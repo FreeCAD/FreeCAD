@@ -2,6 +2,88 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl" sourcelanguage="en">
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Przekładnia ewolwentowa ...</translation>
+    </message>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Tworzy lub edytuje definicję przekładni ewolwentowej.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Koło łańcuchowe ...</translation>
+    </message>
+    <message>
+      <location filename="SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Tworzy lub edytuje koło łańcuchowe.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Kreator projektowania wału ...</translation>
+    </message>
+    <message>
+      <location filename="WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Uruchom kreatora projektowania wału</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Długość [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Średnica [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Średnica wewnętrzna [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Typ wiązania</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Typ krawędzi początkowej</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Rozmiar krawędzi początkowej</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Typ krawędzi końcowej</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Rozmiar krawędzi końcowej</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
       <location filename="../../Command.cpp" line="1692"/>
@@ -11,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Addytywna helisa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Przeciągnij wybrany szkic wzdłuż helisy</translation>
     </message>
   </context>
   <context>
@@ -137,7 +219,7 @@
     <message>
       <location filename="../../Command.cpp" line="430"/>
       <source>Create a clone</source>
-      <translation>Utwórz klon</translation>
+      <translation>Utwórz klona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="431"/>
@@ -155,7 +237,7 @@
     <message>
       <location filename="../../Command.cpp" line="1984"/>
       <source>Draft</source>
-      <translation>Szkic</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1985"/>
@@ -196,7 +278,7 @@
     <message>
       <location filename="../../Command.cpp" line="1928"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Utwórz zaokrąglenia na krawędzi, powierzchni lub bryle</translation>
+      <translation>Utwórz zaokrąglenie na krawędzi, powierzchni lub zawartości</translation>
     </message>
   </context>
   <context>
@@ -268,7 +350,7 @@
     <message>
       <location filename="../../Command.cpp" line="2252"/>
       <source>Create a linear pattern feature</source>
-      <translation>Utwórz szyk liniowy</translation>
+      <translation>Utwórz cechę przez szyk liniowy</translation>
     </message>
   </context>
   <context>
@@ -281,12 +363,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="313"/>
       <source>Migrate</source>
-      <translation>Przenieś</translation>
+      <translation>Przenieś ze starszej wersji</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="314"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Przenieś dokument do nowoczesnego przepływu pracy Projekt części</translation>
+      <translation>Przenieś dokument do nowoczesnego przepływu pracy Projekt Części</translation>
     </message>
   </context>
   <context>
@@ -335,12 +417,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="825"/>
       <source>Move object after other object</source>
-      <translation>Przesuń obiekt po innym obiekcie</translation>
+      <translation>Przesuń obiekt za inny obiekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Przenosi wybrany obiekt i umieszcza go za innym elementem</translation>
+      <translation>Przenosi wybrany obiekt i umieszcza go za innym obiektem</translation>
     </message>
   </context>
   <context>
@@ -376,7 +458,7 @@
     <message>
       <location filename="../../Command.cpp" line="2430"/>
       <source>Create a multitransform feature</source>
-      <translation>Utwórz funkcje wielokrotnej transformacji</translation>
+      <translation>Utwórz cechę wielokrotnej transformacji</translation>
     </message>
   </context>
   <context>
@@ -484,7 +566,7 @@
     <message>
       <location filename="../../Command.cpp" line="2316"/>
       <source>Create a polar pattern feature</source>
-      <translation>Utwórz szyk kołowy</translation>
+      <translation>Utwórz cechę przez szyk kołowy</translation>
     </message>
   </context>
   <context>
@@ -520,7 +602,7 @@
     <message>
       <location filename="../../Command.cpp" line="2381"/>
       <source>Create a scaled feature</source>
-      <translation>Utwórz funkcję skalowaną</translation>
+      <translation>Utwórz cechę skalowaną</translation>
     </message>
   </context>
   <context>
@@ -538,7 +620,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Create a new shape binder</source>
-      <translation>Utwórz nowy łącznik kształtu kształtu</translation>
+      <translation>Utwórz nowy łącznik kształtu</translation>
     </message>
   </context>
   <context>
@@ -552,7 +634,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>Utwórz łącznik kształtu obiektu podrzędnego</translation>
     </message>
   </context>
   <context>
@@ -565,12 +647,12 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Subtraktywna helisa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Rozciągnij wybrany szkic wzdłuż krętej ścieżki lub do innych profili i usuń z zawartości</translation>
     </message>
   </context>
   <context>
@@ -643,7 +725,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="195"/>
       <source>Additive Box</source>
-      <translation>Addytywny Prostopadłościan</translation>
+      <translation>Addytywny prostopadłościan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
@@ -653,32 +735,32 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Sphere</source>
-      <translation>Addytywna Sfera</translation>
+      <translation>Addytywna sfera</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Cone</source>
-      <translation>Addytywny Stożek</translation>
+      <translation>Addytywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Ellipsoid</source>
-      <translation>Addytywna Elipsoida</translation>
+      <translation>Addytywna elipsoida</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Torus</source>
-      <translation>Addytywny Torus</translation>
+      <translation>Addytywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Prism</source>
-      <translation>Addytywny Graniastosłup</translation>
+      <translation>Addytywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Wedge</source>
-      <translation>Addytywny Klin</translation>
+      <translation>Addytywny klin</translation>
     </message>
   </context>
   <context>
@@ -697,7 +779,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="351"/>
       <source>Subtractive Box</source>
-      <translation>Subtraktywny Prostopadłościan</translation>
+      <translation>Subtraktywny prostopadłościan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="355"/>
@@ -707,32 +789,32 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Sphere</source>
-      <translation>Subtraktywna Sfera</translation>
+      <translation>Subtraktywna sfera</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Cone</source>
-      <translation>Subtraktywny Stożek</translation>
+      <translation>Subtraktywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Subtraktywna Elipsoida</translation>
+      <translation>Subtraktywna elipsoida</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Torus</source>
-      <translation>Subtraktywny Torus</translation>
+      <translation>Subtraktywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Prism</source>
-      <translation>Subtraktywny Graniastosłup</translation>
+      <translation>Subtraktywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="379"/>
       <source>Subtractive Wedge</source>
-      <translation>Subtraktywny Klin</translation>
+      <translation>Subtraktywny klin</translation>
     </message>
   </context>
   <context>
@@ -740,78 +822,78 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Edytuj łącznik kształtu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Utwórz łącznik kształtu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Edytuj podrzędny łącznik kształtu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create Clone</source>
-      <translation type="unfinished">Create Clone</translation>
+      <translation>Utwórz klona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <location filename="../../Command.cpp" line="1155"/>
       <source>Make copy</source>
-      <translation type="unfinished">Make copy</translation>
+      <translation>Utwórz kopię</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>Create a Sketch on Face</source>
-      <translation type="unfinished">Create a Sketch on Face</translation>
+      <translation>Utwórz szkic na ścianie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Create a new Sketch</source>
-      <translation type="unfinished">Create a new Sketch</translation>
+      <translation>Utwórz nowy szkic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Konwertuj jako cechę wielokrotnej transformacji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2568"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Utwórz cechę funkcją logiczną</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="193"/>
       <source>Add a Body</source>
-      <translation type="unfinished">Add a Body</translation>
+      <translation>Dodaj zawartość</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>Migracja cech ze starych wersji Projektu Części do Zawartości</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>Przenieś czubek do wybranej cechy</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
-      <translation type="unfinished">Duplicate a PartDesign object</translation>
+      <translation>Duplikuj obiekt Projektu Części</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="738"/>
       <source>Move an object</source>
-      <translation type="unfinished">Move an object</translation>
+      <translation>Przenieś obiekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="887"/>
       <source>Move an object inside tree</source>
-      <translation type="unfinished">Move an object inside tree</translation>
+      <translation>Przesuń obiekt wewnątrz drzewa</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="296"/>
@@ -821,7 +903,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="322"/>
       <source>Make LinearPattern</source>
-      <translation type="unfinished">Make LinearPattern</translation>
+      <translation>Utwórz wzorzec liniowy</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
@@ -839,7 +921,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
       <source>Valid</source>
-      <translation>Aktualny</translation>
+      <translation>Poprawny</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="46"/>
@@ -849,17 +931,17 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
       <source>No wire in sketch</source>
-      <translation>Nie znaleziono szkieletu na szkicu</translation>
+      <translation>Nie znaleziono polilinii w szkicu</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation>Szkicuj już używane przez inną funkcję</translation>
+      <translation>Szkic jest już używany przez inną cechę</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkic należy do innej funkcji zawartości</translation>
+      <translation>Szkic należy do innej cechy zawartości</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
@@ -869,25 +951,25 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Funkcja jest umieszczona po wierzchołku funkcji</translation>
+      <translation>Cecha znajduje się za cechą czubka</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Face tools</source>
       <translation>Narzędzia ścian</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
-      <translation>Narzędzia szkicowania</translation>
+      <translation>Przybory do szkicowania</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Create Geometry</source>
-      <translation>Tworzenie geometrii</translation>
+      <translation>Utwórz Geometrię</translation>
     </message>
   </context>
   <context>
@@ -895,7 +977,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Parametry ewolwenty</translation>
+      <translation>Parametry profilu ewolwenty</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -905,7 +987,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation type="unfinished">Module:</translation>
+      <translation>Moduł:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
@@ -921,13 +1003,13 @@
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
       <location filename="../../../InvoluteGearFeature.ui" line="166"/>
       <source>True</source>
-      <translation>Prawda</translation>
+      <translation>Tak</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="144"/>
       <location filename="../../../InvoluteGearFeature.ui" line="171"/>
       <source>False</source>
-      <translation>Fałsz</translation>
+      <translation>Nie</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
@@ -943,10 +1025,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Nie można utworzyć żądanej cechy. Powodem może być:
+  - aktywna Zawartość nie zawiera podstawowego kształtu, więc nie ma
+  materiału do usunięcia;
+  - wybrany szkic nie należy do aktywnej zawartości.</translation>
     </message>
   </context>
   <context>
@@ -957,10 +1039,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Nie można utworzyć żądanej cechy. Powodem może być:
+  - aktywna Zawartość nie zawiera podstawowego kształtu, więc nie ma
+  materiału do usunięcia;
+  - wybrany szkic nie należy do aktywnej zawartości.</translation>
     </message>
   </context>
   <context>
@@ -971,10 +1053,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Nie można utworzyć żądanej cechy. Powodem może być:
+  - aktywna Zawartość nie zawiera podstawowego kształtu, więc nie ma
+  materiału do usunięcia;
+  - wybrany szkic nie należy do aktywnej zawartości.</translation>
     </message>
   </context>
   <context>
@@ -985,16 +1067,16 @@
       <translation>Pierwotne bryły geometryczne</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
-      <source>Width:</source>
-      <translation>Szerokość:</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
       <translation>Długość:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
+      <source>Width:</source>
+      <translation>Szerokość:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1004,12 +1086,6 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
       <translation>Wysokość:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
-      <source>Angle:</source>
-      <translation>Kąt:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1024,30 +1100,30 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1274"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Kąt w pierwszym kierunku:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="314"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1281"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Kąt w pierwszym kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="333"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1300"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Kąt w drugim kierunku:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="340"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1307"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Kąt w kierunku drugim</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="391"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Kąt obrotu:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="465"/>
@@ -1064,6 +1140,12 @@
       <translation>Promień 2:</translation>
     </message>
     <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
+      <source>Angle:</source>
+      <translation>Kąt:</translation>
+    </message>
+    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <source>U parameter:</source>
@@ -1077,12 +1159,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
       <source>Radius in local z-direction</source>
-      <translation type="unfinished">Radius in local z-direction</translation>
+      <translation>Promień w lokalnym kierunku osi Z</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local x-direction</source>
-      <translation type="unfinished">Radius in local x-direction</translation>
+      <translation>Promień w lokalnym kierunku osi X</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
@@ -1093,8 +1175,8 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Promień w lokalnym kierunku osi Y
+Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1105,12 +1187,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation type="unfinished">Radius in local xy-plane</translation>
+      <translation>Promień zawarty w lokalnej płaszczyźnie XY</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation type="unfinished">Radius in local xz-plane</translation>
+      <translation>Promień zawarty w lokalnej płaszczyźnie XZ</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1233,14 +1315,14 @@ If zero, it is equal to Radius2</translation>
       <translation>Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
-      <source>End point</source>
-      <translation>Punkt końcowy</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
       <translation>Punkt początkowy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
+      <source>End point</source>
+      <translation>Punkt końcowy</translation>
     </message>
   </context>
   <context>
@@ -1253,7 +1335,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Wybrano geometrie, które nie są częścią aktywnej zawartości. Proszę określić, jak należy postępować z tymi zaznaczeniami. Jeśli nie chcesz tych odwołań, anuluj polecenie.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1263,12 +1345,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="52"/>
       <source>Make dependent copy</source>
-      <translation>Stwórz zależną kopię</translation>
+      <translation>Utwórz zależną kopię</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
       <source>Create cross-reference</source>
-      <translation>Utwórz odnośnik</translation>
+      <translation>Utwórz dowiązanie</translation>
     </message>
   </context>
   <context>
@@ -1289,22 +1371,22 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>Dodaj kontener</translation>
+      <translation>Dodaj zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>Usuń kontener</translation>
+      <translation>Usuń zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Suma</translation>
+      <translation>Scalenie</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1314,7 +1396,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="56"/>
       <source>Boolean parameters</source>
-      <translation>Parametry wartości logicznej</translation>
+      <translation>Parametry operacji logicznej</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="85"/>
@@ -1332,34 +1414,34 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="725"/>
       <source>Cone radii are equal</source>
-      <translation type="unfinished">Cone radii are equal</translation>
+      <translation>Promienie stożków są równe</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="726"/>
       <source>The radii for cones must not be equal!</source>
-      <translation type="unfinished">The radii for cones must not be equal!</translation>
+      <translation>Promienie stożków nie mogą być równe!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="801"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="806"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="811"/>
       <source>Invalid wedge parameters</source>
-      <translation type="unfinished">Invalid wedge parameters</translation>
+      <translation>Nieprawidłowe parametry klina</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>Wartość minimalna X nie może być równa wartości maksymalnej X!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Wartość minimalna Y nie może być równa wartości maksymalnej Y!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Wartość minimalna Z nie może być równa wartości maksymalnej Z!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1380,8 +1462,8 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="166"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
+kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1389,11 +1471,16 @@ click again to end selection</translation>
       <translation>Dodaj</translation>
     </message>
     <message>
+      <location filename="../../TaskChamferParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Skasuj</translation>
+    </message>
+    <message>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the chamfers</translation>
+      <translation>- wybierz element, aby go podświetlić
+- kliknij dwukrotnie na element, aby zobaczyć fazki</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
@@ -1403,22 +1490,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Wymiary równe</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Dwa wymiary</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>Wymiar i kąt</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Odwróć kierunek</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1428,7 +1515,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>Rozmiar 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -1436,17 +1523,12 @@ click again to end selection</translation>
       <translation>Kąt</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Skasuj</translation>
-    </message>
-    <message>
       <location filename="../../TaskChamferParameters.cpp" line="176"/>
       <location filename="../../TaskChamferParameters.cpp" line="178"/>
       <location filename="../../TaskChamferParameters.cpp" line="243"/>
       <location filename="../../TaskChamferParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Wymagany jest co najmniej jeden element</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
@@ -1456,7 +1538,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Należy wybrać co najmniej jeden element.</translation>
     </message>
   </context>
   <context>
@@ -1472,17 +1554,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="356"/>
       <source>Empty body list</source>
-      <translation>Lista puste ciało</translation>
+      <translation>Lista zawartości jest pusta</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="357"/>
       <source>The body list cannot be empty</source>
-      <translation>Lista "{0}" nie może być pusta.</translation>
+      <translation>Lista zawartości nie może być pusta</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="368"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Wartość Logiczna: Akceptuj: Błąd wejścia</translation>
+      <translation>Funkcja logiczna: Akceptuj: Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
@@ -1495,7 +1577,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Nie istnieje tryb tryb załącznika który pasuje do obecnej konfiguracji referencji. Jeśli uznasz, żeby kontynuować, funkcja pozostanie tam gdzie jest teraz i i nie zmieni się jako zmiana referencji. Kontynuować?</translation>
+      <translation>Nie ma trybu dołączania, który pasowałby do obecnego zestawu odniesień. Jeśli zdecydujesz się kontynuować, właściwość pozostanie tam, gdzie jest teraz i nie zostanie przeniesiona, gdy referencje się zmienią. Kontynuować?</translation>
     </message>
   </context>
   <context>
@@ -1527,8 +1609,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
+kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1544,13 +1626,13 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- wybierz element, aby go podświetlić
+- kliknij dwukrotnie na element, aby zobaczyć rysunki robocze</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
       <source>Draft angle</source>
-      <translation>Szkicuj kąt</translation>
+      <translation>Kąt początkowy</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="98"/>
@@ -1573,7 +1655,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="276"/>
       <location filename="../../TaskDraftParameters.cpp" line="278"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Wymagany jest co najmniej jeden element</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
@@ -1583,7 +1665,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Należy wybrać co najmniej jeden element.</translation>
     </message>
   </context>
   <context>
@@ -1597,7 +1679,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="243"/>
       <location filename="../../TaskDressUpParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Wymagany jest co najmniej jeden element</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1692,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation>Pozwól używać funkcji</translation>
+      <translation>Zezwalaj na używane cechy</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
@@ -1625,7 +1707,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation>Z różnych części lub swobodnych obiektów</translation>
+      <translation>Z różnych części lub swobodnych cech</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
@@ -1635,17 +1717,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="79"/>
       <source>Make dependent copy</source>
-      <translation>Stwórz zależną kopię</translation>
+      <translation>Utwórz zależną kopię</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
       <source>Create cross-reference</source>
-      <translation>Utwórz odnośnik</translation>
+      <translation>Utwórz dowiązanie</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>Valid</source>
-      <translation>Aktualny</translation>
+      <translation>Poprawny</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
@@ -1655,12 +1737,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>No wire in sketch</source>
-      <translation>Nie znaleziono szkieletu na szkicu</translation>
+      <translation>Nie znaleziono polilinii w szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
       <source>Sketch already used by other feature</source>
-      <translation>Szkicuj już używane przez inną funkcję</translation>
+      <translation>Szkic jest już używany przez inną cechę</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
@@ -1685,12 +1767,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Funkcja jest umieszczona po wierzchołku funkcji</translation>
+      <translation>Cecha jest umieszczona za czubkiem</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="86"/>
       <source>Select feature</source>
-      <translation>Wybrane funkcje</translation>
+      <translation>Wybierz cechę</translation>
     </message>
   </context>
   <context>
@@ -1706,8 +1788,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="121"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
+kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1715,11 +1797,16 @@ click again to end selection</translation>
       <translation>Dodaj</translation>
     </message>
     <message>
+      <location filename="../../TaskFilletParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Skasuj</translation>
+    </message>
+    <message>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the fillets</translation>
+      <translation>- wybierz element, aby go podświetlić
+- kliknij dwukrotnie na element, aby zobaczyć zaokrąglenia</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -1727,17 +1814,12 @@ click again to end selection</translation>
       <translation>Promień:</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Skasuj</translation>
-    </message>
-    <message>
       <location filename="../../TaskFilletParameters.cpp" line="131"/>
       <location filename="../../TaskFilletParameters.cpp" line="133"/>
       <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <location filename="../../TaskFilletParameters.cpp" line="200"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Wymagany jest co najmniej jeden element</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
@@ -1747,7 +1829,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Należy wybrać co najmniej jeden element.</translation>
     </message>
   </context>
   <context>
@@ -1760,12 +1842,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="23"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Status:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="30"/>
       <source>Valid</source>
-      <translation>Aktualny</translation>
+      <translation>Poprawny</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="42"/>
@@ -1793,12 +1875,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="65"/>
       <source>Horizontal sketch axis</source>
-      <translation>Szkic poziomej osi</translation>
+      <translation>Pozioma oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="70"/>
       <source>Vertical sketch axis</source>
-      <translation>Szkic pionowej osi</translation>
+      <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="75"/>
@@ -1814,22 +1896,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
       <source>Pitch-Height-Angle</source>
-      <translation type="unfinished">Pitch-Height-Angle</translation>
+      <translation>Skok - wysokość - kąt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="101"/>
       <source>Pitch-Turns-Angle</source>
-      <translation type="unfinished">Pitch-Turns-Angle</translation>
+      <translation>Skok - liczba obrotów - kąt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="106"/>
       <source>Height-Turns-Angle</source>
-      <translation type="unfinished">Height-Turns-Angle</translation>
+      <translation>Wysokość - liczba obrotów - kąt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="111"/>
       <source>Height-Turns-Growth</source>
-      <translation type="unfinished">Height-Turns-Growth</translation>
+      <translation>Wysokość - liczba obrotów - poszerzenie</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
@@ -1844,12 +1926,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="186"/>
       <source>Turns:</source>
-      <translation type="unfinished">Turns:</translation>
+      <translation>Obroty:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="214"/>
       <source>Cone angle:</source>
-      <translation type="unfinished">Cone angle:</translation>
+      <translation>Kąt stożka:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="248"/>
@@ -1859,7 +1941,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation type="unfinished">Left handed</translation>
+      <translation>Lewostronny</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>
@@ -1869,7 +1951,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation type="unfinished">Remove outside of profile</translation>
+      <translation>Usuń za obrębem profilu profilu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>
@@ -1879,11 +1961,36 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="65"/>
       <source>Helix parameters</source>
-      <translation type="unfinished">Helix parameters</translation>
+      <translation>Parametry helisy</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="52"/>
+      <source>Counterbore</source>
+      <translation>Pogłębienie walcowe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="53"/>
+      <source>Countersink</source>
+      <translation>Pogłębienie stożkowe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="54"/>
+      <source>Cheesehead (deprecated)</source>
+      <translation>Pogłębienie pod łeb z rowkiem (przestarzały)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="55"/>
+      <source>Countersink socket screw (deprecated)</source>
+      <translation>Śruba z łbem stożkowym (przestarzałe)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="56"/>
+      <source>Cap screw (deprecated)</source>
+      <translation>Śruba z łbem walcowym (przestarzałe)</translation>
+    </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="60"/>
       <source>Hole parameters</source>
@@ -1895,54 +2002,29 @@ click again to end selection</translation>
       <translation>Brak</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="52"/>
-      <source>Counterbore</source>
-      <translation>Pogłębiacz walcowy</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="53"/>
-      <source>Countersink</source>
-      <translation>Nawiercenie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="54"/>
-      <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="55"/>
-      <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="56"/>
-      <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular profile</source>
-      <translation type="unfinished">ISO metric regular profile</translation>
+      <translation>Standardowy profil metryczny ISO</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO metryczny grubej profilu</translation>
+      <translation>Dokładny profil metryczny ISO</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Zgrubny profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Dokładny profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine profile</source>
-      <translation>UTS grubej profilu</translation>
+      <translation>Precyzyjny profil UTS</translation>
     </message>
   </context>
   <context>
@@ -1965,7 +2047,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -1980,7 +2062,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="101"/>
@@ -2028,7 +2110,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
@@ -2048,7 +2130,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2086,7 +2168,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2134,7 +2216,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2164,7 +2246,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="100"/>
       <source>Add mirrored transformation</source>
-      <translation>Dodaj skopiowaną lustrzanie transformację</translation>
+      <translation>Dodaj transformację w odbiciu lustrzanym</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
@@ -2179,7 +2261,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
       <source>Add scaled transformation</source>
-      <translation>Dodaj transformację skalowaną</translation>
+      <translation>Dodaj transformację w zmienionej skali</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="116"/>
@@ -2194,7 +2276,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="147"/>
       <source>Right-click to add</source>
-      <translation>Kliknij prawym przyciskiem myszy, aby dodać</translation>
+      <translation>Kliknij prawym przyciskiem myszki, aby dodać</translation>
     </message>
   </context>
   <context>
@@ -2219,19 +2301,19 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="38"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="60"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Użyj wektora niestandardowego dla kierunku wyciągnięcia, w przeciwnym razie
+zostanie użyty wektor normalnej płaszczyzny szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="64"/>
       <source>Use custom direction</source>
-      <translation type="unfinished">Use custom direction</translation>
+      <translation>Użyj niestandardowego kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="73"/>
@@ -2241,7 +2323,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="80"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>składowa X wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="102"/>
@@ -2251,7 +2333,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="109"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>składowa Y wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="131"/>
@@ -2261,44 +2343,44 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="138"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>składowa Z wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="166"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Jeśli opcja nie jest zaznaczona, długość będzie
+mierzona wzdłuż podanego kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="170"/>
       <source>Length along sketch normal</source>
-      <translation type="unfinished">Length along sketch normal</translation>
+      <translation>Długość wzdłuż wektora normalnego szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="185"/>
       <source>Offset to face</source>
-      <translation type="unfinished">Offset to face</translation>
+      <translation>Przesunięcie do ściany</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="192"/>
       <source>Offset from face in which pad will end</source>
-      <translation type="unfinished">Offset from face in which pad will end</translation>
+      <translation>Przesunięcie w kierunku ściany, na której wyciągnięcie zostanie zakończone</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="207"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Nadaje długość symetrycznie do płaszczyzny szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="210"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="217"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>Odwróć kierunek wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="220"/>
@@ -2368,7 +2450,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation>Rodzaj orientacji</translation>
+      <translation>Tryb orientacji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -2403,7 +2485,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
@@ -2443,7 +2525,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="558"/>
       <source>Section orientation</source>
-      <translation>Wybierz położenie</translation>
+      <translation>Kierunek sekcji profilu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="588"/>
@@ -2461,7 +2543,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
@@ -2487,12 +2569,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation>Zaokrąglij róg</translation>
+      <translation>Zaokrąglony narożnik</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Ścieżka do wyciagnięcia</translation>
+      <translation>Ścieżka do wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2507,7 +2589,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="75"/>
       <source>Pipe parameters</source>
-      <translation>Parametry rury</translation>
+      <translation>Parametry wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="95"/>
@@ -2523,7 +2605,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
-      <translation type="unfinished">No active body</translation>
+      <translation>Brak aktywnej zawartości</translation>
     </message>
   </context>
   <context>
@@ -2536,7 +2618,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation>Tryb transormacji</translation>
+      <translation>Tryb transformacji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
@@ -2546,7 +2628,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Wielosekcja</translation>
+      <translation>Sekcja wielokrotna</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -2561,7 +2643,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="885"/>
       <source>Section transformation</source>
-      <translation>Sekcja przekształceń</translation>
+      <translation>Przekształcenia sekcji</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="903"/>
@@ -2591,7 +2673,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="38"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="55"/>
@@ -2601,7 +2683,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="74"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="81"/>
@@ -2681,7 +2763,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Lista może zostać uporządkowana poprzez przeciąganie</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2729,7 +2811,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="900"/>
       <source>Attachment</source>
-      <translation>Załącznik</translation>
+      <translation>Dołączenie</translation>
     </message>
   </context>
   <context>
@@ -2765,12 +2847,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
       <source>Horizontal sketch axis</source>
-      <translation>Szkic poziomej osi</translation>
+      <translation>Pozioma oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
       <source>Vertical sketch axis</source>
-      <translation>Szkic pionowej osi</translation>
+      <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
@@ -2786,7 +2868,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Symetryczna do płaszczyzny</translation>
+      <translation>Symetrycznie do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
@@ -2896,8 +2978,8 @@ measured along the specified direction</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknij w przycisk, aby przejść do trybu wyboru,
+kliknij ponownie, aby zakończyć wybór</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>
@@ -2913,8 +2995,8 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- wybierz element, aby go podświetlić
+- kliknij dwukrotnie na element, aby zobaczyć cechy</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -2968,7 +3050,7 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="220"/>
       <location filename="../../TaskThicknessParameters.cpp" line="222"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Wymagany jest co najmniej jeden element</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
@@ -2978,7 +3060,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Należy wybrać co najmniej jeden element.</translation>
     </message>
   </context>
   <context>
@@ -2999,12 +3081,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="248"/>
       <source>Vertical sketch axis</source>
-      <translation>Szkic pionowej osi</translation>
+      <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="249"/>
       <source>Horizontal sketch axis</source>
-      <translation>Szkic poziomej osi</translation>
+      <translation>Pozioma oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="251"/>
@@ -3062,12 +3144,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Tworzenie addytywnego prostopadłościanu przez podanie szerokości, wysokości i długości</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Tworzenie addytywnego walca przez podanie promienia, wysokości i kąta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3077,7 +3159,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive cone</source>
-      <translation>Stwórz addytywny stożek</translation>
+      <translation>Utwórz addytywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
@@ -3087,17 +3169,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive torus</source>
-      <translation>Stwórz addytywny torus</translation>
+      <translation>Utwórz addytywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive prism</source>
-      <translation>Stwórz addytywny graniastosłup</translation>
+      <translation>Utwórz addytywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive wedge</source>
-      <translation>Stwórz addytywny klin</translation>
+      <translation>Utwórz addytywny klin</translation>
     </message>
   </context>
   <context>
@@ -3110,7 +3192,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Tworzenie subtraktywnego cylindra przez jego promień, wysokość i kąt</translation>
+      <translation>Tworzenie subtraktywnego walca przez podanie promienia, wysokości i kąta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
@@ -3120,27 +3202,27 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive cone</source>
-      <translation>Stwórz subtraktywny stożek</translation>
+      <translation>Utwórz subtraktywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Stwórz subtraktywną elipsoidę</translation>
+      <translation>Utwórz subtraktywną elipsoidę</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive torus</source>
-      <translation>Stwórz subtraktywny torus</translation>
+      <translation>Utwórz subtraktywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive prism</source>
-      <translation>Stwórz subtraktywny graniastosłup</translation>
+      <translation>Utwórz subtraktywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive wedge</source>
-      <translation>Stwórz subtraktywny klin</translation>
+      <translation>Utwórz subtraktywny klin</translation>
     </message>
   </context>
   <context>
@@ -3161,7 +3243,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="879"/>
       <source>Select feature</source>
-      <translation>Wybrane funkcje</translation>
+      <translation>Wybierz cechę</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="880"/>
@@ -3171,17 +3253,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>Przenieś czubek</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>Przeniesiony element pojawia się za aktualnie ustawionym czubkiem.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Czy chcesz aby ostatnia cecha była nowym czubkiem?</translation>
     </message>
   </context>
   <context>
@@ -3194,7 +3276,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Nie istnieją tryby załączników, które miałyby pasować do wybranych obiektów. Wybierz coś innego.</translation>
+      <translation>Nie ma trybów dołączania, które pasują do wybranych obiektów. Wybierz coś innego.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
@@ -3206,12 +3288,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Nie istnieje aktywna zawartość. Proszę stworzyć aktywną zawartość przed umieszczeniem danej jednostki.</translation>
+      <translation>Nie istnieje aktywna zawartość. Proszę uaktywnić zawartość przed wstawieniem elementu układu odniesienia.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Łącznik kształtów podrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
@@ -3241,7 +3323,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="611"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>Musisz wybrać ścianę planarną jako płaszczyznę szkicu!</translation>
+      <translation>Musisz wybrać powierzchnię jako bazę dla szkicu!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="796"/>
@@ -3251,7 +3333,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę do szkicu</translation>
+      <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę dla umieszczenia szkicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="810"/>
@@ -3282,27 +3364,27 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>Nie można użyć tego polecenia, ponieważ nie ma bryły do odjęcia.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature  before attempting a subtractive command.</translation>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Upewnij się, że zawartość posiada cechę, zanim spróbujesz wykonać polecenie odejmowania.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>Nie można użyć wybranego obiektu. Wybrany obiekt musi należeć do aktywnej zawartości</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>Rozważ użycie Łącznika Kształtu lub Cechy Podstawowej do odniesienia zewnętrznej geometrii w zawartości.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>No sketch to work on</source>
-      <translation>Brak szkicu</translation>
+      <translation>Brak szkicu do pracy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
@@ -3320,33 +3402,23 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Select an edge, face, or body.</source>
-      <translation type="unfinished">Select an edge, face, or body.</translation>
+      <translation>Wybierz krawędź, ścianę lub zawartość.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1839"/>
-      <source>Select an edge, face, or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2158"/>
-      <source>Please create a feature first.</source>
-      <translation type="unfinished">Please create a feature first.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2167"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
+      <translation>Wybierz krawędź, ścianę lub zawartość z pojedynczej zawartości.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
-      <translation>Wybór nie jest w aktywnej zawartości</translation>
+      <translation>Wybór nie znajduje się w aktywnej zawartości</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1839"/>
+      <source>Select an edge, face, or body from an active body.</source>
+      <translation>Wybierz krawędź, ścianę lub zawartość z aktywnej zawartości.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3366,12 +3438,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
       <source> not possible on selected faces/edges.</source>
-      <translation> nie jest to możliwe na wybranych ścianach/krawędziach.</translation>
+      <translation> nie jest możliwe na wybranych ścianach / krawędziach.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
       <translation>Brak prawidłowych cech w tym dokumencie</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2158"/>
+      <source>Please create a feature first.</source>
+      <translation>Proszę najpierw utworzyć cechę.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2167"/>
+      <source>Please select only one feature in an active body.</source>
+      <translation>Wybierz tylko jedną cechę w aktywnej zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -3399,7 +3481,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="125"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 już należy do zawartości, nie można go użyć jak podstawową funkcję dla innej zawartości.</translation>
+      <translation>Obiekt %1 już należy do zawartości, nie może zostać użyty jako podstawowa cecha kolejnej zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="138"/>
@@ -3437,7 +3519,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="179"/>
       <source>Base feature</source>
-      <translation>Własność podstawowa</translation>
+      <translation>Cecha podstawowa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="187"/>
@@ -3452,7 +3534,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body. Nothing to migrate.</translation>
+      <translation>Nie znaleziono elementów Projektu Części, które nie należą do zawartości. Nie ma nic do migracji.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>
@@ -3476,7 +3558,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Zaznacz dokładnie jedną cechę lub zawartość Projektu części.</translation>
+      <translation>Zaznacz dokładnie jedną cechę lub zawartość Projektu Części.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
@@ -3513,29 +3595,29 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Niemożliwe jest przeniesienie podstawowej cechy ciała.</translation>
+      <translation>Niemożliwe jest przeniesienie podstawowej cechy zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="859"/>
       <source>Select one or more features from the same body.</source>
-      <translation>Wybierz jedną lub więcej funkcji tego samego ciała.</translation>
+      <translation>Wybierz jedną lub więcej cech z tej samej zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="872"/>
       <source>Beginning of the body</source>
-      <translation>Początek ciała</translation>
+      <translation>Początek zawartości</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="936"/>
       <source>Dependency violation</source>
-      <translation type="unfinished">Dependency violation</translation>
+      <translation>Naruszenie warunków zależności</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="937"/>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation type="unfinished">Early feature must not depend on later feature.
+      <translation>Cecha początkowa nie może zależeć od cechy następnej.
 
 </translation>
     </message>
@@ -3554,14 +3636,14 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <location filename="../../TaskRevolutionParameters.cpp" line="136"/>
       <location filename="../../TaskTransformedParameters.cpp" line="284"/>
       <source>Vertical sketch axis</source>
-      <translation>Szkic pionowej osi</translation>
+      <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="206"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <location filename="../../TaskTransformedParameters.cpp" line="285"/>
       <source>Horizontal sketch axis</source>
-      <translation>Szkic poziomej osi</translation>
+      <translation>Pozioma oś szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="208"/>
@@ -3577,7 +3659,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
       <source>No active Body</source>
-      <translation>Brak aktywnego widoku</translation>
+      <translation>Brak aktywnej zawartości</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="144"/>
@@ -3596,7 +3678,7 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     <message>
       <location filename="../../Utils.cpp" line="160"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Aby utworzyć nowy obiekt Projektu części, w dokumencie musi być aktywny obiekt Zawartość. Uaktywnij jeden (podwójnym kliknięciem) lub utwórz nową Zawartość.</translation>
+      <translation>Aby utworzyć nowy obiekt Projektu Części, w dokumencie musi być aktywny obiekt Zawartość. Uaktywnij jeden (podwójnym kliknięciem) lub utwórz nową Zawartość.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="200"/>
@@ -3616,12 +3698,12 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     <message>
       <location filename="../../Utils.cpp" line="234"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Ta funkcja musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
+      <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="97"/>
       <source>Set colors...</source>
-      <translation>Ustaw kolory...</translation>
+      <translation>Ustaw kolory ...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="69"/>
@@ -3649,12 +3731,12 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="138"/>
       <source>Coordinate System</source>
-      <translation>Układ Współrzędnych</translation>
+      <translation>Układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="237"/>
       <source>Edit datum</source>
-      <translation>Edytuj punkt odniesienia</translation>
+      <translation>Edytuj odniesienie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
@@ -3722,12 +3804,12 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Synchronizuj</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>Wybierz powiązany obiekt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3747,7 +3829,7 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="145"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Edytowany dokument "%1" został zaprojektowany w starszej wersji środowiska Projekt części.</translation>
+      <translation>Edytowany dokument "%1" został zaprojektowany w starszej wersji środowiska Projekt Części.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="148"/>
@@ -3769,9 +3851,9 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Uwaga: Jeśli zdecydujesz się na migrację, nie będziesz mógł edytować pliku przy użyciu starszej wersji FreeCAD.
+Jeśli odmówisz migracji, nie będziesz mógł używać nowych funkcji środowiska Projekt Części, takich jak Zawartość i Część. W rezultacie nie będziesz mógł również używać swoich części w środowisku Złożeń.
+Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Migruj".</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -3781,7 +3863,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
-      <translation type="unfinished">Edit helix</translation>
+      <translation>Edytuj helisę</translation>
     </message>
   </context>
   <context>
@@ -3789,7 +3871,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation type="unfinished">Sprocket parameter</translation>
+      <translation>Parametry koła łańcuchowego</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -3799,172 +3881,172 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation type="unfinished">Sprocket Reference</translation>
+      <translation>Typ koła łańcuchowego</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
       <source>Bicycle with Derailleur</source>
-      <translation type="unfinished">Bicycle with Derailleur</translation>
+      <translation>Rowerowa z przerzutkami</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="123"/>
       <source>Bicycle without Derailleur</source>
-      <translation type="unfinished">Bicycle without Derailleur</translation>
+      <translation>Rowerowa bez przerzutek</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="143"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="148"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="153"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="158"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation type="unfinished">Motorcycle 420</translation>
+      <translation>Motocyklowy 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation type="unfinished">Motorcycle 425</translation>
+      <translation>Motocyklowy 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation type="unfinished">Motorcycle 428</translation>
+      <translation>Motocyklowy 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation type="unfinished">Motorcycle 520</translation>
+      <translation>Motocyklowy 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation type="unfinished">Motorcycle 525</translation>
+      <translation>Motocyklowy 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation type="unfinished">Motorcycle 530</translation>
+      <translation>Motocyklowy 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation type="unfinished">Motorcycle 630</translation>
+      <translation>Motocyklowy 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Podziałka łańcucha:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 w</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Średnica wałka:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4025,12 +4107,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation>Nawiercenie</translation>
+      <translation>Pogłębienie stożkowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
       <source>Counterbore</source>
-      <translation>Pogłębiacz walcowy</translation>
+      <translation>Pogłębienie walcowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
@@ -4040,7 +4122,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation>Spersonalizowane wymiary</translation>
+      <translation>Wymiary niestandardowe</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
@@ -4088,12 +4170,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
       <source>Counterbore depth</source>
-      <translation>Głębokość pogłębiacza walcowego</translation>
+      <translation>Głębokość pogłębienia walcowego</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Kąt nawiercenia</translation>
+      <translation>Kąt pogłębienia stożkowego</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -4106,29 +4188,44 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="20"/>
       <source>Task Hole Parameters</source>
-      <translation>Parametry zadania</translation>
+      <translation>Parametry otworu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="26"/>
+      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Gwintowanie i wymiar&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="39"/>
+      <source>Profile</source>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
       <source>Whether the hole gets a thread</source>
-      <translation type="unfinished">Whether the hole gets a thread</translation>
+      <translation>Czy otwór będzie gwintowany</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="71"/>
+      <source>Threaded</source>
+      <translation>Gwintowany</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Czy otwór będzie posiadał wymodelowany gwint</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Model gwintu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation type="unfinished">Live update of changes to the thread
-Note that the calculation can take some time</translation>
+      <translation>Aktualizacja zmian gwintu na żywo
+Zauważ, że obliczenia mogą zająć trochę czasu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="101"/>
@@ -4138,30 +4235,50 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation type="unfinished">Customize thread clearance</translation>
+      <translation>Dostosuj pasowanie gwintu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation type="unfinished">Custom Thread Clearance</translation>
+      <translation>Niestandardowa wartość pasowania gwintu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Pasowanie</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation type="unfinished">Custom Thread clearance value</translation>
+      <translation>Niestandardowa wartość pasowania gwintu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="171"/>
+      <source>Direction</source>
+      <translation>Kierunek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="190"/>
+      <source>Right hand</source>
+      <translation>Prawy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="206"/>
+      <source>Left hand</source>
+      <translation>Lewy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="222"/>
+      <source>Size</source>
+      <translation>Rozmiar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation type="unfinished">Hole clearance
-Only available for holes without thread</translation>
+      <translation>Pasowanie
+Dostępne tylko dla otworów bez gwintu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
@@ -4180,59 +4297,17 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="285"/>
       <location filename="../../TaskHoleParameters.cpp" line="582"/>
       <source>Wide</source>
-      <translation type="unfinished">Wide</translation>
+      <translation>Szerokość</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="299"/>
+      <source>Class</source>
+      <translation>Klasa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation type="unfinished">Tolerance class for threaded holes according to hole profile</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="350"/>
-      <source>Hole diameter</source>
-      <translation type="unfinished">Hole diameter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="421"/>
-      <source>Thread Depth</source>
-      <translation type="unfinished">Thread Depth</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="441"/>
-      <source>Hole depth</source>
-      <translation type="unfinished">Hole depth</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="451"/>
-      <source>Tapped (DIN76)</source>
-      <translation type="unfinished">Tapped (DIN76)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="488"/>
-      <location filename="../../TaskHoleParameters.ui" line="666"/>
-      <source>Type</source>
-      <translation>Typ</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="767"/>
-      <source>Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="789"/>
-      <source>Reverses the hole direction</source>
-      <translation type="unfinished">Reverses the hole direction</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="792"/>
-      <source>Reversed</source>
-      <translation>Odwrócony</translation>
+      <translation>Klasa tolerancji dla otworów gwintowanych w zależności od profilu otworu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="331"/>
@@ -4241,87 +4316,15 @@ over 90: larger hole radius at the bottom</translation>
       <translation>Średnica</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="350"/>
+      <source>Hole diameter</source>
+      <translation>Średnica otworu</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="369"/>
       <location filename="../../TaskHoleParameters.ui" line="577"/>
       <source>Depth</source>
       <translation>Głębokość</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="299"/>
-      <source>Class</source>
-      <translation>Klasa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
-      <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="520"/>
-      <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="523"/>
-      <source>Custom values</source>
-      <translation type="unfinished">Custom values</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="730"/>
-      <source>The size of the drill point will be taken into
-account for the depth of blind holes</source>
-      <translation type="unfinished">The size of the drill point will be taken into
-account for the depth of blind holes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="734"/>
-      <source>Take into account for depth</source>
-      <translation type="unfinished">Take into account for depth</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="754"/>
-      <source>Tapered</source>
-      <translation>Smukły</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="171"/>
-      <source>Direction</source>
-      <translation>Kierunek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="682"/>
-      <source>Flat</source>
-      <translation>Płaski</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="698"/>
-      <source>Angled</source>
-      <translation>Pochylony</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="190"/>
-      <source>Right hand</source>
-      <translation>Prawa Ręka</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="206"/>
-      <source>Left hand</source>
-      <translation>Lewa ręka</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="71"/>
-      <source>Threaded</source>
-      <translation>Gwintowany</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="39"/>
-      <source>Profile</source>
-      <translation>Profil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="615"/>
-      <source>Countersink angle</source>
-      <translation>Kąt nawiercenia</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="389"/>
@@ -4335,19 +4338,19 @@ account for the depth of blind holes</translation>
       <translation>Przez wszystkie</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="222"/>
-      <source>Size</source>
-      <translation>Rozmiar</translation>
+      <location filename="../../TaskHoleParameters.ui" line="421"/>
+      <source>Thread Depth</source>
+      <translation>Głębokość gwintu</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="650"/>
-      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Punkt wiercenia&lt;/b&gt;</translation>
+      <location filename="../../TaskHoleParameters.ui" line="441"/>
+      <source>Hole depth</source>
+      <translation>Głębokość otworu</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="741"/>
-      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Różne&lt;/b&gt;</translation>
+      <location filename="../../TaskHoleParameters.ui" line="451"/>
+      <source>Tapped (DIN76)</source>
+      <translation>Gwintowany (DIN76)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
@@ -4355,9 +4358,88 @@ account for the depth of blind holes</translation>
       <translation>&lt;b&gt;Wycięcie otworu&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="26"/>
-      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Gwintowanie i wymiar&lt;/b&gt;</translation>
+      <location filename="../../TaskHoleParameters.ui" line="488"/>
+      <location filename="../../TaskHoleParameters.ui" line="666"/>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <source>Cut type for screw heads</source>
+      <translation>Typ nacięcia dla łbów śrub</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="520"/>
+      <source>Check to override the values predefined by the 'Type'</source>
+      <translation>Zaznacz opcję, aby nadpisać wartości predefiniowane przez "Typ"</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="523"/>
+      <source>Custom values</source>
+      <translation>Wartości użytkownika</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="615"/>
+      <source>Countersink angle</source>
+      <translation>Kąt pogłębienia stożkowego</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="650"/>
+      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Czubek wiertła&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="682"/>
+      <source>Flat</source>
+      <translation>Płaski</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="698"/>
+      <source>Angled</source>
+      <translation>Kątowy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="730"/>
+      <source>The size of the drill point will be taken into
+account for the depth of blind holes</source>
+      <translation>Wielkość wierzchołka wiertła będzie brana pod uwagę
+dla głębokości otworów nieprzelotowych</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
+      <source>Take into account for depth</source>
+      <translation>Uwzględnij głębokość</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="741"/>
+      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Różne&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="754"/>
+      <source>Tapered</source>
+      <translation>Stożkowy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="767"/>
+      <source>Taper angle for the hole
+90 degree: straight hole
+under 90: smaller hole radius at the bottom
+over 90: larger hole radius at the bottom</source>
+      <translation>Kąt stożka dla otworu
+90°: otwór prosty
+poniżej 90°: mniejszy promień otworu u dołu
+powyżej 90°: większy promień otworu u dołu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="789"/>
+      <source>Reverses the hole direction</source>
+      <translation>Odwraca kierunek otworu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="792"/>
+      <source>Reversed</source>
+      <translation>Odwrócony</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="591"/>
@@ -4367,7 +4449,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>Pasowanie</translation>
     </message>
   </context>
   <context>
@@ -4387,38 +4469,68 @@ account for the depth of blind holes</translation>
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>&amp;Part Design</source>
-      <translation type="unfinished">&amp;Part Design</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Sketch</source>
-      <translation type="unfinished">&amp;Sketch</translation>
+      <translation>&amp;Szkic</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
-      <source>Create a datum</source>
-      <translation type="unfinished">Create a datum</translation>
+      <source>&amp;Part Design</source>
+      <translation>&amp;Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
-      <source>Create an additive feature</source>
-      <translation type="unfinished">Create an additive feature</translation>
+      <source>Create a datum</source>
+      <translation>Utwórz układ odniesienia</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
-      <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <source>Create an additive feature</source>
+      <translation>Utwórz cechę przez dodanie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
-      <source>Apply a pattern</source>
-      <translation type="unfinished">Apply a pattern</translation>
+      <source>Create a subtractive feature</source>
+      <translation>Utwórz cechę przez odjecie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
+      <source>Apply a pattern</source>
+      <translation>Zastosuj wzór</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
-      <translation type="unfinished">Apply a dress-up feature</translation>
+      <translation>Zastosuj funkcję ulepszenia</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="60"/>
+      <source>Sprocket...</source>
+      <translation>Koło łańcuchowe ...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Involute gear...</source>
+      <translation>Przekładnia ewolwentowa ...</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Shaft design wizard</source>
+      <translation>Kreator projektowania wału</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="67"/>
+      <source>Measure</source>
+      <translation>Wymiarowanie</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="68"/>
+      <source>Part Design Helper</source>
+      <translation>Projekt Części - pomocnik</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Part Design Modeling</source>
+      <translation>Projekt Części - modelowanie</translation>
     </message>
   </context>
 </TS>

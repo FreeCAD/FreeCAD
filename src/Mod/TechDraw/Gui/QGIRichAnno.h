@@ -98,6 +98,8 @@ protected:
     double prefPointSize(void);
     QFont prefFont(void);
 
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
     bool m_isExporting;
     QGCustomText* m_text;
     bool m_hasHover;

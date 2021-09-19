@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="847"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="848"/>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1562"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1563"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="1074"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1463"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1464"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="133"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="134"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../Command.cpp" line="1197"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1198"/>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../../Command.cpp" line="1362"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../../Command.cpp" line="1154"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
@@ -242,7 +242,7 @@
     <message>
       <location filename="../../Command.cpp" line="1528"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../Command.cpp" line="565"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
@@ -298,7 +298,7 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
@@ -317,7 +317,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="369"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="370"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1788"/>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="895"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../Command.cpp" line="738"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="739"/>
@@ -405,7 +405,7 @@
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="795"/>
@@ -424,7 +424,7 @@
     <message>
       <location filename="../../Command.cpp" line="1100"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1286"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Command.cpp" line="1318"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
@@ -500,7 +500,7 @@
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -519,7 +519,7 @@
     <message>
       <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1877"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../Command.cpp" line="1045"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1716"/>
@@ -575,7 +575,7 @@
     <message>
       <location filename="../../Command.cpp" line="1751"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1752"/>
@@ -594,7 +594,7 @@
     <message>
       <location filename="../../Command.cpp" line="1400"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
@@ -613,7 +613,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1831"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="173"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="94"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="95"/>
@@ -669,7 +669,7 @@
     <message>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
@@ -688,7 +688,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="228"/>
@@ -701,7 +701,7 @@
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
@@ -720,7 +720,7 @@
     <message>
       <location filename="../../Command.cpp" line="692"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Háló létrehozás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>

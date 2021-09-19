@@ -737,20 +737,18 @@ class Component(ArchIFC.IfcProduct):
                         base = base.fuse(add)
 
                     elif hasattr(o,'Shape'):
-                        if o.Shape:
-                            if not o.Shape.isNull():
-                                if o.Shape.Solids:
-                                    s = o.Shape.copy()
-                                    if placement:
-                                        s.Placement = s.Placement.multiply(placement)
-                                    if base:
-                                        if base.Solids:
-                                            try:
-                                                base = base.fuse(s)
-                                            except Part.OCCError:
-                                                print("Arch: unable to fuse object ", obj.Name, " with ", o.Name)
-                                    else:
-                                        base = s
+                        if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
+                            s = o.Shape.copy()
+                            if placement:
+                                s.Placement = s.Placement.multiply(placement)
+                            if base:
+                                if base.Solids:
+                                    try:
+                                        base = base.fuse(s)
+                                    except Part.OCCError:
+                                        print("Arch: unable to fuse object ", obj.Name, " with ", o.Name)
+                            else:
+                                base = s
 
         # treat subtractions
         subs = obj.Subtractions
@@ -1231,7 +1229,7 @@ class ViewProviderComponent:
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:
                     return ":/icons/Arch_Component_Clone.svg"
-        return ":/icons/Arch_Component.svg"
+        return ":/icons/Arch_Component_Tree.svg"
 
     def onChanged(self,vobj,prop):
         """Method called when the view provider has a property changed.
@@ -1420,11 +1418,7 @@ class ViewProviderComponent:
         if hasattr(self,"Object"):
             c = []
             if hasattr(self.Object,"Base"):
-                if Draft.getType(self.Object) != "Wall":
-                    c = [self.Object.Base]
-                elif Draft.getType(self.Object.Base) == "Space":
-                    c = []
-                else:
+                if not (Draft.getType(self.Object) == "Wall" and Draft.getType(self.Object.Base) == "Space"):
                     c = [self.Object.Base]
             if hasattr(self.Object,"Additions"):
                 c.extend(self.Object.Additions)
@@ -1543,7 +1537,7 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
-        """If an object is a clone, set it it to copy the color of its parent.
+        """If an object is a clone, set it to copy the color of its parent.
 
         Only change the color of the clone if the clone and its parent have
         colors that are distinguishably different from each other.

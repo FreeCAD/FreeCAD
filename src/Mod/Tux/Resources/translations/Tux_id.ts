@@ -16,22 +16,22 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="65"/>
       <source>Rotate</source>
-      <translation>Memutar</translation>
+      <translation>Putar</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="66"/>
       <source>Pan</source>
-      <translation>Wajan</translation>
+      <translation>Geser</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="67"/>
       <source>Tilt</source>
-      <translation>Tilt</translation>
+      <translation>Miring</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="68"/>
       <source>Navigation style</source>
-      <translation>Navigasi gaya</translation>
+      <translation>Gaya navigasi</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="69"/>
@@ -46,17 +46,17 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="73"/>
       <source>Middle mouse button.</source>
-      <translation>Tombol tengah mouse.</translation>
+      <translation>Tombol tengah tetikus.</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="76"/>
       <source>Navigation style not recognized.</source>
-      <translation>Navigasi gaya tidak diakui.</translation>
+      <translation>Gaya navigasi tidak dikenali.</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Setelan</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="292"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Kompak</translation>
+      <translation>Ringkas</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>Keteragan alat</translation>
+      <translation>Keterangan alat</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="295"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>Tombol tengah tetikus atau tombol H.</translation>
     </message>
   </context>
 </TS>

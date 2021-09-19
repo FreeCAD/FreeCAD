@@ -1,7 +1,7 @@
 ; Graphite
-; Uwe Stöhr, LGPL
+; Uwe StÃ¶hr, LGPL
 ; information about the content of such cards can be found on the wiki:
-; https://www.freecadweb.org/wiki/Material
+; https://www.freecadweb.org/wiki/Material 
 ; file created by FreeCAD 0.20.24516 (Git)
 
 [General]
@@ -9,7 +9,7 @@ Name = Graphite
 Description = Typical material properties for pure graphite
 Father = Carbon
 KindOfMaterial = Solid
-ReferenceSource = Poperties and characteristics of graphite
+ReferenceSource = Properties and characteristics of graphite
 SourceURL = https://www.entegris.com/content/dam/web/resources/manuals-and-guides/manual-properties-and-characteristics-of-graphite-109441.pdf
 
 [Mechanical]

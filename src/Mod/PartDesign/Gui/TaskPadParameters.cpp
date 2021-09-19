@@ -104,7 +104,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
-    ui->groupBoxDirection->setChecked(useCustom);
+    ui->checkBoxDirection->setChecked(useCustom);
+    onDirectionToggled(useCustom);
     ui->checkBoxAlongDirection->setChecked(alongCustom);
     ui->XDirectionEdit->setValue(xs);
     ui->YDirectionEdit->setValue(ys);
@@ -158,7 +159,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onLength2Changed(double)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
         this, SLOT(onAlongSketchNormalChanged(bool)));
-    connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
+    connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onDirectionToggled(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
         this, SLOT(onXDirectionEditChanged(double)));
@@ -203,7 +204,8 @@ void TaskPadParameters::updateUI(int index)
     bool isLengthEditVisible  = false;
     bool isLengthEdit2Visible = false;
     bool isOffsetEditVisible  = false;
-    bool isMidplateEnabled    = false;
+    bool isMidplaneEnabled    = false;
+    bool isMidplaneVisible    = false;
     bool isReversedEnabled    = false;
     bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
@@ -216,7 +218,8 @@ void TaskPadParameters::updateUI(int index)
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplateEnabled = !ui->checkBoxReversed->isChecked();
+        isMidplaneEnabled = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
         isReversedVisible = true;
@@ -224,6 +227,8 @@ void TaskPadParameters::updateUI(int index)
     // up to first/last
     else if (index == 1 || index == 2) {
         isOffsetEditVisible = true;
+        isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // up to face
     else if (index == 3) {
@@ -233,12 +238,15 @@ void TaskPadParameters::updateUI(int index)
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
+        isReversedEnabled = true;
+        isReversedVisible = true;
     }
     // two dimensions
     else {
         isLengthEditVisible  = true;
         isLengthEdit2Visible = true;
-        isMidplateEnabled    = !ui->checkBoxReversed->isChecked();
+        isMidplaneEnabled    = !ui->checkBoxReversed->isChecked();
+        isMidplaneVisible    = true;
         isReversedEnabled    = !ui->checkBoxMidplane->isChecked();
         isReversedVisible    = true;
     }
@@ -252,7 +260,8 @@ void TaskPadParameters::updateUI(int index)
     ui->offsetEdit->setEnabled( isOffsetEditVisible );
     ui->labelOffset->setVisible( isOffsetEditVisible );
 
-    ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
+    ui->checkBoxMidplane->setEnabled( isMidplaneEnabled );
+    ui->checkBoxMidplane->setVisible( isMidplaneVisible );
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
     ui->checkBoxReversed->setVisible( isReversedVisible );
@@ -323,8 +332,12 @@ void TaskPadParameters::onDirectionToggled(bool on)
     pcPad->UseCustomVector.setValue(on);
     // dis/enable length direction
     ui->checkBoxAlongDirection->setEnabled(on);
-    if (!on)
+    if (on) {
+        ui->groupBoxDirection->show();
+    } else {
         ui->checkBoxAlongDirection->setChecked(!on);
+        ui->groupBoxDirection->hide();
+    }
     recomputeFeature();
     // the calculation of the sketch's normal vector is done in FeaturePad.cpp
     // if this vector was used for the recomputation we must fill the direction
@@ -473,7 +486,7 @@ bool   TaskPadParameters::getAlongSketchNormal(void) const
 
 bool   TaskPadParameters::getCustom(void) const
 {
-    return ui->groupBoxDirection->isChecked();
+    return ui->checkBoxDirection->isChecked();
 }
 
 double TaskPadParameters::getXDirection(void) const

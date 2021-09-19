@@ -64,6 +64,10 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
+        # FIXME The following two imports were added as part of PR4926
+        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        import FreeCADGui as Gui
+        from pivy import coin
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):
@@ -128,13 +132,20 @@ def autogroup(obj):
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
-            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
+            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            if obj in active_arch_obj.InListRecursive:
+                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+                return
+            active_arch_obj.addObject(obj)
 
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
             # if not scaled. Modified accordingly to realthunder suggestions
-            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            if obj in active_part.InListRecursive:
+                # do not autogroup if obj points to active_part to prevent cyclic references
+                return
             matrix = parent.getSubObject(sub, retType=4)
             if matrix.hasScale() == 1:
                 err = translate("Draft",
@@ -161,7 +172,8 @@ def autogroup(obj):
             elif hasattr(obj,"Placement"):
                 # every object that have a placement is processed here
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-            p.addObject(obj)
+
+            active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):

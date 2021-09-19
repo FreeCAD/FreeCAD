@@ -210,10 +210,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             PathLog.debug("Processing holes and face ...")
             holeEnv = PathUtils.getEnvelope(partshape=holeShape, depthparams=self.depthparams)
             newEnv = env.cut(holeEnv)
-            tup = newEnv, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+            tup = newEnv, False, 'pathMillFace'
         else:
             PathLog.debug("Processing solid face ...")
-            tup = env, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+            tup = env, False, 'pathMillFace'
 
         self.removalshapes.append(tup)
         obj.removalshape = self.removalshapes[0][0]  # save removal shape
@@ -304,9 +304,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectFace(obj, name)
+    obj.Proxy = ObjectFace(obj, name, parentJob)
     return obj

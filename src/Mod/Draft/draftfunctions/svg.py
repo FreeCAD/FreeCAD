@@ -428,7 +428,7 @@ def get_svg(obj,
     # all the SVG strings from the contents of the group
     if hasattr(obj, "isDerivedFrom"):
         if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) == "Layer"):
+                or utils.get_type(obj) in ["Layer","BuildingPart"]):
             svg = ""
             for child in obj.Group:
                 svg += get_svg(child,

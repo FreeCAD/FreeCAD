@@ -28,7 +28,6 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -161,8 +160,6 @@ def export(objectslist, filename, argstring):
     global UNITS
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
-    global HORIZRAPID
-    global VERTRAPID
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -195,34 +192,10 @@ def export(objectslist, filename, argstring):
             if not obj.Base.Active:
                 continue
 
-        # fetch machine details
-        job = PathUtils.findParentJob(obj)
-
-        myMachine = 'not set'
-
-        if hasattr(job, "MachineName"):
-            myMachine = job.MachineName
-
-        if hasattr(job, "MachineUnits"):
-            if job.MachineUnits == "Metric":
-                UNITS = "G21"
-                UNIT_FORMAT = 'mm'
-                UNIT_SPEED_FORMAT = 'mm/min'
-            else:
-                UNITS = "G20"
-                UNIT_FORMAT = 'in'
-                UNIT_SPEED_FORMAT = 'in/min'
-
-        if hasattr(job, "SetupSheet"):
-            if hasattr(job.SetupSheet, "HorizRapid"):
-                HORIZRAPID = Units.Quantity(job.SetupSheet.HorizRapid, FreeCAD.Units.Velocity)
-            if hasattr(job.SetupSheet, "VertRapid"):
-                VERTRAPID = Units.Quantity(job.SetupSheet.HorizRapid, FreeCAD.Units.Velocity)
-
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine: %s, %s)\n" % (myMachine, UNIT_SPEED_FORMAT)
+            gcode += linenumber() + "(machine: %s, %s)\n" % (MACHINE_NAME, UNIT_SPEED_FORMAT)
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 

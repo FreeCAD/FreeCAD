@@ -30,11 +30,9 @@
 #ifdef FC_OS_WIN32
 # define DraftUtilsExport  __declspec(dllexport)
 # define PartExport __declspec(dllexport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define DraftUtilsExport
 # define PartExport
-# define BaseExport
 #endif
 
 #ifdef _MSC_VER

@@ -22,12 +22,10 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import Part
 from PySide import QtCore, QtGui
 
 __title__ = "Path Deburr Operation UI"
@@ -35,13 +33,9 @@ __author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
-LOGLEVEL = False
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):
@@ -55,15 +49,6 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         return super(TaskPanelBaseGeometryPage, self)
 
     def addBaseGeometry(self, selection):
-        for sel in selection:
-            if sel.HasSubObjects:
-                # selectively add some elements of the drawing to the Base
-                for sub in sel.SubObjects:
-                    if isinstance(sub, Part.Face):
-                        if sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1):
-                            PathLog.info(translate("Path", "Ignoring non-horizontal Face"))
-                            return
-
         self.super().addBaseGeometry(selection)
 
 

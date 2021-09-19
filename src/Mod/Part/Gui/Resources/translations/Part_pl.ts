@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Załącznik...</translation>
+      <translation>Dołączenie ...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{obj} nie może być załączony. Nadal możesz użyć okna dialogowego edytora załączników, aby wyrównać obiekt, ale załącznik nie będzie parametryczny.</translation>
+      <translation>{obj} nie jest możliwe do dołączenia. Nadal można użyć okna edytora dołączania, aby wyrównać obiekt, ale dołączenie nie będzie parametryczne.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Załącznik</translation>
+      <translation>Dołączenie</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Zignorowano. Nie można dołączyć obiektu do siebie!</translation>
+      <translation>Zignorowano. Nie można dołączyć obiektu do samego siebie!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation>{obj1} zależy od dołączonego obiektu, nie można go użyć do załącznika</translation>
+      <translation>{obj1} zależy od dołączanego obiektu, nie można go używać do dołączania</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation>Referencja{i}</translation>
+      <translation>Odniesienie{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation>Dołączono z trybem {mode}</translation>
+      <translation>Załączony w trybie {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -106,17 +106,17 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Odsunięcie załącznika (nieaktywny - nie podłączony):</translation>
+      <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odsunięcie mocowania (według lokalnych współrzędnych):</translation>
+      <translation>Odsunięcie dołączenia (według lokalnych współrzędnych):</translation>
     </message>
   </context>
   <context>
@@ -206,12 +206,12 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
-      <translation>Zaznacz kształt, który jest związkiem, po raz pierwszy!</translation>
+      <translation>Najpierw wybierz kształt, który jest złożeniem!</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>First select a shape that is a compound.</source>
-      <translation>Najpierw wybierz kształt, który jest kształtem złożonym.</translation>
+      <translation>Najpierw wybierz kształt, który jest złożeniem.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -242,7 +242,7 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Tworzy wycięcie w jednym obiekcie, aby pasowało na inny obiekt.</translation>
+      <translation>Tworzy wycięcie w jednym obiekcie, pasujące do innego obiektu.</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
+      <translation>Fragmentacja funkcją logiczną</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
@@ -350,6 +350,16 @@ Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby a
       <translation>Krojenie na kształty złożone</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -361,7 +371,7 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation>Pokrój</translation>
+      <translation>Pokrój część</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -519,7 +519,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation>Nie wybrano referencji</translation>
+      <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>
@@ -702,7 +702,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Unorientable Shape</source>
-      <translation>Kształt bez możliwości ustawienia</translation>
+      <translation>Kształt niemożliwy do przewidzenia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
@@ -712,12 +712,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Not Connected</source>
-      <translation>Niepołączone</translation>
+      <translation>Nie połączono</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Sub Shape Not In Shape</source>
-      <translation>Podrzędna część kształtu nie jest częścią kształtu</translation>
+      <translation>Kształt podrzędny nie jest częścią kształtu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
@@ -742,22 +742,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="144"/>
       <source>No Result</source>
-      <translation>Brak rezultatu</translation>
+      <translation>Bez rezultatu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation>Poza wyliczonym zasięgiem: </translation>
+      <translation>Poza zakresem wyliczenia: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation>Suma kontrolna Nieznana BOPAlgo</translation>
+      <translation>Suma kontrolna Operacji Logicznej komponentu Open Cascade, nieznana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation>Zły Typ BOPAlgo</translation>
+      <translation>Zły typ Operacji Logicznej komponentu Open Cascade</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
@@ -767,7 +767,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation>Zbyt Mała Krawędź BOPAlgo</translation>
+      <translation>Zbyt mała krawędź BOPAlgo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -850,12 +850,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="847"/>
       <source>Set colors...</source>
-      <translation>Ustaw kolory...</translation>
+      <translation>Ustaw kolory ...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="79"/>
       <source>Edit mirror plane</source>
-      <translation>Edycja płaszczyzny lustra</translation>
+      <translation>Edycja płaszczyzny odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="276"/>
@@ -1100,7 +1100,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Przyciąganie jest wyłączone. Punkt może być przeniesiony przez edycję właściwości umiejscowienia.</translation>
+      <translation>Mocowanie jest wyłączone. Punkt może być przeniesiony przez edycję właściwości umiejscowienia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -1184,7 +1184,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="291"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Nie zaimplementowano</translation>
+      <translation>Nie wprowadzono</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="293"/>
@@ -1235,7 +1235,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję umiejscowienia.</translation>
+      <translation>Dołączanie jest wyłączone. Linia może zostać przesunięta poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
@@ -1435,25 +1435,25 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Druga główna oś</translation>
+      <translation>Druga oś główna</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linia stosuje się do drugiej głównej osi inerti.</translation>
+      <translation>Linia przebiega zgodnie z drugą główną osią bezwładności.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Trzecia główna oś</translation>
+      <translation>Trzecia oś główna</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linia stosuje się do trzeciej głównej osi inerti.</translation>
+      <translation>Linia przebiega zgodnie z trzecią główną osią bezwładności.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
@@ -1465,7 +1465,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linia prostopadłą do powierzchni w punkcie ustawionym przez wierzchołek.</translation>
+      <translation>Linia prostopadła do powierzchni w punkcie wyznaczonym przez wierzchołek.</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1480,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję położenia.</translation>
+      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -1596,7 +1596,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Współosiowy</translation>
+      <translation>Współosiowo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
@@ -1608,7 +1608,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Sekcja Obrotu</translation>
+      <translation>Obrót przekroju</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
@@ -1626,13 +1626,13 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Wyrównaj płaszczyznę do przejścia przez trzy wierzchołki.</translation>
+      <translation>Wyrównaj płaszczyznę tak, aby przechodziła przez trzy wierzchołki.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normalna do 3 punktów</translation>
+      <translation>Normalny do 3 punktów</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
@@ -1656,13 +1656,13 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Inercja 2-3</translation>
+      <translation>Bezwładność 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Płaszczyzna zbudowana na drugiej i trzeciej osi głównej inercji (przechodzi przez centrum bryły).</translation>
+      <translation>Płaszczyzna zbudowana na drugiej i trzeciej głównej osi bezwładności (przechodzi przez środek masy).</translation>
     </message>
   </context>
   <context>
@@ -1677,7 +1677,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Załącznik jest nieaktywny. Linia może być przeniesiona przez właściwą edycję położenia.</translation>
+      <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1793,7 +1793,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Współosiowy</translation>
+      <translation>Współosiowo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
@@ -1805,7 +1805,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Sekcja Obrotu</translation>
+      <translation>Obrót przekroju</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
@@ -1853,13 +1853,13 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Inercjalny CS</translation>
+      <translation>Inercyjny CS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Inercjalny układ współrzędnych, skonstruowany na głównej osi inercji i centrum bryły.</translation>
+      <translation>Bezwładnościowy układ współrzędnych, zbudowany na głównych osiach bezwładności i środku ciężkości.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
@@ -2068,12 +2068,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBlock.ui" line="214"/>
       <location filename="../../DlgBlock.ui" line="309"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -2276,7 +2276,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../CommandParametric.cpp" line="99"/>
       <location filename="../../CommandParametric.cpp" line="104"/>
       <source>Cube</source>
-      <translation>Kostka</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="89"/>
@@ -2299,7 +2299,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="137"/>
       <source>Create a box solid without dialog</source>
-      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
+      <translation>Utwórz prostopadłościan bez użycia okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -2317,7 +2317,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Create a box solid without dialog</source>
-      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
+      <translation>Utwórz prostopadłościan bez użycia okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -2348,7 +2348,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation>Fazowanie ...</translation>
+      <translation>Fazka ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -2402,7 +2402,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Join objects...</source>
-      <translation>Połącz obiekty...</translation>
+      <translation>Połącz obiekty ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
@@ -2425,7 +2425,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Narzędzia do przesuwania kształtów (konstrukcja równoległych kształtów)</translation>
+      <translation>Narzędzia do odsuwania kształtów (konstrukcja równoległych kształtów)</translation>
     </message>
   </context>
   <context>
@@ -2438,12 +2438,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Split objects...</source>
-      <translation>Podziel obiekty...</translation>
+      <translation>Podziel obiekty ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Kształtuj dzielące się narzędzia. Tworzenie narzędzi Compsolid. OCC 6.9.0 lub późniejsze jest wymagane.</translation>
+      <translation>Narzędzia do dzielenia kształtów. Narzędzia do tworzenia brył złożonych. Wymagana jest wersja OCC 6.9.0 lub nowsza.</translation>
     </message>
   </context>
   <context>
@@ -2512,7 +2512,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -2555,7 +2555,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation>Usuń element z kształtu</translation>
+      <translation>Usuń cechę z kształtu</translation>
     </message>
   </context>
   <context>
@@ -2568,7 +2568,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1048"/>
       <source>Export CAD...</source>
-      <translation>Eksport CAD...</translation>
+      <translation>Eksport projektu do CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
@@ -2586,7 +2586,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Extrude...</source>
-      <translation>Wyciągnięcie...</translation>
+      <translation>Wyciągnięcie ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
@@ -2622,12 +2622,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Make a union of several shapes</source>
-      <translation>Utwórz sumę kilku obiektów</translation>
+      <translation>Utwórz połączenie kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -2640,7 +2640,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="988"/>
       <source>Import CAD...</source>
-      <translation>Importuj CAD...</translation>
+      <translation>Import projektu CAD ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="989"/>
@@ -2658,12 +2658,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1095"/>
       <source>Import curve network...</source>
-      <translation>Importuj sieci krzywej...</translation>
+      <translation>Importuj sieć krzywych ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1096"/>
       <source>Import a curve network</source>
-      <translation>Importuj sieci krzywej</translation>
+      <translation>Importuj sieć krzywych</translation>
     </message>
   </context>
   <context>
@@ -2730,12 +2730,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1468"/>
       <source>Mirroring...</source>
-      <translation>Odbicie lustrzane...</translation>
+      <translation>Odbicie lustrzane ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1469"/>
       <source>Mirroring a selected shape</source>
-      <translation>Utwórz odbicie lustrzane wybranego obiektu</translation>
+      <translation>Utwórz odbicie lustrzane wybranego kształtu</translation>
     </message>
   </context>
   <context>
@@ -2748,7 +2748,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation>Wyrównanie 3D...</translation>
+      <translation>Odsunięcie 3D ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
@@ -2766,7 +2766,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation>Wyrównanie 2D...</translation>
+      <translation>Odsunięcie 2D ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
@@ -2784,12 +2784,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Pick curve network</source>
-      <translation>Wybierz krzywą sieci</translation>
+      <translation>Wybierz sieć krzywych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="91"/>
       <source>Pick a curve network</source>
-      <translation>Wybierz krzywą sieci</translation>
+      <translation>Wybierz sieć krzywych</translation>
     </message>
   </context>
   <context>
@@ -2861,7 +2861,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Revolve a selected shape</source>
-      <translation>Wyciągnij przez obrót zaznaczony obiekt</translation>
+      <translation>Wyciągnij przez obrót wybrany kształt</translation>
     </message>
   </context>
   <context>
@@ -2910,7 +2910,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
       <source>Create shape from mesh...</source>
-      <translation>Utwórz kształt z siatki...</translation>
+      <translation>Utwórz kształt z siatki ...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="110"/>
@@ -2946,7 +2946,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="58"/>
       <source>Create Cylinder...</source>
-      <translation>Utwórz walec  ...</translation>
+      <translation>Utwórz walec ...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="59"/>
@@ -2984,7 +2984,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Wyciągnięcie po ścieżce...</translation>
+      <translation>Wyciągnięcie po ścieżce ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
@@ -3002,12 +3002,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1814"/>
       <source>Thickness...</source>
-      <translation>Grubość...</translation>
+      <translation>Grubość ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1815"/>
       <source>Utility to apply a thickness</source>
-      <translation>Narzędzie do ustawiania grubości</translation>
+      <translation>Narzędzie do nadawania grubości</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1827"/>
@@ -3081,17 +3081,17 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb załączników:</translation>
+      <translation>Tryb mocowania:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>AttachmentOffset property. Położenie jest wyrażone w lokalnej przestrzeni dołączonego obiektu.</translation>
+      <translation>Właściwość przesunięcia mocowania. Położenie jest wyrażone w miejscowej przestrzeni dołączonego obiektu.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -3126,7 +3126,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Obróć strony</translation>
+      <translation>Odwróć strony</translation>
     </message>
   </context>
   <context>
@@ -3134,7 +3134,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Przekroje</translation>
+      <translation>Przekrój poprzeczny</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -3164,7 +3164,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sekcje</translation>
+      <translation>Przekroje</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -3207,7 +3207,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="46"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
@@ -3235,7 +3235,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation>Kombinacje</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
@@ -3266,12 +3266,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="388"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Nie można wykonać operacji boolean na tym samym kształcie</translation>
+      <translation>Nie można wykonać operacji logicznej na tym samym kształcie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="398"/>
       <source>No active document available</source>
-      <translation>Żaden aktywny dokument nie jest dostępny</translation>
+      <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="408"/>
@@ -3281,7 +3281,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="415"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation>Utworzenie sumy na obiektach nie będących bryłami nie jest możliwe</translation>
+      <translation>Utworzenie złączenia na obiektach nie będących bryłami nie jest możliwe</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="424"/>
@@ -3332,7 +3332,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation>Spersonalizowany kierunek:</translation>
+      <translation>Kierunek niestandardowy:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
@@ -3384,7 +3384,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
@@ -3509,7 +3509,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="14"/>
       <source>Fillet Edges</source>
-      <translation>Zaokrąglij Krawędzie</translation>
+      <translation>Zaokrąglenie krawędzi</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
@@ -3524,12 +3524,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <source>Fillet Parameter</source>
-      <translation>Parametr Zaokrąglenia</translation>
+      <translation>Parametry zaokrąglenia</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -3564,12 +3564,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant Radius</source>
-      <translation>Stały Promień</translation>
+      <translation>Promień stały</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable Radius</source>
-      <translation>Zmienny Promień</translation>
+      <translation>Promień zmienny</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
@@ -3584,12 +3584,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
       <source>Constant Length</source>
-      <translation>Stała długość</translation>
+      <translation>Długość stała</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Variable Length</source>
-      <translation>Zmienna Długość</translation>
+      <translation>Długość zmienna</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
@@ -3632,7 +3632,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
       <source>Length</source>
-      <translation>Długość</translation>
+      <translation>Odstęp</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="829"/>
@@ -3679,7 +3679,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation>Jednostki dla eksportu IGES</translation>
+      <translation>Jednostki dla eksportu w formacie IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3704,12 +3704,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Grupy Przyciętych Powierzchni (typ 144)</translation>
+      <translation>Grupy przyciętych powierzchni (typ 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Bryły (typ 186) i Powłoki (typ 514) / tryb B-REP</translation>
+      <translation>Bryły (typ 186) i powłoki (typ 514) / tryb B-REP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
@@ -3719,7 +3719,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Skip blank entities</source>
-      <translation>Pomiń puste podmioty</translation>
+      <translation>Pomiń puste elementy</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="110"/>
@@ -3792,7 +3792,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="97"/>
       <source>Units for export of STEP</source>
-      <translation>Jednostki dla eksportu STEP</translation>
+      <translation>Jednostki dla eksportu w formacie STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="104"/>
@@ -3908,7 +3908,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
       <source>Parameter</source>
-      <translation>parametr</translation>
+      <translation>Parametry</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
@@ -3926,7 +3926,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES input file</source>
-      <translation>Plik wejściowy IGES</translation>
+      <translation>Plik wejściowy w formacie IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
@@ -3957,7 +3957,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>Step input file</source>
-      <translation>Plik wejściowy STEP</translation>
+      <translation>Plik wejściowy w formacie STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4088,7 +4088,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>parametr</translation>
+      <translation>Parametry</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="223"/>
@@ -4351,17 +4351,17 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
       <source>Center X:</source>
-      <translation>Centrum X:</translation>
+      <translation>Środek w X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="139"/>
       <source>Center Y:</source>
-      <translation>Centrum Y:</translation>
+      <translation>Środek w Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="159"/>
       <source>Center Z:</source>
-      <translation>Centrum Z:</translation>
+      <translation>Środek w Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="201"/>
@@ -4372,33 +4372,33 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation>Dir. X:</translation>
+      <translation>Kierunek w X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation>Dir. Y:</translation>
+      <translation>Kierunek w Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation>Dir. Z:</translation>
+      <translation>Kierunek w Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation>Wybierz referencję</translation>
+      <translation>Wybierz odniesienie</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Jeśli zaznaczone, obrót rozszerzy się do przodu i do tyłu poprzez połowa kąta.</translation>
+      <translation>Jeśli opcja jest zaznaczona, kierunek obrotu będzie przesunięty do przodu i do tyłu o połowę kąta.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Symmetric angle</source>
-      <translation>Symetryczny kąt</translation>
+      <translation>Kąt symetrycznie</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
@@ -4424,12 +4424,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Długość kierunku obrotu osi jest równa zero. Musi być różna od zera.</translation>
+      <translation>Wartość długość kierunku obrotu osi jest równa zero. Musi być różna od zera.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Obrót rozpiętości kąta jest równy zero. Musi być różny od zera.</translation>
+      <translation>Wartość obrotu rozpiętości kąta jest równa zero. Musi być różna od zera.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -4444,7 +4444,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
       <source>Selecting... (line or arc)</source>
-      <translation>Wybieranie...(linia lub łuk)</translation>
+      <translation>Wybieranie ... (linia lub łuk)</translation>
     </message>
   </context>
   <context>
@@ -4515,12 +4515,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Automatycznie sprawdź model po operacji logicznej</translation>
+      <translation>Automatycznie sprawdź model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Automatycznie dostosuj model po operacji logicznej</translation>
+      <translation>Automatycznie udoskonal model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
@@ -4543,12 +4543,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Part colors</source>
-      <translation>Kolor Części</translation>
+      <translation>Kolor części</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Part colors</source>
-      <translation>Domyślne kolory Części</translation>
+      <translation>Domyślne kolory części</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4591,7 +4591,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Kolor okna zakreślania w widoku 3D</translation>
+      <translation>Kolor ramki otaczającej w oknie widoku 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
@@ -4805,7 +4805,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
       <location filename="../../TaskShapeBuilder.cpp" line="348"/>
       <source>Select one or more edges</source>
-      <translation>Zaznacz jedną lub więcej krawędzi</translation>
+      <translation>Wybierz jedną lub więcej krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
@@ -4850,7 +4850,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>All shape types can be selected</source>
-      <translation>Można zaznaczyć wszystkie rodzaje obwiedni</translation>
+      <translation>Można wybrać wszystkie typy kształtów</translation>
     </message>
   </context>
   <context>
@@ -4870,12 +4870,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation>Ścieżka wycierania</translation>
+      <translation>Ścieżka przeciągania</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Wybierz jedną lub więcej połączonych krawędzi, które chcesz wyciągnąć wzdłuż.</translation>
+      <translation>Wybierz jedną lub więcej połączonych krawędzi, po których chcesz wykonać przeciągnięcie.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4910,7 +4910,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Wybierz jedną lub więcej połączonych krawędzi w widoku 3D i naciśnij przycisk "Gotowe"</translation>
+      <translation>Wybierz jedną lub więcej połączonych krawędzi w oknie widoku 3D i naciśnij przycisk "Gotowe"</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
@@ -4926,7 +4926,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation>Wycieranie</translation>
+      <translation>Wyciągnięcie po ścieżce</translation>
     </message>
   </context>
   <context>
@@ -4964,18 +4964,18 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Tryb załączników:</translation>
+      <translation>Tryb mocowania:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>AttachmentOffset property. Położenie jest wyrażone w lokalnej przestrzeni dołączonego obiektu.</translation>
+      <translation>Właściwość przesunięcia mocowania. Położenie jest wyrażone w miejscowej przestrzeni dołączonego obiektu.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation>Odsunięcie załącznika:</translation>
+      <translation>Odsunięcie dołączenia:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5010,7 +5010,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Obróć strony</translation>
+      <translation>Odwróć strony</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
@@ -5025,7 +5025,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Tryb załącznika nie powiódł się: %1</translation>
+      <translation>Tryb mocowania nie powiódł się: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
@@ -5035,12 +5035,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation>Dołączony z trybem %1</translation>
+      <translation>Dołączony w trybie %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Odsunięcie załącznika (nieaktywny - nie podłączony):</translation>
+      <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -5127,7 +5127,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Aby wybrać ściany zaznacz je w widoku 3D.</translation>
+      <translation>Aby wybrać ściany zaznacz je w oknie widoku 3D.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5137,7 +5137,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="59"/>
       <source>Set to default</source>
-      <translation>Ustaw domyślne</translation>
+      <translation>Ustaw jako domyślne</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>
@@ -5199,7 +5199,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
       <source>Join type</source>
-      <translation>Dołącz typ</translation>
+      <translation>Typ dołączenia</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
@@ -5220,7 +5220,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Samoistne przecięcie się</translation>
+      <translation>Samoprzecięcia</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -5244,7 +5244,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create shape</source>
-      <translation>Utwórz obwiednię</translation>
+      <translation>Utwórz kształt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -5302,7 +5302,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Wycieranie</translation>
+      <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -5424,7 +5424,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
-      <translation>Logiczne</translation>
+      <translation>Funkcje logiczne</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>

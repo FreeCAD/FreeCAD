@@ -127,7 +127,7 @@ Double click on an error in the tree view to see more information about it, incl
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Copyright (c) Вернер Майер (Werner Mayer) FreeCAD UnitTest є частиною FreeCAD і підтримує написання Unit Tests для них власних модулів.</translation>
+      <translation>Copyright (c) Вернер Майер (Werner Mayer) FreeCAD UnitTest є частиною FreeCAD і підтримує написання Unit Tests для тих власних модулів.</translation>
     </message>
   </context>
 </TS>

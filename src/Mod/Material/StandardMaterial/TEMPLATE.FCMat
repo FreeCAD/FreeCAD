@@ -92,6 +92,10 @@ YieldStrength =
 ; https://en.wikipedia.org/wiki/Young%27s_modulus
 YoungsModulus =
 
+; Stiffness (or Spring Stiffness) in [FreeCAD Stiffness unit]
+; https://en.wikipedia.org/wiki/Stiffness
+Stiffness =
+
 
 [Thermal]
 ; Specific capacity in [FreeCAD SpecificHeat unit]

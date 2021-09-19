@@ -57,7 +57,7 @@ __title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
+def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -128,7 +128,10 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         obj.Height = height
     else:
         obj.Height = p.GetFloat("WallHeight",3000)
-    obj.Align = align
+    if align:
+        obj.Align = align
+    else:
+        obj.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
     if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()
@@ -847,7 +850,17 @@ class _Wall(ArchComponent.Component):
                                         offset = obj.OffsetFirst.Value
                                     else:
                                         offset = obj.OffsetSecond.Value
-                                    for edge in self.basewires[0].Edges:
+                                    # only 1 wire (first) is supported
+                                    if len(obj.Base.Shape.Edges) == 1:
+                                        # If there is a single edge, the wire was used
+                                        baseEdges = self.basewires[0].Edges
+                                    elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                                        # if obj.Base is Sketch, self.baseWires[0] returned is already a list of edge
+                                        baseEdges = self.basewires[0]
+                                    else:
+                                        # otherwise, it is wire
+                                        baseEdges = self.basewires[0].Edges
+                                    for edge in baseEdges:
                                         while offset < (edge.Length-obj.Joint.Value):
                                             #print i," Edge ",edge," : ",edge.Length," - ",offset
                                             if offset:
@@ -858,7 +871,7 @@ class _Wall(ArchComponent.Component):
                                                 p2 = edge.valueAt(offset).add(p.negative())
                                                 sh = Part.LineSegment(p1,p2).toShape()
                                                 if obj.Joint.Value:
-                                                    sh = sh.extrude(t.multiply(obj.Joint.Value))
+                                                    sh = sh.extrude(-t.multiply(obj.Joint.Value))
                                                 sh = sh.extrude(n)
                                                 if i == 0:
                                                     cuts1.append(sh)

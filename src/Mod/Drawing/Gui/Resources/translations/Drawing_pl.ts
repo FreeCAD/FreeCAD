@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="478"/>
@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="479"/>
       <location filename="../../Command.cpp" line="481"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Wstawia widok Adnotacji w aktywnym rysunku</translation>
+      <translation>Wstaw widok adnotacji w aktywnym rysunku</translation>
     </message>
   </context>
   <context>
@@ -25,18 +25,18 @@
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>&amp;Clip</source>
-      <translation>&amp; Klip</translation>
+      <translation>&amp;Wycinek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <location filename="../../Command.cpp" line="529"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Wstawia grupę klipu do aktywnego rysunku</translation>
+      <translation>Wstaw grupę wycinków do aktywnego rysunku</translation>
     </message>
   </context>
   <context>
@@ -44,18 +44,18 @@
     <message>
       <location filename="../../Command.cpp" line="716"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="717"/>
       <source>&amp;Draft View</source>
-      <translation>Widok &amp;Szkicu</translation>
+      <translation>Widok &amp;rysunku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="718"/>
       <location filename="../../Command.cpp" line="720"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Wstawia widok Szkicu przez zaznaczenie obiektu(ów) w aktywnym rysunku</translation>
+      <translation>Wstaw widok Szkicu przez zaznaczenie obiektu(ów) w aktywnym rysunku</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="631"/>
       <source>Export a page to an SVG file</source>
-      <translation>Eksport strony do pliku SVG</translation>
+      <translation>Wyeksportuj stronę do pliku w formacie DXF</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="93"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="94"/>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Insert view in drawing</source>
-      <translation>Wstaw widok w rysunku</translation>
+      <translation>Wstaw widok do rysunku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -128,12 +128,12 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
-      <translation>Otwórz SVG...</translation>
+      <translation>Otwórz plik w formacie SVG ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -146,18 +146,18 @@
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Open &amp;browser view</source>
-      <translation>Otwórz &amp;widok przeglądania</translation>
+      <translation>Otwórz &amp;widok z przeglądarki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <location filename="../../Command.cpp" line="443"/>
       <source>Opens the selected page in a browser view</source>
-      <translation>Otwiera wybraną stronę w przeglądarce</translation>
+      <translation>Otwórz wybraną stronę w przeglądarce</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="390"/>
@@ -183,12 +183,12 @@
     <message>
       <location filename="../../Command.cpp" line="680"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>Project shape...</source>
-      <translation>Rzut obwiedni...</translation>
+      <translation>Rzutowanie kształtów ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="682"/>
@@ -202,18 +202,18 @@
     <message>
       <location filename="../../Command.cpp" line="747"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="748"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>&amp;Widok arkusza</translation>
+      <translation>&amp;Widok arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <location filename="../../Command.cpp" line="751"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation>Wstawia widok wybranego arkusza w aktywnym rysunku</translation>
+      <translation>Wstaw widok wybranego arkusza w aktywnym rysunku</translation>
     </message>
   </context>
   <context>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../Command.cpp" line="570"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Outline</source>
-      <translation>&amp;Obwiednia</translation>
+      <translation>&amp;Kontur</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="227"/>
@@ -265,12 +265,12 @@
     <message>
       <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;Antyaliasing wysokiej jakości</translation>
+      <translation>&amp;Wygładzanie wysokiej jakości</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="275"/>
       <source>Open SVG File</source>
-      <translation>Otwórz plik SVG</translation>
+      <translation>Otwórz plik w formacie SVG</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="276"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="363"/>
       <source>&amp;Renderer</source>
-      <translation>&amp;Renderer</translation>
+      <translation>&amp;Renderowanie</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="468"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="579"/>
       <source>Different orientation</source>
-      <translation>Inna orientacja</translation>
+      <translation>Odmienna orientacja</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="580"/>
@@ -343,14 +343,14 @@ Czy chcesz kontynuować?</translation>
       <location filename="../../DrawingView.cpp" line="587"/>
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>Different paper size</source>
-      <translation>Inny rozmiar papieru</translation>
+      <translation>Odmienny format papieru</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="588"/>
       <location filename="../../DrawingView.cpp" line="596"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Drukarka używa innego rozmiaru papieru niż rysunek. Czy chcesz kontynuować?</translation>
+      <translation>Drukarka używa innego rozmiaru papieru niż zastosowano na rysunku. Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="607"/>
@@ -384,7 +384,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="302"/>
       <location filename="../../TaskOrthoViews.ui" line="362"/>
       <source>Right click for axonometric settings</source>
-      <translation>Wciśnij prawy przycisk myszy, aby ustawić aksonometrię</translation>
+      <translation>Kliknij prawym przyciskiem myszki, aby uzyskać ustawienia aksonometryczne</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="324"/>
@@ -404,7 +404,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="421"/>
       <source>Auto scale / position</source>
-      <translation>Auto skala / pozycja</translation>
+      <translation>Automatyczna skala / pozycja</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="436"/>
@@ -424,7 +424,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation>Pokaż ukryte linie</translation>
+      <translation>Pokaż niewidoczne linie szwów</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
@@ -439,12 +439,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
-      <translation>Oś na zewnątrz i prawo</translation>
+      <translation>Oś na zewnątrz i w prawo</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
       <source>Vertical tilt</source>
-      <translation>Pionowe pochylenie</translation>
+      <translation>Nachylenie w pionie</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="605"/>
@@ -520,7 +520,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="715"/>
       <location filename="../../TaskOrthoViews.ui" line="738"/>
       <source>Flip</source>
-      <translation>Obróć</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
@@ -550,7 +550,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
-      <translation>Osie wyrównane do prawej strony:</translation>
+      <translation>Oś wyrównana w prawo:</translation>
     </message>
   </context>
   <context>
@@ -568,12 +568,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Visible sewn edges</source>
-      <translation>Widoczne przerywane krawędzie</translation>
+      <translation>Widoczne krawędzie szwu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
-      <translation>Widoczny obrys krawędzi</translation>
+      <translation>Widoczne krawędzie konturu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -593,12 +593,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="58"/>
       <source>Hidden sewn edges</source>
-      <translation>Ukryte przerywane krawędzie</translation>
+      <translation>Ukryte krawędzie szwu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
-      <translation>Ukryty obrys krawędzi</translation>
+      <translation>Ukryte krawędzie konturu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="60"/>
@@ -618,7 +618,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Aktualnie nie ma aktywnego dokumentu aby dokończyć operację</translation>
+      <translation>Obecnie nie ma aktywnego dokumentu do zakończenia operacji</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="97"/>
@@ -628,7 +628,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Aktualnie nie ma aktywnego widoku aby dokończyć operację</translation>
+      <translation>Obecnie nie ma aktywnego widoku do zakończenia operacji</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Landscape</source>
-      <translation>Orientacja Pozioma</translation>
+      <translation>Orientacja pozioma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -701,7 +701,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="585"/>
       <location filename="../../Command.cpp" line="766"/>
       <source>No page found</source>
-      <translation>Nie znaleziono strony</translation>
+      <translation>Strony nie znaleziono</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -749,7 +749,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.cpp" line="55"/>
       <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
-      <translation>Edytuj ustawienia aksonometrii...</translation>
+      <translation>Edytuj ustawienia aksonometryczne ...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="56"/>
@@ -768,7 +768,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Drawing</source>
-      <translation>Rysunek</translation>
+      <translation>Kreślenie</translation>
     </message>
   </context>
 </TS>

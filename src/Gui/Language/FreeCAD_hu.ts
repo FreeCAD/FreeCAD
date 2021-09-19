@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation>Mérés beszúrása</translation>
+      <translation>Méret beszúrása</translation>
     </message>
     <message>
       <source>Insert text document</source>
@@ -277,14 +277,33 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Alapértelmezett</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Átalakítás</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Vágás</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Szín</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Írj be egy kifejezést...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Kifejezés: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +524,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>A FreeCAD nem jöhetett volna létre az alábbi együttműködők nélkül</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Személyek</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Szervezetek</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1441,7 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>A kódsorok sorszámozva lesznek</translation>
     </message>
   </context>
   <context>
@@ -2639,15 +2658,15 @@ A beállítás módosításához újra kell indítani az alkalmazást.</translat
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Milyen több mintavételes élsimítást használ</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Szemtől-szembeni távolság sztereó kivetítésekhez.
+A megadott érték olyan tényező, amelyet megszoroz
+az aktuálisan megjelenített 3D tárgy határolókeret méretével.</translation>
     </message>
   </context>
   <context>
@@ -3271,20 +3290,51 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
       <translation>Betöltetlen munkafelületek</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kijelölt munkafelületek betöltése, a beállítási ablakaik hozzáadása a beállítások párbeszédpanelhez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation>Munkafelület neve</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Kiválasztottak betöltése</translation>
+      <source>Autoload?</source>
+      <translation>Automatikus betöltés?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Elérhető betöltetlen munkafelületek&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation>Betöltés most</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az erőforrások megőrzése érdekében a FreeCAD nem tölti be a munkafelületeket, amíg nem használják őket. A betöltésük hozzáférést biztosíthat a funkciójukhoz kapcsolódó további beállításokhoz.&lt;/p&gt;&lt;p&gt;A következő munkafelületek érhetők el a telepítéshez, de még nincsenek betöltve:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az erőforrások megőrzése érdekében a FreeCAD használatukig nem tölt be munkafelületeket. Ezek betöltése hozzáférést biztosíthat további funkcionalitásukkal kapcsolatos további beállításokhoz.&lt;/p&gt; &lt;p&gt;A következő munkafelületek állnak rendelkezésre a telepítéshez, de még nincsenek betöltve:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Munkafelület</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Automatikus betöltés</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Ha bejelölt</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>automatikusan betöltődik, amikor elindítja a FreeCAD-et</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Ez az aktuális indítási modul, és automatikusan be kell tölteni. Ennek módosításához lásd a Beállítások/Általános/Automatikus betöltés lehetőséget.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Betöltve</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Betöltés most</translation>
     </message>
   </context>
   <context>
@@ -3456,7 +3506,7 @@ Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
       <translation>Rotációs elforgatási stílus.
 Hanyattegér: Ha vízszintesen mozgatja az egeret, az alkatrész az y tengely körül forog
-Forgóasztal: az alkatrész a z tengely körül forog.</translation>
+Forgóasztal: az alkatrész a tengely körül forog.</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -3590,25 +3640,25 @@ Ez a beállítás nem tiltja le az egér megdöntése beállítást.</translatio
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Kocka felületére kattintva a lehető legközelebbi állapotba forog</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Forgatás a legközelebbire</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kocka méret</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Navigációs kocka mérete</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Mennyire nagyítson.
+Az '1' nagyítási lépés minden nagyítási lépésnél 7,5-ös tényezőt jelent.</translation>
     </message>
   </context>
   <context>
@@ -3631,7 +3681,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Kijelölés rögzításe a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
@@ -3742,7 +3792,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation>FEM (mm, N, sek)</translation>
+      <translation>FEM (mm, N, mp)</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3976,7 @@ Az előnyben részesített rendszer az általános beállításokban beállítot
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>ismeretlen mértékegység:</translation>
     </message>
   </context>
   <context>
@@ -4640,6 +4690,16 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <source>Partial</source>
       <translation>Részleges</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -6953,9 +7013,9 @@ Dokumentum: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Fizikai útvonal: </translation>
     </message>
   </context>
   <context>
@@ -7803,7 +7863,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation>Csatolás távolról futó hibakeresőhez</translation>
+      <translation>Csatolás távolról futó hibakeresőhöz</translation>
     </message>
   </context>
   <context>
@@ -8730,6 +8790,17 @@ Physical path: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -9071,7 +9142,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation>Nézet forgatása 90°-kal az óramutató járásával ellentétesen</translation>
+      <translation>Nézet forgatása 90°-al az óramutató járásával ellentétesen</translation>
     </message>
   </context>
   <context>
@@ -9322,7 +9393,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Kijelölés rögzításe a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
+      <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
   </context>
   <context>

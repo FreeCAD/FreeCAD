@@ -102,7 +102,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 
     sPixmap = "TechDraw_Dimension";
     if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
-        sPixmap = "techdraw-landmarkdistance";
+        sPixmap = "TechDraw_LandmarkDimension";
     }
 }
 
@@ -270,6 +270,9 @@ void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, c
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

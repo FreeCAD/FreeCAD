@@ -692,10 +692,12 @@ class ObjectDressup(object):
         self.bones.append((bone.boneId, bone.locationZ(), enabled, inaccessible))
 
         self.boneId = bone.boneId
-        if False and PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG and bone.boneId > 2:
-            commands = self.boneCommands(bone, False)
-        else:
-            commands = self.boneCommands(bone, enabled)
+        # Specific debugging `if` statement
+        # if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG and bone.boneId > 2:
+        #    commands = self.boneCommands(bone, False)
+        # else:
+        #    commands = self.boneCommands(bone, enabled)
+        commands = self.boneCommands(bone, enabled)
         bone.commands = commands
 
         self.shapes[bone.boneId] = self.boneShapes

@@ -759,8 +759,8 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
     return false;
 #else
     // This is not as easy as it looks, because a distance of zero might be OK if
-    // the axis touches the sketchshape in in a linear edge or a vertex
-    // Note: This algorithm does not catch cases where the sketchshape touches the
+    // the axis touches the sketchshape in a linear edge or a vertex
+    // Note: This algorithm doesn't catch cases where the sketchshape touches the
     // axis in two or more points
     // Note: And it only works on closed outer wires
     TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
@@ -1196,57 +1196,32 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
     return SketchVector;
 }
 
+void ProfileBased::Restore(Base::XMLReader& reader)
+{
+    PartDesign::FeatureAddSub::Restore(reader);
+}
 
-void ProfileBased::Restore(Base::XMLReader& reader) {
+void ProfileBased::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    //check if we load the old sketch property
+    if ((strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
 
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+        std::vector<std::string> vec;
+        // read my element
+        reader.readElement("Link");
+        // get the value of my attribute
+        std::string name = reader.getAttribute("value");
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-        // NOTE: We must also check the type of the current property because a
-        // subclass of PropertyContainer might change the type of a property but
-        // not its name. In this case we would force to read-in a wrong property
-        // type and the behaviour would be undefined.
-        try {
-            //check if we load the old sketch property
-            if(!prop && (strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
-
-                std::vector<std::string> vec;
-                // read my element
-                reader.readElement("Link");
-                // get the value of my attribute
-                std::string name = reader.getAttribute("value");
-
-                if (name != "") {
-                    App::Document* document = getDocument();
-                    DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
-                    Profile.setValue(object, vec);
-                }
-                else {
-                    Profile.setValue(0, vec);
-                }
-            }
-            else if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
-                prop->Restore(reader);
+        if (name != "") {
+            App::Document* document = getDocument();
+            DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
+            Profile.setValue(object, vec);
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
+        else {
+            Profile.setValue(0, vec);
         }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-
-        reader.readEndElement("Property");
     }
-    reader.readEndElement("Properties");
+    else {
+        PartDesign::FeatureAddSub::handleChangedPropertyName(reader, TypeName, PropName);
+    }
 }

@@ -404,7 +404,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
          </widget>
         </item>
         <item row="5" column="0">
-         <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
+         <widget class="Gui::PrefCheckBox" name="checkBoxUseAutoRotation">
           <property name="enabled">
            <bool>true</bool>
           </property>

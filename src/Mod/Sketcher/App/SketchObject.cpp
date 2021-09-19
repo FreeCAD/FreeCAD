@@ -2982,156 +2982,149 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     std::vector<Part::Geometry *> newGeometries;
     std::vector<int> newIds;
     std::vector<Constraint *> newConstraints;
-    bool ok = false;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
     double radius, startAngle, endAngle, splitAngle;
     unsigned int longestPart = 0;
 
-    do {
-        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSegm = static_cast<const Part::GeomLineSegment *>(geo);
 
-            startPoint = lineSegm->getStartPoint();
-            endPoint = lineSegm->getEndPoint();
-            splitPoint = point.Perpendicular(startPoint, endPoint - startPoint);
-            if ((endPoint - splitPoint).Length() > (splitPoint - startPoint).Length()) {
-                longestPart = 1;
-            }
+    bool ok = false;
+    if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        const Part::GeomLineSegment *lineSegm = static_cast<const Part::GeomLineSegment *>(geo);
 
-            Part::GeomLineSegment *newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
-            newGeometries.push_back(newLine);
+        startPoint = lineSegm->getStartPoint();
+        endPoint = lineSegm->getEndPoint();
+        splitPoint = point.Perpendicular(startPoint, endPoint - startPoint);
+        if ((endPoint - splitPoint).Length() > (splitPoint - startPoint).Length()) {
+            longestPart = 1;
+        }
 
-            newLine->setPoints(startPoint, splitPoint);
-            int newId = addGeometry(newLine);
-            if (newId < 0) {
-                continue;
-            }
+        Part::GeomLineSegment *newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
+        newGeometries.push_back(newLine);
+
+        newLine->setPoints(startPoint, splitPoint);
+        int newId = addGeometry(newLine);
+        if (newId >= 0) {
             newIds.push_back(newId);
             setConstruction(newId, GeometryFacade::getConstruction(geo));
 
-            newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
+            newLine = static_cast<Part::GeomLineSegment*>(lineSegm->copy());
             newGeometries.push_back(newLine);
 
             newLine->setPoints(splitPoint, endPoint);
             newId = addGeometry(newLine);
-            if (newId < 0) {
-                continue;
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+                Constraint* joint = new Constraint();
+                joint->Type = Coincident;
+                joint->First = newIds[0];
+                joint->FirstPos = end;
+                joint->Second = newIds[1];
+                joint->SecondPos = start;
+                newConstraints.push_back(joint);
+
+                transferConstraints(GeoId, start, newIds[0], start, true);
+                transferConstraints(GeoId, end, newIds[1], end, true);
+                ok = true;
             }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-
-            Constraint *joint = new Constraint();
-            joint->Type = Coincident;
-            joint->First = newIds[0];
-            joint->FirstPos = end;
-            joint->Second = newIds[1];
-            joint->SecondPos = start;
-            newConstraints.push_back(joint);
-
-            transferConstraints(GeoId, start, newIds[0], start, true);
-            transferConstraints(GeoId, end, newIds[1], end, true);
-            ok = true;
         }
-        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
+    }
+    else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
 
-            Base::Vector3d center(circle->getLocation());
-            Base::Vector3d dir(point - center);
-            radius = circle->getRadius();
+        Base::Vector3d center(circle->getLocation());
+        Base::Vector3d dir(point - center);
+        radius = circle->getRadius();
 
-            splitAngle = atan2(dir.y, dir.x);
-            startAngle = splitAngle;
-            endAngle = splitAngle + M_PI*2.0;
+        splitAngle = atan2(dir.y, dir.x);
+        startAngle = splitAngle;
+        endAngle = splitAngle + M_PI*2.0;
 
-            splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
-            startPoint = splitPoint;
-            endPoint = splitPoint;
+        splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
+        startPoint = splitPoint;
+        endPoint = splitPoint;
 
-            Part::GeomArcOfCircle *arc = new Part::GeomArcOfCircle();
-            newGeometries.push_back(arc);
+        Part::GeomArcOfCircle *arc = new Part::GeomArcOfCircle();
+        newGeometries.push_back(arc);
 
-            arc->setLocation(center);
-            arc->setRadius(radius);
-            arc->setRange(startAngle, endAngle, false);
-            int arcId = addGeometry(arc);
-            if (arcId < 0) {
-                continue;
-            }
+        arc->setLocation(center);
+        arc->setRadius(radius);
+        arc->setRange(startAngle, endAngle, false);
+        int arcId = addGeometry(arc);
+        if (arcId >= 0) {
             newIds.push_back(arcId);
             setConstruction(arcId, GeometryFacade::getConstruction(geo));
 
             transferConstraints(GeoId, mid, arcId, mid);
             ok = true;
         }
-        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
+    }
+    else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
 
-            startPoint = arc->getStartPoint();
-            endPoint = arc->getEndPoint();
+        startPoint = arc->getStartPoint();
+        endPoint = arc->getEndPoint();
 
-            Base::Vector3d center(arc->getLocation());
-            radius = arc->getRadius();
-            arc->getRange(startAngle, endAngle, false);
+        Base::Vector3d center(arc->getLocation());
+        radius = arc->getRadius();
+        arc->getRange(startAngle, endAngle, false);
 
-            Base::Vector3d dir(point - center);
-            splitAngle = atan2(dir.y, dir.x);
-            if (splitAngle < startAngle) {
-              splitAngle += M_PI*2.0;
-            }
-            if (endAngle - splitAngle > splitAngle - startAngle) {
-                longestPart = 1;
-            }
+        Base::Vector3d dir(point - center);
+        splitAngle = atan2(dir.y, dir.x);
+        if (splitAngle < startAngle) {
+            splitAngle += M_PI*2.0;
+        }
+        if (endAngle - splitAngle > splitAngle - startAngle) {
+            longestPart = 1;
+        }
 
-            splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
-            startPoint = splitPoint;
-            endPoint = splitPoint;
+        splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
+        startPoint = splitPoint;
+        endPoint = splitPoint;
 
-            Part::GeomArcOfCircle *newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
-            newGeometries.push_back(newArc);
+        Part::GeomArcOfCircle *newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
+        newGeometries.push_back(newArc);
 
-            newArc->setRange(startAngle, splitAngle, false);
-            int newId = addGeometry(newArc);
-            if (newId < 0) {
-                continue;
-            }
+        newArc->setRange(startAngle, splitAngle, false);
+        int newId = addGeometry(newArc);
+        if (newId >= 0) {
             newIds.push_back(newId);
             setConstruction(newId, GeometryFacade::getConstruction(geo));
 
-            newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
+            newArc = static_cast<Part::GeomArcOfCircle*>(arc->copy());
             newGeometries.push_back(newArc);
 
             newArc->setRange(splitAngle, endAngle, false);
             newId = addGeometry(newArc);
-            if (newId < 0) {
-                continue;
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+                Constraint* joint = new Constraint();
+                joint->Type = Coincident;
+                joint->First = newIds[0];
+                joint->FirstPos = end;
+                joint->Second = newIds[1];
+                joint->SecondPos = start;
+                newConstraints.push_back(joint);
+
+                joint = new Constraint();
+                joint->Type = Coincident;
+                joint->First = newIds[0];
+                joint->FirstPos = mid;
+                joint->Second = newIds[1];
+                joint->SecondPos = mid;
+                newConstraints.push_back(joint);
+
+                transferConstraints(GeoId, start, newIds[0], start, true);
+                transferConstraints(GeoId, mid, newIds[0], mid);
+                transferConstraints(GeoId, end, newIds[1], end, true);
+                ok = true;
             }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(geo));
-
-            Constraint *joint = new Constraint();
-            joint->Type = Coincident;
-            joint->First = newIds[0];
-            joint->FirstPos = end;
-            joint->Second = newIds[1];
-            joint->SecondPos = start;
-            newConstraints.push_back(joint);
-
-            joint = new Constraint();
-            joint->Type = Coincident;
-            joint->First = newIds[0];
-            joint->FirstPos = mid;
-            joint->Second = newIds[1];
-            joint->SecondPos = mid;
-            newConstraints.push_back(joint);
-
-            transferConstraints(GeoId, start, newIds[0], start, true);
-            transferConstraints(GeoId, mid, newIds[0], mid);
-            transferConstraints(GeoId, end, newIds[1], end, true);
-            ok = true;
         }
     }
-    while (false);
 
     if (ok) {
         std::vector<int> oldConstraints;
@@ -4534,6 +4527,137 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     Geometry.touch();
 
     return Geometry.getSize()-1;
+
+}
+
+
+int SketchObject::removeAxesAlignment(const std::vector<int> &geoIdList)
+{
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
+
+    unsigned int nhoriz = 0;
+    unsigned int nvert = 0;
+
+    bool changed = false;
+
+    std::vector<std::pair<size_t, Sketcher::ConstraintType>> changeConstraintIndices;
+
+    for (size_t i = 0; i < constrvals.size(); i++) {
+        for( auto geoid : geoIdList) {
+            if (constrvals[i]->First == geoid || constrvals[i]->Second == geoid || constrvals[i]->Third == geoid) {
+                switch(constrvals[i]->Type) {
+                    case Sketcher::Horizontal:
+                         if( constrvals[i]->FirstPos == Sketcher::none &&
+                             constrvals[i]->SecondPos == Sketcher::none ) {
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                            nhoriz++;
+                         }
+                        break;
+                    case Sketcher::Vertical:
+                         if( constrvals[i]->FirstPos == Sketcher::none &&
+                             constrvals[i]->SecondPos == Sketcher::none ) {
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                            nvert++;
+                         }
+                        break;
+                    case Sketcher::Symmetric: // only remove symmetric to axes
+                        if( (constrvals[i]->Third == GeoEnum::HAxis || constrvals[i]->Third == GeoEnum::VAxis) &&
+                            constrvals[i]->ThirdPos == Sketcher::none )
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    case Sketcher::PointOnObject:
+                        if( (constrvals[i]->Second == GeoEnum::HAxis || constrvals[i]->Second == GeoEnum::VAxis) &&
+                            constrvals[i]->SecondPos == Sketcher::none )
+                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    case Sketcher::DistanceX:
+                    case Sketcher::DistanceY:
+                        changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    if(changeConstraintIndices.empty())
+        return 0; // nothing to be done
+
+    std::vector< Constraint * > newconstrVals;
+    newconstrVals.reserve(constrvals.size());
+
+    int referenceHorizontal = Constraint::GeoUndef;
+    int referenceVertical = Constraint::GeoUndef;
+
+    int cindex = 0;
+    for (size_t i = 0; i < constrvals.size(); i++) {
+        if ( i == changeConstraintIndices[cindex].first ) {
+            if(changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
+                changed = true;
+                if(referenceHorizontal == Constraint::GeoUndef) {
+                    referenceHorizontal = constrvals[i]->First;
+                }
+                else {
+
+                    auto newConstr = new Constraint();
+
+                    newConstr->Type = Sketcher::Parallel;
+                    newConstr->First = referenceHorizontal;
+                    newConstr->Second = constrvals[i]->First;
+
+                    newconstrVals.push_back(newConstr);
+                }
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
+                changed = true;
+                if(referenceVertical == Constraint::GeoUndef) {
+                    referenceVertical = constrvals[i]->First;;
+                }
+                else {
+                    auto newConstr = new Constraint();
+
+                    newConstr->Type = Sketcher::Parallel;
+                    newConstr->First = referenceVertical;
+                    newConstr->Second = constrvals[i]->First;
+
+                    newconstrVals.push_back(newConstr);
+                }
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::Symmetric ||
+                    changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
+                changed = true; // We remove symmetric on axes
+            }
+            else if(changeConstraintIndices[cindex].second == Sketcher::DistanceX ||
+                    changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
+                changed = true; // We remove symmetric on axes
+                newconstrVals.push_back(constrvals[i]->clone());
+                newconstrVals.back()->Type = Sketcher::Distance;
+            }
+
+            cindex++;
+        }
+        else {
+            newconstrVals.push_back(constrvals[i]);
+        }
+    }
+
+    if( nhoriz > 0 && nvert > 0 ) {
+        auto newConstr = new Constraint();
+
+        newConstr->Type = Sketcher::Perpendicular;
+        newConstr->First = referenceVertical;
+        newConstr->Second = referenceHorizontal;
+
+        newconstrVals.push_back(newConstr);
+    }
+
+    if(changed)
+        Constraints.setValues(std::move(newconstrVals));
+
+    return 0;
 
 }
 

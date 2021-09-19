@@ -36,6 +36,13 @@ else(BUILD_QT5)
     )
 endif(BUILD_QT5)
 
+generate_from_xml(MDIViewPagePy)
+
+# The XML files
+set(TechDrawGui_XML_SRCS
+    MDIViewPagePy.xml
+)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
@@ -96,6 +103,7 @@ SET(MRTE_SRCS
 SET(TechDrawGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/InitGui.py
     ${TechDrawGui_SRCS}
+    ${TechDrawGui_XML_SRCS}
     ${MRTE_SRCS}
     AppTechDrawGui.cpp
     AppTechDrawGuiPy.cpp
@@ -103,6 +111,7 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandExtensionPack.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -197,6 +206,7 @@ SET(TechDrawGui_SRCS
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
+    MDIViewPagePyImp.cpp
     QGVPage.cpp
     QGVPage.h
     QGCustomText.cpp

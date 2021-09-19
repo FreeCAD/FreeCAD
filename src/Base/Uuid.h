@@ -27,6 +27,9 @@
 // Std. configurations
 
 #include <string>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base
 {

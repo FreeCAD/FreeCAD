@@ -46,6 +46,7 @@ __url__ = "https://www.freecadweb.org"
 # @{
 import math
 import FreeCAD as App
+import FreeCADGui as Gui
 import DraftVecUtils
 
 from draftutils.translate import translate
@@ -103,15 +104,16 @@ class DraftWireGuiTools(GuiTools):
         pts[node_idx] = v
         obj.Points = pts
 
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
+        return [
+            ("delete point", lambda: self.delete_point(obj, node_idx)),
+        ]
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        actions = ["delete point"]
-        return actions
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action == "delete point":
-            self.delete_point(obj, node_idx)
-            edit_command.resetTrackers(obj)
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("add point", lambda: self.add_point(edit_command, obj, position)),
+            ("reverse wire", lambda: self.reverse_wire(obj)),
+        ]
 
     def init_preview_object(self, obj):
         return trackers.wireTracker(obj.Shape)
@@ -123,7 +125,39 @@ class DraftWireGuiTools(GuiTools):
             if obj.Closed:
                 pointList.append(pointList[0])
             edit_command.ghost.updateFromPointlist(pointList)
-        
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj.
+        """
+        info, newPoint = edit_command.get_specific_object_info(obj,pos)
+
+        if not info:
+            return
+        if not 'Edge' in info["Component"]: 
+            return
+        edgeIndex = int(info["Component"][4:])
+
+        newPoints = []
+        if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
+            # TODO: If Draft_Wire fails to calculate one of the fillets or chamfers
+            #       this algo fails to identify the correct edge
+            if obj.ChamferSize > 0 and obj.FilletRadius > 0:
+                edgeIndex = (edgeIndex + 3) / 4
+            elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
+                edgeIndex = (edgeIndex + 1) / 2
+
+        for index, point in enumerate(obj.Points):
+            if index == edgeIndex:
+                newPoints.append(edit_command.localize_vector(obj, newPoint))
+            newPoints.append(point)
+        if obj.Closed and edgeIndex == len(obj.Points):
+            # last segment when object is closed
+            newPoints.append(edit_command.localize_vector(obj, newPoint))
+        obj.Points = newPoints
+
+        obj.recompute()
+        return
+
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
             _msg = translate("draft", "Active object must have more than two points/nodes") 
@@ -136,6 +170,9 @@ class DraftWireGuiTools(GuiTools):
 
         obj.recompute()
 
+    def reverse_wire(self, obj):
+        obj.Points = reversed(obj.Points)
+        obj.recompute()
 
 class DraftBSplineGuiTools(DraftWireGuiTools):
 
@@ -148,6 +185,33 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
         if obj.Closed:
             pointList.append(pointList[0])
         edit_command.ghost.update(pointList)
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj.
+        """
+        info, pt = edit_command.get_specific_object_info(obj,pos)
+        if not info or (pt is None):
+            return
+
+        pts = obj.Points
+        if (obj.Closed == True):
+            curve = obj.Shape.Edges[0].Curve
+        else:
+            curve = obj.Shape.Curve
+        uNewPoint = curve.parameter(pt)
+        uPoints = []
+        for p in obj.Points:
+            uPoints.append(curve.parameter(p))
+        for i in range(len(uPoints) - 1):
+            if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
+                pts.insert(i + 1, edit_command.localize_vector(obj, pt))
+                break
+        # DNC: fix: add points to last segment if curve is closed
+        if obj.Closed and (uNewPoint > uPoints[-1]):
+            pts.append(edit_command.localize_vector(obj, pt))
+        obj.Points = pts
+
+        obj.recompute()
 
 
 class DraftRectangleGuiTools(GuiTools):
@@ -175,12 +239,6 @@ class DraftRectangleGuiTools(GuiTools):
             obj.Length = DraftVecUtils.project(v, App.Vector(1,0,0)).Length
         elif node_idx == 2:
             obj.Height = DraftVecUtils.project(v, App.Vector(0,1,0)).Length
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class DraftCircleGuiTools(GuiTools):
@@ -277,26 +335,46 @@ class DraftCircleGuiTools(GuiTools):
                         obj.Radius = v.Length
 
 
-    def get_edit_point_context_menu(self, obj, node_idx):
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         actions = None
         if obj.FirstAngle != obj.LastAngle:
             if node_idx == 0:  # user is over arc start point
-                actions = ["move arc"]
+                return [
+                    ("move arc", lambda: self.handle_move_arc(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 1:  # user is over arc start point
-                actions = ["set first angle"]
+                return [
+                    ("set first angle", lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 2:  # user is over arc end point
-                actions = ["set last angle"]
+                return [
+                    ("set last angle", lambda: self.handle_set_last_angle(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 3:  # user is over arc mid point
-                actions = ["set radius"]
-        if actions:
-            return actions
+                return [
+                    ("set radius", lambda: self.handle_set_radius(edit_command, obj, node_idx)),
+                ]
 
+    def handle_move_arc(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
 
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action in ("move arc", "set radius",
-                "set first angle", "set last angle"):
-            edit_command.alt_edit_mode = 1
-            edit_command.startEditing(edit_command.event)
+    def handle_set_first_angle(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def handle_set_last_angle(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def handle_set_radius(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("invert arc", lambda: self.arcInvert(obj)),
+        ]
 
     def init_preview_object(self, obj):
         return trackers.arcTracker()
@@ -414,12 +492,6 @@ class DraftEllipseGuiTools(GuiTools):
             else:
                 obj.MinorRadius = obj.MajorRadius
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class DraftPolygonGuiTools(GuiTools):
 
@@ -443,12 +515,6 @@ class DraftPolygonGuiTools(GuiTools):
         elif node_idx == 1:
             obj.Radius = v.Length
         obj.recompute()
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class DraftDimensionGuiTools(GuiTools):
@@ -474,12 +540,6 @@ class DraftDimensionGuiTools(GuiTools):
             obj.Dimline = v
         elif node_idx == 3:
             obj.ViewObject.TextPosition = v
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class DraftBezCurveGuiTools(GuiTools):
@@ -521,29 +581,18 @@ class DraftBezCurveGuiTools(GuiTools):
         obj.Points = pts
 
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        if utils.get_type(obj) in ["Line", "Wire", "BSpline"]:
-            actions = ["delete point"]
-        elif utils.get_type(obj) in ["BezCurve"]:
-            actions = ["make sharp", "make tangent",
-                        "make symmetric", "delete point"]
-        return actions
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
+        return [
+            ("make sharp", lambda: self.smoothBezPoint(obj, node_idx, 'Sharp')),
+            ("make tangent", lambda: self.smoothBezPoint(obj, node_idx, 'Tangent')),
+            ("make symmetric", lambda: self.smoothBezPoint(obj, node_idx, 'Symmetric')),
+            ("delete point", lambda: self.delete_point(obj, node_idx)),
+        ]
     
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action == "delete point":
-            self.delete_point(obj, node_idx)
-            edit_command.resetTrackers(obj)
-        # Bezier curve menu
-        elif action in ["make sharp", "make tangent", "make symmetric"]:
-            if action == "make sharp":
-                self.smoothBezPoint(obj, node_idx, 'Sharp')
-            elif action == "make tangent":
-                self.smoothBezPoint(obj, node_idx, 'Tangent')
-            elif action == "make symmetric":
-                self.smoothBezPoint(obj, node_idx, 'Symmetric')
-            edit_command.resetTrackers(obj)
-
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("add point", lambda: self.add_point(edit_command, obj, position)),
+        ]
 
     def init_preview_object(self, obj):
         return trackers.bezcurveTracker()
@@ -713,5 +762,47 @@ class DraftBezCurveGuiTools(GuiTools):
                                             len(obj.Continuity)))
         obj.Points = pts
         obj.Continuity = newcont
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj and reset trackers.
+        """
+        info, pt = edit_command.get_specific_object_info(obj,pos)
+        if not info or (pt is None):
+            return
+        
+        import Part
+
+        pts = obj.Points
+        if not info['Component'].startswith('Edge'):
+            return  # clicked control point
+        edgeindex = int(info['Component'].lstrip('Edge')) - 1
+        wire = obj.Shape.Wires[0]
+        bz = wire.Edges[edgeindex].Curve
+        param = bz.parameter(pt)
+        seg1 = wire.Edges[edgeindex].copy().Curve
+        seg2 = wire.Edges[edgeindex].copy().Curve
+        seg1.segment(seg1.FirstParameter, param)
+        seg2.segment(param, seg2.LastParameter)
+        if edgeindex == len(wire.Edges):
+            # we hit the last segment, we need to fix the degree
+            degree=wire.Edges[0].Curve.Degree
+            seg1.increase(degree)
+            seg2.increase(degree)
+        edges = wire.Edges[0:edgeindex] + [Part.Edge(seg1),Part.Edge(seg2)] \
+            + wire.Edges[edgeindex + 1:]
+        pts = edges[0].Curve.getPoles()[0:1]
+        for edge in edges:
+            pts.extend(edge.Curve.getPoles()[1:])
+        if obj.Closed:
+            pts.pop()
+        c = obj.Continuity
+        # assume we have a tangent continuity for an arbitrarily split
+        # segment, unless it's linear
+        cont = 1 if (obj.Degree >= 2) else 0
+        obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
+
+        obj.Points = pts
+
+        obj.recompute()
 
 ## @}

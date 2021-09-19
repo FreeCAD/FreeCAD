@@ -195,6 +195,9 @@ void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, con
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
     }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const

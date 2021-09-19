@@ -1051,7 +1051,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
         QString unit = Base::UnitsApi::toString(val, format);
         setPropertyValue(unit);
     }
@@ -1644,7 +1644,7 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
-    Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("(%1, %2, %3)")
                     .arg(Base::UnitsApi::toNumber(x, format))
                     .arg(Base::UnitsApi::toNumber(y, format))
@@ -2370,7 +2370,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     const Base::Placement& val = value.value<Base::Placement>();
     Base::Vector3d pos = val.getPosition();
 
-    Base::QuantityFormat format(Base::QuantityFormat::Default, decimals());
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")

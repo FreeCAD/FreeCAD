@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Erstellen Sie eine neue, leere Bewegungsbahn</translation>
     </message>
   </context>
   <context>

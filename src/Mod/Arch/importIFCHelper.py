@@ -608,7 +608,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
-def getIfcPsetPoperties(ifcfile, pid):
+def getIfcPsetProperties(ifcfile, pid):
     """ directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})

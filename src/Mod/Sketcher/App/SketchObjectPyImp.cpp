@@ -1293,6 +1293,35 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
     throw Py::TypeError(error);
 }
 
+PyObject* SketchObjectPy::removeAxesAlignment(PyObject *args)
+{
+    PyObject *pcObj;
+
+    if (!PyArg_ParseTuple(args, "O", &pcObj))
+        return 0;
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        }
+
+        int ret = this->getSketchObjectPtr()->removeAxesAlignment(geoIdList) + 1;
+
+        if(ret == -1)
+            throw Py::TypeError("Operation unsuccessful!");
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
 PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject *args)
 {
     int GeoId1=0, GeoId2=0;

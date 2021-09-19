@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation>Składnik_Siatki</translation>
+      <translation>Siatka Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
@@ -36,7 +36,7 @@
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Tworzy przybliżoną krzywą na wierzchu siatki.
-To polecenie działa tylko z obiektem typu 'mesh'.</translation>
+To polecenie działa tylko z obiektem typu Siatka.</translation>
     </message>
   </context>
   <context>
@@ -54,7 +54,7 @@ To polecenie działa tylko z obiektem typu 'mesh'.</translation>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnienie kształtu</translation>
     </message>
   </context>
   <context>
@@ -242,12 +242,12 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Próg połączenia</translation>
+      <translation>Próg podziału</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Przybliżenie splajnu</translation>
+      <translation>Przybliżenie krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
@@ -275,7 +275,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Tesselacja</translation>
+      <translation>Rozdrobnienie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -413,7 +413,7 @@ Najmniejszą wartością jest 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
       <source>Very fine</source>
-      <translation>Bardzo dokładna</translation>
+      <translation>Bardzo dokładnie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="259"/>
@@ -473,7 +473,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Czy siatki będą układane najlepiej przy użyciu czworobocznych ścian</translation>
+      <translation>Czy siatki będą rozmieszczone najlepiej przy użyciu czworobocznych ścian</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -483,7 +483,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Pozostaw otwarty panel</translation>
+      <translation>Pozostaw panel otwarty</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
@@ -535,7 +535,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation>Wybierz stronę, którą chcesz zachować.</translation>
+      <translation>Wybierz tę stronę, którą zamierzasz pozostawić.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
@@ -558,7 +558,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Składnik_Siatki</translation>
+      <translation>Siatka Części</translation>
     </message>
   </context>
 </TS>

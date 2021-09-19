@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Base</source>
-      <translation>Pagrindas</translation>
+      <translation>Pagrindiniai dydžiai</translation>
     </message>
   </context>
   <context>
@@ -274,6 +274,25 @@
     <message>
       <source>Filename</source>
       <translation>Rinkmenos pavadinimas</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Numatytasis</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Keisti</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation type="unfinished">Cutting</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Spalva</translation>
     </message>
   </context>
   <context>
@@ -1568,7 +1587,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
@@ -2924,12 +2943,12 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Leisti vartotojui nutraukti perskaičiavimą nuspaudžiant „ESC“ mygtuką.
+Ši galimybė gali truputį prailginti perskaičiavimo trukmę.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Leisti perskaičiavimo nutraukimą</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -3277,20 +3296,51 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation type="unfinished">Unloaded Workbenches</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Darbastalis</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -4426,7 +4476,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas padėties vertes!</translation>
+      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas išdėstymo vertes!</translation>
     </message>
     <message>
       <source>Use center of mass</source>
@@ -4645,6 +4695,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Partial</source>
       <translation>Dalinis</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4665,7 +4725,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Model</source>
@@ -4817,7 +4877,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selection View</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -5771,7 +5831,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Dokumento langas:</translation>
+      <translation>Dokumento rodinys:</translation>
     </message>
   </context>
   <context>
@@ -6004,7 +6064,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
   </context>
   <context>
@@ -6126,7 +6186,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation>Įgalinti dalinius savybių perskaičiavimus</translation>
+      <translation>Leisti dalinius savybių perskaičiavimus</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -6322,7 +6382,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
     <message>
       <source>Property view</source>
@@ -6330,15 +6390,15 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Ataskaitos langas</translation>
+      <translation>Ataskaitos rodinys</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6354,7 +6414,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>DAG View</source>
-      <translation>DAG langas</translation>
+      <translation>DAG rodinys</translation>
     </message>
   </context>
   <context>
@@ -8735,6 +8795,17 @@ Physical path: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -9439,7 +9510,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Document window</source>
-      <translation>Dokumento langas</translation>
+      <translation>Dokumento rodinys</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>

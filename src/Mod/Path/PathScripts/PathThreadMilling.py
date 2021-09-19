@@ -195,12 +195,6 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyLink", "ClearanceOp", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Operation to clear the inside of the thread"))
         obj.Direction = self.Directions
 
-        # Rotation related properties
-        if not hasattr(obj, 'EnableRotation'):
-            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
-            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
-
-
     def threadStartDepth(self, obj):
         if obj.ThreadOrientation == self.RightHand:
             if obj.Direction == self.DirectionClimb:
@@ -333,11 +327,11 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a thread milling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectThreadMilling(obj, name)
+    obj.Proxy = ObjectThreadMilling(obj, name, parentJob)
     if obj.Proxy:
         obj.Proxy.findAllHoles(obj)
     return obj

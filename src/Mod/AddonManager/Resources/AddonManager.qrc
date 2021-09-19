@@ -98,5 +98,7 @@
         <file>translations/AddonManager_vi.qm</file>
         <file>translations/AddonManager_zh-CN.qm</file>
         <file>translations/AddonManager_zh-TW.qm</file>
+        <file>translations/AddonManager_es-AR.qm</file>
+        <file>translations/AddonManager_bg.qm</file>
     </qresource>
 </RCC>

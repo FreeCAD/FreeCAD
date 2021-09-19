@@ -77,8 +77,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
         PathGui.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
-        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
-            obj.EnableRotation = str(self.form.enableRotation.currentText())
 
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
@@ -100,7 +98,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
-        self.selectInComboBox(obj.EnableRotation, self.form.enableRotation)
 
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
@@ -118,7 +115,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutSide.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
-        signals.append(self.form.enableRotation.currentIndexChanged)
         signals.append(self.form.useCompensation.stateChanged)
         signals.append(self.form.useStartPoint.stateChanged)
         signals.append(self.form.processHoles.stateChanged)

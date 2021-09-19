@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="849"/>
       <location filename="../../Command.cpp" line="851"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Dodaj trójkąt do siatki</translation>
+      <translation>Dodaje trójkąt do siatki manualnie</translation>
     </message>
   </context>
   <context>
@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Regular solid...</source>
-      <translation>Bryła podstawowa...</translation>
+      <translation>Bryła pierwotna ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1606"/>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Builds a regular solid</source>
-      <translation>Zbuduje bryłę podstawową</translation>
+      <translation>Zbuduj bryłę podstawową</translation>
     </message>
   </context>
   <context>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation>Decydująca...</translation>
+      <translation>Decymacja ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -196,7 +196,7 @@
       <location filename="../../Command.cpp" line="493"/>
       <location filename="../../Command.cpp" line="495"/>
       <source>Exports a mesh to file</source>
-      <translation>Eksport siatki do pliku</translation>
+      <translation>Eksportuj siatkę do pliku</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="1675"/>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Close holes interactively</source>
-      <translation>Zamknij otwory interaktywnie</translation>
+      <translation>Zamyka otwory interaktywnie</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@
       <location filename="../../Command.cpp" line="1637"/>
       <location filename="../../Command.cpp" line="1639"/>
       <source>Fill holes of the mesh</source>
-      <translation>Zamknij otwory w siatce</translation>
+      <translation>Wypełnia otwory siatki</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
       <location filename="../../Command.cpp" line="1530"/>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Flips the normals of the mesh</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Tessellate shape</source>
-      <translation>Tesselacja obwiedni</translation>
+      <translation>Rozdrobnij kształt</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1789"/>
       <source>Merges selected meshes into one</source>
-      <translation>Połącz wybrane siatki</translation>
+      <translation>Łączy wybrane siatki</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
       <location filename="../../Command.cpp" line="1287"/>
       <location filename="../../Command.cpp" line="1288"/>
       <source>Refine existing mesh</source>
-      <translation>Ulepsz istniejącą siatkę</translation>
+      <translation>Ulepsza istniejącą siatkę</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
       <location filename="../../Command.cpp" line="1242"/>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Usuń topologię niezależną od siatki</translation>
+      <translation>Usuwa topologiczne, niezależne elementy z siatki</translation>
     </message>
   </context>
   <context>
@@ -524,12 +524,12 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
-      <translation>Skaluj...</translation>
+      <translation>Skaluj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
-      <translation>Skaluj zaznaczone siatki</translation>
+      <translation>Skaluje zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -567,7 +567,7 @@
       <location filename="../../Command.cpp" line="1717"/>
       <location filename="../../Command.cpp" line="1719"/>
       <source>Create mesh segments</source>
-      <translation>Utwórz segmenty siatki</translation>
+      <translation>Tworzy segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@
       <location filename="../../Command.cpp" line="1753"/>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Utwórz segmenty siatki z najlepiej dopasowanych powierzchni</translation>
+      <translation>Tworzy segmenty siatki z najlepiej dopasowanych powierzchni</translation>
     </message>
   </context>
   <context>
@@ -599,13 +599,13 @@
     <message>
       <location filename="../../Command.cpp" line="1401"/>
       <source>Smooth...</source>
-      <translation>Wygładź...</translation>
+      <translation>Wygładź ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
-      <translation>Wygładź zaznaczone siatki</translation>
+      <translation>Wygładza zaznaczone siatki</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation>Rozdziela wybrane siatki na niezależne składniki</translation>
+      <translation>Rozdziela wybrane siatki na niezależne komponenty</translation>
     </message>
   </context>
   <context>
@@ -642,7 +642,7 @@
       <location filename="../../Command.cpp" line="174"/>
       <location filename="../../Command.cpp" line="176"/>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Tworzy segment z siatki danego narzędzia</translation>
+      <translation>Tworzy segment z danej siatki narzędzia</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Union</source>
-      <translation>Suma</translation>
+      <translation>Połączenie</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Tworzenie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation>Złączenie siatek</translation>
+      <translation>Połączenie siatek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -786,7 +786,7 @@
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation>Odwróć wektory normalne siatki</translation>
+      <translation>Odwraca wektory normalne siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation>Decymacja siatki</translation>
+      <translation>Dziesiątkowanie siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -826,7 +826,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <source>Fix indices</source>
-      <translation>Napraw indeksy</translation>
+      <translation>Napraw wskaźniki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
@@ -867,7 +867,7 @@
       <location filename="../../ViewProvider.cpp" line="874"/>
       <location filename="../../ViewProvider.cpp" line="929"/>
       <source>Cut</source>
-      <translation>Wytnij</translation>
+      <translation>Przetnij</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="883"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decymacja</translation>
+      <translation>Dziesiątkowanie</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -1036,7 +1036,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
       <source>Face indices</source>
-      <translation>Wskaźniki powierzchni</translation>
+      <translation>Wskaźniki ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
@@ -1139,7 +1139,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="640"/>
       <source>Invalid face indices</source>
-      <translation>Nieprawidłowe wskaźniki powierzchni</translation>
+      <translation>Nieprawidłowe wskaźniki ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="647"/>
@@ -1154,7 +1154,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
       <source>Invalid neighbour indices</source>
-      <translation>Nieprawidłowe wskaźniki sąsiadów</translation>
+      <translation>Nieprawidłowe wskaźniki sąsiedztwa</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="668"/>
@@ -1221,7 +1221,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1019"/>
       <source>No folds on surface</source>
-      <translation>Brak zagięć na płaszczyźnie</translation>
+      <translation>Brak zagięć na powierzchni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
@@ -1245,7 +1245,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation settings</source>
-      <translation>Ustawienia ewaluacji</translation>
+      <translation>Ustawienia klasyfikacji</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1273,7 +1273,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Bryła podstawowa</translation>
+      <translation>Bryła pierwotna</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="53"/>
@@ -1303,7 +1303,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="97"/>
       <source>Cube</source>
-      <translation>Kostka</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="106"/>
@@ -1409,7 +1409,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation>Formaty siatek</translation>
+      <translation>Formaty siatki</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
@@ -1586,7 +1586,7 @@ do gładszego wyglądu.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Kąt załamania to kąt progowy pomiędzy dwoma powierzchniami.
+      <translation>Kąt załamania to kąt progowy pomiędzy dwoma wielokątami.
 
  Jeśli kąt ściany ≥ kąta załamania, stosuje się cieniowanie ściany
  Jeśli kąt ściany &lt; kąta załamania, stosuje się cieniowanie gładkie</translation>
@@ -1770,7 +1770,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Nie wybrano</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -1862,7 +1862,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="49"/>
       <source>&lt; faces than</source>
-      <translation>&lt;powierzchnie niż</translation>
+      <translation>&lt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="56"/>
@@ -1895,7 +1895,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="135"/>
       <source>&gt; faces than</source>
-      <translation>&gt; powierzchnie niż</translation>
+      <translation>&gt; niż ściany</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
@@ -1980,12 +1980,12 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Max. krzywizny</translation>
+      <translation>Maksymalna krzywizna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. krzywizny</translation>
+      <translation>Minimalna krzywizna</translation>
     </message>
   </context>
   <context>
@@ -2205,13 +2205,13 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <location filename="../../Command.cpp" line="458"/>
       <location filename="../../Command.cpp" line="517"/>
       <source>Inventor V2.1 ascii</source>
-      <translation>Inventor V2.1 w ASCII</translation>
+      <translation>Inventor v2.1 w ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <location filename="../../Command.cpp" line="521"/>
       <source>Stanford Polygon</source>
-      <translation>Stanford Polygon</translation>
+      <translation>Stanford Triangle Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
@@ -2262,12 +2262,12 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <source>Python module def</source>
-      <translation>Moduły Pythona</translation>
+      <translation>Definicje modułów Python</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation>Format Asymptoty</translation>
+      <translation>Format asymptoty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2391,7 +2391,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation>Siatki</translation>
+      <translation>&amp;Siatki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

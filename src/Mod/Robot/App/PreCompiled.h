@@ -31,12 +31,10 @@
 # define RobotExport __declspec(dllexport)
 # define PartExport  __declspec(dllimport)
 # define MeshExport  __declspec(dllimport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define RobotExport
 # define PartExport 
 # define MeshExport  
-# define BaseExport  
 #endif
 
 #ifdef _PreComp_

@@ -349,6 +349,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
 }""", "resize_non_uniform_sphere")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
+        object.Shape.tessellate(0.025) # To ensure the bounding box calculation is correct
         self.assertAlmostEqual (object.Shape.BoundBox.XLength, 2*8.5, 1)
         self.assertAlmostEqual (object.Shape.BoundBox.YLength, 2*8.5, 1)
         self.assertAlmostEqual (object.Shape.BoundBox.ZLength, 10.0, 1)

@@ -94,17 +94,17 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6935"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6365"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6936"/>
       <source>Carbon copy</source>
       <translation type="unfinished">Carbon copy</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6366"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6937"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Kopioi toisen luonnoksen geometrian</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1556"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1585"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1557"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1586"/>
       <source>Clone</source>
       <translation>Kloonaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1558"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1587"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="100"/>
+      <location filename="../../CommandSketcherTools.cpp" line="102"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="101"/>
+      <location filename="../../CommandSketcherTools.cpp" line="103"/>
       <source>Close shape</source>
       <translation>Sulje muoto</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="102"/>
+      <location filename="../../CommandSketcherTools.cpp" line="104"/>
       <source>Produce a closed shape by tying the end point of one element with the next element's starting point</source>
       <translation>Tuota suljettu muoto kytkemällä kohteen päätepiste seuraavan kohteen alkupisteeseen</translation>
     </message>
@@ -186,45 +186,50 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5848"/>
+      <location filename="../../CommandConstraints.cpp" line="5896"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5849"/>
+      <location filename="../../CommandConstraints.cpp" line="5897"/>
       <source>Constrain arc or circle</source>
       <translation>Rajoita ympyrän kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5850"/>
+      <location filename="../../CommandConstraints.cpp" line="5898"/>
       <source>Constrain an arc or a circle</source>
       <translation>Rajoita ympyrän kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5942"/>
+      <location filename="../../CommandConstraints.cpp" line="6003"/>
       <source>Constrain radius</source>
       <translation>Rajoita säde</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5946"/>
+      <location filename="../../CommandConstraints.cpp" line="6007"/>
       <source>Constrain diameter</source>
       <translation>Rajoita halkaisija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6011"/>
+      <source>Constrain auto radius/diameter</source>
+      <translation type="unfinished">Constrain auto radius/diameter</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1631"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1662"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1632"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1663"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1633"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1664"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -232,27 +237,27 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1810"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2389"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1811"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2390"/>
       <source>Create arc</source>
       <translation>Luo kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1812"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2391"/>
       <source>Create an arc in the sketcher</source>
       <translation>Luo kaari luonnostyökalulla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1889"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2468"/>
       <source>Center and end points</source>
       <translation>Keski- ja loppupisteet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2472"/>
       <source>End points and rim point</source>
       <translation>Loppupisteet ja kehän kohta</translation>
     </message>
@@ -260,17 +265,17 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4446"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5025"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4447"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5026"/>
       <source>Create a B-spline</source>
       <translation>Luo B-splini</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4448"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5027"/>
       <source>Create a B-spline in the sketch</source>
       <translation>Luo B-splinin luonnokseen</translation>
     </message>
@@ -278,27 +283,27 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4764"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5335"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4765"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5336"/>
       <source>Create circle</source>
       <translation>Luo ympyrä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4766"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5337"/>
       <source>Create a circle in the sketcher</source>
       <translation>Luo ympyrä luonnostyökalulla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4843"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5414"/>
       <source>Center and rim point</source>
       <translation>keskipiste ja kehäpiste</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4847"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <source>3 rim points</source>
       <translation>3 kehän pistettä</translation>
     </message>
@@ -306,42 +311,42 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3869"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4448"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4449"/>
       <source>Create a conic</source>
       <translation>Luo kartio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3871"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4450"/>
       <source>Create a conic in the sketch</source>
       <translation>Luo kartio luonnokseen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3976"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4555"/>
       <source>Ellipse by center, major radius, point</source>
       <translation>Ellipsi keskipisteellä, pääsäteellä tai pisteellä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3980"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4559"/>
       <source>Ellipse by periapsis, apoapsis, minor radius</source>
       <translation>Ellipsi lähimmällä pisteellä, kauimmalla pisteellä, ja pienellä säteellä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3984"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4563"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
       <translation>Ellipsin kaari keskipisteellä, suurella säteellä, päätepisteillä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3988"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4567"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
       <translation>Hyperbelin kaari keskipisteen, isoakselin säteen ja päätepisteiden perusteella</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3992"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4571"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
       <translation>Paraabelin kaari polttopisteen, huipun ja päätepisteiden perusteella</translation>
     </message>
@@ -349,81 +354,114 @@
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5341"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5912"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5342"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5913"/>
       <source>Fillets</source>
       <translation>Pyöristys</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5914"/>
       <source>Create a fillet between two lines</source>
       <translation>Luo pyöristys kahden viivan väliseen nurkkaan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5989"/>
       <source>Sketch fillet</source>
       <translation>Pyöristys luonnokselle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5993"/>
       <source>Constraint-preserving sketch fillet</source>
       <translation>Rajoitteet säilyttävä pyöristys luonnokselle</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherCompCreateRegularPolygon</name>
+    <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6993"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1095"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1096"/>
+      <source>Create rectangles</source>
+      <translation type="unfinished">Create rectangles</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1097"/>
+      <source>Creates a rectangle in the sketch</source>
+      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1180"/>
+      <source>Rectangle</source>
+      <translation>Suorakulmio</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1184"/>
+      <source>Centered rectangle</source>
+      <translation type="unfinished">Centered rectangle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1188"/>
+      <source>Rounded rectangle</source>
+      <translation type="unfinished">Rounded rectangle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCompCreateRegularPolygon</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7578"/>
+      <source>Sketcher</source>
+      <translation>Luonnostelija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7579"/>
       <source>Create regular polygon</source>
       <translation>Luo säännöllinen monikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6995"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7580"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Luo säännöllinen monikulmio luonnokseen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7110"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7695"/>
       <source>Triangle</source>
       <translation>Kolmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7114"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7699"/>
       <source>Square</source>
       <translation>Neliö</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
       <source>Pentagon</source>
       <translation>Viisikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7122"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
       <source>Hexagon</source>
       <translation>Kuusikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7126"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
       <source>Heptagon</source>
       <translation>Seitsenkulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7130"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
       <source>Octagon</source>
       <translation>Kahdeksankulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7134"/>
-      <source>Regular Polygon</source>
+      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
+      <source>Regular polygon</source>
       <translation>Säännöllinen monikulmio</translation>
     </message>
   </context>
@@ -458,17 +496,17 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="211"/>
+      <location filename="../../CommandSketcherTools.cpp" line="214"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="212"/>
+      <location filename="../../CommandSketcherTools.cpp" line="215"/>
       <source>Connect edges</source>
       <translation>Yhdistä reunat</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="213"/>
+      <location filename="../../CommandSketcherTools.cpp" line="216"/>
       <source>Tie the end point of the element with next element's starting point</source>
       <translation>Yhdistä kohteen päätepiste seuraavan kohteen alkupisteeseen</translation>
     </message>
@@ -476,17 +514,17 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5975"/>
+      <location filename="../../CommandConstraints.cpp" line="6040"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5976"/>
+      <location filename="../../CommandConstraints.cpp" line="6041"/>
       <source>Constrain angle</source>
       <translation>Rajoita kulma</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5977"/>
+      <location filename="../../CommandConstraints.cpp" line="6042"/>
       <source>Fix the angle of a line or the angle between two lines</source>
       <translation>Korjaa viivan kulmaa tai kahden viivan välistä kulma</translation>
     </message>
@@ -530,17 +568,17 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5393"/>
+      <location filename="../../CommandConstraints.cpp" line="5229"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5394"/>
+      <location filename="../../CommandConstraints.cpp" line="5230"/>
       <source>Constrain diameter</source>
       <translation>Rajoita halkaisija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5395"/>
+      <location filename="../../CommandConstraints.cpp" line="5231"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Kiinnitä ympyrän tai kaaren halkaisija</translation>
     </message>
@@ -602,17 +640,17 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6502"/>
+      <location filename="../../CommandConstraints.cpp" line="6567"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6503"/>
+      <location filename="../../CommandConstraints.cpp" line="6568"/>
       <source>Constrain equal</source>
       <translation>Yhtäsuuruus rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6504"/>
+      <location filename="../../CommandConstraints.cpp" line="6569"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
       <translation>Luo yhtäsuuruus rajoite kahdelle viivan tai ympyröiden ja kaarien väliin</translation>
     </message>
@@ -638,17 +676,17 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7183"/>
+      <location filename="../../CommandConstraints.cpp" line="7248"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7184"/>
+      <location filename="../../CommandConstraints.cpp" line="7249"/>
       <source>Constrain internal alignment</source>
       <translation>Rajoita sisäinen asemointi</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7185"/>
+      <location filename="../../CommandConstraints.cpp" line="7250"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
       <translation>Rajoitus: kohde tasataan toisen kohteen sisäisen geometrian kanssa</translation>
     </message>
@@ -728,6 +766,24 @@ valitulle kärkipisteelle</translation>
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainRadiam</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5548"/>
+      <source>Sketcher</source>
+      <translation>Luonnostelija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5549"/>
+      <source>Constrain auto radius/diameter</source>
+      <translation type="unfinished">Constrain auto radius/diameter</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5550"/>
+      <source>Fix automatically diameter on circle and radius on arc/pole</source>
+      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4882"/>
@@ -748,17 +804,17 @@ valitulle kärkipisteelle</translation>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7019"/>
+      <location filename="../../CommandConstraints.cpp" line="7084"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7020"/>
+      <location filename="../../CommandConstraints.cpp" line="7085"/>
       <source>Constrain refraction (Snell's law')</source>
       <translation>Rajoita taittuminen (Snellin laki)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7021"/>
+      <location filename="../../CommandConstraints.cpp" line="7086"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
       <translation>Luo taittumislain (Snellin laki) mukainen rajoite kahden taitesäteen päätepisteiden ja materiaalirajapintana toimivan reunaviivan välille.</translation>
@@ -767,17 +823,17 @@ and an edge as an interface.</source>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6719"/>
+      <location filename="../../CommandConstraints.cpp" line="6784"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6720"/>
+      <location filename="../../CommandConstraints.cpp" line="6785"/>
       <source>Constrain symmetrical</source>
       <translation>Rajoita symmetrisesti</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6721"/>
+      <location filename="../../CommandConstraints.cpp" line="6786"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
       <translation>Luo symmetriarajoite kahden pisteen välille, 
@@ -841,17 +897,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1512"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1539"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1513"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1540"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1514"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1541"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Luo yksinkertaisen kopion geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -859,17 +915,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1783"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2362"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1784"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2363"/>
       <source>Create arc by three points</source>
       <translation>Luo kaari kolmella pistettä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1785"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2364"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Luoda kaari sen loppupisteistä ja kaarella olevasta pisteestä</translation>
     </message>
@@ -877,17 +933,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4737"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5308"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4738"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5309"/>
       <source>Create circle by three points</source>
       <translation>Luo ympyrä kolmella pistettä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4739"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Luo ympyrä kolmella kehän pisteellä</translation>
     </message>
@@ -895,17 +951,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1514"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2093"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1515"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2094"/>
       <source>Create arc by center</source>
       <translation>Luo kaari keskipistettä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1516"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2095"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Luo kaari sen keskipisteellä ja sen loppupisteillä</translation>
     </message>
@@ -913,17 +969,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3196"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3775"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3197"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3776"/>
       <source>Create an arc of ellipse</source>
       <translation>Luo  ellipsin kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3198"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3777"/>
       <source>Create an arc of ellipse in the sketch</source>
       <translation>Luo ellipsin kaaren luonnoksessa</translation>
     </message>
@@ -931,17 +987,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3539"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4118"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3540"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4119"/>
       <source>Create an arc of hyperbola</source>
       <translation>Luo hyperbelin kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3541"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4120"/>
       <source>Create an arc of hyperbola in the sketch</source>
       <translation>Luo hyperbelin kaari luonnokseen</translation>
     </message>
@@ -949,17 +1005,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3837"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4416"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3838"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4417"/>
       <source>Create an arc of parabola</source>
       <translation>Luo paraabelin kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3839"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4418"/>
       <source>Create an arc of parabola in the sketch</source>
       <translation>Lue paraabelin kaari luonnokseen</translation>
     </message>
@@ -967,17 +1023,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4371"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4950"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4372"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4951"/>
       <source>Create B-spline</source>
       <translation>Luo B-splini</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4373"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4952"/>
       <source>Create a B-spline via control points in the sketch.</source>
       <translation>Luo B-splini määrittämällä ohjauspisteet luonnokseen.</translation>
     </message>
@@ -985,17 +1041,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2044"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2623"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2045"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2624"/>
       <source>Create circle</source>
       <translation>Luo ympyrä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2046"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2625"/>
       <source>Create a circle in the sketch</source>
       <translation>Luo ympyrän luonnoksessa</translation>
     </message>
@@ -1003,17 +1059,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5001"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5572"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5002"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5573"/>
       <source>Create draft line</source>
       <translation>Luo vedosviiva</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5003"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5574"/>
       <source>Create a draft line in the sketch</source>
       <translation>Luo vedosviiva luonnokseen</translation>
     </message>
@@ -1021,17 +1077,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2869"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3448"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3449"/>
       <source>Create ellipse by 3 points</source>
       <translation>Luo ellipsi 3:lla pisteellä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2871"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3450"/>
       <source>Create an ellipse by 3 points in the sketch</source>
       <translation>Luo ellipsi 3 pisteellä luonnoksessa</translation>
     </message>
@@ -1039,17 +1095,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2839"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3418"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2840"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3419"/>
       <source>Create ellipse by center</source>
       <translation>Luo ellipsi keskipisteen avulla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2841"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3420"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>Luo ellipsi keskipisteen avulla luonnoksessa</translation>
     </message>
@@ -1057,17 +1113,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5281"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5852"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5282"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5853"/>
       <source>Create fillet</source>
       <translation>Luo pyöristys</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5283"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5854"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
@@ -1075,17 +1131,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6908"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7493"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6909"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7494"/>
       <source>Create heptagon</source>
       <translation>Luo seitsenkulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7495"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Luo seitsenkulmio luonnoksessa</translation>
     </message>
@@ -1093,17 +1149,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6881"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7466"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6882"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7467"/>
       <source>Create hexagon</source>
       <translation>Luo kuusikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6883"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7468"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Luo kuusikulmio luonnoksessa</translation>
     </message>
@@ -1127,19 +1183,37 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreateOctagon</name>
+    <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6935"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1052"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6936"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1053"/>
+      <source>Create rounded rectangle</source>
+      <translation type="unfinished">Create rounded rectangle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1054"/>
+      <source>Create a rounded rectangle in the sketch</source>
+      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateOctagon</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7520"/>
+      <source>Sketcher</source>
+      <translation>Luonnostelija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7521"/>
       <source>Create octagon</source>
       <translation>Luo kahdeksankulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6937"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7522"/>
       <source>Create an octagon in the sketch</source>
       <translation>Luo kahdeksankulmio luonnoksessa</translation>
     </message>
@@ -1147,17 +1221,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6853"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7438"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6854"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7439"/>
       <source>Create pentagon</source>
       <translation>Luo viisikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6855"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7440"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Luo viisikulmio luonnoksessa</translation>
     </message>
@@ -1165,17 +1239,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4415"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4994"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4416"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4995"/>
       <source>Create periodic B-spline</source>
       <translation>Luo jaksollinen B-splini</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4417"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4996"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
       <translation>Luo jaksollisen B-splinin määrittämällä ohjauspisteet luonnokseen.</translation>
     </message>
@@ -1183,17 +1257,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4944"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5515"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4945"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5516"/>
       <source>Create point</source>
       <translation>Luo piste</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4946"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5517"/>
       <source>Create a point in the sketch</source>
       <translation>Luo pisteen luonnoksessa</translation>
     </message>
@@ -1201,17 +1275,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5881"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5311"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5882"/>
       <source>Create corner-preserving fillet</source>
       <translation>Luo nurkkapisteen säilyttävä pyöristys</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5312"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5883"/>
       <source>Fillet that preserves intersection point and most constraints</source>
       <translation>Pyöristys, joka säilyttää alkuperäisen nurkkapisteen ja useimmat rajoitteet</translation>
     </message>
@@ -1219,17 +1293,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1271"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1850"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1272"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1851"/>
       <source>Create polyline</source>
       <translation>Luo murtoviiva</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1273"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1852"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>Luo murtoviivan luonnos.  'M' avain ohjaa käyttäytymistä</translation>
     </message>
@@ -1237,35 +1311,53 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="687"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="584"/>
+      <location filename="../../CommandCreateGeo.cpp" line="688"/>
       <source>Create rectangle</source>
       <translation>Luo suorakolmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="585"/>
+      <location filename="../../CommandCreateGeo.cpp" line="689"/>
       <source>Create a rectangle in the sketch</source>
       <translation>Luo suorakulmion luonnoksessa</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreateRegularPolygon</name>
+    <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6962"/>
+      <location filename="../../CommandCreateGeo.cpp" line="728"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6963"/>
+      <location filename="../../CommandCreateGeo.cpp" line="729"/>
+      <source>Create centered rectangle</source>
+      <translation type="unfinished">Create centered rectangle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="730"/>
+      <source>Create a centered rectangle in the sketch</source>
+      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateRegularPolygon</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7547"/>
+      <source>Sketcher</source>
+      <translation>Luonnostelija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="7548"/>
       <source>Create regular polygon</source>
       <translation>Luo säännöllinen monikulmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6964"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7549"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Luo säännöllinen monikulmio luonnokseen</translation>
     </message>
@@ -1273,17 +1365,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6605"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7191"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6606"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7192"/>
       <source>Create slot</source>
       <translation>Luo rako</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6607"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7193"/>
       <source>Create a slot in the sketch</source>
       <translation>Luo rako luonnokseen</translation>
     </message>
@@ -1291,17 +1383,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6826"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7411"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6827"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7412"/>
       <source>Create square</source>
       <translation>Luo neliö</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6828"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7413"/>
       <source>Create a square in the sketch</source>
       <translation>Luo neliö luonnoksessa</translation>
     </message>
@@ -1309,17 +1401,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4973"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5544"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4974"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5545"/>
       <source>Create text</source>
       <translation>Luo tekstiä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4975"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5546"/>
       <source>Create text in the sketch</source>
       <translation>Luo teksti luonnokseen</translation>
     </message>
@@ -1327,17 +1419,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6799"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7384"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6800"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7385"/>
       <source>Create equilateral triangle</source>
       <translation>Luo tasasivuinen kolmio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6801"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7386"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Luo tasasivuinen kolmio luonnoksessa</translation>
     </message>
@@ -1381,17 +1473,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2092"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2127"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2093"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2128"/>
       <source>Delete all constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2129"/>
       <source>Delete all constraints in the sketch</source>
       <translation>Poistaa kaikki rajoitteet luonnoksesta</translation>
     </message>
@@ -1399,17 +1491,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2064"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2032"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2065"/>
       <source>Delete all geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2033"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2066"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
       <translation>Poista kaikki geometria ja rajoitteet nykyisestä luonnoksesta, lukuun ottamatta ulkoista geometriaa</translation>
     </message>
@@ -1435,17 +1527,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5885"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6456"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5886"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6457"/>
       <source>Extend edge</source>
       <translation>Pidennä reunaa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5887"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6458"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Pidennä reunaa valittuun sijaintiin asti</translation>
     </message>
@@ -1453,17 +1545,17 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6188"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6759"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6189"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6760"/>
       <source>External geometry</source>
       <translation>Ulkoinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6190"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6761"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Luo reuna joka on yhteydessä ulkoiseen geometriaan</translation>
     </message>
@@ -1612,17 +1704,17 @@ X- tai Y-akselia tai origoa.</translation>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1599"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1628"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1600"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Move</source>
       <translation>Siirrä</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1601"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1630"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Siirtää geometriaa käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -1648,19 +1740,37 @@ X- tai Y-akselia tai origoa.</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1893"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1924"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1925"/>
       <source>Rectangular array</source>
       <translation>Suorakaideruudukko</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1895"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1926"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Luo geometriasta suorakaideruudukon käyttäen viimeistä valittua pistettä referenssipisteenä</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherRemoveAxesAlignment</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2191"/>
+      <source>Sketcher</source>
+      <translation>Luonnostelija</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2192"/>
+      <source>Remove axes alignment</source>
+      <translation type="unfinished">Remove axes alignment</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2193"/>
+      <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
+      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
     </message>
   </context>
   <context>
@@ -1686,17 +1796,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="905"/>
+      <location filename="../../CommandSketcherTools.cpp" line="929"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="906"/>
+      <location filename="../../CommandSketcherTools.cpp" line="930"/>
       <source>Show/hide internal geometry</source>
       <translation>Näytä/Piilota sisäinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="907"/>
+      <location filename="../../CommandSketcherTools.cpp" line="931"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
       <translation>Näytä kaikki sisäinen geometria tai piilota käyttämätön sisäinen geometria</translation>
     </message>
@@ -1704,13 +1814,13 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="652"/>
+      <location filename="../../CommandSketcherTools.cpp" line="670"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="653"/>
-      <location filename="../../CommandSketcherTools.cpp" line="654"/>
+      <location filename="../../CommandSketcherTools.cpp" line="671"/>
+      <location filename="../../CommandSketcherTools.cpp" line="672"/>
       <source>Select conflicting constraints</source>
       <translation>Valitse ristiriitaiset rajoitteet</translation>
     </message>
@@ -1718,17 +1828,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="296"/>
+      <location filename="../../CommandSketcherTools.cpp" line="301"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="297"/>
+      <location filename="../../CommandSketcherTools.cpp" line="302"/>
       <source>Select associated constraints</source>
       <translation>Valitse liittyvät rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="298"/>
+      <location filename="../../CommandSketcherTools.cpp" line="303"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
       <translation>Valitse valittuihin geometrisiin elementteihin liittyvät rajoitteet</translation>
     </message>
@@ -1736,17 +1846,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="702"/>
+      <location filename="../../CommandSketcherTools.cpp" line="722"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="703"/>
+      <location filename="../../CommandSketcherTools.cpp" line="723"/>
       <source>Select associated geometry</source>
       <translation>Valitse liittyvä geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="704"/>
+      <location filename="../../CommandSketcherTools.cpp" line="724"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
       <translation>Valitsee geometriset elementit, jotka liittyvät valittuihin rajoitteisiin</translation>
     </message>
@@ -1754,17 +1864,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="822"/>
+      <location filename="../../CommandSketcherTools.cpp" line="844"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="823"/>
+      <location filename="../../CommandSketcherTools.cpp" line="845"/>
       <source>Select unconstrained DoF</source>
       <translation>Valitse vapaat geometriaelementit</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="824"/>
+      <location filename="../../CommandSketcherTools.cpp" line="846"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
       <translation>Valitse geometriset elementit, joissa ratkaisualgoritmi havaitsee yhä rajoittamattomia vapausasteita.</translation>
     </message>
@@ -1772,17 +1882,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="465"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="455"/>
+      <location filename="../../CommandSketcherTools.cpp" line="466"/>
       <source>Select horizontal axis</source>
       <translation>Valitse vaaka-akseli</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="456"/>
+      <location filename="../../CommandSketcherTools.cpp" line="467"/>
       <source>Select the local horizontal axis of the sketch</source>
       <translation>Valitse luonnoksen paikallinen vaakasuora akseli</translation>
     </message>
@@ -1790,13 +1900,13 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="547"/>
+      <location filename="../../CommandSketcherTools.cpp" line="562"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="548"/>
-      <location filename="../../CommandSketcherTools.cpp" line="549"/>
+      <location filename="../../CommandSketcherTools.cpp" line="563"/>
+      <location filename="../../CommandSketcherTools.cpp" line="564"/>
       <source>Select malformed constraints</source>
       <translation>Valitse virheelliset rajoitteet</translation>
     </message>
@@ -1804,17 +1914,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="368"/>
+      <location filename="../../CommandSketcherTools.cpp" line="375"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <location filename="../../CommandSketcherTools.cpp" line="376"/>
       <source>Select origin</source>
       <translation>Valitse origo</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="370"/>
+      <location filename="../../CommandSketcherTools.cpp" line="377"/>
       <source>Select the local origin point of the sketch</source>
       <translation>Valitse luonnoksen paikallinen origo</translation>
     </message>
@@ -1822,13 +1932,13 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="599"/>
+      <location filename="../../CommandSketcherTools.cpp" line="616"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="600"/>
-      <location filename="../../CommandSketcherTools.cpp" line="601"/>
+      <location filename="../../CommandSketcherTools.cpp" line="617"/>
+      <location filename="../../CommandSketcherTools.cpp" line="618"/>
       <source>Select partially redundant constraints</source>
       <translation>Valitse osittain ylimääräiset rajoitteet</translation>
     </message>
@@ -1836,13 +1946,13 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="495"/>
+      <location filename="../../CommandSketcherTools.cpp" line="508"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="496"/>
-      <location filename="../../CommandSketcherTools.cpp" line="497"/>
+      <location filename="../../CommandSketcherTools.cpp" line="509"/>
+      <location filename="../../CommandSketcherTools.cpp" line="510"/>
       <source>Select redundant constraints</source>
       <translation>Valitse tarpeettomat rajoitteet</translation>
     </message>
@@ -1850,17 +1960,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="421"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="413"/>
+      <location filename="../../CommandSketcherTools.cpp" line="422"/>
       <source>Select vertical axis</source>
       <translation>Valitse pystyakseli</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="414"/>
+      <location filename="../../CommandSketcherTools.cpp" line="423"/>
       <source>Select the local vertical axis of the sketch</source>
       <translation>Valitse luonnoksen paikallinen pystyakseli</translation>
     </message>
@@ -1868,17 +1978,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6004"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6575"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6005"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6576"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6006"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6577"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
     </message>
@@ -1922,17 +2032,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="998"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1024"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1025"/>
       <source>Symmetry</source>
       <translation>Symmetria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1026"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>Peilaa geometriaa suhteessa viimeisenä valittuun viivaan tai pisteeseen</translation>
     </message>
@@ -1940,17 +2050,17 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7770"/>
+      <location filename="../../CommandConstraints.cpp" line="7836"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7771"/>
+      <location filename="../../CommandConstraints.cpp" line="7837"/>
       <source>Activate/deactivate constraint</source>
       <translation>Aktivoi/deaktivoi rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7772"/>
+      <location filename="../../CommandConstraints.cpp" line="7838"/>
       <source>Activates or deactivates the selected constraints</source>
       <translation>Aktivoi tai deaktivoi valitut rajoitteet</translation>
     </message>
@@ -1977,17 +2087,17 @@ rakennetilan ja tavallisen geometrian välillä edestakaisin</translation>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7644"/>
+      <location filename="../../CommandConstraints.cpp" line="7709"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7645"/>
+      <location filename="../../CommandConstraints.cpp" line="7710"/>
       <source>Toggle driving/reference constraint</source>
       <translation>Vaihda rajoite määräävän/referenssin välillä</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7646"/>
+      <location filename="../../CommandConstraints.cpp" line="7711"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
       <translation>Vaihtaa työkalupalkin kuvakkeen, tai valitut rajoitteet, 
@@ -1997,17 +2107,17 @@ määräävän ja referenssimoodin välillä edestakaisin</translation>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5571"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6142"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5572"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6143"/>
       <source>Trim edge</source>
       <translation>Trimmaa reuna</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5573"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6144"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Tarkenna reuna suhteessa valittuun kohtaan</translation>
     </message>
@@ -2133,8 +2243,8 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="2042"/>
       <location filename="../../CommandConstraints.cpp" line="2188"/>
       <location filename="../../CommandConstraints.cpp" line="2253"/>
-      <location filename="../../CommandSketcherTools.cpp" line="144"/>
-      <location filename="../../CommandSketcherTools.cpp" line="250"/>
+      <location filename="../../CommandSketcherTools.cpp" line="146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="253"/>
       <source>Add coincident constraint</source>
       <translation>Lisää yhtenevyys-rajoite</translation>
     </message>
@@ -2263,64 +2373,72 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Lisää tangenttirajoitepiste</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4999"/>
-      <location filename="../../CommandConstraints.cpp" line="5064"/>
-      <location filename="../../CommandConstraints.cpp" line="5083"/>
-      <location filename="../../CommandConstraints.cpp" line="5241"/>
+      <location filename="../../CommandConstraints.cpp" line="5000"/>
+      <location filename="../../CommandConstraints.cpp" line="5050"/>
+      <location filename="../../CommandConstraints.cpp" line="5069"/>
+      <location filename="../../CommandConstraints.cpp" line="5147"/>
       <source>Add radius constraint</source>
       <translation>Lisää säteen rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5500"/>
-      <location filename="../../CommandConstraints.cpp" line="5559"/>
-      <location filename="../../CommandConstraints.cpp" line="5571"/>
-      <location filename="../../CommandConstraints.cpp" line="5726"/>
+      <location filename="../../CommandConstraints.cpp" line="5337"/>
+      <location filename="../../CommandConstraints.cpp" line="5381"/>
+      <location filename="../../CommandConstraints.cpp" line="5393"/>
+      <location filename="../../CommandConstraints.cpp" line="5476"/>
       <source>Add diameter constraint</source>
       <translation>Lisää halkaisijan rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6067"/>
-      <location filename="../../CommandConstraints.cpp" line="6200"/>
-      <location filename="../../CommandConstraints.cpp" line="6230"/>
-      <location filename="../../CommandConstraints.cpp" line="6254"/>
-      <location filename="../../CommandConstraints.cpp" line="6367"/>
-      <location filename="../../CommandConstraints.cpp" line="6421"/>
+      <location filename="../../CommandConstraints.cpp" line="5660"/>
+      <location filename="../../CommandConstraints.cpp" line="5715"/>
+      <location filename="../../CommandConstraints.cpp" line="5736"/>
+      <location filename="../../CommandConstraints.cpp" line="5827"/>
+      <source>Add radiam constraint</source>
+      <translation type="unfinished">Add radiam constraint</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6132"/>
+      <location filename="../../CommandConstraints.cpp" line="6265"/>
+      <location filename="../../CommandConstraints.cpp" line="6295"/>
+      <location filename="../../CommandConstraints.cpp" line="6319"/>
+      <location filename="../../CommandConstraints.cpp" line="6432"/>
+      <location filename="../../CommandConstraints.cpp" line="6486"/>
       <source>Add angle constraint</source>
       <translation>Lisää kulman rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6635"/>
-      <location filename="../../CommandConstraints.cpp" line="6687"/>
+      <location filename="../../CommandConstraints.cpp" line="6700"/>
+      <location filename="../../CommandConstraints.cpp" line="6752"/>
       <source>Add equality constraint</source>
       <translation>Lisää yhtäsuuruuden rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6808"/>
-      <location filename="../../CommandConstraints.cpp" line="6860"/>
-      <location filename="../../CommandConstraints.cpp" line="6876"/>
-      <location filename="../../CommandConstraints.cpp" line="6962"/>
-      <location filename="../../CommandConstraints.cpp" line="6997"/>
+      <location filename="../../CommandConstraints.cpp" line="6873"/>
+      <location filename="../../CommandConstraints.cpp" line="6925"/>
+      <location filename="../../CommandConstraints.cpp" line="6941"/>
+      <location filename="../../CommandConstraints.cpp" line="7027"/>
+      <location filename="../../CommandConstraints.cpp" line="7062"/>
       <source>Add symmetric constraint</source>
       <translation>Lisää symmetrisyyden rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7136"/>
+      <location filename="../../CommandConstraints.cpp" line="7201"/>
       <source>Add Snell's law constraint</source>
       <translation>Lisää Snellin lain rajoite</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7345"/>
-      <location filename="../../CommandConstraints.cpp" line="7523"/>
+      <location filename="../../CommandConstraints.cpp" line="7410"/>
+      <location filename="../../CommandConstraints.cpp" line="7588"/>
       <source>Add internal alignment constraint</source>
       <translation>Lisää sisäinen kohdistusrajoitus</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7729"/>
+      <location filename="../../CommandConstraints.cpp" line="7795"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Vaihda rajoite määräävän/referenssin välillä</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7813"/>
+      <location filename="../../CommandConstraints.cpp" line="7879"/>
       <source>Activate/Deactivate constraint</source>
       <translation>Aktivoi/deaktivoi rajoite</translation>
     </message>
@@ -2370,100 +2488,110 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Lisää luonnos linja</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="494"/>
+      <location filename="../../CommandCreateGeo.cpp" line="538"/>
       <source>Add sketch box</source>
       <translation>Lisää luonnos laatikko</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="982"/>
+      <location filename="../../CommandCreateGeo.cpp" line="575"/>
+      <source>Add centered sketch box</source>
+      <translation type="unfinished">Add centered sketch box</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="901"/>
+      <source>Add rounded rectangle</source>
+      <translation type="unfinished">Add rounded rectangle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1561"/>
       <source>Add line to sketch wire</source>
       <translation>Lisää linja luonnoksen lankaan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1002"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1581"/>
       <source>Add arc to sketch wire</source>
       <translation>Lisää kaari luonnokseen lankaan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1445"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1714"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2024"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2293"/>
       <source>Add sketch arc</source>
       <translation>Lisää luonnos kaari</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1983"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4669"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2562"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5240"/>
       <source>Add sketch circle</source>
       <translation>Lisää luonnosympyrä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2742"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3321"/>
       <source>Add sketch ellipse</source>
       <translation>Lisää luonnos ellipsi</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3111"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3690"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Lisää luonnos ellipsin kaaresta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3449"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4028"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>Lisää luonnos hyperbolin kaaresta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3751"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4330"/>
       <source>Add sketch arc of Parabola</source>
       <translation>Lisää luonnos parabolin kaaresta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4074"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4653"/>
       <source>Add Pole circle</source>
       <translation>Lisää napa- ympyrä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4896"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5467"/>
       <source>Add sketch point</source>
       <translation>Lisää luonnos piste</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5145"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5223"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5794"/>
       <source>Create fillet</source>
       <translation>Luo pyöristys</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5541"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6112"/>
       <source>Trim edge</source>
       <translation>Trimmaa reuna</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5817"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6388"/>
       <source>Extend edge</source>
       <translation>Pidennä reunaa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5977"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6548"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6152"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6723"/>
       <source>Add external geometry</source>
       <translation>Lisää ulkoinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6333"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6904"/>
       <source>Add carbon copy</source>
       <translation>Lisää hiilikopio</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6514"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7102"/>
       <source>Add slot</source>
       <translation>Lisää paikka</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6727"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7312"/>
       <source>Add hexagon</source>
       <translation>Lisää kuusikulmio</translation>
     </message>
@@ -2493,34 +2621,39 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Pienennä solmun moninkertaisuusarvoa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="962"/>
+      <location filename="../../CommandSketcherTools.cpp" line="986"/>
       <source>Exposing Internal Geometry</source>
       <translation>Sisäisen Geometrian näyttäminen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1172"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1198"/>
       <source>Create symmetric geometry</source>
       <translation>Luo symmetrinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1314"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1341"/>
       <source>Copy/clone/move geometry</source>
       <translation>Kopioi/kloonaa/siirrä geometriaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1838"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
       <source>Create copy of geometry</source>
       <translation>Tee kopio geometriasta</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2058"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2091"/>
       <source>Delete all geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2118"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2153"/>
       <source>Delete All Constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2278"/>
+      <source>Remove Axes Alignment</source>
+      <translation type="unfinished">Remove Axes Alignment</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -2549,22 +2682,22 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Nimeä rajoite uudelleen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="851"/>
+      <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Point</source>
       <translation>Raahaa pistettä</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="884"/>
       <source>Drag Curve</source>
       <translation>Raahaa käyrää</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="933"/>
+      <location filename="../../ViewProviderSketch.cpp" line="935"/>
       <source>Drag Constraint</source>
       <translation>Raahaa rajoitetta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1109"/>
       <source>Modify sketch constraints</source>
       <translation>Muokkaa luonnoksen rajoitteita</translation>
     </message>
@@ -2612,42 +2745,42 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Ei kyetty arvaamaan reunojen risteämispistettä. Kokeile lisätä yhtenevyysrajoite pyöristettävien reunojen kärkipisteiden välille.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5604"/>
+      <location filename="../../../App/SketchObject.cpp" line="5735"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Tämä OCE/OCC-versio ei tue solmutoimintoa. Tarvitset version 6.9.0 tai uudemman.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5608"/>
+      <location filename="../../../App/SketchObject.cpp" line="5739"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-splinin geometria-indeksi (GeoID) on sallittujen rajojen ulkopuolella.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5611"/>
+      <location filename="../../../App/SketchObject.cpp" line="5742"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Solmun moninkertaisuusarvoon ei pyydetty muutosta.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5616"/>
+      <location filename="../../../App/SketchObject.cpp" line="5747"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Annettu geometria-indeksi (GeoID) ei vastaa B-splini-käyrää.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5623"/>
+      <location filename="../../../App/SketchObject.cpp" line="5754"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Solmun indeksi on rajojen ulkopuolella. Huomaa, että OCC: n notaation mukaisesti ensimmäisellä solmulla on indeksi 1 eikä nolla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5630"/>
+      <location filename="../../../App/SketchObject.cpp" line="5761"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Monimuotoisuusarvoa ei voi kasvattaa B-splinin astetta suuremmaksi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5633"/>
+      <location filename="../../../App/SketchObject.cpp" line="5764"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Moninkertaisuusarvoa ei voi pienentää negatiiviseksi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5645"/>
+      <location filename="../../../App/SketchObject.cpp" line="5776"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ei pysty pienentämään moninkertaisuusarvoa pysyäkseen suurimmassa sallitussa toleranssissa.</translation>
     </message>
@@ -2789,57 +2922,62 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="4911"/>
       <location filename="../../CommandConstraints.cpp" line="4922"/>
       <location filename="../../CommandConstraints.cpp" line="4983"/>
-      <location filename="../../CommandConstraints.cpp" line="4988"/>
-      <location filename="../../CommandConstraints.cpp" line="5235"/>
-      <location filename="../../CommandConstraints.cpp" line="5422"/>
-      <location filename="../../CommandConstraints.cpp" line="5433"/>
-      <location filename="../../CommandConstraints.cpp" line="5475"/>
-      <location filename="../../CommandConstraints.cpp" line="5490"/>
-      <location filename="../../CommandConstraints.cpp" line="5714"/>
-      <location filename="../../CommandConstraints.cpp" line="5720"/>
-      <location filename="../../CommandConstraints.cpp" line="6017"/>
-      <location filename="../../CommandConstraints.cpp" line="6029"/>
-      <location filename="../../CommandConstraints.cpp" line="6060"/>
-      <location filename="../../CommandConstraints.cpp" line="6122"/>
-      <location filename="../../CommandConstraints.cpp" line="6218"/>
-      <location filename="../../CommandConstraints.cpp" line="6274"/>
-      <location filename="../../CommandConstraints.cpp" line="6414"/>
-      <location filename="../../CommandConstraints.cpp" line="6531"/>
-      <location filename="../../CommandConstraints.cpp" line="6544"/>
-      <location filename="../../CommandConstraints.cpp" line="6560"/>
-      <location filename="../../CommandConstraints.cpp" line="6565"/>
-      <location filename="../../CommandConstraints.cpp" line="6584"/>
-      <location filename="../../CommandConstraints.cpp" line="6614"/>
-      <location filename="../../CommandConstraints.cpp" line="6629"/>
-      <location filename="../../CommandConstraints.cpp" line="6681"/>
-      <location filename="../../CommandConstraints.cpp" line="6763"/>
-      <location filename="../../CommandConstraints.cpp" line="6776"/>
-      <location filename="../../CommandConstraints.cpp" line="6801"/>
-      <location filename="../../CommandConstraints.cpp" line="6823"/>
-      <location filename="../../CommandConstraints.cpp" line="6853"/>
-      <location filename="../../CommandConstraints.cpp" line="6890"/>
-      <location filename="../../CommandConstraints.cpp" line="6913"/>
+      <location filename="../../CommandConstraints.cpp" line="4989"/>
+      <location filename="../../CommandConstraints.cpp" line="5141"/>
+      <location filename="../../CommandConstraints.cpp" line="5258"/>
+      <location filename="../../CommandConstraints.cpp" line="5269"/>
+      <location filename="../../CommandConstraints.cpp" line="5311"/>
+      <location filename="../../CommandConstraints.cpp" line="5326"/>
+      <location filename="../../CommandConstraints.cpp" line="5464"/>
+      <location filename="../../CommandConstraints.cpp" line="5470"/>
+      <location filename="../../CommandConstraints.cpp" line="5577"/>
+      <location filename="../../CommandConstraints.cpp" line="5588"/>
+      <location filename="../../CommandConstraints.cpp" line="5643"/>
+      <location filename="../../CommandConstraints.cpp" line="5649"/>
+      <location filename="../../CommandConstraints.cpp" line="5821"/>
+      <location filename="../../CommandConstraints.cpp" line="6082"/>
+      <location filename="../../CommandConstraints.cpp" line="6094"/>
+      <location filename="../../CommandConstraints.cpp" line="6125"/>
+      <location filename="../../CommandConstraints.cpp" line="6187"/>
+      <location filename="../../CommandConstraints.cpp" line="6283"/>
+      <location filename="../../CommandConstraints.cpp" line="6339"/>
+      <location filename="../../CommandConstraints.cpp" line="6479"/>
+      <location filename="../../CommandConstraints.cpp" line="6596"/>
+      <location filename="../../CommandConstraints.cpp" line="6609"/>
+      <location filename="../../CommandConstraints.cpp" line="6625"/>
+      <location filename="../../CommandConstraints.cpp" line="6630"/>
+      <location filename="../../CommandConstraints.cpp" line="6649"/>
+      <location filename="../../CommandConstraints.cpp" line="6679"/>
+      <location filename="../../CommandConstraints.cpp" line="6694"/>
+      <location filename="../../CommandConstraints.cpp" line="6746"/>
+      <location filename="../../CommandConstraints.cpp" line="6828"/>
+      <location filename="../../CommandConstraints.cpp" line="6841"/>
+      <location filename="../../CommandConstraints.cpp" line="6866"/>
+      <location filename="../../CommandConstraints.cpp" line="6888"/>
+      <location filename="../../CommandConstraints.cpp" line="6918"/>
       <location filename="../../CommandConstraints.cpp" line="6955"/>
-      <location filename="../../CommandConstraints.cpp" line="6971"/>
-      <location filename="../../CommandConstraints.cpp" line="7098"/>
-      <location filename="../../CommandConstraints.cpp" line="7104"/>
-      <location filename="../../CommandConstraints.cpp" line="7203"/>
-      <location filename="../../CommandConstraints.cpp" line="7216"/>
-      <location filename="../../CommandConstraints.cpp" line="7237"/>
-      <location filename="../../CommandConstraints.cpp" line="7260"/>
-      <location filename="../../CommandConstraints.cpp" line="7282"/>
-      <location filename="../../CommandConstraints.cpp" line="7290"/>
-      <location filename="../../CommandConstraints.cpp" line="7296"/>
-      <location filename="../../CommandConstraints.cpp" line="7452"/>
-      <location filename="../../CommandConstraints.cpp" line="7460"/>
-      <location filename="../../CommandConstraints.cpp" line="7468"/>
-      <location filename="../../CommandConstraints.cpp" line="7474"/>
-      <location filename="../../CommandConstraints.cpp" line="7623"/>
-      <location filename="../../CommandConstraints.cpp" line="7683"/>
-      <location filename="../../CommandConstraints.cpp" line="7691"/>
-      <location filename="../../CommandConstraints.cpp" line="7723"/>
-      <location filename="../../CommandConstraints.cpp" line="7796"/>
-      <location filename="../../CommandConstraints.cpp" line="7807"/>
+      <location filename="../../CommandConstraints.cpp" line="6978"/>
+      <location filename="../../CommandConstraints.cpp" line="7020"/>
+      <location filename="../../CommandConstraints.cpp" line="7036"/>
+      <location filename="../../CommandConstraints.cpp" line="7163"/>
+      <location filename="../../CommandConstraints.cpp" line="7169"/>
+      <location filename="../../CommandConstraints.cpp" line="7268"/>
+      <location filename="../../CommandConstraints.cpp" line="7281"/>
+      <location filename="../../CommandConstraints.cpp" line="7302"/>
+      <location filename="../../CommandConstraints.cpp" line="7325"/>
+      <location filename="../../CommandConstraints.cpp" line="7347"/>
+      <location filename="../../CommandConstraints.cpp" line="7355"/>
+      <location filename="../../CommandConstraints.cpp" line="7361"/>
+      <location filename="../../CommandConstraints.cpp" line="7517"/>
+      <location filename="../../CommandConstraints.cpp" line="7525"/>
+      <location filename="../../CommandConstraints.cpp" line="7533"/>
+      <location filename="../../CommandConstraints.cpp" line="7539"/>
+      <location filename="../../CommandConstraints.cpp" line="7688"/>
+      <location filename="../../CommandConstraints.cpp" line="7749"/>
+      <location filename="../../CommandConstraints.cpp" line="7757"/>
+      <location filename="../../CommandConstraints.cpp" line="7789"/>
+      <location filename="../../CommandConstraints.cpp" line="7862"/>
+      <location filename="../../CommandConstraints.cpp" line="7873"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="431"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="502"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
@@ -2847,23 +2985,26 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="703"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="794"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
-      <location filename="../../CommandSketcherTools.cpp" line="125"/>
-      <location filename="../../CommandSketcherTools.cpp" line="133"/>
-      <location filename="../../CommandSketcherTools.cpp" line="175"/>
-      <location filename="../../CommandSketcherTools.cpp" line="235"/>
-      <location filename="../../CommandSketcherTools.cpp" line="243"/>
-      <location filename="../../CommandSketcherTools.cpp" line="320"/>
-      <location filename="../../CommandSketcherTools.cpp" line="929"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1022"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1030"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1135"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1144"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1382"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1391"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1450"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1913"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1922"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1984"/>
+      <location filename="../../CommandSketcherTools.cpp" line="127"/>
+      <location filename="../../CommandSketcherTools.cpp" line="135"/>
+      <location filename="../../CommandSketcherTools.cpp" line="177"/>
+      <location filename="../../CommandSketcherTools.cpp" line="238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="246"/>
+      <location filename="../../CommandSketcherTools.cpp" line="325"/>
+      <location filename="../../CommandSketcherTools.cpp" line="953"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1048"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1056"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1161"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1170"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1418"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1477"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1953"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2015"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2211"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2220"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2265"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="123"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="146"/>
@@ -2877,10 +3018,6 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation>Valitse reuna(t) sketsistä.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5180"/>
-      <location filename="../../CommandConstraints.cpp" line="5329"/>
-      <location filename="../../CommandConstraints.cpp" line="5659"/>
-      <location filename="../../CommandConstraints.cpp" line="5795"/>
       <location filename="../../EditDatumDialog.cpp" line="218"/>
       <source>Dimensional constraint</source>
       <translation>Mittarajoite</translation>
@@ -2920,8 +3057,8 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="1458"/>
       <location filename="../../CommandConstraints.cpp" line="1467"/>
       <location filename="../../CommandConstraints.cpp" line="1478"/>
-      <location filename="../../CommandSketcherTools.cpp" line="165"/>
-      <location filename="../../CommandSketcherTools.cpp" line="267"/>
+      <location filename="../../CommandSketcherTools.cpp" line="167"/>
+      <location filename="../../CommandSketcherTools.cpp" line="270"/>
       <source>Impossible constraint</source>
       <translation>Mahdoton rajoite</translation>
     </message>
@@ -3042,7 +3179,7 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="4136"/>
       <location filename="../../CommandConstraints.cpp" line="4349"/>
       <location filename="../../CommandConstraints.cpp" line="4846"/>
-      <location filename="../../CommandConstraints.cpp" line="7166"/>
+      <location filename="../../CommandConstraints.cpp" line="7231"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="833"/>
       <source>Error</source>
       <translation>Virhe</translation>
@@ -3089,8 +3226,9 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="2920"/>
       <location filename="../../CommandConstraints.cpp" line="3172"/>
       <location filename="../../CommandConstraints.cpp" line="4912"/>
-      <location filename="../../CommandConstraints.cpp" line="5423"/>
-      <location filename="../../CommandConstraints.cpp" line="6018"/>
+      <location filename="../../CommandConstraints.cpp" line="5259"/>
+      <location filename="../../CommandConstraints.cpp" line="5578"/>
+      <location filename="../../CommandConstraints.cpp" line="6083"/>
       <source>Select the right things from the sketch.</source>
       <translation>Valitse oikeat asiat luonnoksesta.</translation>
     </message>
@@ -3123,12 +3261,12 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="4439"/>
       <location filename="../../CommandConstraints.cpp" line="4637"/>
       <location filename="../../CommandConstraints.cpp" line="4818"/>
-      <location filename="../../CommandConstraints.cpp" line="5476"/>
-      <location filename="../../CommandConstraints.cpp" line="5721"/>
-      <location filename="../../CommandConstraints.cpp" line="6061"/>
-      <location filename="../../CommandConstraints.cpp" line="6123"/>
-      <location filename="../../CommandConstraints.cpp" line="6415"/>
-      <location filename="../../CommandConstraints.cpp" line="7105"/>
+      <location filename="../../CommandConstraints.cpp" line="5312"/>
+      <location filename="../../CommandConstraints.cpp" line="5471"/>
+      <location filename="../../CommandConstraints.cpp" line="6126"/>
+      <location filename="../../CommandConstraints.cpp" line="6188"/>
+      <location filename="../../CommandConstraints.cpp" line="6480"/>
+      <location filename="../../CommandConstraints.cpp" line="7170"/>
       <source>Select an edge that is not a B-spline weight</source>
       <translation>Valitse reuna joka ei ole B-splinin painokerroin</translation>
     </message>
@@ -3178,7 +3316,7 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3431"/>
-      <location filename="../../CommandConstraints.cpp" line="6545"/>
+      <location filename="../../CommandConstraints.cpp" line="6610"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Valitse vähintään kaksi viivaa sketsistä.</translation>
     </message>
@@ -3305,222 +3443,210 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
       <location filename="../../CommandConstraints.cpp" line="4984"/>
-      <location filename="../../CommandConstraints.cpp" line="5434"/>
-      <location filename="../../CommandConstraints.cpp" line="5491"/>
+      <location filename="../../CommandConstraints.cpp" line="5270"/>
+      <location filename="../../CommandConstraints.cpp" line="5327"/>
+      <location filename="../../CommandConstraints.cpp" line="5589"/>
+      <location filename="../../CommandConstraints.cpp" line="5644"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Valitse yksi tai userampia kaaria tai ympyröitä luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4989"/>
+      <location filename="../../CommandConstraints.cpp" line="4990"/>
+      <location filename="../../CommandConstraints.cpp" line="5650"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>Valitse luonnoksesta yksi tai useampi B-Splinien napa, tai yksi tai useampi kaari tai ympyrä, mutta ei molempien ryhmien sekamuotoa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5045"/>
-      <location filename="../../CommandConstraints.cpp" line="5540"/>
-      <source>Constrain equal</source>
-      <translation>Yhtäsuuruus rajoite</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5046"/>
-      <source>Do you want to share the same radius for all selected elements?</source>
-      <translation>Haluat jakaa saman säteen kaikissa valituissa osissa?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5236"/>
-      <location filename="../../CommandConstraints.cpp" line="5715"/>
+      <location filename="../../CommandConstraints.cpp" line="5142"/>
+      <location filename="../../CommandConstraints.cpp" line="5465"/>
+      <location filename="../../CommandConstraints.cpp" line="5822"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Rajoite sopii vain kaarille tai ympyröille.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5541"/>
-      <source>Do you want to share the same diameter for all selected elements?</source>
-      <translation>Haluatko asettaa saman halkaisijan kaikille valituille elementeille?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6030"/>
-      <location filename="../../CommandConstraints.cpp" line="6275"/>
+      <location filename="../../CommandConstraints.cpp" line="6095"/>
+      <location filename="../../CommandConstraints.cpp" line="6340"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Valitse yksi tai useampi viiva luonnoksesta. Tai valitse kaksi reunaa ja piste.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6186"/>
-      <location filename="../../CommandConstraints.cpp" line="6353"/>
+      <location filename="../../CommandConstraints.cpp" line="6251"/>
+      <location filename="../../CommandConstraints.cpp" line="6418"/>
       <source>Parallel lines</source>
       <translation>Samansuuntaiset viivat</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6187"/>
-      <location filename="../../CommandConstraints.cpp" line="6354"/>
+      <location filename="../../CommandConstraints.cpp" line="6252"/>
+      <location filename="../../CommandConstraints.cpp" line="6419"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Kulma-rajoitusta ei voi määrittää kahdelle samansuuntaiselle viivalle.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6219"/>
+      <location filename="../../CommandConstraints.cpp" line="6284"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Akseliin ei voi lisätä kulmarajoitetta!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6532"/>
+      <location filename="../../CommandConstraints.cpp" line="6597"/>
       <source>Select two edges from the sketch.</source>
       <translation>Valitse kaksi reunaa sketsistä.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6561"/>
-      <location filename="../../CommandConstraints.cpp" line="7261"/>
+      <location filename="../../CommandConstraints.cpp" line="6626"/>
+      <location filename="../../CommandConstraints.cpp" line="7326"/>
       <source>Select two or more compatible edges</source>
       <translation>Valitse yksi tai useampi yhteensopiva reuna</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6566"/>
+      <location filename="../../CommandConstraints.cpp" line="6631"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Luonnoksen akseleita ei voida käyttää yhtäsuuruusrajoitteina</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6585"/>
+      <location filename="../../CommandConstraints.cpp" line="6650"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Ohjelma ei tällä hetkellä vielä tue yhtäsuuruutta B-splinin reunan kanssa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6615"/>
-      <location filename="../../CommandConstraints.cpp" line="6630"/>
-      <location filename="../../CommandConstraints.cpp" line="6682"/>
+      <location filename="../../CommandConstraints.cpp" line="6680"/>
+      <location filename="../../CommandConstraints.cpp" line="6695"/>
+      <location filename="../../CommandConstraints.cpp" line="6747"/>
       <source>Select two or more edges of similar type</source>
       <translation>Valitse yksi tai useampi samantyyppinen reuna</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6764"/>
-      <location filename="../../CommandConstraints.cpp" line="6777"/>
-      <location filename="../../CommandConstraints.cpp" line="6824"/>
-      <location filename="../../CommandConstraints.cpp" line="6891"/>
-      <location filename="../../CommandConstraints.cpp" line="6972"/>
+      <location filename="../../CommandConstraints.cpp" line="6829"/>
+      <location filename="../../CommandConstraints.cpp" line="6842"/>
+      <location filename="../../CommandConstraints.cpp" line="6889"/>
+      <location filename="../../CommandConstraints.cpp" line="6956"/>
+      <location filename="../../CommandConstraints.cpp" line="7037"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>Valitse kaksi pistettä ja symmetria linja, kaksi pistettä ja symmetria kohta, tai linja ja symmetriakohta luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6802"/>
-      <location filename="../../CommandConstraints.cpp" line="6956"/>
+      <location filename="../../CommandConstraints.cpp" line="6867"/>
+      <location filename="../../CommandConstraints.cpp" line="7021"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Ei voida lisätä symmetristä rajoitusta viivan ja sen päätepisteiden väliin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6854"/>
-      <location filename="../../CommandConstraints.cpp" line="6914"/>
+      <location filename="../../CommandConstraints.cpp" line="6919"/>
+      <location filename="../../CommandConstraints.cpp" line="6979"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Viivan ja sen päätepisteiden välille ei voi lisätä symmetriarajoitetta!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7034"/>
+      <location filename="../../CommandConstraints.cpp" line="7099"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Valitse kaksi viivojen päätepistettä säteinä toimimaan sekä reuna kuvaamaan rajaa. Ensimmäinen valittu piste vastaa indeksiä n1, toinen - n2 ja viitearvo määrittää suhteen n2/n1.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7082"/>
+      <location filename="../../CommandConstraints.cpp" line="7147"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Rajoitetta ei voi luoda vain ulkoista geometriaa käyttämällä.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7089"/>
+      <location filename="../../CommandConstraints.cpp" line="7154"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Valittuna on epäyhteensopivaa geometriaa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7099"/>
+      <location filename="../../CommandConstraints.cpp" line="7164"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
       <translation>Ohjelma ei tällä hetkellä vielä tue Snellin lakia B-splinin reunan kanssa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7283"/>
+      <location filename="../../CommandConstraints.cpp" line="7348"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
       <translation>Et voi sisäisesti rajoittaa ellipsiä toisen ellipsin päällä. Valitse vain yksi ellipsi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7336"/>
-      <location filename="../../CommandConstraints.cpp" line="7514"/>
+      <location filename="../../CommandConstraints.cpp" line="7401"/>
+      <location filename="../../CommandConstraints.cpp" line="7579"/>
       <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
       <translation>Tällä hetkellä kaikki ellipsin sisäiset geometriset elementit ovat jo paljastettuna.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7684"/>
-      <location filename="../../CommandConstraints.cpp" line="7692"/>
-      <location filename="../../CommandConstraints.cpp" line="7724"/>
-      <location filename="../../CommandConstraints.cpp" line="7797"/>
-      <location filename="../../CommandConstraints.cpp" line="7808"/>
+      <location filename="../../CommandConstraints.cpp" line="7750"/>
+      <location filename="../../CommandConstraints.cpp" line="7758"/>
+      <location filename="../../CommandConstraints.cpp" line="7790"/>
+      <location filename="../../CommandConstraints.cpp" line="7863"/>
+      <location filename="../../CommandConstraints.cpp" line="7874"/>
       <source>Select constraints from the sketch.</source>
       <translation>Valitse rajoitteet luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7050"/>
+      <location filename="../../CommandConstraints.cpp" line="7115"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Valitut kohteet eivät ole vain yhden luonnoksen geometriaa.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7060"/>
+      <location filename="../../CommandConstraints.cpp" line="7125"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>Valittuja kohteita ei ole 3 (on %1).</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7204"/>
-      <location filename="../../CommandConstraints.cpp" line="7217"/>
+      <location filename="../../CommandConstraints.cpp" line="7269"/>
+      <location filename="../../CommandConstraints.cpp" line="7282"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
       <translation>Valitse vähintään yksi ellipsi ja yksi reuna luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7238"/>
+      <location filename="../../CommandConstraints.cpp" line="7303"/>
       <source>Sketch axes cannot be used in internal alignment constraint</source>
       <translation>Luonnoksen akseleita ei voi käyttää sisäisen tasauksen rajoitteessa</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7291"/>
-      <location filename="../../CommandConstraints.cpp" line="7469"/>
+      <location filename="../../CommandConstraints.cpp" line="7356"/>
+      <location filename="../../CommandConstraints.cpp" line="7534"/>
       <source>Maximum 2 points are supported.</source>
       <translation>Enintään 2 pistettä ovat tuettuja.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7297"/>
-      <location filename="../../CommandConstraints.cpp" line="7475"/>
+      <location filename="../../CommandConstraints.cpp" line="7362"/>
+      <location filename="../../CommandConstraints.cpp" line="7540"/>
       <source>Maximum 2 lines are supported.</source>
       <translation>Enintään 2 viivaa ovat tuettuja.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7335"/>
-      <location filename="../../CommandConstraints.cpp" line="7513"/>
+      <location filename="../../CommandConstraints.cpp" line="7400"/>
+      <location filename="../../CommandConstraints.cpp" line="7578"/>
       <source>Nothing to constrain</source>
       <translation>Ei mitään rajoitettavaa</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7426"/>
-      <location filename="../../CommandConstraints.cpp" line="7437"/>
-      <location filename="../../CommandConstraints.cpp" line="7604"/>
-      <location filename="../../CommandConstraints.cpp" line="7615"/>
+      <location filename="../../CommandConstraints.cpp" line="7491"/>
+      <location filename="../../CommandConstraints.cpp" line="7502"/>
+      <location filename="../../CommandConstraints.cpp" line="7669"/>
+      <location filename="../../CommandConstraints.cpp" line="7680"/>
       <source>Extra elements</source>
       <translation>Ylimääräisiä osia</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7427"/>
-      <location filename="../../CommandConstraints.cpp" line="7438"/>
-      <location filename="../../CommandConstraints.cpp" line="7605"/>
+      <location filename="../../CommandConstraints.cpp" line="7492"/>
+      <location filename="../../CommandConstraints.cpp" line="7503"/>
+      <location filename="../../CommandConstraints.cpp" line="7670"/>
       <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
       <translation>Enemmän osia kuin on mahdollista annettuun määriteltyyn ellipsiin. Nämä jätettiin huomiotta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7453"/>
+      <location filename="../../CommandConstraints.cpp" line="7518"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
       <translation>Et voi sisäisesti rajoittaa kaarta tai ellipsiä toisen kaaren tai ellipsin päällä. Valitse vain yksi kaari tai ellipsi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7461"/>
+      <location filename="../../CommandConstraints.cpp" line="7526"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
       <translation>Et voi sisäisesti rajoittaa ellipsiä toisen ellipsin kaaren päällä. Valitse vain yksi ellipsi tai ellipsin kaari.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7616"/>
+      <location filename="../../CommandConstraints.cpp" line="7681"/>
       <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
       <translation>Enemmän osia kuin on mahdollista annettuun määriteltyyn ellipsin kaareen. Nämä jätettiin huomiotta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7624"/>
+      <location filename="../../CommandConstraints.cpp" line="7689"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Tällä hetkellä sisäinen geometria tuetaan vain ellipsille tai ellipsin kaarelle. Viimeksi valitun osan on oltava ellipsi tai ellipsin kaari.</translation>
     </message>
@@ -3532,7 +3658,7 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Valitse rajoitteet luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5234"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5805"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="682"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-ytimen virhe</translation>
@@ -3578,81 +3704,88 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Mikään valituista elementeistä ei ole B-splinin solmu</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="126"/>
-      <location filename="../../CommandSketcherTools.cpp" line="134"/>
-      <location filename="../../CommandSketcherTools.cpp" line="236"/>
-      <location filename="../../CommandSketcherTools.cpp" line="244"/>
+      <location filename="../../CommandSketcherTools.cpp" line="128"/>
+      <location filename="../../CommandSketcherTools.cpp" line="136"/>
+      <location filename="../../CommandSketcherTools.cpp" line="239"/>
+      <location filename="../../CommandSketcherTools.cpp" line="247"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>Valitse vähintään kaksi reunaa luonnoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="166"/>
-      <location filename="../../CommandSketcherTools.cpp" line="268"/>
+      <location filename="../../CommandSketcherTools.cpp" line="168"/>
+      <location filename="../../CommandSketcherTools.cpp" line="271"/>
       <source>One selected edge is not connectable</source>
       <translation>Yksi valittu reuna ei ole liitettävissä</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="176"/>
+      <location filename="../../CommandSketcherTools.cpp" line="178"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Muodon sulkeminen tehtynä  täsmälleen kahdella viivalla on järjetöntä.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="321"/>
-      <location filename="../../CommandSketcherTools.cpp" line="930"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1023"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1383"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1392"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1914"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1923"/>
+      <location filename="../../CommandSketcherTools.cpp" line="326"/>
+      <location filename="../../CommandSketcherTools.cpp" line="954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1049"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1057"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1410"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1419"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1945"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2212"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2221"/>
       <source>Select elements from a single sketch.</source>
       <translation>Valitse osat yhdestä luonnkoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="806"/>
+      <location filename="../../CommandSketcherTools.cpp" line="826"/>
       <source>No constraint selected</source>
       <translation>Ei rajoitetta valittuna</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="807"/>
+      <location filename="../../CommandSketcherTools.cpp" line="827"/>
       <source>At least one constraint must be selected</source>
       <translation>Vähintään yksi rajoite on valittava</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1136"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1162"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Symmetrinen rakenne edellyttää vähintään kahta geometristä elementtiä, joista viimeinen geometrinen elementti on symmetrisen rakenteen viite.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1145"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1171"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
       <translation>Viimeisen elementin on oltava symmetrisen rakenteen vertailukohtana käytettävä piste tai linja.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1451"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1985"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1478"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2016"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Kopio vaatii vähintään yhden valitun ei-ulkoisen geometrisen elementin</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2046"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2079"/>
       <source>Delete All Geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2047"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2080"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
       <translation>Oletko varma, että haluat poistaa kaiken geometrian ja rajoitteet?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2106"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2141"/>
       <source>Delete All Constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2107"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2142"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Oletko varma, että haluat poistaa kaikki rajoitteet?</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2266"/>
+      <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
+      <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -3668,42 +3801,42 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6235"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6806"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Hiilikopion tekeminen aiheuttaisi tässä tapauksessa silmukkariippuvuuden.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6238"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6809"/>
       <source>This object is in another document.</source>
       <translation>Tämä objekti on toisessa asiakirjassa.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6241"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6812"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>Tämä objekti kuuluu toiseen runkoon. Pidä Ctrl pohjassa salliaksesi ristiviittaukset.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6244"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6815"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>Tämä objekti kuuluu toiseen runkoon ja sisältää ulkoista geometriaa. Ristiviittausta ei sallita.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6247"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6818"/>
       <source>This object belongs to another part.</source>
       <translation>Tämä objekti kuuluu toiseen osaan.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6821"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>Valittu luonnos ei ole samansuuntainen tämän luonnoksen kanssa. Pidä Ctrl+Alt pohjassa salliaksesi ei-rinnakkaiset luonnokset.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6253"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6824"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Valitun luonnoksen XY-akseleilla ei ole samaa suuntaa kuin tämän luonnoksen. Pidä Ctrl+Alt pohjassa sivuuttaaksesi asian.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6256"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6827"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Valitun luonnoksen origo ei ole yhtenevä tämän luonnoksen origon kanssa. Pidä Ctrl+Alt pohjassa sivuuttaaksesi asian.</translation>
     </message>
@@ -3789,8 +3922,6 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Aseta säde</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5133"/>
-      <location filename="../../CommandConstraints.cpp" line="5291"/>
       <location filename="../../EditDatumDialog.cpp" line="104"/>
       <source>Radius:</source>
       <translation>Säde:</translation>
@@ -3801,8 +3932,6 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Syötä halkaisija</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5612"/>
-      <location filename="../../CommandConstraints.cpp" line="5759"/>
       <location filename="../../EditDatumDialog.cpp" line="110"/>
       <source>Diameter:</source>
       <translation>Halkaisija:</translation>
@@ -3835,37 +3964,17 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Pituus:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5127"/>
-      <location filename="../../CommandConstraints.cpp" line="5285"/>
-      <source>Change weight</source>
-      <translation>Muuta painokerrointa</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5128"/>
-      <location filename="../../CommandConstraints.cpp" line="5286"/>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
       <translation>Painokerroin:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5132"/>
-      <location filename="../../CommandConstraints.cpp" line="5290"/>
-      <source>Change radius</source>
-      <translation>Vaihda sädettä</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="5611"/>
-      <location filename="../../CommandConstraints.cpp" line="5758"/>
-      <source>Change diameter</source>
-      <translation>Muuta halkaisijaa</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7116"/>
+      <location filename="../../CommandConstraints.cpp" line="7181"/>
       <source>Refractive index ratio</source>
       <translation>Taitekerroin suhdeluku</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7117"/>
+      <location filename="../../CommandConstraints.cpp" line="7182"/>
       <source>Ratio n2/n1:</source>
       <translation>Suhde n2/n1:</translation>
     </message>
@@ -3873,7 +3982,7 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="184"/>
+      <location filename="../../TaskSketcherElements.cpp" line="185"/>
       <source>Delete</source>
       <translation>Poista</translation>
     </message>
@@ -3881,22 +3990,22 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6044"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6615"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Tämän linkittäminen johtaisi päättymättömään riippuvuussilmukkaan.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6047"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6618"/>
       <source>This object is in another document.</source>
       <translation>Tämä objekti on toisessa asiakirjassa.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6050"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6621"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Tämä objekti kuuluu toiseen runkoon, ei voi linkittää.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6053"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6624"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Tämä objekti kuuluu toiseen osaan, ei voi linkitä.</translation>
     </message>
@@ -4424,179 +4533,221 @@ Vaatii syöttämään uudelleen muokkaustilan tullakseen voimaan.</translation>
       <translation>Luonnoksen muokkaaminen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="26"/>
-      <source>A dialog will pop up to input a value for new dimensional constraints</source>
-      <translation>Valintaikkuna ponnahtaa, jottra voit syöttää arvon uusille mittarajoitteille</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="29"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Pyydä arvo etäisyysrajoitteen luomisen jälkeen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
       <source>Segments per geometry</source>
       <translation>Segmentit geometriaa kohden</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="52"/>
-      <source>Current constraint creation tool will remain active after creation</source>
-      <translation>Nykyinen rajoituksen luontityökalu pysyy aktiivisena luomisen jälkeen</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="55"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Rajoituksien luonti "Jatkuva tila"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="71"/>
-      <source>Line pattern used for grid lines</source>
-      <translation>Linjakuvio, jota käytetään ruudukon linjoissa</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="81"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
       <source>Base length units will not be displayed in constraints.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Peruspituusyksiköitä ei näytetä rajoitteissa.
 Tukee kaikkia yksikköjärjestelmiä paitsi 'USA: n tavallisesti' ja 'US/Euro' rakentaminen.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="85"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Piilota tuettujen yksikköjärjestelmien peruspituusyksikkö</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="98"/>
-      <source>Use Diameter as default constraint for arcs and circles instead of Radius.</source>
-      <translation type="unfinished">Use Diameter as default constraint for arcs and circles instead of Radius.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="101"/>
-      <source>Use diameter as default constraint for arcs and circles</source>
-      <translation type="unfinished">Use diameter as default constraint for arcs and circles</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="120"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
       <source>Font size</source>
       <translation>Kirjasimen koko</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="154"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <source>Font size used for labels and constraints.</source>
+      <translation type="unfinished">Font size used for labels and constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
+      <source>The 3D view is scaled based on this factor.</source>
+      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
+      <source>Line pattern used for grid lines.</source>
+      <translation type="unfinished">Line pattern used for grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <source>The number of polygons used for geometry approximation.</source>
+      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <source>A dialog will pop up to input a value for new dimensional constraints.</source>
+      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
+      <source>The current sketcher creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
+      <source>The current constraint creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
+      <source>If checked, displays the name on dimensional constraints (if exists).</source>
+      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <source>Show dimensional constraint name with format</source>
+      <translation type="unfinished">Show dimensional constraint name with format</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>%N = %V</source>
+      <translation type="unfinished">%N = %V</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <source>The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</source>
+      <translation type="unfinished">The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
+      <source>DimensionalStringFormat</source>
+      <translation type="unfinished">DimensionalStringFormat</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
+      <source>Mod/Sketcher</source>
+      <translation type="unfinished">Mod/Sketcher</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
       <source>Visibility automation</source>
       <translation>Näkyvyyden automaatio</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="160"/>
-      <source>When opening sketch, hide all features that depend on it</source>
-      <translation>Kun avaat luonnosta, piilota kaikki siitä riippuvaiset ominaisuudet</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <source>When opening a sketch, hide all features that depend on it.</source>
+      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
+      <source>When opening a sketch, show sources for external geometry links.</source>
+      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
+      <source>When opening a sketch, show objects the sketch is attached to.</source>
+      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
+      <source>Applies current visibility automation settings to all sketches in open documents.</source>
+      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Piilota kaikki kohteet, jotka ovat riippuvaisia luonnoksesta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="179"/>
-      <source>When opening sketch, show sources for external geometry links</source>
-      <translation>Kun avaat luonnosta, näytä lähteet ulkoisen geometrian linkeille</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
       <source>Show objects used for external geometry</source>
       <translation>Näytä ulkoiseen geometriaan käytetyt objektit</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="198"/>
-      <source>When opening sketch, show objects the sketch is attached to</source>
-      <translation>Kun avaat luonnoksen, näytä objektit, mihin luonnos on liitetty</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Näytä objektit, mihin luonnos on liitettynä</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="236"/>
-      <source>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</source>
-      <translation type="unfinished">By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
+      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
+      <source>Force orthographic camera when entering edit</source>
+      <translation type="unfinished">Force orthographic camera when entering edit</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
+      <source>Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
       <translation type="unfinished">Open sketch in Section View mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Huomautus: nämä asetukset ovat oletusarvoisia uusissa luonnoksissa. Käytös on muistettava kunkin luonnoksen osalta erikseen ominaisuuksina Näytä -välilehdellä.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
       <source>View scale ratio</source>
       <translation>Näytä skaalaussuhde</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="376"/>
-      <source>The 3D view is scaled based on this factor</source>
-      <translation>3D-näkymä on skaalattu tämän tekijän perusteella</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="217"/>
-      <source>When closing sketch, move camera back to where it was before sketch was opened</source>
-      <translation>Kun suljet luonnosta, siirrä kamera takaisin sinne, missä se oli ennen luonnoksen avaamista</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
       <source>Restore camera position after editing</source>
       <translation>Palauta kameran sijainti muokkaamisen jälkeen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
-      <source>Applies current visibility automation settings to all sketches in open documents</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
+      <source>When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</source>
+      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
+Works only when "Restore camera position after editing" is enabled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="283"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
       <source>Apply to existing sketches</source>
       <translation type="unfinished">Apply to existing sketches</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="293"/>
-      <source>Font size used for labels and constraints</source>
-      <translation type="unfinished">Font size used for labels and constraints</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
-      <source>Current sketcher creation tool will remain active after creation</source>
-      <translation type="unfinished">Current sketcher creation tool will remain active after creation</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="321"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation type="unfinished">Geometry creation "Continue Mode"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="337"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="114"/>
       <source>Grid line pattern</source>
       <translation>Ruudukon viivakuvio</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="344"/>
-      <source>Number of polygons for geometry approximation</source>
-      <translation type="unfinished">Number of polygons for geometry approximation</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="232"/>
       <source>Unexpected C++ exception</source>
       <translation>Odottamaton C++-poikkeus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="235"/>
       <source>Sketcher</source>
       <translation>Luonnostelija</translation>
     </message>
@@ -4878,106 +5029,106 @@ Kuitenkaan ei ole löytynyt rajoitteita, jotka liittyisivät päätepisteisiin.<
       <translation>Automaattien vaihto reunaan</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="257"/>
+      <location filename="../../TaskSketcherElements.cpp" line="259"/>
       <source>Elements</source>
       <translation>Osat</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="278"/>
+      <location filename="../../TaskSketcherElements.cpp" line="280"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: monivalinta&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: vaihda seuraavaan kelvolliseen tyyppiin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="747"/>
-      <location filename="../../TaskSketcherElements.cpp" line="748"/>
-      <location filename="../../TaskSketcherElements.cpp" line="853"/>
-      <location filename="../../TaskSketcherElements.cpp" line="854"/>
+      <location filename="../../TaskSketcherElements.cpp" line="749"/>
+      <location filename="../../TaskSketcherElements.cpp" line="750"/>
+      <location filename="../../TaskSketcherElements.cpp" line="855"/>
+      <location filename="../../TaskSketcherElements.cpp" line="856"/>
       <source>Point</source>
       <translation>Piste</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="750"/>
       <location filename="../../TaskSketcherElements.cpp" line="752"/>
-      <location filename="../../TaskSketcherElements.cpp" line="856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="857"/>
+      <location filename="../../TaskSketcherElements.cpp" line="754"/>
+      <location filename="../../TaskSketcherElements.cpp" line="858"/>
+      <location filename="../../TaskSketcherElements.cpp" line="859"/>
       <source>Line</source>
       <translation>Viiva</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="99"/>
-      <location filename="../../TaskSketcherElements.cpp" line="751"/>
-      <location filename="../../TaskSketcherElements.cpp" line="755"/>
-      <location filename="../../TaskSketcherElements.cpp" line="759"/>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
-      <location filename="../../TaskSketcherElements.cpp" line="771"/>
-      <location filename="../../TaskSketcherElements.cpp" line="775"/>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
-      <location filename="../../TaskSketcherElements.cpp" line="783"/>
+      <location filename="../../TaskSketcherElements.cpp" line="753"/>
+      <location filename="../../TaskSketcherElements.cpp" line="757"/>
+      <location filename="../../TaskSketcherElements.cpp" line="761"/>
+      <location filename="../../TaskSketcherElements.cpp" line="765"/>
+      <location filename="../../TaskSketcherElements.cpp" line="769"/>
+      <location filename="../../TaskSketcherElements.cpp" line="773"/>
+      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="781"/>
+      <location filename="../../TaskSketcherElements.cpp" line="785"/>
       <source>Construction</source>
       <translation>Rakenne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
       <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="859"/>
-      <location filename="../../TaskSketcherElements.cpp" line="860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="758"/>
+      <location filename="../../TaskSketcherElements.cpp" line="861"/>
+      <location filename="../../TaskSketcherElements.cpp" line="862"/>
       <source>Arc</source>
       <translation>Kaari</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
       <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="863"/>
+      <location filename="../../TaskSketcherElements.cpp" line="762"/>
+      <location filename="../../TaskSketcherElements.cpp" line="864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="865"/>
       <source>Circle</source>
       <translation>Ympyrä</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
       <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
-      <location filename="../../TaskSketcherElements.cpp" line="866"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
+      <location filename="../../TaskSketcherElements.cpp" line="867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="868"/>
       <source>Ellipse</source>
       <translation>Ellipsi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
       <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
-      <location filename="../../TaskSketcherElements.cpp" line="869"/>
+      <location filename="../../TaskSketcherElements.cpp" line="770"/>
+      <location filename="../../TaskSketcherElements.cpp" line="870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="871"/>
       <source>Elliptical Arc</source>
       <translation>Elliptinen kaari</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
       <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
-      <location filename="../../TaskSketcherElements.cpp" line="872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="774"/>
+      <location filename="../../TaskSketcherElements.cpp" line="873"/>
+      <location filename="../../TaskSketcherElements.cpp" line="874"/>
       <source>Hyperbolic Arc</source>
       <translation>Hyperbolinen Kaari</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
       <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
-      <location filename="../../TaskSketcherElements.cpp" line="875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="877"/>
       <source>Parabolic Arc</source>
       <translation>Parabolinen Kaari</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
       <location filename="../../TaskSketcherElements.cpp" line="780"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
-      <location filename="../../TaskSketcherElements.cpp" line="878"/>
+      <location filename="../../TaskSketcherElements.cpp" line="782"/>
+      <location filename="../../TaskSketcherElements.cpp" line="879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
       <location filename="../../TaskSketcherElements.cpp" line="784"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
-      <location filename="../../TaskSketcherElements.cpp" line="881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="786"/>
+      <location filename="../../TaskSketcherElements.cpp" line="882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="883"/>
       <source>Other</source>
       <translation>Muu</translation>
     </message>
@@ -5159,136 +5310,136 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6242"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
       <source>Edit sketch</source>
       <translation>Muokkaa luonnosta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6257"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
       <source>Do you want to close this dialog?</source>
       <translation>Haluatko sulkea tämän valintaikkunan?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6271"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
       <source>Invalid sketch</source>
       <translation>Virheellinen luonnos</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6272"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Haluatko avata luonnoksen validointityökalun?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Luonnos on virheellinen eikä sitä voi muokata.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
       <source>Please remove the following constraint:</source>
       <translation>Poista seuraava rajoite:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Poista ainakin yksi seuraavista rajoitteista:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Poista seuraava turha rajoite:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6496"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Poista seuraavat turhat rajoitteet:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Seuraava rajoite on osittain tarpeeton:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6503"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Seuraavat rajoitteet ovat osittain tarpeettomia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Poista seuraava virheellinen rajoite:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Poista seuraavat virheelliset rajoitteet:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Empty sketch</source>
       <translation>Tyhjä luonnos</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
       <source>Sketch contains malformed constraints</source>
       <translation type="unfinished">Sketch contains malformed constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6566"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
       <source>Sketch contains conflicting constraints</source>
       <translation type="unfinished">Sketch contains conflicting constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6574"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
       <source>Sketch contains redundant constraints</source>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6583"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation type="unfinished">Sketch contains partially redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6553"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6560"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6567"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6575"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6624"/>
       <source>(click to select)</source>
       <translation>(Valitse napsauttamalla)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
       <source>Fully constrained sketch</source>
       <translation>Täysin rajoitettu luonnos</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Alirajoitettu luonnos &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 asteen&lt;/span&gt;&lt;/a&gt; vapauden kanssa. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6605"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Alirajoitettu luonnos &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 asteen&lt;/span&gt;&lt;/a&gt; vapaudesta. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
       <source>Solved in %1 sec</source>
       <translation>Ratkaistu %1 sekunnissa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6613"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Ratkaisematta (%1 sekuntia)</translation>
     </message>
@@ -5359,8 +5510,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1706"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1707"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1737"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1738"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -5368,17 +5519,17 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1705"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1736"/>
       <source>Clone</source>
       <translation>Kloonaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1709"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1740"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1713"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1744"/>
       <source>Move</source>
       <translation>Siirrä</translation>
     </message>
@@ -5386,26 +5537,42 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5947"/>
-      <location filename="../../CommandConstraints.cpp" line="5948"/>
+      <location filename="../../CommandConstraints.cpp" line="6008"/>
+      <location filename="../../CommandConstraints.cpp" line="6009"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Kiinnitä ympyrän tai kaaren halkaisija</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_ConstrainRadiam</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6013"/>
+      <source>Fix the radius/diameter of a circle or an arc</source>
+      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5943"/>
-      <location filename="../../CommandConstraints.cpp" line="5944"/>
+      <location filename="../../CommandConstraints.cpp" line="6004"/>
+      <location filename="../../CommandConstraints.cpp" line="6005"/>
       <source>Fix the radius of a circle or an arc</source>
       <translation>Korjaa ympyrän tai kaaren sädettä</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_ConstraintRadiam</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6012"/>
+      <source>Fix the radius/diameter of a circle or an arc</source>
+      <translation type="unfinished">Fix the radius/diameter of a circle or an arc</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1710"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1711"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1741"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1742"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Luo yksinkertaisen kopion geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -5413,8 +5580,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1895"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2473"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2474"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Luoda kaari sen loppupisteistä ja kaarella olevasta pisteestä</translation>
     </message>
@@ -5422,8 +5589,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4848"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4849"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5420"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Luo ympyrä kehän 3:sta pisteestä</translation>
     </message>
@@ -5431,8 +5598,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1890"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1891"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2469"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2470"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Luo kaari sen keskipisteellä ja sen loppupisteillä</translation>
     </message>
@@ -5440,8 +5607,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3985"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3986"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4564"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4565"/>
       <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
       <translation>Luo ellipsin kaari keskipisteellä, suurella säteellä, päätepisteillä</translation>
     </message>
@@ -5449,8 +5616,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3989"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3990"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4568"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4569"/>
       <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
       <translation>Luo hyperbolin kaari sen keskipisteellä, pääsäteellä ja päätepisteillä</translation>
     </message>
@@ -5458,8 +5625,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3993"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4572"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4573"/>
       <source>Create an arc of parabola by its focus, vertex, and endpoints</source>
       <translation>Luo paraabelin kaari polttopisteen, huipun ja päätepisteiden perusteella</translation>
     </message>
@@ -5467,13 +5634,13 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4532"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5111"/>
       <source>B-spline by control points</source>
       <translation>B-splini ohjauspisteillä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4533"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4534"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5113"/>
       <source>Create a B-spline by control points</source>
       <translation>Luo B-splini ohjauspisteillä</translation>
     </message>
@@ -5481,8 +5648,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4844"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4845"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5415"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5416"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Luoda ympyrä sen keskipisteellä ja kehän pisteellä</translation>
     </message>
@@ -5490,8 +5657,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3981"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3982"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4560"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4561"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Luo ellipsi kauimmalla pisteellä, lähimmällä pisteellä ja pienellä säteellä</translation>
     </message>
@@ -5499,8 +5666,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3977"/>
-      <location filename="../../CommandCreateGeo.cpp" line="3978"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4557"/>
       <source>Create an ellipse by center, major radius and point</source>
       <translation>Luo ellipsi keskipisteellä, suurella säteellä ja pisteellä</translation>
     </message>
@@ -5508,8 +5675,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5990"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5991"/>
       <source>Creates a radius between two lines</source>
       <translation>Luo säteen kahden linjan välillä</translation>
     </message>
@@ -5517,8 +5684,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7127"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7128"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Luo seitsenkulmio keskipisteellä ja yhdellä kulmalla</translation>
     </message>
@@ -5526,23 +5693,31 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7123"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7124"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Luo kuusikulmio keskipisteellä ja yhdellä kulmalla</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_CreateOblong</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1189"/>
+      <source>Create a rounded rectangle</source>
+      <translation type="unfinished">Create a rounded rectangle</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7131"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7132"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Luo kahdeksankulmio keskipisteellä ja yhdellä kulmalla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7135"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7136"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Luo säännöllinen monikulmio sen keskikohdan ja yhden kulman mukaan</translation>
     </message>
@@ -5550,8 +5725,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7119"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7120"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Luo viisikulmio keskipisteellä ja yhdellä kulmalla</translation>
     </message>
@@ -5559,17 +5734,33 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5423"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5424"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5995"/>
       <source>Fillet that preserves constraints and intersection point</source>
       <translation>Kaistale, joka säilyttää rajoitteet ja risteyspisteen</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_CreateRectangle</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1181"/>
+      <source>Create a rectangle</source>
+      <translation type="unfinished">Create a rectangle</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateRectangle_Center</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1185"/>
+      <source>Create a centered rectangle</source>
+      <translation type="unfinished">Create a centered rectangle</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7115"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7116"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7700"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7701"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Luo neliö keskipisteellä ja yhdellä kulmalla</translation>
     </message>
@@ -5577,8 +5768,8 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7111"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7696"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7697"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Luo tasasivuinen kolmio keskipisteellä ja yhdellä kulmalla</translation>
     </message>
@@ -5586,13 +5777,13 @@ Pisteet on asetettava lähemmäksi kuin viidesosan etäisyydelle ruudukon koosta
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4536"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5115"/>
       <source>Periodic B-spline by control points</source>
       <translation>Jaksollinen B-splini ohjauspisteillä</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4537"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4538"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5116"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5117"/>
       <source>Create a periodic B-spline by control points</source>
       <translation>Luo jaksollinen B-splini ohjauspisteillä</translation>
     </message>
@@ -5667,8 +5858,8 @@ Valitse uusi tapa liittää tämä luonnos valittuihin objekteihin.</translation
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1714"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1715"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1745"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1746"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Siirtää geometriaa käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>

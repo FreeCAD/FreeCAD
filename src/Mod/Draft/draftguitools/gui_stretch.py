@@ -101,6 +101,10 @@ class Stretch(gui_base_original.Modifier):
                         if base:
                             if utils.getType(base) in supported:
                                 self.sel.append([base, obj.Placement.multiply(obj.Base.Placement)])
+                    elif hasattr(obj.Base, "Base"):
+                        if obj.Base.Base:
+                            if utils.getType(obj.Base.Base) in supported:
+                                self.sel.append([obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -451,8 +455,10 @@ class Stretch(gui_base_original.Modifier):
                                 else:
                                     pts.append(vts[i].Point.add(self.displacement))
                             pts = str(pts).replace("Vector ", "FreeCAD.Vector")
-                            _cmd = "Draft.makeWire"
-                            _cmd += "(" + pts + ", closed=True)"
+                            _cmd = "Draft.make_wire"
+                            _cmd += "(" + pts + ", closed=True, "
+                            _cmd += "face=" + str(ops[0].MakeFace)
+                            _cmd += ")"
                             _format = "Draft.formatObject"
                             _format += "(w, "
                             _format += _doc + ops[0].Name

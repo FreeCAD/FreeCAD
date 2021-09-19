@@ -1845,7 +1845,7 @@ void CmdMeshSplitComponents::activated(int)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
-        std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
+        std::vector<std::vector<Mesh::FacetIndex> > comps = mesh.getComponents();
 
         for (const auto& comp : comps) {
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));

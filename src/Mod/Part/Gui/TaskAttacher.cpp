@@ -102,6 +102,9 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     for (size_t r = 0; r < 4; r++) {
         if ((r < refs.size()) && (refs[r] != NULL)) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
+            // for Origin or Datum features refnames is empty but we need a non-empty return value
+            if (refnames[r].empty())
+                refnames[r] = refs[r]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
             refnames.push_back("");
@@ -195,7 +198,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->lineRef4->blockSignals(false);
     ui->listOfModes->blockSignals(false);
 
-    this->iActiveRef = 0;
+    // only activate the ref when there is no existing first attachment
+    if (refnames[0].empty())
+        this->iActiveRef = 0;
+    else
+        this->iActiveRef = -1;
     if (pcAttach->Support.getSize() == 0){
         autoNext = true;
     } else {

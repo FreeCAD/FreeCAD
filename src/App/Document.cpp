@@ -66,6 +66,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 # include <climits>
 # include <bitset>
 # include <random>
+# include <boost/filesystem.hpp>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -141,6 +142,8 @@ using namespace zipios;
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
 #endif
+
+namespace fs = boost::filesystem;
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
 typedef boost::adjacency_list <
@@ -2610,6 +2613,8 @@ bool Document::saveToFile(const char* filename) const
         fn += uuid;
     }
     Base::FileInfo tmp(fn);
+    // In case some folders in the path do not exist
+    fs::create_directories(fs::path(filename).parent_path());
 
     // open extra scope to close ZipWriter properly
     {

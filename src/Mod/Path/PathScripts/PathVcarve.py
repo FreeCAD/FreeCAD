@@ -186,7 +186,7 @@ class _Geometry(object):
 def _calculate_depth(MIC, geom):
     # given a maximum inscribed circle (MIC) and tool angle,
     # return depth of cut relative to zStart.
-    depth = geom.start - round(MIC / geom.scale, 4)
+    depth = geom.start - round(MIC * geom.scale, 4)
     PathLog.debug('zStart value: {} depth: {}'.format(geom.start, depth))
 
     return max(depth, geom.stop)
@@ -363,9 +363,9 @@ def SetupProperties():
     return ["Discretize"]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Vcarve operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    ObjectVcarve(obj, name)
+    obj.Proxy = ObjectVcarve(obj, name, parentJob)
     return obj

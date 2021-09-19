@@ -30,6 +30,9 @@
 #include <map>
 #include <set>
 #include <vector>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base
 {

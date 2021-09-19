@@ -348,6 +348,11 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "SavedInventor" in pl:
             obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
             obj.setEditorMode("SavedInventor",2)
+        if not "OnlySolids" in pl:
+            obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
+            obj.OnlySolids = True
+        if not "MaterialsTable" in pl:
+            obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"))
 
         self.Type = "BuildingPart"
 
@@ -412,17 +417,21 @@ class BuildingPart(ArchIFC.IfcProduct):
     def execute(self,obj):
 
         # gather all the child shapes into a compound
-        shapes = self.getShapes(obj)
+        shapes,materialstable = self.getShapes(obj)
         if shapes:
-            f = []
-            for s in shapes:
-                f.extend(s.Faces)
-            #print("faces before compound:",len(f))
             import Part
-            obj.Shape = Part.makeCompound(f)
-            #print("faces after compound:",len(obj.Shape.Faces))
-            #print("recomputing ",obj.Label)
+            if obj.OnlySolids:
+                f = []
+                for s in shapes:
+                    f.extend(s.Solids)
+                #print("faces before compound:",len(f))
+                obj.Shape = Part.makeCompound(f)
+                #print("faces after compound:",len(obj.Shape.Faces))
+                #print("recomputing ",obj.Label)
+            else:
+                obj.Shape = Part.makeCompound(shapes)
         obj.Area = self.getArea(obj)
+        obj.MaterialsTable = materialstable
 
     def getArea(self,obj):
 
@@ -431,9 +440,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if hasattr(child,"Area") and hasattr(child,"IfcType"):
-                    # only add arch objects that have an Area property
-                    # TODO only spaces? ATM only spaces and windows have an Area property
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
                     area += child.Area.Value
         return area
 
@@ -442,10 +449,22 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
+        solidindex = 0
+        materialstable = {}
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape'):
-                shapes.extend(child.Shape.Faces)
-        return shapes
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and child.Shape:
+                    shapes.append(child.Shape)
+                    for solid in child.Shape.Solids:
+                        matname = "Undefined"
+                        if hasattr(child,"Material") and child.Material:
+                            matname = child.Material.Name
+                        if matname in materialstable:
+                            materialstable[matname] = materialstable[matname]+","+str(solidindex)
+                        else:
+                            materialstable[matname] = str(solidindex)
+                        solidindex += 1
+        return shapes,materialstable
 
     def getSpaces(self,obj):
 
@@ -652,13 +671,14 @@ class ViewProviderBuildingPart:
 
         colors = []
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
-                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
-                    colors.extend(child.ViewObject.DiffuseColor)
-                else:
-                    c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
-                    for i in range(len(child.Shape.Faces)):
-                        colors.append(c)
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                    if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+                        colors.extend(child.ViewObject.DiffuseColor)
+                    else:
+                        c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                        for i in range(len(child.Shape.Faces)):
+                            colors.append(c)
         return colors
 
     def onChanged(self,vobj,prop):

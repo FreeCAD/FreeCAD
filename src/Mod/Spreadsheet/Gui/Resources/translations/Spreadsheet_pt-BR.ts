@@ -570,56 +570,56 @@ Planilha.meu_nome em vez de Planilha.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Inserir %n linha(s) acima</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Inserir %n linha(s) abaixo</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Inserir %n linhas não contíguas</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remover linha(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Inserir %n coluna(s) à esquerda</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Inserir %n coluna(s) à direita</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Inserir %n colunas não contíguas</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remover coluna(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>

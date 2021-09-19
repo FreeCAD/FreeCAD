@@ -277,14 +277,33 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Privzeti</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Preoblikuj</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Prerez</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Barva</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Vnesite izraz ...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Izraz: </translation>
     </message>
   </context>
   <context>
@@ -506,17 +525,17 @@ kliknete na levo oz. desno tipko in premikate miško gor oz. dol</translation>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCADa ne bi bilo, če ne bi bilo prispevkov</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Posamezniki</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Družbe</translation>
     </message>
   </context>
   <context>
@@ -1423,7 +1442,7 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Vrstice kode bodo oštevilčene</translation>
     </message>
   </context>
   <context>
@@ -2360,7 +2379,7 @@ Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
       <translation>Notranja Pythonova sporočila o napakah bodo preusmerjena
-s Pythonove ukzne mize na ploščo poročevalnega pogleda</translation>
+s Pythonove ukazne mize na ploščo poročevalnega pogleda</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
@@ -2646,15 +2665,15 @@ Za spremembo te možnosti je treba program ponovno zagnati.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Kakšno glajenje robov z večkratnim vzorčenjem je uporabljeno</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Medočesna razdalja, uporabljena v dvovidnih preslikavah.
+Ta vredost predstavlja količnik, ki bo pomnožen z velikostjo
+mejnega kvadra trenutno prikazanega prostorskega predmeta.</translation>
     </message>
   </context>
   <context>
@@ -3278,20 +3297,51 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
       <translation>Odložena delovna okolja</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Naloži izbrana delovna okolja in njihova prednastavitvena okna dodaj k pogovornemu oknu s prednastavitvami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation>Ime delovnega okolja</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Naloži izbrano</translation>
+      <source>Autoload?</source>
+      <translation>Samodejno nalaganje?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Odložena delovna okolja, ki so na voljo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation>Naloži zdaj</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja, ki niso še naložena:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Delovno okolje</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Samodejno nalaganje</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Če je označeno</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>bo samodejno naloženo ob FreeCAD-ovem zagonu</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Takšen je trenutni zagonski modul, ki mora biti samodejno naložen. Če želite to spremeniti, pojdite ne Prednastavitve/Splošno/Samodejno nalaganje.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Naloženo</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Naloži zdaj</translation>
     </message>
   </context>
   <context>
@@ -3597,25 +3647,25 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Zasuk v najbližji možni položaj, ob kliku na ploskev kocke</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Zasuk do najbližjega</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Velikost kocke</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Velikost krmilne kocke</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Za koliko se bo spremenila povečava.
+Korak preodmičenja "1" pomeni količnik velikost 7,5 za vsak korak.</translation>
     </message>
   </context>
   <context>
@@ -3933,7 +3983,7 @@ Prednostni je sistem, nastavljen v splošnih prednastavitvah.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>neznana enota:</translation>
     </message>
   </context>
   <context>
@@ -4645,6 +4695,16 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Delno</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -6959,9 +7019,9 @@ Dokument: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Tvarna pot: </translation>
     </message>
   </context>
   <context>
@@ -8733,6 +8793,17 @@ Physical path: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Zažene računalo enot</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>
