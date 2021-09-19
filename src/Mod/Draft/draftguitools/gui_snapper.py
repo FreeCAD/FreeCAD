@@ -475,21 +475,15 @@ class Snapper:
                 # snap to corners of section planes
                 snaps.extend(self.snapToEndpoints(obj.Shape))
 
+        if not snaps:
+            return None
+
         # updating last objects list
         if not self.lastObj[1]:
             self.lastObj[1] = obj.Name
         elif self.lastObj[1] != obj.Name:
             self.lastObj[0] = self.lastObj[1]
             self.lastObj[1] = obj.Name
-
-        if not snaps:
-            self.spoint = self.cstr(lastpoint, constrain, point)
-            self.running = False
-            if self.trackLine and lastpoint:
-                self.trackLine.p2(self.spoint)
-                self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
-                self.trackLine.on()
-            return self.spoint
 
         # calculating the nearest snap point
         shortest = 1000000000000000000
