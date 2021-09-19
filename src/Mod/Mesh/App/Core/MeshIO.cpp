@@ -49,6 +49,8 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/convert.hpp>
+#include <boost/convert/spirit.hpp>
 
 
 using namespace MeshCore;
@@ -1656,31 +1658,88 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
-        if (line.find("GRID*") == 0) {
+        if (line.empty()) {
+            // Skip all the following tests
         }
-        else if (line.find('*') == 0) {
+        else if (line.rfind("GRID*", 0) == 0) {
+            // This element is the 16-digit-precision GRID element, which occupies two lines of the card. Note that
+            // FreeCAD discards the extra precision, downcasting to an four-byte float.
+	    //
+	    // The two lines are:
+	    // 1      8               24             40             56
+	    // GRID*  Index(16)       Blank(16)      x(16)          y(at least one)
+	    // *      z(at least one)
+	    //
+	    // The first character is typically the sign, and may be omitted for positive numbers,
+	    // so it is possible for a field to begin with a blank. Trailing zeros may be omitted, so
+	    // a field may also end with blanks. No space or other delimiter is required between
+	    // the numbers. The following is a valid NASTRAN GRID* element:
+	    //
+	    // GRID*  1                               0.1234567890120.
+	    // *      1.
+	    //
+            if (line.length() < 8 + 16 + 16 + 16 + 1) // Element type(8), index(16), empty(16), x(16), y(>=1)
+                continue;
+            auto indexView = std::string_view(&line[8], 16);
+            auto blankView = std::string_view(&line[8+16], 16);
+            auto xView = std::string_view(&line[8+16+16], 16);
+            auto yView = std::string_view(&line[8+16+16+16]);
+
+            std::string line2;
+            std::getline(rstrIn, line2);
+            if ((!line2.empty() && line2[0] != '*') ||
+                line2.length() < 9)
+                continue; // File format error: second line is not a continuation line
+            auto zView = std::string_view(&line2[8]);
+
+            // We have to strip off any whitespace (technically really just any *trailing* whitespace):
+            auto indexString = boost::trim_copy(std::string(indexView));
+            auto xString = boost::trim_copy(std::string(xView));
+            auto yString = boost::trim_copy(std::string(yView));
+            auto zString = boost::trim_copy(std::string(zView));
+
+            auto converter = boost::cnv::spirit();
+            auto indexCheck = boost::convert<int>(indexString, converter);
+            if (!indexCheck.is_initialized())
+                // File format error: index couldn't be converted to an integer
+                continue;
+            index = indexCheck.get();
+
+            // Get the high-precision versions first
+            auto x = boost::convert<double>(xString, converter);
+            auto y = boost::convert<double>(yString, converter);
+            auto z = boost::convert<double>(zString, converter);
+
+            if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized())
+                // File format error: x, y or z could not be converted
+                continue;
+
+            // Now drop precision:
+            mNode[index].x = (float)x.get();
+            mNode[index].y = (float)y.get();
+            mNode[index].z = (float)z.get();
         }
-        // insert the read-in vertex into a map to preserve the order
-        else if (line.find("GRID") == 0) {
+        else if (line.rfind("GRID", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_p)) {
+                // insert the read-in vertex into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mNode[index].x = (float)std::atof(what[2].first);
                 mNode[index].y = (float)std::atof(what[5].first);
                 mNode[index].z = (float)std::atof(what[8].first);
             }
         }
-        // insert the read-in triangle into a map to preserve the order
-        else if (line.find("CTRIA3 ") == 0) {
+        else if (line.rfind("CTRIA3 ", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_t)) {
+                // insert the read-in triangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mTria[index].iV[0] = std::atol(what[3].first)-1;
                 mTria[index].iV[1] = std::atol(what[4].first)-1;
                 mTria[index].iV[2] = std::atol(what[5].first)-1;
             }
         }
-        // insert the read-in quadrangle into a map to preserve the order
-        else if (line.find("CQUAD4") == 0) {
+        else if (line.rfind("CQUAD4", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_q)) {
+                // insert the read-in quadrangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mQuad[index].iV[0] = std::atol(what[3].first)-1;
                 mQuad[index].iV[1] = std::atol(what[4].first)-1;
