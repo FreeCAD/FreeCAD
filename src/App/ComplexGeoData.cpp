@@ -1699,8 +1699,9 @@ MappedName ComplexGeoData::renameDuplicateElement(int index,
     ss << elementMapPrefix() << 'D' << std::hex << index;
     MappedName renamed(name);
     encodeElementName(element.getType()[0],renamed,ss,&sids);
-    FC_TRACE("duplicate element mapping '" << name << " -> " << renamed << ' ' 
-            << element << '/' << element2);
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        FC_WARN("duplicate element mapping '" << name << " -> " << renamed << ' ' 
+                << element << '/' << element2);
     return renamed;
 }
 
@@ -1938,8 +1939,12 @@ void ComplexGeoData::encodeElementName(char element_type,
                 name = n;
         }
     }
-    if(sids && Hasher)
+
+    if(sids && Hasher) {
         name = hashElementName(name, *sids);
+        if (!forceTag && !tag && ss.tellp())
+            forceTag = true;
+    }
     if(forceTag || tag) {
         assert(element_type);
         int pos = ss.tellp();
