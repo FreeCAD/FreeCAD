@@ -47,7 +47,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Normal</string>
+         <string>Geometric</string>
         </property>
        </item>
        <item>
@@ -63,6 +63,101 @@
        <item>
         <property name="text">
          <string>Reference</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Horizontal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Coincident</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Point on Object</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Parallel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Perpendicular</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tangent</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Equality</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Symmetric</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Block</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Horizontal Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Radius</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Weight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Snell's Law</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Internal Alignment</string>
         </property>
        </item>
       </widget>

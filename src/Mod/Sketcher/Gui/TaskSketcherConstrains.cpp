@@ -912,45 +912,71 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         bool visible = true;
 
-        /* Filter
-         0 <=> All
-         1 <=> Normal
-         2 <=> Datums
-         3 <=> Named
-         4 <=> Non-Driving
-        */
-
-        bool showNormal = (Filter < 2);
-        bool showDatums = (Filter < 3);
-        bool showNamed = (Filter == 3 && !(constraint->Name.empty()));
-        bool showNonDriving = (Filter == 4 && !constraint->isDriving);
+        bool showAll = (Filter == FilterValue::All);
+        bool showGeometric = (Filter == FilterValue::Geometric);
+        bool showDatums = (Filter == FilterValue::Datums);
+        bool showNamed = (Filter == FilterValue::Named && !(constraint->Name.empty()));
+        bool showNonDriving = (Filter == FilterValue::NonDriving && !constraint->isDriving);
         bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
 
         switch(constraint->Type) {
         case Sketcher::Horizontal:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Horizontal);
+            break;
         case Sketcher::Vertical:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Vertical);
+            break;
         case Sketcher::Coincident:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Coincident);
+            break;
         case Sketcher::PointOnObject:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::PointOnObject);
+            break;
         case Sketcher::Parallel:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Parallel);
+            break;
         case Sketcher::Perpendicular:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Perpendicular);
+            break;
         case Sketcher::Tangent:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Tangent);
+            break;
         case Sketcher::Equal:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Equality);
+            break;
         case Sketcher::Symmetric:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Symmetric);
+            break;
         case Sketcher::Block:
-            visible = showNormal || showNamed;
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Block);
             break;
         case Sketcher::Distance:
+            visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Distance);
+            break;
         case Sketcher::DistanceX:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::HorizontalDistance);
+            break;
         case Sketcher::DistanceY:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::VerticalDistance);
+            break;
         case Sketcher::Radius:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Radius);
+            break;
         case Sketcher::Weight:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Weight);
+            break;
         case Sketcher::Diameter:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Diameter);
+            break;
         case Sketcher::Angle:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Angle);
+            break;
         case Sketcher::SnellsLaw:
-            visible = (showDatums || showNamed || showNonDriving);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::SnellsLaw);
             break;
         case Sketcher::InternalAlignment:
-            visible = ((showNormal || showNamed) && !hideInternalAlignment);
+            visible = (( showAll || showGeometric || showNamed || Filter == FilterValue::InternalAlignment) &&
+                        (!hideInternalAlignment || (Filter == FilterValue::InternalAlignment)));
         default:
             break;
         }
