@@ -211,7 +211,7 @@ class ArchReference:
             shape = Part.makeCompound(shapes)
             try:
                 shape = shape.removeSplitter()
-            except:
+            except Exception:
                 print(obj.Label,": error removing splitter")
         return shape
 
