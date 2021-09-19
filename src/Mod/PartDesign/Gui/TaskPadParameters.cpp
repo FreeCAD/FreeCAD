@@ -107,7 +107,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     // the direction combobox is filled later in updateUI()
-    ui->groupBoxDirection->setChecked(useCustom);
+    ui->checkBoxDirection->setChecked(useCustom);
+    onDirectionToggled(useCustom);
     ui->checkBoxAlongDirection->setChecked(alongNormal);
     // dis/enable length and direction
     ui->directionCB->setEnabled(!useCustom);
@@ -471,10 +472,13 @@ void TaskPadParameters::onDirectionToggled(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->UseCustomVector.setValue(on);
-    // dis/enable length and direction
-    ui->directionCB->setEnabled(!on);
-    if (on)
-        ui->checkBoxAlongDirection->setEnabled(on);
+    // dis/enable length direction
+    ui->checkBoxAlongDirection->setEnabled(on);
+    if (on) {
+        ui->groupBoxDirection->show();
+    }
+    else {
+        ui->checkBoxAlongDirection->setChecked(!on);
         ui->groupBoxDirection->hide();
     }
     recomputeFeature();

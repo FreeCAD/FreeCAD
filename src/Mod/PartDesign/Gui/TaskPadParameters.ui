@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>405</height>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,11 +40,11 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
-       <property name="keyboardTracking" stdset="0">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
+       <property name="keyboardTracking">
         <bool>false</bool>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -87,6 +87,13 @@ or select an edge as reference</string>
        </layout>
       </item>
       <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBoxDirection">
+        <property name="text">
+         <string>Use custom direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QGroupBox" name="groupBoxDirection">
         <property name="enabled">
          <bool>true</bool>
@@ -95,11 +102,8 @@ or select an edge as reference</string>
          <string>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</string>
         </property>
-        <property name="title">
-         <string>Custom direction</string>
-        </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -198,7 +202,7 @@ the sketch plane's normal vector will be used</string>
         </layout>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QCheckBox" name="checkBoxAlongDirection">
         <property name="enabled">
          <bool>true</bool>
@@ -225,11 +229,11 @@ measured along the specified direction</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
        <property name="toolTip">
         <string>Offset from face in which pad will end</string>
        </property>
-       <property name="keyboardTracking" stdset="0">
+       <property name="keyboardTracking">
         <bool>false</bool>
        </property>
       </widget>
@@ -269,8 +273,8 @@ measured along the specified direction</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
-       <property name="keyboardTracking" stdset="0">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
+       <property name="keyboardTracking">
         <bool>false</bool>
        </property>
       </widget>
@@ -278,15 +282,15 @@ measured along the specified direction</string>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="0">
       <widget class="QPushButton" name="buttonFace">
        <property name="text">
         <string>Face</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QLineEdit" name="lineFaceName"/>
      </item>
     </layout>
