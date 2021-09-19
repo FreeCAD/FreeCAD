@@ -38,7 +38,7 @@ typedef void (*PVF)();
 class UTILS_EXPORT Unexpect { //save / retrieve unexpected exceptions treatment
   PVF old;
   public :
-#ifndef WIN32
+#ifndef _MSC_VER
   // std::set_unexpected has been removed in C++17
     Unexpect( PVF f ) 
       { /*old = std::set_unexpected(f);*/old = f; }
@@ -54,7 +54,7 @@ class UTILS_EXPORT Terminate {//save / retrieve terminate function
   
   PVF old;
   public :
-#ifndef WIN32
+#ifndef _MSC_VER
     Terminate( PVF f ) 
       { old = std::set_terminate(f); }
   ~Terminate() { std::set_terminate(old); }
