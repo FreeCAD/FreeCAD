@@ -27,7 +27,7 @@ General notes on how the tooling works:
 This setup uses [conda](https://docs.conda.io) for dependency management.
 Conda is able to pull the deps from a repository called conda-forge and
 setup an isolated build environment. Not quite as isolated as docker, but
-it is a good option for Mac and its what the FreeCAD CI system uses.
+it is a good option for Mac and is what the FreeCAD CI system uses.
 
 Once the dependencies are installed into a conda environment, then the
 build uses the standard `cmake` configuration process to configure the build
@@ -68,21 +68,21 @@ the standard way *from within the freecad_dev conda environment*.
 
 ---
 
-# Building ⚙️ FreeCAD on macOS ⌘ using homebrew 🍺 with & without a formula file
+# Building FreeCAD on macOS using homebrew with & without a formula file
 
 <a name="homebrew-build-fc-on-macos"></a>
 
-> The below procedure provides on alternative way to install FreeCAD from the git source on macOS without having to use conda, but rather rely on [**mac homebrew**][lnk1] to manage dependencies.
+> The below procedure provides an alternative way to install FreeCAD from the git source on macOS without having to use conda, but rather relies on [**mac homebrew**][lnk1] to manage dependencies.
 
 ## Requirements
 
 <a name="homebrew-requirements"></a>
 
-- macOS, running high sierra _10.13_ or later
-- mac homebrew installed and working
-- all required dependencies to build FreeCAD installed using `brew install`
+- macOS, running High Sierra _10.13_ or later
+- homebrew installed and working
+- All required dependencies to build FreeCAD installed using `brew install`
 
-There is an official [**homebrew tap**][lnk2] that provides a list of formula along with freecad to setup all the dependencies to build FreeCAD from source on macOS, and also provides prebuilt bottles to install FreeCAD from a package rather than building from source.
+There is an official [**homebrew tap**][lnk2] that provides a list of formulas along with FreeCAD to setup all the dependencies to build FreeCAD from source on macOS, and also provides prebuilt bottles to install FreeCAD from a package rather than building from source.
 
 > 💡 The below steps will build a FreeCAD binary that will launch FreeCAD from a command line interface, and will **NOT** build the **FreeCAD.app** bundle, ie. a double clickable app icon that can be launched from a Finder window.
 
@@ -90,30 +90,30 @@ There is an official [**homebrew tap**][lnk2] that provides a list of formula al
 
 <a name="homebrew-install-required-deps"></a>
 
-- setup homebrew to use the official [**freecad-homebrew**][lnk2] tap.
+- Setup homebrew to use the official [**freecad-homebrew**][lnk2] tap.
 
 ```shell
 brew tap FreeCAD/freecad
 ```
 
-- install FreeCAD dependencies provided by the tap
+- Install FreeCAD dependencies provided by the tap
 
 ```shell
 brew install --only-dependencies freecad
 ```
 
-> the above step will install FreeCAD dependencies provided by the tap, and if a _bottle_ is provided by the tap homebrew will install the bottled version of the dep rather than building from source, unless the `install` command explicitly uses a _flag_ to build from source.
+> The above step will install FreeCAD dependencies provided by the tap, and if a _bottle_ is provided by the tap homebrew will install the bottled version of the dep rather than building from source, unless the `install` command explicitly uses a _flag_ to build from source.
 
-After all the dependencies have been installed, it should be possible to install freecad from the provided bottle.
+After all the dependencies have been installed, it should be possible to install FreeCAD from the provided bottle.
 
 ```shell
 brew install freecad/freecad/freecad
 ```
 
 > As of writing this, there are bottles provided for macOS Catalina and Big Sur
-> > if running a different version of macOS then building freecad from source will be required.
+> > If running a different version of macOS then building FreeCAD from source will be required.
 
-To explicitly build freecad from source using the formula file provided by the tap
+To explicitly build FreeCAD from source using the formula file provided by the tap
 
 ```shell
 brew install freecad/freecad/freecad --build-from-source --HEAD --verbose
@@ -121,7 +121,7 @@ brew install freecad/freecad/freecad --build-from-source --HEAD --verbose
 
 The above command will grab the latest git source of FreeCAD and output the build process to the terminal.
 
-> ⏲ On my MacBookPro 2013 late model it takes ~ 60 minutes to build FreeCAD from source.
+> NOTE: On a MacBookPro 2013 late model it takes ~60 minutes to build FreeCAD from source.
 
 After the _make_ and _make install_ process completes it should be possible to launch FreeCAD from any directory using a terminal with the below commands,
 
@@ -133,47 +133,47 @@ FreeCADCmd
 - `FreeCAD` will launch a GUI version of FreeCAD
 - `FreeCADCmd` will launch **only** a command line version of FreeCAD
 
-## Limitations of using the freecad formula file
+## Limitations of using the FreeCAD formula file
 
 <a name="homebrew-limits-of-formula-file"></a>
 
-If freecad is installed via the bottle then one will have to wait for a new bottle to be generated to install a later version of freecad.  However, if freecad is built from source, then FreeCAD will have all the updates up to the time the build process was started.
+If FreeCAD is installed via the bottle then one will have to wait for a new bottle to be generated to install a later version of FreeCAD.  However, if FreeCAD is built from source, then FreeCAD will have all the updates up to the time the build process was started.
 
-When installing FreeCAD from source using the formula file provided by brew each subsequent build will require a complete rebuild of FreeCAD thus requiring an additional 60 minutes to build (my Macbook), and if any of the dependencies FreeCAD relies on is updated then more than likely FreeCAD will require a rebuild.  mac homebrew does provide a feature to pin packages at specific versions to prevent them from updating, and also allows setting of an environment variable to prevent homebrew from automatically checking of updates (which can slow things down). All that said, FreeCAD can be built using all the dependencies provided by mac homebrew, but not using the formula file but rather cloning the source to an arbitrary path on a local file system providing a couple of advantages
+If any of the dependencies FreeCAD relies on is updated FreeCAD will likely require a rebuild.  Mac homebrew does provide a feature to pin packages at specific versions to prevent them from updating, and also allows setting of an environment variable to prevent homebrew from automatically checking for updates (which can slow things down). All that said, FreeCAD can be built using all the dependencies provided by Mac homebrew, but not using the formula file: instead cloning the source to an arbitrary path on a local filesystem. This provides a couple of advantages:
 
-- if `brew cleanup` is ran, and FreeCAD was installed using the above provided command then all the source tarballs or bottles that were _checked out_ or downloaded during the install process will be delete from the system, and thus if a reinstall or upgrade is required then homebrew will have to refetch the bottles, or reclone the git source again.
-- mac homebrew does provide a method, _install flag_ for keeping the source regardless if the build succeeds or fails, thus allowing to navigate to the git clone of FreeCAD source however the options are limited IMHO, and performing a standard `git clone` outside of homebrew is **much** preferred. 
-- cloning the FreeCAD source allows passing **any** cmake flags not provided by the formula file
-  - allowing to use other build systems such as _ninja_
-  - allowing the use of alternate compilers, ie. _ccache_
-  - pulling in subsequent updates are quicker because the `git clone` of the FreeCAD source will remain on the local filesystem even if a `brew cleanup` is ran
-  - subsequent recompiles should not take 60 minutes if using a cachining strategy such as _ccache_.
+- If `brew cleanup` is run and FreeCAD was installed using the above-provided command, all source tarballs or bottles that were _checked out_ or downloaded during the install process will be deleted from the system. If a reinstall or upgrade is later required then homebrew will have to refetch the bottles, or reclone the git source again.
+- Mac homebrew provides a method, _install flag_, for keeping the source regardless if the build succeeds or fails. The options are limited, however, and performing a standard `git clone` outside of homebrew is **much** preferred. 
+- Cloning the FreeCAD source allows passing **any** cmake flags not provided by the formula file
+  - Allowing the use of other build systems such as _ninja_
+  - Allowing the use of alternate compilers, e.g. _ccache_
+  - Pulling in subsequent updates are quicker because the `git clone` of the FreeCAD source will remain on the local filesystem even if a `brew cleanup` is run
+  - Subsequent recompiles should not take 60 minutes if using a caching strategy such as _ccache_.
 
 ## Directions, Installing FreeCAD using brew packages without a formula file
 
 <a name="homebrew-install-no-form-file"></a>
 
-> ⚠️ the below directions assume macOS high sierra or later is being used, homebrew is setup properly and all dependencies have successfully been installed.
+> ⚠️ The below directions assume macOS High Sierra or later is being used, homebrew is setup properly, and all dependencies were installed successfully.
 
 **TL;DR**
 
-- clone the FreeCAD source, pass cmake args/flags within source dir, run make, and make install, then profit 💰
+- Clone the FreeCAD source, pass cmake args/flags within source dir, run make, and make install, then profit 💰
 
 ### Expanded Directions
 
 <a name="homebrew-expanded-directions"></a>
 
-- clone the FreeCAD source from GitHub
+- Clone the FreeCAD source from GitHub
 
 ```shell
 git clone https://github.com/freecad/freecad
 cd ./freecad
-git fetch --unshallow
+git fetch
 ```
 
-> The above _fetch_ cmd will take some time to fetch the commit history for the repo, but if a shallow clone is performed then FreeCAD will not show to correct build number in the About dialog [**learn more**][lnk3]
+> The above _fetch_ cmd will take some time to fetch the commit history for the repo, but if a shallow clone is performed then FreeCAD will not show to correct build number in the About dialog [**learn more**][lnk3].
 
-I used the below cmake flags to build FreeCAD from a clone, and I'd recommend building FreeCAD in a specific _build branch_ rather than the master branch to not pollute the master branch with build artifacts. Also I'd prefer using clang provided by mac homebrew rather than Xcode, and if possible, I'd prefer using ccache provided by homebrew over using homebrew clang to speed rebuilds when required.
+Advanced users may alter the process below to build in a different location, use a different compiler, etc. but these instructions represent a procedure that works successfully for this author.
 
 Set the path / environment variables for specifying the compilers to use
 
@@ -182,7 +182,7 @@ export CC="/usr/local/opt/llvm/bin/clang"
 export CXX="/usr/local/opt/llvm/bin/clang++"
 ```
 
-- linking the brew provided install of python 3 will be required, in order for cmake to find the proper python, and python libraries.
+- Linking the brew-provided install of python 3 will be required in order for cmake to find the proper python and python libraries.
 
 ```shell
 brew link python@3.9
@@ -192,7 +192,7 @@ brew link python@3.9
 
 <a name="homebrew-boost-175-fix"></a>
 
-- due to recent changes in boost ie. v1.75, building FreeCAD will fail with the below linking error message, for a more exhaustive error message, [**learn more**][lnk4]
+- Due to recent changes in boost v1.75, building FreeCAD will fail with the below linking error message (for a more exhaustive error message, [**learn more**][lnk4])
 
 To work around the linking issue until the [**PR**][lnk5] is merged install boost will the patches applied within the PR.
 
@@ -212,12 +212,11 @@ cmake \
 -DCMAKE_FIND_FRAMEWORK=LAST
 -DCMAKE_VERBOSE_MAKEFILE=ON \
 -Wno-dev \
--DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk \
+-DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/macOSX10.14.sdk \
 -std=c++14 \
 -DCMAKE_CXX_STANDARD=14 \
 -DBUILD_ENABLE_CXX_STD:STRING=C++14 \
 -Wno-deprecated-declarations \
--DBUILD_QT5=ON \
 -DUSE_PYTHON3=1 -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
 -DBUILD_FEM_NETGEN=1 \
 -DBUILD_FEM=1 \
@@ -234,7 +233,7 @@ make
 make install
 ```
 
-> The above cmake build flags are the ones I've had good luck with, but that's not to say other ones can be added or removed. And for reasons unknown to me the above build process takes ~ twice along than using `brew install --build-from-source`
+> 💡 Author's note: The above cmake build flags are the ones I've had good luck with, but that's not to say other ones can be added or removed. And for reasons unknown to me the above build process takes ~ twice along than using `brew install --build-from-source`
 
 If everything goes well FreeCAD should be able to launch from a terminal
 
@@ -242,7 +241,7 @@ If everything goes well FreeCAD should be able to launch from a terminal
 
 <a name="errors-issues-solutions"></a>
 
-While going through the process of getting FreeCAD to compile on macOS using brew with a formula file and without a formula file I ran into several issues along the way, and I'll document them here in case anyone else is run into such error and may have a frame of reference why such error happens.  All that said, I **can not** list every possible eror that could arrise, but hopefully these can help guide will troubleshooting a problematic build.
+Some common pitfalls are listed in this section.
 
 ---
 
@@ -251,7 +250,7 @@ While going through the process of getting FreeCAD to compile on macOS using bre
 
 ```shell
 [ 18%] Building CXX object src/Gui/CMakeFiles/FreeCADGui.dir/DlgProjectInformationImp.cpp.o
-cd /opt/code/github/public/forks/freecad/build/src/Gui && /usr/local/bin/ccache /usr/local/opt/llvm/bin/clang++ -DBOOST_ALL_NO_LIB -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PP_VARIADICS=1 -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DBUILD_ADDONMGR -DCMAKE_BUILD_TYPE=\"Release\" -DFreeCADGui_EXPORTS -DGL_SILENCE_DEPRECATION -DHAVE_CONFIG_H -DHAVE_FREEIMAGE -DHAVE_PYSIDE2 -DHAVE_RAPIDJSON -DHAVE_SHIBOKEN2 -DHAVE_TBB -DNDEBUG -DOCC_CONVERT_SIGNALS -DPYSIDE_QML_SUPPORT=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_SVG_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB -D_OCC64 -I/opt/code/github/public/forks/freecad/build -I/opt/code/github/public/forks/freecad/build/src -I/opt/code/github/public/forks/freecad/src -I/opt/code/github/public/forks/freecad/src/Gui -I/opt/code/github/public/forks/freecad/src/Gui/Quarter -I/opt/code/github/public/forks/freecad/build/src/Gui -I/opt/code/github/public/forks/freecad/src/Gui/.. -I/opt/code/github/public/forks/freecad/build/src/Gui/.. -I/opt/code/github/public/forks/freecad/build/src/Gui/Language -I/opt/code/github/public/forks/freecad/build/src/Gui/propertyeditor -I/opt/code/github/public/forks/freecad/build/src/Gui/TaskView -I/opt/code/github/public/forks/freecad/build/src/Gui/Quarter -I/opt/code/github/public/forks/freecad/build/src/Gui/DAGView -I/usr/local/include/eigen3 -I/usr/local/include/PySide2/QtCore -I/usr/local/include/PySide2/QtGui -I/usr/local/include/PySide2/QtWidgets -isystem /usr/local/include -isystem /usr/local/Frameworks/Python.framework/Versions/3.9/include/python3.9 -iframework /usr/local/opt/qt/lib -isystem /usr/local/opt/qt/lib/QtCore.framework/Headers -isystem /usr/local/opt/qt/./mkspecs/macx-clang -isystem /usr/local/opt/qt/lib/QtWidgets.framework/Headers -isystem /usr/local/opt/qt/lib/QtGui.framework/Headers -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers -isystem /usr/local/opt/qt/lib/QtOpenGL.framework/Headers -isystem /usr/local/opt/qt/lib/QtPrintSupport.framework/Headers -isystem /usr/local/opt/qt/lib/QtSvg.framework/Headers -isystem /usr/local/opt/qt/lib/QtNetwork.framework/Headers -isystem /usr/local/opt/qt/include -isystem /usr/local/opt/qt/include/QtUiTools -isystem /usr/local/include/shiboken2 -isystem /usr/local/include/PySide2 -isystem /usr/local/opt/qt/lib/QtXml.framework/Headers -Wall -Wextra -Wpedantic -Wno-write-strings  -Wno-undefined-var-template -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC -I/usr/local/Cellar/open-mpi/4.0.5/include -fPIC -std=gnu++14 -o CMakeFiles/FreeCADGui.dir/DlgProjectInformationImp.cpp.o -c /opt/code/github/public/forks/freecad/src/Gui/DlgProjectInformationImp.cpp
+cd /opt/code/github/public/forks/freecad/build/src/Gui && /usr/local/bin/ccache /usr/local/opt/llvm/bin/clang++ -DBOOST_ALL_NO_LIB -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PP_VARIADICS=1 -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DBUILD_ADDONMGR -DCMAKE_BUILD_TYPE=\"Release\" -DFreeCADGui_EXPORTS -DGL_SILENCE_DEPRECATION -DHAVE_CONFIG_H -DHAVE_FREEIMAGE -DHAVE_PYSIDE2 -DHAVE_RAPIDJSON -DHAVE_SHIBOKEN2 -DHAVE_TBB -DNDEBUG -DOCC_CONVERT_SIGNALS -DPYSIDE_QML_SUPPORT=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_SVG_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB -D_OCC64 -I/opt/code/github/public/forks/freecad/build -I/opt/code/github/public/forks/freecad/build/src -I/opt/code/github/public/forks/freecad/src -I/opt/code/github/public/forks/freecad/src/Gui -I/opt/code/github/public/forks/freecad/src/Gui/Quarter -I/opt/code/github/public/forks/freecad/build/src/Gui -I/opt/code/github/public/forks/freecad/src/Gui/.. -I/opt/code/github/public/forks/freecad/build/src/Gui/.. -I/opt/code/github/public/forks/freecad/build/src/Gui/Language -I/opt/code/github/public/forks/freecad/build/src/Gui/propertyeditor -I/opt/code/github/public/forks/freecad/build/src/Gui/TaskView -I/opt/code/github/public/forks/freecad/build/src/Gui/Quarter -I/opt/code/github/public/forks/freecad/build/src/Gui/DAGView -I/usr/local/include/eigen3 -I/usr/local/include/PySide2/QtCore -I/usr/local/include/PySide2/QtGui -I/usr/local/include/PySide2/QtWidgets -isystem /usr/local/include -isystem /usr/local/Frameworks/Python.framework/Versions/3.9/include/python3.9 -iframework /usr/local/opt/qt/lib -isystem /usr/local/opt/qt/lib/QtCore.framework/Headers -isystem /usr/local/opt/qt/./mkspecs/macx-clang -isystem /usr/local/opt/qt/lib/QtWidgets.framework/Headers -isystem /usr/local/opt/qt/lib/QtGui.framework/Headers -isystem /Library/Developer/CommandLineTools/SDKs/macOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers -isystem /usr/local/opt/qt/lib/QtOpenGL.framework/Headers -isystem /usr/local/opt/qt/lib/QtPrintSupport.framework/Headers -isystem /usr/local/opt/qt/lib/QtSvg.framework/Headers -isystem /usr/local/opt/qt/lib/QtNetwork.framework/Headers -isystem /usr/local/opt/qt/include -isystem /usr/local/opt/qt/include/QtUiTools -isystem /usr/local/include/shiboken2 -isystem /usr/local/include/PySide2 -isystem /usr/local/opt/qt/lib/QtXml.framework/Headers -Wall -Wextra -Wpedantic -Wno-write-strings  -Wno-undefined-var-template -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/macOSX10.14.sdk -fPIC -I/usr/local/Cellar/open-mpi/4.0.5/include -fPIC -std=gnu++14 -o CMakeFiles/FreeCADGui.dir/DlgProjectInformationImp.cpp.o -c /opt/code/github/public/forks/freecad/src/Gui/DlgProjectInformationImp.cpp
 /opt/code/github/public/forks/freecad/src/Gui/DlgProjectInformationImp.cpp:56:9: error: no member named 'lineEditProgramVersion' in 'Gui::Dialog::Ui_DlgProjectInformation'
     ui->lineEditProgramVersion->setText(QString::fromUtf8(doc->getProgramVersion()));
     ~~  ^
@@ -263,7 +262,7 @@ make: *** [all] Error 2
 
 </details>
 
-FreeCAD will fail to build if creating a build directory within the _src_ directory and running `cmake ..` within the newly created _build_ directory.  As it currently stands, `cmake` needs run within the _src_ directory or the below error message will more than likely appear durning the build process.
+FreeCAD may fail to build if creating a build directory within the _src_ directory and running `cmake ..` within the newly created _build_ directory.  As it currently stands, `cmake` needs run within the _src_ directory or the this error message will likely appear during the build process.
 
 ---
 
@@ -280,7 +279,7 @@ FreeCAD will fail to build if creating a build directory within the _src_ direct
 
 </details>
 
-On macOS most if not all filesystems are case **insensitive** whereas most GNU+Linux distros use _case sensitive_ file systems. So if freecad source is cloned within a `FreeCAD` directory the build process on macOS will look for a `freecad` that is _case sensitive_ however the file system isn't case sensitive, thus the compiler will provide the above warning message.
+On macOS most filesystems are case **insensitive**, whereas most GNU+Linux distros use _case sensitive_ file systems. So if FreeCAD source is cloned within a `FreeCAD` directory the build process on macOS may look for a `freecad` that is _case sensitive_ however the file system isn't case sensitive, thus the compiler will provide the above warning message.
 
 One way to resolve such error message is to rename `FreeCAD` to `freecad`
 
@@ -290,8 +289,6 @@ mv freecadd freecad;
 ```
 
 ---
-
-The text within this document is by no means exhaustive and aiming to cover every edge but does aim to serve as a decent starting point for setting up macOS to build FreeCAD from source. 
 
 <!-- links -->
 
