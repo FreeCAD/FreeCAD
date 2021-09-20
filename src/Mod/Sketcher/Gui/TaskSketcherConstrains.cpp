@@ -401,7 +401,9 @@ protected:
 #endif
         initStyleOption(&options, index);
 
-        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
+        const QWidget* widget = option.widget;
+        QStyle* style = widget ? widget->style() : QApplication::style();
+        style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
 
         ConstraintItem * item = dynamic_cast<ConstraintItem*>(view->item(index.row()));
         if (!item || item->sketch->Constraints.getSize() <= item->ConstraintNbr)
