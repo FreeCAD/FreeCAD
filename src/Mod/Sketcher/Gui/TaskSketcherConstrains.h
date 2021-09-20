@@ -107,6 +107,8 @@ public:
 
 private:
     void slotConstraintsChanged(void);
+    bool isConstraintFiltered(QListWidgetItem * item);
+    void change3DViewVisibilityToTrackFilter();
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
