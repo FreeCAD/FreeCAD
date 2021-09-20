@@ -1811,12 +1811,14 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     TopoShape uptoface(_uptoface);
     TopoShape base(_base);
-    bool cutBase = false;
-    if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
-        // It seems that OCC insists the 'up to face' must be somehow related to
-        // the base shape. So if this is not the case, we make our own base
-        // using the 'up to face' by extrusion, and later on cut it out.
-        cutBase = true;
+    if (base.isNull())
+        base = sketchshape;
+    else if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
+        // It seems that OCC insists the 'up to face' must be somehow related
+        // to the base shape. So if this is not the case, we make our own base
+        // using the 'up to face' by extrusion, and set prism mode as None so
+        // that the base is not included in the result shape.
+        Mode = PrismMode::None;
         base.makEPrism(uptoface, direction);
     }
 
@@ -1919,12 +1921,6 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
     src = src.makECompound(srcShapes, nullptr, false);
     mapper.init(src, res);
     this->makESHAPE(res,mapper,{src},op);
-
-    if (cutBase) {
-        this->makECut({*this, base});
-        // if (!_base.isNull())
-        //     this->makEFuse({*this, _base});
-    }
     return *this;
 }
 
