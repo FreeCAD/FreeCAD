@@ -442,11 +442,8 @@ public:
         return TopoShape(0,Hasher).makEShape(mkShape,*this,op);
     }
 
-    TopoShape &makEShape(BRepFeat_MakePrism &mkShape, const TopoShape &source,
-            const char *op=0);
-    TopoShape makEShape(BRepFeat_MakePrism &mkShape,const char *op=0) const {
-        return TopoShape(0,Hasher).makEShape(mkShape,*this,op);
-    }
+    TopoShape &makEShape(BRepFeat_MakePrism &mkShape,
+            const std::vector<TopoShape> &source, const TopoShape &uptoface, const char *op);
 
     struct PartExport Mapper {
         mutable std::vector<TopoDS_Shape> _res;
