@@ -367,70 +367,50 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
     writer.Stream() << "</Cells>" << std::endl;
 }
 
-void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
+void PropertySheet::pasteCells(XMLReader& reader, const CellAddress& addr) {
     AtomicPropertyChange signaller(*this);
 
     bool first = true;
-    int roffset=0,coffset=0;
+    int roffset = 0, coffset = 0;
 
     reader.readElement("Cells");
-    int rangeCount = reader.getAttributeAsInteger("count");
-
-    for(;rangeCount;--rangeCount) {
+    for (int rangeCount = reader.getAttributeAsInteger("count"); rangeCount != 0; --rangeCount) {
         reader.readElement("Range");
         CellAddress from(reader.getAttribute("from"));
         CellAddress to(reader.getAttribute("to"));
-        int cellCount = reader.getAttributeAsInteger("count");
-        Range range(from,to);
-        bool hasCells = !!cellCount;
-        for(;cellCount;--cellCount) {
-            reader.readElement("Cell");
-            CellAddress src(reader.getAttribute("address"));
-            if(first) {
+        Range range(from, to);
+        for (int cellCount = reader.getAttributeAsInteger("count"); cellCount != 0; --cellCount) {
+            if (first) {
                 first = false;
                 roffset = addr.row() - from.row();
                 coffset = addr.col() - from.col();
-            }else
-                if (!range.next())
-                    break;
-            while(src!=*range) {
-                CellAddress dst(*range);
-                dst.setRow(dst.row()+roffset);
-                dst.setCol(dst.col()+coffset);
-                owner->clear(dst);
-                owner->cellUpdated(dst);
-                if (!range.next())
-                    break;
             }
-            CellAddress dst(src.row()+roffset, src.col()+coffset);
+            reader.readElement("Cell");
+            CellAddress src(reader.getAttribute("address"));
+            CellAddress dst(src.row() + roffset, src.col() + coffset);
+            owner->clear(dst);
+            owner->cellUpdated(dst);
+
             auto cell = owner->getNewCell(dst);
-            cell->setSpans(-1,-1);
-            cell->restore(reader,true);
+            cell->setSpans(-1, -1);
+            cell->restore(reader, true);
             int rows, cols;
-            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
+            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1))
                 mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
 
-            if(roffset || coffset) {
+            if (roffset || coffset) {
                 OffsetCellsExpressionVisitor<PropertySheet> visitor(*this, roffset, coffset);
                 cell->visit(visitor);
-                if(visitor.changed())
+                if (visitor.changed())
                     recomputeDependencies(dst);
             }
             dirty.insert(dst);
             owner->cellUpdated(dst);
         }
-        if(!hasCells || range.next()) {
-            do {
-                CellAddress dst(*range);
-                dst.setRow(dst.row()+roffset);
-                dst.setCol(dst.col()+coffset);
-                owner->clear(dst);
-                owner->cellUpdated(dst);
-            }while(range.next());
-        }
     }
     signaller.tryInvoke();
 }
+
 
 Cell * PropertySheet::cellAt(CellAddress address)
 {
