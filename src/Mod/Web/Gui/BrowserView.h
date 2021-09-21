@@ -97,6 +97,8 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
+    bool canClose (void);
+
 #ifdef QTWEBENGINE
     void setWindowIcon(const QIcon &icon);
 #endif
