@@ -551,7 +551,7 @@ std::vector<Base::Reference<ParameterGrp> > ParameterGrp::GetGroups(void)
         Name = StrX(value).c_str();
         // already created?
         if (!(rParamGrp=_GroupMap[Name]).isValid()) {
-            rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(static_cast<DOMElement*>(pcTemp),Name.c_str()));
+            rParamGrp = Base::Reference<ParameterGrp> (new ParameterGrp(static_cast<DOMElement*>(pcTemp),Name.c_str(), this));
             _GroupMap[Name] = rParamGrp;
         }
         vrParamGrp.push_back( rParamGrp );
