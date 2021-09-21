@@ -263,7 +263,7 @@ class PathArray:
 
         if self.arrayType == 'Linear1D':
             for i in range(self.copies):
-                pos = FreeCAD.Vector(self.offsetVector.x * (i + 1), self.offsetVector.y * (i + 1), 0)
+                pos = FreeCAD.Vector(self.offsetVector.x * (i + 1), self.offsetVector.y * (i + 1), self.offsetVector.z * (i + 1))
                 pos = self._calculateJitter(pos)
 
                 for b in base:
@@ -278,9 +278,9 @@ class PathArray:
                 for i in range(self.copiesY + 1):
                     for j in range(self.copiesX + 1):
                         if (i % 2) == 0:
-                            pos = FreeCAD.Vector(self.offsetVector.x * j, self.offsetVector.y * i, 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * j, self.offsetVector.y * i, self.offsetVector.z * i)
                         else:
-                            pos = FreeCAD.Vector(self.offsetVector.x * (self.copiesX - j), self.offsetVector.y * i, 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * (self.copiesX - j), self.offsetVector.y * i, self.offsetVector.z * i)
                         pos = self._calculateJitter(pos)
 
                         for b in base:
@@ -294,9 +294,9 @@ class PathArray:
                 for i in range(self.copiesX + 1):
                     for j in range(self.copiesY + 1):
                         if (i % 2) == 0:
-                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * j, 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * j, self.offsetVector.z * i)
                         else:
-                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * (self.copiesY - j), 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * (self.copiesY - j), self.offsetVector.z * i)
                         pos = self._calculateJitter(pos)
 
                         for b in base:
