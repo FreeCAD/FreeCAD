@@ -102,7 +102,7 @@ class ViewProvider:
         return []
 
     def doubleClicked(self, vobj):
-        self.setEdit(vobj)
+        return self.setEdit(vobj)
 
 
 class Delegate(QtGui.QStyledItemDelegate):
@@ -197,6 +197,10 @@ class OpTaskPanel:
         self.form.table.setModel(self.model)
         self.form.table.setItemDelegateForColumn(2, self.delegate)
         self.form.table.resizeColumnsToContents()
+
+        self.form.setMinimumHeight(
+                self.form.table.horizontalHeader().height() + 4 +
+                self.form.table.rowHeight(0) * min(10, len(self.props)) + 30)
 
         self.model.dataChanged.connect(self.updateData)
 
