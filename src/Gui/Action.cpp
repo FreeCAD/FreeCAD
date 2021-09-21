@@ -2859,13 +2859,14 @@ void ExpressionAction::popup(const QPoint &pt)
 // --------------------------------------------------------------------
 
 PresetsAction::PresetsAction ( Command* pcCmd, QObject * parent )
-  : Action(pcCmd, parent), _menu(0)
+  : Action(pcCmd, parent), _menu(0), _undoMenu(0)
 {
 }
 
 PresetsAction::~PresetsAction()
 {
     delete _menu;
+    delete _undoMenu;
 }
 
 void PresetsAction::addTo ( QWidget * w )
@@ -2885,7 +2886,17 @@ void PresetsAction::onAction(QAction *action) {
     auto param = App::GetApplication().GetParameterSet(
             action->data().toByteArray().constData());
     if (param) {
-        if (QApplication::queryKeyboardModifiers() == Qt::ControlModifier)
+        bool revert = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
+        ParameterManager *manager = new ParameterManager;
+        manager->CreateDocument();
+        QString title = action->text();
+        if (revert)
+            title = tr("Revert ") + title;
+        _undos.emplace_back(title, manager);
+        if (_undos.size() > 10)
+            _undos.pop_front();
+        App::GetApplication().GetUserParameter().copyTo(_undos.back().second);
+        if (revert)
             App::GetApplication().GetUserParameter().revert(param);
         else
             param->insertTo(&App::GetApplication().GetUserParameter());
@@ -2920,6 +2931,25 @@ void PresetsAction::onShowMenu()
         t += tooltip;
         action->setToolTip(t);
         action->setData(QByteArray(v.first.c_str()));
+    }
+
+    if (_undos.size()) {
+        _menu->addSeparator();
+        if (!_undoMenu) {
+            _undoMenu = new QMenu(tr("Undo"));
+            QObject::connect(_undoMenu, &QMenu::aboutToShow, [this]() {
+                _undoMenu->clear();
+                for (int i=(int)_undos.size()-1; i>=0; --i) {
+                    _undoMenu->addAction(_undos[i].first, [this, i]() {
+                        if (i < _undos.size()) {
+                            _undos[i].second->copyTo(&App::GetApplication().GetUserParameter());
+                            _undos.resize(i);
+                        }
+                    });
+                }
+            });
+        }
+        _menu->addMenu(_undoMenu);
     }
 }
 

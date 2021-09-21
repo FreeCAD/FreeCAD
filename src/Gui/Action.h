@@ -25,6 +25,8 @@
 #define GUI_ACTION_H
 
 #include <memory>
+#include <deque>
+
 #include <QAction>
 #include <QMenu>
 #include <QComboBox>
@@ -32,9 +34,9 @@
 #include <QCompleter>
 #include <QTimer>
 
-#include <memory>
-
 #include <boost_signals2.hpp>
+
+#include <Base/Parameter.h>
 
 class QLineEdit;
 class QWidgetAction;
@@ -615,6 +617,8 @@ protected Q_SLOTS:
 
 private:
     QMenu* _menu;
+    QMenu* _undoMenu;
+    std::deque<std::pair<QString, ParameterGrp::handle>> _undos;
 };
 
 GuiExport void setupMenuStyle(QWidget *);
