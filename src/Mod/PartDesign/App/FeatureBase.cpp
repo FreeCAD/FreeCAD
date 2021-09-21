@@ -66,8 +66,10 @@ App::DocumentObjectExecReturn* FeatureBase::execute(void) {
         return new App::DocumentObjectExecReturn("BaseFeature must be a Part::Feature");
     
     auto shape = Part::Feature::getTopoShape(BaseFeature.getValue());
+    if (!shape.countSubShapes(TopAbs_SOLID))
+        shape = shape.makESolid();
     if(shape.isNull())
-        return new App::DocumentObjectExecReturn("BaseFeature has a empty shape");
+        return new App::DocumentObjectExecReturn("No solid found in BaseFeature");
     
     Shape.setValue(shape);
     
