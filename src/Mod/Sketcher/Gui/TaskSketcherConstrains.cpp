@@ -679,6 +679,14 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         ui->extendedInformation, SIGNAL(stateChanged(int)),
                      this                     , SLOT  (on_extendedInformation_stateChanged(int))
         );
+    QObject::connect(
+        ui->showAllButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_showAllButton_clicked(bool))
+        );
+    QObject::connect(
+        ui->hideAllButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_hideAllButton_clicked(bool))
+        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -696,6 +704,62 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
+}
+
+void TaskSketcherConstrains::changeFilteredVisibility(bool show)
+{
+    assert(sketchView);
+    const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
+
+    bool doCommit = false;
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+
+    for(int i = 0; i < ui->listWidgetConstraints->count(); ++i)
+    {
+        QListWidgetItem* item = ui->listWidgetConstraints->item(i);
+
+        if(!item->isHidden()) { // The item is shown in the filtered list
+            const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
+
+            if (!it)
+                continue;
+
+            // must change state is shown and is to be hidden or hidden and must change state is shown
+            if((it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace() && !show) ||
+               (it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace() && show)) {
+
+
+                try {
+                    Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                                it->ConstraintNbr,
+                                show?"False":"True");
+
+                    doCommit = true;
+                }
+                catch (const Base::Exception & e) {
+                    Gui::Command::abortCommand();
+
+                    QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                                QString::fromLatin1("Impossible to update visibility tracking"), QMessageBox::Ok, QMessageBox::Ok);
+
+                    return;
+                }
+            }
+        }
+    }
+
+    if(doCommit)
+        Gui::Command::commitCommand();
+}
+
+void TaskSketcherConstrains::on_showAllButton_clicked(bool)
+{
+    changeFilteredVisibility(true);
+}
+void TaskSketcherConstrains::on_hideAllButton_clicked(bool)
+{
+    changeFilteredVisibility(false);
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)

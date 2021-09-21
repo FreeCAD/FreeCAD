@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>234</width>
+    <width>299</width>
     <height>388</height>
    </rect>
   </property>
@@ -167,7 +167,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -182,8 +182,102 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
+     <widget class="QWidget" name="visualisationTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string>View</string>
+      </attribute>
+      <widget class="QPushButton" name="showAllButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>125</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Shows all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Show All</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="hideAllButton">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>10</y>
+         <width>125</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Hides all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Hide All</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="automationTab">
+      <property name="toolTip">
+       <string>Controls visualisation in the 3D view</string>
+      </property>
+      <attribute name="title">
+       <string>Automation</string>
+      </attribute>
+      <widget class="Gui::PrefCheckBox" name="visualisationTrackingFilter">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>189</width>
+         <height>36</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</string>
+       </property>
+       <property name="text">
+        <string>Track filter selection</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>VisualisationTrackingFilter</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher</cstring>
+       </property>
+      </widget>
+     </widget>
      <widget class="QWidget" name="controlTab">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -201,7 +295,7 @@
        <string>Controls widget list behaviour</string>
       </property>
       <attribute name="title">
-       <string>List control</string>
+       <string>List</string>
       </attribute>
       <widget class="Gui::PrefCheckBox" name="extendedInformation">
        <property name="geometry">
@@ -260,45 +354,6 @@
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>HideInternalAlignment</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher</cstring>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="visualisationTab">
-      <property name="toolTip">
-       <string>Controls visualisation in the 3D view</string>
-      </property>
-      <attribute name="title">
-       <string>Visualisation</string>
-      </attribute>
-      <widget class="Gui::PrefCheckBox" name="visualisationTrackingFilter">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>189</width>
-         <height>36</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</string>
-       </property>
-       <property name="text">
-        <string>Track filter selection</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>VisualisationTrackingFilter</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Mod/Sketcher</cstring>
