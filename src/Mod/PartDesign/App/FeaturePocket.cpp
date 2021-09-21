@@ -290,14 +290,13 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (isRecomputePaused())
                 return App::DocumentObject::StdReturn;
 
-            prism.Tag = -this->getID();
-
             // Cut the SubShape out of the base feature
             TopoShape result(0,getDocument()->getStringHasher());
             try {
                 if (NewSolid.getValue())
                     result = prism;
                 else {
+                    prism.Tag = -this->getID();
                     const char *maker;
                     switch (getAddSubType()) {
                     case Additive:

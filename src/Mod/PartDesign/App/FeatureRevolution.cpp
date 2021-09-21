@@ -157,13 +157,13 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (isRecomputePaused())
             return App::DocumentObject::StdReturn;
 
-        result.Tag = -getID();
-
         if(base.isNull()) {
             result = refineShapeIfActive(result);
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
+
+        result.Tag = -getID();
 
         TopoShape boolOp(0,getDocument()->getStringHasher());
 

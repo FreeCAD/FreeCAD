@@ -52,6 +52,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <App/MappedElement.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
 #include <Mod/Part/App/PartParams.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -322,9 +323,9 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         if (isRecomputePaused())
             return App::DocumentObject::StdReturn;
 
-        prism.Tag = -this->getID();
-
         if (!base.isNull() && fuse) {
+            prism.Tag = -this->getID();
+
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:

@@ -159,12 +159,12 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         if (isRecomputePaused())
             return App::DocumentObject::StdReturn;
 
-        result.Tag = -getID();
-
         if(base.isNull()) {
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
+
+        result.Tag = -getID();
 
         try {
             const char *maker;

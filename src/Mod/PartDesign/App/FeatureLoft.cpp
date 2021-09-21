@@ -197,13 +197,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         else
             result = shapes.front();
             
-        result.Tag = -getID();
-        
         if(base.isNull()) {
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
+        result.Tag = -getID();
         TopoShape boolOp(0,getDocument()->getStringHasher());
 
         const char *maker;

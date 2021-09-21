@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
 
-        TopoShape primitiveShape(-getID());
+        TopoShape primitiveShape;
         primitiveShape.setShape(primitive);
         
         //if we have no base we just add the standard primitive shape
@@ -83,6 +83,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         try{
              //if we have a base shape we need to make sure that it does not get our transformation to
             base = getBaseShape().moved(getLocation().Inverted());
+            primitiveShape.Tag = -this->getID();
         }
         catch(const Base::Exception&) {
 

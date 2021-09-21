@@ -326,13 +326,13 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
         if (feat->isRecomputePaused())
             return App::DocumentObject::StdReturn;
 
-        result.Tag = -feat->getID();
-
         if(base.isNull()) {
             result = feat->refineShapeIfActive(result);
             feat->Shape.setValue(closed ? feat->getSolid(result) : result);
             return App::DocumentObject::StdReturn;
         }
+
+        result.Tag = -feat->getID();
 
         TopoShape boolOp(0,feat->getDocument()->getStringHasher());
 
