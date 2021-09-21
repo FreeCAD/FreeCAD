@@ -158,6 +158,8 @@ SET(FemConstraints_SRCS
     FemConstraintFluidBoundary.h
     FemConstraintPressure.cpp
     FemConstraintPressure.h
+    FemConstraintSpring.cpp
+    FemConstraintSpring.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp

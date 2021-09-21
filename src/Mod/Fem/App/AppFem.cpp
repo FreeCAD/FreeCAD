@@ -59,6 +59,7 @@
 #include "FemConstraintContact.h"
 #include "FemConstraintFluidBoundary.h"
 #include "FemConstraintTransform.h"
+#include "FemConstraintSpring.h"
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
@@ -156,6 +157,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::ConstraintPulley                     ::init();
     Fem::ConstraintTemperature                ::init();
     Fem::ConstraintTransform                  ::init();
+    Fem::ConstraintSpring                     ::init();
 
     Fem::FemMesh                              ::init();
     Fem::FemMeshObject                        ::init();

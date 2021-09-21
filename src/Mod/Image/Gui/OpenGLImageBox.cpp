@@ -31,6 +31,7 @@
 
 #if defined(__MINGW32__)
 # include <GL/gl.h>
+# include <GL/glu.h>
 # include <GL/glext.h>
 #elif defined (FC_OS_MACOSX)
 # include <OpenGL/gl.h>

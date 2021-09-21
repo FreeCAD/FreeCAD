@@ -107,7 +107,7 @@ def display_external(internal_value,
                 uom = unit
                 internal_value = q.getValueAs(unit)
                 conversion = 1
-            except:
+            except Exception:
                 conversion = q.getUserPreferred()[1]
                 uom = q.getUserPreferred()[2]
     elif dim == 'Angle':

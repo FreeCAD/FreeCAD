@@ -52,6 +52,8 @@
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "DlgActiveBody.h"
+
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -108,49 +110,65 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
-        bool singleBodyDocument = activeView->getAppDocument()->
-            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
+        auto doc = activeView->getAppDocument();
+        bool singleBodyDocument = doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
+        if (assertModern && PartDesignGui::assureModernWorkflow (doc) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
-                auto doc = activeView->getAppDocument();
                 auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject *parent = 0;
                 App::DocumentObject *body = 0;
-                std::string sub;
                 if(bodies.size()==1) {
                     body = bodies[0];
-                    for(auto &v : body->getParents()) {
-                        if(v.first->getDocument()!=doc)
-                            continue;
-                        if(parent) {
-                            body = 0;
-                            break;
-                        }
-                        parent = v.first;
-                        sub = v.second;
-                    }
-                }
-                if(body) {
-                    auto doc = parent?parent->getDocument():body->getDocument();
-                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
-                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                    activeBody = makeBodyActive(body, doc, topParent, subname);
                 }
             }
             if (!activeBody && messageIfNot) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                DlgActiveBody dia(
+                    Gui::getMainWindow(),
+                    doc,
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one.\n\nIf you have a legacy document "
-                                "with PartDesign objects without Body, use the migrate function in "
-                                "PartDesign to put them into a Body."
-                                ));
+                                "Please make one active (double click) or create one."
+                                "\n\nIf you have a legacy document with PartDesign objects without Body, "
+                                "use the migrate function in PartDesign to put them into a Body."
+                        ));
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    activeBody = dia.getActiveBody();
             }
         }
     }
 
     return activeBody;
+}
+
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent,
+                                  std::string *subname)
+{
+    App::DocumentObject *parent = 0;
+    std::string sub;
+
+    for(auto &v : body->getParents()) {
+        if(v.first->getDocument()!=doc)
+            continue;
+        if(parent) {
+            body = 0;
+            break;
+        }
+        parent = v.first;
+        sub = v.second;
+    }
+
+    if(body) {
+        auto _doc = parent?parent->getDocument():body->getDocument();
+        _FCMD_DOC_CMD(Gui, _doc, "ActiveView.setActiveObject('" << PDBODYKEY
+                      << "'," << Gui::Command::getObjectCmd(parent?parent:body)
+                      << ",'" << sub << "')");
+        return Gui::Application::Instance->activeView()->
+            getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+    }
+
+    return dynamic_cast<PartDesign::Body*>(body);
 }
 
 void needActiveBodyError(void)
@@ -170,13 +188,8 @@ PartDesign::Body * makeBody(App::Document *doc)
                              "App.getDocument('%s').addObject('PartDesign::Body','%s')",
                              doc->getName(), bodyName.c_str() );
     auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
-    if(body) {
-        auto vp = Gui::Application::Instance->getViewProvider(body);
-        if(vp) {
-            // make the new body active
-            vp->doubleClicked();
-        }
-    }
+    if(body)
+        makeBodyActive(body, doc);
     return body;
 }
 

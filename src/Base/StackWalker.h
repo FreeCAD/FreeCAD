@@ -36,7 +36,10 @@
 // so we need not to check the version (because we only support _MSC_VER >= 1100)!
 #pragma once
 
-#include <windows.h>
+#include <Windows.h>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 // special defines for VC5/6 (if no actual PSDK is installed):
 #if _MSC_VER < 1300

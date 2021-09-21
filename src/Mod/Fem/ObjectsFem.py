@@ -335,6 +335,16 @@ def makeConstraintSectionPrint(
     return obj
 
 
+def makeConstraintSpring(
+    doc,
+    name="ConstraintSpring"
+):
+    """makeConstraintSpring(document, [name]):
+    makes a Fem ConstraintSpring object"""
+    obj = doc.addObject("Fem::ConstraintSpring", name)
+    return obj
+
+
 # ********* element definition objects ***********************************************************
 def makeElementFluid1D(
     doc,

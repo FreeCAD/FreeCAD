@@ -61,7 +61,7 @@ class TaskHole:
             body.removeObject(sketch)
             try:
                 document.removeObject(sketch.Name)      
-            except:
+            except Exception:
                 pass # This always throws an exception: "Sketch support has been deleted" from SketchObject::execute()
             body.removeObject(plane)
             document.removeObject(plane.Name)

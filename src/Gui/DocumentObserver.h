@@ -165,7 +165,7 @@ private:
 /**
  * @brief The ViewProviderWeakPtrT class
  */
-class AppExport ViewProviderWeakPtrT
+class GuiExport ViewProviderWeakPtrT
 {
 public:
     ViewProviderWeakPtrT(ViewProviderDocumentObject*);

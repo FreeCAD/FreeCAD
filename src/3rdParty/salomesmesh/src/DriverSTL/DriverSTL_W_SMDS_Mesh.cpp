@@ -23,7 +23,9 @@
 #include "DriverSTL_W_SMDS_Mesh.h"
 
 #ifdef WIN32
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 #include <Basics_Utils.hxx>

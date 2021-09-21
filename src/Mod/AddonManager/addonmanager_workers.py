@@ -259,11 +259,15 @@ class CheckWBWorker(QtCore.QThread):
                     except Exception:
                         print("AddonManager: Unable to fetch git updates for repo", repo[0])
                     else:
-                        if "git pull" in gitrepo.status():
-                            self.mark.emit(repo[0])
-                            upds.append(repo[0])
-                            # mark as already installed AND already checked for updates AND update available
-                            self.repos[self.repos.index(repo)][2] = 3
+                        try:
+                            if "git pull" in gitrepo.status():
+                                self.mark.emit(repo[0])
+                                upds.append(repo[0])
+                                # mark as already installed AND already checked for updates AND update available
+                                self.repos[self.repos.index(repo)][2] = 3
+                        except stderr:
+                            FreeCAD.Console.PrintWarning("AddonManager - " + repo[0] + " git status"
+                                                         " fatal: this operation must be run in a work tree \n")
         self.addon_repos.emit(self.repos)
         self.enable.emit(len(upds))
         self.stop = True

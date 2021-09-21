@@ -280,6 +280,8 @@ void PolyPickerSelection::initialize()
 
 void PolyPickerSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Native);
     _pcView3D->redraw();
@@ -673,6 +675,8 @@ void RubberbandSelection::initialize()
 
 void RubberbandSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&rubberband);
     if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);

@@ -454,7 +454,7 @@ public:
      *
      * @sa Command::_doCommand()
      */
-#ifdef FC_OS_WIN32
+#ifdef _MSC_VER
 #define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
 #else
 #define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)

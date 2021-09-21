@@ -35,7 +35,7 @@ class PlaneFit;
 class CylinderFit;
 class SphereFit;
 class MeshFacet;
-typedef std::vector<unsigned long> MeshSegment;
+typedef std::vector<FacetIndex> MeshSegment;
 
 class MeshExport MeshSurfaceSegment
 {
@@ -45,12 +45,12 @@ public:
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual const char* GetType() const = 0;
-    virtual void Initialize(unsigned long);
-    virtual bool TestInitialFacet(unsigned long) const;
+    virtual void Initialize(FacetIndex);
+    virtual bool TestInitialFacet(FacetIndex) const;
     virtual void AddFacet(const MeshFacet& rclFacet);
-    void AddSegment(const std::vector<unsigned long>&);
+    void AddSegment(const std::vector<FacetIndex>&);
     const std::vector<MeshSegment>& GetSegments() const { return segments; }
-    MeshSegment FindSegment(unsigned long) const;
+    MeshSegment FindSegment(FacetIndex) const;
 
 protected:
     std::vector<MeshSegment> segments;
@@ -78,7 +78,7 @@ public:
     virtual ~MeshDistancePlanarSegment();
     bool TestFacet (const MeshFacet& rclFacet) const;
     const char* GetType() const { return "Plane"; }
-    void Initialize(unsigned long);
+    void Initialize(FacetIndex);
     void AddFacet(const MeshFacet& rclFacet);
 
 protected:
@@ -174,8 +174,8 @@ public:
     virtual ~MeshDistanceGenericSurfaceFitSegment();
     bool TestFacet (const MeshFacet& rclFacet) const;
     const char* GetType() const { return fitter->GetType(); }
-    void Initialize(unsigned long);
-    bool TestInitialFacet(unsigned long) const;
+    void Initialize(FacetIndex);
+    bool TestInitialFacet(FacetIndex) const;
     void AddFacet(const MeshFacet& rclFacet);
     std::vector<float> Parameters() const;
 
@@ -254,15 +254,15 @@ private:
 class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
 {
 public:
-    MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<unsigned long> &indices);
+    MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices);
     virtual ~MeshSurfaceVisitor ();
     bool AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                     unsigned long, unsigned long, unsigned short neighbourIndex);
+                     FacetIndex, unsigned long, unsigned short neighbourIndex);
     bool Visit (const MeshFacet & face, const MeshFacet &,
-                unsigned long ulFInd, unsigned long);
+                FacetIndex ulFInd, unsigned long);
 
 protected:
-    std::vector<unsigned long>  &indices;
+    std::vector<FacetIndex>  &indices;
     MeshSurfaceSegment& segm;
 };
 

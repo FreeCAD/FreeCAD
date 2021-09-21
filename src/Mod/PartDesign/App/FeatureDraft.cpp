@@ -88,6 +88,9 @@ void Draft::handleChangedPropertyType(Base::XMLReader &reader,
         v.Restore(reader);
         Angle.setValue(v.getValue());
     }
+    else {
+        DressUp::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 short Draft::mustExecute() const

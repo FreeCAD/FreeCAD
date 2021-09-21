@@ -1158,9 +1158,29 @@ bool Document::save(void)
                 if(gdoc) gdoc->setModified(false);
             }
         }
+        catch (const Base::FileException& e) {
+            int ret = QMessageBox::question(
+                getMainWindow(),
+                QObject::tr("Could not save document"),
+                QObject::tr("There was an issue trying to save the file. "
+                            "This may be because some of the parent folders do not exist, "
+                            "or you do not have sufficient permissions, "
+                            "or for other reasons. Error details:\n\n\"%1\"\n\n"
+                            "Would you like to save the file with a different name?")
+                .arg(QString::fromLatin1(e.what())),
+                QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No) {
+                // TODO: Understand what exactly is supposed to be returned here
+                getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+                return false;
+            } else if (ret == QMessageBox::Yes) {
+                return saveAs();
+            }
+        }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
                 QString::fromLatin1(e.what()));
+            return false;
         }
         return true;
     }
@@ -1195,6 +1215,25 @@ bool Document::saveAs(void)
             fi.setFile(QString::fromUtf8(d->_pcDocument->FileName.getValue()));
             setModified(false);
             getMainWindow()->appendRecentFile(fi.filePath());
+        }
+        catch (const Base::FileException& e) {
+            int ret = QMessageBox::question(
+                getMainWindow(),
+                QObject::tr("Could not save document"),
+                QObject::tr("There was an issue trying to save the file. "
+                            "This may be because some of the parent folders do not exist, "
+                            "or you do not have sufficient permissions, "
+                            "or for other reasons. Error details:\n\n\"%1\"\n\n"
+                            "Would you like to save the file with a different name?")
+                .arg(QString::fromLatin1(e.what())),
+                QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No) {
+                // TODO: Understand what exactly is supposed to be returned here
+                getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+                return false;
+            } else if (ret == QMessageBox::Yes) {
+                return saveAs();
+            }
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
@@ -1942,11 +1981,33 @@ bool Document::canClose (bool checkModify, bool checkLink)
 
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
-        int res = getMainWindow()->confirmSave(getDocument()->Label.getValue(),getActiveView());
-        if(res>0)
+        const char *docName = getDocument()->Label.getValue();
+        int res = getMainWindow()->confirmSave(docName, getActiveView());
+        switch (res)
+        {
+        case MainWindow::ConfirmSaveResult::Cancel:
+            ok = false;
+            break;
+        case MainWindow::ConfirmSaveResult::SaveAll:
+        case MainWindow::ConfirmSaveResult::Save:
             ok = save();
-        else
-            ok = res<0;
+            if (!ok) {
+                int ret = QMessageBox::question(
+                    getActiveView(),
+                    QObject::tr("Document not saved"),
+                    QObject::tr("The document%1 could not be saved. Do you want to cancel closing it?")
+                    .arg(docName?(QString::fromUtf8(" ")+QString::fromUtf8(docName)):QString()),
+                    QMessageBox::Discard | QMessageBox::Cancel,
+                    QMessageBox::Discard);
+                if (ret == QMessageBox::Discard)
+                    ok = true;
+            }
+            break;
+        case MainWindow::ConfirmSaveResult::DiscardAll:
+        case MainWindow::ConfirmSaveResult::Discard:
+            ok = true;
+            break;
+        }
     }
 
     if (ok) {
