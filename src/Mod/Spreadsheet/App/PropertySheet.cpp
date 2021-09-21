@@ -341,25 +341,26 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     signaller.tryInvoke();
 }
 
-void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ranges) const {
+void PropertySheet::copyCells(Base::Writer& writer, const std::vector<Range>& ranges) const {
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl;
     writer.Stream() << "<Cells count=\"" << ranges.size() << "\">" << std::endl;
     writer.incInd();
-    for(auto range : ranges) {
-        auto r = range;
-        int count = 0;
-        do {
-            if(getValue(*r))
-                ++count;
-        }while(r.next());
+    for (auto range : ranges) {
         writer.Stream() << writer.ind() << "<Range from=\"" << range.fromCellString()
-            << "\" to=\"" << range.toCellString() << "\" count=\"" << count << "\">" << std::endl;
+            << "\" to=\"" << range.toCellString() << "\" count=\"" << range.size() << "\">" << std::endl;
         writer.incInd();
         do {
             auto cell = getValue(*range);
-            if(cell)
+            if (cell) {
                 cell->save(writer);
-        }while(range.next());
+            }
+            else {
+                // The cell is empty, so when it's pasted it needs to clear the existing contents
+                writer.Stream() << writer.ind() << "<Cell "
+                    << "address=\"" << (*range).toString() << "\" "
+                    << "content = \"\" />";
+            }
+        } while (range.next());
         writer.decInd();
         writer.Stream() << writer.ind() << "</Range>" << std::endl;
     }
@@ -374,12 +375,12 @@ void PropertySheet::pasteCells(XMLReader& reader, const CellAddress& addr) {
     int roffset = 0, coffset = 0;
 
     reader.readElement("Cells");
-    for (int rangeCount = reader.getAttributeAsInteger("count"); rangeCount != 0; --rangeCount) {
+    for (int rangeCount = reader.getAttributeAsInteger("count"); rangeCount > 0; --rangeCount) {
         reader.readElement("Range");
         CellAddress from(reader.getAttribute("from"));
         CellAddress to(reader.getAttribute("to"));
         Range range(from, to);
-        for (int cellCount = reader.getAttributeAsInteger("count"); cellCount != 0; --cellCount) {
+        for (int cellCount = reader.getAttributeAsInteger("count"); cellCount > 0; --cellCount) {
             if (first) {
                 first = false;
                 roffset = addr.row() - from.row();
