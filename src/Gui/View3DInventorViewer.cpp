@@ -2571,6 +2571,11 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     std::string saveMethod = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");
 
+    if (selectionRoot->getRenderManager()) {
+        if (saveMethod != "FramebufferObject" && saveMethod != "GrabFramebuffer")
+            saveMethod = "FramebufferObject";
+    }
+
     bool useFramebufferObject = false;
     bool useGrabFramebuffer = false;
     bool usePixelBuffer = false;
@@ -3103,12 +3108,12 @@ void View3DInventorViewer::setRenderType(const RenderType type)
             QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
 #if !defined(HAVE_QT5_OPENGL)
-            framebuffer = new QtGLFramebufferObject(width, height, QtGLFramebufferObject::Depth);
+            framebuffer = new QtGLFramebufferObject(width, height, QtGLFramebufferObject::CombinedDepthStencil);
             renderToFramebuffer(framebuffer);
 #else
             QOpenGLFramebufferObjectFormat fboFormat;
             fboFormat.setSamples(getNumSamples());
-            fboFormat.setAttachment(QtGLFramebufferObject::Depth);
+            fboFormat.setAttachment(QtGLFramebufferObject::CombinedDepthStencil);
             QtGLFramebufferObject* fbo = new QtGLFramebufferObject(width, height, fboFormat);
             if (fbo->format().samples() > 0) {
                 renderToFramebuffer(fbo);
@@ -3200,7 +3205,7 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
 
     QtGLFramebufferObjectFormat fboFormat;
     fboFormat.setSamples(samples);
-    fboFormat.setAttachment(QtGLFramebufferObject::Depth);
+    fboFormat.setAttachment(QtGLFramebufferObject::CombinedDepthStencil);
     // With enabled alpha a transparent background is supported but
     // at the same time breaks semi-transparent models. A workaround
     // is to use a certain background color using GL_RGB as texture
