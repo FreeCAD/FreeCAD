@@ -612,15 +612,15 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
         discardBtn->setShortcut(QKeySequence::mnemonic(text));
     }
 
-    int res = 0;
+    int res = ConfirmSaveResult::Cancel;
     box.adjustSize(); // Silence warnings from Qt on Windows
     switch (box.exec())
     {
     case QMessageBox::Save:
-        res = checkBox.isChecked()?2:1;
+        res = checkBox.isChecked()?ConfirmSaveResult::SaveAll:ConfirmSaveResult::Save;
         break;
     case QMessageBox::Discard:
-        res = checkBox.isChecked()?-2:-1;
+        res = checkBox.isChecked()?ConfirmSaveResult::DiscardAll:ConfirmSaveResult::Discard;
         break;
     }
     if(addCheckbox && res)
@@ -632,12 +632,13 @@ bool MainWindow::closeAllDocuments (bool close)
 {
     auto docs = App::GetApplication().getDocuments();
     try {
-        docs = App::Document::getDependentDocuments(docs,true);
+        docs = App::Document::getDependentDocuments(docs, true);
     }catch(Base::Exception &e) {
         e.ReportException();
     }
     bool checkModify = true;
     bool saveAll = false;
+    int failedSaves = 0;
     for(auto doc : docs) {
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
@@ -650,19 +651,36 @@ bool MainWindow::closeAllDocuments (bool close)
             continue;
         bool save = saveAll;
         if(!save && checkModify) {
-            int res = confirmSave(doc->Label.getStrValue().c_str(),this,docs.size()>1);
-            if(res==0)
+            int res = confirmSave(doc->Label.getStrValue().c_str(), this, docs.size()>1);
+            switch (res)
+            {
+            case ConfirmSaveResult::Cancel:
                 return false;
-            if(res>0) {
+            case ConfirmSaveResult::SaveAll:
+                saveAll = true;
+            case ConfirmSaveResult::Save:
                 save = true;
-                if(res==2)
-                    saveAll = true;
-            } else if(res==-2)
+                break;
+            case ConfirmSaveResult::DiscardAll:
                 checkModify = false;
+            }
         }
+
         if(save && !gdoc->save())
+            failedSaves++;
+    }
+
+    if (failedSaves > 0) {
+        int ret = QMessageBox::question(
+            getMainWindow(),
+            QObject::tr("%1 Document(s) not saved").arg(QString::number(failedSaves)),
+            QObject::tr("Some documents could not be saved. Do you want to cancel closing?"),
+            QMessageBox::Discard | QMessageBox::Cancel,
+            QMessageBox::Discard);
+        if (ret == QMessageBox::Cancel)
             return false;
     }
+
     if(close)
         App::GetApplication().closeAllDocuments();
     // d->mdiArea->closeAllSubWindows();

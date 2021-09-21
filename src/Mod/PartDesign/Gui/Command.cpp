@@ -70,6 +70,7 @@
 #include "WorkflowManager.h"
 #include "ViewProvider.h"
 #include "ViewProviderBody.h"
+#include "DlgActiveBody.h"
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
 #include "ui_DlgReference.h"
@@ -505,12 +506,15 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // objects (in which case, just make one) to make a new sketch.
 
         pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
-        if (pcActiveBody == nullptr) {
-            if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+        if (!pcActiveBody) {
+            if ( doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0 ) {
                 shouldMakeBody = true;
             } else {
-                PartDesignGui::needActiveBodyError();
-                return;
+                PartDesignGui::DlgActiveBody dia(Gui::getMainWindow(), doc);
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    pcActiveBody = dia.getActiveBody();
+                if (!pcActiveBody)
+                    return;
             }
         }
 

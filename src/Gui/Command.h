@@ -31,6 +31,7 @@
 #include <vector>
 
 #include <Base/Type.h>
+#include <Gui/Application.h>
 
 /** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
 //@{
@@ -179,8 +180,8 @@
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
-            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument());\
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
+            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
     }\
 }while(0)
 
@@ -330,6 +331,7 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
+    void printConflictingAccelerators() const;
     //@}
 
 public:
@@ -343,6 +345,8 @@ public:
     void testActive(void);
     /// Enables or disables the command
     void setEnabled(bool);
+    /// (Re)Create the text for the tooltip (for example, when the shortcut is changed)
+    void recreateTooltip(const char* context, Action*);
     /// Command trigger source
     enum TriggerSource {
         /// No external trigger, e.g. invoked through Python
@@ -450,7 +454,7 @@ public:
      *
      * @sa Command::_doCommand()
      */
-#ifdef FC_OS_WIN32
+#ifdef _MSC_VER
 #define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
 #else
 #define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
@@ -869,6 +873,14 @@ public:
 
     void addCommandMode(const char* sContext, const char* sName);
     void updateCommands(const char* sContext, int mode);
+
+    /** 
+     * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
+     * In the case of multiple conflicts, only the first is returned. 
+     * \param accel The accelerator to check
+     * \param ignore (optional) A command to ignore matches with
+     */
+    const Command* checkAcceleratorForConflicts(const char* accel, const Command *ignore = nullptr) const;
 
 private:
     /// Destroys all commands in the manager and empties the list.

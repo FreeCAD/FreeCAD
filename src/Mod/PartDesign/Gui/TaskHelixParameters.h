@@ -90,7 +90,7 @@ protected:
     //mirrors of helixes's properties
     App::PropertyLength*      propPitch;
     App::PropertyLength*      propHeight;
-    App::PropertyFloat*       propTurns;
+    App::PropertyFloatConstraint*       propTurns;
     App::PropertyBool*        propLeftHanded;
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;

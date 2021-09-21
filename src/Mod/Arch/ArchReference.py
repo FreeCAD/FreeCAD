@@ -102,6 +102,8 @@ class ArchReference:
                     obj.ReferenceMode = "Transient"
                 obj.removeProperty("TransientReference")
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" TransientReference property to ReferenceMode\n")
+        if not "FuseArch" in pl:
+            obj.addProperty("App::PropertyBool","FuseArch", "Reference", QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material"))
         self.Type = "Reference"
 
     def onDocumentRestored(self,obj):
@@ -158,17 +160,60 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
-                            import Part
-                            shape = Part.Shape()
                             if sys.version_info.major >= 3:
                                 shapedata = shapedata.decode("utf8")
-                            shape.importBrepFromString(shapedata)
+                            shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
                                 obj.Placement = pl
                         else:
                             print("Part not found in file")
             self.reload = False
+
+    def cleanShape(self,shapedata,obj,materials):
+
+        "cleans the imported shape"
+
+        import Part
+        shape = Part.Shape()
+        shape.importBrepFromString(shapedata)
+        if obj.FuseArch and materials:
+            # separate lone edges
+            shapes = []
+            for edge in shape.Edges:
+                found = False
+                for solid in shape.Solids:
+                    if found:
+                        break
+                    for soledge in solid.Edges:
+                        if found:
+                            break
+                        if edge.hashCode() == soledge.hashCode():
+                            found = True
+                            break
+            else:
+                shapes.append(edge)
+            print("solids:",len(shape.Solids),"mattable:",materials)
+            for key,solindexes in materials.items():
+                if key == "Undefined":
+                    # do not join objects with no defined material
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        shapes.append(shape.Solids[solindex])
+                else:
+                    fusion = None
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        if not fusion:
+                            fusion = shape.Solids[solindex]
+                        else:
+                            fusion = fusion.fuse(shape.Solids[solindex])
+                    if fusion:
+                        shapes.append(fusion)
+            shape = Part.makeCompound(shapes)
+            try:
+                shape = shape.removeSplitter()
+            except Exception:
+                print(obj.Label,": error removing splitter")
+        return shape
 
     def getFile(self,obj,filename=None):
 
@@ -206,6 +251,7 @@ class ArchReference:
         "returns a list of Part-based objects in a FCStd file"
 
         parts = {}
+        materials = {}
         filename = self.getFile(obj,filename)
         if not filename:
             return parts
@@ -214,6 +260,7 @@ class ArchReference:
             name = None
             label = None
             part = None
+            materials = {}
             writemode = False
             for line in docf:
                 if sys.version_info.major >= 3:
@@ -236,11 +283,23 @@ class ArchReference:
                     if n:
                         part = n[0]
                         writemode = False
-                if name and label and part:
-                    parts[name] = [label,part]
+                elif "<Property name=\"MaterialsTable\" type=\"App::PropertyMap\"" in line:
+                    writemode = True
+                elif writemode and "<Item key=" in line:
+                    n = re.findall('key=\"(.*?)\"',line)
+                    v = re.findall('value=\"(.*?)\"',line)
+                    if n and v:
+                        materials[n[0]] = v[0]
+                elif writemode and "</Map>" in line:
+                    writemode = False
+                elif "</Object>" in line:
+                    if name and label and part:
+                        parts[name] = [label,part,materials]
                     name = None
                     label = None
                     part = None
+                    materials = {}
+                    writemode = False
         return parts
 
     def getColors(self,obj):

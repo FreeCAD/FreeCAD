@@ -142,12 +142,12 @@
       <translation>Hãy chọn 3 đối tượng trước</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Chức năng không được hỗ trợ</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Nhấn OK</translation>
     </message>

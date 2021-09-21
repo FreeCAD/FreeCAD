@@ -168,6 +168,7 @@ from draftguitools.gui_shapestrings import ShapeString
 from draftguitools.gui_points import Point
 from draftguitools.gui_facebinders import Draft_Facebinder
 from draftguitools.gui_labels import Draft_Label
+from draftguitools.gui_hatch import Draft_Hatch
 
 # ---------------------------------------------------------------------------
 # Modifier functions

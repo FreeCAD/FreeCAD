@@ -30,6 +30,7 @@
         <file>icons/FEM_ConstraintTemperature.svg</file>
         <file>icons/FEM_ConstraintTie.svg</file>
         <file>icons/FEM_ConstraintTransform.svg</file>
+        <file>icons/FEM_ConstraintSpring.svg</file>
 
         <!-- gui command icons: element geometries -->
         <file>icons/FEM_ElementFluid1D.svg</file>
@@ -141,6 +142,8 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_es-AR.qm</file>
+        <file>translations/Fem_bg.qm</file>
 
         <!-- task panels -->
         <file>ui/ConstraintCentrif.ui</file>

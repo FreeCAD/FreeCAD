@@ -52,7 +52,7 @@ def makeSnapshotWithoutGui():
 	inp=coin.SoInput()
 	try:
 		inp.setBuffer(iv)
-	except:
+	except Exception:
 		tempPath = tempfile.gettempdir()
 		fileName = tempPath + os.sep + "cone.iv"
 		file = open(fileName, "w")

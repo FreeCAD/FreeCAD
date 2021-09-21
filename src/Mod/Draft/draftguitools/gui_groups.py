@@ -36,6 +36,7 @@ to the construction group.
 # @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide import QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -43,8 +44,8 @@ import Draft_rc
 import draftutils.utils as utils
 import draftutils.groups as groups
 import draftguitools.gui_base as gui_base
+from draftutils.translate import _tr, translate
 
-from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -63,14 +64,16 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     def __init__(self):
         super(AddToGroup, self).__init__(name=translate("draft","Add to group"))
         self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup","Ungroup")
-
+        #add new group string option
+        self.addNewGroupStr=_tr("+ Add new group")
+    
     def GetResources(self):
         """Set icon, menu and tooltip."""
         _tooltip = ()
 
         d = {'Pixmap': 'Draft_AddToGroup',
              'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup","Move to group")+"...",
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}        
         return d
 
     def Activated(self):
@@ -85,6 +88,8 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
             obj = self.doc.getObject(group)
             if obj:
                 self.labels.append(obj.Label)
+        #add new group option
+        self.labels.append(self.addNewGroupStr)
 
         # It uses the `DraftToolBar` class defined in the `DraftGui` module
         # and globally initialized in the `Gui` namespace,
@@ -96,19 +101,15 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         self.ui.sourceCmd = self
         self.ui.popupMenu(self.labels)
 
+
     def proceed(self, labelname):
         """Place the selected objects in the chosen group or ungroup them.
-
         Parameters
         ----------
         labelname: str
             The passed string with the name of the group.
             It puts the selected objects inside this group.
         """
-        # Deactivate the source command of the `DraftToolBar` class
-        # so that it doesn't do more with this command.
-        self.ui.sourceCmd = None
-
         # If the selected group matches the ungroup label,
         # remove the selection from all groups.
         if labelname == self.ungroup:
@@ -118,18 +119,41 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
                 except Exception:
                     pass
         else:
-            # Otherwise try to add all selected objects to the chosen group
-            if labelname in self.labels:
-                i = self.labels.index(labelname)
-                g = self.doc.getObject(self.groups[i])
-                for obj in Gui.Selection.getSelection():
-                    try:
-                        g.addObject(obj)
-                    except Exception:
-                        pass
+            # Deactivate the source command of the `DraftToolBar` class
+            # so that it doesn't do more with this command.
+            self.ui.sourceCmd = None
+
+            #if new group is selected then launch AddNamedGroup
+            if labelname == self.addNewGroupStr:
+               add=AddNamedGroup()
+               add.Activated()
+            else:
+            #else add selection to the selected group
+                if labelname in self.labels :
+                    i = self.labels.index(labelname)
+                    g = self.doc.getObject(self.groups[i])
+                    moveToGroup(g)
 
 
 Gui.addCommand('Draft_AddToGroup', AddToGroup())
+
+def moveToGroup(group):
+    """
+    Place the selected objects in the chosen group.
+    """
+
+    for obj in Gui.Selection.getSelection():
+        try:
+            #retrieve group's visibility
+            obj.ViewObject.Visibility = group.ViewObject.Visibility
+            group.addObject(obj)
+
+        except Exception:
+            pass
+
+    App.activeDocument().recompute(None, True, True)
+
+
 
 
 class SelectGroup(gui_base.GuiCommandNeedsSelection):
@@ -378,4 +402,59 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 Draft_AddConstruction = AddToConstruction
 Gui.addCommand('Draft_AddConstruction', AddToConstruction())
 
+
+class AddNamedGroup(gui_base.GuiCommandSimplest):
+
+    """Gui Command for the addGroup tool.
+        It adds a new named group
+    """
+    def __init__(self):
+        super().__init__(name=_tr("Add a new group with a given name"))
+
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _menu = "Add a new named group"
+        _tip = ("Add a new group with a given name.")
+
+        d = {'Pixmap': 'Draft_AddNamedGroup',
+             'MenuText': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", _menu),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", _tip)}
+        return d
+
+    def Activated(self):
+        super().Activated()
+        panel = Ui_AddNamedGroup()
+        Gui.Control.showDialog(panel)
+        panel.name.setFocus()
+
+
+Draft_AddNamedGroup = AddNamedGroup
+Gui.addCommand('Draft_AddNamedGroup', AddNamedGroup())
+
+
+class Ui_AddNamedGroup():
+    """
+    User interface for addgroup tool
+    simple label and line edit in dialogbox
+    """
+    def __init__(self):
+        self.form = QtGui.QWidget()
+        self.form.setWindowTitle(_tr("Add group"))
+        row = QtGui.QHBoxLayout(self.form)
+        lbl = QtGui.QLabel(_tr("Group name")+":")
+        self.name = QtGui.QLineEdit()
+        row.addWidget(lbl)
+        row.addWidget(self.name)
+
+
+    def accept(self):
+        group = App.activeDocument().addObject("App::DocumentObjectGroup",translate("Gui::Dialog::DlgAddProperty","Group"))
+        group.Label=self.name.text()
+        moveToGroup(group)
+        Gui.Control.closeDialog()
+
+
+
 ## @}
+

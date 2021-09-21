@@ -1456,6 +1456,7 @@ void Hole::onChanged(const App::Property *prop)
         ThreadDepth.setReadOnly(Threaded.getValue() && std::string(ThreadDepthType.getValueAsString()) != "Dimension");
     }
     else if (prop == &ThreadDepth) {
+        // Nothing else needs to be updated on ThreadDepth change
     }
     else if (prop == &UseCustomThreadClearance) {
         updateDiameterParam();

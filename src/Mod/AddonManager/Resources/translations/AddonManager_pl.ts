@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="530"/>
+      <location filename="addonmanager_workers.py" line="531"/>
       <source>Installed location</source>
       <translation>Miejsce instalacji</translation>
     </message>
@@ -22,257 +22,257 @@
       <translation>Nie można pobrać opisu makrodefinicji.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="84"/>
+      <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodatki, które mogą być zainstalowane, nie są oficjalnie częścią FreeCAD, i nie są sprawdzane przez zespół FreeCAD. Upewnij się, że wiesz, co instalujesz!</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="198"/>
+      <location filename="AddonManager.py" line="199"/>
       <source>Addon manager</source>
       <translation>Menedżer dodatków</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="203"/>
+      <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Musisz zrestartować program FreeCAD, aby zmiany odniosły skutek. Naciśnij Ok, aby zrestartować FreeCAD teraz, lub Anuluj, aby zrestartować program później.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="242"/>
+      <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Sprawdzanie aktualizacji...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="261"/>
+      <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Zastosuj</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="262"/>
+      <location filename="AddonManager.py" line="263"/>
       <source>update(s)</source>
       <translation>aktualizacja</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="265"/>
+      <location filename="AddonManager.py" line="266"/>
       <source>No update available</source>
       <translation>Brak dostępnych aktualizacji</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="432"/>
+      <location filename="AddonManager.py" line="433"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
       <translation>Makro zostało pomyślnie zainstalowane. Jest teraz dostępne w oknie dialogowym Makrodefinicje.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="434"/>
+      <location filename="AddonManager.py" line="435"/>
       <source>Unable to install</source>
       <translation>Nie można zainstalować</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="493"/>
+      <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
       <translation>Pomyślnie usunięto. Proszę zrestartować FreeCAD</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="495"/>
+      <location filename="AddonManager.py" line="496"/>
       <source>Unable to remove this addon</source>
       <translation>Nie można usunąć tego dodatku</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="501"/>
+      <location filename="AddonManager.py" line="502"/>
       <source>Macro successfully removed.</source>
       <translation>Makro zostało pomyślnie usunięte.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="503"/>
+      <location filename="AddonManager.py" line="504"/>
       <source>Macro could not be removed.</source>
       <translation>Nie można usunąć makra.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="166"/>
+      <location filename="addonmanager_workers.py" line="167"/>
       <source>Unable to download addon list.</source>
       <translation>Nie można pobrać listy dodatków.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="171"/>
+      <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
       <translation>Lista Środowisk pracy została zaktualizowana.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="733"/>
+      <location filename="addonmanager_workers.py" line="734"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Wykryto przestarzały GitPython, rozważ aktualizację za pomocą programu pip.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="291"/>
+      <location filename="addonmanager_workers.py" line="292"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Pomyślnie pobrano listę makrodefinicji.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="646"/>
+      <location filename="addonmanager_workers.py" line="647"/>
       <source>Retrieving description...</source>
       <translation>Pobieranie opisu...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="386"/>
+      <location filename="addonmanager_workers.py" line="387"/>
       <source>Retrieving info from</source>
       <translation>Pobieranie informacji z</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="528"/>
+      <location filename="addonmanager_workers.py" line="529"/>
       <source>An update is available for this addon.</source>
       <translation>Aktualizacja jest dostępna dla tego dodatku.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="516"/>
+      <location filename="addonmanager_workers.py" line="517"/>
       <source>This addon is already installed.</source>
       <translation>Ten dodatek jest już zainstalowany.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="648"/>
+      <location filename="addonmanager_workers.py" line="649"/>
       <source>Retrieving info from git</source>
       <translation>Pobieranie informacji z git</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="651"/>
+      <location filename="addonmanager_workers.py" line="652"/>
       <source>Retrieving info from wiki</source>
       <translation>Pobieranie informacji z Wiki</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="695"/>
+      <location filename="addonmanager_workers.py" line="696"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>Nie znaleziono GitPython. Zamiast tego użyto standardowego pobierania.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="700"/>
+      <location filename="addonmanager_workers.py" line="701"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Twoja wersja Pythona nie&apos; obsługuje plików ZIP. Nie można kontynuować.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="781"/>
+      <location filename="addonmanager_workers.py" line="782"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Środowisko pracy zainstalowano pomyślnie. Uruchom ponownie FreeCAD, aby zastosować zmiany.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="830"/>
+      <location filename="addonmanager_workers.py" line="831"/>
       <source>Missing workbench</source>
       <translation>Nieistniejące Środowisko pracy</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="839"/>
+      <location filename="addonmanager_workers.py" line="840"/>
       <source>Missing python module</source>
       <translation>Nieistniejący moduł Pyton</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="849"/>
+      <location filename="addonmanager_workers.py" line="850"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Brakuje opcjonalnego modułu Python (nie przeszkadza w instalacji)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="852"/>
+      <location filename="addonmanager_workers.py" line="853"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Znaleziono pewne błędy, które uniemożliwiają zainstalowanie tego środowiska</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
+      <location filename="addonmanager_workers.py" line="855"/>
       <source>Please install the missing components first.</source>
       <translation>Proszę najpierw zainstalować brakujące komponenty.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="875"/>
+      <location filename="addonmanager_workers.py" line="876"/>
       <source>Error: Unable to download</source>
       <translation>Błąd: Nie można pobrać</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="888"/>
+      <location filename="addonmanager_workers.py" line="889"/>
       <source>Successfully installed</source>
       <translation>Zainstalowano pomyślnie</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="305"/>
+      <location filename="addonmanager_workers.py" line="306"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython nie jest zainstalowany! Nie można pobrać makrodefinicji z git</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="566"/>
+      <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Zainstalowano</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="585"/>
+      <location filename="AddonManager.py" line="586"/>
       <source>Update available</source>
       <translation>Dostępna aktualizacja</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="541"/>
+      <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Wymagany restart</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="660"/>
+      <location filename="addonmanager_workers.py" line="661"/>
       <source>This macro is already installed.</source>
       <translation>Moduł jest już zainstalowany.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="794"/>
+      <location filename="addonmanager_workers.py" line="795"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Makro zostało zainstalowane i jest dostępne w menu Macrodefinicji -&gt; Menu makrodefinicji</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="542"/>
+      <location filename="addonmanager_workers.py" line="543"/>
       <source>This addon is marked as obsolete</source>
       <translation>Ten dodatek jest oznaczony jako przestarzały</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="546"/>
+      <location filename="addonmanager_workers.py" line="547"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Oznacza to, że zazwyczaj nie jest on już utrzymywany, a niektóre bardziej zaawansowane dodatki z tej listy zapewniają tę samą funkcjonalność.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="868"/>
+      <location filename="addonmanager_workers.py" line="869"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Błąd: nie można znaleźć pliku Zip z</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="314"/>
+      <location filename="addonmanager_workers.py" line="315"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation>Coś poszło nie tak z pobieraniem makr Git, prawdopodobnie plik wykonywalny Git nie występuje w podanej lokalizacjii</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="554"/>
+      <location filename="addonmanager_workers.py" line="555"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Ten dodatek jest oznaczony tylko jako Python 2</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="559"/>
+      <location filename="addonmanager_workers.py" line="560"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Te środowisko pracy nie może być dłużej utrzymywane, a zainstalowanie go w systemie Python 3 z dużym prawdopodobieństwem doprowadzi do błędów podczas uruchamiania lub podczas użytkowania.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="722"/>
+      <location filename="addonmanager_workers.py" line="723"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Użytkownik poprosił o zaktualizowanie Środowiska pracy Python 2 w systemie z obsługą Pythona 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="758"/>
+      <location filename="addonmanager_workers.py" line="759"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Środowisko pracy zaktualizowano pomyślnie. Uruchom ponownie FreeCAD, aby zastosować zmiany.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="766"/>
+      <location filename="addonmanager_workers.py" line="767"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>Użytkownik poprosił o zainstalowanie Środowiska pracy Python 2 w systemie z obsługą Pythona 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="338"/>
+      <location filename="addonmanager_workers.py" line="339"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation>Wygląda na to, że występuje problem z połączeniem się z Wiki, dlatego nie można obecnie pobrać listy makrodefinicji dostępnej na Wiki</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="428"/>
+      <location filename="addonmanager_workers.py" line="429"/>
       <source>Raw markdown displayed</source>
       <translation>Wyświetlono surowy format markdown</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="430"/>
+      <location filename="addonmanager_workers.py" line="431"/>
       <source>Python Markdown library is missing.</source>
       <translation>Brakuje biblioteki Markdown środowiska Python.</translation>
     </message>

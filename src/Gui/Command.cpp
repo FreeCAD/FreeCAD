@@ -852,34 +852,24 @@ const char * Command::endCmdHelp(void)
     return "</body></html>\n\n";
 }
 
-void Command::applyCommandData(const char* context, Action* action)
+void Command::recreateTooltip(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(
+    QString tooltip;
+    tooltip.append(QString::fromLatin1("<h3>"));
+    tooltip.append(QCoreApplication::translate(
         context, getMenuText()));
-    // build the tooltip
-        QString tooltip;
-        tooltip.append(QString::fromLatin1("<h3>"));
-        tooltip.append(QCoreApplication::translate(
-            context, getMenuText()));
-        tooltip.append(QString::fromLatin1("</h3>"));
-        QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
-        tooltip.replace(re, QString::fromLatin1("\\1\\2"));
-        tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
-        tooltip.append(QCoreApplication::translate(
-            context, getToolTipText()));
-        tooltip.append(QString::fromLatin1("<br><i>("));
-        tooltip.append(QCoreApplication::translate(
-            context, getWhatsThis()));
-        tooltip.append(QString::fromLatin1(")</i> "));
-    action->setToolTip(tooltip);
-    action->setWhatsThis(QCoreApplication::translate(
+    tooltip.append(QString::fromLatin1("</h3>"));
+    QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
+    tooltip.replace(re, QString::fromLatin1("\\1\\2"));
+    tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
+    tooltip.append(QCoreApplication::translate(
+        context, getToolTipText()));
+    tooltip.append(QString::fromLatin1("<br><i>("));
+    tooltip.append(QCoreApplication::translate(
         context, getWhatsThis()));
-    if (sStatusTip)
-        action->setStatusTip(QCoreApplication::translate(
-            context, getStatusTip()));
-    else
-        action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText()));
+    tooltip.append(QString::fromLatin1(")</i> "));
+    action->setToolTip(tooltip);
+
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
         // show shortcut inside tooltip
@@ -892,6 +882,22 @@ void Command::applyCommandData(const char* context, Action* action)
             .arg(accel, action->statusTip());
         action->setStatusTip(stip);
     }
+
+    if (sStatusTip)
+        action->setStatusTip(QCoreApplication::translate(
+            context, getStatusTip()));
+    else
+        action->setStatusTip(QCoreApplication::translate(
+            context, getToolTipText()));
+}
+
+void Command::applyCommandData(const char* context, Action* action)
+{
+    action->setText(QCoreApplication::translate(
+        context, getMenuText()));
+    recreateTooltip(context, action);
+    action->setWhatsThis(QCoreApplication::translate(
+        context, getWhatsThis()));
 }
 
 const char* Command::keySequenceToAccel(int sk) const
@@ -952,16 +958,24 @@ void Command::adjustCameraPosition()
     }
 }
 
+void Command::printConflictingAccelerators() const
+{
+    auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
+    if (cmd)
+        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+}
+
 Action * Command::createAction(void)
 {
     Action *pcAction;
-
     pcAction = new Action(this,getMainWindow());
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
-
     return pcAction;
 }
 
@@ -1056,7 +1070,7 @@ void GroupCommand::setup(Action *pcAction) {
         const char *statustip = cmd->getStatusTip();
         if (!statustip || '\0' == *statustip)
             statustip = tooltip;
-        pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
+        recreateTooltip(context, pcAction);
         pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
     }
 }
@@ -1125,6 +1139,9 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
@@ -1327,6 +1344,9 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
@@ -1838,4 +1858,58 @@ void CommandManager::updateCommands(const char* sContext, int mode)
             }
         }
     }
+}
+
+const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* accel, const Command* ignore) const
+{
+    if (!accel || accel[0] == '\0')
+        return nullptr;
+
+    QString newCombo = QString::fromLatin1(accel);
+    if (newCombo.isEmpty())
+        return nullptr;
+    auto newSequence = QKeySequence::fromString(newCombo);
+    if (newSequence.count() == 0)
+        return nullptr;
+
+    // Does this command shortcut conflict with other commands already defined?
+    auto commands = Application::Instance->commandManager().getAllCommands();
+    for (const auto& cmd : commands) {
+        if (cmd == ignore)
+            continue;
+        auto existingAccel = cmd->getAccel();
+        if (!existingAccel || existingAccel[0] == '\0')
+            continue;
+
+        // Three possible conflict scenarios:
+        // 1) Exactly the same combo as another command
+        // 2) The new command is a one-char combo that overrides an existing two-char combo
+        // 3) The old command is a one-char combo that overrides the new command
+
+        QString existingCombo = QString::fromLatin1(existingAccel);
+        if (existingCombo.isEmpty())
+            continue;
+        auto existingSequence = QKeySequence::fromString(existingCombo);
+        if (existingSequence.count() == 0)
+            continue;
+
+        // Exact match
+        if (existingSequence == newSequence)
+            return cmd;
+
+        // If it's not exact, then see if one of the sequences is a partial match for
+        // the beginning of the other sequence
+        auto numCharsToCheck = std::min(existingSequence.count(), newSequence.count());
+        bool firstNMatch = true;
+        for (int i = 0; i < numCharsToCheck; ++i) {
+            if (newSequence[i] != existingSequence[i]) {
+                firstNMatch = false;
+                break;
+            }
+        }
+        if (firstNMatch)
+            return cmd;
+    }
+
+    return nullptr;
 }

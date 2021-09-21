@@ -64,9 +64,9 @@ public:
     /// implement this in derived classes
     virtual void initialize() = 0;
     /// implement this in derived classes
-    virtual void terminate() = 0;
+    virtual void terminate(bool abort = false) = 0;
     void grabMouseModel(Gui::View3DInventorViewer*);
-    void releaseMouseModel(void);
+    void releaseMouseModel(bool abort = false);
     const std::vector<SbVec2s>& getPositions() const {
         return _clPoly;
     }
@@ -134,7 +134,7 @@ public:
     void setColor(float r, float g, float b, float a = 1.0);
 
     virtual void initialize();
-    virtual void terminate();
+    virtual void terminate(bool abort = false);
 
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
@@ -213,7 +213,7 @@ public:
     void setColor(float r, float g, float b, float a = 1.0);
 
     virtual void initialize();
-    virtual void terminate();
+    virtual void terminate(bool abort = false);
 
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
@@ -253,7 +253,7 @@ class GuiExport BoxZoomSelection : public RubberbandSelection
 public:
     BoxZoomSelection();
     ~BoxZoomSelection();
-    void terminate();
+    void terminate(bool abort = false);
 };
 
 } // namespace Gui

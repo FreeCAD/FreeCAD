@@ -112,6 +112,7 @@ public:
 
     //backwards compatibility: profile property was renamed and has different type now
     virtual void Restore(Base::XMLReader& reader);
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 
     // calculate the through all length
     double getThroughAllLength() const;

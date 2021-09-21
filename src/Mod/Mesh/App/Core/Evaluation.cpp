@@ -52,7 +52,7 @@ MeshOrientationVisitor::MeshOrientationVisitor() : _nonuniformOrientation(false)
 }
 
 bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                                    unsigned long ulFInd, unsigned long ulLevel)
+                                    FacetIndex ulFInd, unsigned long ulLevel)
 {
     (void)ulFInd;
     (void)ulLevel;
@@ -69,13 +69,13 @@ bool MeshOrientationVisitor::HasNonUnifomOrientedFacets() const
     return _nonuniformOrientation;
 }
 
-MeshOrientationCollector::MeshOrientationCollector(std::vector<unsigned long>& aulIndices, std::vector<unsigned long>& aulComplement)
+MeshOrientationCollector::MeshOrientationCollector(std::vector<FacetIndex>& aulIndices, std::vector<FacetIndex>& aulComplement)
  : _aulIndices(aulIndices), _aulComplement(aulComplement)
 {
 }
 
 bool MeshOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                                      unsigned long ulFInd, unsigned long ulLevel)
+                                      FacetIndex ulFInd, unsigned long ulLevel)
 {
     (void)ulLevel;
     // different orientation of rclFacet and rclFrom
@@ -104,13 +104,13 @@ bool MeshOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshFacet
     return true;
 }
 
-MeshSameOrientationCollector::MeshSameOrientationCollector(std::vector<unsigned long>& aulIndices)
+MeshSameOrientationCollector::MeshSameOrientationCollector(std::vector<FacetIndex>& aulIndices)
   : _aulIndices(aulIndices)
 {
 }
 
 bool MeshSameOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, 
-                                          unsigned long ulFInd, unsigned long ulLevel)
+                                          FacetIndex ulFInd, unsigned long ulLevel)
 {
     // different orientation of rclFacet and rclFrom
     (void)ulLevel;
@@ -139,7 +139,7 @@ bool MeshEvalOrientation::Evaluate ()
     MeshFacetArray::_TConstIterator iEnd = rFAry.end();
     for (MeshFacetArray::_TConstIterator it = iBeg; it != iEnd; ++it) {
         for (int i = 0; i < 3; i++) {
-            if (it->_aulNeighbours[i] != ULONG_MAX) {
+            if (it->_aulNeighbours[i] != FACET_INDEX_MAX) {
                 const MeshFacet& rclFacet = iBeg[it->_aulNeighbours[i]];
                 for (int j = 0; j < 3; j++) {
                     if (it->_aulPoints[i] == rclFacet._aulPoints[j]) {
@@ -156,7 +156,7 @@ bool MeshEvalOrientation::Evaluate ()
     return true;
 }
 
-unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<unsigned long>& inds) const
+unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<FacetIndex>& inds) const
 {
     // All faces with wrong orientation (i.e. adjacent faces with a normal flip and their neighbours)
     // build a segment and are marked as TMP0. Now we check all border faces of the segments with 
@@ -166,10 +166,10 @@ unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<unsigned 
     // algorithm fail to detect the faces with wrong orientation.
     const MeshFacetArray& rFAry = _rclMesh.GetFacets();
     MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    for (std::vector<FacetIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         const MeshFacet& f = iBeg[*it];
         for (int i = 0; i < 3; i++) {
-            if (f._aulNeighbours[i] != ULONG_MAX) {
+            if (f._aulNeighbours[i] != FACET_INDEX_MAX) {
                 const MeshFacet& n = iBeg[f._aulNeighbours[i]];
                 if (f.IsFlag(MeshFacet::TMP0) && !n.IsFlag(MeshFacet::TMP0)) {
                     for (int j = 0; j < 3; j++) {
@@ -183,15 +183,15 @@ unsigned long MeshEvalOrientation::HasFalsePositives(const std::vector<unsigned 
         }
     }
 
-    return ULONG_MAX;
+    return FACET_INDEX_MAX;
 }
 
-std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
+std::vector<FacetIndex> MeshEvalOrientation::GetIndices() const
 {
-    unsigned long ulStartFacet, ulVisited;
+    FacetIndex ulStartFacet, ulVisited;
 
     if (_rclMesh.CountFacets() == 0)
-        return std::vector<unsigned long>();
+        return std::vector<FacetIndex>();
 
     // reset VISIT flags
     MeshAlgorithm cAlg(_rclMesh);
@@ -205,10 +205,10 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
 
     ulStartFacet = 0;
 
-    std::vector<unsigned long> uIndices, uComplement;
+    std::vector<FacetIndex> uIndices, uComplement;
     MeshOrientationCollector clHarmonizer(uIndices, uComplement);
 
-    while (ulStartFacet !=  ULONG_MAX) {
+    while (ulStartFacet !=  FACET_INDEX_MAX) {
         unsigned long wrongFacets = uIndices.size();
 
         uComplement.clear();
@@ -234,7 +234,7 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
         if (iTri < iEnd)
             ulStartFacet = iTri - iBeg;
         else
-            ulStartFacet = ULONG_MAX;
+            ulStartFacet = FACET_INDEX_MAX;
     }
 
     // in some very rare cases where we have some strange artifacts in the mesh structure
@@ -242,23 +242,23 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
     cAlg.ResetFacetFlag(MeshFacet::TMP0);
     cAlg.SetFacetsFlag(uIndices, MeshFacet::TMP0);
     ulStartFacet = HasFalsePositives(uIndices);
-    while (ulStartFacet != ULONG_MAX) {
+    while (ulStartFacet != FACET_INDEX_MAX) {
         cAlg.ResetFacetsFlag(uIndices, MeshFacet::VISIT);
-        std::vector<unsigned long> falsePos;
+        std::vector<FacetIndex> falsePos;
         MeshSameOrientationCollector coll(falsePos);
         _rclMesh.VisitNeighbourFacets(coll, ulStartFacet);
 
         std::sort(uIndices.begin(), uIndices.end());
         std::sort(falsePos.begin(), falsePos.end());
 
-        std::vector<unsigned long> diff;
-        std::back_insert_iterator<std::vector<unsigned long> > biit(diff);
+        std::vector<FacetIndex> diff;
+        std::back_insert_iterator<std::vector<FacetIndex> > biit(diff);
         std::set_difference(uIndices.begin(), uIndices.end(), falsePos.begin(), falsePos.end(), biit);
         uIndices = diff;
 
         cAlg.ResetFacetFlag(MeshFacet::TMP0);
         cAlg.SetFacetsFlag(uIndices, MeshFacet::TMP0);
-        unsigned long current = ulStartFacet;
+        FacetIndex current = ulStartFacet;
         ulStartFacet = HasFalsePositives(uIndices);
         if (current == ulStartFacet)
             break; // avoid an endless loop
@@ -312,7 +312,8 @@ namespace MeshCore {
 
 struct Edge_Index
 {
-    unsigned long p0, p1, f;
+    PointIndex p0, p1;
+    FacetIndex f;
 };
 
 struct Edge_Less
@@ -347,8 +348,8 @@ bool MeshEvalTopology::Evaluate ()
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
-            item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
-            item.p1 = std::max<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
             item.f  = pI - rclFAry.begin();
             edges.push_back(item);
         }
@@ -360,12 +361,12 @@ bool MeshEvalTopology::Evaluate ()
     std::sort(edges.begin(), edges.end(), Edge_Less());
 
     // search for non-manifold edges
-    unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
+    PointIndex p0 = POINT_INDEX_MAX, p1 = POINT_INDEX_MAX;
     nonManifoldList.clear();
     nonManifoldFacets.clear();
 
     int count = 0;
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
     std::vector<Edge_Index>::iterator pE;
     for (pE = edges.begin(); pE != edges.end(); ++pE) {
         if (p0 == pE->p0 && p1 == pE->p1) {
@@ -391,7 +392,7 @@ bool MeshEvalTopology::Evaluate ()
 }
 
 // generate indexed edge list which tangents non-manifolds
-void MeshEvalTopology::GetFacetManifolds (std::vector<unsigned long> &raclFacetIndList) const
+void MeshEvalTopology::GetFacetManifolds (std::vector<FacetIndex> &raclFacetIndList) const
 {
     raclFacetIndList.clear();
     const MeshFacetArray& rclFAry = _rclMesh.GetFacets();
@@ -399,9 +400,9 @@ void MeshEvalTopology::GetFacetManifolds (std::vector<unsigned long> &raclFacetI
 
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-            std::pair<unsigned long,unsigned long> edge  = std::make_pair(ulPt0, ulPt1);
+            PointIndex ulPt0 = std::min<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            std::pair<PointIndex,PointIndex> edge  = std::make_pair(ulPt0, ulPt1);
 
             if (std::find(nonManifoldList.begin(), nonManifoldList.end(), edge) != nonManifoldList.end())
                 raclFacetIndList.push_back(pI - rclFAry.begin());
@@ -430,11 +431,11 @@ bool MeshFixTopology::Fixup ()
 #else
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     deletedFaces.reserve(3 * nonManifoldList.size()); // allocate some memory
-    std::list<std::vector<unsigned long> >::const_iterator it;
+    std::list<std::vector<FacetIndex> >::const_iterator it;
     for (it = nonManifoldList.begin(); it != nonManifoldList.end(); ++it) {
-        std::vector<unsigned long> non_mf;
+        std::vector<FacetIndex> non_mf;
         non_mf.reserve(it->size());
-        for (std::vector<unsigned long>::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
+        for (std::vector<FacetIndex>::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
             // facet is only connected with one edge and there causes a non-manifold
             unsigned short numOpenEdges = rFaces[*jt].CountOpenEdges();
             if (numOpenEdges == 2)
@@ -474,10 +475,10 @@ bool MeshEvalPointManifolds::Evaluate ()
     MeshCore::MeshRefPointToFacets vf_it(_rclMesh);
 
     unsigned long ctPoints = _rclMesh.CountPoints();
-    for (unsigned long index=0; index < ctPoints; index++) {
+    for (PointIndex index=0; index < ctPoints; index++) {
         // get the local neighbourhood of the point
-        const std::set<unsigned long>& nf = vf_it[index];
-        const std::set<unsigned long>& np = vv_it[index];
+        const std::set<FacetIndex>& nf = vf_it[index];
+        const std::set<PointIndex>& np = vv_it[index];
 
         std::set<unsigned long>::size_type sp, sf;
         sp = np.size();
@@ -487,7 +488,7 @@ bool MeshEvalPointManifolds::Evaluate ()
         // for a non-manifold point the number of adjacent points is higher by more than one than the number of shared faces
         if (sp > sf + 1) {
             nonManifoldPoints.push_back(index);
-            std::vector<unsigned long> faces;
+            std::vector<FacetIndex> faces;
             faces.insert(faces.end(), nf.begin(), nf.end());
             this->facetsOfNonManifoldPoints.push_back(faces);
         }
@@ -496,9 +497,9 @@ bool MeshEvalPointManifolds::Evaluate ()
     return this->nonManifoldPoints.empty();
 }
 
-void MeshEvalPointManifolds::GetFacetIndices (std::vector<unsigned long> &facets) const
+void MeshEvalPointManifolds::GetFacetIndices (std::vector<FacetIndex> &facets) const
 {
-    std::list<std::vector<unsigned long> >::const_iterator it;
+    std::list<std::vector<FacetIndex> >::const_iterator it;
     for (it = facetsOfNonManifoldPoints.begin(); it != facetsOfNonManifoldPoints.end(); ++it) {
         facets.insert(facets.end(), it->begin(), it->end());
     }
@@ -576,11 +577,11 @@ bool MeshEvalSingleFacet::Evaluate ()
 
 bool MeshFixSingleFacet::Fixup ()
 {
-  std::vector<unsigned long> aulInvalids;
+  std::vector<FacetIndex> aulInvalids;
 //  MeshFacetArray& raFacets = _rclMesh._aclFacetArray;
-  for ( std::vector<std::list<unsigned long> >::const_iterator it=_raclManifoldList.begin();it!=_raclManifoldList.end();++it )
+  for ( std::vector<std::list<FacetIndex> >::const_iterator it=_raclManifoldList.begin();it!=_raclManifoldList.end();++it )
   {
-    for ( std::list<unsigned long>::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 )
+    for ( std::list<FacetIndex>::const_iterator it2 = it->begin(); it2 != it->end(); ++it2 )
     {
       aulInvalids.push_back(*it2);
 //      MeshFacet& rF = raFacets[*it2];
@@ -614,7 +615,7 @@ bool MeshEvalSelfIntersection::Evaluate ()
     Base::SequencerLauncher seq("Checking for self-intersections...", ulGridX*ulGridY*ulGridZ);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         //Get the facet indices, belonging to the current grid unit
-        std::vector<unsigned long> aulGridElements;
+        std::vector<FacetIndex> aulGridElements;
         clGridIter.GetElements(aulGridElements);
 
         seq.next();
@@ -623,12 +624,12 @@ bool MeshEvalSelfIntersection::Evaluate ()
 
         MeshGeomFacet facet1, facet2;
         Base::Vector3f pt1, pt2;
-        for (std::vector<unsigned long>::iterator it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
+        for (std::vector<FacetIndex>::iterator it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
             const Base::BoundBox3f& box1 = boxes[*it];
             cMFI.Set(*it);
             facet1 = *cMFI;
             const MeshFacet& rface1 = rFaces[*it];
-            for (std::vector<unsigned long>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
+            for (std::vector<FacetIndex>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
                 if (jt == it) // the identical facet
                     continue;
                 // If the facets share a common vertex we do not check for self-intersections because they 
@@ -665,7 +666,7 @@ bool MeshEvalSelfIntersection::Evaluate ()
     return true;
 }
 
-void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<unsigned long, unsigned long> >& indices,
+void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<FacetIndex, FacetIndex> >& indices,
                                                 std::vector<std::pair<Base::Vector3f, Base::Vector3f> >& intersection) const
 {
     intersection.reserve(indices.size());
@@ -673,7 +674,7 @@ void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<unsi
     MeshFacetIterator cMF2(_rclMesh);
 
     Base::Vector3f pt1, pt2;
-    std::vector<std::pair<unsigned long, unsigned long> >::const_iterator it;
+    std::vector<std::pair<FacetIndex, FacetIndex> >::const_iterator it;
     for (it = indices.begin(); it != indices.end(); ++it) {
         cMF1.Set(it->first);
         cMF2.Set(it->second);
@@ -689,7 +690,7 @@ void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<unsi
     }
 }
 
-void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned long, unsigned long> >& intersection) const
+void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<FacetIndex, FacetIndex> >& intersection) const
 {
     // Contains bounding boxes for every facet 
     std::vector<Base::BoundBox3f> boxes;
@@ -711,7 +712,7 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
     Base::SequencerLauncher seq("Checking for self-intersections...", ulGridX*ulGridY*ulGridZ);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         //Get the facet indices, belonging to the current grid unit
-        std::vector<unsigned long> aulGridElements;
+        std::vector<FacetIndex> aulGridElements;
         clGridIter.GetElements(aulGridElements);
 
         seq.next(true);
@@ -720,12 +721,12 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
 
         MeshGeomFacet facet1, facet2;
         Base::Vector3f pt1, pt2;
-        for (std::vector<unsigned long>::iterator it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
+        for (std::vector<FacetIndex>::iterator it = aulGridElements.begin(); it != aulGridElements.end(); ++it) {
             const Base::BoundBox3f& box1 = boxes[*it];
             cMFI.Set(*it);
             facet1 = *cMFI;
             const MeshFacet& rface1 = rFaces[*it];
-            for (std::vector<unsigned long>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
+            for (std::vector<FacetIndex>::iterator jt = it; jt != aulGridElements.end(); ++jt) {
                 if (jt == it) // the identical facet
                     continue;
                 // If the facets share a common vertex we do not check for self-intersections because they 
@@ -759,11 +760,11 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
     }
 }
 
-std::vector<unsigned long> MeshFixSelfIntersection::GetFacets() const
+std::vector<FacetIndex> MeshFixSelfIntersection::GetFacets() const
 {
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-    for (std::vector<std::pair<unsigned long, unsigned long> >::const_iterator
+    for (std::vector<std::pair<FacetIndex, FacetIndex> >::const_iterator
         it = selfIntersectons.begin(); it != selfIntersectons.end(); ++it) {
         unsigned short numOpenEdges1 = rFaces[it->first].CountOpenEdges();
         unsigned short numOpenEdges2 = rFaces[it->second].CountOpenEdges();
@@ -819,8 +820,8 @@ bool MeshEvalNeighbourhood::Evaluate ()
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
-            item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
-            item.p1 = std::max<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
             item.f  = pI - rclFAry.begin();
             edges.push_back(item);
         }
@@ -831,8 +832,8 @@ bool MeshEvalNeighbourhood::Evaluate ()
     // sort the edges
     std::sort(edges.begin(), edges.end(), Edge_Less());
 
-    unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
-    unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
+    PointIndex p0 = POINT_INDEX_MAX, p1 = POINT_INDEX_MAX;
+    PointIndex f0 = FACET_INDEX_MAX, f1 = FACET_INDEX_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
     for (pE = edges.begin(); pE != edges.end(); ++pE) {
@@ -858,7 +859,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
                 const MeshFacet& rFace = rclFAry[f0];
                 unsigned short side = rFace.Side(p0,p1);
                 // should be "open edge" but isn't marked as such
-                if (rFace._aulNeighbours[side] != ULONG_MAX)
+                if (rFace._aulNeighbours[side] != FACET_INDEX_MAX)
                     return false;
             }
 
@@ -872,9 +873,9 @@ bool MeshEvalNeighbourhood::Evaluate ()
     return true;
 }
 
-std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
+std::vector<FacetIndex> MeshEvalNeighbourhood::GetIndices() const
 {
-    std::vector<unsigned long> inds;
+    std::vector<FacetIndex> inds;
     const MeshFacetArray& rclFAry = _rclMesh.GetFacets();
     std::vector<Edge_Index> edges;
     edges.reserve(3*rclFAry.size());
@@ -885,8 +886,8 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
     for (pI = rclFAry.begin(); pI != rclFAry.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
-            item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
-            item.p1 = std::max<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
             item.f  = pI - rclFAry.begin();
             edges.push_back(item);
         }
@@ -897,8 +898,8 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
     // sort the edges
     std::sort(edges.begin(), edges.end(), Edge_Less());
 
-    unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
-    unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
+    PointIndex p0 = POINT_INDEX_MAX, p1 = POINT_INDEX_MAX;
+    PointIndex f0 = FACET_INDEX_MAX, f1 = FACET_INDEX_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
     for (pE = edges.begin(); pE != edges.end(); ++pE) {
@@ -926,7 +927,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
                 const MeshFacet& rFace = rclFAry[f0];
                 unsigned short side = rFace.Side(p0,p1);
                 // should be "open edge" but isn't marked as such
-                if (rFace._aulNeighbours[side] != ULONG_MAX)
+                if (rFace._aulNeighbours[side] != FACET_INDEX_MAX)
                     inds.push_back(f0);
             }
 
@@ -950,7 +951,7 @@ bool MeshFixNeighbourhood::Fixup()
     return true;
 }
 
-void MeshKernel::RebuildNeighbours (unsigned long index)
+void MeshKernel::RebuildNeighbours (FacetIndex index)
 {
     std::vector<Edge_Index> edges;
     edges.reserve(3 * (this->_aclFacetArray.size() - index));
@@ -961,8 +962,8 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     for (pI = pB + index; pI != this->_aclFacetArray.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
             Edge_Index item;
-            item.p0 = std::min<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
-            item.p1 = std::max<unsigned long>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p0 = std::min<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
+            item.p1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i+1)%3]);
             item.f  = pI - pB;
             edges.push_back(item);
         }
@@ -973,8 +974,8 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     int threads = std::max(1, QThread::idealThreadCount());
     MeshCore::parallel_sort(edges.begin(), edges.end(), Edge_Less(), threads);
 
-    unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
-    unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
+    PointIndex p0 = POINT_INDEX_MAX, p1 = POINT_INDEX_MAX;
+    PointIndex f0 = FACET_INDEX_MAX, f1 = FACET_INDEX_MAX;
     int count = 0;
     std::vector<Edge_Index>::iterator pE;
     for (pE = edges.begin(); pE != edges.end(); ++pE) {
@@ -996,7 +997,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
             else if (count == 1) {
                 MeshFacet& rFace = this->_aclFacetArray[f0];
                 unsigned short side = rFace.Side(p0,p1);
-                rFace._aulNeighbours[side] = ULONG_MAX;
+                rFace._aulNeighbours[side] = FACET_INDEX_MAX;
             }
 
             p0 = pE->p0;
@@ -1019,11 +1020,11 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     else if (count == 1) {
         MeshFacet& rFace = this->_aclFacetArray[f0];
         unsigned short side = rFace.Side(p0,p1);
-        rFace._aulNeighbours[side] = ULONG_MAX;
+        rFace._aulNeighbours[side] = FACET_INDEX_MAX;
     }
 }
 
-void MeshKernel::RebuildNeighbours (void)
+void MeshKernel::RebuildNeighbours ()
 {
     // complete rebuild
     RebuildNeighbours(0);

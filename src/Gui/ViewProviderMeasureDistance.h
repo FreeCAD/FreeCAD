@@ -56,6 +56,7 @@ protected:
 private:
     View3DInventorViewer *view;
     ViewProviderPointMarker *vp;
+    bool previousSelectionEn;
 };
 
 class GuiExport ViewProviderPointMarker : public ViewProviderDocumentObject
@@ -107,6 +108,8 @@ private:
     SoTranslation    * pTranslation;
     SoCoordinate3    * pCoords;
     SoIndexedLineSet * pLines;
+
+    static void endMeasureDistanceMode(void * ud, Gui::View3DInventorViewer* view, SoEventCallback * n, PointMarker *pm);
 };
 
 } //namespace Gui

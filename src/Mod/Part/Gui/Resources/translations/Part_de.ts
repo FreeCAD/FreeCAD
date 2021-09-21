@@ -346,6 +346,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Teilen zu einem Verbund</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
@@ -380,16 +390,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 oder mit den Formen innerhalb einer Verbindung durchführen.
 Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden.
 Ein 'Compoundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

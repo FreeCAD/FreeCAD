@@ -227,6 +227,18 @@ public:
     virtual ~PropertyPressure(){}
 };
 
+/** Stiffness property
+ * This is a property for representing stiffness. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyStiffness: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyStiffness(void);
+    virtual ~PropertyStiffness(){}
+};
+
 /** Force property
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.

@@ -234,35 +234,8 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
             ui->editShortcut->clear();
         }
 
-        // update the tool tip
-        QString toolTip = QCoreApplication::translate(cmd->className(),
-            cmd->getToolTipText());
-        if (!nativeText.isEmpty()) {
-            if (!toolTip.isEmpty()) {
-                QString tip = QString::fromLatin1("%1 (%2)")
-                    .arg(toolTip, nativeText);
-                action->setToolTip(tip);
-            }
-        }
-        else {
-            action->setToolTip(toolTip);
-        }
-
-        // update the status tip
-        QString statusTip = QCoreApplication::translate(cmd->className(),
-            cmd->getStatusTip());
-        if (statusTip.isEmpty())
-            statusTip = toolTip;
-        if (!nativeText.isEmpty()) {
-            if (!statusTip.isEmpty()) {
-                QString tip = QString::fromLatin1("(%1)\t%2")
-                    .arg(nativeText, statusTip);
-                action->setStatusTip(tip);
-            }
-        }
-        else {
-            action->setStatusTip(statusTip);
-        }
+        // update the tool tip (and status tip)
+        cmd->recreateTooltip(cmd->className(), action);
 
         // The shortcuts for macros are store in a different location,
         // also override the command's shortcut directly
@@ -313,6 +286,9 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
         ui->accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
         hGrp->RemoveASCII(name.constData());
+
+        // update the tool tip (and status tip)
+        cmd->recreateTooltip(cmd->className(), cmd->getAction());
     }
 
     ui->buttonReset->setEnabled( false );
@@ -327,6 +303,10 @@ void DlgCustomKeyboardImp::on_buttonResetAll_clicked()
         if ((*it)->getAction()) {
           (*it)->getAction()->setShortcut(QKeySequence(QString::fromLatin1((*it)->getAccel()))
                                           .toString(QKeySequence::NativeText));
+
+
+          // update the tool tip (and status tip)
+          (*it)->recreateTooltip((*it)->className(), (*it)->getAction());
         }
     }
 

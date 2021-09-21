@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Domyślne</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Przemieszczenie</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Cięcie</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kolor</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -1233,7 +1252,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Kolor kreślenia:</translation>
+      <translation>Kolor wykresu:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -3274,20 +3293,51 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
       <translation>Niezaładowane Środowiska pracy</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Załaduj wybrane Środowiska pracy, dodając ich konfigurację do okna preferencji głównych.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation>Nazwa środowiska pracy</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Załaduj wybrane</translation>
+      <source>Autoload?</source>
+      <translation>Wczytać automatycznie?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dostępne niezaładowane Środowiska pracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation>Wczytaj teraz</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby oszczędzać zasoby, FreeCAD nie ładuje Środowisk pracy, dopóki nie zostaną użyte. Ich załadowanie może zapewnić dostęp do dodatkowych preferencji związanych z ich funkcjonalnością.&lt;/p&gt;&lt;p&gt;Następujące Środowiska pracy są dostępne w twojej instalacji, ale nie są jeszcze załadowane:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby oszczędzać zasoby, FreeCAD nie ładuje środowisk pracy, dopóki nie zostaną użyte. Ich załadowanie może zapewnić dostęp do dodatkowych preferencji związanych z ich funkcjonalnością.&lt;/p&gt;&lt;p&gt;Następujące środowiska pracy są dostępne w twojej instalacji, ale nie są jeszcze załadowane:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Środowiska pracy</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Wczytaj automatycznie</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Jeśli zaznaczone</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>zostanie załadowany automatycznie po uruchomieniu programu FreeCAD</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Jest to bieżący moduł startowy i musi być automatycznie załadowany. Aby zmienić ustawienia, patrz: Preferencje → Ogólne → Uruchamianie.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Wczytano</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Wczytaj teraz</translation>
     </message>
   </context>
   <context>
@@ -4645,6 +4695,16 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
       <source>Partial</source>
       <translation>Częściowo</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -5733,7 +5793,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Box select</source>
-      <translation>Zaznacz obszar</translation>
+      <translation>Zaznacz obszarem</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -7934,7 +7994,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Unnamed</source>
-      <translation>Bez nazwy</translation>
+      <translation>Nienazwany</translation>
     </message>
   </context>
   <context>
@@ -8257,7 +8317,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Save All</source>
-      <translation>Zapisz wszystko</translation>
+      <translation>Zapisz wszystkie</translation>
     </message>
     <message>
       <source>Save all opened document</source>
@@ -8287,7 +8347,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation>Zapisz i &amp;kopiuj...</translation>
+      <translation>Zapisz jako &amp;kopię ...</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
@@ -8723,6 +8783,17 @@ Physical path: </source>
     <message>
       <source>Start the units calculator</source>
       <translation>Uruchom kalkulator jednostek</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>
@@ -9404,7 +9475,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Powiększ pole</translation>
+      <translation>Powiększ obszar</translation>
     </message>
   </context>
   <context>

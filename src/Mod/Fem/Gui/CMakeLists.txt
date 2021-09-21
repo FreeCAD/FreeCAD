@@ -80,6 +80,7 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintPlaneRotation.ui
     TaskFemConstraintContact.ui
     TaskFemConstraintTransform.ui
+    TaskFemConstraintSpring.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
     TaskDriver.ui
@@ -154,6 +155,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintPressure.ui
     TaskFemConstraintPressure.cpp
     TaskFemConstraintPressure.h
+    TaskFemConstraintSpring.ui
+    TaskFemConstraintSpring.cpp
+    TaskFemConstraintSpring.h
     TaskFemConstraintGear.cpp
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.cpp
@@ -224,6 +228,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintFluidBoundary.h
     ViewProviderFemConstraintPressure.cpp
     ViewProviderFemConstraintPressure.h
+    ViewProviderFemConstraintSpring.cpp
+    ViewProviderFemConstraintSpring.h
     ViewProviderFemConstraintGear.cpp
     ViewProviderFemConstraintGear.h
     ViewProviderFemConstraintPulley.cpp

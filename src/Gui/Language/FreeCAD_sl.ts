@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Privzeti</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Preoblikuj</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Prerez</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Barva</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3278,20 +3297,51 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
       <translation>Odložena delovna okolja</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Naloži izbrana delovna okolja in njihova prednastavitvena okna dodaj k pogovornemu oknu s prednastavitvami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Workbench Name</source>
+      <translation>Ime delovnega okolja</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Naloži izbrano</translation>
+      <source>Autoload?</source>
+      <translation>Samodejno nalaganje?</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Odložena delovna okolja, ki so na voljo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Load Now</source>
+      <translation>Naloži zdaj</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja, ki niso še naložena:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Delovno okolje</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Samodejno nalaganje</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Če je označeno</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>bo samodejno naloženo ob FreeCAD-ovem zagonu</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Takšen je trenutni zagonski modul, ki mora biti samodejno naložen. Če želite to spremeniti, pojdite ne Prednastavitve/Splošno/Samodejno nalaganje.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Naloženo</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Naloži zdaj</translation>
     </message>
   </context>
   <context>
@@ -4645,6 +4695,16 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Delno</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -8733,6 +8793,17 @@ Tvarna pot: </translation>
     <message>
       <source>Start the units calculator</source>
       <translation>Zažene računalo enot</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
     </message>
   </context>
   <context>

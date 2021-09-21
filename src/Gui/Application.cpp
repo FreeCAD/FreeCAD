@@ -1244,6 +1244,50 @@ void Application::tryClose(QCloseEvent * e)
     }
 }
 
+int Application::getUserEditMode(const std::string &mode) const
+{
+    if (mode.empty()) {
+        return userEditMode;
+    }
+    for (auto const &uem : userEditModes) {
+        if (uem.second == mode) {
+            return uem.first;
+        }
+    }
+    return -1;
+}
+
+std::string Application::getUserEditModeName(int mode) const
+{
+    if (mode == -1) {
+        return userEditModes.at(userEditMode);
+    }
+    if (userEditModes.find(mode) != userEditModes.end()) {
+        return userEditModes.at(mode);
+    }
+    return "";
+}
+
+bool Application::setUserEditMode(int mode)
+{
+    if (userEditModes.find(mode) != userEditModes.end() && userEditMode != mode) {
+        userEditMode = mode;
+        this->signalUserEditModeChanged(userEditMode);
+        return true;
+    }
+    return false;
+}
+
+bool Application::setUserEditMode(const std::string &mode)
+{
+    for (auto const &uem : userEditModes) {
+        if (uem.second == mode) {
+            return setUserEditMode(uem.first);
+        }
+    }
+    return false;
+}
+
 /**
  * Activate the matching workbench to the registered workbench handler with name \a name.
  * The handler must be an instance of a class written in Python.

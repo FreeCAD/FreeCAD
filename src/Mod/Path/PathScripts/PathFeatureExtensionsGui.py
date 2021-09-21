@@ -755,7 +755,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             return _ext
 
     def _resetCachedExtensions(self):
-        PathLog.error("_resetCachedExtensions()")
+        PathLog.debug("_resetCachedExtensions()")
         reset = dict()
         # Keep waterline extensions as they will not change
         for k in self.extensionsCache.keys():

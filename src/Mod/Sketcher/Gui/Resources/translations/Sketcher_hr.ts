@@ -96,17 +96,17 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6943"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6935"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6944"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6936"/>
       <source>Carbon copy</source>
       <translation>Indigo kopija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6945"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6937"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Kopira geometriju drugu skicu</translation>
     </message>
@@ -285,27 +285,27 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5335"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5344"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5336"/>
       <source>Create circle</source>
       <translation>Napravi krug</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5345"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5337"/>
       <source>Create a circle in the sketcher</source>
       <translation>Stvaranje kruga u skici</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5414"/>
       <source>Center and rim point</source>
       <translation>Centar i rubna točka</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5426"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <source>3 rim points</source>
       <translation>3 rubne točke</translation>
     </message>
@@ -356,27 +356,27 @@
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5920"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5912"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5921"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5913"/>
       <source>Fillets</source>
       <translation type="unfinished">Fillets</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5922"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5914"/>
       <source>Create a fillet between two lines</source>
       <translation type="unfinished">Create a fillet between two lines</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5997"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5989"/>
       <source>Sketch fillet</source>
       <translation type="unfinished">Sketch fillet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6001"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5993"/>
       <source>Constraint-preserving sketch fillet</source>
       <translation type="unfinished">Constraint-preserving sketch fillet</translation>
     </message>
@@ -417,52 +417,52 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7586"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7578"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7587"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7579"/>
       <source>Create regular polygon</source>
       <translation>Stvorite pravilan poligon</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7588"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7580"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Stvorite pravilan poligon u skici</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7695"/>
       <source>Triangle</source>
       <translation>Trokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7699"/>
       <source>Square</source>
       <translation>Kvadrat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7703"/>
       <source>Pentagon</source>
       <translation>Peterokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7707"/>
       <source>Hexagon</source>
       <translation>Šesterokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7711"/>
       <source>Heptagon</source>
       <translation>Sedmerokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7723"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7715"/>
       <source>Octagon</source>
       <translation>Osmerokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7727"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7719"/>
       <source>Regular polygon</source>
       <translation>Pravilni poligon</translation>
     </message>
@@ -936,17 +936,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5316"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5308"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5317"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5309"/>
       <source>Create circle by three points</source>
       <translation>Stvori krug kroz tri točke</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5318"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Stvori krug kroz tri obodne točke</translation>
     </message>
@@ -1062,17 +1062,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5580"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5572"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5581"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5573"/>
       <source>Create draft line</source>
       <translation>Napravi liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5582"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5574"/>
       <source>Create a draft line in the sketch</source>
       <translation>Napravi liniju u skici</translation>
     </message>
@@ -1116,17 +1116,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5860"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5852"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5861"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5853"/>
       <source>Create fillet</source>
       <translation>Napravi obrub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5862"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5854"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
@@ -1134,17 +1134,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7501"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7493"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7502"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7494"/>
       <source>Create heptagon</source>
       <translation>Stvaranje sedmerokuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7503"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7495"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Stvaranje sedmerokuta u skici</translation>
     </message>
@@ -1152,17 +1152,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7474"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7466"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7475"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7467"/>
       <source>Create hexagon</source>
       <translation>Stvaranje šesterokut</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7476"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7468"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Stvaranje šestero kuta u skici</translation>
     </message>
@@ -1206,17 +1206,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7528"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7520"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7529"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7521"/>
       <source>Create octagon</source>
       <translation>Stvaranje osmerokuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7530"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7522"/>
       <source>Create an octagon in the sketch</source>
       <translation>Stvaranje osmero kuta u skici</translation>
     </message>
@@ -1224,17 +1224,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7446"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7438"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7447"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7439"/>
       <source>Create pentagon</source>
       <translation>Stvaranje peterokuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7448"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7440"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Stvaranje petero kuta u skici</translation>
     </message>
@@ -1260,17 +1260,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5523"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5515"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5524"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5516"/>
       <source>Create point</source>
       <translation>Napravi točku</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5525"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5517"/>
       <source>Create a point in the sketch</source>
       <translation>Napravi točku u skici</translation>
     </message>
@@ -1278,17 +1278,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5889"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5881"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5882"/>
       <source>Create corner-preserving fillet</source>
       <translation type="unfinished">Create corner-preserving fillet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5891"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5883"/>
       <source>Fillet that preserves intersection point and most constraints</source>
       <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
     </message>
@@ -1350,17 +1350,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7555"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7547"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7548"/>
       <source>Create regular polygon</source>
       <translation>Stvorite pravilan poligon</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7549"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Stvorite pravilan poligon u skici</translation>
     </message>
@@ -1368,17 +1368,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7191"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7200"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7192"/>
       <source>Create slot</source>
       <translation>Napravite utor</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7201"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7193"/>
       <source>Create a slot in the sketch</source>
       <translation>Stvorite otvor u skici</translation>
     </message>
@@ -1386,17 +1386,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7411"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7420"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7412"/>
       <source>Create square</source>
       <translation>Stvaranje kvadrata</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7421"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7413"/>
       <source>Create a square in the sketch</source>
       <translation>Stvaranje kvadrata u skici</translation>
     </message>
@@ -1404,17 +1404,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5552"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5544"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5553"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5545"/>
       <source>Create text</source>
       <translation>Napravi tekst</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5554"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5546"/>
       <source>Create text in the sketch</source>
       <translation>Napravi tekst u skici</translation>
     </message>
@@ -1422,17 +1422,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7392"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7384"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7393"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7385"/>
       <source>Create equilateral triangle</source>
       <translation>Stvaranje istostraničnog trokuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7394"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7386"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Stvaranje jednostraničnih trokuta u skici</translation>
     </message>
@@ -1530,17 +1530,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6464"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6456"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6465"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6457"/>
       <source>Extend edge</source>
       <translation>Vanjski rub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6466"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6458"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Proširiti rub u odnosu na pokupljenu poziciju</translation>
     </message>
@@ -1548,17 +1548,17 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6767"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6759"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6768"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6760"/>
       <source>External geometry</source>
       <translation>Vanjska geometrija</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6769"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6761"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Kreiraj rub povezan sa vanjskom geometrijom</translation>
     </message>
@@ -1991,17 +1991,17 @@ Ovo će očistiti svojstvo "Podrška", ako postoji.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6575"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6584"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6576"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6585"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6577"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
     </message>
@@ -2127,17 +2127,17 @@ u režim vožnje ili referentni
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6150"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6142"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6151"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6143"/>
       <source>Trim edge</source>
       <translation>Skrati rub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6152"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6144"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Odreži dio ruba s obzirom na odabranu poziciju</translation>
     </message>
@@ -2575,7 +2575,7 @@ nevaljana ograničenja, degenerirana geometrija itd.
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2562"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5240"/>
       <source>Add sketch circle</source>
       <translation>Dodaj krug skice</translation>
     </message>
@@ -2611,48 +2611,48 @@ nevaljana ograničenja, degenerirana geometrija itd.
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5475"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5467"/>
       <source>Add sketch point</source>
       <translation>Dodajte točku skice</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5724"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5802"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5794"/>
       <source>Create fillet</source>
       <translation>Napravi obrub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6120"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6112"/>
       <source>Trim edge</source>
       <translation>Skrati rub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6396"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6388"/>
       <source>Extend edge</source>
       <translation>Vanjski rub</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6556"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6548"/>
       <source>Split edge</source>
       <translation type="unfinished">Split edge</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6731"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6723"/>
       <source>Add external geometry</source>
       <translation>Dodajte vanjsku geometriju</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6912"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6904"/>
       <source>Add carbon copy</source>
       <translation>Dodajte indigo kopiju</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7110"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7102"/>
       <source>Add slot</source>
       <translation>Dodajte utor</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7320"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7312"/>
       <source>Add hexagon</source>
       <translation>Dodajte šesterokut</translation>
     </message>
@@ -3739,7 +3739,7 @@ Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije
       <translation>Odaberite objekt(e) sa skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5813"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5805"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="682"/>
       <source>CAD Kernel Error</source>
       <translation>CAD Kernel greška</translation>
@@ -3882,42 +3882,42 @@ Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6814"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6806"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Kopija će izazvati kružne ovisnosti.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6817"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6809"/>
       <source>This object is in another document.</source>
       <translation>Ovaj objekt je u drugom dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6820"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6812"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>Ovaj objekt pripada drugom tijelu. Držite Ctrl kako bi se omogućile unakrsne reference.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6823"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6815"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>Ovaj objekt pripada drugom tijelu i sadrži vanjsku geometriju. Unakrsne reference nisu dozvoljene.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6826"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6818"/>
       <source>This object belongs to another part.</source>
       <translation>Ovaj objekt pripada drugom dijelu.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6829"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6821"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>Odabrana skica nije paralelna sa ovom skicom. Držite Ctrl + Alt za omogućavanje ne-paralelnih skica.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6832"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6824"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>XY osi odabrane skice nemaju isti smjer kao ova skica. Držite Ctrl + Alt za zanemarivanje ovoga.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6835"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6827"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Original odabrane skice nije usklađen sa ovom skicom. Držite Ctrl + Alt za zanemarivanje ovoga.</translation>
     </message>
@@ -4071,22 +4071,22 @@ Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6623"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6615"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Povezivanjem će te izazvati kružnu ovisnost.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6618"/>
       <source>This object is in another document.</source>
       <translation>Ovaj objekt je u drugom dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6629"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6621"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Ovaj objekt pripada drugom tijelu, ne može se povezati.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6624"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Ovaj objekt pripada drugom djelu, ne može se povezati.</translation>
     </message>
@@ -4632,202 +4632,221 @@ Za stupanje na snagu zahtijeva ponovni ulazak u način uređivanja.
       <translation>Skica za uređivanje</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="26"/>
-      <source>A dialog will pop up to input a value for new dimensional constraints</source>
-      <translation>Pojavit će se dijaloški okvir za unos vrijednosti za nova ograničenja dimenzije
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="29"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Pitati za vrijednost nakon stvaranja dimenzionalna ograničenja</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
       <source>Segments per geometry</source>
       <translation>Segmenata po geometriji</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="52"/>
-      <source>Current constraint creation tool will remain active after creation</source>
-      <translation>Trenutni alat za stvaranje ograničenja ostat će aktivan i nakon stvaranja
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="55"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Stvaranje Ograničenja "Kontinuirani Mod"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="71"/>
-      <source>Line pattern used for grid lines</source>
-      <translation>Uzorak linije koji se koristi za linije mreže
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="81"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
       <source>Base length units will not be displayed in constraints.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Jedinice osnovne duljine neće se prikazivati ​​u ograničenjima.
 Podržava sve jedinice jedinice, osim 'US customary' i "Izgradnja US / Euro".</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="85"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Sakrij jedinice dužine za potporu sustava jedinica</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="104"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
       <source>Font size</source>
       <translation>Veličina Pisma</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="138"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <source>Font size used for labels and constraints.</source>
+      <translation type="unfinished">Font size used for labels and constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
+      <source>The 3D view is scaled based on this factor.</source>
+      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
+      <source>Line pattern used for grid lines.</source>
+      <translation type="unfinished">Line pattern used for grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <source>The number of polygons used for geometry approximation.</source>
+      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <source>A dialog will pop up to input a value for new dimensional constraints.</source>
+      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
+      <source>The current sketcher creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
+      <source>The current constraint creation tool will remain active after creation.</source>
+      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
+      <source>If checked, displays the name on dimensional constraints (if exists).</source>
+      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <source>Show dimensional constraint name with format</source>
+      <translation type="unfinished">Show dimensional constraint name with format</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
+      <source>%N = %V</source>
+      <translation type="unfinished">%N = %V</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <source>The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</source>
+      <translation type="unfinished">The format of the dimensional constraint string presentation.
+Defaults to: %N = %V
+
+%N - name parameter
+%V - dimension value</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
+      <source>DimensionalStringFormat</source>
+      <translation type="unfinished">DimensionalStringFormat</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
+      <source>Mod/Sketcher</source>
+      <translation type="unfinished">Mod/Sketcher</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
       <source>Visibility automation</source>
       <translation>Automatizacija vidljivosti</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
-      <source>When opening sketch, hide all features that depend on it</source>
-      <translation>Prilikom otvaranja skice, sakri sve značajke koje ovise o tome</translation>
+      <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
+      <source>When opening a sketch, hide all features that depend on it.</source>
+      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
+      <source>When opening a sketch, show sources for external geometry links.</source>
+      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
+      <source>When opening a sketch, show objects the sketch is attached to.</source>
+      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
+      <source>Applies current visibility automation settings to all sketches in open documents.</source>
+      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Sakri sve objekte koji ovise o skici</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
-      <source>When opening sketch, show sources for external geometry links</source>
-      <translation>Prilikom otvaranja skice pokažite izvore za vanjske poveznice geometrije
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
       <source>Show objects used for external geometry</source>
       <translation>Prikaži objekte korištene za vanjske geometrije</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
-      <source>When opening sketch, show objects the sketch is attached to</source>
-      <translation>Prilikom otvaranja skice prikažite predmete na koje je skica pridružena
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Prikaži objekt(e) kojima je skica pridružena</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
+      <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
+      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
       <translation type="unfinished">Force orthographic camera when entering edit</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="244"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
+      <source>Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</source>
+      <translation type="unfinished">Open a sketch in Section View mode by default.
+Then objects are only visible behind the sketch plane.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
       <translation type="unfinished">Open sketch in Section View mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Napomena: ove postavke su zadane postavke primijenjene na nove skice. Karakteristika se pamti za svaku skicu pojedinačno kao svojstva kartice Pogleda.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="374"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
       <source>View scale ratio</source>
       <translation type="unfinished">View scale ratio</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="381"/>
-      <source>The 3D view is scaled based on this factor</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
-      <source>When closing sketch, move camera back to where it was before sketch was opened</source>
-      <translation>Pri zatvaranju skice vratite kameru na mjesto gdje je bila prije otvaranja skice
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
       <source>Restore camera position after editing</source>
       <translation>Vratiti položaj kamere nakon uređivanja</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation type="unfinished">When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
-      <source>Open a by default sketch in Section View mode.
-Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a by default sketch in Section View mode.
-Then objects are only visible behind the sketch plane.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="285"/>
-      <source>Applies current visibility automation settings to all sketches in open documents</source>
-      <translation>Primjenjuje trenutne postavke automatizacije vidljivosti na sve skice u otvorenim dokumentima
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="288"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
       <source>Apply to existing sketches</source>
       <translation>Primijeni na postojeće skice</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
-      <source>Font size used for labels and constraints</source>
-      <translation>Veličina slova koja se koristi za oznake i ograničenja
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="301"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="45"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="323"/>
-      <source>Current sketcher creation tool will remain active after creation</source>
-      <translation>Trenutni alat za izradu skica ostat će aktivan i nakon izrade
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="326"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Stvaranje Geometrija "Kontinuirani Mod"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="342"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="114"/>
       <source>Grid line pattern</source>
       <translation>Uzorak crte rešetke</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
-      <source>Number of polygons for geometry approximation</source>
-      <translation>Broj poligona za geometrijsko približavanje 
-</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="232"/>
       <source>Unexpected C++ exception</source>
       <translation>Neočekivani C++ izuzetak</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="231"/>
+      <location filename="../../SketcherSettings.cpp" line="235"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -5410,136 +5429,136 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
       <source>Edit sketch</source>
       <translation>Uredi skicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6258"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
       <source>Invalid sketch</source>
       <translation>Neispravna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6274"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Želite li otvoriti alat provjera valjanosti skice?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6275"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skica je neispravna i ne može se uređivati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6490"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
       <source>Please remove the following constraint:</source>
       <translation>Molim uklonite sljedeće ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6491"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Molim uklonite barem jedno od sljedećih ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6497"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Molimo obrišite ovo redundantno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6498"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Molimo obrišite ova redundantna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6504"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
       <source>The following constraint is partially redundant:</source>
       <translation type="unfinished">The following constraint is partially redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6505"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
       <source>The following constraints are partially redundant:</source>
       <translation type="unfinished">The following constraints are partially redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6511"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
       <source>Please remove the following malformed constraint:</source>
       <translation type="unfinished">Please remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6512"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
       <source>Please remove the following malformed constraints:</source>
       <translation type="unfinished">Please remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6547"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
       <source>Empty sketch</source>
       <translation>Prazan skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6554"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6561"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
       <source>Sketch contains malformed constraints</source>
       <translation type="unfinished">Sketch contains malformed constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6568"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
       <source>Sketch contains conflicting constraints</source>
       <translation type="unfinished">Sketch contains conflicting constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6576"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
       <source>Sketch contains redundant constraints</source>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation type="unfinished">Sketch contains partially redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6555"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6562"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6569"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6577"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6586"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6624"/>
       <source>(click to select)</source>
       <translation>(klikni za odabir)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6597"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
       <source>Fully constrained sketch</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6604"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6612"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
       <source>Solved in %1 sec</source>
       <translation>Riješeno za %1 sek</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Neriješen (%1 sek)</translation>
     </message>
@@ -5691,8 +5710,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5427"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5428"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5420"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Stvori krug kroz tri točke</translation>
     </message>
@@ -5750,8 +5769,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5423"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5424"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5415"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5416"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Stvaranje kruga od njegovog središta i njegovih točaka</translation>
     </message>
@@ -5777,8 +5796,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5998"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5999"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5990"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5991"/>
       <source>Creates a radius between two lines</source>
       <translation type="unfinished">Creates a radius between two lines</translation>
     </message>
@@ -5786,8 +5805,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Stvaranje heptagona (sedmerokuta) iz središta i jednog ugla</translation>
     </message>
@@ -5795,8 +5814,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Stvaranje heksagona iz središta i jednog ugla</translation>
     </message>
@@ -5812,14 +5831,14 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7724"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7725"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7716"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7717"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Stvaranje oktagona iz središta i jednog ugla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7728"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7729"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7720"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7721"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Stvaranje pravilnog poligona iz središta i jednog ugla</translation>
     </message>
@@ -5827,8 +5846,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7712"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Stvaranje pentagona iz središta i jednog ugla</translation>
     </message>
@@ -5836,8 +5855,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6002"/>
-      <location filename="../../CommandCreateGeo.cpp" line="6003"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5994"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5995"/>
       <source>Fillet that preserves constraints and intersection point</source>
       <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
     </message>
@@ -5861,8 +5880,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7708"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7700"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7701"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Stvaranje kvadrata iz središta i jednog ugla</translation>
     </message>
@@ -5870,8 +5889,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7704"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7705"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7696"/>
+      <location filename="../../CommandCreateGeo.cpp" line="7697"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Stvaranje istostraničnog trokuta iz središta i jednog ugla</translation>
     </message>

@@ -141,7 +141,8 @@ void SMESH_File::close()
     _pos = _end = 0;
     _size = -1;
   }
-  else if ( _file >= 0 )
+  //else if ( _file >= 0 )
+  else if ( _file != 0 )
   {
 #ifdef WIN32
     if(_file != INVALID_HANDLE_VALUE) {

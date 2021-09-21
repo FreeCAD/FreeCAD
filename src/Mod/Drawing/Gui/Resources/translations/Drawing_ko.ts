@@ -188,7 +188,7 @@
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>Project shape...</source>
-      <translation type="unfinished">Project shape...</translation>
+      <translation>프로젝트 모양...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="682"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="579"/>
       <source>Different orientation</source>
-      <translation type="unfinished">Different orientation</translation>
+      <translation>다른 방향</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="580"/>
@@ -388,12 +388,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="324"/>
       <source>Primary view</source>
-      <translation type="unfinished">Primary view</translation>
+      <translation>기본 보기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="340"/>
       <source>Secondary Views</source>
-      <translation type="unfinished">Secondary Views</translation>
+      <translation>보조 보기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="412"/>
@@ -433,17 +433,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="579"/>
       <source>Axonometric</source>
-      <translation type="unfinished">Axonometric</translation>
+      <translation>축척</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>축 밖으로 및 오른쪽</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
       <source>Vertical tilt</source>
-      <translation type="unfinished">Vertical tilt</translation>
+      <translation>수직 기울기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="605"/>
@@ -508,12 +508,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>투영 보기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
       <source> Axis aligned up</source>
-      <translation type="unfinished"> Axis aligned up</translation>
+      <translation> 축 정렬</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="715"/>
@@ -534,12 +534,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="767"/>
       <source>Third Angle</source>
-      <translation type="unfinished">Third Angle</translation>
+      <translation>세 번째 각도</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="772"/>
       <source>First Angle</source>
-      <translation type="unfinished">First Angle</translation>
+      <translation>첫 번째 각도</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="791"/>
@@ -549,7 +549,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
-      <translation type="unfinished">Axis aligned right:</translation>
+      <translation>축 오른쪽 정렬:</translation>
     </message>
   </context>
   <context>
@@ -557,12 +557,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Visible sharp edges</source>
-      <translation type="unfinished">Visible sharp edges</translation>
+      <translation>눈에 보이는 날카로운 모서리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Visible smooth edges</source>
-      <translation type="unfinished">Visible smooth edges</translation>
+      <translation>눈에 보이는 부드러운 가장자리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
@@ -572,7 +572,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
-      <translation type="unfinished">Visible outline edges</translation>
+      <translation>보이는 윤곽선 가장자리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -607,7 +607,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="77"/>
       <source>Project shapes</source>
-      <translation type="unfinished">Project shapes</translation>
+      <translation>프로젝트 모양</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="91"/>
@@ -617,17 +617,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>현재 작업을 완료하기 위한 활성 문서가 없습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="97"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>활성 보기 없음</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>현재 작업을 완료할 수 있는 활성 보기가 없습니다.</translation>
     </message>
   </context>
   <context>

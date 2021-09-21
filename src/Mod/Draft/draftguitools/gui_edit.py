@@ -594,6 +594,7 @@ class Edit(gui_base_original.Modifier):
                 pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
         for index, pwm in enumerate(pointswithmarkers):
             p, marker = pwm
+            p = obj.Placement.inverse().multVec(p)
             p = obj.getGlobalPlacement().multVec(p)
             self.trackers[obj.Name].append(trackers.editTracker(p, obj.Name,
                 index, obj.ViewObject.LineColor, marker=marker))

@@ -121,7 +121,7 @@
     <message>
       <location filename="../../Command.cpp" line="863"/>
       <source>&amp;Reset Camera</source>
-      <translation>Kamera zu&amp;rücksetzen</translation>
+      <translation>Kamera zurücksetzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="864"/>
@@ -263,7 +263,7 @@ Möchten Sie fortfahren?</translation>
       <location filename="../../Command.cpp" line="458"/>
       <location filename="../../Command.cpp" line="470"/>
       <source>No Raytracing project to insert</source>
-      <translation>Kein Raytracing-Projekt zum Einfügen</translation>
+      <translation>Kein Raytracing-Projekt zum Einfügen vorhanden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="459"/>

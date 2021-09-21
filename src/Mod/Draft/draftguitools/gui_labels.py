@@ -66,7 +66,7 @@ class Label(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Label, self).Activated(name="Label", noplanesetup=True)
+        super(Label, self).Activated(name="Label")
         self.ghost = None
         self.labeltype = utils.getParam("labeltype", "Custom")
         self.sel = Gui.Selection.getSelectionEx()

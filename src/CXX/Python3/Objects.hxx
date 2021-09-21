@@ -55,7 +55,7 @@
 namespace Py
 {
     typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
-    Py_ssize_t numeric_limits_max();
+    PYCXX_EXPORT Py_ssize_t numeric_limits_max();
 
     // Forward declarations
     class Object;

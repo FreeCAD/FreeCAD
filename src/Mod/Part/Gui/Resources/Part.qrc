@@ -133,5 +133,7 @@
         <file>translations/Part_vi.qm</file>
         <file>translations/Part_zh-CN.qm</file>
         <file>translations/Part_zh-TW.qm</file>
+        <file>translations/Part_es-AR.qm</file>
+        <file>translations/Part_bg.qm</file>
     </qresource>
 </RCC>

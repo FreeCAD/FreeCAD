@@ -142,12 +142,12 @@
       <translation>Silahkan pilih 3 objek terlebih dahulu</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Fungsi Tidak Didukung</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Tekan OK</translation>
     </message>

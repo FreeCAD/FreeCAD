@@ -62,7 +62,7 @@ public:
   /**
    * Returns the indices of all invalid facets or facets whose points are invalid.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -113,7 +113,7 @@ public:
   /**
    * Returns the indices of all duplicated points.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -161,7 +161,7 @@ public:
   /**
    * Returns the indices of all NaN points.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -211,7 +211,7 @@ public:
   /**
    * Returns the indices of all duplicated facets.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -258,11 +258,11 @@ public:
   /**
    * Return the indices.
    */
-  const std::vector<unsigned long>& GetIndices() const
+  const std::vector<FacetIndex>& GetIndices() const
   { return _indices; }
 
 private:
-    std::vector<unsigned long> _indices;
+    std::vector<FacetIndex> _indices;
 };
 
 /**
@@ -297,7 +297,7 @@ public:
   /**
    * Returns the indices of all corrupt facets.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 
 private:
   float fEpsilon;
@@ -417,7 +417,7 @@ public:
   /**
    * Returns the indices of deformed facets.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 
 private:
   float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
@@ -493,10 +493,10 @@ public:
     ~MeshEvalDentsOnSurface() {}
 
     bool Evaluate();
-    std::vector<unsigned long> GetIndices() const;
+    std::vector<FacetIndex> GetIndices() const;
 
 private:
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
 };
 
 class MeshExport MeshFixDentsOnSurface : public MeshValidation
@@ -520,10 +520,10 @@ public:
     ~MeshEvalFoldsOnSurface() {}
 
     bool Evaluate();
-    std::vector<unsigned long> GetIndices() const;
+    std::vector<FacetIndex> GetIndices() const;
 
 private:
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
 };
 
 /**
@@ -539,10 +539,10 @@ public:
     ~MeshEvalFoldsOnBoundary() {}
 
     bool Evaluate();
-    std::vector<unsigned long> GetIndices() const;
+    std::vector<FacetIndex> GetIndices() const;
 
 private:
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
 };
 
 class MeshExport MeshFixFoldsOnBoundary : public MeshValidation
@@ -565,11 +565,11 @@ public:
     ~MeshEvalFoldOversOnSurface() {}
 
     bool Evaluate();
-    std::vector<unsigned long> GetIndices() const
+    std::vector<FacetIndex> GetIndices() const
     { return this->indices; }
 
 private:
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
 };
 
 /**
@@ -580,13 +580,13 @@ private:
 class MeshExport MeshEvalBorderFacet : public MeshEvaluation
 {
 public:
-  MeshEvalBorderFacet (const MeshKernel &rclB, std::vector<unsigned long>& f)
+  MeshEvalBorderFacet (const MeshKernel &rclB, std::vector<FacetIndex>& f)
     : MeshEvaluation(rclB), _facets(f) {}
   virtual ~MeshEvalBorderFacet () {}
   bool Evaluate();
 
 protected:
-    std::vector<unsigned long>& _facets;
+    std::vector<FacetIndex>& _facets;
 };
 
 // ----------------------------------------------------
@@ -618,7 +618,7 @@ public:
   /**
    * Returns the indices of all facets with invalid neighbour indices.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -666,7 +666,7 @@ public:
   /**
    * Returns the indices of all facets with invalid point indices.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -715,7 +715,7 @@ public:
   /**
    * Returns the indices of all corrupt facets.
    */
-  std::vector<unsigned long> GetIndices() const;
+  std::vector<FacetIndex> GetIndices() const;
 };
 
 /**

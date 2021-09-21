@@ -102,7 +102,7 @@
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Klicken Sie auf "Hinzufügen" und wählen Sie geometrische Elemente, um sie zur Liste hinzuzufügen.{}Die folgenden geometrischen Elemente stehen zur Auswahl: {}{}{}</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
@@ -122,7 +122,7 @@
     <message>
       <location filename="selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Wenn keine Geometrie zur Liste hinzugefügt wird, werden alle verbleibenden verwendet.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>

@@ -148,7 +148,7 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Parametern der Anordnung a
       <translation>Die Komponenten dieses Blocks</translation>
     </message>
     <message>
-      <location filename="wpproxy.py" line="42"/>
+      <location filename="hatch.py" line="46"/>
       <source>The placement of this object</source>
       <translation>Die Platzierung dieses Objekts</translation>
     </message>
@@ -1119,12 +1119,47 @@ Benutzen Sie 'arch' um die US-Bogen Notation zu erzwingen</translation>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Wenn dies wahr ist, wird dieses Objekt nur sichtbare Objekte enthalten</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Dieses Objekt wird nur neu berechnet, wenn dies wahr ist.</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Die Form dieses Objekts</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
     </message>
   </context>
   <context>
@@ -1490,7 +1525,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Schaltet die Beschränkung auf die Arbeitsebene ein oder aus</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kann kein neues Objekt in einen skaliertes Teil einfügen</translation>
     </message>
@@ -1643,7 +1678,7 @@ Die Anordnung kann in eine orthogonale oder polare Anordnung durch ändern des T
       <translation>Fase erstellen</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Versatz Richtung ist nicht definiert. Bitte bewegen Sie die Maus auf einer Seiten des Objekts zuerst, um eine Richtung anzuzeigen</translation>
     </message>
@@ -1671,6 +1706,11 @@ Die Anordnung kann in eine orthogonale oder polare Anordnung durch ändern des T
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>Warnung</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
     </message>
   </context>
   <context>
@@ -2083,12 +2123,12 @@ Es muss mindestens 2 sein.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
       <translation>Zur Konstruktionsgruppe hinzufügen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="367"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2113,17 +2153,17 @@ Es wird eine Konstruktionsgruppe erstellt, wenn diese nicht vorhanden ist.</tran
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="gui_groups.py" line="67"/>
+      <location filename="gui_groups.py" line="68"/>
       <source>Ungroup</source>
       <translation>Gruppierung aufheben</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="72"/>
+      <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
       <translation>In Gruppe verschieben</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="74"/>
+      <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>Verschiebt die ausgewählten Objekte in eine bestehende Gruppe oder entfernt sie aus jeder Gruppe.
@@ -2200,12 +2240,12 @@ auf polar oder kreisförmig und deren Eigenschaften geändert werden.</translati
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="239"/>
+      <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
       <translation>Autogruppe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="242"/>
+      <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Wählen Sie eine Gruppe aus, um automatisch alle Zeichnungs- und Arch-Objekte hinzuzufügen.</translation>
     </message>
@@ -2478,6 +2518,19 @@ unterstützten Knoten und unterstützten Objekten anzuzeigen.</translation>
 If other objects are selected they are ignored.</source>
       <translation>Die Richtung der Normalen der gewählten Bemassung (Linear, Radial, Winkel) umkehren.
 Wenn andere Objekte ausgewählt sind, werden diese ignoriert.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Hatch</name>
+    <message>
+      <location filename="gui_hatch.py" line="37"/>
+      <source>Hatch</source>
+      <translation>Schraffur</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="41"/>
+      <source>Create hatches on selected faces</source>
+      <translation type="unfinished">Create hatches on selected faces</translation>
     </message>
   </context>
   <context>
@@ -2810,12 +2863,12 @@ STRG zum Einrasten, SHIFT zum Einschränken, ALT zum Kopieren.</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="gui_groups.py" line="165"/>
+      <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
       <translation>Gruppe wählen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="168"/>
+      <location filename="gui_groups.py" line="192"/>
       <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
@@ -2851,23 +2904,6 @@ Du kannst auch drei Punkte oder einen Proxy der Arbeitsebene auswählen.</transl
       <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
       <translation>Setzt Standard-Stile</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Arbeitsebenen Proxy erstellen</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation>Erstellt ein Proxy-Objekt aus der aktuellen Arbeitsebene.
-Sobald das Objekt erstellt wurde, doppelklicke in der Baumansicht darauf, um die Kameraposition und die Sichtbarkeit der Objekte wiederherzustellen.
-Danach kannst Du damit jederzeit eine andere Kameraposition und Objektzustände speichern.</translation>
     </message>
   </context>
   <context>
@@ -2907,12 +2943,12 @@ Die geschlossenen Formen können für Extrusionen und boolesche Operationen verw
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
       <translation>Fang Werkzeugleiste einblenden</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="579"/>
+      <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation>Zeigt die Fangen-Symbolleiste an, wenn sie ausgeblendet ist.</translation>
     </message>
@@ -2954,12 +2990,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="331"/>
+      <location filename="gui_snaps.py" line="344"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="334"/>
+      <location filename="gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation>Setze das Einrasten auf Punkte in einem kreisförmigen Bogen, der sich in mehreren Winkeln von 30 und 45 Grad befindet.</translation>
     </message>
@@ -2967,12 +3003,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="361"/>
+      <location filename="gui_snaps.py" line="374"/>
       <source>Center</source>
       <translation>Mittelpunkt</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="364"/>
+      <location filename="gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation>Setze das Einrasten in die Mitte eines Kreisbogens.</translation>
     </message>
@@ -2980,12 +3016,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="513"/>
+      <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
       <translation>Bemaßungen anzeigen</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="516"/>
+      <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation>Temporäre lineare Bemaßungen bei der Bearbeitung eines Objekts und mit anderen Fangmethoden anzeigen.</translation>
     </message>
@@ -2993,12 +3029,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="300"/>
+      <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
       <translation>Endpunkt</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="303"/>
+      <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation>Setze das Einrasten auf die Endpunkte einer Kante.</translation>
     </message>
@@ -3006,12 +3042,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="391"/>
+      <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
       <translation>Erweiterung</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="394"/>
+      <location filename="gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation>Setze das Einrasten auf die Verlängerung einer Kante.</translation>
     </message>
@@ -3019,12 +3055,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="210"/>
+      <location filename="gui_snaps.py" line="223"/>
       <source>Grid</source>
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="213"/>
+      <location filename="gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation>Setze das Einrasten auf den Schnittpunkt der Rasterlinien.</translation>
     </message>
@@ -3032,12 +3068,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="240"/>
+      <location filename="gui_snaps.py" line="253"/>
       <source>Intersection</source>
       <translation>Schnitt</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="243"/>
+      <location filename="gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation>Setze das Einrasten an den Schnittpunkt der Kanten.</translation>
     </message>
@@ -3045,12 +3081,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="120"/>
+      <location filename="gui_snaps.py" line="133"/>
       <source>Main snapping toggle On/Off</source>
       <translation>Haupt-Fangenschalter ein/aus</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="123"/>
+      <location filename="gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation>Aktiviert oder deaktiviert alle Fangmethoden auf einmal.</translation>
     </message>
@@ -3058,12 +3094,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="150"/>
+      <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
       <translation>Mittelpunkt</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="153"/>
+      <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation>Setze das Einrasten auf den Mittelpunkt einer Kante.</translation>
     </message>
@@ -3071,12 +3107,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="421"/>
+      <location filename="gui_snaps.py" line="434"/>
       <source>Nearest</source>
       <translation>Nächste</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="424"/>
+      <location filename="gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation>Setze das Einrasten auf den nächstgelegenen Punkt einer Kante.</translation>
     </message>
@@ -3084,12 +3120,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="452"/>
+      <location filename="gui_snaps.py" line="465"/>
       <source>Orthogonal</source>
       <translation>Orthogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="455"/>
+      <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation>Setze das Einrasten auf eine Richtung, die ein Vielfaches von 45 Grad von einem Punkt ist.</translation>
     </message>
@@ -3097,12 +3133,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="270"/>
+      <location filename="gui_snaps.py" line="283"/>
       <source>Parallel</source>
       <translation>Parallel</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="273"/>
+      <location filename="gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation>Setze das Einrasten auf eine Richtung, die parallel zu einer Kante ist.</translation>
     </message>
@@ -3110,12 +3146,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="180"/>
+      <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
       <translation>Senkrecht</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="183"/>
+      <location filename="gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation>Setze das Einrasten auf eine Richtung, die senkrecht zu einer Kante ist.</translation>
     </message>
@@ -3123,12 +3159,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="482"/>
+      <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
       <translation>Spezial</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="485"/>
+      <location filename="gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation>Setze das Einrasten auf die speziellen Punkte, die innerhalb eines Objekts definiert sind.</translation>
     </message>
@@ -3136,12 +3172,12 @@ gerade Entwurfslinien, die in der XY-Ebene gezeichnet werden. Ausgewählte Objek
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="546"/>
+      <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
       <translation>Arbeitsebene</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="549"/>
+      <location filename="gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3279,7 +3315,7 @@ Dies ist für geschlossene Formen und Feststoffe vorgesehen und wirkt sich nicht
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="79"/>
+      <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Beschneidet oder erweitert das ausgewählte Objekt oder extrudiert einzelne Oberflächen. STRG fängt, SHIFT legt den derzeitigen Abschnitt als normal fest, ALT invertiert.</translation>
@@ -3340,6 +3376,23 @@ Beispielsweise kann es die ausgewählten Objekte zu einem einzigen zusammenfüge
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Wandelt einen ausgewählten Linienzug in einen B-Spline oder einen B-Spline in einen Linienzug.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Arbeitsebenen Proxy erstellen</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation>Erstellt ein Proxy-Objekt aus der aktuellen Arbeitsebene.
+Sobald das Objekt erstellt wurde, doppelklicke in der Baumansicht darauf, um die Kameraposition und die Sichtbarkeit der Objekte wiederherzustellen.
+Danach kannst Du damit jederzeit eine andere Kameraposition und Objektzustände speichern.</translation>
     </message>
   </context>
   <context>
@@ -3784,6 +3837,49 @@ value by using the [ and ] keys while drawing</source>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
       <translation>Der Abstand zwischen den Textzeilen</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Form</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Skalieren</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Drehung:</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Gruppe</translation>
     </message>
   </context>
   <context>
@@ -5191,14 +5287,22 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
     </message>
   </context>
   <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="importAirfoilDAT.py" line="186"/>
+      <source>Did not find enough coordinates</source>
+      <translation type="unfinished">Did not find enough coordinates</translation>
+    </message>
+  </context>
+  <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation>Konvertierung erfolgreich</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
       <translation>Konvertierung:</translation>
     </message>
@@ -5247,7 +5351,7 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>aktiver Befehl:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Kein</translation>
     </message>
@@ -5302,7 +5406,7 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Länge</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="220"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
@@ -5347,7 +5451,7 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Anzahl der Seiten</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Versetzen</translation>
     </message>
@@ -5427,7 +5531,7 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Bezeichnung</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>Abstand</translation>
     </message>
@@ -5699,22 +5803,22 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Wenn aktiviert, werden Subelemente anstatt ganzer Objekte geändert</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Oben</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Vorne</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Seite</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation>Aktuelle Arbeitsebene</translation>
     </message>
@@ -5739,14 +5843,9 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Drücken Sie diese Schaltfläche, um das Textobjekt zu erstellen, oder beenden Sie Ihren Text mit zwei leeren Zeilen</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
       <translation>Versatzabstand</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation>Abstand trimmen</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -6649,7 +6748,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Aufrüsten</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="204"/>
+      <location filename="gui_move.py" line="205"/>
       <source>Move</source>
       <translation>Verschieben</translation>
     </message>
@@ -6664,7 +6763,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Startpunkt wählen</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="302"/>
+      <location filename="gui_move.py" line="303"/>
       <source>Pick end point</source>
       <translation>Endpunkt wählen</translation>
     </message>
@@ -6704,82 +6803,82 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Anzeigemodus umschalten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="113"/>
+      <location filename="gui_snaps.py" line="126"/>
       <source>Main toggle snap</source>
       <translation>Hauptumschaltknopf Fangen</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="144"/>
+      <location filename="gui_snaps.py" line="157"/>
       <source>Midpoint snap</source>
       <translation>Mittelpunkt Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="174"/>
+      <location filename="gui_snaps.py" line="187"/>
       <source>Perpendicular snap</source>
       <translation>Senkrecht Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="204"/>
+      <location filename="gui_snaps.py" line="217"/>
       <source>Grid snap</source>
       <translation>Am Raster fangen</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="234"/>
+      <location filename="gui_snaps.py" line="247"/>
       <source>Intersection snap</source>
       <translation>Schnittpunkt Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="264"/>
+      <location filename="gui_snaps.py" line="277"/>
       <source>Parallel snap</source>
       <translation>Parallel Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="294"/>
+      <location filename="gui_snaps.py" line="307"/>
       <source>Endpoint snap</source>
       <translation>Endpunkt Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="325"/>
+      <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation>Winkel Einrasten (30 und 45 Grad)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="355"/>
+      <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
       <translation>Bogenmitte Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="385"/>
+      <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
       <translation>Kantenerweiterung einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="415"/>
+      <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
       <translation>In der Nähe Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="446"/>
+      <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
       <translation>Rechtwinklig Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="476"/>
+      <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
       <translation>Spezialpunkt Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="507"/>
+      <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
       <translation>Maßanzeige</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="540"/>
+      <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
       <translation>Arbeitsebene Einrasten</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="570"/>
+      <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
       <translation>Fang Werkzeugleiste einblenden</translation>
     </message>
@@ -6914,7 +7013,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Bemaßung umkehren</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
       <translation>Strecken</translation>
     </message>
@@ -6924,27 +7023,27 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Wähle ein zu streckendes Objekt aus</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation>Wähle den ersten Punkt des Auswahlrechtecks</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation>Wählen Sie den gegenüberliegenden Punkt des Auswahlrechtecks</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation>Wähle Startpunkt der Verschiebung</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation>Wähle Endpunkt der Verschiebung</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Verwandle ein Rechteck in Kantenzug</translation>
     </message>
@@ -7019,7 +7118,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Kein Bearbeitungspunkt für ausgewählte Objekte gefunden</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="822"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: dieses Objekt kann nicht bearbeitet werden</translation>
     </message>
@@ -7044,42 +7143,32 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="91"/>
+      <location filename="gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
       <translation>Wähle Objekt(e) zum verkürzen/verlängern</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Abstand auswählen</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation>Der Versatzabstand</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation>Der Versatzwinkel</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Objekte könne nicht beschnitten werden, nur Draft Linien und Bögen werden unterstützt.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Objekte könne nicht beschnitten werden, zu viele Linien</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
       <translation>Diese Objekte überschneiden sich nicht.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
       <translation>Zu viele Schnittpunkte.</translation>
     </message>
@@ -7109,22 +7198,22 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>B-Spline erstellen</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation>Wähle eine Fläche, 3 Punkte oder einen WP Proxy um die Zeichenebene zu definieren</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation>Arbeitsebene ausgerichtet an der globalen Platzierung von</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation>Richtung</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Benutzerdefiniert</translation>
     </message>
@@ -7219,27 +7308,27 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Stil ändern</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="64"/>
+      <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
       <translation>Zur Gruppe hinzufügen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="159"/>
+      <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Gruppe wählen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="233"/>
+      <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
       <translation>Autogruppe</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
       <translation>Neue Ebene hinzufügen</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>Zur Konstruktionsgruppe hinzufügen</translation>
     </message>
@@ -7259,7 +7348,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Kann diesen Objekttyp nicht versetzen</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation>Versatz von Bezierkurven wird derzeit nicht unterstützt</translation>
     </message>
@@ -7456,7 +7545,7 @@ Nicht verfügbar, wenn die Option "Primitive Teile verwenden" aktiviert ist</tra
       <translation>Kann Objekte nicht skalieren:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="814"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Zu viele Objekte ausgewählt, Maximalzahl gesetzt auf:</translation>
     </message>
@@ -7476,6 +7565,11 @@ Nicht verfügbar, wenn die Option "Primitive Teile verwenden" aktiviert ist</tra
 </source>
       <translation>Ausgewählte Formen müssen eine Ebene definieren
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation>Versatz Winkel</translation>
     </message>
   </context>
   <context>
