@@ -743,8 +743,7 @@ ParameterGrp::handle DlgParameterImp::copyParameters(ParameterManager *manager)
         };
 
         if (v.second.empty()) {
-            for (auto &v : v.first->GetParameterNames())
-                setValue(v.first, v.second.c_str());
+            hSrc->copyTo(hGrp);
         } else {
             for (auto &key : v.second)
                 setValue(key.type, key.name.constData());
