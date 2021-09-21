@@ -2898,8 +2898,14 @@ void PresetsAction::onAction(QAction *action) {
         App::GetApplication().GetUserParameter().copyTo(_undos.back().second);
         if (revert)
             App::GetApplication().GetUserParameter().revert(param);
-        else
-            param->insertTo(&App::GetApplication().GetUserParameter());
+        else {
+            auto manager = &App::GetApplication().GetUserParameter();
+            param->insertTo(manager);
+            // Remove name and tooltip in preset parameters from the application
+            // setting
+            manager->RemoveASCII("Name");
+            manager->RemoveASCII("ToolTip");
+        }
     }
 }
 
@@ -2941,7 +2947,7 @@ void PresetsAction::onShowMenu()
                 _undoMenu->clear();
                 for (int i=(int)_undos.size()-1; i>=0; --i) {
                     _undoMenu->addAction(_undos[i].first, [this, i]() {
-                        if (i < _undos.size()) {
+                        if (i < (int)_undos.size()) {
                             _undos[i].second->copyTo(&App::GetApplication().GetUserParameter());
                             _undos.resize(i);
                         }
