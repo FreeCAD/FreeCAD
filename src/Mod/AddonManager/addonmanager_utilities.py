@@ -266,8 +266,10 @@ def get_zip_url(baseurl):
 def get_readme_url(url):
     "Returns the location of a readme file"
 
-    if "github" in url or "framagit" in url or "gitlab" in url:
+    if "github" in url or "framagit" in url:
         return url+"/raw/master/README.md"
+    elif "gitlab" in url:
+        return url+"/-/raw/master/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
     return None
