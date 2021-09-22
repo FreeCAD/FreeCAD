@@ -541,20 +541,12 @@ void ConstraintView::updateActiveStatus()
 
 void ConstraintView::showConstraints()
 {
-    QList<QListWidgetItem *> items = selectedItems();
-    for (auto it : items) {
-        if (it->checkState() != Qt::Checked)
-            it->setCheckState(Qt::Checked);
-    }
+    Q_EMIT emitShowSelection3DVisibility();
 }
 
 void ConstraintView::hideConstraints()
 {
-    QList<QListWidgetItem *> items = selectedItems();
-    for (auto it : items) {
-        if (it->checkState() != Qt::Unchecked)
-            it->setCheckState(Qt::Unchecked);
-    }
+    Q_EMIT emitHideSelection3DVisibility();
 }
 
 void ConstraintView::modifyCurrentItem()
@@ -687,6 +679,14 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         ui->hideAllButton, SIGNAL(clicked(bool)),
                      this                     , SLOT  (on_hideAllButton_clicked(bool))
         );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(emitHideSelection3DVisibility()),
+        this                     , SLOT  (on_listWidgetConstraints_emitHideSelection3DVisibility())
+       );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(emitShowSelection3DVisibility()),
+        this                     , SLOT  (on_listWidgetConstraints_emitShowSelection3DVisibility())
+       );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -706,12 +706,14 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     connectionConstraintsChanged.disconnect();
 }
 
-void TaskSketcherConstrains::changeFilteredVisibility(bool show)
+void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget target)
 {
     assert(sketchView);
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
 
     bool doCommit = false;
+
+    auto selecteditems = ui->listWidgetConstraints->selectedItems();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
 
@@ -719,7 +721,17 @@ void TaskSketcherConstrains::changeFilteredVisibility(bool show)
     {
         QListWidgetItem* item = ui->listWidgetConstraints->item(i);
 
-        if(!item->isHidden()) { // The item is shown in the filtered list
+        bool processItem = false;
+
+        if(target == ActionTarget::All) {
+            processItem = !item->isHidden();
+        }
+        else if(target == ActionTarget::Selected) {
+            if(std::find(selecteditems.begin(), selecteditems.end(), item) != selecteditems.end())
+                processItem = true;
+        }
+
+        if(processItem) { // The item is shown in the filtered list
             const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
 
             if (!it)
@@ -757,9 +769,20 @@ void TaskSketcherConstrains::on_showAllButton_clicked(bool)
 {
     changeFilteredVisibility(true);
 }
+
 void TaskSketcherConstrains::on_hideAllButton_clicked(bool)
 {
     changeFilteredVisibility(false);
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_emitHideSelection3DVisibility()
+{
+    changeFilteredVisibility(false, ActionTarget::Selected);
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_emitShowSelection3DVisibility()
+{
+    changeFilteredVisibility(true, ActionTarget::Selected);
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)

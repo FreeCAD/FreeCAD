@@ -53,6 +53,8 @@ Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
     void onUpdateActiveStatus(QListWidgetItem *item, bool status);
     void emitCenterSelectedItems();
+    void emitHideSelection3DVisibility();
+    void emitShowSelection3DVisibility();
 
 protected Q_SLOTS:
     void modifyCurrentItem();
@@ -98,6 +100,11 @@ class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::Select
         InternalAlignment = 23
     };
 
+    enum class ActionTarget {
+        All,
+        Selected
+    };
+
 public:
     TaskSketcherConstrains(ViewProviderSketch *sketchView);
     ~TaskSketcherConstrains();
@@ -109,7 +116,7 @@ private:
     void slotConstraintsChanged(void);
     bool isConstraintFiltered(QListWidgetItem * item);
     void change3DViewVisibilityToTrackFilter();
-    void changeFilteredVisibility(bool show);
+    void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -123,6 +130,8 @@ public Q_SLOTS:
     void on_extendedInformation_stateChanged(int state);
     void on_showAllButton_clicked(bool);
     void on_hideAllButton_clicked(bool);
+    void on_listWidgetConstraints_emitShowSelection3DVisibility();
+    void on_listWidgetConstraints_emitHideSelection3DVisibility();
 
 protected:
     void changeEvent(QEvent *e);
