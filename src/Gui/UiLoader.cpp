@@ -28,6 +28,7 @@
 #endif
 
 #include "UiLoader.h"
+#include "PythonWrapper.h"
 #include "WidgetFactory.h"
 #include <Base/Interpreter.h>
 

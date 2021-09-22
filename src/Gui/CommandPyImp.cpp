@@ -31,7 +31,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "Window.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "CommandPy.h"

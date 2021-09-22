@@ -25,7 +25,6 @@
 #define GUI_WIDGETFACTORY_H
 
 #include <vector>
-#include <QGraphicsItem>
 
 #include <Base/Factory.h>
 #include <Base/PyObjectBase.h>
@@ -42,33 +41,6 @@ namespace Gui {
   namespace Dialog{
     class PreferencePage;
   }
-
-class GuiExport PythonWrapper
-{
-public:
-    PythonWrapper();
-    bool loadCoreModule();
-    bool loadGuiModule();
-    bool loadWidgetsModule();
-    bool loadUiToolsModule();
-
-    bool toCString(const Py::Object&, std::string&);
-    QObject* toQObject(const Py::Object&);
-    QGraphicsItem* toQGraphicsItem(PyObject* ptr);
-    Py::Object fromQObject(QObject*, const char* className=0);
-    Py::Object fromQWidget(QWidget*, const char* className=0);
-    const char* getWrapperName(QObject*) const;
-    /*!
-      Create a Python wrapper for the icon. The icon must be created on the heap
-      and the Python wrapper takes ownership of it.
-     */
-    Py::Object fromQIcon(const QIcon*);
-    QIcon *toQIcon(PyObject *pyobj);
-    Py::Object fromQDir(const QDir&);
-    QDir* toQDir(PyObject* pyobj);
-    static void createChildrenNameAttributes(PyObject* root, QObject* object);
-    static void setParent(PyObject* pyWdg, QObject* parent);
-};
 
 /**
  * The widget factory provides methods for the dynamic creation of widgets.
