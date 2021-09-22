@@ -449,15 +449,15 @@ void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.ply)").arg(QObject::tr("All Mesh Files"));
+    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)").arg(QObject::tr("All Mesh Files"));
     filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
     filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
     filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
     filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
     filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
-    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii"));
+    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
     filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
-    //filter << "Nastran (*.nas *.bdf)";
+    filter << QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
     filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
