@@ -27,6 +27,8 @@
 # include <QDockWidget>
 # include <QAction>
 # include <QMap>
+# include <QApplication>
+# include <QMouseEvent>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -93,6 +95,57 @@ const QList<DockWindowItem>& DockWindowItems::dockWidgets() const
 // -----------------------------------------------------------
 
 namespace Gui {
+
+class DockWidgetEventFilter: public QObject {
+public:
+    bool eventFilter(QObject *o, QEvent *e) {
+        if (!o->isWidgetType() || e->type() != QEvent::MouseMove)
+            return false;
+        auto widget = qobject_cast<QDockWidget*>(o);
+        if (!widget || !widget->isFloating()) {
+            if (overriden) {
+                overriden = false;
+                QApplication::restoreOverrideCursor();
+            }
+            return false;
+        }
+        if (static_cast<QMouseEvent*>(e)->buttons() != Qt::NoButton)
+            return false;
+        auto pos = QCursor::pos();
+        const int m = 5;
+        QPoint topLeft = widget->mapToGlobal(QPoint(m, m));
+        int h = widget->frameGeometry().height();
+        int w = widget->frameGeometry().width();
+        QPoint bottomRight = widget->mapToGlobal(QPoint(w-m, h-m));
+        bool left = QRect(topLeft - QPoint(m,m), QSize(m, h)).contains(pos);
+        bool right = QRect(bottomRight.x(), topLeft.y(), m, h).contains(pos);
+        bool bottom = QRect(topLeft.x()-m, bottomRight.y(), w, m).contains(pos);
+        auto cursor = Qt::ArrowCursor;
+        if (left && bottom)
+            cursor = Qt::SizeBDiagCursor;
+        else if (right && bottom)
+            cursor = Qt::SizeFDiagCursor;
+        else if (bottom)
+            cursor = Qt::SizeVerCursor;
+        else if (left || right)
+            cursor = Qt::SizeHorCursor;
+        else if (overriden) {
+            overriden = false;
+            QApplication::restoreOverrideCursor();
+            return false;
+        }
+        if (overriden)
+            QApplication::changeOverrideCursor(cursor);
+        else {
+            overriden = true;
+            QApplication::setOverrideCursor(cursor);
+        }
+        return false;
+    }
+
+    bool overriden = false;
+};
+
 struct DockWindowManagerP
 {
     QList<QDockWidget*> _dockedWindows;
@@ -101,6 +154,7 @@ struct DockWindowManagerP
     ParameterGrp::handle hPref;
     boost::signals2::scoped_connection connParam;
     QTimer timer;
+    DockWidgetEventFilter dockWidgetEventFilter;
 };
 } // namespace Gui
 
@@ -122,6 +176,7 @@ void DockWindowManager::destruct()
 DockWindowManager::DockWindowManager()
 {
     d = new DockWindowManagerP;
+    qApp->installEventFilter(&d->dockWidgetEventFilter);
     d->hPref = App::GetApplication().GetUserParameter().GetGroup(
             "BaseApp/MainWindow/DockWindows");
     d->connParam = d->hPref->Manager()->signalParamChanged.connect(
