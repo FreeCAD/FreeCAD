@@ -1032,6 +1032,7 @@ SET(Widget_CPP_SRCS
     QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
+    UiLoader.cpp
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
@@ -1048,6 +1049,7 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox_p.h
     SpinBox.h
     Splashscreen.h
+    UiLoader.h
     WidgetFactory.h
     Widgets.h
     Window.h

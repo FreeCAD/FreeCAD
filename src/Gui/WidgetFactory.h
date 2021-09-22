@@ -25,7 +25,6 @@
 #define GUI_WIDGETFACTORY_H
 
 #include <vector>
-#include <QUiLoader>
 #include <QGraphicsItem>
 
 #include <Base/Factory.h>
@@ -71,18 +70,6 @@ public:
     static void setParent(PyObject* pyWdg, QObject* parent);
 };
 
-class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
-{
-
-public:
-    PySideUicModule();
-    virtual ~PySideUicModule() {}
-
-private:
-    Py::Object loadUiType(const Py::Tuple& args);
-    Py::Object loadUi(const Py::Tuple& args);
-};
-
 /**
  * The widget factory provides methods for the dynamic creation of widgets.
  * To create these widgets once they must be registered to the factory.
@@ -111,51 +98,6 @@ inline WidgetFactoryInst& WidgetFactory()
 {
     return WidgetFactoryInst::instance();
 }
-
-// --------------------------------------------------------------------
-
-/**
- * The UiLoader class provides the abitlity to use the widget factory
- * framework of FreeCAD within the framework provided by Qt. This class
- * extends QUiLoader by the creation of FreeCAD specific widgets.
- * @author Werner Mayer
- */
-class UiLoader : public QUiLoader
-{
-public:
-    UiLoader(QObject* parent=0);
-    virtual ~UiLoader();
-
-    /**
-     * Creates a widget of the type \a className with the parent \a parent.
-     * For more details see the documentation to QWidgetFactory.
-     */
-    QWidget* createWidget(const QString & className, QWidget * parent=0,
-                          const QString& name = QString());
-private:
-    QStringList cw;
-};
-
-// --------------------------------------------------------------------
-
-class UiLoaderPy : public Py::PythonExtension<UiLoaderPy>
-{
-public:
-    static void init_type(void);    // announce properties and methods
-
-    UiLoaderPy();
-    ~UiLoaderPy();
-
-    Py::Object repr();
-    Py::Object createWidget(const Py::Tuple&);
-    Py::Object load(const Py::Tuple&);
-
-private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
-
-private:
-    UiLoader loader;
-};
 
 // --------------------------------------------------------------------
 

@@ -36,6 +36,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/UiLoader.h>
 #include <Gui/WidgetFactory.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
