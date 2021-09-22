@@ -422,8 +422,39 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
     return 0;
 }
 
+Py::Object PythonWrapper::fromQDir(const QDir& dir)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    const char* typeName = typeid(dir).name();
+    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QDir>()),
+        const_cast<QDir*>(&dir), false, false, typeName);
+    if (pyobj)
+        return Py::asObject(pyobj);
+#endif
+    throw Py::RuntimeError("Failed to wrap icon");
+}
+
+QDir* PythonWrapper::toQDir(PyObject* pyobj)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject* type = getPyTypeObjectForTypeName<QDir>();
+    if (type) {
+        if (Shiboken::Object::checkType(pyobj)) {
+            SbkObject* sbkobject = reinterpret_cast<SbkObject*>(pyobj);
+            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
+            return reinterpret_cast<QDir*>(cppobject);
+        }
+    }
+#else
+    Q_UNUSED(pyobj);
+#endif
+    return nullptr;
+}
+
 Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
 {
+    if (!object)
+        return Py::None();
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
     //
@@ -558,6 +589,21 @@ bool PythonWrapper::loadWidgetsModule()
         if (requiredModule.isNull())
             return false;
         SbkPySide2_QtWidgetsTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#endif
+    return true;
+}
+
+bool PythonWrapper::loadUiToolsModule()
+{
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+    // QtUiTools
+    static PyTypeObject** SbkPySide2_QtUiToolsTypes = nullptr;
+    if (!SbkPySide2_QtUiToolsTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtUiTools"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide2_QtUiToolsTypes = Shiboken::Module::getTypes(requiredModule);
     }
 #endif
     return true;

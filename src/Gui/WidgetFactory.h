@@ -35,6 +35,10 @@
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
 
+QT_BEGIN_NAMESPACE
+class QDir;
+QT_END_NAMESPACE
+
 namespace Gui {
   namespace Dialog{
     class PreferencePage;
@@ -47,6 +51,7 @@ public:
     bool loadCoreModule();
     bool loadGuiModule();
     bool loadWidgetsModule();
+    bool loadUiToolsModule();
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
@@ -60,6 +65,8 @@ public:
      */
     Py::Object fromQIcon(const QIcon*);
     QIcon *toQIcon(PyObject *pyobj);
+    Py::Object fromQDir(const QDir&);
+    QDir* toQDir(PyObject* pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };
