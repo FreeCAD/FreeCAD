@@ -2055,6 +2055,8 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
         setCursor(Qt::OpenHandCursor);
         if (_DragFrame)
             _DragFrame->hide();
+        if (_DragFloating)
+            _DragFrame->hide();
         return;
     }
     OverlayManager::instance()->dragDockWidget(me->globalPos(),
@@ -2122,6 +2124,8 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
                                                true);
     if (_DragFrame)
         _DragFrame->hide();
+    if (_DragFloating)
+        _DragFloating->hide();
 }
 
 void OverlayTitleBar::keyPressEvent(QKeyEvent *ke)
@@ -2130,6 +2134,8 @@ void OverlayTitleBar::keyPressEvent(QKeyEvent *ke)
         setCursor(Qt::OpenHandCursor);
         _Dragging = nullptr;
         if (_DragFrame)
+            _DragFrame->hide();
+        if (_DragFloating)
             _DragFrame->hide();
     }
 }
@@ -3497,10 +3503,12 @@ public:
         dock->show();
     }
 
-    void dragDockWidget(const QPoint &pos,
+    // Warning, the caller may be deleted during the call. So do not pass
+    // parameter using reference, pass by value instead.
+    void dragDockWidget(QPoint pos,
                         QWidget *srcWidget,
-                        const QPoint &dragOffset,
-                        const QSize &dragSize,
+                        QPoint dragOffset,
+                        QSize dragSize,
                         bool drop)
     {
         if (!getMainWindow())
