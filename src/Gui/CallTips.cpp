@@ -727,8 +727,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             if (!hasFocus())
                 hide();
         }
-        else if (watched == this && event->type() == QEvent::ShortcutOverride) {
-            qApp->sendEvent(textEdit, event);
+        else if (event->type() == QEvent::ShortcutOverride) {
+            event->accept();
             return true;
         }
     }
