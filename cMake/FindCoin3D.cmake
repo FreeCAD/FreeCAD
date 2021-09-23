@@ -9,7 +9,7 @@
 SET( COIN3D_FOUND "NO" )
 
 IF (WIN32)
-  IF (CYGWIN)
+  IF (CYGWIN OR MINGW)
 
     FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
       ${CMAKE_INCLUDE_PATH}
@@ -24,7 +24,7 @@ IF (WIN32)
       /usr/local/lib
     )
 
-  ELSE (CYGWIN)
+  ELSE (CYGWIN OR MINGW)
 
     FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/include"
