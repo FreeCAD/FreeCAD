@@ -27,6 +27,9 @@
 # include <limits>
 #endif
 #include <QMetaType>
+#include <QWidget>
+#include <QIcon>
+#include <QDir>
 
 // Uncomment this block to remove PySide C++ support and switch to its Python interface
 //#undef HAVE_SHIBOKEN
