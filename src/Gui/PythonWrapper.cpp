@@ -25,11 +25,11 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <limits>
+# include <QWidget>
+# include <QIcon>
+# include <QDir>
 #endif
 #include <QMetaType>
-#include <QWidget>
-#include <QIcon>
-#include <QDir>
 
 // Uncomment this block to remove PySide C++ support and switch to its Python interface
 //#undef HAVE_SHIBOKEN
@@ -427,6 +427,8 @@ Py::Object PythonWrapper::fromQDir(const QDir& dir)
         const_cast<QDir*>(&dir), false, false, typeName);
     if (pyobj)
         return Py::asObject(pyobj);
+#else
+    Q_UNUSED(dir)
 #endif
     throw Py::RuntimeError("Failed to wrap icon");
 }
