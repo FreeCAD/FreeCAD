@@ -499,11 +499,11 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 
     QObject* objS=nullptr;
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-    QList<QWidget*>::const_iterator it = list.begin();
+    QList<QWidget*>::const_iterator it = list.cbegin();
     QObject *obj;
     QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
-    while ( it != list.end() ) {
+    while ( it != list.cend() ) {
         obj = *it;
         ++it;
         if (obj->objectName() == QLatin1String(sender)) {
@@ -546,11 +546,11 @@ Py::Object PyResource::value(const Py::Tuple& args)
     QVariant v;
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-        QList<QWidget*>::const_iterator it = list.begin();
+        QList<QWidget*>::const_iterator it = list.cbegin();
         QObject *obj;
 
         bool fnd = false;
-        while ( it != list.end() ) {
+        while ( it != list.cend() ) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {
@@ -646,11 +646,11 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-        QList<QWidget*>::const_iterator it = list.begin();
+        QList<QWidget*>::const_iterator it = list.cbegin();
         QObject *obj;
 
         bool fnd = false;
-        while ( it != list.end() ) {
+        while ( it != list.cend() ) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {

@@ -577,8 +577,8 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
     if (wrap.loadCoreModule()) {
         std::string fn;
         QFile file;
-        QIODevice* device = 0;
-        QWidget* parent = 0;
+        QIODevice* device = nullptr;
+        QWidget* parent = nullptr;
         if (wrap.toCString(args[0], fn)) {
             file.setFileName(QString::fromUtf8(fn.c_str()));
             if (!file.open(QFile::ReadOnly))
