@@ -389,6 +389,8 @@ class ViewProviderDraft(object):
             It is `False` otherwise.
         """
         if mode != 0:
+            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
+            # case of an unrecognized context menu action)
             return None
         elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
