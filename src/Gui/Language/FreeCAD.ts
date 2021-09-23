@@ -3229,10 +3229,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
 <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-        <source>Unloaded Workbenches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Workbench Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3246,6 +3242,10 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available Workbenches</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4435,31 +4435,31 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around y-axis:</source>
+        <source>Pitch (around y-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around z-axis:</source>
+        <source>Roll (around x-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around x-axis:</source>
+        <source>Yaw (around z-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the x-axis</source>
+        <source>Yaw (around z-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the y-axis</source>
+        <source>Pitch (around y-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the z-axis</source>
+        <source>Roll (around the x-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Euler angles (xy&apos;z&apos;&apos;)</source>
+        <source>Euler angles (zy&apos;x&apos;&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5973,6 +5973,18 @@ Do you want to specify another directory?</source>
         <source>Vietnamese</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Bulgarian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Greek</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish, Argentina</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::TreeDockWidget</name>
@@ -6917,6 +6929,34 @@ Document: </source>
         <source>
 
 Physical path: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+&quot;%1&quot;
+
+Would you like to save the file with a different name?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document not saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 Document(s) not saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9717,6 +9757,10 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Special Ops</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axonometric</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
