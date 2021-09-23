@@ -106,14 +106,14 @@ private:
 class UiLoader : public QUiLoader
 {
 public:
-    UiLoader(QObject* parent=0);
+    UiLoader(QObject* parent=nullptr);
     virtual ~UiLoader();
 
     /**
      * Creates a widget of the type \a className with the parent \a parent.
      * For more details see the documentation to QWidgetFactory.
      */
-    QWidget* createWidget(const QString & className, QWidget * parent=0,
+    QWidget* createWidget(const QString & className, QWidget * parent=nullptr,
                           const QString& name = QString());
 
 private:
@@ -125,7 +125,7 @@ private:
 class UiLoaderPy : public Py::PythonExtension<UiLoaderPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     UiLoaderPy();
     ~UiLoaderPy();

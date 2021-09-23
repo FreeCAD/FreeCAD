@@ -60,7 +60,7 @@ Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWid
     std::string className;
     className = str.as_std_string("utf-8");
     // 2nd argument
-    QWidget* parent = 0;
+    QWidget* parent = nullptr;
     if (wrap.loadCoreModule() && args.size() > 1) {
         QObject* object = wrap.toQObject(args[1]);
         if (object)
@@ -537,7 +537,7 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 PyObject *UiLoaderPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     return new UiLoaderPy();
 }
 

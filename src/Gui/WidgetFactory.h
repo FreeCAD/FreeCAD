@@ -55,8 +55,8 @@ public:
     static WidgetFactoryInst& instance();
     static void destruct ();
 
-    QWidget* createWidget (const char* sName, QWidget* parent=0) const;
-    Gui::Dialog::PreferencePage* createPreferencePage (const char* sName, QWidget* parent=0) const;
+    QWidget* createWidget (const char* sName, QWidget* parent=nullptr) const;
+    Gui::Dialog::PreferencePage* createPreferencePage (const char* sName, QWidget* parent=nullptr) const;
     QWidget* createPrefWidget(const char* sName, QWidget* parent, const char* sPref);
 
 private:
@@ -330,7 +330,7 @@ private:
 class PyResource : public Py::PythonExtension<PyResource>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PyResource();
     ~PyResource();
@@ -383,7 +383,7 @@ class GuiExport PreferencePagePython : public PreferencePage
     Q_OBJECT
 
 public:
-    PreferencePagePython(const Py::Object& dlg, QWidget* parent = 0);
+    PreferencePagePython(const Py::Object& dlg, QWidget* parent = nullptr);
     virtual ~PreferencePagePython();
 
     void loadSettings();
