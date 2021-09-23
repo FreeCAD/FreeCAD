@@ -6,12 +6,12 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Evolventní ozubené kolo...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Vytvoří nebo upraví definici "evolventního" ozubeného kola.</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Vytvoří nebo upraví definici pastorku.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Průvodce konstrukcí hřídele...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Spusťte průvodce konstrukcí hřídele</translation>
     </message>
   </context>
   <context>
@@ -45,42 +45,42 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Délka [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Průměr [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>Vnitřní průměr [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Typ omezení</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Typ počáteční hrany</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Velikost počáteční hrany</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Typ koncové hrany</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Velikost koncové hrany</translation>
     </message>
   </context>
   <context>
@@ -822,12 +822,12 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Upravit pořadač tvarů</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Vytvořit pořadač tvarů</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
@@ -1979,7 +1979,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Válcová hlava (deprecated)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
@@ -3253,7 +3253,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>Přesunout tip</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
@@ -4510,7 +4510,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Evolventní ozubené kolo...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>

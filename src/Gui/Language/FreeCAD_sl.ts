@@ -3293,10 +3293,6 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Odložena delovna okolja</translation>
-    </message>
-    <message>
       <source>Workbench Name</source>
       <translation>Ime delovnega okolja</translation>
     </message>
@@ -3311,6 +3307,10 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
     </message>
   </context>
   <context>
@@ -4508,32 +4508,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Izberite 1, 2 ali 3 točke preden kliknete ta gumb.  Točka je lahko na ogljišču, ploskvi ali na robu.  Če bo na ploskvi ali robu, bo uporabljena točka položaja kazalke na ploskvi ali robu.  Če je izbrana 1 točka, bo uporabljena kot središče sukanja.  Če sta izbrani 2 točki, bo točka na sredini med njima središče sukanja in ustvarjena bo nova os po meri, če bo potrebno.  Če so izbrane 3 točke, prva točka postane središče vrtenja in leži na vektorju, ki je pravokoten na ravnino, določeno s temi 3 točkami.  Nekateri podatki o razdaljah in kotih so podani v poročilnem pogledu, ki je lahko koristen posebno pri poravnavanju objektov.  Za lažjo uporabo se s Premakni + klik ustrezna razdalja ali kot kopira v odložišče.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Okoli osi y:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Okoli osi z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Okoli osi x:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Sukanje okoli osi x</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Sukanje okoli osi y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Sukanje okoli osi z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Eulerjevi koti (xy'z")</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4698,13 +4698,13 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Uporabi izvorni izbor</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Prezri odvisnosti in nadaljuj s predmeti, ki so bili
+izbrani pred odprtjem tega pogovrnega okna</translation>
     </message>
   </context>
   <context>
@@ -6059,6 +6059,18 @@ Ali želite navesti drugo mapo?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamščina</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grščina</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -7022,6 +7034,38 @@ Physical path: </source>
       <translation>
 
 Tvarna pot: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -8799,11 +8843,11 @@ Tvarna pot: </translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Način urejanja</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Opredeljuje obnašanje pri urejanju predmeta iz drevesa</translation>
     </message>
   </context>
   <context>
@@ -9829,6 +9873,10 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Posebne možnosti</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Aksonometrično</translation>
     </message>
   </context>
   <context>

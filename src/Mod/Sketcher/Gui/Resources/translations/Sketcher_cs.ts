@@ -213,7 +213,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6011"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Vazba automatický rádius/průměr</translation>
     </message>
   </context>
   <context>
@@ -389,12 +389,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Vytvořit obdélníky</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Vytvoří obdélník v náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -404,12 +404,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1184"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>Vystředěný obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>Zaoblený obdélník</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3141"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>Vazba svislé vzdálenosti</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3142"/>
@@ -775,12 +775,12 @@ na vybraném vrcholu</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5549"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Vazba automatický rádius/průměr</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5550"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+      <translation>Opravit automaticky průměr kružnice a poloměr oblouku/pólu</translation>
     </message>
   </context>
   <context>
@@ -1191,12 +1191,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Vytvořit zaoblený obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>Vytvořit zaoblený obdélník v náčrtu</translation>
     </message>
   </context>
   <context>
@@ -1335,12 +1335,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>Vytvořit vystředěný obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>Vytvořit vystředěný obdélník v náčrtu</translation>
     </message>
   </context>
   <context>
@@ -1764,12 +1764,12 @@ jakožto reference.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2192"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>Odstranit osové zarovnání</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>Upraví vazby tak, aby se odstranilo zarovnání podle osy, zatímco vazby ve výběru zůstaly zachované</translation>
     </message>
   </context>
   <context>
@@ -1984,12 +1984,12 @@ Tímto se vymaže vlastnost "Podpora", pokud existuje.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6576"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Rozdělit hranu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6577"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into two while preserving constraints</translation>
+      <translation>Rozdělí hranu na dvě se zachováním vazeb</translation>
     </message>
   </context>
   <context>
@@ -2334,7 +2334,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4230"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>Bod na křivce + tečnost prohodit s tečností v bodě křivky</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4325"/>
@@ -2392,7 +2392,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="5736"/>
       <location filename="../../CommandConstraints.cpp" line="5827"/>
       <source>Add radiam constraint</source>
-      <translation type="unfinished">Add radiam constraint</translation>
+      <translation>Přidat vazbu poloměr-průměr</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6132"/>
@@ -2493,12 +2493,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>Přidat vystředěný obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>Přidat zaoblený obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1561"/>
@@ -2571,7 +2571,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6548"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>Rozdělit hranu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6723"/>
@@ -2651,7 +2651,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2278"/>
       <source>Remove Axes Alignment</source>
-      <translation type="unfinished">Remove Axes Alignment</translation>
+      <translation>Odstranit osové zarovnání</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -2660,7 +2660,9 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="858"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="718"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="951"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="977"/>
       <source>Update constraint's virtual space</source>
       <translation>Aktualizovat virtuální prostor vazby</translation>
     </message>
@@ -2670,12 +2672,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Přidat automatické vazby</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="621"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
       <source>Swap constraint names</source>
       <translation>Prohodit názvy vazeb</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="843"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="936"/>
       <source>Rename sketch constraint</source>
       <translation>Přejmenovat vazbu náčrtu</translation>
     </message>
@@ -2743,42 +2745,42 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Nelze odhadnout průsečík křivek. Zkuste přidat vazbu totožnosti mezi vrcholy křivek, které chcete zaoblit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5735"/>
+      <location filename="../../../App/SketchObject.cpp" line="5728"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Tato verze OCE/OCC nepodporuje operaci uzel. Potřebujete 6.9.0 nebo vyšší.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5739"/>
+      <location filename="../../../App/SketchObject.cpp" line="5732"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Geometrický index (GeoID) B-splajnu je mimo meze.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5742"/>
+      <location filename="../../../App/SketchObject.cpp" line="5735"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nepožadujete změnu v násobnosti uzlů.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5747"/>
+      <location filename="../../../App/SketchObject.cpp" line="5740"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Daný geometrický index (GeoId) neodpovídá B-splajn křivce.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5754"/>
+      <location filename="../../../App/SketchObject.cpp" line="5747"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Index uzlu je mimo hranice. Všimněte si, že v souladu s OCC zápisem je index prvního uzlu 1 a ne 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5761"/>
+      <location filename="../../../App/SketchObject.cpp" line="5754"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Násobnost nemůže být zvýšena nad stupeň B-splajnu.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5764"/>
+      <location filename="../../../App/SketchObject.cpp" line="5757"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Násobnost nemůže být snížena pod nulu.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5776"/>
+      <location filename="../../../App/SketchObject.cpp" line="5769"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC není schopno snížit násobnost na maximální toleranci.</translation>
     </message>
@@ -3421,22 +3423,22 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../CommandConstraints.cpp" line="675"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Nahrazení vazeb náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="681"/>
       <source>Keep notifying me of constraint substitutions</source>
-      <translation type="unfinished">Keep notifying me of constraint substitutions</translation>
+      <translation>Informovat o nahrazování vazeb</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2674"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied instead.</translation>
+      <translation>Namísto toho byla použita tečnost hrany v koncovém bodě.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4242"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to edge tangency was applied. The point on object constraint was deleted.</translation>
+      <translation>Byla použita tečnost hrany v koncovém bodě. Vazba bodu na objektu byla smazána.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4923"/>
@@ -3783,7 +3785,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2266"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
-      <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
+      <translation>Odstranění osového zarovnání vyžaduje alespoň jeden vybraný geometrický element, který není vnější</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -3892,12 +3894,12 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Prohodit názvy vazeb</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="612"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="604"/>
       <source>Unnamed constraint</source>
       <translation>Nepojmenovaná vazba</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="605"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Pouze názvy pojmenovaných vazeb mohou být vyměněny.</translation>
     </message>
@@ -4323,12 +4325,12 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>Pracovní barvy</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Text souřadnice</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -4338,27 +4340,27 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Vytváření čáry</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="115"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>Nitkový kurzor</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="140"/>
       <source>Geometric element colors</source>
-      <translation type="unfinished">Geometric element colors</translation>
+      <translation>Barvy geometrických prvků</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="154"/>
       <source>Internal alignment edge</source>
-      <translation type="unfinished">Internal alignment edge</translation>
+      <translation>Hrana vnitřního zarovnání</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="167"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Bez vazby</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="180"/>
@@ -4400,12 +4402,12 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
       <source>Deactivated constraint</source>
-      <translation type="unfinished">Deactivated constraint</translation>
+      <translation>Deaktivovaná vazba</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation type="unfinished">Colors outside Sketcher</translation>
+      <translation>Barvy mimo náčrt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="279"/>
@@ -4420,7 +4422,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>Omezeno</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="466"/>
@@ -4430,7 +4432,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="479"/>
       <source>Fully constrained Sketch</source>
-      <translation type="unfinished">Fully constrained Sketch</translation>
+      <translation>Plně určený náčrt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
@@ -4465,12 +4467,12 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="556"/>
       <source>Constraint colors</source>
-      <translation type="unfinished">Constraint colors</translation>
+      <translation>Barvy vazeb</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="570"/>
       <source>Constraint symbols</source>
-      <translation type="unfinished">Constraint symbols</translation>
+      <translation>Symboly vazeb</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="577"/>
@@ -4485,7 +4487,7 @@ Vyžaduje znovu otevření editace náčrtu, aby se aktivovalo.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
       <source>Expression dependent constraint</source>
-      <translation type="unfinished">Expression dependent constraint</translation>
+      <translation>Vazby závislé na výrazu</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
@@ -4562,22 +4564,22 @@ Podporuje všechny jednotkové systémy kromě "US tradiční" a "stavební US/E
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Font size used for labels and constraints.</source>
-      <translation type="unfinished">Font size used for labels and constraints.</translation>
+      <translation>Velikost písma použitá pro popisky a vazby.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+      <translation>3D pohled je zobrazen v tomto měřítku.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>Vzor pro čáry použité v mřížce.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>Počet polygonů použitých pro aproximaci geometrie.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
@@ -4626,11 +4628,6 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
       <translation type="unfinished">DimensionalStringFormat</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
-      <source>Mod/Sketcher</source>
-      <translation type="unfinished">Mod/Sketcher</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4900,11 +4897,6 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
       <translation>Vše</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
-      <source>Normal</source>
-      <translation>Normála</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
       <source>Datums</source>
       <translation>Referenční geometrie</translation>
@@ -4920,33 +4912,191 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
       <translation>Odkaz</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="70"/>
+      <source>Horizontal</source>
+      <translation>Vodorovně</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
+      <source>Vertical</source>
+      <translation>Svisle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="80"/>
+      <source>Coincident</source>
+      <translation type="unfinished">Coincident</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="85"/>
+      <source>Point on Object</source>
+      <translation type="unfinished">Point on Object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="90"/>
+      <source>Parallel</source>
+      <translation>Rovnoběžně</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="95"/>
+      <source>Perpendicular</source>
+      <translation>Kolmý</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="100"/>
+      <source>Tangent</source>
+      <translation>Tečna</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="105"/>
+      <source>Equality</source>
+      <translation type="unfinished">Equality</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="110"/>
+      <source>Symmetric</source>
+      <translation>Symetrické</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="115"/>
+      <source>Block</source>
+      <translation>Blok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="120"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="125"/>
+      <source>Horizontal Distance</source>
+      <translation type="unfinished">Horizontal Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="130"/>
+      <source>Vertical Distance</source>
+      <translation type="unfinished">Vertical Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="135"/>
+      <source>Radius</source>
+      <translation>Poloměr</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="140"/>
+      <source>Weight</source>
+      <translation>Tloušťka</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="145"/>
+      <source>Diameter</source>
+      <translation>Průměr</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="150"/>
+      <source>Angle</source>
+      <translation>Úhel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="155"/>
+      <source>Snell's Law</source>
+      <translation type="unfinished">Snell's Law</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="160"/>
+      <source>Internal Alignment</source>
+      <translation type="unfinished">Internal Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="195"/>
+      <source>View</source>
+      <translation>Pohled</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="213"/>
+      <source>Shows all the constraints in the list</source>
+      <translation type="unfinished">Shows all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="216"/>
+      <source>Show All</source>
+      <translation>Zobrazit vše</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="235"/>
+      <source>Hides all the constraints in the list</source>
+      <translation type="unfinished">Hides all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="238"/>
+      <source>Hide All</source>
+      <translation type="unfinished">Hide All</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="244"/>
+      <source>Controls visualisation in the 3D view</source>
+      <translation type="unfinished">Controls visualisation in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="247"/>
+      <source>Automation</source>
+      <translation type="unfinished">Automation</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="265"/>
+      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
+      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="268"/>
+      <source>Track filter selection</source>
+      <translation type="unfinished">Track filter selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="295"/>
+      <source>Controls widget list behaviour</source>
+      <translation type="unfinished">Controls widget list behaviour</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="298"/>
+      <source>List</source>
+      <translation>Seznam</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="347"/>
       <source>Internal alignments will be hidden</source>
       <translation>Interní zarovnání budou skryta</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="78"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="350"/>
       <source>Hide internal alignment</source>
       <translation>Skrýt vnitřní zarovnání</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="94"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="316"/>
       <source>Extended information will be added to the list</source>
       <translation>Rozšířené informace budou přidány do seznamu</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="97"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
+      <source>Geometric</source>
+      <translation type="unfinished">Geometric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="319"/>
       <source>Extended information</source>
       <translation>Rozšířené informace</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="634"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="626"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="852"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="868"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="755"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="945"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="961"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="997"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="1015"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -5305,136 +5455,136 @@ Body musejí být blíž než pětina velikosti mřížky, aby došlo k přichyc
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6291"/>
       <source>Edit sketch</source>
       <translation>Upravit skicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6305"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dialog je opravdu otevřen v panelu úloh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6306"/>
       <source>Do you want to close this dialog?</source>
       <translation>Chcete zavřít tento dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6320"/>
       <source>Invalid sketch</source>
       <translation>Neplatný náčrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6321"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Chcete otevřít nástroje pro ověření náčrtu?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6322"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Náčrt není platný a nemůže být upravován.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6537"/>
       <source>Please remove the following constraint:</source>
       <translation>Odstraňte, prosím, následující vazbu:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6538"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Odstraňte, prosím, alespoň jednu z následujících vazeb:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6544"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Odstraňte, prosím, následující nadbytečnou vazbu:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Odstraňte, prosím, následující nadbytečné vazby:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6551"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Toto omezení je částečně nadbytečné:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tato omezení jsou částečně nadbytečná:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6558"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Odstraňte prosím tuto poškozenou vazbu:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Odstraňte prosím tyto poškozené vazby:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6594"/>
       <source>Empty sketch</source>
       <translation>Prázdný náčrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6601"/>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6608"/>
       <source>Sketch contains malformed constraints</source>
       <translation type="unfinished">Sketch contains malformed constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Sketch contains conflicting constraints</source>
       <translation type="unfinished">Sketch contains conflicting constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains redundant constraints</source>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6632"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation type="unfinished">Sketch contains partially redundant constraints</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6616"/>
       <location filename="../../ViewProviderSketch.cpp" line="6624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6633"/>
       <source>(click to select)</source>
       <translation>(klikněte pro vybrání)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6644"/>
       <source>Fully constrained sketch</source>
       <translation>Plně určený náčrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Nedovazbený náčrt s &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 stupněm&lt;/span&gt;&lt;/a&gt; volnosti. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Nedovazbený náčrt s &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 stupni&lt;/span&gt;&lt;/a&gt; volnosti. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6659"/>
       <source>Solved in %1 sec</source>
       <translation>Vyřešeno behem %1 s</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6662"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Nevyřešeno (%1 s)</translation>
     </message>
@@ -5740,7 +5890,7 @@ Body musejí být blíž než pětina velikosti mřížky, aby došlo k přichyc
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>Vytvořit obdélník</translation>
     </message>
   </context>
   <context>

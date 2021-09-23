@@ -29,7 +29,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation>Çalışma dizini</translation>
+      <translation>Çalışma Dizini</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation>Geçen zaman:</translation>
+      <translation>Geçen Süre:</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
@@ -73,11 +73,6 @@
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
       <translation>için geometri kaynak noktası seçici</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometri referans seçici için bir </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -133,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Katı</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometri referans seçici için bir </translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation>Çubuk Döndürme</translation>
+      <translation>Kiriş Döndürme</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>

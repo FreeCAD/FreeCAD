@@ -2655,7 +2655,9 @@ invalid constraints, degenerated geometry, etc.</source>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="858"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="718"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="951"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="977"/>
       <source>Update constraint's virtual space</source>
       <translation>拘束の仮想スペースを更新</translation>
     </message>
@@ -2665,12 +2667,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>自動拘束を追加</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="621"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
       <source>Swap constraint names</source>
       <translation>拘束名を交換</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="843"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="936"/>
       <source>Rename sketch constraint</source>
       <translation>スケッチ拘束の名前を変更</translation>
     </message>
@@ -2738,42 +2740,42 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>曲線の交点を推定できません。フィレット対象の曲線の頂点の間に一致拘束を追加してみてください。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5735"/>
+      <location filename="../../../App/SketchObject.cpp" line="5728"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>このバージョンの OCE/OCC はノット操作をサポートしていません。バージョン 6.9.0 以上が必要です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5739"/>
+      <location filename="../../../App/SketchObject.cpp" line="5732"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-スプラインのジオメトリー番号（ジオID）が範囲外です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5742"/>
+      <location filename="../../../App/SketchObject.cpp" line="5735"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5747"/>
+      <location filename="../../../App/SketchObject.cpp" line="5740"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>入力されたジオメトリー番号（ジオID）がB-スプライン曲線になりません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5754"/>
+      <location filename="../../../App/SketchObject.cpp" line="5747"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5761"/>
+      <location filename="../../../App/SketchObject.cpp" line="5754"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>B-スプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5764"/>
+      <location filename="../../../App/SketchObject.cpp" line="5757"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5776"/>
+      <location filename="../../../App/SketchObject.cpp" line="5769"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
@@ -3887,12 +3889,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>拘束名を交換</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="612"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="604"/>
       <source>Unnamed constraint</source>
       <translation>名前のない拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="605"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>スワップできるのは名前のついた拘束だけです。</translation>
     </message>
@@ -4555,52 +4557,52 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Font size used for labels and constraints.</source>
-      <translation type="unfinished">Font size used for labels and constraints.</translation>
+      <translation>ラベルと拘束で使用されるフォントサイズ.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+      <translation>この係数に基づいて3Dビューが拡大縮小されます。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>グリッド線に使用される線種.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>ジオメトリー近似で使用されるポリゴン数.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>新しい寸法拘束の値を入力するためのダイアログがポップアップします。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>現在のスケッチャー作成ツールは作成後も有効です。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>現在の制約作成ツールは、作成後もアクティブになります。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>チェックされている場合、寸法拘束の名前を表示します (存在する場合)。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>フォーマットで寸法拘束名を表示する</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4609,21 +4611,16 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>寸法拘束文字列プレゼンテーションのフォーマット。
+デフォルトは %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - 名前パラメータ
+%V - 寸法値</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
-      <source>Mod/Sketcher</source>
-      <translation type="unfinished">Mod/Sketcher</translation>
+      <translation>寸法の文字列形式</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4633,22 +4630,22 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>スケッチを開くとき、それに依存するすべての機能を非表示にします。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>スケッチを開くとき、外部ジオメトリリンクのソースを表示します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>スケッチを開くとき、スケッチが添付されているオブジェクトを表示します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>開いているドキュメント内のすべてのスケッチに現在の表示オートメーション設定を適用します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4668,7 +4665,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>スケッチを閉じるときは、スケッチを開く前の位置にカメラを戻します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
@@ -4679,8 +4676,8 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>スケッチは、デフォルトでは断面図モードで開きます。
+この場合、オブジェクトはスケッチ平面の背後にのみ表示されます。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
@@ -4893,11 +4890,6 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>すべて</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
-      <source>Normal</source>
-      <translation>標準</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
       <source>Datums</source>
       <translation>データム</translation>
@@ -4913,33 +4905,191 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>参照</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="70"/>
+      <source>Horizontal</source>
+      <translation>水平方向</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
+      <source>Vertical</source>
+      <translation>垂直方向</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="80"/>
+      <source>Coincident</source>
+      <translation>一致</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="85"/>
+      <source>Point on Object</source>
+      <translation type="unfinished">Point on Object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="90"/>
+      <source>Parallel</source>
+      <translation>平行</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="95"/>
+      <source>Perpendicular</source>
+      <translation>直交する|鉛直な</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="100"/>
+      <source>Tangent</source>
+      <translation>正接</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="105"/>
+      <source>Equality</source>
+      <translation type="unfinished">Equality</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="110"/>
+      <source>Symmetric</source>
+      <translation>対称</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="115"/>
+      <source>Block</source>
+      <translation>ブロック</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="120"/>
+      <source>Distance</source>
+      <translation>距離</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="125"/>
+      <source>Horizontal Distance</source>
+      <translation type="unfinished">Horizontal Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="130"/>
+      <source>Vertical Distance</source>
+      <translation type="unfinished">Vertical Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="135"/>
+      <source>Radius</source>
+      <translation>半径</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="140"/>
+      <source>Weight</source>
+      <translation>太さ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="145"/>
+      <source>Diameter</source>
+      <translation>直径</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="150"/>
+      <source>Angle</source>
+      <translation>角度</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="155"/>
+      <source>Snell's Law</source>
+      <translation type="unfinished">Snell's Law</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="160"/>
+      <source>Internal Alignment</source>
+      <translation type="unfinished">Internal Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="195"/>
+      <source>View</source>
+      <translation>ビュー</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="213"/>
+      <source>Shows all the constraints in the list</source>
+      <translation type="unfinished">Shows all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="216"/>
+      <source>Show All</source>
+      <translation>全て表示</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="235"/>
+      <source>Hides all the constraints in the list</source>
+      <translation type="unfinished">Hides all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="238"/>
+      <source>Hide All</source>
+      <translation type="unfinished">Hide All</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="244"/>
+      <source>Controls visualisation in the 3D view</source>
+      <translation type="unfinished">Controls visualisation in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="247"/>
+      <source>Automation</source>
+      <translation type="unfinished">Automation</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="265"/>
+      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
+      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="268"/>
+      <source>Track filter selection</source>
+      <translation type="unfinished">Track filter selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="295"/>
+      <source>Controls widget list behaviour</source>
+      <translation type="unfinished">Controls widget list behaviour</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="298"/>
+      <source>List</source>
+      <translation>リスト</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="347"/>
       <source>Internal alignments will be hidden</source>
       <translation>内部アライメントは非表示になります</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="78"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="350"/>
       <source>Hide internal alignment</source>
       <translation>内部アライメントを非表示</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="94"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="316"/>
       <source>Extended information will be added to the list</source>
       <translation>拡張情報がリストに追加されます。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="97"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
+      <source>Geometric</source>
+      <translation type="unfinished">Geometric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="319"/>
       <source>Extended information</source>
       <translation>拡張情報</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="634"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="626"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="852"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="868"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="755"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="945"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="961"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="997"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="1015"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -5298,136 +5448,136 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6291"/>
       <source>Edit sketch</source>
       <translation>スケッチを編集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6305"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6306"/>
       <source>Do you want to close this dialog?</source>
       <translation>このダイアログを閉じますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6320"/>
       <source>Invalid sketch</source>
       <translation>スケッチが無効です</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6321"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>スケッチ検証ツールを起動しますか?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6322"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>スケッチが不正で、編集できません。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6537"/>
       <source>Please remove the following constraint:</source>
       <translation>以下の拘束を削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6538"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>以下の拘束から少なくとも1つを削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6544"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>以下の不要な拘束を削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>以下の不要な拘束を削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6551"/>
       <source>The following constraint is partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
       <source>The following constraints are partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6558"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>次の不正な拘束を削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>次の不正な拘束を削除してください:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6594"/>
       <source>Empty sketch</source>
       <translation>スケッチが空です</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6601"/>
       <source>Over-constrained sketch</source>
       <translation>過剰拘束されたスケッチ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6608"/>
       <source>Sketch contains malformed constraints</source>
       <translation>スケッチに不正な拘束が含まれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Sketch contains conflicting constraints</source>
       <translation>スケッチに競合する拘束が含まれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains redundant constraints</source>
       <translation>スケッチに冗長な拘束が含まれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6632"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation>スケッチに一部が冗長な拘束が含まれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6616"/>
       <location filename="../../ViewProviderSketch.cpp" line="6624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6633"/>
       <source>(click to select)</source>
       <translation>（クリックすると選択）</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6644"/>
       <source>Fully constrained sketch</source>
       <translation>スケッチが完全拘束になりました</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1&lt;/span&gt;&lt;/a&gt; 自由度の拘束下のスケッチ。%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1&lt;/span&gt;&lt;/a&gt; 自由度の拘束下のスケッチ。%2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6659"/>
       <source>Solved in %1 sec</source>
       <translation>%1 秒で求解しました</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6662"/>
       <source>Unsolved (%1 sec)</source>
       <translation>求解できません（%1 秒）</translation>
     </message>

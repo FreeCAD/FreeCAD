@@ -958,7 +958,7 @@ preko kotnice</translation>
       <translation>Prikaže kotnico in puščice</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Če drži, bodo predmeti znotraj te plasti prevzeli črtno barvo plasti</translation>
     </message>
@@ -1133,32 +1133,37 @@ Use 'arch' to force US arch notation</source>
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Izhodiščni predmet tega predmeta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Ime vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Merilo vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Zasuk vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Če je nastavljeno na "Napak", se črtkanje izvede, kakršno je, ne da bi bilo premaknjeno (na ploskvah, ki so izven XY, lahko to privede do napačnega izida</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1501,27 +1506,27 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
       <translation>Dodaj novo plast</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Preklopi med vklopom/izklopom mreže</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Pripenjanje predmeta</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Preklaplja med vklopljenostjo in izklopljenostjo kót za vidno pomoč</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Preklopi med Vklop/Izklop pravokotnosti</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Preklopi omejitve na delovno ravnino Vklop / Izklop</translation>
     </message>
@@ -1710,7 +1715,7 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Pred tem ukazom morate izbrati izhodiščni predmet</translation>
     </message>
   </context>
   <context>
@@ -2530,7 +2535,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Na izbranih ploskvah ustvari črtkanje</translation>
     </message>
   </context>
   <context>
@@ -2978,12 +2983,12 @@ Izbrani predmeti, ki niso posamezne črte, bodo prezrti.</translation>
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Preklopi med vklopom/izklopom mreže</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Preklopi mrežo osnutka</translation>
     </message>
@@ -3853,12 +3858,12 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>datoteke vzorcev (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>Datoteka PAT:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3868,7 +3873,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Vzorec:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -5304,7 +5309,7 @@ Opozorilo: C++ izvozilnik je hitrejši, vendar nima še toliko zmožnosti</trans
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Ni mogoče najti dovolj sorednic</translation>
     </message>
   </context>
   <context>
@@ -5336,7 +5341,7 @@ Opozorilo: C++ izvozilnik je hitrejši, vendar nima še toliko zmožnosti</trans
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation>Pripenjanje v osnutku</translation>
     </message>
@@ -6419,17 +6424,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Izberite vsebino plasti</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>po meri</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Vnešenega ni mogoče pretvoriti v količnik velikosti</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Nastavi velikost pripisov po meri kot x:x, x=x</translation>
     </message>

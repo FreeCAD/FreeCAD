@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="531"/>
+      <location filename="addonmanager_workers.py" line="535"/>
       <source>Installed location</source>
       <translation>Место установки</translation>
     </message>
@@ -97,97 +97,97 @@
       <translation>Список рабочих окружений обновлен.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="734"/>
+      <location filename="addonmanager_workers.py" line="738"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Обнаружен устаревший GitPython, рассмотрите обновление с помощью pip.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="292"/>
+      <location filename="addonmanager_workers.py" line="296"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Список макросов успешно получен.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="647"/>
+      <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Получение описания...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="387"/>
+      <location filename="addonmanager_workers.py" line="391"/>
       <source>Retrieving info from</source>
       <translation>Получение информации от</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="529"/>
+      <location filename="addonmanager_workers.py" line="533"/>
       <source>An update is available for this addon.</source>
       <translation>Для этого дополнения доступно обновление.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="517"/>
+      <location filename="addonmanager_workers.py" line="521"/>
       <source>This addon is already installed.</source>
       <translation>Это дополнение уже установлено.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="649"/>
+      <location filename="addonmanager_workers.py" line="653"/>
       <source>Retrieving info from git</source>
       <translation>Получение информации из git</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="652"/>
+      <location filename="addonmanager_workers.py" line="656"/>
       <source>Retrieving info from wiki</source>
       <translation>Получение информации из вики</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="696"/>
+      <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython не найден. Вместо этого используется стандартная загрузка.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="701"/>
+      <location filename="addonmanager_workers.py" line="705"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>По-видимому, ваша версия python не поддерживает ZIP файлы. Продолжение невозможно.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="782"/>
+      <location filename="addonmanager_workers.py" line="786"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Рабочее окружение успешно установлено. Пожалуйста, перезапустите FreeCAD для применения изменений.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="831"/>
+      <location filename="addonmanager_workers.py" line="835"/>
       <source>Missing workbench</source>
       <translation>Отсутствует рабочее окружение</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="840"/>
+      <location filename="addonmanager_workers.py" line="844"/>
       <source>Missing python module</source>
       <translation>Отсутствует модуль python</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="850"/>
+      <location filename="addonmanager_workers.py" line="854"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Отсутствует дополнительный модуль python (не запрещает установку)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="853"/>
+      <location filename="addonmanager_workers.py" line="857"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Найдены некоторые ошибки, которые мешают установке этого рабочего окружения</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="855"/>
+      <location filename="addonmanager_workers.py" line="859"/>
       <source>Please install the missing components first.</source>
       <translation>Сначала установите недостающие компоненты.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="876"/>
+      <location filename="addonmanager_workers.py" line="880"/>
       <source>Error: Unable to download</source>
       <translation>Ошибка: Не удалось загрузить</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="889"/>
+      <location filename="addonmanager_workers.py" line="893"/>
       <source>Successfully installed</source>
       <translation>Успешно установлено</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="306"/>
+      <location filename="addonmanager_workers.py" line="310"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython не установлен! Не удается получить макрос из git</translation>
     </message>
@@ -207,72 +207,72 @@
       <translation>Требуется перезапуск</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="661"/>
+      <location filename="addonmanager_workers.py" line="665"/>
       <source>This macro is already installed.</source>
       <translation>Этот макрос уже установлен.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="795"/>
+      <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Макрос установлен и доступен меню Макросы -&gt; макрос</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="543"/>
+      <location filename="addonmanager_workers.py" line="547"/>
       <source>This addon is marked as obsolete</source>
       <translation>Это дополнение помечено как устаревшее</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="547"/>
+      <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Это обычно означает, что оно больше не поддерживается, и некоторые более продвинутые дополнения в этом списке обеспечивают те же функции.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="869"/>
+      <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Ошибка: Не удается найти zip из</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="315"/>
+      <location filename="addonmanager_workers.py" line="319"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation>Что-то пошло не так при запросе макроса с сайта Git. Возможно исполняемый файл Git не находится в нужном месте</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="555"/>
+      <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Это дополнение помечено Только для Python 2</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="560"/>
+      <location filename="addonmanager_workers.py" line="564"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Этот верстак больше не может быть поддержан, и установка его на систему с Python 3, вероятно, вызовет ошибки при запуске или во время использования.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="723"/>
+      <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Пользователь запросил обновление рабочего стола Python 2 на системе, запущенной с Python 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="759"/>
+      <location filename="addonmanager_workers.py" line="763"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Верстак успешно обновлен. Перезапустите FreeCAD, чтобы применить изменения.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="767"/>
+      <location filename="addonmanager_workers.py" line="771"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>Пользователь запросил установить верстак для Python 2 на системе Python 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="339"/>
+      <location filename="addonmanager_workers.py" line="343"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation>Возможно, возникла проблема при подключении к Wiki, поэтому в данный момент не удается получить список Wiki-макросов</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="429"/>
+      <location filename="addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
       <translation>Показана исходная разметка</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="431"/>
+      <location filename="addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
       <translation>Библиотека Python Markdown отсутствует.</translation>
     </message>

@@ -960,7 +960,7 @@ haratago duen luzera</translation>
       <translation>Kota-lerroak eta geziak erakusten ditu</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Egia bada, geruza honek dituen objektuek geruzaren lerro-kolorea hartuko dute</translation>
     </message>
@@ -1135,32 +1135,37 @@ Erabili 'arch' US arku-notazioa behartzeko.</translation>
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Objektu honek darabilen oinarri-objektua</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Objektu honek darabilen PAT fitxategia</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Objektu honek darabilen eredu-izena</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Objektu honek darabilen eredu-eskala</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Objektu honek darabilen eredu-biraketa</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Faltsua bada, itzaleztadura bere horretan aplikatuko zaie aurpegiei, translaziorik gabe (horrek emaitza okerrak eman baititzake XY ez diren aurpegietan)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1503,27 +1508,27 @@ Instalatu DXF liburutegiaren gehigarria eskuz
       <translation>Gehitu geruza berria</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Sareta aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Objektu-atxikitzea</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Ikusizko laguntza-kotak aktibatzen/desaktibatzen ditu</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Ortogonala aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Laneko planora murriztea aktibatzen/desaktibatzen du</translation>
     </message>
@@ -1713,7 +1718,7 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Oinarri-objektu bat hautatu behar da komando hau erabili baino lehen</translation>
     </message>
   </context>
   <context>
@@ -2534,7 +2539,7 @@ Beste objektu batzuk hautatuta badude, ez ikusiarena egiten zaie.</translation>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Sortu itzaleztadurak aurpegi hautatuetan</translation>
     </message>
   </context>
   <context>
@@ -2984,12 +2989,12 @@ zuzenetan soilik funtzionatuko du ongi. Lerro bakunak ez diren hautatutako objek
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Sareta aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Txandakatu zirriborro-sareta</translation>
     </message>
@@ -3851,12 +3856,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>eredu-fitxategiak (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT fitxategia:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3866,7 +3871,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Eredua:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -5296,7 +5301,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Ez da koordenatu nahikorik aurkitu</translation>
     </message>
   </context>
   <context>
@@ -5328,7 +5333,7 @@ Oharra: C++ esportatzailea azkarragoa da, baina oraindik eginbide gutxiago ditu.
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation>Zirriborro-atxikitzea</translation>
     </message>
@@ -6411,17 +6416,17 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Hautatu geruza-edukiak</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>pertsonalizatua</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Sarrera ezin izan da eskala-faktore bihurtu</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Ezarri oharpen-eskala pertsonalizatua x:x, x=x formatuan</translation>
     </message>
@@ -7476,15 +7481,15 @@ Amaierako angelua izango da oinarriko angelua gehi kantitate hau.</translation>
       <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Koordenatuak azken puntuarekiko edo koordenatu-sistemaren jatorriarekiko,
+ezarriko den lehen puntua bada</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Koordenatuak koordenatu-sistema globalarekiko.
+Desmarkatu laneko planoaren koordenatu-sistema erabiltzeko</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="759"/>
@@ -7578,7 +7583,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="gui_trimex.py" line="222"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Desplazamendu-angelua</translation>
     </message>
   </context>
   <context>

@@ -3829,7 +3829,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Tạo kết cấu từ lựa chọn</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
@@ -3839,17 +3839,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Hãy chọn ít nhất một trục</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Công cụ đùn</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Chọn công cụ...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4633,7 +4633,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Nhiều kết cấu</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
@@ -4643,17 +4643,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Hệ thống kết cấu</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Tạo một đối tượng hệ thống kết cấu từ kết cấu được chọn và trục</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Công cụ kết cấu</translation>
     </message>
   </context>
   <context>

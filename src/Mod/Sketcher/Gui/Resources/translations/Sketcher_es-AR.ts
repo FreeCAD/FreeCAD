@@ -2660,7 +2660,9 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="858"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="718"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="951"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="977"/>
       <source>Update constraint's virtual space</source>
       <translation>Actualizar el espacio virtual de la restricción</translation>
     </message>
@@ -2670,12 +2672,12 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>Añadir restricciones automáticas</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="621"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
       <source>Swap constraint names</source>
       <translation>Cambiar nombres de restricciones</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="843"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="936"/>
       <source>Rename sketch constraint</source>
       <translation>Renombrar restricción de croquis</translation>
     </message>
@@ -2743,42 +2745,42 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>No se puede adivinar la intersección de las curvas. Intente agregar una restricción coincidente entre los vértices de las curvas que pretende redondear.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5735"/>
+      <location filename="../../../App/SketchObject.cpp" line="5728"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Esta versión de OCE/OCC no permite operación de nudo. Necesita 6.9.0 o superior.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5739"/>
+      <location filename="../../../App/SketchObject.cpp" line="5732"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de Geometría BSpline (GeoID) está fuera de límites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5742"/>
+      <location filename="../../../App/SketchObject.cpp" line="5735"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>No está solicitando ningún cambio en la multiplicidad de nudos.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5747"/>
+      <location filename="../../../App/SketchObject.cpp" line="5740"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>El índice de geometría (GeoId) proporcionado no es una curva B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5754"/>
+      <location filename="../../../App/SketchObject.cpp" line="5747"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>El índice de nudos está fuera de los límites. Tenga en cuenta que de acuerdo con la notación OCC, el primer nudo tiene índice 1 y no 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5761"/>
+      <location filename="../../../App/SketchObject.cpp" line="5754"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicidad no puede incrementarse más allá del grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5764"/>
+      <location filename="../../../App/SketchObject.cpp" line="5757"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicidad no puede ser disminuida más allá de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5776"/>
+      <location filename="../../../App/SketchObject.cpp" line="5769"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC es incapaz de disminuir la multiplicidad dentro de la tolerancia máxima.</translation>
     </message>
@@ -3892,12 +3894,12 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
       <translation>Cambiar nombres de restricciones</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="612"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="604"/>
       <source>Unnamed constraint</source>
       <translation>Restricción sin nombre</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="605"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Sólo los nombres de las restricciones nombradas pueden ser cambiados.</translation>
     </message>
@@ -4563,52 +4565,52 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Font size used for labels and constraints.</source>
-      <translation type="unfinished">Font size used for labels and constraints.</translation>
+      <translation>Tamaño de la fuente usada por rótulos y restricciones.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+      <translation>La vista 3D se escalará a este factor.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>Lineas patrón usadas por la retícula.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>Número de polígonos para la aproximación de la geometría.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>Aparecerá una ventana de diálogo para introducir un valor para las nuevas restricciones de cota.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>La herramienta actual de creación de croquis permanecerá activa después de la creación.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>La herramienta actual de creación de controles permanecerá activa después de la creación.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>Si está marcado, muestra el nombre de las restricciones de cota (si existe).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Mostrar nombre de restricción de cota con formato</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4617,21 +4619,16 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>El formato de presentación de la cadena de control de acotamiento.
+Por defecto en: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - parámetro del nombre
+%V - valor de la cota</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
-      <source>Mod/Sketcher</source>
-      <translation type="unfinished">Mod/Sketcher</translation>
+      <translation>FormatoCadenaCota</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4641,22 +4638,22 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>Al abrir un croquis, oculta todas las características que dependen de el.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>Al abrir un croquis, muestra fuentes para enlaces de geometría externos.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>Al abrir un croquis, muestra los objetos adjuntos del croquis.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>Aplica la configuración actual de automatización de visibilidad a todos los croquis en los documentos abiertos.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4676,7 +4673,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>Al cerrar un croquis, mueve la cámara a donde estaba antes de que el croquis fuera abierto.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
@@ -4687,8 +4684,8 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Abre un croquis en el modo Vista de Sección por defecto.
+Entonces los objetos sólo son visibles detrás del plano del croquis.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
@@ -4901,11 +4898,6 @@ Sin embargo, no se encontraron restricciones que vinculen a los puntos finales.<
       <translation>Todos</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
-      <source>Normal</source>
-      <translation>Normal</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
       <source>Datums</source>
       <translation>Textos de cotas</translation>
@@ -4921,33 +4913,191 @@ Sin embargo, no se encontraron restricciones que vinculen a los puntos finales.<
       <translation>Referencia</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="70"/>
+      <source>Horizontal</source>
+      <translation>Horizontal</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
+      <source>Vertical</source>
+      <translation>Vertical</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="80"/>
+      <source>Coincident</source>
+      <translation>Coincidente</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="85"/>
+      <source>Point on Object</source>
+      <translation type="unfinished">Point on Object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="90"/>
+      <source>Parallel</source>
+      <translation>Paralelo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="95"/>
+      <source>Perpendicular</source>
+      <translation>Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="100"/>
+      <source>Tangent</source>
+      <translation>Tangente</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="105"/>
+      <source>Equality</source>
+      <translation type="unfinished">Equality</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="110"/>
+      <source>Symmetric</source>
+      <translation>Simétrico</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="115"/>
+      <source>Block</source>
+      <translation>Bloque</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="120"/>
+      <source>Distance</source>
+      <translation>Distancia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="125"/>
+      <source>Horizontal Distance</source>
+      <translation type="unfinished">Horizontal Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="130"/>
+      <source>Vertical Distance</source>
+      <translation type="unfinished">Vertical Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="135"/>
+      <source>Radius</source>
+      <translation>Radio</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="140"/>
+      <source>Weight</source>
+      <translation>Peso</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="145"/>
+      <source>Diameter</source>
+      <translation>Diámetro</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="150"/>
+      <source>Angle</source>
+      <translation>Ángulo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="155"/>
+      <source>Snell's Law</source>
+      <translation type="unfinished">Snell's Law</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="160"/>
+      <source>Internal Alignment</source>
+      <translation type="unfinished">Internal Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="195"/>
+      <source>View</source>
+      <translation>Ver</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="213"/>
+      <source>Shows all the constraints in the list</source>
+      <translation type="unfinished">Shows all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="216"/>
+      <source>Show All</source>
+      <translation>Mostrar Todo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="235"/>
+      <source>Hides all the constraints in the list</source>
+      <translation type="unfinished">Hides all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="238"/>
+      <source>Hide All</source>
+      <translation type="unfinished">Hide All</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="244"/>
+      <source>Controls visualisation in the 3D view</source>
+      <translation type="unfinished">Controls visualisation in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="247"/>
+      <source>Automation</source>
+      <translation type="unfinished">Automation</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="265"/>
+      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
+      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="268"/>
+      <source>Track filter selection</source>
+      <translation type="unfinished">Track filter selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="295"/>
+      <source>Controls widget list behaviour</source>
+      <translation type="unfinished">Controls widget list behaviour</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="298"/>
+      <source>List</source>
+      <translation>Lista</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="347"/>
       <source>Internal alignments will be hidden</source>
       <translation>Las alineaciones internas se ocultarán</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="78"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="350"/>
       <source>Hide internal alignment</source>
       <translation>Ocultar alineación interna</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="94"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="316"/>
       <source>Extended information will be added to the list</source>
       <translation>La información extendida se añadirá a la lista</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="97"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
+      <source>Geometric</source>
+      <translation type="unfinished">Geometric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="319"/>
       <source>Extended information</source>
       <translation>Información extendida</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="634"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="626"/>
       <source>Constraints</source>
       <translation>Restricciones</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="852"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="868"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="755"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="945"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="961"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="997"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="1015"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -5306,136 +5456,136 @@ Los puntos deben establecerse más cerca de una quinta parte del tamaño de la c
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6291"/>
       <source>Edit sketch</source>
       <translation>Editar boceto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6305"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6306"/>
       <source>Do you want to close this dialog?</source>
       <translation>¿Desea cerrar este diálogo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6320"/>
       <source>Invalid sketch</source>
       <translation>Croquis no válido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6321"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>¿Quieres abrir la herramienta de validación de croquis?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6322"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>El croquis no es válido y no puede editarse.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6537"/>
       <source>Please remove the following constraint:</source>
       <translation>Por favor, elimine la siguiente restricción:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6538"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Por favor, elimine al menos una de las siguientes restricciones:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6544"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Por favor, elimine la siguiente restricción redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Elimine las siguientes restricciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6551"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La siguiente restricción es parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Las siguientes restricciones son parcialmente redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6558"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Por favor, elimine la siguiente restricción mal formada:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Por favor, elimine las siguientes restricciones mal formadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6594"/>
       <source>Empty sketch</source>
       <translation>Croquis vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6601"/>
       <source>Over-constrained sketch</source>
       <translation>Croquis sobre-restringido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6608"/>
       <source>Sketch contains malformed constraints</source>
       <translation>El croquis contiene restricciones mal formadas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Sketch contains conflicting constraints</source>
       <translation>Croquis contiene restricciones conflictivas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains redundant constraints</source>
       <translation>Croquis contiene restricciones redundantes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6632"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation>El croquis contiene restricciones parcialmente redundantes</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6616"/>
       <location filename="../../ViewProviderSketch.cpp" line="6624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6633"/>
       <source>(click to select)</source>
       <translation>(clic para seleccionar)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6644"/>
       <source>Fully constrained sketch</source>
       <translation>Croquis totalmente restringido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Croquis bajo-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 grados&lt;/span&gt;&lt;/a&gt; de libertad</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Croquis sub-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 grados&lt;/span&gt;&lt;/a&gt; de libertad. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6659"/>
       <source>Solved in %1 sec</source>
       <translation>Resuelto en %1 seg</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6662"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Sin resolver (%1 seg)</translation>
     </message>

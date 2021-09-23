@@ -620,7 +620,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Create a new shape binder</source>
-      <translation>Crea una nuova forma legata</translation>
+      <translation>Crea una nuovo Riferimento di Forma</translation>
     </message>
   </context>
   <context>
@@ -634,7 +634,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>Crea un legante di forma per sotto-oggetti</translation>
+      <translation>Crea un Riferimento di Forma per i(l) sotto-oggetti(o)</translation>
     </message>
   </context>
   <context>
@@ -822,17 +822,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation>Modifica legante di forma</translation>
+      <translation>Modifica il Riferimento di Forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation>Crea legante di forma</translation>
+      <translation>Crea Riferimento di Forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation>Crea legante di sotto forma</translation>
+      <translation>Crea Sotto-Riferimento di Forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -1239,7 +1239,7 @@ Se zero, è uguale a Raggio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch:</source>
-      <translation>Beccheggio:</translation>
+      <translation>Passo:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1916,7 +1916,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
       <source>Pitch:</source>
-      <translation>Beccheggio:</translation>
+      <translation>Passo:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="155"/>
@@ -3293,7 +3293,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Sotto-Riferimento di Forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
@@ -3379,7 +3379,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>Considerare il Riferimento di Forma o una Funzione di Base per creare un riferimento di geometria esterno in un corpo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
@@ -3530,7 +3530,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body. Nothing to migrate.</translation>
+      <translation>Nessuna funzione PartDesign è stata trovata che non sia appartente al corpo. Niente da migrare.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>
@@ -3606,16 +3606,14 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="936"/>
       <source>Dependency violation</source>
-      <translation type="unfinished">Dependency violation</translation>
+      <translation>Violazione dell'albero di dipendenza</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="937"/>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation type="unfinished">Early feature must not depend on later feature.
-
-</translation>
+      <translation>La funzione precedente non deve dipendere da quella seguente.</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="265"/>
@@ -3792,17 +3790,17 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="192"/>
       <source>Edit shape binder</source>
-      <translation>Modifica Lega-forme</translation>
+      <translation>Modifica il Riferimento di Forma</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Sincronizza</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>Seleziona oggetto di contorno</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3844,9 +3842,9 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Nota: se si sceglie di migrare, non sarà più possibile modificare il file con le vecchie versioni di FreeCAD.
+Se ci si rifiuta di migrare, non sarà possibile usare le nuove funzioni di PartDesign, come Bodies o Parts. Come risultato non si potranno usare le proprie parti nel Workbench Assembly.
+Comunque si può decidere di migrare in ogni momento con 'Part Design -&gt; Migrate'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -3856,7 +3854,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
-      <translation type="unfinished">Edit helix</translation>
+      <translation>Modifica elica</translation>
     </message>
   </context>
   <context>
@@ -3864,7 +3862,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation type="unfinished">Sprocket parameter</translation>
+      <translation>Parametri Tasca</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -3874,77 +3872,77 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation type="unfinished">Sprocket Reference</translation>
+      <translation>Riferimento Tasca</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
@@ -3959,37 +3957,37 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 08B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 10B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="143"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 12B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="148"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 16B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="153"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 20B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="158"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 24B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
@@ -4338,7 +4336,7 @@ Disponibile solo per fori senza filetto</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="441"/>
       <source>Hole depth</source>
-      <translation type="unfinished">Hole depth</translation>
+      <translation>Profondità foro</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
@@ -4359,17 +4357,17 @@ Disponibile solo per fori senza filetto</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="507"/>
       <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
+      <translation>Tipo di taglio per la testa della vite</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+      <translation>Seleziona per sovrascrivere i valori predefiniti dal 'Tipo'</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
       <source>Custom values</source>
-      <translation type="unfinished">Custom values</translation>
+      <translation>Valori personalizzati</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="615"/>
@@ -4419,15 +4417,15 @@ per la profondità dei fori ciechi</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
+      <translation>Angolo di svasatura per il foro
+90°: foro dritto
+&lt;90°: restrizione sul fondo
+&gt;90°: allargamento sul fondo</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>
       <source>Reverses the hole direction</source>
-      <translation type="unfinished">Reverses the hole direction</translation>
+      <translation>Invertire la direzione del foro</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="792"/>

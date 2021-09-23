@@ -11,7 +11,7 @@
     <message>
       <location filename="ArchAxis.py" line="208"/>
       <source>The angles of each axis</source>
-      <translation>Kąty każdej osi</translation>
+      <translation>Kąty nachylenia osi</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="214"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="ArchComponent.py" line="194"/>
       <source>The object this component is cloning</source>
-      <translation>Obiekt jest klonowany przez ten komponent</translation>
+      <translation>Obiekt, z którego sklonowano ten komponent</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="614"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
-      <translation>Opcjonalna etykieta dla tego komponentu</translation>
+      <translation>Opcjonalny znacznik dla tego komponentu</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="206"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="ArchComponent.py" line="215"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation>Określa, czy obiekt musi poruszać się razem z hostem</translation>
+      <translation>Określa, czy obiekt ma poruszać się razem z gospodarzem</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="218"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="ArchSite.py" line="618"/>
       <source>The area of the projection of this object onto the XY plane</source>
-      <translation>Powierzchnia rzutu tego obiektu na płaszczyznę XY</translation>
+      <translation>Pole powierzchni rzutu tego obiektu na płaszczyznę XY</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="224"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="ArchEquipment.py" line="295"/>
       <source>Additional snap points for this equipment</source>
-      <translation>Dodatkowe punkty przyciągania do tego sprzętu</translation>
+      <translation>Dodatkowe punkty przyciągania dla tego sprzętu</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="297"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="ArchPanel.py" line="408"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation>Grubość lub głębokość tego elementu</translation>
+      <translation>Grubość lub głębokość wytłoczenia tego elementu</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="410"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="ArchPanel.py" line="428"/>
       <source>The area of this panel</source>
-      <translation>Obszar tego panelu</translation>
+      <translation>Pole powierzchni tego panelu</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="430"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="ArchPanel.py" line="841"/>
       <source>The line width of the rendered objects</source>
-      <translation>Gruboć linii renderowanych obiektów</translation>
+      <translation>Grubość linii renderowanych obiektów</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="844"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="ArchPanel.py" line="1217"/>
       <source>The linked Panel cuts</source>
-      <translation>Połączony Panel wycięcia</translation>
+      <translation>Powiązane wycięcia Panelu</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1219"/>
@@ -466,7 +466,7 @@
     <message>
       <location filename="ArchProfile.py" line="250"/>
       <source>Wall thickness</source>
-      <translation>Grubość ścianki</translation>
+      <translation>Grubość ściany</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="361"/>
@@ -711,7 +711,7 @@
     <message>
       <location filename="ArchSpace.py" line="274"/>
       <source>The finishing of the floor of this space</source>
-      <translation>Wykończenie piętra tej przestrzeni</translation>
+      <translation>Wykończenie podłogi tej przestrzeni</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="276"/>
@@ -776,7 +776,7 @@
     <message>
       <location filename="ArchSpace.py" line="512"/>
       <source>The color of the area text</source>
-      <translation>Kolor obszaru tekstu</translation>
+      <translation>Kolor tekstu pola powierzchni</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1033"/>
@@ -1246,7 +1246,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation>Jeżeli prawda, wtedy aktywuje się, płaszczyzna robocza automatycznie dostosowuje się do tej kondygnacji</translation>
+      <translation>Jeśli parametr ma wartość Prawda, po włączeniu tej opcji płaszczyzna robocza zostanie automatycznie dostosowana do tej kondygnacji</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="537"/>
@@ -1606,7 +1606,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="568"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation>Jeśli prawda, pokaż obiekty zawarte w tej części budynku przyjmą te linie, ustawienia kolorów i przezroczystości</translation>
+      <translation>Jeśli parametr ma wartość prawda, pokazane obiekty zawarte w tej części budynku przyjmą te ustawienia dla linii, koloru i przezroczystości</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="570"/>
@@ -2046,57 +2046,57 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Jeśli parametr ma wartość Prawda, tylko bryły będą gromadzone przez ten obiekt, gdy istnieją odniesienia z innych plików</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Nazwa materiału: Lista indeksów brył, łączących nazwy materiałów z indeksami brył, które mają być używane podczas tworzenia odniesień do tego obiektu z innych plików</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Łączenie obiektów z tego samego materiału</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Obliczona długość ścieżki wyciągnięcia</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Odległość odsunięcia początku wzdłuż trasy wyciągnięcia (dodatnia: wydłuż, ujemna: utnij</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Odległość odsunięcia końca wzdłuż trasy wyciągnięcia (dodatnia: wydłuż, ujemna: utnij</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Wyrównaj automatycznie podstawę konstrukcji prostopadle do osi narzędzia</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Przesunięcie X pomiędzy punktem bazowym i osią narzędzia (używane wyłącznie, gdy parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Przesunięcie Y pomiędzy punktem bazowym i osią narzędzia (używane wyłącznie, gdy parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Odbicie lustrzane bazy wzdłuż jej osi Y (używane tylko jeśli parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Podstawowy obrót wokół osi narzędzia (używany tylko jeśli parametr BasePerpendicularToTool ma wartość Prawda)</translation>
     </message>
   </context>
   <context>
@@ -3826,32 +3826,32 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Utwórz konstrukcje z zaznaczonych elementów</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Proszę wybrać najpierw obiekt bazowy, a następnie krawędzie, które mają być użyte jako ścieżki wyciągnięcia</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Proszę wybierz przynajmniej jedną oś</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Narzędzia do wyciągania</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Wybierz narzędzie ...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Wybierz obiekt lub krawędzie do użycia jako narzędzie (ścieżka wyciągania)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1304"/>
@@ -4630,27 +4630,27 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Wiele konstrukcji</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Tworzenie wielu obiektów konstrukcji Architektury z wybranej podstawy, używając każdej wybranej krawędzi jako ścieżki wyciągnięcia</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Układ konstrukcyjny</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Utwórz obiekt układu konstrukcyjnego z wybranych konstrukcji oraz osi</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Narzędzia konstrukcyjne</translation>
     </message>
   </context>
   <context>

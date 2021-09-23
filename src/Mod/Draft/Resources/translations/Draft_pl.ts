@@ -108,7 +108,7 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation>Kąt do pokrycia kopiami</translation>
+      <translation>Rozpiętość kąta do pokrycia kopiami</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
@@ -785,7 +785,7 @@ W przeciwnym razie duplikaty będą miały taką samą orientację jak oryginaln
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation>Opcjonalna wartość przesunięcia, która zostanie zastosowana do wszystkich ścian</translation>
+      <translation>Opcjonalna wartość odsunięcia, która ma być zastosowana do wszystkich ścian</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
@@ -800,7 +800,7 @@ W przeciwnym razie duplikaty będą miały taką samą orientację jak oryginaln
     <message>
       <location filename="clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation>Obiekty są zawarte w tej kopii</translation>
+      <translation>Obiekty zawarte w tym klonie</translation>
     </message>
     <message>
       <location filename="clone.py" line="51"/>
@@ -959,7 +959,7 @@ beyond the dimension line</source>
       <translation>Pokazuj linie wymiarowe i strzałki</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Jeśli parametr ma wartość Prawda, obiekty zawarte w tej warstwie przyjmą kolor linii warstwy</translation>
     </message>
@@ -1134,32 +1134,37 @@ Użyj "arch", aby wymusić notację architektoniczną amerykańską</translation
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Obiekt podstawowy używany przez ten obiekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Plik PAT używany przez ten obiekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Nazwa wzoru używana przez ten obiekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Skala wzoru używana przez ten obiekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Obrót wzoru używanego przez ten obiekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Jeśli wartość ta jest ustawiona na Fałsz, kreskowanie jest stosowane do powierzchni w takiej postaci, w jakiej jest, bez przesunięcia (może to prowadzić do błędnych wyników dla powierzchni innych niż XY)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1502,27 +1507,27 @@ z menu Przybory -&gt; Menedżer dodatków</translation>
       <translation>Dodaj nową warstwę</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Przyciąganie obiektu</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Włącz / wyłącz wizualną pomoc dla wymiarów</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Włącz / wyłącz tryb ortogonalny</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Włącz / wyłącz wiązanie do płaszczyzny roboczej</translation>
     </message>
@@ -1682,7 +1687,7 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
     <message>
       <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation>Kierunek przesunięcia nie jest zdefiniowany. Proszę najpierw przesunąć kursor myszki po obu stronach obiektu, aby wskazać kierunek</translation>
+      <translation>Kierunek odsunięcia nie jest zdefiniowany. Przesuń kursor myszki do wewnątrz lub na zewnątrz obiektu, aby wskazać kierunek</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
@@ -1712,7 +1717,7 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Musisz wybrać obiekt bazowy przed użyciem tej komendy</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2309,7 @@ CTRL, aby przyciągnąć, SHIFT, aby ograniczyć.</translation>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
       <translation>Tworzy okrąg (pełny okrągły łuk).
-CTRL, aby przyciągnąć, ALT, aby wybrać styczny obiekt.</translation>
+CTRL aby przyciągnąć, ALT aby wybrać styczny obiekt.</translation>
     </message>
   </context>
   <context>
@@ -2532,7 +2537,7 @@ Jeśli wybrane są inne obiekty, to zostaną one ignorowane.</translation>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Utwórz kreskowanie na wybranych ścianach</translation>
     </message>
   </context>
   <context>
@@ -2983,12 +2988,12 @@ prostych linii projektowych, które są rysowane w płaszczyźnie XY. Wybrane ob
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Włącz / wyłącz wyświetlanie siatki</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Przełącz siatkę szkicu</translation>
     </message>
@@ -3289,7 +3294,7 @@ To może być użyte do rysowania kilku obiektów jeden po drugim.</translation>
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation>Przełącz wyświetlanie normalne / szkielet</translation>
+      <translation>Przełącz wyświetlanie normalne / model krawędziowy</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
@@ -3859,12 +3864,12 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>pliki wzorów (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>Plik w formacie PAT:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3874,7 +3879,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Wzór:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -4030,7 +4035,7 @@ lub rodziny, jak np. "Arial, Helvetica, sans" lub nazwa w stylu np. "Arial: Bold
     <message>
       <location filename="preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG Patterns location</source>
-      <translation>Alternatywna lokalizcja wzorców SVG</translation>
+      <translation>Alternatywna lokalizacja wzorów SVG</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="220"/>
@@ -5310,7 +5315,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Za mało współrzędnych</translation>
     </message>
   </context>
   <context>
@@ -5342,7 +5347,7 @@ Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</transl
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation>Rysunek Roboczy - przyciąganie</translation>
     </message>
@@ -6265,7 +6270,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="make_patharray.py" line="246"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation>Nieprawidłowe dane wejściowe: musi to być 'oryginalny', 'swobodny' lub 'styczny'.</translation>
+      <translation>Nieprawidłowe dane wejściowe: musi to być "oryginalny", "swobodny" lub "styczny".</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="103"/>
@@ -6424,17 +6429,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Wybierz zawartość warstwy</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>niestandardowe</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Nie można przekonwertować danych wejściowych do współczynnika skali</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Ustaw niestandardową skalę dla adnotacji w formacie x:x, x=x</translation>
     </message>

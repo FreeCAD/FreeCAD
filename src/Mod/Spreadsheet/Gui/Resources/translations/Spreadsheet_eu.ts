@@ -604,9 +604,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Txertatu zutabe %n eskuinean</numerusform>
+        <numerusform>Txertatu %n zutabe eskuinean</numerusform>
       </translation>
     </message>
     <message numerus="yes">

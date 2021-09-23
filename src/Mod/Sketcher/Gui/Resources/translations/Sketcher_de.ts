@@ -2658,7 +2658,9 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="858"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="718"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="951"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="977"/>
       <source>Update constraint's virtual space</source>
       <translation>Virtuellen Raum der Einschränkungen aktualisieren</translation>
     </message>
@@ -2668,12 +2670,12 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Automatische Einschränkungen hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="621"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
       <source>Swap constraint names</source>
       <translation>Namen der Beschränkungen tauschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="843"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="936"/>
       <source>Rename sketch constraint</source>
       <translation>Skizzeneinschränkung umbenennen</translation>
     </message>
@@ -2741,42 +2743,42 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Schnittpunkt von Kurven konnte nicht gefunden werden. Versuchen Sie eine Koinzidenz Beschränkung zwischen den Scheitelpunkten der Kurven hinzuzufügen, die Sie verrunden möchten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5735"/>
+      <location filename="../../../App/SketchObject.cpp" line="5728"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Diese Version von OCE/OCC unterstützt keine Knoten-Operationen. Sie benötigen 6.9.0 oder höher.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5739"/>
+      <location filename="../../../App/SketchObject.cpp" line="5732"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5742"/>
+      <location filename="../../../App/SketchObject.cpp" line="5735"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Sie fordern keine Änderung in der Multiplizität der Knoten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5747"/>
+      <location filename="../../../App/SketchObject.cpp" line="5740"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5754"/>
+      <location filename="../../../App/SketchObject.cpp" line="5747"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten Sie, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5761"/>
+      <location filename="../../../App/SketchObject.cpp" line="5754"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5764"/>
+      <location filename="../../../App/SketchObject.cpp" line="5757"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5776"/>
+      <location filename="../../../App/SketchObject.cpp" line="5769"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
@@ -3890,12 +3892,12 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <translation>Namen der Beschränkungen tauschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="612"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="604"/>
       <source>Unnamed constraint</source>
       <translation>Unbenannte Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="613"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="605"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Nur die Namen von benannten Beschränkungen können vertauscht werden.</translation>
     </message>
@@ -4559,7 +4561,7 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Font size used for labels and constraints.</source>
-      <translation type="unfinished">Font size used for labels and constraints.</translation>
+      <translation>Schriftgröße für Bezeichnungen und Beschränkungen.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
@@ -4625,11 +4627,6 @@ Defaults to: %N = %V
       <translation type="unfinished">DimensionalStringFormat</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="269"/>
-      <source>Mod/Sketcher</source>
-      <translation type="unfinished">Mod/Sketcher</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
       <source>Visibility automation</source>
       <translation>Sichtbarkeitsautomatisierung</translation>
@@ -4637,7 +4634,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>Beim Öffnen einer Skizze alle davon abhängigen Objekte ausblenden.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
@@ -4672,7 +4669,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>Beim Schließen einer Skizze die Kamera an die Stelle zurückbewegen, an der sie war, bevor die Skizze geöffnet wurde.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
@@ -4683,8 +4680,7 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Eine Skizze standardmäßig im Schnittansichtsmodus öffnen. Dann sind nur Objekte hinter der Skizzenebene sichtbar.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
@@ -4897,11 +4893,6 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Alles</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
-      <source>Normal</source>
-      <translation>Normal</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
       <source>Datums</source>
       <translation>Bezüge</translation>
@@ -4917,33 +4908,191 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Referenz</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="70"/>
+      <source>Horizontal</source>
+      <translation>Horizontale</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
+      <source>Vertical</source>
+      <translation>Vertikale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="80"/>
+      <source>Coincident</source>
+      <translation type="unfinished">Coincident</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="85"/>
+      <source>Point on Object</source>
+      <translation type="unfinished">Point on Object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="90"/>
+      <source>Parallel</source>
+      <translation>Parallel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="95"/>
+      <source>Perpendicular</source>
+      <translation>Senkrecht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="100"/>
+      <source>Tangent</source>
+      <translation>Tangente</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="105"/>
+      <source>Equality</source>
+      <translation type="unfinished">Equality</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="110"/>
+      <source>Symmetric</source>
+      <translation>Symmetrisch</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="115"/>
+      <source>Block</source>
+      <translation>Block</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="120"/>
+      <source>Distance</source>
+      <translation>Abstand</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="125"/>
+      <source>Horizontal Distance</source>
+      <translation type="unfinished">Horizontal Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="130"/>
+      <source>Vertical Distance</source>
+      <translation type="unfinished">Vertical Distance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="135"/>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="140"/>
+      <source>Weight</source>
+      <translation>Stärke</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="145"/>
+      <source>Diameter</source>
+      <translation>Durchmesser</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="150"/>
+      <source>Angle</source>
+      <translation>Winkel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="155"/>
+      <source>Snell's Law</source>
+      <translation type="unfinished">Snell's Law</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="160"/>
+      <source>Internal Alignment</source>
+      <translation type="unfinished">Internal Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="195"/>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="213"/>
+      <source>Shows all the constraints in the list</source>
+      <translation type="unfinished">Shows all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="216"/>
+      <source>Show All</source>
+      <translation>Alle anzeigen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="235"/>
+      <source>Hides all the constraints in the list</source>
+      <translation type="unfinished">Hides all the constraints in the list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="238"/>
+      <source>Hide All</source>
+      <translation type="unfinished">Hide All</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="244"/>
+      <source>Controls visualisation in the 3D view</source>
+      <translation type="unfinished">Controls visualisation in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="247"/>
+      <source>Automation</source>
+      <translation type="unfinished">Automation</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="265"/>
+      <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
+      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="268"/>
+      <source>Track filter selection</source>
+      <translation type="unfinished">Track filter selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="295"/>
+      <source>Controls widget list behaviour</source>
+      <translation type="unfinished">Controls widget list behaviour</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="298"/>
+      <source>List</source>
+      <translation>Liste</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="347"/>
       <source>Internal alignments will be hidden</source>
       <translation>Interne Ausrichtungen werden ausgeblendet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="78"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="350"/>
       <source>Hide internal alignment</source>
       <translation>Interne Ausrichtung ausblenden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="94"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="316"/>
       <source>Extended information will be added to the list</source>
       <translation>Erweiterte Informationen werden der Liste hinzugefügt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.ui" line="97"/>
+      <location filename="../../TaskSketcherConstrains.ui" line="50"/>
+      <source>Geometric</source>
+      <translation type="unfinished">Geometric</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.ui" line="319"/>
       <source>Extended information</source>
       <translation>Erweiterte Informationen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="634"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="626"/>
       <source>Constraints</source>
       <translation>Einschränkungen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="852"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="868"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="755"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="945"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="961"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="997"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="1015"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
@@ -5302,136 +5451,136 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6282"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6291"/>
       <source>Edit sketch</source>
       <translation>Skizze bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6296"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6305"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6297"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6306"/>
       <source>Do you want to close this dialog?</source>
       <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6311"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6320"/>
       <source>Invalid sketch</source>
       <translation>Ungültige Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6312"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6321"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Möchten Sie das Werkzeug zum Überprüfen der Skizze öffnen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6322"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Die Skizze ist ungültig und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6528"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6537"/>
       <source>Please remove the following constraint:</source>
       <translation>Bitte folgende Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6538"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Bitte mindestens eine der folgenden Beschränkungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6535"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6544"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Bitte folgende redundante Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6536"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6545"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Bitte folgende, redundante Beschränkungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6542"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6551"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Die folgende Einschränkung ist teilweise redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6543"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6552"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Die folgende Einschränkungen sind teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6549"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6558"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Bitte folgende fehlerhafte Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6550"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6559"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Bitte folgende fehlerhafte Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6594"/>
       <source>Empty sketch</source>
       <translation>Leere Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6601"/>
       <source>Over-constrained sketch</source>
       <translation>Überbestimmte Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6599"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6608"/>
       <source>Sketch contains malformed constraints</source>
       <translation>Skizze enthält fehlerhafte Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6606"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
       <source>Sketch contains conflicting constraints</source>
       <translation>Skizze enthält widersprüchliche Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6614"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
       <source>Sketch contains redundant constraints</source>
       <translation>Skizze enthält redundante Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6623"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6632"/>
       <source>Sketch contains partially redundant constraints</source>
       <translation>Skizze enthält teilweise redundante Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6593"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6600"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6607"/>
-      <location filename="../../ViewProviderSketch.cpp" line="6615"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6616"/>
       <location filename="../../ViewProviderSketch.cpp" line="6624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6633"/>
       <source>(click to select)</source>
       <translation>(anklicken zum Auswählen)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6635"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6644"/>
       <source>Fully constrained sketch</source>
       <translation>Vollständig bestimmte Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
       <translation>Unterbestimmte Skizze mit &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 Freiheitsgrad&lt;/span&gt;&lt;/a&gt;. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6645"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
       <translation>Unterbestimmte Skizze mit &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 Freiheitsgraden&lt;/span&gt;&lt;/a&gt;. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6650"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6659"/>
       <source>Solved in %1 sec</source>
       <translation>Berechnet in %1 s</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="6653"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6662"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Keine Lösung (%1 s)</translation>
     </message>
