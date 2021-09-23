@@ -73,7 +73,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
-                                     "the line color of the layer")
+                                     "the shape color of the layer")
             vobj.addProperty("App::PropertyBool",
                              "OverrideShapeColorChildren",
                              "Layer",
@@ -150,7 +150,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The transparency of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyInteger",
+            vobj.addProperty("App::PropertyPercent",
                              "Transparency",
                              "Layer",
                              _tip)
