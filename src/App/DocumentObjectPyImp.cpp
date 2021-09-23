@@ -352,6 +352,15 @@ PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
     if (!PyArg_ParseTuple(args, "s", &expr))
         return nullptr;
 
+    // HINT:
+    // The standard behaviour of Python for class methods is to always pass the class
+    // object as first argument.
+    // For FreeCAD-specific types the behaviour is a bit different:
+    // When calling this method for an instance then this is passed as first argument
+    // and otherwise the class object is passed.
+    // This behaviour is achieved by the function _getattr() that passed 'this' to
+    // PyCFunction_New().
+    //
     // evalExpression() is a class method and thus 'self' can either be an instance of
     // DocumentObjectPy or a type object.
     App::DocumentObject* obj = nullptr;
