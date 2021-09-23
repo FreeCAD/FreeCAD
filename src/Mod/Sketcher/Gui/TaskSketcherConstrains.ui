@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>212</width>
-    <height>288</height>
+    <width>299</width>
+    <height>388</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>288</height>
+    <height>388</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -47,7 +47,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Normal</string>
+         <string>Geometric</string>
         </property>
        </item>
        <item>
@@ -65,46 +65,301 @@
          <string>Reference</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Horizontal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Coincident</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Point on Object</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Parallel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Perpendicular</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tangent</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Equality</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Symmetric</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Block</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Horizontal Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Radius</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Weight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Snell's Law</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Internal Alignment</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>95</height>
+      </size>
+     </property>
      <property name="toolTip">
-      <string>Internal alignments will be hidden</string>
+      <string/>
      </property>
-     <property name="text">
-      <string>Hide internal alignment</string>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>HideInternalAlignment</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Gui::PrefCheckBox" name="extendedInformation">
-     <property name="toolTip">
-      <string>Extended information will be added to the list</string>
-     </property>
-     <property name="text">
-      <string>Extended information</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>ExtendedConstraintInformation</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher</cstring>
-     </property>
+     <widget class="QWidget" name="visualisationTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string>View</string>
+      </attribute>
+      <widget class="QPushButton" name="showAllButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>125</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Shows all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Show All</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="hideAllButton">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>10</y>
+         <width>125</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Hides all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Hide All</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="automationTab">
+      <property name="toolTip">
+       <string>Controls visualisation in the 3D view</string>
+      </property>
+      <attribute name="title">
+       <string>Automation</string>
+      </attribute>
+      <widget class="Gui::PrefCheckBox" name="visualisationTrackingFilter">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>189</width>
+         <height>36</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</string>
+       </property>
+       <property name="text">
+        <string>Track filter selection</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>VisualisationTrackingFilter</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher</cstring>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="controlTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>Controls widget list behaviour</string>
+      </property>
+      <attribute name="title">
+       <string>List</string>
+      </attribute>
+      <widget class="Gui::PrefCheckBox" name="extendedInformation">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>30</y>
+         <width>189</width>
+         <height>36</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Extended information will be added to the list</string>
+       </property>
+       <property name="text">
+        <string>Extended information</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>ExtendedConstraintInformation</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher</cstring>
+       </property>
+      </widget>
+      <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>189</width>
+         <height>36</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Internal alignments will be hidden</string>
+       </property>
+       <property name="text">
+        <string>Hide internal alignment</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>HideInternalAlignment</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher</cstring>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item>

@@ -25,7 +25,7 @@
 #endif
 #include "ExpressionBindingPy.h"
 #include "ExpressionBinding.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 #include "QuantitySpinBox.h"
 #include "InputField.h"
 #include <App/DocumentObjectPy.h>

@@ -37,7 +37,7 @@
 #include "SoFCDB.h"
 
 #include "ViewProvider.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 
 #include <Base/BoundBoxPy.h>
 

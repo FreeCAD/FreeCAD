@@ -125,9 +125,10 @@ class UnitBasicCases(unittest.TestCase):
                 try:
                     q2 = FreeCAD.Units.Quantity(t[0])
                     if math.fabs(q1.Value - q2.Value) > 0.01:
-                        print (q1, " : ", q2, " : ", t, " : ", i, " : ", val)
+                        print (" {} : {} : {} : {} : {}".format(q1, q2, t, i, val).encode("utf-8").strip())
                 except Exception as e:
-                    print ("{}: {}".format(str(e), t[0]))
+                    s = "{}: {}".format(e, t[0])
+                    print (" ".join(e).encode("utf-8").strip())
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")

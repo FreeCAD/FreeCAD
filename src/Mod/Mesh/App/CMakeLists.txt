@@ -372,6 +372,15 @@ SET(Mesh_SRCS
     Segment.h
 )
 
+# Suppress -Wundefined-var-template
+if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif()
+endif()
+
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
