@@ -346,15 +346,22 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
-PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
+PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
 {
     const char *expr;
-    if (!PyArg_ParseTuple(args, "s", &expr))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "s", &expr))
+        return nullptr;
+
+    // evalExpression() is a class method and thus 'self' can either be an instance of
+    // DocumentObjectPy or a type object.
+    App::DocumentObject* obj = nullptr;
+    if (self && PyObject_TypeCheck(self, &DocumentObjectPy::Type)) {
+        obj = static_cast<DocumentObjectPy*>(self)->getDocumentObjectPtr();
+    }
 
     PY_TRY {
-        std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
-        if(shared_expr)
+        std::shared_ptr<Expression> shared_expr(Expression::parse(obj, expr));
+        if (shared_expr)
             return Py::new_reference_to(shared_expr->getPyValue());
         Py_Return;
     } PY_CATCH
