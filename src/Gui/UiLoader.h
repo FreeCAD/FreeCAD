@@ -24,8 +24,25 @@
 #ifndef GUI_UILOADER_H
 #define GUI_UILOADER_H
 
+#if !defined (__MINGW32__)
+#define HAVE_QT_UI_TOOLS
+#endif
+
+#if defined (HAVE_QT_UI_TOOLS)
 #include <QUiLoader>
+#else
+#include <QObject>
+#endif
 #include <CXX/Extensions.hxx>
+
+QT_BEGIN_NAMESPACE
+class QLayout;
+class QAction;
+class QActionGroup;
+class QDir;
+class QIODevice;
+class QWidget;
+QT_END_NAMESPACE
 
 
 namespace Gui {
@@ -40,7 +57,45 @@ public:
 private:
     Py::Object loadUiType(const Py::Tuple& args);
     Py::Object loadUi(const Py::Tuple& args);
+    Py::Object createCustomWidget(const Py::Tuple&);
 };
+
+#if !defined (HAVE_QT_UI_TOOLS)
+class QUiLoader : public QObject
+{
+    Q_OBJECT
+public:
+    explicit QUiLoader(QObject* parent = nullptr);
+    ~QUiLoader();
+
+    QStringList pluginPaths() const;
+    void clearPluginPaths();
+    void addPluginPath(const QString& path);
+
+    QWidget* load(QIODevice* device, QWidget* parentWidget = nullptr);
+    QStringList availableWidgets() const;
+    QStringList availableLayouts() const;
+
+    virtual QWidget* createWidget(const QString& className, QWidget* parent = nullptr, const QString& name = QString());
+    virtual QLayout* createLayout(const QString& className, QObject* parent = nullptr, const QString& name = QString());
+    virtual QActionGroup* createActionGroup(QObject* parent = nullptr, const QString& name = QString());
+    virtual QAction* createAction(QObject* parent = nullptr, const QString& name = QString());
+
+    void setWorkingDirectory(const QDir& dir);
+    QDir workingDirectory() const;
+
+    void setLanguageChangeEnabled(bool enabled);
+    bool isLanguageChangeEnabled() const;
+
+    void setTranslationEnabled(bool enabled);
+    bool isTranslationEnabled() const;
+
+    QString errorString() const;
+
+private:
+    Py::Object uiloader;
+};
+#endif
 
 /**
  * The UiLoader class provides the abitlity to use the widget factory
@@ -60,6 +115,7 @@ public:
      */
     QWidget* createWidget(const QString & className, QWidget * parent=0,
                           const QString& name = QString());
+
 private:
     QStringList cw;
 };

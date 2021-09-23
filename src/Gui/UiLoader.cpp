@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QAction>
+# include <QActionGroup>
+# include <QDir>
+# include <QLayout>
 # include <QFile>
 # include <QTextStream>
 #endif
@@ -31,9 +35,62 @@
 #include "PythonWrapper.h"
 #include "WidgetFactory.h"
 #include <Base/Interpreter.h>
+#include <functional>
 
 using namespace Gui;
 
+namespace {
+
+QWidget* createFromWidgetFactory(const QString & className, QWidget * parent, const QString& name)
+{
+    QWidget* widget = nullptr;
+    if (WidgetFactory().CanProduce((const char*)className.toLatin1()))
+        widget = WidgetFactory().createWidget((const char*)className.toLatin1(), parent);
+    if (widget)
+        widget->setObjectName(name);
+    return widget;
+}
+
+Py::Object wrapFromWidgetFactory(const Py::Tuple& args, const std::function<QWidget*(const QString&, QWidget *, const QString&)> & callableFunc)
+{
+    Gui::PythonWrapper wrap;
+
+    // 1st argument
+    Py::String str(args[0]);
+    std::string className;
+    className = str.as_std_string("utf-8");
+    // 2nd argument
+    QWidget* parent = 0;
+    if (wrap.loadCoreModule() && args.size() > 1) {
+        QObject* object = wrap.toQObject(args[1]);
+        if (object)
+            parent = qobject_cast<QWidget*>(object);
+    }
+
+    // 3rd argument
+    std::string objectName;
+    if (args.size() > 2) {
+        Py::String str(args[2]);
+        objectName = str.as_std_string("utf-8");
+    }
+
+    QWidget* widget = callableFunc(QString::fromLatin1(className.c_str()), parent,
+                                   QString::fromLatin1(objectName.c_str()));
+    if (!widget) {
+        return Py::None();
+    //    std::string err = "No such widget class '";
+    //    err += className;
+    //    err += "'";
+    //    throw Py::RuntimeError(err);
+    }
+    wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
+
+    const char* typeName = wrap.getWrapperName(widget);
+    return wrap.fromQWidget(widget, typeName);
+}
+
+}
 
 PySideUicModule::PySideUicModule()
   : Py::ExtensionModule<PySideUicModule>("PySideUic")
@@ -43,6 +100,8 @@ PySideUicModule::PySideUicModule()
         "and then execute it in a special frame to retrieve the form_class.");
     add_varargs_method("loadUi",&PySideUicModule::loadUi,
         "Addition of \"loadUi\" to PySide.");
+    add_varargs_method("createCustomWidget",&PySideUicModule::createCustomWidget,
+        "Create custom widgets.");
     initialize("PySideUic helper module"); // register with Python
 }
 
@@ -160,6 +219,295 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object PySideUicModule::createCustomWidget(const Py::Tuple& args)
+{
+    return wrapFromWidgetFactory(args, &createFromWidgetFactory);
+}
+
+// ----------------------------------------------------
+
+#if !defined (HAVE_QT_UI_TOOLS)
+namespace Gui {
+QUiLoader::QUiLoader(QObject* parent)
+{
+    Base::PyGILStateLocker lock;
+    PythonWrapper wrap;
+    wrap.loadUiToolsModule();
+  //PyObject* module = PyImport_ImportModule("PySide2.QtUiTools");
+    PyObject* module = PyImport_ImportModule("freecad.UiTools");
+    if (module) {
+        Py::Tuple args(1);
+        args[0] = wrap.fromQObject(parent);
+        Py::Module mod(module, true);
+        uiloader = mod.callMemberFunction("QUiLoader", args);
+    }
+}
+
+QUiLoader::~QUiLoader()
+{
+    Base::PyGILStateLocker lock;
+    uiloader = Py::None();
+}
+
+QStringList QUiLoader::pluginPaths() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::List list(uiloader.callMemberFunction("pluginPaths"));
+        QStringList paths;
+        for (const auto& it : list) {
+            paths << QString::fromStdString(Py::String(it).as_std_string());
+        }
+        return paths;
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return QStringList();
+    }
+}
+
+void QUiLoader::clearPluginPaths()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        uiloader.callMemberFunction("clearPluginPaths");
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+void QUiLoader::addPluginPath(const QString& path)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args[0] = Py::String(path.toStdString());
+        uiloader.callMemberFunction("addPluginPath", args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+QWidget* QUiLoader::load(QIODevice* device, QWidget* parentWidget)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(2);
+        args[0] = wrap.fromQObject(device);
+        args[1] = wrap.fromQObject(parentWidget);
+        Py::Object form(uiloader.callMemberFunction("load", args));
+        return qobject_cast<QWidget*>(wrap.toQObject(form));
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return nullptr;
+    }
+}
+
+QStringList QUiLoader::availableWidgets() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::List list(uiloader.callMemberFunction("availableWidgets"));
+        QStringList widgets;
+        for (const auto& it : list) {
+            widgets << QString::fromStdString(Py::String(it).as_std_string());
+        }
+        return widgets;
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return QStringList();
+    }
+}
+
+QStringList QUiLoader::availableLayouts() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::List list(uiloader.callMemberFunction("availableLayouts"));
+        QStringList layouts;
+        for (const auto& it : list) {
+            layouts << QString::fromStdString(Py::String(it).as_std_string());
+        }
+        return layouts;
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return QStringList();
+    }
+}
+
+QWidget* QUiLoader::createWidget(const QString& className, QWidget* parent, const QString& name)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(3);
+        args[0] = Py::String(className.toStdString());
+        args[1] = wrap.fromQObject(parent);
+        args[2] = Py::String(name.toStdString());
+        Py::Object form(uiloader.callMemberFunction("createWidget", args));
+        return qobject_cast<QWidget*>(wrap.toQObject(form));
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return nullptr;
+    }
+}
+
+QLayout* QUiLoader::createLayout(const QString& className, QObject* parent, const QString& name)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(3);
+        args[0] = Py::String(className.toStdString());
+        args[1] = wrap.fromQObject(parent);
+        args[2] = Py::String(name.toStdString());
+        Py::Object form(uiloader.callMemberFunction("createLayout", args));
+        return qobject_cast<QLayout*>(wrap.toQObject(form));
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return nullptr;
+    }
+}
+
+QActionGroup* QUiLoader::createActionGroup(QObject* parent, const QString& name)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(2);
+        args[0] = wrap.fromQObject(parent);
+        args[1] = Py::String(name.toStdString());
+        Py::Object action(uiloader.callMemberFunction("createActionGroup", args));
+        return qobject_cast<QActionGroup*>(wrap.toQObject(action));
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return nullptr;
+    }
+}
+
+QAction* QUiLoader::createAction(QObject* parent, const QString& name)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(2);
+        args[0] = wrap.fromQObject(parent);
+        args[1] = Py::String(name.toStdString());
+        Py::Object action(uiloader.callMemberFunction("createAction", args));
+        return qobject_cast<QAction*>(wrap.toQObject(action));
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return nullptr;
+    }
+}
+
+void QUiLoader::setWorkingDirectory(const QDir& dir)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Tuple args(1);
+        args[0] = wrap.fromQDir(dir);
+        uiloader.callMemberFunction("setWorkingDirectory", args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+QDir QUiLoader::workingDirectory() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        PythonWrapper wrap;
+        Py::Object dir((uiloader.callMemberFunction("workingDirectory")));
+        QDir* d = wrap.toQDir(dir.ptr());
+        if (d) return *d;
+        return QDir::current();
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return QDir::current();
+    }
+}
+
+void QUiLoader::setLanguageChangeEnabled(bool enabled)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args[0] = Py::Boolean(enabled);
+        uiloader.callMemberFunction("setLanguageChangeEnabled", args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+bool QUiLoader::isLanguageChangeEnabled() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Boolean ok((uiloader.callMemberFunction("isLanguageChangeEnabled")));
+        return static_cast<bool>(ok);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return false;
+    }
+}
+
+void QUiLoader::setTranslationEnabled(bool enabled)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args[0] = Py::Boolean(enabled);
+        uiloader.callMemberFunction("setTranslationEnabled", args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+bool QUiLoader::isTranslationEnabled() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Boolean ok((uiloader.callMemberFunction("isTranslationEnabled")));
+        return static_cast<bool>(ok);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return false;
+    }
+}
+
+QString QUiLoader::errorString() const
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::String error((uiloader.callMemberFunction("errorString")));
+        return QString::fromStdString(error.as_std_string());
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return QString();
+    }
+}
+}
+#endif
+
 // ----------------------------------------------------
 
 UiLoader::UiLoader(QObject* parent)
@@ -180,11 +528,8 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 {
     if (this->cw.contains(className))
         return QUiLoader::createWidget(className, parent, name);
-    QWidget* w = 0;
-    if (WidgetFactory().CanProduce((const char*)className.toLatin1()))
-        w = WidgetFactory().createWidget((const char*)className.toLatin1(), parent);
-    if (w) w->setObjectName(name);
-    return w;
+
+    return createFromWidgetFactory(className, parent, name);
 }
 
 // ----------------------------------------------------
@@ -279,38 +624,10 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
 
 Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 {
-    Gui::PythonWrapper wrap;
-
-    // 1st argument
-    Py::String str(args[0]);
-    std::string className;
-    className = str.as_std_string("utf-8");
-    // 2nd argument
-    QWidget* parent = 0;
-    if (wrap.loadCoreModule() && args.size() > 1) {
-        QObject* object = wrap.toQObject(args[1]);
-        if (object)
-            parent = qobject_cast<QWidget*>(object);
-    }
-
-    // 3rd argument
-    std::string objectName;
-    if (args.size() > 2) {
-        Py::String str(args[2]);
-        objectName = str.as_std_string("utf-8");
-    }
-
-    QWidget* widget = loader.createWidget(QString::fromLatin1(className.c_str()), parent,
-        QString::fromLatin1(objectName.c_str()));
-    if (!widget) {
-        std::string err = "No such widget class '";
-        err += className;
-        err += "'";
-        throw Py::RuntimeError(err);
-    }
-    wrap.loadGuiModule();
-    wrap.loadWidgetsModule();
-
-    const char* typeName = wrap.getWrapperName(widget);
-    return wrap.fromQWidget(widget, typeName);
+    return wrapFromWidgetFactory(args, std::bind(&UiLoader::createWidget, &loader,
+                                                 std::placeholders::_1,
+                                                 std::placeholders::_2,
+                                                 std::placeholders::_3));
 }
+
+#include "moc_UiLoader.cpp"
