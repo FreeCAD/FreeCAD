@@ -26,6 +26,7 @@
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
 # include <TopTools_MapOfShape.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
 #include "ShapeUpgrade/UnifySameDomainPy.h"
