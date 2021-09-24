@@ -53,8 +53,7 @@ protected:
     void changeEvent(QEvent *e);
 
 protected Q_SLOTS:
-    void preferencePackSelectionChanged();
-    void applyPreferencePackClicked();
+    void onLoadPreferencePackClicked(const std::string &packName);
     void recreatePreferencePackMenu();
     void newPreferencePackDialogAccepted();
 

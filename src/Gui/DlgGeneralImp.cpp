@@ -95,8 +95,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     }
 
     recreatePreferencePackMenu();
-    connect(ui->PreferencePacks, &QTableWidget::itemSelectionChanged, this, &DlgGeneralImp::preferencePackSelectionChanged);
-    connect(ui->ApplyPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::applyPreferencePackClicked);
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
     // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
@@ -328,45 +326,53 @@ void DlgGeneralImp::changeEvent(QEvent *e)
 
 void DlgGeneralImp::recreatePreferencePackMenu()
 {
-    // Populate the Preference Packs list
-    auto appearancePacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
-    auto behaviorPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
-    auto combinationPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
+    ui->PreferencePacks->setRowCount(0); // Begin by clearing whatever is there
+    ui->PreferencePacks->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    ui->PreferencePacks->setColumnCount(3);
+    ui->PreferencePacks->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
+    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::Stretch);
+    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
+    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
+    QStringList columnHeaders;
+    columnHeaders << tr("Preference Pack Name") 
+                  << tr("Type", "Whether a preference pack sets appearance, behavior, or both")
+                  << QString(); // for the "Load" buttons
+    ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
 
-    ui->PreferencePacks->setRowCount(appearancePacks.size() + behaviorPacks.size() + combinationPacks.size());
+    // Populate the Preference Packs list
+    std::map<PreferencePack::Type, std::vector<std::string>> packNames;
+    packNames[PreferencePack::Type::Appearance] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
+    packNames[PreferencePack::Type::Behavior] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
+    packNames[PreferencePack::Type::Combination] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
+
+    ui->PreferencePacks->setRowCount(
+        packNames[PreferencePack::Type::Appearance].size() + 
+        packNames[PreferencePack::Type::Behavior].size() + 
+        packNames[PreferencePack::Type::Combination].size());
 
     int row = 0;
-    for (const auto& pack : appearancePacks) {
-        auto name = new QTableWidgetItem(QString::fromStdString(pack));
-        ui->PreferencePacks->setItem(row, 0, name);
-        auto kind = new QTableWidgetItem(tr("Appearance"));
-        ui->PreferencePacks->setItem(row, 1, kind);
-        ++row;
-    }
-    for (const auto& pack : behaviorPacks) {
-        auto name = new QTableWidgetItem(QString::fromStdString(pack));
-        ui->PreferencePacks->setItem(row, 0, name);
-        auto kind = new QTableWidgetItem(tr("Behavior"));
-        ui->PreferencePacks->setItem(row, 1, kind);
-        ++row;
-    }
-    for (const auto& pack : combinationPacks) {
-        auto name = new QTableWidgetItem(QString::fromStdString(pack));
-        ui->PreferencePacks->setItem(row, 0, name);
-        auto kind = new QTableWidgetItem(tr("Combination"));
-        ui->PreferencePacks->setItem(row, 1, kind);
-        ++row;
+    for (const auto& packGroup : packNames) {
+        for (const auto& pack : packGroup.second) {
+            auto name = new QTableWidgetItem(QString::fromStdString(pack));
+            ui->PreferencePacks->setItem(row, 0, name);
+            QTableWidgetItem* kind;
+            switch (packGroup.first) {
+            case PreferencePack::Type::Appearance: kind = new QTableWidgetItem(tr("Appearance")); break;
+            case PreferencePack::Type::Behavior: kind = new QTableWidgetItem(tr("Behavior")); break;
+            case PreferencePack::Type::Combination: kind = new QTableWidgetItem(tr("Combination")); break;
+            default: kind = new QTableWidgetItem(QString::fromUtf8("[ERR: UNKNOWN TYPE]")); break;
+            }
+            ui->PreferencePacks->setItem(row, 1, kind);
+            auto button = new QPushButton(tr("Apply"));
+            button->setToolTip(tr("Apply the ") +
+                QString::fromStdString(pack) + QString::fromUtf8(" ") +
+                tr("Preference Pack"));
+            connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack); });
+            ui->PreferencePacks->setCellWidget(row, 2, button);
+            ++row;
+        }
     }
     ui->PreferencePacks->setRangeSelected(QTableWidgetSelectionRange(), true);
-    ui->ApplyPreferencePack->setEnabled(false);
-}
-
-void DlgGeneralImp::preferencePackSelectionChanged()
-{
-    if (ui->PreferencePacks->selectedItems().isEmpty())
-        ui->ApplyPreferencePack->setEnabled(false);
-    else
-        ui->ApplyPreferencePack->setEnabled(true);
 }
 
 void DlgGeneralImp::saveAsNewPreferencePack()
@@ -402,19 +408,12 @@ void DlgGeneralImp::newPreferencePackDialogAccepted()
     recreatePreferencePackMenu();
 }
 
-void DlgGeneralImp::applyPreferencePackClicked()
+void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
 {
-    auto selectedPreferencePacks = ui->PreferencePacks->selectedItems();
-
-    for (const auto pack : selectedPreferencePacks) {
-        if (pack->column() == 0) {
-            auto packName = pack->text().toStdString();
-            if (Application::Instance->prefPackManager()->apply(packName)) {
-                auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
-                if (parentDialog)
-                    parentDialog->reload();
-            }
-        }
+    if (Application::Instance->prefPackManager()->apply(packName)) {
+        auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
+        if (parentDialog)
+            parentDialog->reload();
     }
 }
 
