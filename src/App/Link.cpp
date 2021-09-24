@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -34,6 +34,7 @@
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include "ComplexGeoData.h"
 #include "ComplexGeoDataPy.h"
 
@@ -52,14 +53,16 @@ namespace bp = boost::placeholders;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :myOwner(0),enableLabelCache(false),hasOldSubElement(false)
+    :enableLabelCache(false),hasOldSubElement(false)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
-    EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link", 
+    EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link",
             PropertyType(Prop_Hidden|Prop_NoPersist),0);
-    EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link", 
+    EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link",
             PropertyType(Prop_Hidden|Prop_NoPersist|Prop_ReadOnly),0);
     _ChildCache.setScope(LinkScope::Global);
+    EXTENSION_ADD_PROPERTY_TYPE(_LinkOwner, (0), " Link",
+            PropertyType(Prop_Hidden|Prop_Output),0);
     props.resize(PropMax,0);
 }
 
@@ -87,7 +90,7 @@ const LinkBaseExtension::PropInfoMap &LinkBaseExtension::getPropertyInfoMap() co
     static PropInfoMap PropsMap;
     if(PropsMap.empty()) {
         const auto &infos = getPropertyInfo();
-        for(const auto &info : infos) 
+        for(const auto &info : infos)
             PropsMap[info.name] = info;
     }
     return PropsMap;
@@ -116,12 +119,12 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         props[idx]->setStatus(Property::LockDynamic,false);
         props[idx] = 0;
     }
-    if(!prop) 
+    if(!prop)
         return;
     if(!prop->isDerivedFrom(infos[idx].type)) {
         std::ostringstream str;
-        str << "App::LinkBaseExtension: expected property type '" << 
-            infos[idx].type.getName() << "', instead of '" << 
+        str << "App::LinkBaseExtension: expected property type '" <<
+            infos[idx].type.getName() << "', instead of '" <<
             prop->getClassTypeId().getName() << "'";
         LINK_THROW(Base::TypeError,str.str().c_str());
     }
@@ -166,13 +169,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE)) {
         const char *propName;
-        if(!prop) 
+        if(!prop)
             propName = "<null>";
         else if(prop->getContainer())
             propName = prop->getName();
-        else 
+        else
             propName = extensionGetPropertyName(prop);
-        if(!propName) 
+        if(!propName)
             propName = "?";
         FC_TRACE("set property " << infos[idx].name << ": " << propName);
     }
@@ -193,7 +196,8 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
         PropertyPythonObject *proxy = 0;
         if(getLinkExecuteProperty()
                 && !boost::iequals(getLinkExecuteValue(), "none")
-                && (!myOwner || !container->getDocument()->getObjectByID(myOwner)))
+                && (!_LinkOwner.getValue() 
+                    || !container->getDocument()->getObjectByID(_LinkOwner.getValue())))
         {
             // Check if this is an element link. Do not invoke appLinkExecute()
             // if so, because it will be called from the link array.
@@ -303,7 +307,7 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListValue().size() 
+    if(_getElementListValue().size()
             || (_getElementCountValue() && _getShowElementValue()))
         return true;
     DocumentObject *linked = getTrueLinkedObject(false);
@@ -318,7 +322,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         auto propElementVis = getVisibilityListProperty();
-        if(!propElementVis || !element || !element[0]) 
+        if(!propElementVis || !element || !element[0])
             return -1;
         if(propElementVis->getSize()<=index) {
             if(visible) return 1;
@@ -381,7 +385,7 @@ DocumentObject *LinkBaseExtension::getLink(int depth) const{
 }
 
 int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname) {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname)) 
+    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
         return -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
@@ -401,7 +405,7 @@ int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname)
 }
 
 int LinkBaseExtension::getElementIndex(const char *subname, const char **psubname) const {
-    if(!subname || Data::ComplexGeoData::isMappedElement(subname)) 
+    if(!subname || Data::ComplexGeoData::isMappedElement(subname))
         return -1;
     int idx = -1;
     const char *dot = strchr(subname,'.');
@@ -414,7 +418,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         if(_getElementCountProperty()) {
             if(idx>=_getElementCountValue())
                 return -1;
-        }else if(idx>=(int)_getElementListValue().size()) 
+        }else if(idx>=(int)_getElementListValue().size())
             return -1;
     }else if(!_getShowElementValue() && _getElementCountValue()) {
         // If elements are collapsed, we check first for LinkElement naming
@@ -579,8 +583,8 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
     return true;
 }
 
-bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname, 
-        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
     ret = 0;
     auto obj = getContainer();
@@ -605,8 +609,8 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             _mat = *mat;
         }
 
-        if(pyObj && !_getElementCountValue() 
-                && _getElementListValue().empty() && mySubElements.size()<=1) 
+        if(pyObj && !_getElementCountValue()
+                && _getElementListValue().empty() && mySubElements.size()<=1)
         {
             // Scale will be included here
             if(getScaleProperty() || getScaleVectorProperty()) {
@@ -659,7 +663,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     }
 
     auto linked = getTrueLinkedObject(false,mat,depth);
-    if(!linked || linked==obj) 
+    if(!linked || linked==obj)
         return true;
 
     Base::Matrix4D matNext;
@@ -692,13 +696,13 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     return true;
 }
 
-void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj, 
+void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const
 {
     if(!pyObj || !*pyObj || (!postfix && obj->getDocument()==linked->getDocument()) ||
        !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
         return;
-       
+
     // auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
     // geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
 }
@@ -708,14 +712,14 @@ void LinkBaseExtension::onExtendedUnsetupObject() {
         return;
     auto objs = getElementListValue();
     getElementListProperty()->setValue();
-    for(auto obj : objs) 
+    for(auto obj : objs)
         detachElement(obj);
 }
 
 DocumentObject *LinkBaseExtension::getTrueLinkedObject(
         bool recurse, Base::Matrix4D *mat, int depth, bool noElement) const
 {
-    if(noElement && extensionIsDerivedFrom(LinkElement::getExtensionClassTypeId()) 
+    if(noElement && extensionIsDerivedFrom(LinkElement::getExtensionClassTypeId())
             && !static_cast<const LinkElement*>(this)->canDelete())
     {
         return 0;
@@ -736,10 +740,10 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
     return ret;
 }
 
-bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject *&ret, 
+bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject *&ret,
         bool recurse, Base::Matrix4D *mat, bool transform, int depth) const
 {
-    if(mat) 
+    if(mat)
         *mat *= getTransform(transform);
     ret = 0;
     if(!_getElementCountValue())
@@ -822,7 +826,7 @@ void LinkBaseExtension::updateGroup() {
             auto group = ext->getExtendedObject();
             auto &conn = plainGroupConns[group];
             if(!conn.connected()) {
-                FC_LOG("new group connection " << getExtendedObject()->getFullName() 
+                FC_LOG("new group connection " << getExtendedObject()->getFullName()
                         << " -> " << group->getFullName());
                 conn = group->signalChanged.connect(
                         boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
@@ -836,7 +840,7 @@ void LinkBaseExtension::updateGroup() {
                 groupSet.insert(child);
                 auto &conn = plainGroupConns[child];
                 if(!conn.connected()) {
-                    FC_LOG("new group connection " << getExtendedObject()->getFullName() 
+                    FC_LOG("new group connection " << getExtendedObject()->getFullName()
                             << " -> " << child->getFullName());
                     conn = child->signalChanged.connect(
                             boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
@@ -885,7 +889,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
     }else if(prop == _getShowElementProperty()) {
-        if(_getShowElementValue()) 
+        if(_getShowElementValue())
             update(parent,_getElementCountProperty());
         else {
             auto objs = getElementListValue();
@@ -979,9 +983,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
                     auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
-                    if(obj && (!obj->myOwner || obj->myOwner==ownerID))
+                    if(obj && (!obj->_LinkOwner.getValue() || obj->_LinkOwner.getValue()==ownerID)) {
                         obj->Visibility.setValue(false);
-                    else {
+                    } else {
                         obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
@@ -1001,7 +1005,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         obj->Scale.setValue(1);
                     objs.push_back(obj);
                 }
-                if(getPlacementListProperty()) 
+                if(getPlacementListProperty())
                     getPlacementListProperty()->setSize(0);
                 if(getScaleListProperty())
                     getScaleListProperty()->setSize(0);
@@ -1014,7 +1018,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 long ownerID = owner?owner->getID():0;
                 while(objs.size()>elementCount) {
                     auto element = freecad_dynamic_cast<LinkElement>(objs.back());
-                    if(element && element->myOwner==ownerID)
+                    if(element && element->_LinkOwner.getValue()==ownerID)
                         tmpObjs.push_back(objs.back());
                     objs.pop_back();
                 }
@@ -1074,9 +1078,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
         syncElementList();
-        if(_getShowElementValue() 
-                && _getElementCountProperty() 
-                && getElementListProperty() 
+        if(_getShowElementValue()
+                && _getElementCountProperty()
+                && getElementListProperty()
                 && getElementCountValue()!=getElementListProperty()->getSize())
         {
             getElementCountProperty()->setValue(
@@ -1121,8 +1125,8 @@ void LinkBaseExtension::cacheChildLabel(int enable) const {
 }
 
 bool LinkBaseExtension::linkTransform() const {
-    if(!getLinkTransformProperty() && 
-       !getLinkPlacementProperty() && 
+    if(!getLinkTransformProperty() &&
+       !getLinkPlacementProperty() &&
        !getPlacementProperty())
         return true;
     return getLinkTransformValue();
@@ -1138,10 +1142,12 @@ void LinkBaseExtension::syncElementList() {
     auto elements = getElementListValue();
     for(size_t i=0;i<elements.size();++i) {
         auto element = freecad_dynamic_cast<LinkElement>(elements[i]);
-        if(!element || (element->myOwner && element->myOwner!=ownerID)) 
+        if(!element
+                || (element->_LinkOwner.getValue()
+                    && element->_LinkOwner.getValue()!=ownerID))
             continue;
 
-        element->myOwner = ownerID;
+        element->_LinkOwner.setValue(ownerID);
 
         element->LinkTransform.setStatus(Property::Hidden,transform!=0);
         element->LinkTransform.setStatus(Property::Immutable,transform!=0);
@@ -1175,12 +1181,12 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
         // SubElements was stored as a PropertyStringList. It is now migrated to be
         // stored inside PropertyXLink.
         auto xlink = freecad_dynamic_cast<PropertyXLink>(getLinkedObjectProperty());
-        if(!xlink) 
+        if(!xlink)
             FC_ERR("Failed to restore SubElements for " << parent->getFullName());
         else if(!xlink->getValue())
             FC_ERR("Discard SubElements of " << parent->getFullName() << " due to null link");
         else if(xlink->getSubValues().size() > 1)
-            FC_ERR("Failed to restore SubElements for " << parent->getFullName() 
+            FC_ERR("Failed to restore SubElements for " << parent->getFullName()
                     << " due to conflict subnames");
         else if(xlink->getSubValues().empty()) {
             auto subs = xlink->getSubValues();
@@ -1227,8 +1233,8 @@ void LinkBaseExtension::_handleChangedPropertyName(
     }
 }
 
-void LinkBaseExtension::setLink(int index, DocumentObject *obj, 
-    const char *subname, const std::vector<std::string> &subElements) 
+void LinkBaseExtension::setLink(int index, DocumentObject *obj,
+    const char *subname, const std::vector<std::string> &subElements)
 {
     auto parent = getContainer();
     if(!parent)
@@ -1285,7 +1291,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             {
                 std::string name = parent->getDocument()->getUniqueObjectName("Link");
                 auto link = new Link;
-                link->myOwner = parent->getID();
+                link->_LinkOwner.setValue(parent->getID());
                 parent->getDocument()->addObject(link,name.c_str());
                 link->setLink(-1,obj,subname,subElements);
                 auto linked = link->getTrueLinkedObject(true);
@@ -1316,8 +1322,8 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
 
         auto objs = getElementListValue();
         getElementListProperty()->setValue();
-        for(auto obj : objs) 
-            detachElement(obj);
+        for(auto thisObj : objs)
+            detachElement(thisObj);
         return;
     }
 
@@ -1359,11 +1365,11 @@ void LinkBaseExtension::detachElement(DocumentObject *obj) {
     auto owner = getContainer();
     long ownerID = owner?owner->getID():0;
     if(getLinkModeValue()==LinkModeAutoUnlink) {
-        if(!ext || ext->myOwner!=ownerID)
+        if(!ext || ext->_LinkOwner.getValue()!=ownerID)
             return;
     }else if(getLinkModeValue()!=LinkModeAutoDelete) {
-        if(ext && ext->myOwner==ownerID)
-            ext->myOwner = 0;
+        if(ext && ext->_LinkOwner.getValue()==ownerID)
+            ext->_LinkOwner.setValue(0);
         return;
     }
     obj->getDocument()->removeObject(obj->getNameInDocument());
@@ -1421,14 +1427,21 @@ static bool isExcludedProperties(const char *name) {
 }
 
 Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const {
-    auto prop = inherited::extensionGetPropertyByName(name);
-    if(prop || isExcludedProperties(name))
-        return prop;
+    if (checkingProperty)
+        return inherited::extensionGetPropertyByName(name);
+    Base::StateLocker guard(checkingProperty);
+    if(isExcludedProperties(name))
+        return nullptr;
     auto owner = getContainer();
-    if(owner && owner->canLinkProperties()) {
-        auto linked = getTrueLinkedObject(true);
-        if(linked)
-            return linked->getPropertyByName(name);
+    if (owner) {
+        App::Property *prop = owner->getPropertyByName(name);
+        if(prop)
+            return prop;
+        if(owner->canLinkProperties()) {
+            auto linked = getTrueLinkedObject(true);
+            if(linked)
+                return linked->getPropertyByName(name);
+        }
     }
     return 0;
 }
@@ -1503,11 +1516,11 @@ LinkElement::LinkElement() {
 }
 
 bool LinkElement::canDelete() const {
-    if(!myOwner)
+    if(!_LinkOwner.getValue())
         return true;
 
     auto owner = getContainer();
-    return !owner || !owner->getDocument()->getObjectByID(myOwner);
+    return !owner || !owner->getDocument()->getObjectByID(_LinkOwner.getValue());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

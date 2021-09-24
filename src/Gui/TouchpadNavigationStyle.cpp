@@ -225,8 +225,8 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {

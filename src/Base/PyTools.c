@@ -18,10 +18,6 @@ is provided on an as is basis, without warranties of any kind.
 #include <eval.h>
 #include <frameobject.h>
 
-#if PY_VERSION_HEX <= 0x02050000
-#error "Use Python2.5.x or higher"
-#endif
-
 
 /*****************************************************************************
  * RUN EMBEDDED OBJECT METHODS, ACCESS OBJECT ATTRIBUTES 
@@ -158,11 +154,7 @@ PP_Debug_Function(PyObject *func, PyObject *args)
     /* expand tuple at front */
     // it seems that some versions of python want just 2 arguments; in that
     // case, remove trailing 1
-#if (PY_MAJOR_VERSION>=2)&&(PY_MINOR_VERSION>=2)
     oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args))); 
-#else
-    oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args)),1); 
-#endif    
     oops |= PyTuple_SetItem(args, 0, func);   
     if (oops) 
         return NULL;                        /* "args = (funcobj,) + (arg,..)" */
@@ -255,15 +247,9 @@ void PP_Fetch_Error_Text()
     pystring = NULL;
     if (errobj != NULL &&
        (pystring = PyObject_Str(errobj)) != NULL &&      /* str(errobj) */
-#if PY_MAJOR_VERSION >= 3
        (PyUnicode_Check(pystring)) )                      /* str() increfs */
     {
         strncpy(PP_last_error_type, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
-#else
-       (PyString_Check(pystring)) )                      /* str() increfs */
-    {
-        strncpy(PP_last_error_type, PyString_AsString(pystring), MAX); /*Py->C*/
-#endif
         PP_last_error_type[MAX-1] = '\0';
     }
     else
@@ -285,11 +271,7 @@ void PP_Fetch_Error_Text()
         PyObject* value = PyDict_GetItemString(errdata,"swhat");
         
         if (value!=NULL) {
-#if PY_MAJOR_VERSION < 3
-            strncpy(PP_last_error_info, PyString_AsString(value), MAX);
-#else
             strncpy(PP_last_error_info, PyUnicode_AsUTF8(value), MAX);
-#endif
             PP_last_error_info[MAX-1] = '\0';
         }
 
@@ -298,15 +280,9 @@ void PP_Fetch_Error_Text()
     }
     else if (errdata != NULL &&
        (pystring = PyObject_Str(errdata)) != NULL &&     /* str(): increfs */
-#if PY_MAJOR_VERSION >= 3
        (PyUnicode_Check(pystring)) )
     {
         strncpy(PP_last_error_info, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
-#else
-       (PyString_Check(pystring)) )
-    {
-        strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); /*Py->C*/
-#endif
         PP_last_error_info[MAX-1] = '\0';
     }
     else 
@@ -320,11 +296,7 @@ void PP_Fetch_Error_Text()
 
     pystring = NULL;
     if (errtraceback != NULL &&
-#if PY_MAJOR_VERSION < 3
-       (PP_Run_Function("StringIO", "StringIO", "O", &pystring, "()") == 0) &&
-#else
        (PP_Run_Function("io", "StringIO", "O", &pystring, "()") == 0) &&
-#endif
 
        (PyTraceBack_Print(errtraceback, pystring) == 0) &&
        (PP_Run_Method(pystring, "getvalue", "s", &tempstr, "()") == 0) )
@@ -338,11 +310,7 @@ void PP_Fetch_Error_Text()
         if(!frame) 
             return;
         int line = PyFrame_GetLineNumber(frame);
-#if PY_MAJOR_VERSION >= 3
         const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#else
-        const char *file = PyString_AsString(frame->f_code->co_filename);
-#endif
 #ifdef FC_OS_WIN32
         const char *_f = strstr(file, "\\src\\");
 #else
@@ -638,11 +606,7 @@ PP_Run_Bytecode(PyObject *codeobj,           /* run compiled bytecode object */
     if (PP_DEBUG)
         presult = PP_Debug_Bytecode(codeobj, dict);        /* run in pdb */
     else
-#if PY_MAJOR_VERSION >= 3
         presult = PyEval_EvalCode((PyObject*)codeobj, dict, dict);
-#else
-        presult = PyEval_EvalCode((PyCodeObject *)codeobj, dict, dict);
-#endif
     return PP_Convert_Result(presult, resfmt, restarget);  /* expr val to C */
 }
 

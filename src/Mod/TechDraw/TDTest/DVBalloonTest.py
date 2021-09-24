@@ -76,7 +76,7 @@ def DVBalloonTest():
     FreeCAD.ActiveDocument.recompute()
 
     rc = False
-    if ("Up-to-date" in balloon2.State) and ("Up-to-date" in balloon2.State):
+    if ("Up-to-date" in balloon1.State) and ("Up-to-date" in balloon2.State):
         rc = True
     FreeCAD.closeDocument("TDBalloon")
     return rc

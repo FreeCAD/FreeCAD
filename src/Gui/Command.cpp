@@ -93,9 +93,9 @@ using namespace Gui::DockWnd;
  *
  * \section wayout Way out
  * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world. 
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world.
  *
- * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created 
+ * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created
  * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
  *
  * Now, the implementation of the slots of MainWindow can be done in the method \a activated() of subclasses of Command instead.
@@ -135,10 +135,25 @@ using namespace Gui::DockWnd;
 // list of modules already loaded by a command (not issue again for macro cleanness)
 std::set<std::string> alreadyLoadedModule;
 
-CommandBase::CommandBase( const char* sMenu, const char* sToolTip, const char* sWhat,
-                          const char* sStatus, const char* sPixmap, const char* sAcc)
-        : sMenuText(sMenu), sToolTipText(sToolTip), sWhatsThis(sWhat?sWhat:sToolTip),
-        sStatusTip(sStatus?sStatus:sToolTip), sPixmap(sPixmap), sAccel(sAcc), _pcAction(0)
+class StringCache {
+public:
+    static const char* New(const char* str) {
+        using StringList = std::list<std::string>;
+        static StringList strings;
+        strings.emplace_back(str);
+        return strings.back().c_str();
+    }
+};
+
+CommandBase::CommandBase(const char* sMenu, const char* sToolTip, const char* sWhat,
+                         const char* sStatus, const char* sPixmap, const char* sAcc)
+  : sMenuText(sMenu)
+  , sToolTipText(sToolTip)
+  , sWhatsThis(sWhat ? sWhat : sToolTip)
+  , sStatusTip(sStatus ? sStatus : sToolTip)
+  , sPixmap(sPixmap)
+  , sAccel(sAcc)
+  , _pcAction(nullptr)
 {
 }
 
@@ -162,56 +177,32 @@ Action * CommandBase::createAction()
 
 void CommandBase::setMenuText(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sMenuText = _strdup(s);
-#else
-    this->sMenuText = strdup(s);
-#endif
+    this->sMenuText = StringCache::New(s);
 }
 
 void CommandBase::setToolTipText(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sToolTipText = _strdup(s);
-#else
-    this->sToolTipText = strdup(s);
-#endif
+    this->sToolTipText = StringCache::New(s);
 }
 
 void CommandBase::setStatusTip(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sStatusTip = _strdup(s);
-#else
-    this->sStatusTip = strdup(s);
-#endif
+    this->sStatusTip = StringCache::New(s);
 }
 
 void CommandBase::setWhatsThis(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sWhatsThis = _strdup(s);
-#else
-    this->sWhatsThis = strdup(s);
-#endif
+    this->sWhatsThis = StringCache::New(s);
 }
 
 void CommandBase::setPixmap(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sPixmap = _strdup(s);
-#else
-    this->sPixmap = strdup(s);
-#endif
+    this->sPixmap = StringCache::New(s);
 }
 
 void CommandBase::setAccel(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sAccel = _strdup(s);
-#else
-    this->sAccel = strdup(s);
-#endif
+    this->sAccel = StringCache::New(s);
 }
 
 //===========================================================================
@@ -221,7 +212,9 @@ void CommandBase::setAccel(const char* s)
 /* TRANSLATOR Gui::Command */
 
 Command::Command(const char* name)
-        : CommandBase(0), sName(name), sHelpUrl(0)
+    : CommandBase(nullptr)
+    , sName(name)
+    , sHelpUrl(0)
 {
     sAppModule  = "FreeCAD";
     sGroup      = QT_TR_NOOP("Standard");
@@ -375,68 +368,78 @@ void Command::setupCheckable(int iMsg) {
 void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
-    if(displayText.empty()) {
+    if (displayText.empty()) {
         displayText = getMenuText();
         boost::replace_all(displayText,"&","");
-        if(displayText.empty())
+        if (displayText.empty())
             displayText = getName();
     }
-
-    // Because Transaction now captures ViewObject changes, auto named
-    // transaction is disabled here to avoid too many unnecessary transactions.
-    //
-    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
-    App::AutoTransaction committer(0,true);
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
 #endif
-    // set the application module type for the macro
-    getGuiApplication()->macroManager()->setModule(sAppModule);
+
+    _invoke(i, bCanLog && !_busy);
+}
+
+void Command::_invoke(int id, bool disablelog)
+{
     try {
-        std::unique_ptr<LogDisabler> disabler;
-        if(bCanLog && !_busy)
-            disabler.reset(new LogDisabler);
+        // Because Transaction now captures ViewObject changes, auto named
+        // transaction is disabled here to avoid too many unnecessary transactions.
+        //
+        App::AutoTransaction committer(nullptr, true);
+
+        // set the application module type for the macro
+        getGuiApplication()->macroManager()->setModule(sAppModule);
+
+        std::unique_ptr<LogDisabler> logdisabler;
+        if (disablelog)
+            logdisabler.reset(new LogDisabler);
+
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
             auto editDoc = getGuiApplication()->editDocument();
-            if(!disabler)
-                activated( i );
+
+            if (!logdisabler) {
+                activated(id);
+            }
             else {
-                Gui::SelectionLogDisabler disabler;
+                Gui::SelectionLogDisabler seldisabler;
                 auto lines = manager->getLines();
                 std::ostringstream ss;
                 ss << "### Begin command " << sName;
                 // Add a pending line to mark the start of a command
                 PendingLine pending(MacroManager::Cmt, ss.str().c_str());
-                activated( i );
                 ss.str("");
-                if(manager->getLines() == lines) {
+
+                activated(id);
+
+                if (manager->getLines() == lines) {
                     // This command does not record any lines, lets do it for
-                    // him. The above LogDisabler is to prevent nested command
+                    // it. The above LogDisabler is to prevent nested command
                     // logging, i.e. we only auto log the first invoking
                     // command.
 
                     // Cancel the above pending line first
                     pending.cancel();
-                    ss << "Gui.runCommand('" << sName << "'," << i << ')';
-                    if(eType & AlterDoc)
-                        manager->addLine(MacroManager::App, ss.str().c_str());
-                    else
-                        manager->addLine(MacroManager::Gui, ss.str().c_str());
-                }else{
+                    ss << "Gui.runCommand('" << sName << "'," << id << ')';
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+                }
+                else {
                     // In case the command has any output to the console, lets
                     // mark the end of the command here
                     ss << "### End command " << sName;
                     manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
+
             getMainWindow()->updateActions();
 
             // If this command starts an editing, let the transaction persist
-            if(!editDoc && getGuiApplication()->editDocument())
+            if (!editDoc && getGuiApplication()->editDocument())
                 committer.setEnable(false);
         }
     }
@@ -466,7 +469,7 @@ void Command::invoke(int i, TriggerSource trigger)
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", i);
+        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -482,7 +485,7 @@ void Command::testActive(void)
     }
 
     if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
-        
+
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
             (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
@@ -542,8 +545,8 @@ std::string Command::getUniqueObjectName(const char *BaseName, const App::Docume
     return doc->getUniqueObjectName(BaseName);
 }
 
-std::string Command::getObjectCmd(const char *Name, const App::Document *doc, 
-        const char *prefix, const char *postfix, bool gui) 
+std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
@@ -551,7 +554,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
     std::ostringstream str;
     if(prefix)
         str << prefix;
-    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName() 
+    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName()
         << "').getObject('" << Name << "')";
     if(postfix)
         str << postfix;
@@ -559,7 +562,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 }
 
 std::string Command::getObjectCmd(const App::DocumentObject *obj,
-        const char *prefix, const char *postfix, bool gui) 
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!obj || !obj->getNameInDocument())
         return std::string("None");
@@ -568,20 +571,12 @@ std::string Command::getObjectCmd(const App::DocumentObject *obj,
 
 void Command::setAppModuleName(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sAppModule = _strdup(s);
-#else
-    this->sAppModule = strdup(s);
-#endif
+    this->sAppModule = StringCache::New(s);
 }
 
 void Command::setGroupName(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sGroup = _strdup(s);
-#else
-    this->sGroup = strdup(s);
-#endif
+    this->sGroup = StringCache::New(s);
 }
 
 //--------------------------------------------------------------------------
@@ -651,19 +646,15 @@ void Command::printPyCaller() {
     if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     PyFrameObject* frame = PyEval_GetFrame();
-    if(!frame) 
+    if(!frame)
         return;
     int line = PyFrame_GetLineNumber(frame);
-#if PY_MAJOR_VERSION >= 3
     const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#else
-    const char *file = PyString_AsString(frame->f_code->co_filename);
-#endif
     printCaller(file?file:"<no file>",line);
 }
 
 void Command::printCaller(const char *file, int line) {
-    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) 
+    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     std::ostringstream str;
 #ifdef FC_OS_WIN32
@@ -720,7 +711,7 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
 
 std::string Command::_assureWorkbench(const char *file, int line, const char * sName)
 {
-    // check if the WB is already open? 
+    // check if the WB is already open?
     std::string actName = WorkbenchManager::instance()->active()->name();
     // if yes, do nothing
     if(actName == sName)
@@ -861,20 +852,24 @@ const char * Command::endCmdHelp(void)
     return "</body></html>\n\n";
 }
 
-void Command::applyCommandData(const char* context, Action* action)
+void Command::recreateTooltip(const char* context, Action* action)
 {
-    action->setText(QCoreApplication::translate(
+    QString tooltip;
+    tooltip.append(QString::fromLatin1("<h3>"));
+    tooltip.append(QCoreApplication::translate(
         context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(
+    tooltip.append(QString::fromLatin1("</h3>"));
+    QRegularExpression re(QString::fromLatin1("([^&])&([^&])"));
+    tooltip.replace(re, QString::fromLatin1("\\1\\2"));
+    tooltip.replace(QString::fromLatin1("&&"), QString::fromLatin1("&"));
+    tooltip.append(QCoreApplication::translate(
         context, getToolTipText()));
-    action->setWhatsThis(QCoreApplication::translate(
+    tooltip.append(QString::fromLatin1("<br><i>("));
+    tooltip.append(QCoreApplication::translate(
         context, getWhatsThis()));
-    if (sStatusTip)
-        action->setStatusTip(QCoreApplication::translate(
-            context, getStatusTip()));
-    else
-        action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText()));
+    tooltip.append(QString::fromLatin1(")</i> "));
+    action->setToolTip(tooltip);
+
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
         // show shortcut inside tooltip
@@ -887,6 +882,22 @@ void Command::applyCommandData(const char* context, Action* action)
             .arg(accel, action->statusTip());
         action->setStatusTip(stip);
     }
+
+    if (sStatusTip)
+        action->setStatusTip(QCoreApplication::translate(
+            context, getStatusTip()));
+    else
+        action->setStatusTip(QCoreApplication::translate(
+            context, getToolTipText()));
+}
+
+void Command::applyCommandData(const char* context, Action* action)
+{
+    action->setText(QCoreApplication::translate(
+        context, getMenuText()));
+    recreateTooltip(context, action);
+    action->setWhatsThis(QCoreApplication::translate(
+        context, getWhatsThis()));
 }
 
 const char* Command::keySequenceToAccel(int sk) const
@@ -947,16 +958,24 @@ void Command::adjustCameraPosition()
     }
 }
 
+void Command::printConflictingAccelerators() const
+{
+    auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
+    if (cmd)
+        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+}
+
 Action * Command::createAction(void)
 {
     Action *pcAction;
-
     pcAction = new Action(this,getMainWindow());
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
-
     return pcAction;
 }
 
@@ -995,6 +1014,7 @@ Command *GroupCommand::addCommand(const char *name) {
 
 Action * GroupCommand::createAction(void) {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
@@ -1039,7 +1059,7 @@ void GroupCommand::languageChange() {
 void GroupCommand::setup(Action *pcAction) {
 
     pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
-    
+
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
@@ -1050,7 +1070,7 @@ void GroupCommand::setup(Action *pcAction) {
         const char *statustip = cmd->getStatusTip();
         if (!statustip || '\0' == *statustip)
             statustip = tooltip;
-        pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
+        recreateTooltip(context, pcAction);
         pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
     }
 }
@@ -1062,28 +1082,21 @@ void GroupCommand::setup(Action *pcAction) {
 /* TRANSLATOR Gui::MacroCommand */
 
 MacroCommand::MacroCommand(const char* name, bool system)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) ), systemMacro(system)
-#else
-  : Command( strdup(name) ), systemMacro(system)
-#endif
+  : Command(StringCache::New(name))
+  , systemMacro(system)
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
-    sScriptName = 0;
+    sScriptName = nullptr;
 }
 
 MacroCommand::~MacroCommand()
 {
-    free(const_cast<char*>(sName));
-    sName = 0;
-    free(const_cast<char*>(sScriptName));
-    sScriptName = 0;
 }
 
 void MacroCommand::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     QDir d;
     if (!systemMacro) {
@@ -1099,7 +1112,7 @@ void MacroCommand::activated(int iMsg)
         QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
         d = QDir(dirstr);
     }
-    
+
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -1126,6 +1139,9 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
@@ -1146,11 +1162,7 @@ Action * MacroCommand::createAction(void)
 
 void MacroCommand::setScriptName( const char* s )
 {
-#if defined (_MSC_VER)
-    this->sScriptName = _strdup( s );
-#else
-    this->sScriptName = strdup( s );
-#endif
+    this->sScriptName = StringCache::New(s);
 }
 
 void MacroCommand::load()
@@ -1203,11 +1215,7 @@ void MacroCommand::save()
 //===========================================================================
 
 PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) )
-#else
-  : Command( strdup(name) )
-#endif
+  : Command(StringCache::New(name))
   ,_pcPyCommand(pcPyCommand)
 {
     if (pActivationString)
@@ -1247,8 +1255,6 @@ PythonCommand::~PythonCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
-    free(const_cast<char*>(sName));
-    sName = 0;
 }
 
 const char* PythonCommand::getResource(const char* sName) const
@@ -1260,19 +1266,11 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (!PyUnicode_Check(pcTemp)) {
-#else
-    if (!PyString_Check(pcTemp)) {
-#endif
         throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 void PythonCommand::activated(int iMsg)
@@ -1335,17 +1333,9 @@ const char* PythonCommand::getHelpUrl(void) const
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
     if (! pcTemp )
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (! PyUnicode_Check(pcTemp) )
-#else
-    if (! PyString_Check(pcTemp) )
-#endif
         throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 Action * PythonCommand::createAction(void)
@@ -1354,6 +1344,9 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
+#ifdef FC_DEBUG
+    printConflictingAccelerators();
+#endif
     pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
@@ -1438,11 +1431,7 @@ bool PythonCommand::isChecked() const
 //===========================================================================
 
 PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) )
-#else
-  : Command( strdup(name) )
-#endif
+  : Command(StringCache::New(name))
   ,_pcPyCommand(pcPyCommand)
 {
     sGroup = "Python";
@@ -1477,8 +1466,6 @@ PythonGroupCommand::~PythonGroupCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
-    free(const_cast<char*>(sName));
-    sName = 0;
 }
 
 void PythonGroupCommand::activated(int iMsg)
@@ -1674,19 +1661,11 @@ const char* PythonGroupCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResource, sName);
     if (!pcTemp)
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (!PyUnicode_Check(pcTemp)) {
-#else
-    if (!PyString_Check(pcTemp)) {
-#endif
         throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
                                "group command object returns a dictionary which holds not only strings");
     }
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 const char* PythonGroupCommand::getWhatsThis() const
@@ -1879,4 +1858,58 @@ void CommandManager::updateCommands(const char* sContext, int mode)
             }
         }
     }
+}
+
+const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* accel, const Command* ignore) const
+{
+    if (!accel || accel[0] == '\0')
+        return nullptr;
+
+    QString newCombo = QString::fromLatin1(accel);
+    if (newCombo.isEmpty())
+        return nullptr;
+    auto newSequence = QKeySequence::fromString(newCombo);
+    if (newSequence.count() == 0)
+        return nullptr;
+
+    // Does this command shortcut conflict with other commands already defined?
+    auto commands = Application::Instance->commandManager().getAllCommands();
+    for (const auto& cmd : commands) {
+        if (cmd == ignore)
+            continue;
+        auto existingAccel = cmd->getAccel();
+        if (!existingAccel || existingAccel[0] == '\0')
+            continue;
+
+        // Three possible conflict scenarios:
+        // 1) Exactly the same combo as another command
+        // 2) The new command is a one-char combo that overrides an existing two-char combo
+        // 3) The old command is a one-char combo that overrides the new command
+
+        QString existingCombo = QString::fromLatin1(existingAccel);
+        if (existingCombo.isEmpty())
+            continue;
+        auto existingSequence = QKeySequence::fromString(existingCombo);
+        if (existingSequence.count() == 0)
+            continue;
+
+        // Exact match
+        if (existingSequence == newSequence)
+            return cmd;
+
+        // If it's not exact, then see if one of the sequences is a partial match for
+        // the beginning of the other sequence
+        auto numCharsToCheck = std::min(existingSequence.count(), newSequence.count());
+        bool firstNMatch = true;
+        for (int i = 0; i < numCharsToCheck; ++i) {
+            if (newSequence[i] != existingSequence[i]) {
+                firstNMatch = false;
+                break;
+            }
+        }
+        if (firstNMatch)
+            return cmd;
+    }
+
+    return nullptr;
 }

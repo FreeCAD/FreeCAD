@@ -4,97 +4,97 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="16"/>
+      <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
       <translation>FreeCAD 유닛테스트</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="31"/>
+      <location filename="../../UnitTest.ui" line="32"/>
       <source>Failures and errors</source>
       <translation>실패와 오류</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="47"/>
+      <location filename="../../UnitTest.ui" line="48"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="82"/>
+      <location filename="../../UnitTest.ui" line="83"/>
       <source>&amp;Start</source>
       <translation>시작(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="85"/>
+      <location filename="../../UnitTest.ui" line="86"/>
       <source>Alt+S</source>
       <translation>Alt + S</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="114"/>
+      <location filename="../../UnitTest.ui" line="115"/>
       <source>&amp;Help</source>
       <translation>도움말(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="117"/>
+      <location filename="../../UnitTest.ui" line="118"/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="127"/>
+      <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;About</source>
       <translation>정보(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="130"/>
+      <location filename="../../UnitTest.ui" line="131"/>
       <source>Alt+A</source>
       <translation>Alt + A</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="140"/>
+      <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Close</source>
       <translation>닫기 &amp;C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="143"/>
+      <location filename="../../UnitTest.ui" line="144"/>
       <source>Alt+C</source>
       <translation>Alt + C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="161"/>
+      <location filename="../../UnitTest.ui" line="162"/>
       <source>Idle</source>
       <translation>유휴 상태</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="168"/>
+      <location filename="../../UnitTest.ui" line="169"/>
       <source>Progress</source>
       <translation>진행 상황</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="197"/>
+      <location filename="../../UnitTest.ui" line="198"/>
       <source>Remaining:</source>
       <translation>남음:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="214"/>
+      <location filename="../../UnitTest.ui" line="215"/>
       <source>Errors:</source>
       <translation>오류:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="231"/>
+      <location filename="../../UnitTest.ui" line="232"/>
       <source>Failures:</source>
       <translation>실패:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="248"/>
+      <location filename="../../UnitTest.ui" line="249"/>
       <source>Run:</source>
       <translation>실행:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="258"/>
+      <location filename="../../UnitTest.ui" line="259"/>
       <source>Test</source>
       <translation>테스트</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="270"/>
+      <location filename="../../UnitTest.ui" line="271"/>
       <source>Select test name:</source>
       <translation>테스트 이름 선택:</translation>
     </message>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Help</source>
       <translation>도움말</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Double click on an error in the tree view to see more information about it, incl
 트리 뷰의 오류를 더블 클릭하면 스택 추적을 포함하여 더 자세한 정보를 확인할 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD 유닛테스트에 대하여</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

@@ -53,13 +53,14 @@
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Inventor/MarkerBitmaps.h>
+#include <Command.h>
 
 using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderMeasureDistance, Gui::ViewProviderDocumentObject)
 
 
-ViewProviderMeasureDistance::ViewProviderMeasureDistance() 
+ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 {
     ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
     ADD_PROPERTY(LineColor,(1.0f,1.0f,1.0f));
@@ -171,7 +172,7 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
     SoMarkerSet* points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", 
+    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
             ViewParams::instance()->getMarkerSize());
     points->numPoints=2;
     lineSep->addChild(points);
@@ -242,11 +243,14 @@ PointMarker::PointMarker(View3DInventorViewer* iv) : view(iv),
     vp(new ViewProviderPointMarker)
 {
     view->addViewProvider(vp);
+    previousSelectionEn = view->isSelectionEnabled();
+    view->setSelectionEnabled(false);
 }
 
 PointMarker::~PointMarker()
 {
     view->removeViewProvider(vp);
+    view->setSelectionEnabled(previousSelectionEn);
     delete vp;
 }
 
@@ -265,7 +269,7 @@ int PointMarker::countPoints() const
 void PointMarker::customEvent(QEvent*)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    doc->openCommand("Measure distance");
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Measure distance"));
     App::DocumentObject* obj = doc->getDocument()->addObject
         (App::MeasureDistance::getClassTypeId().getName(),"Distance");
 
@@ -318,11 +322,10 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
         const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
         const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
         if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
+            n->setHandled();
+            // Handle it on key up, because otherwise upper layer will handle it too.
             if (!press) {
-                n->setHandled();
-                view->setEditing(false);
-                view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
-                pm->deleteLater();
+                endMeasureDistanceMode(ud, view, n, pm);
             }
         }
     }
@@ -350,10 +353,16 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             }
         }
         else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
-            n->setHandled();
-            view->setEditing(false);
-            view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
-            pm->deleteLater();
+            endMeasureDistanceMode(ud, view, n, pm);
         }
     }
+}
+
+void ViewProviderMeasureDistance::endMeasureDistanceMode(void * ud, Gui::View3DInventorViewer* view, SoEventCallback * n, PointMarker *pm)
+{
+    n->setHandled();
+    view->setEditing(false);
+    view->removeEventCallback(SoEvent::getClassTypeId(), ViewProviderMeasureDistance::measureDistanceCallback, ud);
+    Application::Instance->commandManager().testActive();
+    pm->deleteLater();
 }

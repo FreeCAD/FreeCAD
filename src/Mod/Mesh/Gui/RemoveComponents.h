@@ -42,7 +42,7 @@ class MeshGuiExport RemoveComponents : public QWidget
     Q_OBJECT
 
 public:
-    RemoveComponents(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    RemoveComponents(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponents();
     void reject();
     void deleteSelection();
@@ -78,7 +78,7 @@ class MeshGuiExport RemoveComponentsDialog : public QDialog
     Q_OBJECT
 
 public:
-    RemoveComponentsDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    RemoveComponentsDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponentsDialog();
     void reject();
 

@@ -126,14 +126,14 @@ public:
 
   void destroy(X* obj)
   {
-    long adrobj = (long) (obj);
+    intptr_t adrobj = (intptr_t) (obj);
     for (size_t i = 0; i < _chunkList.size(); i++)
       {
         X* chunk = _chunkList[i];
-        long adrmin = (long) (chunk);
+        intptr_t adrmin = (intptr_t) (chunk);
         if (adrobj < adrmin)
           continue;
-        long adrmax = (long) (chunk + _chunkSize);
+        intptr_t adrmax = (intptr_t) (chunk + _chunkSize);
         if (adrobj >= adrmax)
           continue;
         int rank = (adrobj - adrmin) / sizeof(X);

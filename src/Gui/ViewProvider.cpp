@@ -224,12 +224,25 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                     // holding the mouse button while using some SoDragger.
                     // Therefore, we shall ignore ESC while any mouse button is
                     // pressed, until this Coin bug is fixed.
-
-                    Gui::TimerFunction* func = new Gui::TimerFunction();
-                    func->setAutoDelete(true);
-                    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-                    func->setFunction(boost::bind(&Document::resetEdit, doc));
-                    QTimer::singleShot(0, func, SLOT(timeout()));
+                    if (!press) {
+                        // react only on key release 
+                        // Let first selection mode terminate
+                        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+                        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+                        if (view)
+                        {
+                            Gui::View3DInventorViewer* viewer = view->getViewer();
+                            if (viewer->isSelecting())
+                            {
+                                return;
+                            }
+                        }
+                        
+                        Gui::TimerFunction* func = new Gui::TimerFunction();
+                        func->setAutoDelete(true);
+                        func->setFunction(boost::bind(&Document::resetEdit, doc));
+                        QTimer::singleShot(0, func, SLOT(timeout()));
+                    }
                 }
                 else if (press) {
                     FC_WARN("Please release all mouse buttons before exiting editing");
@@ -302,17 +315,32 @@ void ViewProvider::update(const App::Property* prop)
 
 QIcon ViewProvider::getIcon(void) const
 {
-    return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
 }
 
-QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeGreyableOverlayIcons (const QIcon & orig) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+        if (!ext->ignoreOverlayIcon())
+            overlayedIcon = ext->extensionMergeGreyableOverlayIcons(overlayedIcon);
+    }
+
+    return overlayedIcon;
+}
+
+QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    QIcon overlayedIcon = orig;
+
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (!ext->ignoreOverlayIcon())
+            overlayedIcon = ext->extensionMergeColorfullOverlayIcons(overlayedIcon);
     }
 
     return overlayedIcon;
@@ -524,6 +552,7 @@ void ViewProvider::onBeforeChange(const App::Property* prop)
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
+    Application::Instance->updateActions();
 
     App::TransactionalObject::onChanged(prop);
 }
@@ -649,6 +678,13 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     return false;
 }
 
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetupContextMenu(menu, receiver, method);
+}
+
 bool ViewProvider::onDelete(const vector< string >& subNames)
 {
     bool del = true;
@@ -749,7 +785,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -760,8 +796,8 @@ bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject
     return canDropObject(obj);
 }
 
-std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
-        const char *subname, const std::vector<std::string> &elements) 
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
+        const char *subname, const std::vector<std::string> &elements)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
@@ -916,7 +952,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     action.setSecondary(true);
     for(auto element : elements) {
         bool hidden = hasHiddenMarker(element.c_str());
-        if(hidden) 
+        if(hidden)
             element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
         SoDetail *det = 0;
@@ -926,7 +962,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
-            if(!hidden) 
+            if(!hidden)
                 action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
             else
                 action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);

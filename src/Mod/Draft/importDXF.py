@@ -55,7 +55,7 @@ import six
 import FreeCAD
 import Part, Draft, Mesh
 import DraftVecUtils, DraftGeomUtils, WorkingPlane
-from Draft import _Dimension, _ViewProviderDimension
+from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
@@ -184,7 +184,7 @@ def getDXFlibs():
         import dxfColorMap
         try:
             import dxfReader
-        except:
+        except Exception:
             libsok = False
     except ImportError:
         libsok = False
@@ -785,7 +785,7 @@ def placementFromDXFOCS(ent):
     Parameters
     ----------
     ent : A DXF entity
-        It could be of several types, like `lwpolyline`, `polynine`,
+        It could be of several types, like `lwpolyline`, `polyline`,
         and others, and with `ent.extrusion`, `ent.elevation`
         or `ent.loc` attributes.
 
@@ -802,6 +802,30 @@ def placementFromDXFOCS(ent):
     draftWPlane = FreeCAD.DraftWorkingPlane
     draftWPlane.alignToPointAndAxis(Vector(0.0, 0.0, 0.0),
                                     vec(ent.extrusion), 0.0)
+    # Object Coordinate Systems (OCS)
+    # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
+    # Arbitrary Axis Algorithm
+    # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
+    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano 
+    # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
+    # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
+    if (draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0)):
+        draftWPlane.u = FreeCAD.Vector(0.0, 1.0, 0.0)
+        draftWPlane.v = FreeCAD.Vector(0.0, 0.0, 1.0)
+    elif (draftWPlane.axis == FreeCAD.Vector(-1.0, 0.0, 0.0)):
+        draftWPlane.u = FreeCAD.Vector(0.0, -1.0, 0.0)
+        draftWPlane.v = FreeCAD.Vector(0.0, 0.0, 1.0)
+    else:
+        if ((abs(ent.extrusion[0]) < (1.0 / 64.0)) and (abs(ent.extrusion[1]) < (1.0 / 64.0))):
+            draftWPlane.u = FreeCAD.Vector(0.0, 1.0, 0.0).cross(draftWPlane.axis)
+        else:
+            draftWPlane.u = FreeCAD.Vector(0.0, 0.0, 1.0).cross(draftWPlane.axis)
+        draftWPlane.u.normalize()
+        draftWPlane.v = draftWPlane.axis.cross(draftWPlane.u)
+        draftWPlane.v.normalize()
+        draftWPlane.position = Vector(0.0, 0.0, 0.0)
+        draftWPlane.weak = False
+    
     pl = FreeCAD.Placement()
     pl = draftWPlane.getPlacement()
     if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
@@ -2021,10 +2045,10 @@ def addText(text, attrib=False):
         # better store as utf8 always.
         # try:
         #    val = val.decode("utf8").encode("Latin1")
-        # except:
+        # except Exception:
         #    try:
         #        val = val.encode("latin1")
-        #    except:
+        #    except Exception:
         #        pass
         newob = Draft.makeText(val.split("\n"))
         if hasattr(lay, "addObject"):
@@ -2196,7 +2220,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     drawstyle = "Dashdot"
                 locateLayer(name, color, drawstyle)
     else:
-        locateLayer("0", [0.0, 0.0, 0.0], "Solid")
+        locateLayer("0", (0.0, 0.0, 0.0), "Solid")
 
      # Draw lines
     lines = drawing.entities.get_type("line")
@@ -2549,7 +2573,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     newob = doc.addObject("App::FeaturePython", "Dimension")
                     lay.addObject(newob)
                     _Dimension(newob)
-                    _ViewProviderDimension(newob.ViewObject)
+                    if FreeCAD.GuiUp:
+                        from Draft import _ViewProviderDimension
+                        _ViewProviderDimension(newob.ViewObject)
                     newob.Start = p1
                     newob.End = p2
                     newob.Dimline = pt
@@ -2769,6 +2795,8 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         import Import
         Import.readDXF(filename)
+        Draft.convertDraftTexts() # convert annotations to Draft texts
+        doc.recompute()
 
 
 def insert(filename, docname):
@@ -2815,7 +2843,8 @@ def insert(filename, docname):
     else:
         import Import
         Import.readDXF(filename)
-
+        Draft.convertDraftTexts() # convert annotations to Draft texts
+        doc.recompute()
 
 def getShapes(filename):
     """Read a DXF file, and return a list of shapes from its contents.
@@ -3513,7 +3542,7 @@ def getStr(l):
             # dxf R12 files are rather over-sensitive with utf8...
             try:
                 import unicodedata
-            except:
+            except Exception:
                 # fallback
                 return l.encode("ascii", errors="replace")
             else:
@@ -3636,7 +3665,9 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
         else:
             # other cases, treat objects one by one
             dxf = dxfLibrary.Drawing()
-
+            # add global variables
+            if hasattr(dxf,"header"): 
+                dxf.header.append("  9\n$DIMTXT\n 40\n"+str(Draft.getParam("textheight", 20))+"\n")
             for ob in exportLayers:
                 if ob.Label != "0":  # dxflibrary already creates it
                     ltype = 'continuous'
@@ -3654,8 +3685,9 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                        lineType=ltype))
 
             for ob in exportList:
+                obtype = Draft.getType(ob)
                 # print("processing " + str(ob.Name))
-                if Draft.getType(ob) == "PanelSheet":
+                if obtype == "PanelSheet":
                     if not hasattr(ob.Proxy, "sheetborder"):
                         ob.Proxy.execute(ob)
                     sb = ob.Proxy.sheetborder
@@ -3678,10 +3710,44 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                             writeShape(shp, ob, dxf, nospline, lwPoly,
                                        layer="Outlines", color=5)
 
-                elif Draft.getType(ob) == "PanelCut":
+                elif obtype == "PanelCut":
                     writePanelCut(ob, dxf, nospline, lwPoly)
 
-                elif Draft.getType(ob) == "Axis":
+                elif obtype == "Space":
+                    vobj = ob.ViewObject
+                    c = utils.get_rgb(vobj.TextColor)
+                    n = vobj.FontName
+                    a = 0
+                    if rotation != 0:
+                        a = math.radians(rotation)
+                    t1 = "".join(vobj.Proxy.text1.string.getValues())
+                    t2 = "".join(vobj.Proxy.text2.string.getValues())
+                    scale = vobj.FirstLine.Value/vobj.FontSize.Value
+                    f1 = fontsize * scale
+                    if round(FreeCAD.DraftWorkingPlane.axis.getAngle(App.Vector(0,0,1)),2) not in [0,3.14]:
+                        # if not in XY view, place the label at center
+                        p2 = obj.Shape.CenterOfMass
+                    else:
+                        _v = vobj.Proxy.coords.translation.getValue().getValue()
+                        p2 = obj.Placement.multVec(App.Vector(_v))
+                    _h = vobj.Proxy.header.translation.getValue().getValue()
+                    lspc = FreeCAD.Vector(_h)
+                    p1 = p2 + lspc                    
+                    dxf.append(dxfLibrary.Text(t1, p1, height=f1,
+                                               color=getACI(ob, text=True),
+                                               style='STANDARD',
+                                               layer=getStrGroup(ob)))
+                    if t2:
+                        ofs = FreeCAD.Vector(0, -lspc.Length, 0)
+                        if a:
+                            Z = FreeCAD.Vector(0, 0, 1)
+                            ofs = FreeCAD.Rotation(Z, -rotation).multVec(ofs)
+                        dxf.append(dxfLibrary.Text(t2, p1.add(ofs), height=f1,
+                                                   color=getACI(ob, text=True),
+                                                   style='STANDARD',
+                                                   layer=getStrGroup(ob)))
+
+                elif obtype == "Axis":
                     axes = ob.Proxy.getAxisData(ob)
                     if not axes:
                         continue
@@ -3781,7 +3847,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                             else:
                                 writeShape(sh, ob, dxf, nospline, lwPoly)
 
-                elif Draft.getType(ob) == "Annotation":
+                elif obtype == "Annotation":
                     # old-style texts
                     # temporary - as dxfLibrary doesn't support mtexts well,
                     # we use several single-line texts
@@ -3800,7 +3866,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) in ("DraftText","Text"):
+                elif obtype in ("DraftText","Text"):
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)
@@ -3810,14 +3876,16 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         point = DraftVecUtils.tup(Vector(ob.Placement.Base.x,
                                                          ob.Placement.Base.y - (height * 1.2 * ob.Text.index(text)),
                                                          ob.Placement.Base.z))
+                        rotation = math.degrees(ob.Placement.Rotation.Angle)
                         dxf.append(dxfLibrary.Text(text,
                                                    point,
                                                    height=height * 0.8,
+                                                   rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) in ["Dimension","LinearDimension"]:
+                elif obtype in ["Dimension","LinearDimension"]:
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start, ob.End).toShape()
@@ -3836,7 +3904,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     filename = filename.encode("utf8")
             dxf.saveas(filename)
 
-        FCC.PrintMessage("successfully exported " + filename + "\n")
+        FCC.PrintMessage("successfully exported" + " " + filename + "\n")
 
     else:
         errorDXFLib(gui)

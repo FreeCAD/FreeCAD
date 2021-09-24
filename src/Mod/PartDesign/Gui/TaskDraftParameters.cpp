@@ -56,10 +56,10 @@ using namespace Gui;
 
 TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
+    , ui(new Ui_TaskDraftParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskDraftParameters();
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
@@ -67,8 +67,8 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     double a = pcDraft->Angle.getValue();
 
-    ui->draftAngle->setMinimum(0.0);
-    ui->draftAngle->setMaximum(89.99);
+    ui->draftAngle->setMinimum(pcDraft->Angle.getMinimum());
+    ui->draftAngle->setMaximum(pcDraft->Angle.getMaximum());
     ui->draftAngle->setValue(a);
     ui->draftAngle->selectAll();
     QMetaObject::invokeMethod(ui->draftAngle, "setFocus", Qt::QueuedConnection);
@@ -118,6 +118,9 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
     ref = pcDraft->PullDirection.getValue();
     strings = pcDraft->PullDirection.getSubValues();
     ui->lineLine->setText(getRefStr(ref, strings));
+
+    // the dialog can be called on a broken draft, then hide the draft
+    hideOnError();
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -171,6 +174,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             // highlight existing references for possible further selections
             DressUpView->highlightReferences(true);
+            // hide the draft if there was a computation error
+            hideOnError();
         } else if (selectionMode == line) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> edges;
@@ -185,6 +190,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             // highlight existing references for possible further selections
             DressUpView->highlightReferences(true);
+            // hide the draft if there was a computation error
+            hideOnError();
         }
     }
 }
@@ -260,6 +267,8 @@ void TaskDraftParameters::onRefDeleted(void)
     pcDraft->Base.setValue(base, refs);
     // recompute the feature
     pcDraft->recomputeFeature();
+    // hide the draft if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -295,6 +304,8 @@ void TaskDraftParameters::onAngleChanged(double angle)
     setupTransaction();
     pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
+    // hide the draft if there was a computation error
+    hideOnError();
 }
 
 double TaskDraftParameters::getAngle(void) const
@@ -308,6 +319,8 @@ void TaskDraftParameters::onReversedChanged(const bool on) {
     setupTransaction();
     pcDraft->Reversed.setValue(on);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
+    // hide the draft if there was a computation error
+    hideOnError();
 }
 
 bool TaskDraftParameters::getReversed(void) const
@@ -317,10 +330,14 @@ bool TaskDraftParameters::getReversed(void) const
 
 TaskDraftParameters::~TaskDraftParameters()
 {
-    Gui::Selection().clearSelection();
-    Gui::Selection().rmvSelectionGate();
-
-    delete ui;
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskDraftParameters::event(QEvent *e)
@@ -369,7 +386,9 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters()
 
 bool TaskDlgDraftParameters::accept()
 {
-    parameter->showObject();
+    auto tobj = vp->getObject();
+    if (!tobj->isError())
+        parameter->showObject();
 
     std::vector<std::string> strings;
     App::DocumentObject* obj;
@@ -388,7 +407,6 @@ bool TaskDlgDraftParameters::accept()
     //     return false;
     // }
 
-    auto tobj = vp->getObject();
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
     if(neutralPlane.empty())

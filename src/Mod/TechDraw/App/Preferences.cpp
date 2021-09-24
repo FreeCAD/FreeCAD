@@ -167,13 +167,13 @@ int Preferences::projectionAngle()
     return projType;
 }
 
-std::string Preferences::lineGroup()
+int Preferences::lineGroup()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    return lgName;
+    int lgInt = hGrp->GetInt("LineGroup", 3); // FC 0.70mm
+    return lgInt;
 }
 
 int Preferences::balloonArrow()

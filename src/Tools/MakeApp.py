@@ -3,14 +3,13 @@
 # (c) 2003 Werner Mayer LGPL
 # Create a new application module
 
-import os,sys,string
-import FCFileTools
+import os,sys
 import MakeAppTools
 
 
 if(len(sys.argv) != 2):
-	sys.stdout.write("Please enter a name for your application.\n")
-	sys.exit()
+    sys.stdout.write("Please enter a name for your application.\n")
+    sys.exit()
 
 Application = sys.argv[1]
 
@@ -18,8 +17,8 @@ Application = sys.argv[1]
 if not os.path.isdir("../Mod/"+Application):
     os.mkdir("../Mod/"+Application)
 else:
-	sys.stdout.write(Application + " already exists. Please enter another name.\n")
-	sys.exit()
+    sys.stdout.write(Application + " already exists. Please enter another name.\n")
+    sys.exit()
 
 
 # copying files from _TEMPLATE_ to ../Mod/<Application>

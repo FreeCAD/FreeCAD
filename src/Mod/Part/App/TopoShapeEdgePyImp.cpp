@@ -121,6 +121,13 @@ PyObject *TopoShapeEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Edge
+        getTopoShapePtr()->setShape(TopoDS_Edge());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj, *pcObj2;
     double first=DBL_MAX, last=DBL_MAX;
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {
@@ -484,17 +491,10 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         // use no kwds
         PyObject* dist_or_num;
         if (PyArg_ParseTuple(args, "O", &dist_or_num)) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check(dist_or_num)) {
                 numPoints = PyLong_AsLong(dist_or_num);
                 uniformAbscissaPoints = true;
             }
-#else
-            if (PyInt_Check(dist_or_num)) {
-                numPoints = PyInt_AsLong(dist_or_num);
-                uniformAbscissaPoints = true;
-            }
-#endif
             else if (PyFloat_Check(dist_or_num)) {
                 distance = PyFloat_AsDouble(dist_or_num);
                 uniformAbscissaDistance = true;
@@ -814,43 +814,12 @@ Py::Object TopoShapeEdgePy::getCurve() const
     {
     case GeomAbs_Line:
         {
-            static bool LineOld = true;
-            static bool init = false;
-            if (!init) {
-                init = true;
-                Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
-                    .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-                Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-                LineOld = hGenPGrp->GetBool("LineOld", false);
-            }
-
-            if (LineOld) {
-                GeomLineSegment* line = new GeomLineSegment();
-                Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-                    (line->handle());
-                Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-                    (this_curv->BasisCurve());
-                this_line->SetLin(adapt.Line());
-                this_curv->SetTrim(adapt.FirstParameter(), adapt.LastParameter());
-                PyErr_SetString(PyExc_DeprecationWarning,
-                    "For future usage 'Curve' will return 'Line' which is infinite "
-                    "instead of the limited 'LineSegment'.\n"
-                    "If you need a line segment then use this:\n"
-                    "Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)\n"
-                    "To suppress the warning set BaseApp/Preferences/Mod/Part/General/LineOld to false");
-                PyErr_Print();
-
-                curve = new LineSegmentPy(line); // LinePyOld
-                break;
-            }
-            else {
-                GeomLine* line = new GeomLine();
-                Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                    (line->handle());
-                this_curv->SetLin(adapt.Line());
-                curve = new LinePy(line);
-                break;
-            }
+            GeomLine* line = new GeomLine();
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
+                (line->handle());
+            this_curv->SetLin(adapt.Line());
+            curve = new LinePy(line);
+            break;
         }
     case GeomAbs_Circle:
         {
@@ -1065,7 +1034,7 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
         BRep_Tool::CurveOnSurface(edge, curve, surf, loc, first, last, idx+1);
         if (curve.IsNull())
             Py_Return;
-        std::unique_ptr<Part::Geom2dCurve> geo2d(getCurve2dFromGeom2d(curve));
+        std::unique_ptr<Part::Geom2dCurve> geo2d(makeFromCurve2d(curve));
         if (!geo2d)
             Py_Return;
         std::unique_ptr<Part::GeomSurface> geosurf(makeFromSurface(surf));

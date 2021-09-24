@@ -70,7 +70,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskBooleanParameters* ui;
+    std::unique_ptr<Ui_TaskBooleanParameters> ui;
     ViewProviderBoolean *BooleanView;
 
     enum selectionModes { none, bodyAdd, bodyRemove };

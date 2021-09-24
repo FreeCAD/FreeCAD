@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,9 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Space"
+__title__= "FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 SpaceTypes = [
 "Undefined",
@@ -146,7 +145,7 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,math,Draft,sys
+import FreeCAD,ArchComponent,ArchCommands,Draft,sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -610,7 +609,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 except (AttributeError, RuntimeError):
                     pos = FreeCAD.Vector()
             else:
-                pos = vobj.TextPosition
+                pos = vobj.Object.Placement.multVec(vobj.TextPosition)
         # placement's displacement will be already added by the coin node
         pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos
@@ -715,7 +714,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 self.label.whichChild = 0
             else:
                 self.label.whichChild = -1
-        
+
         elif prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
                 self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))

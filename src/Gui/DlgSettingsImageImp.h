@@ -24,8 +24,8 @@
 #ifndef GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H
 #define GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H
 
-#include <Inventor/SoOffscreenRenderer.h> 
-#include <Inventor/SbMatrix.h> 
+#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/SbMatrix.h>
 
 #include <QWidget>
 #include <memory>

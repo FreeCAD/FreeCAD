@@ -39,7 +39,7 @@ class DlgMaterialPropertiesImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgMaterialPropertiesImp();
     void setViewProviders(const std::vector<Gui::ViewProvider*>&);
     QColor diffuseColor() const;

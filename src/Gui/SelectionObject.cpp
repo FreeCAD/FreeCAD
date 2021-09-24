@@ -77,7 +77,7 @@ const App::DocumentObject * SelectionObject::getObject(void) const
     return 0;
 }
 
-App::DocumentObject * SelectionObject::getObject(void) 
+App::DocumentObject * SelectionObject::getObject(void)
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());

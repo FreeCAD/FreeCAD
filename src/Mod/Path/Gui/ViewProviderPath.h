@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 
 class SoCoordinate3;
-class SoDrawStyle;  
+class SoDrawStyle;
 class SoMaterial;
 class SoBaseColor;
 class SoMaterialBinding;
@@ -55,7 +55,7 @@ public:
 
     /// destructor.
     ~ViewProviderPath();
-    
+
     // Display properties
     App::PropertyInteger LineWidth;
     App::PropertyColor   NormalColor;
@@ -91,7 +91,7 @@ protected:
 
     virtual void onChanged(const App::Property* prop);
     virtual unsigned long getBoundColor() const;
- 
+
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
     SoDrawStyle           * pcDrawStyle;
@@ -116,7 +116,7 @@ protected:
     int coordEnd;
 
  };
- 
+
  typedef Gui::ViewProviderPythonFeatureT<ViewProviderPath> ViewProviderPathPython;
 
 } //namespace PathGui

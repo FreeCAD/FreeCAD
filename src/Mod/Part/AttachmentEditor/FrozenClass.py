@@ -34,3 +34,4 @@ class FrozenClass(object):
 
     def _unfreeze(self):
         self.__isfrozen = False
+

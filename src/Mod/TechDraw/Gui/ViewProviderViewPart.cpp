@@ -81,15 +81,15 @@ const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
 
 ViewProviderViewPart::ViewProviderViewPart()
 {
-    sPixmap = "TechDraw_Tree_View";
+    sPixmap = "TechDraw_TreeView";
 
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
 
     //default line weights
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double weight = lg->getWeight("Thick");
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
@@ -177,9 +177,9 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm != nullptr) {
-        sPixmap = "TechDraw_Tree_Multi";
+        sPixmap = "TechDraw_TreeMulti";
     } else if (dvd != nullptr) {
-        sPixmap = "actions/techdraw-DetailView";
+        sPixmap = "actions/TechDraw_DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -333,6 +333,9 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
         App::PropertyFloat  ExtraWidthProperty;
         ExtraWidthProperty.Restore(reader);
         ExtraWidth.setValue(ExtraWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

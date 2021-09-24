@@ -27,6 +27,13 @@
 #include <Base/Interpreter.h>
 #include <App/PropertyContainerPy.h>
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#elif defined(__GNUC__) || defined(__GNUG__)
+# pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 #define PYTHON_TYPE_DEF(_class_, _subclass_) \
     class _class_ : public _subclass_ \
     { \
@@ -58,7 +65,7 @@
     { \
     }
 
-#elif PY_MAJOR_VERSION >= 3
+#else
 #define PYTHON_TYPE_IMP(_class_, _subclass_) \
     PyTypeObject _class_::Type = { \
         PyVarObject_HEAD_INIT(&PyType_Type, 0) \
@@ -78,30 +85,6 @@
     _class_::~_class_() \
     { \
     }
-
-#else
-
-#define PYTHON_TYPE_IMP(_class_, _subclass_) \
-    PyTypeObject _class_::Type = { \
-        PyObject_HEAD_INIT(&PyType_Type) \
-        0, \
-        ""#_class_"",  \
-        sizeof(_class_),  \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS, \
-        ""#_class_"", \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        &_subclass_::Type, \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
-    }; \
-    _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
-        : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
-    { \
-    } \
-    _class_::~_class_() \
-    { \
-    }
-
 #endif
 
 namespace App
@@ -136,5 +119,11 @@ private:
 } //namespace App
 
 #include "FeaturePythonPyImp.inl"
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#elif defined(__GNUC__) || defined(__GNUG__)
+# pragma GCC diagnostic pop
+#endif
 
 #endif // APP_FEATUREPYTHONPYIMP_H

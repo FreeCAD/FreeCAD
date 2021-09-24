@@ -66,7 +66,7 @@
 //
 // Disable front buffer in all cases, in order to spare the repeating logic of
 // handling selection contextn. SoFCSelection is not really used that much
-// anyway. 
+// anyway.
 //
 // #if defined(_OCC64) // is set by configure or cmake
 # define NO_FRONTBUFFER
@@ -261,11 +261,11 @@ void SoFCSelection::doAction(SoAction *action)
         if (selectionMode.getValue() == SEL_ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
             SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
 
-            if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
+            if (selaction->SelChange.Type == SelectionChanges::AddSelection ||
                 selaction->SelChange.Type == SelectionChanges::RmvSelection) {
                 if (documentName.getValue() == selaction->SelChange.pDocName &&
                     objectName.getValue() == selaction->SelChange.pObjectName &&
-                    (subElementName.getValue() == selaction->SelChange.pSubName || 
+                    (subElementName.getValue() == selaction->SelChange.pSubName ||
                     *(selaction->SelChange.pSubName) == '\0') ) {
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
                         if(selected.getValue() == NOTSELECTED){
@@ -286,7 +286,7 @@ void SoFCSelection::doAction(SoAction *action)
                     if(selected.getValue() == SELECTED){
                         selected = NOTSELECTED;
                     }
-                
+
                 }
             }
             else if (selaction->SelChange.Type == SelectionChanges::SetSelection) {
@@ -324,7 +324,7 @@ int SoFCSelection::getPriority(const SoPickedPoint* p)
 const SoPickedPoint*
 SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
 {
-    // To identify the picking of lines in a concave area we have to 
+    // To identify the picking of lines in a concave area we have to
     // get all intersection points. If we have two or more intersection
     // points where the first is of a face and the second of a line with
     // almost similar coordinates we use the second point, instead.
@@ -346,13 +346,13 @@ SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
     //}
 
     //return pp0;
-    
+
     const SoPickedPoint* picked = points[0];
 
     int picked_prio = getPriority(picked);
     const SbVec3f& picked_pt = picked->getPoint();
 
-   
+
     for(int i=1; i<points.getLength();i++) {
         const SoPickedPoint* cur = points[i];
         int cur_prio = getPriority(cur);
@@ -403,9 +403,9 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         this->redrawHighlighted(action, true);
                     }
                 }
-                
+
                 const auto &pt = pp->getPoint();
-                
+
                 auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
                 snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
                                 ,documentName.getValue().getString()
@@ -414,7 +414,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                 ,pts[0].first, pts[0].second.c_str()
                                 ,pts[1].first, pts[1].second.c_str()
                                 ,pts[2].first, pts[2].second.c_str());
-                
+
                 getMainWindow()->showMessage(QString::fromUtf8(buf));
             }
             else { // picked point
@@ -506,7 +506,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                     }
                 }
 
-                action->setHandled(); 
+                action->setHandled();
             } // picked point
         } // mouse release
     }
@@ -523,7 +523,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     //    return;
     //}
 
-    
+
     //
     // If this is a mouseMotion event, then check for locate highlighting
     //
@@ -601,7 +601,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             bCtrl = false;
     }
     // mouse press events for (de)selection (only if selection is enabled on this node)
-    else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) && 
+    else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
              selectionMode.getValue() == SoFCSelection::SEL_ON) {
         SoMouseButtonEvent * const e = (SoMouseButtonEvent *) event;
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
@@ -652,7 +652,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                               ,objectName.getValue().getString()
                                               ,0 ,pt[0] ,pt[1] ,pt[2]);
                     }
- 
+
                     if (mymode == OFF) {
                         snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
                                                    ,objectName.getValue().getString()
@@ -665,7 +665,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                     }
                 }
 
-                action->setHandled(); 
+                action->setHandled();
             } // picked point
         } // mouse release
     }
@@ -699,7 +699,7 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
     if(this->setOverride(action,ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
-    } else 
+    } else
         inherited::GLRenderBelowPath(action);
 #else
     // Set up state for locate highlighting (if necessary)
@@ -861,8 +861,8 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 void
 SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
-    Q_UNUSED(action); 
-    Q_UNUSED(doHighlight); 
+    Q_UNUSED(action);
+    Q_UNUSED(doHighlight);
     //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER
@@ -951,7 +951,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 #endif
 }
 
-SbBool 
+SbBool
 SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 {
     // Note: The read in document name can be false, so the caller must ensure pointing to the correct document
@@ -991,15 +991,15 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state,this,true);
-    
+
     if(!preselected)
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    else 
+    else
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     if(SoLazyElement::getLightModel(state)==SoLazyElement::BASE_COLOR
-            || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) 
+            || mystyle == SoFCSelection::EMISSIVE_DIFFUSE)
     {
         if(!preselected)
             SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);

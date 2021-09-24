@@ -262,7 +262,7 @@ void ParametersDialog::on_compute_clicked()
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
         FitParameter::Points fitpts;
-        std::vector<unsigned long> facets, points;
+        std::vector<Mesh::ElementIndex> facets, points;
         kernel.getFacetsFromSelection(facets);
         points = kernel.getPointsFromFacets(facets);
         MeshCore::MeshPointArray coords = kernel.getKernel().GetPoints(points);

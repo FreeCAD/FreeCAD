@@ -76,7 +76,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherSolverAdvanced* ui;
+    std::unique_ptr<Ui_TaskSketcherSolverAdvanced> ui;
 };
 
 } //namespace SketcherGui

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2012 Luke Parry    <l.parry@warwick.ac.uk>              *
+ *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 # include <QTimer>
 # include <QList>
 # include <QPointer>
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost/signals2/connection.hpp>
 # include <boost_bind_bind.hpp>
 
@@ -90,7 +90,7 @@ ViewProviderPage::ViewProviderPage()
     m_pageName(""),
     m_graphicsView(nullptr)
 {
-    sPixmap = "TechDraw_Tree_Page";
+    sPixmap = "TechDraw_TreePage";
     static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
@@ -172,25 +172,25 @@ void ViewProviderPage::updateData(const App::Property* prop)
     }
     if (prop == &(page->KeepUpdated)) {
        if (getDrawPage()->KeepUpdated.getValue()) {
-           sPixmap = "TechDraw_Tree_Page";
+           sPixmap = "TechDraw_TreePage";
        } else {
-           sPixmap = "TechDraw_Tree_Page_Unsync";
+           sPixmap = "TechDraw_TreePageUnsync";
        }
        signalChangeIcon();
     //if the template is changed, rebuild the visual
     } else if (prop == &(page->Template)) {
-       if (m_mdiView && 
+       if (m_mdiView &&
           !page->isUnsetting()) {
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
     } else if (prop == &(page->Label)) {
-       if (m_mdiView && 
+       if (m_mdiView &&
           !page->isUnsetting()) {
            m_mdiView->setTabText(page->Label.getValue());
        }
     } else if (prop == &page->Views) {
-        if (m_mdiView && !page->isUnsetting()) 
+        if (m_mdiView && !page->isUnsetting())
             m_mdiView->fixOrphans();
     }
 
@@ -232,7 +232,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Yes, QMessageBox::No);
         if (DialogResult == QMessageBox::Yes) {
-            removeMDIView(); 
+            removeMDIView();
             return true;
         } else
             return false;
@@ -298,7 +298,7 @@ bool ViewProviderPage::showMDIViewPage()
         m_mdiView->setDocumentName(pcObject->getDocument()->getName());
 
         m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
-        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
+        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();
         m_mdiView->showMaximized();
@@ -328,7 +328,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     //                                               DrawViewDimension
     //                                               DrawViewBalloon
     //                                               DrawLeaderLine
-    //                                               DrawRichAnno 
+    //                                               DrawRichAnno
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
     //                                               DrawWeldSymbol
@@ -476,7 +476,7 @@ bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
 }
 
 //! Redo the whole visual page
-void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp) 
+void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {
     if (dp == getDrawPage()) {
         if (!m_mdiView.isNull() &&

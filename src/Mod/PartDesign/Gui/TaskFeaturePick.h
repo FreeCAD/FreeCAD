@@ -31,6 +31,7 @@
 #include <App/DocumentObject.h>
 
 #include <boost/function.hpp>
+#include <QListWidgetItem>
 
 namespace PartDesignGui {
 
@@ -55,22 +56,24 @@ public:
         afterTip
     };
 
-    TaskFeaturePick(std::vector<App::DocumentObject*> &objects, 
+    TaskFeaturePick(std::vector<App::DocumentObject*> &objects,
                     const std::vector<featureStatus> &status,
+                    bool singleFeatureSelect,
                     QWidget *parent = 0);
-    
+
     ~TaskFeaturePick();
 
     std::vector<App::DocumentObject*> getFeatures();
     std::vector<App::DocumentObject*> buildFeatures();
     void showExternal(bool val);
-    
+
     static App::DocumentObject* makeCopy(App::DocumentObject* obj, std::string sub, bool independent);
-    
+
 protected Q_SLOTS:
     void onUpdate(bool);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void onItemSelectionChanged();
+    void onDoubleClick(QListWidgetItem *item);
 
 protected:
     /** Notifies when the object is about to be removed. */
@@ -81,7 +84,7 @@ protected:
     virtual void slotDeleteDocument(const Gui::Document& Doc);
 
 private:
-    Ui_TaskFeaturePick* ui;
+    std::unique_ptr<Ui_TaskFeaturePick> ui;
     QWidget* proxy;
     std::vector<Gui::ViewProviderOrigin*> origins;
     bool doSelection;
@@ -105,7 +108,8 @@ public:
                         const std::vector<TaskFeaturePick::featureStatus> &status,
                         boost::function<bool (std::vector<App::DocumentObject*>)> acceptfunc,
                         boost::function<void (std::vector<App::DocumentObject*>)> workfunc,
-                        boost::function<void (void)> abortfunc = 0 );
+                        bool singleFeatureSelect,
+                        boost::function<void (void)> abortfunc = 0);
     ~TaskDlgFeaturePick();
 
 public:
@@ -117,15 +121,16 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button 
+    /// is called by the framework if the user presses the help button
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
-    
+
     void showExternal(bool val);
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+
 
 protected:
     TaskFeaturePick  *pick;

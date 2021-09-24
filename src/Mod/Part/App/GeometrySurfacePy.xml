@@ -172,18 +172,19 @@ Checks if the surface is planar within a certain tolerance.
 of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="toBSpline" Const="true">
+        <Methode Name="toBSpline" Const="true" Keyword="true">
 			<Documentation>
 				<UserDocu>
 					Returns a B-Spline representation of this surface. 
-The required arguments are:
-* tolerance
-* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN)
-* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN)
-* maximum degree in u
-* maximum degree in v
-* maximum number of segments
-* precision code (optional, default=0)
+					The optional arguments are:
+					* tolerance (default=1e-7)
+					* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+					* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+					* maximum degree in u (default=25)
+					* maximum degree in v (default=25)
+					* maximum number of segments (default=1000)
+					* precision code (default=0)
+					Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
 				</UserDocu>
 			</Documentation>
 		</Methode>

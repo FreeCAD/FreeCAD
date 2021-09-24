@@ -107,7 +107,11 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
     void findPrinterSettings(const QString&);
+#if QT_VERSION >= 0x050300
+    QPageSize::PageSizeId getPageSize(int w, int h) const;
+#else
     QPrinter::PageSize getPageSize(int w, int h) const;
+#endif
 
 private:
     QAction *m_nativeAction;
@@ -121,8 +125,13 @@ private:
     std::string m_objectName;
 
     QString m_currentPath;
+#if QT_VERSION >= 0x050300
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_pageSize;
+#else
     QPrinter::Orientation m_orientation;
     QPrinter::PageSize m_pageSize;
+#endif
 };
 
 } // namespace DrawingViewGui

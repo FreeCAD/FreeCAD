@@ -67,9 +67,9 @@ PyObject*  WorkbenchPy::activate(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        std::string name = getWorkbenchPtr()->name(); 
+        std::string name = getWorkbenchPtr()->name();
         WorkbenchManager::instance()->activate( name, getWorkbenchPtr()->getTypeId().getName() );
-        Py_Return; 
+        Py_Return;
     }PY_CATCH;
 }
 
@@ -152,5 +152,5 @@ PyObject* WorkbenchPy::getCustomAttributes(const char*) const
 
 int WorkbenchPy::setCustomAttributes(const char*, PyObject *)
 {
-    return 0; 
+    return 0;
 }

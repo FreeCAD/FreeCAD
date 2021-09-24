@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,7 +35,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "PathGeom - geometry utilities for Path"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001
@@ -224,7 +223,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
         pitch = pitch + 1
     while pitch > 1:
         pitch = pitch - 1
-    print("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
+    PathLog.debug("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
         return max(hSpeed, vSpeed)
@@ -286,29 +285,21 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            eStraight = Part.Edge(Part.LineSegment(p1, p3))
-            esP2 = eStraight.valueAt((eStraight.FirstParameter + eStraight.LastParameter)/2)
-            deviation = (p2 - esP2).Length
-            if isRoughly(deviation, 0):
-                return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
-            # at this point pixellation is all we can do
+            points = edge.discretize(Deflection=0.01)
+            if flip:
+                points = points[::-1]
+
             commands = []
-            segments = int(math.ceil((deviation / eStraight.Length) * segm))
-            #print("**** pixellation with %d segments" % segments)
-            dParameter = (edge.LastParameter - edge.FirstParameter) / segments
-            # starting point
-            p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
-            for i in range(0, segments):
-                if flip:
-                    p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
-                else:
-                    p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
-                if hSpeed > 0 and vSpeed > 0:
-                    params.update({'F': speedBetweenPoints(p0, p, hSpeed, vSpeed)})
-                cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
-                #print("***** %s" % cmd)
-                commands.append(cmd)
-                p0 = p
+            if points:
+                p0 =  points[0]
+                for p in points[1:]:
+                    params = {'X': p.x, 'Y': p.y, 'Z': p.z}
+                    if hSpeed > 0 and vSpeed > 0:
+                        params['F'] = speedBetweenPoints(p0, p, hSpeed, vSpeed)
+                    cmd = Path.Command('G1', params)
+                    # print("***** {}".format(cmd))
+                    commands.append(cmd)
+                    p0 = p
     #print commands
     return commands
 
@@ -353,7 +344,10 @@ def edgeForCmd(cmd, startPoint):
             PathLog.debug("MidPoint:{}".format(midPoint))
             PathLog.debug("EndPoint:{}".format(endPoint))
 
-            return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
+            if pointsCoincide(startPoint, endPoint, 0.001):
+                return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
+            else:
+                return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
         # It's a Helix
         #print('angle: A=%.2f B=%.2f' % (getAngle(A)/math.pi, getAngle(B)/math.pi))
@@ -402,8 +396,9 @@ def wiresForPath(path, startPoint = Vector(0, 0, 0)):
                 edges.append(edgeForCmd(cmd, startPoint))
                 startPoint = commandEndPoint(cmd, startPoint)
             elif cmd.Name in CmdMoveRapid:
-                wires.append(Part.Wire(edges))
-                edges = []
+                if len(edges) > 0:
+                    wires.append(Part.Wire(edges))
+                    edges = []
                 startPoint = commandEndPoint(cmd, startPoint)
         if edges:
             wires.append(Part.Wire(edges))
@@ -543,15 +538,118 @@ def flipEdge(edge):
         flipped.buildFromPolesMultsKnots(poles, mults , knots, perio, degree, weights, ratio)
 
         return Part.Edge(flipped)
+    elif type(edge.Curve) == Part.OffsetCurve:
+        return edge.reversed()
 
     global OddsAndEnds # pylint: disable=global-statement
     OddsAndEnds.append(edge)
-    PathLog.warning(translate('PathGeom', "%s not support for flipping") % type(edge.Curve))
+    PathLog.warning(translate('PathGeom', "%s not supported for flipping") % type(edge.Curve))
+
+Wire = []
 
 def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
+    Wire.append(wire)
     edges = [flipEdge(e) for e in wire.Edges]
     edges.reverse()
     PathLog.debug(edges)
     return Part.Wire(edges)
 
+def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
+    '''makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0)...
+    Function to create boundbox face, with possible extra offset and custom Z-height.'''
+    p1 = FreeCAD.Vector(bBox.XMin - offset, bBox.YMin - offset, zHeight)
+    p2 = FreeCAD.Vector(bBox.XMax + offset, bBox.YMin - offset, zHeight)
+    p3 = FreeCAD.Vector(bBox.XMax + offset, bBox.YMax + offset, zHeight)
+    p4 = FreeCAD.Vector(bBox.XMin - offset, bBox.YMax + offset, zHeight)
+
+    L1 = Part.makeLine(p1, p2)
+    L2 = Part.makeLine(p2, p3)
+    L3 = Part.makeLine(p3, p4)
+    L4 = Part.makeLine(p4, p1)
+
+    return Part.Face(Part.Wire([L1, L2, L3, L4]))
+
+# Method to combine faces if connected
+def combineHorizontalFaces(faces):
+    '''combineHorizontalFaces(faces)...
+    This function successfully identifies and combines multiple connected faces and
+    works on multiple independent faces with multiple connected faces within the list.
+    The return value is a list of simplified faces.
+    The Adaptive op is not concerned with which hole edges belong to which face.
+
+    Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
+    PathGeom.combineConnectedShapes(), so this algorithm was created.
+    '''
+    horizontal = list()
+    offset = 10.0
+    topFace = None
+    innerFaces = list()
+
+    # Verify all incoming faces are at Z=0.0
+    for f in faces:
+        if f.BoundBox.ZMin != 0.0:
+            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+
+    # Make offset compound boundbox solid and cut incoming face extrusions from it
+    allFaces = Part.makeCompound(faces)
+    if hasattr(allFaces, "Area") and isRoughly(allFaces.Area, 0.0):
+        msg = translate('PathGeom',
+                        'Zero working area to process. Check your selection and settings.')
+        PathLog.info(msg)
+        return horizontal
+
+    afbb = allFaces.BoundBox
+    bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
+    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
+    extrudedFaces = list()
+    for f in faces:
+        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
+
+    # Fuse all extruded faces together
+    allFacesSolid = extrudedFaces.pop()
+    for i in range(len(extrudedFaces)):
+        temp = extrudedFaces.pop().fuse(allFacesSolid)
+        allFacesSolid = temp
+    cut = bboxSolid.cut(allFacesSolid)
+
+    # Debug
+    # Part.show(cut)
+    # FreeCAD.ActiveDocument.ActiveObject.Label = "cut"
+
+    # Identify top face and floating inner faces that are the holes in incoming faces
+    for f in cut.Faces:
+        fbb = f.BoundBox
+        if isRoughly(fbb.ZMin, 5.0) and isRoughly(fbb.ZMax, 5.0):
+            if (isRoughly(afbb.XMin - offset, fbb.XMin) and
+                isRoughly(afbb.XMax + offset, fbb.XMax) and
+                isRoughly(afbb.YMin - offset, fbb.YMin) and
+                isRoughly(afbb.YMax + offset, fbb.YMax)):
+                topFace = f
+            else:
+                innerFaces.append(f)
+
+    if not topFace:
+        return horizontal
+
+    outer = [Part.Face(w) for w in topFace.Wires[1:]]
+
+    if outer:
+        for f in outer:
+            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+
+        if innerFaces:
+            # inner = [Part.Face(f.Wire1) for f in innerFaces]
+            inner = innerFaces
+
+            for f in inner:
+                f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+            innerComp = Part.makeCompound(inner)
+            outerComp = Part.makeCompound(outer)
+            cut = outerComp.cut(innerComp)
+            for f in cut.Faces:
+                horizontal.append(f)
+        else:
+            horizontal = outer
+
+    return horizontal

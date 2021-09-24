@@ -55,18 +55,15 @@ class ArrayGroup:
         return ("Draft_OrthoArray",
                 "Draft_PolarArray", "Draft_CircularArray",
                 "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray", "Draft_PointLinkArray")
+                "Draft_PointArray", "Draft_PointLinkArray",
                 "Draft_PathTwistedArray", "Draft_PathTwistedLinkArray")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
 
         return {'Pixmap': 'Draft_Array',
                 'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", _tooltip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
 
     def IsActive(self):
         """Return True when this command should be available."""

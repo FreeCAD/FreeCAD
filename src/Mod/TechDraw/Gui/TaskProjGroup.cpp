@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Joe Dowsett <dowsettjoe[at]yahoo[dot]co[dot]uk>    *
- *   Copyright (c) 2014  Luke Parry <l.parry@warwick.ac.uk>                *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -75,8 +75,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     setFractionalScale(multiView->getScale());
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
-    
-    //Allow or prevent scale changing initially 
+
+    //Allow or prevent scale changing initially
     if (multiView->ScaleType.isValue("Custom"))	{
         ui->sbScaleNum->setEnabled(true);
         ui->sbScaleDen->setEnabled(true);
@@ -138,7 +138,6 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
 TaskProjGroup::~TaskProjGroup()
 {
-    delete ui;
 }
 
 void TaskProjGroup::saveGroupState()
@@ -170,7 +169,7 @@ void TaskProjGroup::restoreGroupState()
     Base::Console().Message("TPG::restoreGroupState()\n");
     if (multiView != nullptr) {
         multiView->ProjectionType.setValue(m_saveProjType.c_str());
-        multiView->ScaleType.setValue(m_saveScaleType.c_str()); 
+        multiView->ScaleType.setValue(m_saveScaleType.c_str());
         multiView->Scale.setValue(m_saveScale);
         multiView->AutoDistribute.setValue(m_saveAutoDistribute);
         multiView->spacingX.setValue(m_saveSpacingX);
@@ -224,7 +223,7 @@ void TaskProjGroup::rotateButtonClicked(void)
             multiView->rotateRight();
         } else if ( clicked == ui->butLeftRotate) {
             multiView->rotateLeft();
-        } else if ( clicked == ui->butCWRotate ) { 
+        } else if ( clicked == ui->butCWRotate ) {
             multiView->spinCW();
         } else if ( clicked == ui->butCCWRotate) {
             multiView->spinCCW();
@@ -257,7 +256,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
     if (blockUpdate)
         return;
 
-    //defaults to prevent scale changing 
+    //defaults to prevent scale changing
     ui->sbScaleNum->setEnabled(false);
     ui->sbScaleDen->setEnabled(false);
 
@@ -583,7 +582,7 @@ TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode)
 {
     //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
     widget  = new TaskProjGroup(featView,mode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ProjectionGroup"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ProjectionGroup"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

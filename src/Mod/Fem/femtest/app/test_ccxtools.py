@@ -24,7 +24,7 @@
 
 __title__ = "Ccxtools FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import unittest
 from os.path import join
@@ -87,7 +87,7 @@ class TestCcxTools(unittest.TestCase):
         from femexamples.boxanalysis_frequency import setup
         setup(self.document, "ccxtools")
         base_name = get_namefromdef("test_")
-        res_obj_name = "CCX_Mode1_Results"
+        res_obj_name = "CCX_EigenMode_1_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing
@@ -143,7 +143,7 @@ class TestCcxTools(unittest.TestCase):
         from femexamples.thermomech_flow1d import setup
         setup(self.document, "ccxtools")
         base_name = get_namefromdef("test_")
-        res_obj_name = "CCX_Time1_0_Results"
+        res_obj_name = "CCX_Time_1_0_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing

@@ -33,15 +33,6 @@ endif()
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
 
-set(PathGui_MOC_HDRS
-    DlgSettingsPathColor.h
-    TaskDlgPathCompound.h
-    DlgProcessorChooser.h
-)
-fc_wrap_cpp(PathGui_MOC_SRCS ${PathGui_MOC_HDRS})
-
-SOURCE_GROUP("Moc" FILES ${PathGui_MOC_SRCS})
-
 set(PathGui_UIC_SRCS
     DlgSettingsPathColor.ui
     TaskDlgPathCompound.ui

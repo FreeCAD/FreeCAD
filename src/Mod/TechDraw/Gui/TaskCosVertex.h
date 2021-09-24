@@ -100,7 +100,7 @@ protected:
    QGIView* findParentQGIV();
 
 private:
-    Ui_TaskCosVertex * ui;
+    std::unique_ptr<Ui_TaskCosVertex> ui;
     bool blockUpdate;
 
     QGTracker* m_tracker;

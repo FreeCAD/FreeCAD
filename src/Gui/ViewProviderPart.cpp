@@ -53,10 +53,11 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
  * Creates the view provider for an object group.
  */
 ViewProviderPart::ViewProviderPart()
-{ 
+{
     initExtension(this);
 
     sPixmap = "Geofeaturegroup.svg";
+    aPixmap = "Geoassembly.svg";
 }
 
 ViewProviderPart::~ViewProviderPart()
@@ -90,7 +91,7 @@ bool ViewProviderPart::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
@@ -111,6 +112,19 @@ bool ViewProviderPart::doubleClicked(void)
 
     return true;
 }
+
+QIcon ViewProviderPart::getIcon(void) const
+{
+    // the original Part object for this ViewProviderPart
+    App::Part* part = static_cast<App::Part*>(this->getObject());
+    // the normal case for Std_Part
+    const char* pixmap = sPixmap;
+    // if it's flagged as an Assembly in its Type, it gets another icon
+    if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
+    
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
+}
+
 
 // Python feature -----------------------------------------------------------------------
 

@@ -41,6 +41,7 @@ class Property;
 }
 
 namespace Gui {
+class SelectionObject;
 class ViewProvider;
 }
 
@@ -62,7 +63,7 @@ public:
 private Q_SLOTS:
     void onReferenceDeleted(void);
     void onForceChanged(double);
-    void onButtonDirection(const bool pressed = true);
+    void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);
     void addToSelection();
     void removeFromSelection();
@@ -72,6 +73,7 @@ protected:
     virtual void changeEvent(QEvent *e);
 
 private:
+    std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;
     void updateUI();
 
 private:

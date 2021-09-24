@@ -84,7 +84,7 @@ protected:
     bool isSectionValid(void);
 
 private:
-    Ui_TaskSectionView * ui;
+    std::unique_ptr<Ui_TaskSectionView> ui;
     TechDraw::DrawViewPart* m_base;
     TechDraw::DrawViewSection* m_section;
     std::string m_symbol;

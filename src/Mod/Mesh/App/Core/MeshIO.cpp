@@ -49,6 +49,8 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/convert.hpp>
+#include <boost/convert/spirit.hpp>
 
 
 using namespace MeshCore;
@@ -58,7 +60,7 @@ char *upper(char * string)
     int i;
     int l;
 
-    if (string != NULL) {
+    if (string != nullptr) {
         l = std::strlen(string);
         for (i=0; i<l; i++)
             string[i] = toupper(string[i]);
@@ -258,8 +260,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     upper(szBuf);
 
     try {
-        if ((strstr(szBuf, "SOLID") == NULL)  && (strstr(szBuf, "FACET") == NULL)    && (strstr(szBuf, "NORMAL") == NULL) &&
-            (strstr(szBuf, "VERTEX") == NULL) && (strstr(szBuf, "ENDFACET") == NULL) && (strstr(szBuf, "ENDLOOP") == NULL)) {
+        if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
+            (strstr(szBuf, "VERTEX") == nullptr) && (strstr(szBuf, "ENDFACET") == nullptr) && (strstr(szBuf, "ENDLOOP") == nullptr)) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(rstrIn);
@@ -341,11 +343,6 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     unsigned long countMaterialFacets = 0;
 
     while (std::getline(rstrIn, line)) {
-        // when a group name comes don't make it lower case
-        if (!line.empty() && line[0] != 'g') {
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = tolower(*it);
-        }
         if (boost::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -612,27 +609,14 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 {
     // http://edutechwiki.unige.ch/en/3D_file_format
     boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_c("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
-    boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-
     boost::cmatch what;
 
     bool colorPerVertex = false;
+    std::vector<App::Color> diffuseColor;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
-    int r, g, b, a;
-    unsigned int  i1=1,i2=1,i3=1,i4=1;
-    MeshGeomFacet clFacet;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -654,56 +638,63 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
     // get number of vertices and faces
     int numPoints=0, numFaces=0;
-    std::getline(rstrIn, line);
-    boost::algorithm::to_lower(line);
-    if (boost::regex_match(line.c_str(), what, rx_n)) {
-        numPoints = std::atoi(what[1].first);
-        numFaces = std::atoi(what[2].first);
+
+    while (true) {
+        std::getline(rstrIn, line);
+        boost::algorithm::to_lower(line);
+        if (boost::regex_match(line.c_str(), what, rx_n)) {
+            numPoints = std::atoi(what[1].first);
+            numFaces = std::atoi(what[2].first);
+            break;
+        }
     }
-    else {
-        // Cannot read number of elements
+
+    if (numPoints == 0 || numFaces == 0)
         return false;
-    }
 
     meshPoints.reserve(numPoints);
     meshFacets.reserve(numFaces);
-    if (_material && colorPerVertex) {
-        _material->binding = MeshIO::PER_VERTEX;
-        _material->diffuseColor.reserve(numPoints);
-    }
+    if (colorPerVertex)
+        diffuseColor.reserve(numPoints);
+    else
+        diffuseColor.reserve(numFaces);
 
     int cntPoints = 0;
     while (cntPoints < numPoints) {
         if (!std::getline(rstrIn, line))
             break;
-        if (colorPerVertex) {
-            if (boost::regex_match(line.c_str(), what, rx_c)) {
-                fX = static_cast<float>(std::atof(what[1].first));
-                fY = static_cast<float>(std::atof(what[4].first));
-                fZ = static_cast<float>(std::atof(what[7].first));
-                r = std::min<int>(std::atof(what[10].first),255);
-                g = std::min<int>(std::atof(what[11].first),255);
-                b = std::min<int>(std::atof(what[12].first),255);
-                a = std::min<int>(std::atof(what[13].first),255);
-                // add to the material
-                if (_material) {
-                    float fr = static_cast<float>(r)/255.0f;
-                    float fg = static_cast<float>(g)/255.0f;
-                    float fb = static_cast<float>(b)/255.0f;
-                    float fa = static_cast<float>(a)/255.0f;
-                    _material->diffuseColor.emplace_back(fr, fg, fb, fa);
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+        if (str.eof())
+            continue; // empty line
+
+        float fX, fY, fZ;
+        str >> fX >> std::ws >> fY >> std::ws >> fZ;
+        if (str) {
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+            cntPoints++;
+
+            if (colorPerVertex) {
+                std::size_t pos = std::size_t(str.tellg());
+                if (line.size() > pos) {
+                    float r,g,b,a;
+                    str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
+                    if (str) {
+                        str >> std::ws >> a;
+                        // no transparency
+                        if (!str)
+                            a = 0.0f;
+
+                        if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
+                            r = static_cast<float>(r)/255.0f;
+                            g = static_cast<float>(g)/255.0f;
+                            b = static_cast<float>(b)/255.0f;
+                            a = static_cast<float>(a)/255.0f;
+                        }
+                        diffuseColor.emplace_back(r, g, b, a);
+                    }
                 }
-                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
-                cntPoints++;
-            }
-        }
-        else {
-            if (boost::regex_match(line.c_str(), what, rx_p)) {
-                fX = static_cast<float>(std::atof(what[1].first));
-                fY = static_cast<float>(std::atof(what[4].first));
-                fZ = static_cast<float>(std::atof(what[7].first));
-                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
-                cntPoints++;
             }
         }
     }
@@ -712,35 +703,67 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     while (cntFaces < numFaces) {
         if (!std::getline(rstrIn, line))
             break;
-        if (boost::regex_match(line.c_str(), what, rx_f3)) {
-            // 3-vertex face
-            if (std::atoi(what[1].first) == 3) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                item.SetVertices(i1,i2,i3);
-                meshFacets.push_back(item);
-                cntFaces++;
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+        if (str.eof())
+            continue; // empty line
+        int count, index;
+        str >> count;
+        if (count >= 3) {
+            std::vector<int> faces;
+            faces.reserve(count);
+
+            for (int i = 0; i < count; i++) {
+                str >> std::ws;
+                str >> index;
+                faces.push_back(index);
             }
-        }
-        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
-            // 4-vertex face
-            if (std::atoi(what[1].first) == 4) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                i4 = std::atoi(what[5].first);
 
-                item.SetVertices(i1,i2,i3);
+            for (int i = 0; i < count-2; i++) {
+                item.SetVertices(faces[0],faces[i+1],faces[i+2]);
                 meshFacets.push_back(item);
+            }
+            cntFaces++;
 
-                item.SetVertices(i3,i4,i1);
-                meshFacets.push_back(item);
-                cntFaces++;
+            std::size_t pos = std::size_t(str.tellg());
+            if (line.size() > pos) {
+                float r,g,b,a;
+                str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
+                if (str) {
+                    str >> std::ws >> a;
+                    // no transparency
+                    if (!str)
+                        a = 0.0f;
+
+                    if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
+                        r = static_cast<float>(r)/255.0f;
+                        g = static_cast<float>(g)/255.0f;
+                        b = static_cast<float>(b)/255.0f;
+                        a = static_cast<float>(a)/255.0f;
+                    }
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(r, g, b, a);
+                    }
+                }
             }
         }
     }
 
+    if (_material) {
+        if (colorPerVertex) {
+            if (meshPoints.size() == diffuseColor.size()) {
+                _material->binding = MeshIO::PER_VERTEX;
+                _material->diffuseColor.swap(diffuseColor);
+            }
+        }
+        else {
+            if (meshFacets.size() == diffuseColor.size()) {
+                _material->binding = MeshIO::PER_FACE;
+                _material->diffuseColor.swap(diffuseColor);
+            }
+        }
+    }
     this->_rclMesh.Clear(); // remove all data before
 
     MeshCleanup meshCleanup(meshPoints,meshFacets);
@@ -967,17 +990,17 @@ bool MeshInput::LoadPLY (std::istream &inp)
     // check if valid 3d points
     Property property;
     std::size_t num_x = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "x"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "x"); });
     if (num_x != 1)
         return false;
 
     std::size_t num_y = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "y"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "y"); });
     if (num_y != 1)
         return false;
 
     std::size_t num_z = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "z"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "z"); });
     if (num_z != 1)
         return false;
 
@@ -993,11 +1016,11 @@ bool MeshInput::LoadPLY (std::istream &inp)
 
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "red"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "red"); });
     std::size_t num_g = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "green"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "green"); });
     std::size_t num_b = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "blue"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "blue"); });
     std::size_t rgb_colors = num_r + num_g + num_b;
     if (rgb_colors != 0 && rgb_colors != 3)
         return false;
@@ -1259,8 +1282,7 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
         return false;
 
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = tolower(*it);
+        boost::algorithm::to_lower(line);
         if (boost::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -1558,7 +1580,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
         }
         // read the point indices of the facets
         else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
-            unsigned long ulPoints[3];
+            PointIndex ulPoints[3];
             facets = true;
             unsigned long ulCt = 0;
             // Get the next line and check for the index field which might begin
@@ -1620,7 +1642,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::regex rx_q("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+    boost::regex rx_q("\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
     boost::cmatch what;
 
@@ -1636,33 +1658,88 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
-        if (line.find("GRID*") == 0) {
-            assert(0);
+        if (line.empty()) {
+            // Skip all the following tests
         }
-        else if (line.find('*') == 0) {
-            assert(0);
+        else if (line.rfind("GRID*", 0) == 0) {
+            // This element is the 16-digit-precision GRID element, which occupies two lines of the card. Note that
+            // FreeCAD discards the extra precision, downcasting to an four-byte float.
+	    //
+	    // The two lines are:
+	    // 1      8               24             40             56
+	    // GRID*  Index(16)       Blank(16)      x(16)          y(at least one)
+	    // *      z(at least one)
+	    //
+	    // The first character is typically the sign, and may be omitted for positive numbers,
+	    // so it is possible for a field to begin with a blank. Trailing zeros may be omitted, so
+	    // a field may also end with blanks. No space or other delimiter is required between
+	    // the numbers. The following is a valid NASTRAN GRID* element:
+	    //
+	    // GRID*  1                               0.1234567890120.
+	    // *      1.
+	    //
+            if (line.length() < 8 + 16 + 16 + 16 + 1) // Element type(8), index(16), empty(16), x(16), y(>=1)
+                continue;
+            auto indexView = std::string_view(&line[8], 16);
+            auto blankView = std::string_view(&line[8+16], 16);
+            auto xView = std::string_view(&line[8+16+16], 16);
+            auto yView = std::string_view(&line[8+16+16+16]);
+
+            std::string line2;
+            std::getline(rstrIn, line2);
+            if ((!line2.empty() && line2[0] != '*') ||
+                line2.length() < 9)
+                continue; // File format error: second line is not a continuation line
+            auto zView = std::string_view(&line2[8]);
+
+            // We have to strip off any whitespace (technically really just any *trailing* whitespace):
+            auto indexString = boost::trim_copy(std::string(indexView));
+            auto xString = boost::trim_copy(std::string(xView));
+            auto yString = boost::trim_copy(std::string(yView));
+            auto zString = boost::trim_copy(std::string(zView));
+
+            auto converter = boost::cnv::spirit();
+            auto indexCheck = boost::convert<int>(indexString, converter);
+            if (!indexCheck.is_initialized())
+                // File format error: index couldn't be converted to an integer
+                continue;
+            index = indexCheck.get();
+
+            // Get the high-precision versions first
+            auto x = boost::convert<double>(xString, converter);
+            auto y = boost::convert<double>(yString, converter);
+            auto z = boost::convert<double>(zString, converter);
+
+            if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized())
+                // File format error: x, y or z could not be converted
+                continue;
+
+            // Now drop precision:
+            mNode[index].x = (float)x.get();
+            mNode[index].y = (float)y.get();
+            mNode[index].z = (float)z.get();
         }
-        // insert the read-in vertex into a map to preserve the order
-        else if (line.find("GRID") == 0) {
+        else if (line.rfind("GRID", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_p)) {
+                // insert the read-in vertex into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mNode[index].x = (float)std::atof(what[2].first);
                 mNode[index].y = (float)std::atof(what[5].first);
                 mNode[index].z = (float)std::atof(what[8].first);
             }
         }
-        // insert the read-in triangle into a map to preserve the order
-        else if (line.find("CTRIA3 ") == 0) {
+        else if (line.rfind("CTRIA3 ", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_t)) {
+                // insert the read-in triangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mTria[index].iV[0] = std::atol(what[3].first)-1;
                 mTria[index].iV[1] = std::atol(what[4].first)-1;
                 mTria[index].iV[2] = std::atol(what[5].first)-1;
             }
         }
-        // insert the read-in quadrangle into a map to preserve the order
-        else if (line.find("CQUAD4") == 0) {
+        else if (line.rfind("CQUAD4", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_q)) {
+                // insert the read-in quadrangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mQuad[index].iV[0] = std::atol(what[3].first)-1;
                 mQuad[index].iV[1] = std::atol(what[4].first)-1;
@@ -2044,7 +2121,6 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
     clIter.Transform(this->_transform);
     const MeshGeomFacet *pclFacet;
-    unsigned long i;
 
     if (!rstrOut || rstrOut.bad() == true || _rclMesh.CountFacets() == 0)
         return false;
@@ -2070,7 +2146,7 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
         rstrOut << "    outer loop\n";
 
         // vertices
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             rstrOut << "      vertex "  << pclFacet->_aclPoints[i].x << " "
                                         << pclFacet->_aclPoints[i].y << " "
                                         << pclFacet->_aclPoints[i].z << '\n';
@@ -2287,7 +2363,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
 
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     if (first || prev != Kd[*it]) {
                         first = false;
@@ -2308,7 +2384,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         else {
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
                                 << f._aulPoints[1]+1 << "//" << *it + 1 << " "
@@ -2489,7 +2565,7 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
             for (int i = 0; i < 3; i++) {
                 const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
                 out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
-                if (i < 3)
+                if (i < 2)
                     out << ", ";
             }
             out << "}));\n";
@@ -3455,7 +3531,7 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
   : pointArray(p)
   , facetArray(f)
-  , materialArray(0)
+  , materialArray(nullptr)
 {
 }
 
@@ -3501,8 +3577,9 @@ void MeshCleanup::RemoveInvalids()
 
 void MeshCleanup::RemoveInvalidFacets()
 {
+    MeshIsFlag<MeshFacet> flag;
     std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+                    [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
     if (countInvalidFacets > 0) {
 
         // adjust the material array if needed
@@ -3522,23 +3599,24 @@ void MeshCleanup::RemoveInvalidFacets()
         MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
         // copy all valid facets to the new array
         std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
-            std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+            [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
         facetArray.swap(copy_facets);
     }
 }
 
 void MeshCleanup::RemoveInvalidPoints()
 {
+    MeshIsFlag<MeshPoint> flag;
     std::size_t countInvalidPoints = std::count_if(pointArray.begin(), pointArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+                    [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
     if (countInvalidPoints > 0) {
         // generate array of decrements
-        std::vector<unsigned long> decrements;
+        std::vector<PointIndex> decrements;
         decrements.resize(pointArray.size());
-        unsigned long decr = 0;
+        PointIndex decr = 0;
 
         MeshPointArray::_TIterator p_end = pointArray.end();
-        std::vector<unsigned long>::iterator decr_it = decrements.begin();
+        std::vector<PointIndex>::iterator decr_it = decrements.begin();
         for (MeshPointArray::_TIterator p_it = pointArray.begin(); p_it != p_end; ++p_it, ++decr_it) {
             *decr_it = decr;
             if (!p_it->IsValid())
@@ -3573,7 +3651,7 @@ void MeshCleanup::RemoveInvalidPoints()
         MeshPointArray copy_points(validPoints);
         // copy all valid facets to the new array
         std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),
-            std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+            [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
         pointArray.swap(copy_points);
     }
 }
@@ -3635,7 +3713,7 @@ void MeshPointFacetAdjacency::SetFacetNeighbourhood()
             }
 
             if (!success) {
-                facet1._aulNeighbours[i] = ULONG_MAX;
+                facet1._aulNeighbours[i] = FACET_INDEX_MAX;
             }
         }
     }

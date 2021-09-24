@@ -175,12 +175,12 @@ bool TaskSmoothing::accept()
         return true;
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand("Mesh Smoothing");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
     bool hasSelection = false;
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
-        std::vector<unsigned long> selection;
+        std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
             // to have coloured triangles when doing an 'undo'

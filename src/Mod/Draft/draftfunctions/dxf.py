@@ -120,7 +120,7 @@ def get_dxf(obj, direction=None):
 
         try:
             d = Drawing.projectToDXF(obj.Shape, direction)
-        except:
+        except Exception:
             # TODO: trap only specific exception.
             # Impossible to generate DXF from Shape? Which exception is throw?
             _wrn("get_dxf: "
@@ -134,10 +134,10 @@ def get_dxf(obj, direction=None):
 
 
 def getDXF(obj,
-           projection=None):
+           direction=None):
     """Return DXF string of the object. DEPRECATED. Use 'get_dxf'."""
     utils.use_instead("get_dxf")
     return get_dxf(obj,
-                   projection=projection)
+                   direction=direction)
 
 ## @}

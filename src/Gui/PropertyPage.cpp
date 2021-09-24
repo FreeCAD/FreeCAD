@@ -25,19 +25,19 @@
 
 #include "PropertyPage.h"
 #include "PrefWidgets.h"
-#include "WidgetFactory.h"
+#include "UiLoader.h"
 #include <Base/Console.h>
 
 using namespace Gui::Dialog;
 
 /** Construction */
-PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent) 
+PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent)
 {
   bChanged = false;
 }
 
 /** Destruction */
-PropertyPage::~PropertyPage() 
+PropertyPage::~PropertyPage()
 {
 }
 
@@ -96,12 +96,12 @@ void PropertyPage::onReset()
 // ----------------------------------------------------------------
 
 /** Construction */
-PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent) 
+PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-PreferencePage::~PreferencePage() 
+PreferencePage::~PreferencePage()
 {
 }
 
@@ -116,9 +116,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
   : PreferencePage(parent), form(0)
 {
     UiLoader loader;
-#if QT_VERSION >= 0x040500
     loader.setLanguageChangeEnabled(true);
-#endif
     loader.setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
     if (file.open(QFile::ReadOnly))
@@ -202,12 +200,12 @@ void PreferenceUiForm::saveSettings()
 // ----------------------------------------------------------------
 
 /** Construction */
-CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent) 
+CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-CustomizeActionPage::~CustomizeActionPage() 
+CustomizeActionPage::~CustomizeActionPage()
 {
 }
 

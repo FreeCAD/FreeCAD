@@ -63,11 +63,11 @@ public:
     SoSVGVectorOutput * getSVGOutput(void) const;
 
     virtual void setBackgroundState(bool b) { m_backgroundState = b; }
-    virtual bool getBackgroundState(void) const { return m_backgroundState; } 
+    virtual bool getBackgroundState(void) const { return m_backgroundState; }
     virtual void setLineWidth(double w) { m_lineWidth = w; }
-    virtual double getLineWidth(void) const { return m_lineWidth; } 
+    virtual double getLineWidth(void) const { return m_lineWidth; }
     virtual void setUseMM(bool b) { m_usemm = b; }
-    virtual bool getUseMM(void) const { return m_usemm; } 
+    virtual bool getUseMM(void) const { return m_usemm; }
 
 protected:
     virtual void printHeader(void) const;

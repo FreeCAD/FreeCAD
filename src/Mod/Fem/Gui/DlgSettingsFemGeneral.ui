@@ -31,7 +31,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis</string>
+        <string>Working directory for solving analysis and gmsh meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -195,7 +195,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Gui::PrefFileChooser" name="le_wd_custom" native="true">
+             <widget class="Gui::PrefFileChooser" name="le_wd_custom">
               <property name="enabled">
                <bool>true</bool>
               </property>

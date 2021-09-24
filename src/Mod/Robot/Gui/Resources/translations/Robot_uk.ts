@@ -51,7 +51,7 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
+      <source>Create a new empty trajectory</source>
       <translation>Створити нову порожню траєкторію</translation>
     </message>
   </context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Встановити орієнтацію за замовчуванням для наступних команд та створення маршрутних точок</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Встановити значення за замовчуванням для швидкості, прискорення та наступності для подальших команд створення маршрутних точок</translation>
     </message>
   </context>
   <context>

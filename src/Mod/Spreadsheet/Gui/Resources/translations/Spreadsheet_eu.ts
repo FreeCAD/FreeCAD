@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusionatu gelaxkak</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Zatitu gelaxka</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Lerrokatu gelaxka ezkerrean</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Zentratu gelaxka</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Lerrokatu gelaxka eskuinean</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Lerrokatu gelaxka goian</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Lerrokatu gelaxka behean</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Zentratu gelaxkak bertikalean</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Ezarri testu lodia</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Ezarri testu etzana</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Ezarri testu azpimarratua</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Sortu kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Ezarri gelaxka-propietateak</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Editatu gelaxka</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Txertatu errenkadak</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Kendu errenkadak</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Txertatu zutabeak</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Garbitu gelaxka(k)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ezarri aurreko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Ezarri atzeko planoaren kolorea</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -366,13 +449,13 @@ Aukeratu gelaxka bakar bat.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Aliasak karaktere baliogabeak ditu!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>
@@ -467,8 +550,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>
@@ -481,24 +564,64 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Txertatu errenkadak</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Kendu errenkadak</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Txertatu zutabeak</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Kendu zutabeak</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propietateak...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n goian</numerusform>
+        <numerusform>Txertatu %n errenkada goian</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n behean</numerusform>
+        <numerusform>Txertatu %n errenkada behean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dagoen errenkada %n</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n errenkada</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Kendu errenkada</numerusform>
+        <numerusform>Kendu errenkadak</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Txertatu zutabe %n ezkerrean</numerusform>
+        <numerusform>Txertatu %n zutabe ezkerrean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Txertatu zutabe %n eskuinean</numerusform>
+        <numerusform>Txertatu %n zutabe eskuinean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Kendu zutabea(k)</numerusform>
+        <numerusform>Kendu zutabeak</numerusform>
+      </translation>
     </message>
   </context>
   <context>

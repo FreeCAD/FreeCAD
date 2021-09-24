@@ -36,12 +36,12 @@ using namespace PartGui;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderPlaneParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderPlaneParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderPlaneParametric::ViewProviderPlaneParametric()
 {
-    sPixmap = "Tree_Part_Plane_Parametric.svg";
+    sPixmap = "Part_Plane_Parametric";
 }
 
 ViewProviderPlaneParametric::~ViewProviderPlaneParametric()

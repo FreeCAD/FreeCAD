@@ -58,7 +58,7 @@ public:
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
     TYPESYSTEM_HEADER();
- 
+
 public:
     struct Line  {uint32_t I1; uint32_t I2;};
     struct Facet {uint32_t I1; uint32_t I2; uint32_t I3;};
@@ -109,11 +109,11 @@ public:
      * using the setTransform() method.
      */
     void setPlacement(const Base::Placement& rclPlacement);
-    /** Return the current transformation as placement using 
+    /** Return the current transformation as placement using
      * getTransform().
      */
     Base::Placement getPlacement() const;
-    /** Override the current transformation with the new one. 
+    /** Override the current transformation with the new one.
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
      */
@@ -201,7 +201,7 @@ protected:
     /// from local to inside
     inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
     {
-        Base::Matrix4D tmpM(getTransform()); 
+        Base::Matrix4D tmpM(getTransform());
         tmpM.inverse();
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);

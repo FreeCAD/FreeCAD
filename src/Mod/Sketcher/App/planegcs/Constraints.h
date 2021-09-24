@@ -67,9 +67,10 @@ namespace GCS
         PointOnHyperbola = 21,
         InternalAlignmentPoint2Hyperbola = 22,
         PointOnParabola = 23,
-        EqualFocalDistance = 24
+        EqualFocalDistance = 24,
+        EqualLineLength = 25
     };
-    
+
     enum InternalAlignmentType {
         EllipsePositiveMajorX = 0,
         EllipsePositiveMajorY = 1,
@@ -110,7 +111,7 @@ namespace GCS
         void revertParams();
         void setTag(int tagId) { tag = tagId; }
         int getTag() { return tag; }
-        
+
         void setDriving(bool isdriving) { driving = isdriving; }
         bool isDriving() const { return driving; }
 
@@ -120,11 +121,11 @@ namespace GCS
         virtual double grad(double *);
         // virtual void grad(MAP_pD_D &deriv);  --> TODO: vectorized grad version
         virtual double maxStep(MAP_pD_D &dir, double lim=1.);
-        // Finds first occurrence of param in pvec. This is useful to test if a constraint depends 
-        // on the parameter (it may not actually depend on it, e.g. angle-via-point doesn't depend 
-        // on ellipse's b (radmin), but b will be included within the constraint anyway. 
+        // Finds first occurrence of param in pvec. This is useful to test if a constraint depends
+        // on the parameter (it may not actually depend on it, e.g. angle-via-point doesn't depend
+        // on ellipse's b (radmin), but b will be included within the constraint anyway.
         // Returns -1 if not found.
-        int findParamInPvec(double* param); 
+        int findParamInPvec(double* param);
     };
 
     // Equal
@@ -413,7 +414,7 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
     };
-    
+
     class ConstraintEllipseTangentLine : public Constraint
     {
     private:
@@ -428,7 +429,7 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
     };
-        
+
     class ConstraintInternalAlignmentPoint2Ellipse : public Constraint
     {
     public:
@@ -516,7 +517,7 @@ namespace GCS
         virtual double grad(double *);
         virtual double maxStep(MAP_pD_D &dir, double lim=1.);
     };
-    
+
     // PointOnHyperbola
     class ConstraintPointOnHyperbola : public Constraint
     {
@@ -560,7 +561,7 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
     };
-    
+
     class ConstraintAngleViaPoint : public Constraint
     {
     private:
@@ -610,6 +611,21 @@ namespace GCS
         //n1dn2 = n1 divided by n2. from n1 to n2. flipn1 = true instructs to flip ray1's tangent
         ConstraintSnell(Curve &ray1, Curve &ray2, Curve &boundary, Point p, double* n1, double* n2, bool flipn1, bool flipn2);
         ~ConstraintSnell();
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
+    class ConstraintEqualLineLength : public Constraint
+    {
+    private:
+        Line l1;
+        Line l2;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of line1, line2
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        ConstraintEqualLineLength(Line &l1, Line &l2);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();

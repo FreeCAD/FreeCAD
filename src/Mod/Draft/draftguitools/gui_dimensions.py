@@ -71,51 +71,33 @@ class Dimension(gui_base_original.Creator):
     """
 
     def __init__(self):
+        super().__init__()
         self.max = 2
         self.cont = None
         self.dir = None
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a dimension.\n"
-                "\n"
-                "- Pick three points to create a simple linear dimension.\n"
-                "- Select a straight line to create a linear dimension "
-                "linked to that line.\n"
-                "- Select an arc or circle to create a radius or diameter "
-                "dimension linked to that arc.\n"
-                "- Select two straight lines to create an angular dimension "
-                "between them.\n"
-                "CTRL to snap, SHIFT to constrain, "
-                "ALT to select an edge or arc.\n"
-                "\n"
-                "You may select a single line or single circular arc "
-                "before launching this command\n"
-                "to create the corresponding linked dimension.\n"
-                "You may also select an 'App::MeasureDistance' object "
-                "before launching this command\n"
-                "to turn it into a 'Draft Dimension' object.")
 
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nCTRL to snap, SHIFT to constrain, ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.\nYou may also select an 'App::MeasureDistance' object before launching this command\nto turn it into a 'Draft Dimension' object.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Dimension")
         if self.cont:
             self.finish()
         elif self.selected_app_measure():
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.create_with_app_measure()
             self.finish()
         else:
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             if self.ui:
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
@@ -129,7 +111,10 @@ class Dimension(gui_base_original.Creator):
                 self.indices = []
                 self.center = None
                 self.arcmode = False
+                self.point1 = None
                 self.point2 = None
+                self.proj_point1 = None
+                self.proj_point2 = None
                 self.force = None
                 self.info = None
                 self.selectmode = False
@@ -168,7 +153,7 @@ class Dimension(gui_base_original.Creator):
                     if v.Point == edge.Vertexes[1].Point:
                         v2 = i
 
-                if v1 and v2:
+                if v1 != None and v2 != None: # note that v1 or v2 can be zero
                     self.link = [sel_object.Object, v1, v2]
             elif DraftGeomUtils.geomType(edge) == "Circle":
                 self.node.extend([edge.Curve.Center,
@@ -296,10 +281,13 @@ class Dimension(gui_base_original.Creator):
         _cmd += ')'
         _cmd_list = ['_dim_ = ' + _cmd]
 
+        plane = App.DraftWorkingPlane
+        dir_u = DraftVecUtils.toString(plane.u)
+        dir_v = DraftVecUtils.toString(plane.v)
         if direction == "X":
-            _cmd_list += ['_dim_.Direction = FreeCAD.Vector(1, 0, 0)']
+            _cmd_list += ['_dim_.Direction = ' + dir_u]
         elif direction == "Y":
-            _cmd_list += ['_dim_.Direction = FreeCAD.Vector(0, 1, 0)']
+            _cmd_list += ['_dim_.Direction = ' + dir_v]
 
         _cmd_list += ['Draft.autogroup(_dim_)',
                       'FreeCAD.ActiveDocument.recompute()']
@@ -423,7 +411,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(False)
-                if self.dir:
+                if self.dir and ( (len(self.node) < 2) or self.ui.continueMode):
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]),
                                                self.dir)
                     self.point = self.node[0].add(_p)
@@ -444,30 +432,22 @@ class Dimension(gui_base_original.Creator):
                 # Draw constraint tracker line.
                 if shift and (not self.arcmode):
                     if len(self.node) == 2:
+                        if not self.point1:
+                            self.point1 = self.node[0]
                         if not self.point2:
                             self.point2 = self.node[1]
-                        else:
-                            self.node[1] = self.point2
-                        if not self.force:
-                            _p = self.point.sub(self.node[0])
-                            a = abs(_p.getAngle(App.DraftWorkingPlane.u))
-                            if (a > math.pi/4) and (a <= 0.75*math.pi):
-                                self.force = 1
-                            else:
-                                self.force = 2
-                        if self.force == 1:
-                            self.node[1] = App.Vector(self.node[0].x,
-                                                      self.node[1].y,
-                                                      self.node[0].z)
-                        elif self.force == 2:
-                            self.node[1] = App.Vector(self.node[1].x,
-                                                      self.node[0].y,
-                                                      self.node[0].z)
+                        # else:
+                        #     self.node[1] = self.point2
+                        self.set_constraint_node()
                 else:
                     self.force = None
+                    self.proj_point1 = None
+                    self.proj_point2 = None
+                    if self.point1:
+                        self.node[0] = self.point1
                     if self.point2 and (len(self.node) > 1):
                         self.node[1] = self.point2
-                        self.point2 = None
+                        # self.point2 = None
                 # update the dimline
                 if self.node and not self.arcmode:
                     self.dimtrack.update(self.node
@@ -578,6 +558,34 @@ class Dimension(gui_base_original.Creator):
             self.createObject()
             if not self.cont:
                 self.finish()
+
+    def set_constraint_node(self):
+        """Set constrained nodes for vertical or horizontal dimension
+        by projecting on the working plane.
+        """
+        if not self.proj_point1 or not self.proj_point2:
+            plane = App.DraftWorkingPlane
+            self.proj_point1 = plane.projectPoint(self.node[0])
+            self.proj_point2 = plane.projectPoint(self.node[1])
+            proj_u= plane.u.dot(self.proj_point2 - self.proj_point1)
+            proj_v= plane.v.dot(self.proj_point2 - self.proj_point1)
+            active_view = Gui.ActiveDocument.ActiveView
+            cursor = active_view.getCursorPos()
+            cursor_point = active_view.getPoint(cursor)
+            self.point = plane.projectPoint(cursor_point)
+            if not self.force:
+                ref_point = self.point - (self.proj_point2 + self.proj_point1)*1/2
+                ref_angle = abs(ref_point.getAngle(plane.u))
+                if (ref_angle > math.pi/4) and (ref_angle <= 0.75*math.pi):
+                    self.force = 2
+                else:
+                    self.force = 1
+            if self.force == 1:
+                self.node[0] = self.proj_point1
+                self.node[1] = self.proj_point1 + plane.v*proj_v
+            elif self.force == 2:
+                self.node[0] = self.proj_point1
+                self.node[1] = self.proj_point1 + plane.u*proj_u
 
 
 Gui.addCommand('Draft_Dimension', Dimension())

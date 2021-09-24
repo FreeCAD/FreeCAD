@@ -37,7 +37,7 @@
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
           <item row="3" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -148,7 +148,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_ext_editor">
             <property name="enabled">
              <bool>false</bool>
             </property>

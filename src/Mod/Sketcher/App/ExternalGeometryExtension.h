@@ -25,11 +25,28 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <array>
+#include <bitset>
 
 namespace Sketcher
 {
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension
+class ISketchExternalGeometryExtension
+{
+public:
+    // Identification information
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    virtual bool testFlag(int flag) const = 0;
+    virtual void setFlag(int flag, bool v=true) = 0;
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+
+    virtual bool isClear() const = 0;
+    virtual size_t flagSize() const = 0;
+
+    virtual const std::string& getRef() const = 0;
+    virtual void setRef(const std::string & ref) = 0;
+};
+
+class SketcherExport ExternalGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -45,29 +62,32 @@ public:
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
     constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
+public:
 
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() override = default;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
 
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-    bool testFlag(int flag) const { return Flags.test((size_t)(flag)); }
-    void setFlag(int flag, bool v=true) { Flags.set((size_t)(flag),v); }
+    virtual bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }
+    virtual void setFlag(int flag, bool v=true) override { Flags.set((size_t)(flag),v); }
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
-    bool isClear() const {return Flags.none();}
-    size_t flagSize() const {return Flags.size();}
+    virtual bool isClear() const override {return Flags.none();}
+    virtual size_t flagSize() const override {return Flags.size();}
 
-    const std::string& getRef() const {return Ref;}
-    void setRef(const std::string & ref) {Ref = ref;}
+    virtual const std::string& getRef() const override {return Ref;}
+    virtual void setRef(const std::string & ref) override {Ref = ref;}
+
+    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;

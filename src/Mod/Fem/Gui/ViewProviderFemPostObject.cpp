@@ -57,6 +57,11 @@
 
 using namespace FemGui;
 
+#ifdef VTK_CELL_ARRAY_V2
+typedef const vtkIdType* vtkIdTypePtr;
+#else
+typedef vtkIdType* vtkIdTypePtr;
+#endif
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
@@ -317,7 +322,7 @@ void ViewProviderFemPostObject::update3D() {
     vtkDataArray *tcoords = NULL;
     vtkCellArray *cells;
     vtkIdType npts = 0;
-    vtkIdType *indx = 0;
+    vtkIdTypePtr indx = 0;
 
     points = pd->GetPoints();
     pntData = pd->GetPointData();

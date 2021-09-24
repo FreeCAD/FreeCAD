@@ -79,7 +79,6 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
 
 TaskLineDecor::~TaskLineDecor()
 {
-    delete ui;
 }
 
 void TaskLineDecor::initUi()
@@ -280,7 +279,6 @@ TaskRestoreLines::TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
 
 TaskRestoreLines::~TaskRestoreLines()
 {
-    delete ui;
 }
 
 void TaskRestoreLines::initUi()

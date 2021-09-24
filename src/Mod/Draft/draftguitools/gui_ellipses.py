@@ -53,20 +53,18 @@ class Ellipse(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates an ellipse. CTRL to snap."
 
         return {'Pixmap': 'Draft_Ellipse',
                 'Accel': "E, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Ellipse")
-        super(Ellipse, self).Activated(name)
+        super(Ellipse, self).Activated(name="Ellipse")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Ellipse")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
@@ -106,9 +104,9 @@ class Ellipse(gui_base_original.Creator):
                 rot2 = App.Placement(m)
                 rot2 = rot2.Rotation
                 rot = str((rot1.multiply(rot2)).Q)
+            Gui.addModule("Draft")
             if utils.getParam("UsePartPrimitives", False):
                 # Insert a Part::Primitive object
-                Gui.addModule("Part")
                 _cmd = 'FreeCAD.ActiveDocument.'
                 _cmd += 'addObject("Part::Ellipse", "Ellipse")'
                 _cmd_list = ['ellipse = ' + _cmd,
@@ -124,7 +122,6 @@ class Ellipse(gui_base_original.Creator):
                             _cmd_list)
             else:
                 # Insert a Draft ellipse
-                Gui.addModule("Draft")
                 _cmd = 'Draft.makeEllipse'
                 _cmd += '('
                 _cmd += str(r1) + ', ' + str(r2) + ', '

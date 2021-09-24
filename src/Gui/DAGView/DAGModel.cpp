@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 #include <boost_bind_bind.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <boost/graph/reverse_graph.hpp>
+#include <boost_graph_reverse_graph.hpp>
 
 #include <QApplication>
 #include <QString>

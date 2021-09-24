@@ -28,12 +28,17 @@
 #  define _USE_MATH_DEFINES
 #  include <cmath>
 # endif //_MSC_VER
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include "ViewProviderAttachExtension.h"
+#include "TaskAttacher.h"
 #include <Mod/Part/App/AttachExtension.h>
 
+#include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
 
 using namespace PartGui;
 
@@ -45,7 +50,7 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
     initExtensionType(ViewProviderAttachExtension::getExtensionClassTypeId());
 }
 
-QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig) const
+QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QIcon & orig) const
 {
     QIcon mergedicon = orig;
 
@@ -102,6 +107,36 @@ void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
         }
     }
 
+}
+
+void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
+{
+    // toggle command to display components
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+    if (Gui::Control().activeDialog())
+        act->setDisabled(true);
+    func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+}
+
+void ViewProviderAttachExtension::showAttachmentEditor()
+{
+    // See PropertyEnumAttacherItem::openTask()
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    TaskDlgAttacher* task;
+    task = qobject_cast<TaskDlgAttacher*>(dlg);
+
+    if (dlg && !task) {
+        // there is already another task dialog which must be closed first
+        Gui::Control().showDialog(dlg);
+        return;
+    }
+
+    if (!task) {
+        task = new TaskDlgAttacher(getExtendedViewProvider());
+    }
+
+    Gui::Control().showDialog(task);
 }
 
 namespace Gui {

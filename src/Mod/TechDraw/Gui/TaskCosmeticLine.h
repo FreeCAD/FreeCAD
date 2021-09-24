@@ -91,7 +91,7 @@ protected:
     void updateCosmeticLine(void);
 
 private:
-    Ui_TaskCosmeticLine * ui;
+    std::unique_ptr<Ui_TaskCosmeticLine> ui;
 
     TechDraw::DrawViewPart* m_partFeat;
 

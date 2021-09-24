@@ -25,5 +25,16 @@ The trimmed surface is built from a copy of the basis surface. Therefore, when t
 is modified the trimmed surface is not changed. Consequently, the trimmed surface does not
 necessarily have the same orientation as the basis surface.</UserDocu>
 		</Documentation>
-	</PythonExport>
+        <Methode Name="setTrim">
+          <Documentation>
+            <UserDocu>Modifies this patch by changing the trim values applied to the original surface</UserDocu>
+          </Documentation>
+        </Methode>
+        <Attribute Name="BasisSurface" ReadOnly="true">
+            <Documentation>
+                <UserDocu></UserDocu>
+            </Documentation>
+            <Parameter Name="BasisSurface" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

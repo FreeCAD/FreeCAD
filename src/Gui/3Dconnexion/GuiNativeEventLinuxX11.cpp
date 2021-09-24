@@ -73,7 +73,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     }
 #endif
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
-        Base::Console().Log("Couldn't connect to spacenav daemon on X11\n");
+        Base::Console().Log("Couldn't connect to spacenav daemon on X11. Please ignore if you don't have a spacemouse.\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon on X11\n");
         mainApp->setSpaceballPresent(true);

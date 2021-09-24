@@ -99,10 +99,13 @@ public:
         Trackball
     };
 
-    enum RotationCenterMode {
-        ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
-        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor position. */
+    enum class RotationCenterMode {
+        WindowCenter       = 0, /**< The center of the window */
+        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+        FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
+        BoundingBoxCenter  = 4  /**< Find the center point of the bounding box of the scene. */
     };
+    Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
 public:
     NavigationStyle();
@@ -131,10 +134,8 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
-    void setDragAtCursor(SbBool);
-    SbBool isDragAtCursor() const;
-    void setRotationCenterMode(RotationCenterMode);
-    RotationCenterMode getRotationCenterMode() const;
+    void setRotationCenterMode(RotationCenterModes);
+    RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
@@ -156,6 +157,7 @@ public:
 
     void startSelection(AbstractMouseSelection*);
     void startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
@@ -264,7 +266,7 @@ private:
  * in the above dialog.
  * This mechanism is useful to implement special navigation styles which are
  * only needed for certain purposes. Thus, it should not be possible to be
- * choosable by the user 
+ * choosable by the user
  * @author Werner Mayer
  */
 class GuiExport UserNavigationStyle : public NavigationStyle {
@@ -410,4 +412,6 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_NAVIGATIONSTYLE_H 
+Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
+
+#endif // GUI_NAVIGATIONSTYLE_H

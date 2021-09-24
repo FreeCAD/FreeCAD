@@ -31,6 +31,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "Window.h"
+#include "PythonWrapper.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "CommandPy.h"
@@ -76,11 +77,7 @@ PyObject* CommandPy::listAll(PyObject *args)
     PyObject* pyList = PyList_New(cmds.size());
     int i=0;
     for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
-#if PY_MAJOR_VERSION >= 3
         PyObject* str = PyUnicode_FromString((*it)->getName());
-#else
-        PyObject* str = PyString_FromString((*it)->getName());
-#endif
         PyList_SetItem(pyList, i++, str);
     }
     return pyList;
@@ -122,11 +119,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
     PyObject* pyList = PyList_New(matches.size());
     int i=0;
     for (std::string match : matches) {
-#if PY_MAJOR_VERSION >= 3
         PyObject* str = PyUnicode_FromString(match.c_str());
-#else
-        PyObject* str = PyString_FromString(match.c_str());
-#endif
         PyList_SetItem(pyList, i++, str);
     }
     return pyList;
@@ -177,11 +170,7 @@ PyObject* CommandPy::getShortcut(PyObject *args)
 
     Command* cmd = this->getCommandPtr();
     if (cmd) {
-#if PY_MAJOR_VERSION >= 3
         PyObject* str = PyUnicode_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
-#else
-        PyObject* str = PyString_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
-#endif
         return str;
     }
     else {
@@ -282,21 +271,12 @@ PyObject* CommandPy::getInfo(PyObject *args)
         if (action)
             shortcutTxt = action->shortcut().toString().toStdString();
 
-#if PY_MAJOR_VERSION >= 3
         PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
         PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
         PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
         PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
         PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
         PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-#else
-        PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
-        PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
-        PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
-        PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
-        PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyString_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-#endif
         PyList_SetItem(pyList, 0, strMenuTxt);
         PyList_SetItem(pyList, 1, strTooltipTxt);
         PyList_SetItem(pyList, 2, strWhatsThisTxt);
@@ -304,6 +284,36 @@ PyObject* CommandPy::getInfo(PyObject *args)
         PyList_SetItem(pyList, 4, strPixMapTxt);
         PyList_SetItem(pyList, 5, strShortcutTxt);
         return pyList;
+    }
+    else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        return nullptr;
+    }
+}
+
+PyObject* CommandPy::getAction(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Command* cmd = this->getCommandPtr();
+    if (cmd) {
+        Action* action = cmd->getAction();
+        ActionGroup* group = qobject_cast<ActionGroup*>(action);
+
+        PythonWrapper wrap;
+        wrap.loadWidgetsModule();
+
+        Py::List list;
+        if (group) {
+            for (auto a : group->actions())
+                list.append(wrap.fromQObject(a));
+        }
+        else if (action) {
+            list.append(wrap.fromQObject(action->action()));
+        }
+
+        return Py::new_reference_to(list);
     }
     else {
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");

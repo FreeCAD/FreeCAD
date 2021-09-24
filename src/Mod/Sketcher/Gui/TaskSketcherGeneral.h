@@ -26,9 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
-
-class Ui_TaskSketcherGeneral;
+#include <boost_signals2.hpp>
 
 namespace App {
 class Property;
@@ -40,6 +38,7 @@ class ViewProvider;
 
 namespace SketcherGui {
 
+class Ui_TaskSketcherGeneral;
 class ViewProviderSketch;
 
 class SketcherGeneralWidget : public QWidget
@@ -76,7 +75,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_TaskSketcherGeneral* ui;
+    std::unique_ptr<Ui_TaskSketcherGeneral> ui;
 };
 
 class TaskSketcherGeneral : public Gui::TaskView::TaskBox,

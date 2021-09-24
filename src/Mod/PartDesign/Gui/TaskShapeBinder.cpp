@@ -60,10 +60,10 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
                              tr("Datum shape parameters"), true, parent)
     , SelectionObserver(view)
+    , ui(new Ui_TaskShapeBinder)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskShapeBinder();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -159,7 +159,6 @@ TaskShapeBinder::~TaskShapeBinder()
     }
     static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
     */
-    delete ui;
 }
 
 void TaskShapeBinder::changeEvent(QEvent *)

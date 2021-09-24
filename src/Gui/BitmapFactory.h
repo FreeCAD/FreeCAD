@@ -77,7 +77,7 @@ public:
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
      * scalable vector graphics (SVG).
-     * 
+     *
      * @param colorMapping - a dictionary of substitute colors.
      * Can be used to customize icon color scheme, e.g. crosshair color
      */

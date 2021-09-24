@@ -2,11 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sk" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>Rovina zmeny mierky obrázku</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Zmení mierku roviny obrázka definovaním vzdialenosti medzi bodmi</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>Rovina zmeny mierky obrázku</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -21,12 +34,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Zadajte vzdialenosť&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Vyberte rovinu obrázka&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
@@ -36,20 +49,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>Vyberte rovinu obrázka a zadajte vzdialenosť</translation>
     </message>
   </context>
   <context>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Vytvoriť planárný obraz v 3D priestore</translation>
+      <translation>Vytvorí planárný obrázok v 3D priestore</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation type="unfinished">Image Scaling</translation>
+      <translation>Zmena mierky obrázku</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="20"/>
       <source>Image plane</source>
-      <translation type="unfinished">Image plane</translation>
+      <translation>Rovina obrázka</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
-      <translation>&amp;Celý obraz</translation>
+      <translation>&amp;Prispôsobiť obrázok</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
@@ -208,7 +208,7 @@
       <location filename="../../ImageView.cpp" line="600"/>
       <location filename="../../ImageView.cpp" line="605"/>
       <source>zoom</source>
-      <translation>Lupa</translation>
+      <translation>priblíženie</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="543"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Vybraný obrázok sa nepodarilo načítať</translation>
+      <translation>Nepodarilo sa otvoriť zvolený obrázok</translation>
     </message>
   </context>
   <context>

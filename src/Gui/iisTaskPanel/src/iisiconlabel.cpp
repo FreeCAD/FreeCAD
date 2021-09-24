@@ -127,11 +127,7 @@ void iisIconLabel::paintEvent ( QPaintEvent * event )
         QRect boundingRect;
 
         QFontMetrics fm(fnt);
-#if QT_VERSION >= 0x040203
         QString txt(fm.elidedText(myText, Qt::ElideRight, textRect.width()));
-#else
-        QString txt = myText;
-#endif
 
         p.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, txt, &boundingRect);
 

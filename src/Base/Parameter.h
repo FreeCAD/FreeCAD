@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
- /** 
+ /**
  * \file Parameter.h
  * \brief The classes defined here are used to interface with the XML-based
  * FreeCAD config files: user.cfg and system.cfg files. It can parse, get,

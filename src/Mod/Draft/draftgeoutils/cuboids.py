@@ -99,6 +99,8 @@ def getCubicDimensions(shape):
     # getting length and width
     vx = vec(base.Edges[0])
     vy = vec(base.Edges[1])
+    if round(vx.Length) == round(vy.Length):
+        vy = vec(base.Edges[2])
 
     # getting rotations
     rotZ = DraftVecUtils.angle(vx)

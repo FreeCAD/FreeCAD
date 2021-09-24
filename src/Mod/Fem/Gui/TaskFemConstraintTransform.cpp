@@ -486,7 +486,7 @@ TaskDlgFemConstraintTransform::TaskDlgFemConstraintTransform(ViewProviderFemCons
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintTransform(ConstraintView);;
+    this->parameter = new TaskFemConstraintTransform(ConstraintView);
 
     Content.push_back(parameter);
 }

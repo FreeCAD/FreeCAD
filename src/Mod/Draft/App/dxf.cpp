@@ -194,7 +194,7 @@ double CDxfRead::mm( double value ) const
 {
     if(m_measurement_inch)
     {
-        value *= 0.0393700787401575;
+        value *= 25.4;
     }
 
     switch(m_eUnits)

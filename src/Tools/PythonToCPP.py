@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2004 Werner Mayer LGPL
 
-import os,sys,string
+import os,sys
 
 #os.chdir("E:\\Develop\\FreeCADWin\\scripts")
 

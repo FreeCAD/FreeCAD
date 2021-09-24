@@ -3,18 +3,15 @@
 # (c) 2012 Werner Mayer LGPL
 
 import sys
-from os import chdir
 from os import path
 from tempfile import gettempdir
 
-from bzrlib.transport import get_transport
 from bzrlib.branch import Branch
 from bzrlib.workingtree import WorkingTree
 
 def runUpdate(filename):
     branch = "versioning.git"
     REMOTE_URL="bzr+ssh://bazaar.launchpad.net/~freecad-maintainers/freecad/%s" % (branch)
-    PUSHTO_URL="bzr+ssh://bazaar.launchpad.net/~freecad-maintainers/freecad/%s" % (branch)
     LOCAL_BRANCH=path.join(gettempdir(),branch)
 
     # Location of branch on Launchpad
@@ -22,6 +19,7 @@ def runUpdate(filename):
 
     # Location of branch on local system
     local_branch = remote_branch.bzrdir.sprout(LOCAL_BRANCH).open_branch()
+    False if local_branch.__name__ else True # "Use" to silence analyzers, pending PEP 640 or similar
 
     # Change a file in the local branch
     try:

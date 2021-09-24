@@ -111,15 +111,27 @@ def isSameLine(e1, e2):
     return False
 
 
-def isLine(bspline):
+def is_line(bspline):
     """Return True if the given BSpline curve is a straight line."""
-    step = bspline.LastParameter/10
-    b = bspline.tangent(0)
 
-    for i in range(10):
-        if bspline.tangent(i * step) != b:
-            return False
-    return True
+# previous implementation may fail for a multipole straight spline due
+# a second order error in tolerance, which introduce a difference of 1e-14
+# in the values of the tangents. Also, may fail on a periodic spline.
+#    step = bspline.LastParameter/10
+#    b = bspline.tangent(0)
+#
+#    for i in range(10):
+#        if bspline.tangent(i * step) != b:
+#            return False
+
+    start_point = bspline.StartPoint
+    end_point = bspline.EndPoint
+    dist_start_end = end_point.distanceToPoint(start_point)
+    if abs(bspline.length() - dist_start_end) < 1e-7:
+        return True
+
+    return False
+
 
 
 def invert(shape):
@@ -208,5 +220,32 @@ def getTangent(edge, from_point=None):
         return v1.cross(edge.Curve.Axis)
 
     return None
+
+
+def get_referenced_edges(property_value):
+    """Return the Edges referenced by the value of a App:PropertyLink, App::PropertyLinkList,
+       App::PropertyLinkSub or App::PropertyLinkSubList property."""
+    edges = []
+    if not isinstance(property_value, list):
+        property_value = [property_value]
+    for element in property_value:
+        if hasattr(element, "Shape") and element.Shape:
+            edges += shape.Edges
+        elif isinstance(element, tuple) and len(element) == 2:
+            object, subelement_names = element
+            if hasattr(object, "Shape") and object.Shape:
+                if len(subelement_names) == 1 and subelement_names[0] == "":
+                    edges += object.Shape.Edges
+                else:
+                    for subelement_name in subelement_names:
+                        if subelement_name.startswith("Edge"):
+                            edge_number = int(subelement_name.lstrip("Edge")) - 1
+                            if edge_number < len(object.Shape.Edges):
+                                edges.append(object.Shape.Edges[edge_number])
+    return edges
+
+# compatibility layer
+
+isLine = is_line
 
 ## @}

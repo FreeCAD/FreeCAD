@@ -70,7 +70,7 @@ protected:
     void getDefaults(void);
 
 private:
-    Ui_TaskLineDecor* ui;
+    std::unique_ptr<Ui_TaskLineDecor> ui;
     TechDraw::DrawViewPart* m_partFeat;
     std::vector<std::string> m_edges;
     int m_style;
@@ -112,7 +112,7 @@ protected:
     void restoreInvisibleCenters(void);
 
 private:
-    Ui_TaskRestoreLines* ui;
+    std::unique_ptr<Ui_TaskRestoreLines> ui;
     TechDraw::DrawViewPart* m_partFeat;
     TaskLineDecor* m_parent;
 };

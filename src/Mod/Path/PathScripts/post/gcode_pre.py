@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -50,6 +50,7 @@ import re
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathCustomGui as PathCustomGui
 import PathScripts.PathOpGui as PathOpGui
+from PySide import QtCore
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -112,7 +113,10 @@ def insert(filename, docname):
 
         # Create a custom and viewobject
         obj = PathCustom.Create("Custom")
-        res = PathOpGui.CommandResources('Custom', PathCustom.Create, PathCustomGui.TaskPanelOpPage, 'Path-Custom', 'Path-Custom', '', '')
+        res = PathOpGui.CommandResources('Custom', PathCustom.Create,
+                PathCustomGui.TaskPanelOpPage,
+                'Path_Custom',
+                QtCore.QT_TRANSLATE_NOOP('Path_Custom', 'Custom'), '', '')
         obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
 
@@ -121,6 +125,7 @@ def insert(filename, docname):
         obj.ToolController = matchToolController(obj, toolnumber)
 
     FreeCAD.ActiveDocument.recompute()
+
 
 
 def parse(inputstring):

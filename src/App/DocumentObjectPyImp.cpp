@@ -329,54 +329,48 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
 
     if (Py::Object(expr).isNone())
-        getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
-#if PY_MAJOR_VERSION >= 3
+        getDocumentObjectPtr()->setExpression(p, std::shared_ptr<Expression>());
     else if (PyUnicode_Check(expr)) {
         const char * exprStr = PyUnicode_AsUTF8(expr);
-#else
-    else if (PyString_Check(expr)) {
-        const char * exprStr = PyString_AsString(expr);
-#endif
-        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
+        std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
         if(shared_expr && comment)
             shared_expr->comment = comment;
 
         getDocumentObjectPtr()->setExpression(p, shared_expr);
     }
     else if (PyUnicode_Check(expr)) {
-#if PY_MAJOR_VERSION >= 3
         std::string exprStr = PyUnicode_AsUTF8(expr);
-#else
-        PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
-        if (unicode) {
-            std::string exprStr = PyString_AsString(unicode);
-            Py_DECREF(unicode);
-            boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
-
-            if(shared_expr && comment)
-                shared_expr->comment = comment;
-            getDocumentObjectPtr()->setExpression(p, shared_expr);
-        }
-        else {
-            // utf-8 encoding failed
-            return 0;
-        }
-#endif
     }
     else
         throw Py::TypeError("String or None expected.");
     Py_Return;
 }
 
-PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
+PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
 {
     const char *expr;
-    if (!PyArg_ParseTuple(args, "s", &expr))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "s", &expr))
+        return nullptr;
+
+    // HINT:
+    // The standard behaviour of Python for class methods is to always pass the class
+    // object as first argument.
+    // For FreeCAD-specific types the behaviour is a bit different:
+    // When calling this method for an instance then this is passed as first argument
+    // and otherwise the class object is passed.
+    // This behaviour is achieved by the function _getattr() that passed 'this' to
+    // PyCFunction_New().
+    //
+    // evalExpression() is a class method and thus 'self' can either be an instance of
+    // DocumentObjectPy or a type object.
+    App::DocumentObject* obj = nullptr;
+    if (self && PyObject_TypeCheck(self, &DocumentObjectPy::Type)) {
+        obj = static_cast<DocumentObjectPy*>(self)->getDocumentObjectPtr();
+    }
 
     PY_TRY {
-        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
-        if(shared_expr)
+        std::shared_ptr<Expression> shared_expr(Expression::parse(obj, expr));
+        if (shared_expr)
             return Py::new_reference_to(shared_expr->getPyValue());
         Py_Return;
     } PY_CATCH
@@ -391,6 +385,34 @@ PyObject*  DocumentObjectPy::recompute(PyObject *args)
     try {
         bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::isValid(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        bool ok = getDocumentObjectPtr()->isValid();
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::getStatusString(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        Py::String text(getDocumentObjectPtr()->getStatusString());
+        return Py::new_reference_to(text);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -417,32 +439,14 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     std::vector<std::string> subs;
     bool single=true;
     if (PyUnicode_Check(obj)) {
-#if PY_MAJOR_VERSION >= 3
         subs.push_back(PyUnicode_AsUTF8(obj));
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(obj);
-        subs.push_back(PyString_AsString(unicode));
-        Py_DECREF(unicode);
-    }
-    else if (PyString_Check(obj)) {
-        subs.push_back(PyString_AsString(obj));
-#endif
     } else if (PySequence_Check(obj)) {
         single=false;
         Py::Sequence shapeSeq(obj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyUnicode_Check(item)) {
-#if PY_MAJOR_VERSION >= 3
                subs.push_back(PyUnicode_AsUTF8(item));
-#else
-                PyObject* unicode = PyUnicode_AsUTF8String(item);
-                subs.push_back(PyString_AsString(unicode));
-                Py_DECREF(unicode);
-            }
-            else if (PyString_Check(item)) {
-                subs.push_back(PyString_AsString(item));
-#endif
             }else{
                 PyErr_SetString(PyExc_TypeError, "non-string object in sequence");
                 return 0;

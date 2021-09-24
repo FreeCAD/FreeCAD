@@ -77,7 +77,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     } else { // fallback to active part
         originGroupObject = PartDesignGui::getActivePart ( );
     }
-    
+
     App::OriginGroupExtension* originGroup = nullptr;
     if(originGroupObject)
         originGroup = originGroupObject->getExtensionByType<App::OriginGroupExtension>();
@@ -172,6 +172,15 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
         return true;
     }
+    if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+        const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+        BRepAdaptor_Curve adapt(edgeShape);
+        if (adapt.GetType() == GeomAbs_Circle) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -195,23 +204,24 @@ bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject
 namespace PartDesignGui
 {
 
-void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub)
 {
+    selObj = nullptr;
     if (!thisObj)
-        return;
+        return false;
 
     if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
-        return;
-    
+        return false;
+
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
-        return;
-    
+        return false;
+
     std::string subname = msg.pSubName;
-    
+
     //check if the selection is an external reference and ask the user what to do
-    //of course only if thisObj is in a body, as otherwise the old workflow would not 
+    //of course only if thisObj is in a body, as otherwise the old workflow would not
     //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
@@ -224,10 +234,11 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
             dia.setModal(true);
             int result = dia.exec();
             if (result == QDialog::DialogCode::Rejected) {
-                selObj = NULL;
-                return;
+                selObj = nullptr;
+                return false;
             }
-            else if (!dlg.radioXRef->isChecked()) {
+
+            if (!dlg.radioXRef->isChecked()) {
                 App::Document* document = thisObj->getDocument();
                 document->openTransaction("Make copy");
                 auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
@@ -237,7 +248,6 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
                 subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
                 subname.append("1");
             }
-        
         }
     }
 
@@ -247,6 +257,8 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     }
 
     selSub = std::vector<std::string>(1,subname);
+
+    return true;
 }
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)

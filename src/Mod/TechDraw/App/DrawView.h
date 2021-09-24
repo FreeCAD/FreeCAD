@@ -23,7 +23,7 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <QCoreApplication>
 #include <QRectF>
@@ -66,6 +66,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
+    virtual App::DocumentObjectExecReturn *recompute() override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onDocumentRestored() override;
     virtual short mustExecute() const override;
@@ -84,6 +85,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     virtual DrawPage* findParentPage() const;
+    virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(void) const;
     virtual double autoScale(double w, double h) const;

@@ -49,7 +49,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
 	Q_UNUSED(window)
     if (spnav_open() == -1) {
-        Base::Console().Log("Couldn't connect to spacenav daemon\n");
+        Base::Console().Log("Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon\n");
 		QSocketNotifier* SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);

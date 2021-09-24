@@ -32,6 +32,9 @@
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #include <QTextCodec>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -65,7 +68,7 @@ private :
   //  Unimplemented constructors and operators
   // -----------------------------------------------------------------------
   StdInputStream(const StdInputStream&);
-  StdInputStream& operator=(const StdInputStream&);   
+  StdInputStream& operator=(const StdInputStream&);
 
   // -----------------------------------------------------------------------
   //  Private data members

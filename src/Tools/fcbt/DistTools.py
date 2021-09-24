@@ -1,7 +1,7 @@
 
 
 # shell and operating system
-import os, sys, re, FileTools
+import os
 verbose = 0
 dcount = fcount = 0
 maxfileload = 100000
@@ -9,13 +9,6 @@ blksize = 1024 * 8
 
 
 def BuildDistName():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -23,13 +16,6 @@ def BuildDistName():
 
     return DistName
 def BuildSetupName():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -38,39 +24,18 @@ def BuildSetupName():
     return DistName
 
 def GetVersion():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
     return  FCVersionMajor[23:-1] + '.' +FCVersionMinor[23:-1] 
 
 def GetBuildNbr():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
     return  FCVersionBuild[23:-1] 
 
 def GetBuildDate():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -127,12 +92,12 @@ BinFilter = ["^Plugin\\.*$",
           "^.*\\.lib$",
           "^.*\\.exp$",
           "^.*\\.bsc$",
-          "^.*\\CADD.exe$",
-          "^.*\\CADAppD.dll$",
-          "^.*\\CmdD.exe$",
-          "^.*\\BaseD.dll$",
-          "^.*\\CADDCmdPy.dll$",
-          "^.*\\GuiD.dll$",
+          "^.*CADD.exe$",
+          "^.*CADAppD.dll$",
+          "^.*CmdD.exe$",
+          "^.*BaseD.dll$",
+          "^.*CADDCmdPy.dll$",
+          "^.*GuiD.dll$",
           "^.*\\.bsc$",
           "^.*\\.FCScript\\..*$",
           "^.*\\.FCParam$",
@@ -147,11 +112,11 @@ LibFilter = ["^Plugin\\.*$",
           "^.*\\.exe$",
           "^.*\\.exp$",
           "^.*\\.bsc$",
-          "^.*\\CADD.lib$",
-          "^.*\\CADAppD.lib$",
-          "^.*\\CmdD.lib$",
-          "^.*\\BaseD.lib$",
-          "^.*\\GuiD.lib$",
+          "^.*CADD.lib$",
+          "^.*CADAppD.lib$",
+          "^.*CmdD.lib$",
+          "^.*BaseD.lib$",
+          "^.*GuiD.lib$",
           "^.*\\.FCScript\\..*$",
           "^.*\\.FCParam$"]
 
@@ -169,7 +134,7 @@ ModFilter = ["^.*\\.o$",
           "^CVS$",
           "^Attic$",
           "^.*\\.opt$",
-          "^.*\\_d\.pyd$",
+          "^.*_d\.pyd$",
           "^.*\\.opt$",
           "^.*\\.ilg$",
           "^.*\\.ps$",
@@ -190,7 +155,7 @@ ModFilter = ["^.*\\.o$",
           "^.*\\.exp$",
           "^.*\\.lib$",
           "^.*\\.ui$",
-          "^.*\\Makefile$",
+          "^.*Makefile$",
           "^.*\\.plg$",]
 
 DocFilter = ["^.*\\.o$",

@@ -43,7 +43,7 @@ public:
     void accept();
 
 private:
-    Ui_SketchMirrorDialog* ui;
+    std::unique_ptr<Ui_SketchMirrorDialog> ui;
 };
 
 }

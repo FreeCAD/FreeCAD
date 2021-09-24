@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -57,7 +57,7 @@ PyObject* AxisOriginPy::getElementPicked(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
     SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
-    if(!pp) 
+    if(!pp)
         throw Base::TypeError("type must be of coin.SoPickedPoint");
     std::string name;
     if(!getAxisOriginPtr()->getElementPicked(pp,name))
@@ -74,7 +74,7 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
-    if(!pPath) 
+    if(!pPath)
         throw Base::TypeError("type must be of coin.SoPath");
     SoDetail *det = 0;
     if(!getAxisOriginPtr()->getDetailPath(
@@ -166,5 +166,5 @@ PyObject *AxisOriginPy::getCustomAttributes(const char* /*attr*/) const
 
 int AxisOriginPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

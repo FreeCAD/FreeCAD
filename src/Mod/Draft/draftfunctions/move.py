@@ -83,9 +83,9 @@ def move(objectslist, vector, copy=False):
                 newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
-            newobj.X = obj.X + real_vector.x
-            newobj.Y = obj.Y + real_vector.y
-            newobj.Z = obj.Z + real_vector.z
+            newobj.X = obj.X.Value + real_vector.x
+            newobj.Y = obj.Y.Value + real_vector.y
+            newobj.Z = obj.Z.Value + real_vector.z
 
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             pass

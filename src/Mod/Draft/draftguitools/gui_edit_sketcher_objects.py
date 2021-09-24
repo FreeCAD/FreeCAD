@@ -69,17 +69,11 @@ class SketcherSketchObjectGuiTools(GuiTools):
         0 : startpoint
         1 : endpoint
         """
+        import Sketcher
         if node_idx == 0:
             obj.movePoint(0, 1, v)
         elif node_idx == 1:
             obj.movePoint(0, 2, v)
         obj.recompute()
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 ## @}

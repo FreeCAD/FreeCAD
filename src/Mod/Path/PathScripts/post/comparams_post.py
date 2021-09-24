@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,11 +19,12 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
 import Path
 import PathScripts.PostUtils as PostUtils
 
-TOOLTIP = ''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
+TOOLTIP = '''Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output.'''
 
 SHOW_EDITOR = True
 

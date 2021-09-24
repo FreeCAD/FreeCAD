@@ -1,12 +1,21 @@
 /***************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
- *   Eivind Kvedalen 2015                                                  *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
 
@@ -43,14 +52,14 @@
 #include "ViewProviderSpreadsheet.h"
 #include "PropertiesDialog.h"
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Base;
 using namespace App;
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetMergeCells)
 
@@ -79,7 +88,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
 
             // Execute mergeCells commands
             if (ranges.size() > 0) {
-                Gui::Command::openCommand("Merge cells");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Merge cells"));
                 std::vector<Range>::const_iterator i = ranges.begin();
                 for (; i != ranges.end(); ++i)
                     if (i->size() > 1)
@@ -103,7 +112,7 @@ bool CmdSpreadsheetMergeCells::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetSplitCell)
 
@@ -132,7 +141,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
 
             if (current.isValid()) {
                 std::string address = CellAddress(current.row(), current.column()).toString();
-                Gui::Command::openCommand("Split cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split cell"));
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.splitCell('%s')", sheet->getNameInDocument(),
                                         address.c_str());
                 Gui::Command::commitCommand();
@@ -159,7 +168,7 @@ bool CmdSpreadsheetSplitCell::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetImport)
 
@@ -199,7 +208,7 @@ bool CmdSpreadsheetImport::isActive()
     return getActiveGuiDocument() ? true : false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetExport)
 
@@ -248,7 +257,7 @@ bool CmdSpreadsheetExport::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignLeft)
 
@@ -278,7 +287,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Left-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Left-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'left', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -300,7 +309,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignCenter)
 
@@ -330,7 +339,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Center cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Center cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'center', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -352,7 +361,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignRight)
 
@@ -382,7 +391,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Right-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Right-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'right', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -404,7 +413,7 @@ bool CmdSpreadsheetAlignRight::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignTop)
 
@@ -434,7 +443,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Top-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Top-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'top', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -456,7 +465,7 @@ bool CmdSpreadsheetAlignTop::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignBottom)
 
@@ -486,7 +495,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Bottom-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bottom-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'bottom', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -508,7 +517,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter)
 
@@ -538,7 +547,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Vertically center cells");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Vertically center cells"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'vcenter', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -560,7 +569,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleBold)
 
@@ -607,7 +616,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set bold text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set bold text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allBold)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'bold', 'add')", sheet->getNameInDocument(),
@@ -634,7 +643,7 @@ bool CmdSpreadsheetStyleBold::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleItalic)
 
@@ -681,7 +690,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set italic text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set italic text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allItalic)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'italic', 'add')", sheet->getNameInDocument(),
@@ -708,7 +717,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline)
 
@@ -755,7 +764,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set underline text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set underline text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allUnderline)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'underline', 'add')", sheet->getNameInDocument(),
@@ -781,7 +790,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetSetAlias)
 
@@ -845,7 +854,7 @@ bool CmdSpreadsheetSetAlias::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdCreateSpreadsheet)
 
@@ -866,7 +875,7 @@ void CmdCreateSpreadsheet::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Spreadsheet");
 
-    openCommand("Create Spreadsheet");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Spreadsheet"));
     doCommand(Doc,"App.activeDocument().addObject('Spreadsheet::Sheet','%s\')",FeatName.c_str());
     doCommand(Gui,"Gui.Selection.clearSelection()\n");
     doCommand(Gui,"Gui.Selection.addSelection(App.activeDocument().Name,'%s\')",FeatName.c_str());
@@ -878,7 +887,7 @@ bool CmdCreateSpreadsheet::isActive()
     return App::GetApplication().getActiveDocument();
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void CreateSpreadsheetCommands(void)
 {

@@ -75,6 +75,15 @@ public:
         return escapeButton;
     }
 
+    /// Defines whether a task dialog must be closed if the document changed the
+    /// active transaction.
+    void setAutoCloseOnTransactionChange(bool on) {
+        autoCloseTransaction = on;
+    }
+    bool isAutoCloseOnTransactionChange() const {
+        return autoCloseTransaction;
+    }
+
     const std::string& getDocumentName() const
     { return documentName; }
     void setDocumentName(const std::string& doc)
@@ -103,6 +112,11 @@ public:
 public:
     /// is called by the framework when the dialog is opened
     virtual void open();
+    /// is called by the framework when the dialog is closed
+    virtual void closed();
+    /// is called by the framework when the dialog is automatically closed due to
+    /// changing the active transaction
+    virtual void autoClosedOnTransactionChange();
     /// is called by the framework if a button is clicked which has no accept or reject role
     virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
@@ -127,6 +141,7 @@ protected:
 private:
     std::string documentName;
     bool escapeButton;
+    bool autoCloseTransaction;
 };
 
 } //namespace TaskView

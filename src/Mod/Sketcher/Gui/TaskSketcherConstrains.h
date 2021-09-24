@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -53,6 +53,8 @@ Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
     void onUpdateActiveStatus(QListWidgetItem *item, bool status);
     void emitCenterSelectedItems();
+    void emitHideSelection3DVisibility();
+    void emitShowSelection3DVisibility();
 
 protected Q_SLOTS:
     void modifyCurrentItem();
@@ -71,6 +73,38 @@ class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::Select
 {
     Q_OBJECT
 
+    enum FilterValue {
+        All = 0,
+        Geometric = 1,
+        Datums = 2,
+        Named = 3,
+        NonDriving = 4,
+        Horizontal = 5,
+        Vertical = 6,
+        Coincident = 7,
+        PointOnObject = 8,
+        Parallel = 9,
+        Perpendicular = 10,
+        Tangent = 11,
+        Equality = 12,
+        Symmetric = 13,
+        Block = 14,
+        Distance = 15,
+        HorizontalDistance = 16,
+        VerticalDistance = 17,
+        Radius = 18,
+        Weight = 19,
+        Diameter = 20,
+        Angle = 21,
+        SnellsLaw = 22,
+        InternalAlignment = 23
+    };
+
+    enum class ActionTarget {
+        All,
+        Selected
+    };
+
 public:
     TaskSketcherConstrains(ViewProviderSketch *sketchView);
     ~TaskSketcherConstrains();
@@ -80,6 +114,9 @@ public:
 
 private:
     void slotConstraintsChanged(void);
+    bool isConstraintFiltered(QListWidgetItem * item);
+    void change3DViewVisibilityToTrackFilter();
+    void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -91,6 +128,11 @@ public Q_SLOTS:
     void on_listWidgetConstraints_emitCenterSelectedItems(void);
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
+    void on_visualisationTrackingFilter_stateChanged(int state);
+    void on_showAllButton_clicked(bool);
+    void on_hideAllButton_clicked(bool);
+    void on_listWidgetConstraints_emitShowSelection3DVisibility();
+    void on_listWidgetConstraints_emitHideSelection3DVisibility();
 
 protected:
     void changeEvent(QEvent *e);
@@ -101,7 +143,7 @@ protected:
 private:
     QWidget* proxy;
     bool inEditMode;
-    Ui_TaskSketcherConstrains* ui;
+    std::unique_ptr<Ui_TaskSketcherConstrains> ui;
 };
 
 } //namespace SketcherGui

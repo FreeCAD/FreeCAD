@@ -224,6 +224,7 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
+generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
 generate_from_xml(LinkViewPy)
@@ -237,6 +238,7 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
     ViewProviderPy.xml
+    ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
     SelectionObjectPy.xml
@@ -276,140 +278,23 @@ SET(FreeCADGui_SDK_MOC_HDRS
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
-set(Gui_MOC_HDRS
-    Action.h
-    ActionFunction.h
-    Assistant.h
-    AutoSaver.h
-    CallTips.h
-    ComboView.h
-    Control.h
-    Clipping.h
-    DemoMode.h
-    DownloadItem.h
-    DownloadManager.h
-    DlgActionsImp.h
-    DlgActivateWindowImp.h
-    DlgUnitsCalculatorImp.h
-    DlgCommandsImp.h
-    DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
-    DlgDisplayPropertiesImp.h
-    DlgEditorImp.h
-    DlgGeneralImp.h
-    DlgInputDialogImp.h
-    DlgKeyboardImp.h
-    DlgMacroExecuteImp.h
-    DlgMacroRecordImp.h
-    DlgRunExternal.h
-    DlgEditFileIncludePropertyExternal.h
-    DlgMaterialPropertiesImp.h
-    DlgOnlineHelpImp.h
-    DlgParameterImp.h
-    DlgParameterFind.h
-    DlgPreferencesImp.h
-    DlgProjectInformationImp.h
-    DlgProjectUtility.h
-    DlgPropertyLink.h
-    DlgReportViewImp.h
-    DlgSettings3DViewImp.h
-    DlgSettingsNavigation.h
-    DlgSettingsViewColor.h
-    DlgSettingsColorGradientImp.h
-    DlgSettingsDocumentImp.h
-    DlgSettingsImageImp.h
-    DlgSettingsMacroImp.h
-    DlgSettingsUnitsImp.h
-    DlgCheckableMessageBox.h
-    DlgToolbarsImp.h
-    DlgWorkbenchesImp.h
-    TaskDlgRelocation.h
-    TaskCSysDragger.h
-    DlgUndoRedo.h
-    DockWindow.h
-    DockWindowManager.h
-    DocumentRecovery.h
-    EditorView.h
-    TextDocumentEditorView.h
-    ExpressionCompleter.h
-    DlgExpressionInput.h
-    FileDialog.h
-    Flag.h
-    GraphicsViewZoom.h
-    GraphvizView.h
-    GuiApplication.h
-    GuiApplicationNativeEventAware.h
-    InputVector.h
-    MainWindow.h
-    ManualAlignment.h
-    MDIView.h
-    NetworkRetriever.h
-    OnlineDocumentation.h
-    Placement.h
-    InputField.h
-    PrefWidgets.h
-    ProgressBar.h
-    ProgressDialog.h
-    PropertyPage.h
-    PropertyView.h
-    PythonConsole.h
-    PythonDebugger.h
-    PythonEditor.h
-    QuantitySpinBox.h
-    QListWidgetCustom.h
-    QuantitySpinBox_p.h
-    ReportView.h
-    SceneInspector.h
-    SelectionView.h
-    SpinBox.h
-    Splashscreen.h
-    TextEdit.h
-    TextureMapping.h
-    ToolBox.h
-    Transform.h
-    Tree.h
-    TreeView.h
-    ProjectView.h
-    View3DInventor.h
-    VectorListEditor.h
-    WidgetFactory.h
-    Widgets.h
-    Language/Translator.h
-    propertyeditor/PropertyEditor.h
-    propertyeditor/PropertyItem.h
-    propertyeditor/PropertyItemDelegate.h
-    propertyeditor/PropertyModel.h
-    TaskView/TaskAppearance.h
-    TaskView/TaskSelectLinkProperty.h
-    TaskView/TaskDialog.h
-    TaskView/TaskWatcher.h
-    TaskView/TaskEditControl.h
-    TaskView/TaskView.h
-    DAGView/DAGView.h
-    DAGView/DAGModel.h
-    TaskElementColors.h
-    DlgObjectSelection.h
-    DlgAddProperty.h
-    ${FreeCADGui_SDK_MOC_HDRS}
-)
-
-fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
-#SOURCE_GROUP("Moc" FILES ${Gui_MOC_SRCS})
-
 if (BUILD_QT5)
+    set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
 
-    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
+        COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h)
 else()
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
         COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
-
-    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 endif()
+
+set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
@@ -441,11 +326,13 @@ SET(Gui_UIC_SRCS
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsNavigation.ui
+    DlgSettingsSelection.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
@@ -671,11 +558,13 @@ SET(Dialog_Settings_CPP_SRCS
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
     DlgSettingsNavigation.cpp
+    DlgSettingsSelection.cpp
     DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
+    DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
@@ -686,11 +575,13 @@ SET(Dialog_Settings_HPP_SRCS
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
     DlgSettingsNavigation.h
+    DlgSettingsSelection.h
     DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
+    DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
 )
 SET(Dialog_Settings_SRCS
@@ -703,11 +594,13 @@ SET(Dialog_Settings_SRCS
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsNavigation.ui
+    DlgSettingsSelection.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
@@ -1004,6 +897,7 @@ SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 SET(Viewprovider_CPP_SRCS
     ViewProvider.cpp
     ViewProviderExtension.cpp
+    ViewProviderExtensionPyImp.cpp
     ViewProviderGroupExtension.cpp
     ViewProviderGeoFeatureGroupExtension.cpp
     ViewProviderOriginGroupExtension.cpp
@@ -1138,6 +1032,8 @@ SET(Widget_CPP_SRCS
     QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
+    PythonWrapper.cpp
+    UiLoader.cpp
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
@@ -1154,6 +1050,8 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox_p.h
     SpinBox.h
     Splashscreen.h
+    PythonWrapper.h
+    UiLoader.h
     WidgetFactory.h
     Widgets.h
     Window.h
@@ -1250,7 +1148,6 @@ SET(FreeCADGui_CPP_SRCS
     WaitCursor.cpp
     ManualAlignment.cpp
     TransactionObject.cpp
-    WinNativeGestureRecognizers.cpp
 )
 SET(FreeCADGui_SRCS 
     Application.h
@@ -1283,7 +1180,6 @@ SET(FreeCADGui_SRCS
     WaitCursor.h
     ManualAlignment.h
     TransactionObject.h
-    WinNativeGestureRecognizers.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 

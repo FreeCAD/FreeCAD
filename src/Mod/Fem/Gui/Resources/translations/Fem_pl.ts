@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Aby dodać odniesienia: zaznacz je w widoku 3D i kliknij „Dodaj”.</translation>
     </message>
   </context>
   <context>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
@@ -59,20 +59,20 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation>Uruchom podobnie</translation>
+      <translation>Uruchom ponownie</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
-      <translation>Anuluj</translation>
+      <translation>Przerwij</translation>
     </message>
   </context>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometria odniesienia selektor </translation>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Określenie odniesienia do geometrii dla</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -82,7 +82,42 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+      <translation>Kliknij na przycisk "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy. Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte. Można wybrać następujące elementy geometryczne: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Można wybrać następujące elementy geometrii: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy. {}Następujące elementy geometryczne mogą zostać wybrane: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Kliknij na przycisk "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation>Kliknij na "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>{}Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -93,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Bryła</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selektor odniesienia geometrii dla </translation>
     </message>
   </context>
   <context>
@@ -105,12 +145,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Wybierz elementy część ciała stałe, które dodaje się do listy. Taniej, niż dodać solid kliknij przycisk "Dodaj".</translation>
+      <translation>Wybierz elementy wchodzące w skład bryły, które mają być dodane do listy. Aby dodać bryłę należy kliknąć "Dodaj".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Wybierz elementy wchodzące w skład bryły, które mają być dodane do listy. Aby dodać bryłę należy kliknąć "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -144,7 +184,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation>Płaszczyzna cięcia na powierzchni</translation>
+      <translation>Dodaj płaszczyznę cięcia na powierzchni</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
@@ -165,12 +205,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Ograniczenie źródła ciepła ciała</translation>
+      <translation>Zdefiniuj źródła ciepła ciała</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Tworzy źródło ciepła ciała ograniczenia FEM</translation>
+      <translation>Tworzy źródło ciepła ciała wiązania MES</translation>
     </message>
   </context>
   <context>
@@ -178,12 +218,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Zdefiniuj potencjał elektrostatyczny</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Tworzy potencjał elektrostatyczny ograniczenia FEM</translation>
+      <translation>Tworzy potencjał elektrostatyczny wiązania MES</translation>
     </message>
   </context>
   <context>
@@ -191,7 +231,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Zdefiniuj prędkość przepływu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -204,12 +244,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Zdefiniuj początkową prędkość przepływu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Tworzy wiązanie MES dla początkowej prędkości przepływu</translation>
     </message>
   </context>
   <context>
@@ -217,12 +257,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation>Ograniczenie wagi własnej</translation>
+      <translation>Zdefiniuj masę</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Tworzy wagę własną Ograniczenia FEM</translation>
+      <translation>Tworzy ciężar własny z wiązaniem MES</translation>
     </message>
   </context>
   <context>
@@ -321,7 +361,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation>Równanie Fluxsolver</translation>
+      <translation>Równanie fluxsolvera</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
@@ -334,7 +374,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Fluxsolver ciepła</translation>
     </message>
   </context>
   <context>
@@ -355,7 +395,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Materiał na ciecz</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -386,7 +426,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Materiał zbrojony (beton)</translation>
     </message>
   </context>
   <context>
@@ -399,7 +439,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation>Materiał MES dla ciała stałego</translation>
+      <translation>Materiał MES dla bryły</translation>
     </message>
   </context>
   <context>
@@ -511,12 +551,12 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation>Oczyść wyniki</translation>
+      <translation>Usuń wyniki</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z aktywnej analizy</translation>
     </message>
   </context>
   <context>
@@ -581,7 +621,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Uruchomić obliczenia dodatku solver</translation>
+      <translation>Uruchom obliczenia solwera</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
@@ -620,7 +660,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation>Edytor materiałów</translation>
+      <translation>Edytor materiału</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
@@ -752,7 +792,7 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation>Obciążenie ciężarem własnym</translation>
+      <translation>Zdefiniuj masę</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
@@ -814,7 +854,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation>Tworzy nieliniowy materiał mechaniczny</translation>
+      <translation>Tworzy materiał mechaniczny</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -874,17 +914,17 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation>Oczyść wyniki</translation>
+      <translation>Usuń wyniki</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z analizy</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z aktywnej analizy</translation>
     </message>
   </context>
   <context>
@@ -892,7 +932,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Uruchomić obliczenia dodatku solver</translation>
+      <translation>Uruchom obliczenia solwera</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
@@ -920,7 +960,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Tworzy grubość powłoki FEM</translation>
+      <translation>Tworzy grubość powłoki MES</translation>
     </message>
   </context>
   <context>
@@ -1013,7 +1053,7 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation>Wpisz plik .inp i uruchom CalculiX ccx</translation>
+      <translation>Zapisz plik .inp i uruchom CalculiX ccx</translation>
     </message>
   </context>
   <context>
@@ -1026,7 +1066,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Okno dialogowe, aby rozpocząć obliczanie wybranego dodatku solver</translation>
+      <translation>Okno dialogowe, do uruchomienia obliczeń wybranym solwerem</translation>
     </message>
   </context>
   <context>
@@ -1039,7 +1079,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Okno dialogowe, aby rozpocząć obliczanie wybranego dodatku solver</translation>
+      <translation>Okno dialogowe, do uruchomienia obliczeń wybranym solwerem</translation>
     </message>
   </context>
   <context>
@@ -1073,7 +1113,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -1087,7 +1127,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -1097,7 +1137,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>Stwórz wiązania MES dla łożyska</translation>
+      <translation>Utwórz wiązanie MES dla łożyska</translation>
     </message>
   </context>
   <context>
@@ -1105,12 +1145,12 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Stwórz stałą przemieszczenia FEM</translation>
+      <translation>Utwórz wiązanie przemieszczenia MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
@@ -1123,12 +1163,12 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Stwórz stałe wiązanie MES</translation>
+      <translation>Utwórz stałe wiązanie MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
@@ -1141,7 +1181,7 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
@@ -1159,7 +1199,7 @@
     <message>
       <location filename="../../Command.cpp" line="445"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="446"/>
@@ -1169,7 +1209,7 @@
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Utwórz obciążenie MES dla koła zębatego</translation>
+      <translation>Utwórz wiązanie MES dla koła zębatego</translation>
     </message>
   </context>
   <context>
@@ -1177,7 +1217,7 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -1195,7 +1235,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -1213,7 +1253,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -1227,7 +1267,7 @@
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="720"/>
@@ -1243,7 +1283,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Wybierz pojedynczą siatkę FEM albo zestaw węzłów, proszę.</translation>
+      <translation>Wybierz pojedynczą siatkę MES albo zestaw węzłów.</translation>
     </message>
   </context>
   <context>
@@ -1251,7 +1291,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="229"/>
@@ -1265,7 +1305,7 @@
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Fem</source>
-      <translation>Mes</translation>
+      <translation>MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="663"/>
@@ -1290,7 +1330,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation>Wewnętrzny edytor dla plików .inp</translation>
+      <translation>Użyj wewnętrznego edytora dla plików .inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
@@ -1345,12 +1385,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation>Limit wysokiej częstotliwości</translation>
+      <translation>Górna granica częstotliwości</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Ograniczenia niskiej częstotliwości</translation>
+      <translation>Dolna granica częstotliwości</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -1389,7 +1429,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1397,7 +1437,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1532,7 @@
     <message>
       <location filename="../../TaskDriver.cpp" line="51"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1540,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Parametry obciążeń MES</translation>
+      <translation>Parametry wiązań MES</translation>
     </message>
   </context>
   <context>
@@ -1564,7 +1604,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
@@ -1613,7 +1653,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation>Obciążenie węzłowe</translation>
+      <translation>Obciążenie punktowe</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
@@ -1695,7 +1735,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd wyboru</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
@@ -1847,7 +1887,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation>Zapiusz plik .inp</translation>
+      <translation>Zapisz plik .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
@@ -1877,7 +1917,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
       <source>choose...</source>
-      <translation>Wybierz...</translation>
+      <translation>wybierz ...</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
@@ -1912,7 +1952,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
       <source>Young's Modulus:</source>
-      <translation>Moduł Younga:</translation>
+      <translation>Modulacja Younga:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
@@ -1961,7 +2001,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>Twój FreeCAD jest zainstalowany bez wsparcia dla NETGEN. Siatka nie będzie działać...</translation>
+      <translation>Twój FreeCAD został skompilowany bez obsługi NETGEN. Tworzenie siatki nie będzie działać....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2022,7 +2062,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation>Siła reakcji</translation>
+      <translation>Zdefiniuj siłę</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
@@ -2051,17 +2091,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation>Przesunięcie Y</translation>
+      <translation>Odkształcenie Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation>Przesunięcie X</translation>
+      <translation>Odkształcenie X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation>Przesunięcie Z</translation>
+      <translation>Odkształcenie Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2076,7 +2116,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation>Przemieszczenie całkowite</translation>
+      <translation>Odkształcenie całkowite</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -2086,17 +2126,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
       <source>Max:</source>
-      <translation>Maks:</translation>
+      <translation>Maksymalnie:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="123"/>
       <source>Min:</source>
-      <translation>Min:</translation>
+      <translation>Minimalnie:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation>Wyporność</translation>
+      <translation>Odkształcenie</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
@@ -2129,7 +2169,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Constraints</source>
-      <translation>Ograniczenia</translation>
+      <translation>Wiązania</translation>
     </message>
   </context>
   <context>
@@ -2243,7 +2283,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>Lokalizacja</translation>
+      <translation>Położenie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -2306,7 +2346,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation>Odwrócone kierunki</translation>
+      <translation>Odwróć kierunek</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
@@ -2316,7 +2356,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
       <source>Location</source>
-      <translation>Lokalizacja</translation>
+      <translation>Położenie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>
@@ -2329,7 +2369,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>Przemieszczenie określone</translation>
+      <translation>Odkształcenie określone</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -2349,7 +2389,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Przesunięcie x</translation>
+      <translation>Odkształcenie x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2374,12 +2414,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Przesunięcie y</translation>
+      <translation>Odkształcenie y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Przesunięcie z</translation>
+      <translation>Odkształcenie z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
@@ -2458,7 +2498,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation>Ciśnienie</translation>
+      <translation>Nacisk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
@@ -2494,7 +2534,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation>Drugiego rzędu</translation>
+      <translation>Elementy drugiego rzędu</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
@@ -2549,12 +2589,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
       <source>Optimize</source>
-      <translation>Optymalizacji</translation>
+      <translation>Optymalizacja</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Liczba węzłów:</translation>
+      <translation>Liczba węzłów: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

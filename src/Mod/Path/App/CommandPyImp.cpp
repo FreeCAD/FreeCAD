@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,6 +56,11 @@ std::string CommandPy::representation(void) const
     return str.str();
 }
 
+// 
+// Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read access from python code
+// Now the pre-filled Py::Dict is returned which is more consistent with normal python behaviour.
+// It should be cleared whenever the c++ Parameters object is changed eg setParameters() or other objects invalidate its content, eg setPlacement()
+// https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
 
 PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
@@ -85,13 +90,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
             std::string ckey;
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(key)) {
                 ckey = PyUnicode_AsUTF8(key);
-#else
-            if (PyString_Check(key)) {
-                ckey = PyString_AsString(key);
-#endif
             }
             else {
                 PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string keys");
@@ -100,13 +100,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 
             boost::to_upper(ckey);
             double cvalue;
-#if PY_MAJOR_VERSION >= 3
             if (PyObject_TypeCheck(value,&(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(value);
-#else
-            if (PyObject_TypeCheck(value,&(PyInt_Type))) {
-                cvalue = (double)PyInt_AsLong(value);
-#endif
             }
             else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(value);
@@ -117,6 +112,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             }
             getCommandPtr()->Parameters[ckey]=cvalue;
         }
+          parameters_copy_dict.clear();
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
@@ -157,15 +153,13 @@ void CommandPy::setName(Py::String arg)
 
 Py::Dict CommandPy::getParameters(void) const
 {
-    PyObject *dict = PyDict_New();
-    for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
-#if PY_MAJOR_VERSION >= 3
-        PyDict_SetItem(dict,PyUnicode_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
-#else
-        PyDict_SetItem(dict,PyString_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
-#endif
+    // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
+    if (parameters_copy_dict.length()==0) {    
+      for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
+          parameters_copy_dict.setItem(i->first, Py::Float(i->second));
+      }
     }
-    return Py::Dict(dict);
+    return parameters_copy_dict;
 }
 
 void CommandPy::setParameters(Py::Dict arg)
@@ -175,13 +169,8 @@ void CommandPy::setParameters(Py::Dict arg)
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
-#if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(key)) {
             ckey = PyUnicode_AsUTF8(key);
-#else
-        if (PyString_Check(key)) {
-            ckey = PyString_AsString(key);
-#endif
         }
         else {
             throw Py::TypeError("The dictionary can only contain string keys");
@@ -189,13 +178,8 @@ void CommandPy::setParameters(Py::Dict arg)
 
         boost::to_upper(ckey);
         double cvalue;
-#if PY_MAJOR_VERSION >= 3
         if (PyObject_TypeCheck(value,&(PyLong_Type))) {
             cvalue = (double)PyLong_AsLong(value);
-#else
-        if (PyObject_TypeCheck(value,&(PyInt_Type))) {
-            cvalue = (double)PyInt_AsLong(value);
-#endif
         }
         else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
             cvalue = PyFloat_AsDouble(value);
@@ -204,6 +188,7 @@ void CommandPy::setParameters(Py::Dict arg)
             throw Py::TypeError("The dictionary can only contain number values");
         }
         getCommandPtr()->Parameters[ckey]=cvalue;
+        parameters_copy_dict.clear();
     }
 }
 
@@ -212,11 +197,7 @@ void CommandPy::setParameters(Py::Dict arg)
 PyObject* CommandPy::toGCode(PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString(getCommandPtr()->toGCode().c_str());
-#else
-        return PyString_FromString(getCommandPtr()->toGCode().c_str());
-#endif
     }
     throw Py::TypeError("This method accepts no argument");
 }
@@ -228,6 +209,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
         std::string gcode(pstr);
         try {
             getCommandPtr()->setFromGCode(gcode);
+            parameters_copy_dict.clear();
         }
         catch (const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
@@ -253,6 +235,7 @@ void CommandPy::setPlacement(Py::Object arg)
     Py::Type PlacementType(pyType.o);
     if(arg.isType(PlacementType)) {
         getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
+        parameters_copy_dict.clear();
     } else
     throw Py::TypeError("Argument must be a placement");
 }
@@ -263,6 +246,7 @@ PyObject* CommandPy::transform(PyObject *args)
     if ( PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &placement) ) {
         Base::PlacementPy *p = static_cast<Base::PlacementPy*>(placement);
         Path::Command trCmd = getCommandPtr()->transform( *p->getPlacementPtr() );
+        parameters_copy_dict.clear();
         return new CommandPy(new Path::Command(trCmd));
     } else
     throw Py::TypeError("Argument must be a placement");
@@ -293,19 +277,15 @@ int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
             double cvalue;
-#if PY_MAJOR_VERSION >= 3
             if (PyObject_TypeCheck(obj,&(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(obj);
-#else
-            if (PyObject_TypeCheck(obj,&(PyInt_Type))) {
-                cvalue = (double)PyInt_AsLong(obj);
-#endif
             } else if (PyObject_TypeCheck(obj,&(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(obj);
             } else {
                 return 0;
             }
             getCommandPtr()->Parameters[satt]=cvalue;
+            parameters_copy_dict.clear();
             return 1;
         }
     }

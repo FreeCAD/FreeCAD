@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2013 Wandererfan <wandererfan@gmail.com>                *
+# *   Copyright (c) 2013 WandererFan <wandererfan@gmail.com>                *
 # *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -68,8 +68,8 @@ import DraftVecUtils
 import lazy_loader.lazy_loader as lz
 
 from draftutils.messages import _msg, _wrn, _err
-from draftutils.translate import _tr
-
+from draftutils.translate import translate
+def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.base import DraftObject
 from draftobjects.draftlink import DraftLink
 
@@ -165,7 +165,7 @@ class PathArray(DraftLink):
     def set_general_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
         if "Base" not in properties:
-            _tip = _tr("The base object that will be duplicated")
+            _tip = QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated")
             obj.addProperty("App::PropertyLinkGlobal",
                             "Base",
                             "Objects",
@@ -173,9 +173,7 @@ class PathArray(DraftLink):
             obj.Base = None
 
         if "PathObject" not in properties:
-            _tip = _tr("The object along which "
-                       "the copies will be distributed. "
-                       "It must contain 'Edges'.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'.")
             obj.addProperty("App::PropertyLinkGlobal",
                             "PathObject",
                             "Objects",
@@ -190,11 +188,7 @@ class PathArray(DraftLink):
         # as this property can be used to select a single object,
         # or a single object with its subelements.
         if "PathSubelements" not in properties:
-            _tip = _tr("List of connected edges in the 'Path Object'.\n"
-                       "If these are present, the copies will be created "
-                       "along these subelements only.\n"
-                       "Leave this property empty to create copies along "
-                       "the entire 'Path Object'.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","List of connected edges in the 'Path Object'.\nIf these are present, the copies will be created along these subelements only.\nLeave this property empty to create copies along the entire 'Path Object'.")
             obj.addProperty("App::PropertyLinkSubListGlobal",
                             "PathSubelements",
                             "Objects",
@@ -202,7 +196,7 @@ class PathArray(DraftLink):
             obj.PathSubelements = []
 
         if "Count" not in properties:
-            _tip = _tr("Number of copies to create")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Number of copies to create")
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
@@ -210,8 +204,7 @@ class PathArray(DraftLink):
             obj.Count = 4
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = _tr("Show the individual array elements "
-                       "(only for Link arrays)")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)")
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
@@ -222,10 +215,7 @@ class PathArray(DraftLink):
     def set_align_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
         if "ExtraTranslation" not in properties:
-            _tip = _tr("Additional translation "
-                       "that will be applied to each copy.\n"
-                       "This is useful to adjust for the difference "
-                       "between shape centre and shape reference point.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Additional translation that will be applied to each copy.\nThis is useful to adjust for the difference between shape centre and shape reference point.")
             obj.addProperty("App::PropertyVectorDistance",
                             "ExtraTranslation",
                             "Alignment",
@@ -233,7 +223,7 @@ class PathArray(DraftLink):
             obj.ExtraTranslation = App.Vector(0, 0, 0)
 
         if "TangentVector" not in properties:
-            _tip = _tr("Alignment vector for 'Tangent' mode")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Alignment vector for 'Tangent' mode")
             obj.addProperty("App::PropertyVector",
                             "TangentVector",
                             "Alignment",
@@ -241,8 +231,7 @@ class PathArray(DraftLink):
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
-            _tip = _tr("Force use of 'Vertical Vector' as local Z direction "
-                       "when using 'Original' or 'Tangent' alignment mode")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode")
             obj.addProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",
@@ -250,8 +239,7 @@ class PathArray(DraftLink):
             obj.ForceVertical = False
 
         if "VerticalVector" not in properties:
-            _tip = _tr("Direction of the local Z axis "
-                       "when 'Force Vertical' is true")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Direction of the local Z axis when 'Force Vertical' is true")
             obj.addProperty("App::PropertyVector",
                             "VerticalVector",
                             "Alignment",
@@ -259,16 +247,7 @@ class PathArray(DraftLink):
             obj.VerticalVector = App.Vector(0, 0, 1)
 
         if "AlignMode" not in properties:
-            _tip = _tr("Method to orient the copies along the path.\n"
-                       "- Original: X is curve tangent, Y is normal, "
-                       "and Z is the cross product.\n"
-                       "- Frenet: aligns the object following the local "
-                       "coordinate system along the path.\n"
-                       "- Tangent: similar to 'Original' but the local X "
-                       "axis is pre-aligned to 'Tangent Vector'.\n"
-                       "\n"
-                       "To get better results with 'Original' or 'Tangent' "
-                       "you may have to set 'Force Vertical' to true.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Method to orient the copies along the path.\n- Original: X is curve tangent, Y is normal, and Z is the cross product.\n- Frenet: aligns the object following the local coordinate system along the path.\n- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.\n\nTo get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.")
             obj.addProperty("App::PropertyEnumeration",
                             "AlignMode",
                             "Alignment",
@@ -279,10 +258,7 @@ class PathArray(DraftLink):
         # The Align property must be attached after other align properties
         # so that onChanged works properly
         if "Align" not in properties:
-            _tip = _tr("Orient the copies along the path depending "
-                       "on the 'Align Mode'.\n"
-                       "Otherwise the copies will have the same orientation "
-                       "as the original Base object.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Orient the copies along the path depending on the 'Align Mode'.\nOtherwise the copies will have the same orientation as the original Base object.")
             obj.addProperty("App::PropertyBool",
                             "Align",
                             "Alignment",
@@ -305,7 +281,7 @@ class PathArray(DraftLink):
         w = self.get_wires(obj.PathObject, obj.PathSubelements)
         if not w:
             _err(obj.PathObject.Label
-                 + _tr(", path object doesn't have 'Edges'."))
+                 + translate("draft",", path object doesn't have 'Edges'."))
             return
 
         base_rotation = obj.Base.Shape.Placement.Rotation
@@ -352,7 +328,7 @@ class PathArray(DraftLink):
             for n in edgeNames:
                 e = sub[0].Shape.getElement(n)
                 sl.append(e)
-        return Part.Wire(sl)
+        return Part.Wire(Part.__sortEdges__(sl))
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
@@ -416,20 +392,19 @@ class PathArray(DraftLink):
         if "PathObj" in properties:
             obj.PathObject = obj.PathObj
             obj.removeProperty("PathObj")
-            _info = "'PathObj' property will be migrated to 'PathObject'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
 
         if "PathSubs" in properties:
             obj.PathSubelements = obj.PathSubs
             obj.removeProperty("PathSubs")
             _info = "'PathSubs' property will be migrated to 'PathSubelements'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
 
         if "Xlate" in properties:
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
             _info = "'Xlate' property will be migrated to 'ExtraTranslation'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -444,7 +419,10 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
     Each copy will be distributed evenly.
     """
     closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-    normal = DraftGeomUtils.getNormal(pathwire)
+    normal = DraftGeomUtils.get_normal(pathwire)
+    # for backward compatibility with previous getNormal implementation
+    if normal is None:
+        normal = App.Vector(0, 0, 1)
 
     if forceNormal and normalOverride:
         normal = normalOverride
@@ -543,8 +521,8 @@ def calculate_placement(globalRotation,
     try:
         t = edge.tangentAt(get_parameter_from_v0(edge, offset))
         t.normalize()
-    except:
-        _wrn(_tr("Cannot calculate path tangent. Copy not aligned."))
+    except Exception:
+        _wrn(translate("draft","Cannot calculate path tangent. Copy not aligned."))
         return placement
 
     if mode in ('Original', 'Tangent'):
@@ -557,10 +535,10 @@ def calculate_placement(globalRotation,
         try:
             b = t.cross(n)
             b.normalize()
-        except:
+        except Exception:
             # weird special case, tangent and normal parallel
             b = nullv
-            _wrn(_tr("Tangent and normal are parallel. Copy not aligned."))
+            _wrn(translate("draft","Tangent and normal are parallel. Copy not aligned."))
             return placement
 
         if overrideNormal:
@@ -577,20 +555,20 @@ def calculate_placement(globalRotation,
             n.normalize()
         except App.Base.FreeCADError:  # no/infinite normals here
             n = defNormal
-            _msg(_tr("Cannot calculate path normal, using default."))
+            _msg(translate("draft","Cannot calculate path normal, using default."))
 
         try:
             b = t.cross(n)
             b.normalize()
-        except:
+        except Exception:
             b = nullv
-            _wrn(_tr("Cannot calculate path binormal. Copy not aligned."))
+            _wrn(translate("draft","Cannot calculate path binormal. Copy not aligned."))
             return placement
 
         priority = "XZY"
         newRot = App.Rotation(t, n, b, priority)  # t/x, n/y, b/z
     else:
-        _msg(_tr("AlignMode {} is not implemented".format(mode)))
+        _msg(translate("draft","AlignMode {} is not implemented").format(mode))
         return placement
 
     # Have valid tangent, normal, binormal

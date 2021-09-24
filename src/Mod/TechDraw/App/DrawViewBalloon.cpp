@@ -65,7 +65,7 @@ using namespace TechDraw;
 
 App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  (1.0) };
+                                                                  (0.1) };
 
 //===========================================================================
 // DrawViewBalloon
@@ -91,23 +91,26 @@ const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
 
 DrawViewBalloon::DrawViewBalloon(void)
 {
-    ADD_PROPERTY_TYPE(Text ,     (""),"",App::Prop_None,"The text to be displayed");
-    ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
-    ADD_PROPERTY_TYPE(OriginX,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin x");
-    ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
+    ADD_PROPERTY_TYPE(Text, (""), "", App::Prop_None, "The text to be displayed");
+    ADD_PROPERTY_TYPE(SourceView, (0), "", (App::PropertyType)(App::Prop_None), "Source view for balloon");
+    ADD_PROPERTY_TYPE(OriginX, (0), "", (App::PropertyType)(App::Prop_None), "Balloon origin x");
+    ADD_PROPERTY_TYPE(OriginY, (0), "", (App::PropertyType)(App::Prop_None), "Balloon origin y");
 
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(EndType,(prefEnd()));
+    ADD_PROPERTY_TYPE(EndType, (prefEnd()), "", (App::PropertyType)(App::Prop_None), "End symbol for the balloon line");
+
+    ADD_PROPERTY_TYPE(EndTypeScale, (1.0), "", (App::PropertyType)(App::Prop_None),"End symbol scale factor");
+    EndTypeScale.setConstraints(&SymbolScaleRange);
 
     BubbleShape.setEnums(balloonTypeEnums);
-    ADD_PROPERTY(BubbleShape,(prefShape()));
+    ADD_PROPERTY_TYPE(BubbleShape, (prefShape()), "", (App::PropertyType)(App::Prop_None), "Shape of the balloon bubble");
 
-    ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
+    ADD_PROPERTY_TYPE(ShapeScale, (1.0), "", (App::PropertyType)(App::Prop_None), "Balloon shape scale");
     ShapeScale.setConstraints(&SymbolScaleRange);
 
-    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
+    ADD_PROPERTY_TYPE(TextWrapLen, (-1), "", (App::PropertyType)(App::Prop_None), "Text wrap length; -1 means no wrap");
 
-    ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(KinkLength, (prefKinkLength()), "", (App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
 
     SourceView.setScope(App::LinkScope::Global);
@@ -125,8 +128,12 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
              (prop == &BubbleShape)  ||
+             (prop == &ShapeScale)   ||
              (prop == &Text)    ||
-             (prop == &KinkLength) ) {
+             (prop == &KinkLength)   ||
+             (prop == &EndTypeScale) ||
+             (prop == &OriginX) ||
+             (prop == &OriginY) ) {
             requestPaint();
         }
     }

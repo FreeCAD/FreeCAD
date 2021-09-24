@@ -36,7 +36,7 @@
 # include <QTimer>
 #endif
 
-#include <QDirModel>
+#include <QFileSystemModel>
 #include <Base/Console.h>
 #include <App/Document.h>
 
@@ -56,8 +56,7 @@ using namespace Gui;
 ProjectWidget::ProjectWidget(QWidget* parent)
     : QTreeView(parent)
 {
-    fileModel = new QDirModel(this);
-    fileModel->setSorting(QDir::DirsFirst | QDir::Type);
+    fileModel = new QFileSystemModel(this);
     setModel(fileModel);
 }
 

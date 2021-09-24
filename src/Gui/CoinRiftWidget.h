@@ -36,7 +36,7 @@
 
 #if BUILD_VR
 
-// defines which method to use to render 
+// defines which method to use to render
 #define USE_SO_OFFSCREEN_RENDERER
 //#define USE_FRAMEBUFFER
 
@@ -84,7 +84,7 @@ class CoinRiftWidget : public QGLWidget
     GLuint frameBufferID[2], depthBufferID[2];
     // A SoSceneManager has a SoRenderManager to do the rendering -- should we not use SoRenderManager instead?
     // We are probably not that interested in events. SoSceneManager::setSceneGraph() searches for the camera
-    // and sets it in SoRenderManager, but its is actually only used for built-in stereo rendering. 
+    // and sets it in SoRenderManager, but its is actually only used for built-in stereo rendering.
     // FIXME: We should probably eliminate that search...
     SoSceneManager *m_sceneManager;
 #endif

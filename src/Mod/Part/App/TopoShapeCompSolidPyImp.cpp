@@ -55,6 +55,13 @@ PyObject *TopoShapeCompSolidPy::PyMake(struct _typeobject *, PyObject *, PyObjec
 
 int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined CompSolid
+        getTopoShapePtr()->setShape(TopoDS_CompSolid());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;

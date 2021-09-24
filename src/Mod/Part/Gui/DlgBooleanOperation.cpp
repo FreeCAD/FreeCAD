@@ -102,7 +102,6 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
 DlgBooleanOperation::~DlgBooleanOperation()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
     this->connectNewObject.disconnect();
     this->connectModObject.disconnect();
 }

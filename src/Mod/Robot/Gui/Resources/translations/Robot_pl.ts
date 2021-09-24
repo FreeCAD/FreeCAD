@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="217"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Dodaj kształt narzędzia do robota</translation>
+      <translation>Dodaj kształt narzędzia robotowi</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Place robot...</source>
-      <translation>Postaw robota...</translation>
+      <translation>Umieść robota...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Place a robot (experimental!)</source>
-      <translation>Postaw robota (eksperymentalne!)</translation>
+      <translation>Umieść robota (eksperymentalne!)</translation>
     </message>
   </context>
   <context>
@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>Utwórz nową pustą trajektorię</translation>
+      <source>Create a new empty trajectory</source>
+      <translation>Utwórz nowy pusty tor pracy</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>Edge to Trajectory...</source>
-      <translation>Krawędź na Trajektorię...</translation>
+      <translation>Wstaw krawędź w tor ruchu ...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="51"/>
       <source>Kuka compact subroutine...</source>
-      <translation>Kuka kompaktowa funkcja...</translation>
+      <translation>Kompaktowy podprogram Kuka...</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="52"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Eksportuj trajektorię jako uproszczoną procedurę KRL.</translation>
+      <translation>Wyeksportuj tor ruchu jako krótki podprogram KRL.</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="113"/>
       <source>Kuka full subroutine...</source>
-      <translation>Kuka pełna funkcja...</translation>
+      <translation>Pełny podprogram Kuka...</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="114"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Eksportuj trajektorię jako pełną procedurę KRL.</translation>
+      <translation>Wyeksportuj tor ruchu jako kompletny podprogram KRL.</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="96"/>
       <source>Insert in trajectory</source>
-      <translation>Wstaw na Trajektorię</translation>
+      <translation>Wstaw narzędzie w tor ruchu</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="97"/>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Wstaw lokację narzędzia robota na trajektorię</translation>
+      <translation>Wstaw lokację narzędzia robota na tor ruchu</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="153"/>
       <source>Insert in trajectory</source>
-      <translation>Wstaw na Trajektorię</translation>
+      <translation>Wstaw narzędzie w tor ruchu</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="154"/>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation>Wstaw pozycję preselekcji do trajektorii (W)</translation>
+      <translation>Wstaw pozycję wyboru wstępnego do toru ruchu</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
       <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="106"/>
       <source>Move to home</source>
-      <translation>Przenieś do pozycji startowej</translation>
+      <translation>Przejdź do pozycji startowej</translation>
     </message>
   </context>
   <context>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../Command.cpp" line="200"/>
       <source>Simulate a trajectory</source>
-      <translation>Symulacja Trajektorii</translation>
+      <translation>Symulacja toru ruchu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>
       <source>Run a simulation on a trajectory</source>
-      <translation>Uruchom symulację na trajektorii</translation>
+      <translation>Uruchom symulację dotyczącą toru ruchu</translation>
     </message>
   </context>
   <context>
@@ -309,12 +309,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="432"/>
       <source>Trajectory compound...</source>
-      <translation>Skład trajektorii...</translation>
+      <translation>Złożony tor pracy ...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="433"/>
       <source>Group and connect some trajectories to one</source>
-      <translation>Grupuj i połącz kilka trajektorii w jedną</translation>
+      <translation>Grupuj i połącz kilka torów pracy w jeden</translation>
     </message>
   </context>
   <context>
@@ -327,12 +327,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
-      <translation>Trajektoria ulepszenia...</translation>
+      <translation>Ulepszenie toru pracy...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Tworzenie obiektu ulepszenia, który zastępuje pewne aspekty trajektorii</translation>
+      <translation>Utwórz obiekt ulepszenia, który zastępuje pewne cechy toru pracy</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Trajectory tools</source>
-      <translation>Narzędzia Trajektoria</translation>
+      <translation>Narzędzia toru pracy</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
@@ -387,17 +387,17 @@
       <location filename="../../CommandExport.cpp" line="128"/>
       <location filename="../../CommandTrajectory.cpp" line="112"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Wybierz jednego robota i jedną trajektorię.</translation>
+      <translation>Wybierz jednego robota i jedną trasę pracy.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Trajectory not valid</source>
-      <translation>Niewłaściwa Trajektoria</translation>
+      <translation>Niewłaściwa trajektoria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Potrzebujesz co najmniej dwa punkty w trajektorii do symulacji.</translation>
+      <translation>Potrzebujesz co najmniej dwóch punktów w trasie pracy do symulacji.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -426,17 +426,17 @@
       <location filename="../../CommandTrajectory.cpp" line="168"/>
       <location filename="../../CommandTrajectory.cpp" line="185"/>
       <source>Select one Trajectory object.</source>
-      <translation>Zaznacz jeden obiekt Trajektoria</translation>
+      <translation>Zaznacz jeden obiekt trasy pracy</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="191"/>
       <source>No preselection</source>
-      <translation>Bez preselekcji</translation>
+      <translation>Brak wstępnego wyboru</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Jeżeli chcesz użyć tego polecenia, musisz unieść powyżej geometrii (preselekcja) przy pomocy myszki. Aby uzyskać szczegółowe informacje na ten temat, sięgnij do dokumentacji.</translation>
+      <translation>Aby użyć tego polecenia, musisz najechać kursorem myszki na geometrię (wybór wstępny). Więcej informacji można znaleźć w dokumentacji.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>continuous ?</source>
-      <translation>ciągłe?</translation>
+      <translation>kontynuować ?</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="413"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Wybierz trajektorię, które chcesz wykonać.</translation>
+      <translation>Wybierz trasę pracy, którą chcesz wykonać.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
@@ -481,12 +481,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>No robot files installed</source>
-      <translation>Nie zainstalowane pliki robota</translation>
+      <translation>Brak zainstalowanych plików robota</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="82"/>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Odwiedź %1 i kopiować pliki do %2</translation>
+      <translation>Odwiedź %1 i skopiuj pliki do %2</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; Acceleration:</source>
-      <translation>Prędkość &amp; Przyśpieszenie:</translation>
+      <translation>Prędkość i przyspieszenie:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
@@ -940,12 +940,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Accel:</source>
-      <translation>Przyśp.:</translation>
+      <translation>Przyspieszenie:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Don't change Cont</source>
-      <translation>Nie zmieniaj</translation>
+      <translation>Bez zmian</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
@@ -960,7 +960,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
       <source>Position and Orientation:</source>
-      <translation>Pozycja &amp; Orientacja:</translation>
+      <translation>Pozycja i orientacja:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="136"/>
@@ -975,7 +975,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Nie zmieniaj Pozycji &amp; Orientacji</translation>
+      <translation>Nie zmieniaj pozycji i orientacji</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
@@ -1008,12 +1008,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Robot</source>
-      <translation>&amp; Robot</translation>
+      <translation>&amp;Robot</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Export trajectory</source>
-      <translation>Eksport Trajektorii</translation>
+      <translation>Eksportuj tor ruchu</translation>
     </message>
   </context>
 </TS>

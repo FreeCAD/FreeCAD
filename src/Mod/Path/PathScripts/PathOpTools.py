@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,7 +34,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -136,6 +135,7 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
+    PathLog.debug('orienting forward: {}'.format(forward))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
@@ -156,17 +156,56 @@ def offsetWire(wire, base, offset, forward, Side = None):
         curve = edge.Curve
         if Part.Circle == type(curve) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
-            # http://www.freecadweb.org/wiki/Part%20Offset2D
+            # https://www.freecadweb.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
-            edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
-            if base.isInside(edge.Vertexes[0].Point, offset/2, True):
+            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
+            if base.isInside(new_edge.Vertexes[0].Point, offset/2, True):
                 if offset > curve.Radius or PathGeom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
-                edge = Part.makeCircle(curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z))
-            w = Part.Wire([edge])
-            return w
+                if Side:
+                    Side[0] = "Inside"
+                    print("inside")
+                new_edge = Part.makeCircle(curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z))
+            
+            return Part.Wire([new_edge])
+        
+        if Part.Circle == type(curve) and not wire.isClosed():
+            # Process arc segment
+            z = -1 if forward else 1
+            l1 = math.sqrt((edge.Vertexes[0].Point.x - curve.Center.x)**2 + (edge.Vertexes[0].Point.y - curve.Center.y)**2)
+            l2 = math.sqrt((edge.Vertexes[1].Point.x - curve.Center.x)**2 + (edge.Vertexes[1].Point.y - curve.Center.y)**2)
+            
+            # Calculate angles based on x-axis (0 - PI/2)
+            start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
+            end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
+
+            # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
+            if edge.Vertexes[0].Point.y < curve.Center.y:
+                start_angle *= -1
+            if edge.Vertexes[1].Point.y < curve.Center.y:
+                end_angle *= -1
+            
+            if (edge.Vertexes[0].Point.x > curve.Center.x or edge.Vertexes[1].Point.x > curve.Center.x) and curve.AngleXU < 0:
+                tmp = start_angle
+                start_angle = end_angle
+                end_angle = tmp
+
+            # Inside / Outside
+            if base.isInside(edge.Vertexes[0].Point, offset/2, True):
+                offset *= -1
+                if Side:
+                    Side[0] = "Inside"
+
+            # Create new arc
+            if curve.AngleXU > 0:
+                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
+            else:
+                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius-offset), start_angle, end_angle).toShape()
+
+            return Part.Wire([edge])
+        
         if Part.Line == type(curve) or Part.LineSegment == type(curve):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset

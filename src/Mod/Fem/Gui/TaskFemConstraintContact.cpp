@@ -404,7 +404,7 @@ TaskDlgFemConstraintContact::TaskDlgFemConstraintContact(ViewProviderFemConstrai
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintContact(ConstraintView);;
+    this->parameter = new TaskFemConstraintContact(ConstraintView);
 
     Content.push_back(parameter);
 }

@@ -571,7 +571,7 @@ TaskDlgFemConstraintDisplacement::TaskDlgFemConstraintDisplacement(ViewProviderF
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintDisplacement(ConstraintView);;
+    this->parameter = new TaskFemConstraintDisplacement(ConstraintView);
 
     Content.push_back(parameter);
 }

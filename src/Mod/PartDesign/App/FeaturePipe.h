@@ -33,12 +33,12 @@ namespace PartDesign
 
 class PartDesignExport Pipe : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Pad);
+    PROPERTY_HEADER(PartDesign::Pipe);
 
 public:
     Pipe();
 
-    
+
     App::PropertyLinkSub     Spine;
     App::PropertyBool        SpineTangent;
     App::PropertyLinkSub     AuxillerySpine;
@@ -57,10 +57,10 @@ public:
         return "PartDesignGui::ViewProviderPipe";
     }
     //@}
-    
+
 protected:
     ///get the given edges and all their tangent ones
-    void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
+    void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
 
@@ -72,14 +72,14 @@ private:
 };
 
 class PartDesignExport AdditivePipe : public Pipe {
-    
+
     PROPERTY_HEADER(PartDesign::AdditivePipe);
 public:
     AdditivePipe();
 };
 
 class PartDesignExport SubtractivePipe : public Pipe {
-    
+
     PROPERTY_HEADER(PartDesign::SubtractivePipe);
 public:
     SubtractivePipe();
@@ -88,4 +88,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PART_Pad_H
+#endif // PARTDESIGN_Pipe_H

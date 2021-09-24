@@ -138,7 +138,7 @@ private:
  * with *Increment for full double precision output.
  *
  * Dragger can be displayed in 2 modes: static scale and auto scale.
- * For static you can set the field scale and you are done. 
+ * For static you can set the field scale and you are done.
  * For autoscale you set the field scale & call setupAutoScale with
  * the viewer camera. @see setUpAutoScale @see scale.
  */
@@ -195,7 +195,7 @@ public:
     SoSFInt32 rotationIncrementCountZ; //!< used from outside for rotation z steps.
 
     void clearIncrementCounts(); //!< used to reset after drag update.
-    
+
     /*! @brief Overall scale of dragger node.
      *
      * When using autoscale mode, this represents normalized device coordinates (0.0 to 1.0). A value
@@ -207,7 +207,7 @@ public:
 
     SoIdleSensor idleSensor; //!< might be overkill, but want to make sure of performance.
     void setUpAutoScale(SoCamera *cameraIn); //!< used to setup the auto scaling of dragger.
-    
+
     //! @name Visibility Functions
     //@{
     void showTranslationX(); //!< show the x translation dragger.
@@ -216,21 +216,21 @@ public:
     void hideTranslationX(); //!< hide the x translation dragger.
     void hideTranslationY(); //!< hide the y translation dragger.
     void hideTranslationZ(); //!< hide the z translation dragger.
-    
+
     void showRotationX(); //!< show the x rotation dragger.
     void showRotationY(); //!< show the y rotation dragger.
     void showRotationZ(); //!< show the z rotation dragger.
     void hideRotationX(); //!< hide the x rotation dragger.
     void hideRotationY(); //!< hide the y rotation dragger.
     void hideRotationZ(); //!< hide the z rotation dragger.
-    
+
     bool isShownTranslationX(); //!< is x translation dragger shown.
     bool isShownTranslationY(); //!< is y translation dragger shown.
     bool isShownTranslationZ(); //!< is z translation dragger shown.
     bool isShownRotationX(); //!< is x rotation dragger shown.
     bool isShownRotationY(); //!< is x rotation dragger shown.
     bool isShownRotationZ(); //!< is x rotation dragger shown.
-    
+
     bool isHiddenTranslationX(); //!< is x translation dragger hidden.
     bool isHiddenTranslationY(); //!< is y translation dragger hidden.
     bool isHiddenTranslationZ(); //!< is z translation dragger hidden.

@@ -386,10 +386,10 @@ public:
      *
      * @param g shared ptr of the cluster graph on which the algorithm is used
      **/
-    property_map(boost::shared_ptr<Graph> g)
+    property_map(std::shared_ptr<Graph> g)
         : m_graph(g) { }
 
-    boost::shared_ptr<Graph> m_graph;
+    std::shared_ptr<Graph> m_graph;
 };
 
 /**

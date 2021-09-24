@@ -25,7 +25,7 @@
 
 __title__ = "Result import for Calculix frd file format"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package importCcxFrdResults
 #  \ingroup FEM
@@ -69,7 +69,8 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=""
+    result_name_prefix="",
+    result_analysis_type=""
 ):
     import ObjectsFem
     from . import importToolsFem
@@ -107,14 +108,23 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        "{}Mode{}_Results"
+                        "{}EigenMode_{}_Results"
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
-                    results_name = (
-                        "{}Time{}_Results"
-                        .format(result_name_prefix, step_time)
-                    )
+
+                    if result_analysis_type == "buckling":
+
+                        results_name = (
+                            "{}BucklingFactor_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+                    else:
+                        results_name = (
+                            "{}Time_{}_Results"
+                            .format(result_name_prefix, step_time)
+                        )
+
                 else:
                     results_name = (
                         "{}Results"
@@ -165,15 +175,15 @@ def importFrd(
                         if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
                             has_reinforced_mat = True
                             Console.PrintLog(
-                                "Reinfoced material object detected, "
+                                "Reinforced material object detected, "
                                 "reinforced principal stresses and standard principal "
-                                " stresses will be added.\n"
+                                "stresses will be added.\n"
                             )
                             resulttools.add_principal_stress_reinforced(res_obj)
                             break
                     if has_reinforced_mat is False:
                         Console.PrintLog(
-                            "No einfoced material object detected, "
+                            "No reinforced material object detected, "
                             "standard principal stresses will be added.\n"
                         )
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
@@ -387,7 +397,7 @@ def read_frd_result(
                 CalculiX uses a different node order in
                 input file *.inp and result file *.frd for hexa20 (C3D20)
                 according to Guido (the developer of ccx):
-                see note in in first line of cgx manuel part element types
+                see note in the first line of cgx manual part element types
                 ccx (and thus the *.inp) follows the ABAQUS convention
                 documented in the ccx-documentation
                 cgx (and thus the *.frd) follows the FAM2 convention

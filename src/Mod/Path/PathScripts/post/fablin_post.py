@@ -1,8 +1,8 @@
 # ***************************************************************************
-# *   (c) imarin 2017                                                       *
+# *   Copyright (c) 2017 imarin                                             *
 # *                                                                         *
-# *   heavily based on gbrl post-procesor by:                               *
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
+# *   Heavily based on gbrl post-procesor by:                               *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +22,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 import datetime
 from PathScripts import PostUtils
@@ -300,4 +300,4 @@ def parse(pathobj):
         return out
 
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

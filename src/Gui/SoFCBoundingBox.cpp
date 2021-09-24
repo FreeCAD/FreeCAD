@@ -93,7 +93,7 @@ SoFCBoundingBox::SoFCBoundingBox ()
     bboxLines->coordIndex.setNum(36);
     bboxLines->coordIndex.setValues(0, 36, bBoxEdges);
     bboxSep->addChild(bboxLines);
-  
+
 
     // create the text nodes, including a transform for each vertice offset
     textSep = new SoSeparator();

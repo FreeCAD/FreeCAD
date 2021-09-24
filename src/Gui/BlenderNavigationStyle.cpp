@@ -145,6 +145,10 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             processed = true;
             viewer->saveHomePosition();
             break;
+        case SoKeyboardEvent::R:
+            processed = true;
+            viewer->resetToHomePosition();
+            break;
         case SoKeyboardEvent::S:
         case SoKeyboardEvent::HOME:
         case SoKeyboardEvent::LEFT_ARROW:
@@ -221,8 +225,8 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {

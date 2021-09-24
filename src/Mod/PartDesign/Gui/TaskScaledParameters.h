@@ -76,7 +76,7 @@ private:
     void updateUI();
 
 private:
-    Ui_TaskScaledParameters* ui;
+    std::unique_ptr<Ui_TaskScaledParameters> ui;
 };
 
 

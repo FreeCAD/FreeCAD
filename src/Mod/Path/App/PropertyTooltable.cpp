@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ void PropertyTooltable::setValue(const Tooltable& tt)
 }
 
 
-const Tooltable &PropertyTooltable::getValue(void)const 
+const Tooltable &PropertyTooltable::getValue(void)const
 {
     return _Tooltable;
 }
@@ -85,7 +85,7 @@ App::Property *PropertyTooltable::Copy(void) const
 {
     PropertyTooltable *prop = new PropertyTooltable();
     prop->_Tooltable = this->_Tooltable;
- 
+
     return prop;
 }
 

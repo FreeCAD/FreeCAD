@@ -111,7 +111,7 @@ class ProjectImporter:
             # this method; otherwise a simple function (not tied to a class)
             # should be used.
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
-        except:
+        except Exception:
             # This scenario occurs validly in IFC2X3,
             # as the mapConversion does not exist
             return
@@ -241,15 +241,18 @@ def buildRelMattable(ifcfile):
     mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+        # the related object might not exist
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        if r.RelatedObjects:
+            for o in r.RelatedObjects:
+                if r.RelatingMaterial.is_a("IfcMaterial"):
+                    mattable[o.id()] = r.RelatingMaterial.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                    mattable[o.id()] = r.RelatingMaterial.Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                    mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                    mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
 
     return mattable
 
@@ -439,25 +442,23 @@ def getColorFromStyledItem(styled_item):
 
     # In current IFC release (IFC2x3) only one presentation style
     # assignment shall be assigned.
-    # TODO: check IFC4
+    # In IFC4 `IfcPresentationStyleAssignment` is deprecated
+    # In IFC4 multiple styles are assigned to style in 'IfcStyleItem' instead
 
-    if len(styled_item.Styles) != 1:
-        # Normally, only one element in `Styles` should be available.
-        _wrn("More than one 'Style' in 'IfcStyleItem', do nothing.")
-
-        # These two cases do nothing so we just comment them out.
-        # if len(styled_item.Styles) == 0:
-        #     # ca 100x in 210_King_Merged.ifc
-        #     # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
-        #     # this is an error in the IFC file in my opinion
-        #     # print(ifcfile[p])
-        #     # print(styled_item)
-        #     # print(styled_item.Styles)
-        #     pass
-        # else:
-        #     # Never seen an IFC with more than one element in `Styles`
-        #     pass
+    # print(ifcfile[p])
+    # print(styled_item)
+    # print(styled_item.Styles)
+    if len(styled_item.Styles) == 0:
+        # IN IFC2x3, only one element in `Styles` should be available.
+        _wrn("No 'Style' in 'IfcStyleItem', do nothing.")
+        # ca 100x in 210_King_Merged.ifc
+        # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
+        # this is an error in the IFC file in my opinion
     else:
+        # never seen an ifc with more than one Styles in IfcStyledItem
+        # the above seams to only apply for IFC2x3, IFC4 can have them
+        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
+
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
             assign_style = styled_item.Styles[0]
@@ -607,7 +608,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
-def getIfcPsetPoperties(ifcfile, pid):
+def getIfcPsetProperties(ifcfile, pid):
     """ directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})

@@ -106,7 +106,7 @@ void TaskGroup::keyPressEvent ( QKeyEvent * event )
   {
     case Qt::Key_Down:
     {
-      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, 0);
+      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
       QApplication::sendEvent(this, &ke);
       return;
     }
@@ -131,7 +131,7 @@ void TaskGroup::keyReleaseEvent ( QKeyEvent * event )
   {
     case Qt::Key_Down:
     {
-      QKeyEvent ke(QEvent::KeyRelease, Qt::Key_Tab, 0);
+      QKeyEvent ke(QEvent::KeyRelease, Qt::Key_Tab, Qt::NoModifier);
       QApplication::sendEvent(this, &ke);
       return;
     }

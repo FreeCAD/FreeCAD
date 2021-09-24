@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -135,7 +135,7 @@ void QGIViewImage::draw()
     }
     m_cliparea->centerAt(0.0,0.0);
 
-    QGIView::draw();
+    drawImage();
 }
 
 void QGIViewImage::drawImage()

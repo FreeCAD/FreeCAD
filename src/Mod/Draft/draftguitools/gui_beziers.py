@@ -58,22 +58,19 @@ class BezCurve(gui_lines.Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Bezier curve"
-        _tip = ("Creates an N-degree Bezier curve. "
-                "The more points you pick, the higher the degree.\n"
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_BezCurve',
                 'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_BezCurve", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezCurve", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_BezCurve", "Bezier curve"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bezier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
 
         Activate the specific bezier curve tracker.
         """
-        super(BezCurve, self).Activated(name=translate("draft", "BezCurve"))
+        super(BezCurve, self).Activated(name="BezCurve",
+                                        icon="Draft_BezCurve")
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -239,25 +236,19 @@ class CubicBezCurve(gui_lines.Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Cubic bezier curve"
-        _tip = ("Creates a Bezier curve made of 2nd degree (quadratic) "
-                "and 3rd degree (cubic) segments. "
-                "Click and drag to define each segment.\n"
-                "After the curve is created you can go back to edit "
-                "each control point and set the properties of each knot.\n"
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_CubicBezCurve',
                 # 'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic bezier curve"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
 
         Activate the specific BezCurve tracker.
         """
-        super(CubicBezCurve, self).Activated(name=translate("draft", "CubicBezCurve"))
+        super(CubicBezCurve, self).Activated(name="CubicBezCurve",
+                                             icon="Draft_CubicBezCurve")
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -481,11 +472,8 @@ class BezierGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Bezier tools"
-        _tip = ("Create various types of Bezier curves.")
-
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_BezierTools", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezierTools", _tip)}
+        return {'MenuText': QT_TRANSLATE_NOOP("Draft_BezierTools", "Bezier tools"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bezier curves.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

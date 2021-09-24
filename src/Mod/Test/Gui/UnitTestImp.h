@@ -60,7 +60,7 @@ public:
     static bool hasInstance();
 
 protected:
-    UnitTestDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    UnitTestDialog(QWidget* parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
     ~UnitTestDialog();
     void setProgressColor(const QColor& col);
 

@@ -68,23 +68,31 @@ from draftgeoutils.general import (precision,
 from draftgeoutils.geometry import (findPerpendicular,
                                     findDistance,
                                     getSplineNormal,
+                                    get_spline_normal,
                                     getNormal,
+                                    get_normal,
                                     getRotation,
                                     isPlanar,
+                                    is_planar,
                                     calculatePlacement,
-                                    mirror)
+                                    mirror,
+                                    are_coplanar,
+                                    is_straight_line)
 
 from draftgeoutils.edges import (findEdge,
                                  orientEdge,
                                  isSameLine,
                                  isLine,
+                                 is_line,
                                  invert,
                                  findMidpoint,
-                                 getTangent)
+                                 getTangent,
+                                 get_referenced_edges)
 
 from draftgeoutils.faces import (concatenate,
                                  getBoundary,
                                  isCoplanar,
+                                 is_coplanar,
                                  bind,
                                  cleanFaces,
                                  removeSplitter)
@@ -122,7 +130,9 @@ from draftgeoutils.wires import (findWires,
                                  rebaseWire,
                                  removeInterVertices,
                                  cleanProjection,
-                                 tessellateProjection)
+                                 tessellateProjection,
+                                 get_placement_perpendicular_to_wire,
+                                 get_extended_wire)
 
 # Needs wires functions
 from draftgeoutils.fillets import (fillet,

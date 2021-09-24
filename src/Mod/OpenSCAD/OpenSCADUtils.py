@@ -131,12 +131,12 @@ def getopenscadversion(osfilename=None):
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
-        p=subprocess.Popen([osfilename,'-v'],\
-            stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
-        p.wait()
-        stdout=p.stdout.read().strip()
-        stderr=p.stderr.read().strip()
-        return (stdout or stderr)
+        with subprocess.Popen([osfilename,'-v'],\
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True) as p:
+            p.wait()
+            stdout=p.stdout.read().strip()
+            stderr=p.stderr.read().strip()
+            return (stdout or stderr)
 
 def newtempfilename():
     import os,time
@@ -329,7 +329,6 @@ def angneg(d):
     return d if (d <= 180.0) else (d-360)
 
 def shorthexfloat(f):
-    s=f.hex()
     mantisse, exponent = f.hex().split('p',1)
     return '%sp%s' % (mantisse.rstrip('0'),exponent)
 

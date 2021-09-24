@@ -23,7 +23,7 @@
 
 __title__ = "Objects FEM"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -95,6 +95,21 @@ def makeConstraintBodyHeatSource(
     if FreeCAD.GuiUp:
         from femviewprovider import view_constraint_bodyheatsource as viewprov
         viewprov.VPConstraintBodyHeatSource(obj.ViewObject)
+    return obj
+
+
+def makeConstraintCentrif(
+    doc,
+    name="ConstraintCentrif"
+):
+    """makeConstraintCentrif(document, [name]):
+    creates a centrif object to define centrifugal body load constraint"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_centrif
+    constraint_centrif.ConstraintCentrif(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_centrif
+        view_constraint_centrif.VPConstraintCentrif(obj.ViewObject)
     return obj
 
 
@@ -258,7 +273,7 @@ def makeConstraintSelfWeight(
     name="ConstraintSelfWeight"
 ):
     """makeConstraintSelfWeight(document, [name]):
-    creates an self weight object to define a gravity load"""
+    creates a self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_selfweight
     constraint_selfweight.ConstraintSelfWeight(obj)
@@ -285,7 +300,7 @@ def makeConstraintTie(
     name="ConstraintTie"
 ):
     """makeConstraintTie(document, [name]):
-    creates an tie object to define bonded faces constraint"""
+    creates a tie object to define bonded faces constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_tie
     constraint_tie.ConstraintTie(obj)
@@ -310,7 +325,7 @@ def makeConstraintSectionPrint(
     name="ConstraintSectionPrint"
 ):
     """makeConstraintSectionPrint(document, [name]):
-    creates an section print object to evaluate forces and moments of defined face"""
+    creates a section print object to evaluate forces and moments of defined face"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_sectionprint
     constraint_sectionprint.ConstraintSectionPrint(obj)
@@ -320,13 +335,23 @@ def makeConstraintSectionPrint(
     return obj
 
 
+def makeConstraintSpring(
+    doc,
+    name="ConstraintSpring"
+):
+    """makeConstraintSpring(document, [name]):
+    makes a Fem ConstraintSpring object"""
+    obj = doc.addObject("Fem::ConstraintSpring", name)
+    return obj
+
+
 # ********* element definition objects ***********************************************************
 def makeElementFluid1D(
     doc,
     name="ElementFluid1D"
 ):
     """makeElementFluid1D(document, [name]):
-    creates an 1D fluid element object to define 1D flow"""
+    creates a 1D fluid element object to define 1D flow"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_fluid1D
     element_fluid1D.ElementFluid1D(obj)
@@ -344,7 +369,7 @@ def makeElementGeometry1D(
     name="ElementGeometry1D"
 ):
     """makeElementGeometry1D(document, [width], [height], [name]):
-    creates an 1D geometry element object to define a cross section"""
+    creates a 1D geometry element object to define a cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry1D
     element_geometry1D.ElementGeometry1D(obj)
@@ -371,7 +396,7 @@ def makeElementGeometry2D(
     name="ElementGeometry2D"
 ):
     """makeElementGeometry2D(document, [thickness], [name]):
-    creates an 2D geometry element object to define a plate thickness"""
+    creates a 2D geometry element object to define a plate thickness"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_geometry2D
     element_geometry2D.ElementGeometry2D(obj)
@@ -387,7 +412,7 @@ def makeElementRotation1D(
     name="ElementRotation1D"
 ):
     """makeElementRotation1D(document, [name]):
-    creates an 1D geometry rotation element object to rotate a 1D cross section"""
+    creates a 1D geometry rotation element object to rotate a 1D cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import element_rotation1D
     element_rotation1D.ElementRotation1D(obj)
@@ -580,7 +605,7 @@ def makeResultMechanical(
     name="ResultMechanical"
 ):
     """makeResultMechanical(document, [name]):
-    creates an mechanical result object to hold FEM results"""
+    creates a mechanical result object to hold FEM results"""
     obj = doc.addObject("Fem::FemResultObjectPython", name)
     from femobjects import result_mechanical
     result_mechanical.ResultMechanical(obj)
@@ -596,7 +621,7 @@ def makePostVtkFilterClipRegion(
     name="VtkFilterClipRegion"
 ):
     """makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
-    creates an FEM post processing region clip filter object (vtk based)"""
+    creates a FEM post processing region clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -611,7 +636,7 @@ def makePostVtkFilterClipScalar(
     name="VtkFilterClipScalar"
 ):
     """makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
-    creates an FEM post processing scalar clip filter object (vtk based)"""
+    creates a FEM post processing scalar clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -626,7 +651,7 @@ def makePostVtkFilterCutFunction(
     name="VtkFilterCutFunction"
 ):
     """makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
-    creates an FEM post processing cut function filter object (vtk based)"""
+    creates a FEM post processing cut function filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -641,7 +666,7 @@ def makePostVtkFilterWarp(
     name="VtkFilterWarp"
 ):
     """makePostVtkFilterWarp(document, base_vtk_result, [name]):
-    creates an FEM post processing warp filter object (vtk based)"""
+    creates a FEM post processing warp filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
     tmp_filter_list = base_vtk_result.Filter
     tmp_filter_list.append(obj)
@@ -656,7 +681,7 @@ def makePostVtkResult(
     name="VtkResult"
 ):
     """makePostVtkResult(document, base_result, [name]):
-    creates an FEM post processing result object (vtk based) to hold FEM results"""
+    creates a FEM post processing result object (vtk based) to hold FEM results"""
     obj = doc.addObject("Fem::FemPostPipeline", name)
     obj.load(base_result)
     return obj
@@ -781,6 +806,17 @@ def makeSolverElmer(
     makes a Elmer solver object"""
     import femsolver.elmer.solver
     obj = femsolver.elmer.solver.create(doc, name)
+    return obj
+
+
+def makeSolverMystran(
+    doc,
+    name="SolverMystran"
+):
+    """makeSolverMystran(document, [name]):
+    makes a Mystran solver object"""
+    import femsolver.mystran.solver
+    obj = femsolver.mystran.solver.create(doc, name)
     return obj
 
 

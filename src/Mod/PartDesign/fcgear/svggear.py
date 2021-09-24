@@ -16,7 +16,6 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 import itertools
-from math import cos, sin
 from involute import CreateExternalGear, rotate
 
 def makeGear(m, Z, angle):
@@ -65,7 +64,7 @@ if __name__ == '__main__':
                  dest='angle', default=20)
     opts, args = p.parse_args()
     if len(args) != 2:
-        p.error()
+        p.error("Invalid arguments")
     m, Z = [float(v) for v in args]
     print(makeGear(m, int(Z), float(opts.angle)))
 

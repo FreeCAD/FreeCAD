@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +24,7 @@ import PathScripts.PathLog as PathLog
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
@@ -173,6 +171,7 @@ class OpPrototype(object):
             'App::PropertyVectorDistance':      Property,
             'App::PropertyVectorList':          Property,
             'Part::PropertyPartShape':          Property,
+            'App::PropertyPythonObject':        PropertyString,
             }
 
     def __init__(self, name):

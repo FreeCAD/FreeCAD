@@ -48,10 +48,10 @@ enum class UnitSystem {
 
 
 /** The UnitSchema class
- * The subclasses of this class define the stuff for a 
- * certain units schema. 
+ * The subclasses of this class define the stuff for a
+ * certain units schema.
  */
-class UnitsSchema 
+class UnitsSchema
 {
 public:
     virtual ~UnitsSchema(){}

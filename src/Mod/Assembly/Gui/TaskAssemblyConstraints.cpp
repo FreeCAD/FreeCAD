@@ -402,7 +402,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
     //    Assembly::Product* ass = p1->getParentAssembly();
 
     //    //extract the geometries to use for comparison
-    //    boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+    //    std::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
 
     //    if(!g1)
     //        return;
@@ -414,7 +414,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
     //        if(!p2)
     //            return;
 
-    //        boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+    //        std::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
 
     //        if(!g2)
     //            return;
@@ -505,7 +505,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
     //    Assembly::Product* ass = p1->getParentAssembly();
 
     //    //extract the geometries to use for comparison
-    //    boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+    //    std::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
 
     //    //let's see if we have a part, if not give feedback to the user by color
     //    if(!g1) {
@@ -525,7 +525,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
     //        if(!p2)
     //            return;
 
-    //        boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+    //        std::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
 
     //        //let's see if we have a part, if not give feedback to the user by color
     //        if(!g2) {
@@ -616,7 +616,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
     //}
 }
 
-bool TaskAssemblyConstraints::isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2)
+bool TaskAssemblyConstraints::isCombination(std::shared_ptr<Geometry3D> g1, std::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2)
 {
     if(g1->getGeometryType() == t1 && g2->getGeometryType() == t2)
         return true;

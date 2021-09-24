@@ -23,7 +23,7 @@
 #ifndef WORKFLOWMANAGER_H_PB7A5GCM
 #define WORKFLOWMANAGER_H_PB7A5GCM
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <map>
 
 namespace App {

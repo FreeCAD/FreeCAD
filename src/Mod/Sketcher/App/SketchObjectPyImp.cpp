@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <Geom_TrimmedCurve.hxx>
-# include <boost/shared_ptr.hpp>
+# include <memory>
 #endif
 
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -45,6 +45,8 @@
 #include "SketchObjectPy.cpp"
 // other python types
 #include "ConstraintPy.h"
+#include "GeometryFacade.h"
+#include "GeometryFacadePy.h"
 
 using namespace Sketcher;
 
@@ -128,7 +130,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Part::Geometry *> geoList;
-        std::vector<boost::shared_ptr <Part::Geometry> > tmpList;
+        std::vector<std::shared_ptr <Part::Geometry> > tmpList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
@@ -141,14 +143,14 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
                         // create the definition struct for that geom
-                        boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
+                        std::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
                         aoc->setHandle(trim);
                         geoList.push_back(aoc.get());
                         tmpList.push_back(aoc);
                     }
                     else if (!ellipse.IsNull()) {
                         // create the definition struct for that geom
-                        boost::shared_ptr<Part::GeomArcOfEllipse> aoe(new Part::GeomArcOfEllipse());
+                        std::shared_ptr<Part::GeomArcOfEllipse> aoe(new Part::GeomArcOfEllipse());
                         aoe->setHandle(trim);
                         geoList.push_back(aoe.get());
                         tmpList.push_back(aoe);
@@ -210,6 +212,39 @@ PyObject* SketchObjectPy::delGeometry(PyObject *args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::delGeometries(PyObject *args)
+{
+    PyObject *pcObj;
+
+    if (!PyArg_ParseTuple(args, "O", &pcObj))
+    return 0;
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+        PyObject_TypeCheck(pcObj, &(PyTuple_Type)) ) {
+
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        }
+
+        if(this->getSketchObjectPtr()->delGeometries(geoIdList)) {
+            std::stringstream str;
+            str << "Not able to delete geometries";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+
+        Py_Return;
+
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchObjectPy::deleteAllGeometry(PyObject *args)
@@ -274,6 +309,24 @@ PyObject* SketchObjectPy::setConstruction(PyObject *args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::getConstruction(PyObject *args)
+{
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    auto gf = this->getSketchObjectPtr()->getGeometryFacade(Index);
+
+    if(gf)
+        return Py::new_reference_to(Py::Boolean(gf->getConstruction()));
+
+    std::stringstream str;
+    str << "Not able to retrieve construction mode of a geometry with the given index: " << Index;
+    PyErr_SetString(PyExc_ValueError, str.str().c_str());
+    return 0;
+
 }
 
 PyObject* SketchObjectPy::addConstraint(PyObject *args)
@@ -395,14 +448,8 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
         }
     }
 
-    // only change the constraint item if the names are different
-    const Constraint* item = this->getSketchObjectPtr()->Constraints[Index];
-    if (item->Name != Name) {
-        Constraint* copy = item->clone();
-        copy->Name = Name;
-        this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
-        delete copy;
-    }
+    this->getSketchObjectPtr()->renameConstraint(Index, Name);
+
     Py_Return;
 }
 
@@ -523,7 +570,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "i|i", &Index, &pos))
         return 0;
 
-    if (pos>=0 && pos<3) { // Sketcher::none Sketcher::mid
+    if (pos>=Sketcher::none && pos<=Sketcher::mid) { // This is the whole range of valid positions
         if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index
@@ -989,16 +1036,21 @@ PyObject* SketchObjectPy::getAxis(PyObject *args)
 PyObject* SketchObjectPy::fillet(PyObject *args)
 {
     PyObject *pcObj1, *pcObj2;
-    int geoId1, geoId2, posId1, trim=1;
+    int geoId1, geoId2, posId1;
+    int trim=true;
+    PyObject* createCorner = Py_False;
     double radius;
 
     // Two Lines, radius
-    if (PyArg_ParseTuple(args, "iiO!O!d|i", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2, &radius, &trim)) {
+    if (PyArg_ParseTuple(args, "iiO!O!d|iO!", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2,
+          &radius, &trim, &PyBool_Type, &createCorner)) {
+        // The i for &trim should probably have been a bool like &createCorner, but we'll leave it an int for backward
+        // compatibility (and because python will accept a bool there anyway)
 
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pcObj2)->value();
 
-        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim?true:false)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim, PyObject_IsTrue(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
             << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
@@ -1010,8 +1062,9 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 
     PyErr_Clear();
     // Point, radius
-    if (PyArg_ParseTuple(args, "iid|i", &geoId1, &posId1, &radius, &trim)) {
-        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim?true:false)) {
+    if (PyArg_ParseTuple(args, "iid|iO!", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim,
+              PyObject_IsTrue(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1021,8 +1074,8 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     }
 
     PyErr_SetString(PyExc_TypeError, "fillet() method accepts:\n"
-    "-- int,int,Vector,Vector,float,[int]\n"
-    "-- int,int,float,[int]\n");
+    "-- int,int,Vector,Vector,float,[bool],[bool]\n"
+    "-- int,int,float,[bool],[bool]\n");
     return 0;
 }
 
@@ -1067,6 +1120,25 @@ PyObject* SketchObjectPy::extend(PyObject *args)
     return 0;
 }
 
+PyObject* SketchObjectPy::split(PyObject *args)
+{
+    PyObject *pcObj;
+    int GeoId;
+
+    if (!PyArg_ParseTuple(args, "iO!", &GeoId, &(Base::VectorPy::Type), &pcObj))
+        return 0;
+
+    Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
+    if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+        std::stringstream str;
+        str << "Not able to split curve with the given index: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 {
     PyObject *pcObj;
@@ -1081,13 +1153,8 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
         int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
@@ -1125,28 +1192,29 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
+        try {
+            int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
 
-        if(ret == -1)
-            throw Py::TypeError("Copy operation unsuccessful!");
+            if(ret == -1)
+                throw Py::TypeError("Copy operation unsuccessful!");
 
-        std::size_t numGeo = geoIdList.size();
-        Py::Tuple tuple(numGeo);
-        for (std::size_t i=0; i<numGeo; ++i) {
-            int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Long(geoId));
+            std::size_t numGeo = geoIdList.size();
+            Py::Tuple tuple(numGeo);
+            for (std::size_t i=0; i<numGeo; ++i) {
+                int geoId = ret - int(numGeo - i);
+                tuple.setItem(i, Py::Long(geoId));
+            }
+
+            return Py::new_reference_to(tuple);
+        }
+        catch(const Base::ValueError & e) {
+            throw Py::ValueError(e.getMessage());
         }
 
-        return Py::new_reference_to(tuple);
     }
 
     std::string error = std::string("type must be list of GeoIds, not ");
@@ -1168,13 +1236,8 @@ PyObject* SketchObjectPy::addMove(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            #if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-            #else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-            #endif
         }
 
     this->getSketchObjectPtr()->addCopy(geoIdList, vect, true);
@@ -1206,20 +1269,51 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
 	    if (PyLong_Check((*it).ptr()))
 		geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
-                                                      rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
+        try {
+            int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
+                                                        rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
+
+            if(ret == -1)
+                throw Py::TypeError("Copy operation unsuccessful!");
+
+        }
+        catch(const Base::ValueError & e) {
+            throw Py::ValueError(e.getMessage());
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
+PyObject* SketchObjectPy::removeAxesAlignment(PyObject *args)
+{
+    PyObject *pcObj;
+
+    if (!PyArg_ParseTuple(args, "O", &pcObj))
+        return 0;
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        }
+
+        int ret = this->getSketchObjectPtr()->removeAxesAlignment(geoIdList) + 1;
 
         if(ret == -1)
-            throw Py::TypeError("Copy operation unsuccessful!");
+            throw Py::TypeError("Operation unsuccessful!");
+
         Py_Return;
     }
 
@@ -1394,6 +1488,18 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::decreaseBSplineDegree(PyObject *args)
+{
+    int GeoId;
+    int decr = 1;
+
+    if (!PyArg_ParseTuple(args, "i|i", &GeoId, &decr))
+        return nullptr;
+
+    bool ok = this->getSketchObjectPtr()->decreaseBSplineDegree(GeoId, decr);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
 PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
@@ -1737,6 +1843,83 @@ Py::Long SketchObjectPy::getAxisCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->getAxisCount());
 }
+
+
+Py::List SketchObjectPy::getGeometryFacadeList(void) const
+{
+    Py::List list;
+
+    for (int i = 0; i < getSketchObjectPtr()->Geometry.getSize(); i++) {
+
+        // we create a python copy and add it to the list
+        std::unique_ptr<GeometryFacade> geofacade = GeometryFacade::getFacade(getSketchObjectPtr()->Geometry[i]->clone());
+        geofacade->setOwner(true);
+
+        Py::Object gfp = Py::Object(new GeometryFacadePy(geofacade.release()),true);
+
+        list.append(gfp);
+    }
+    return list;
+}
+
+void SketchObjectPy::setGeometryFacadeList(Py::List value)
+{
+    std::vector<Part::Geometry *> list;
+    list.reserve(value.size());
+
+    for (const auto & ti : value) {
+        if (PyObject_TypeCheck(ti.ptr(), &(GeometryFacadePy::Type))) {
+
+            GeometryFacadePy * gfp = static_cast<GeometryFacadePy *>(ti.ptr());
+
+            GeometryFacade * gf = gfp->getGeometryFacadePtr();
+
+            Part::Geometry * geo = gf->getGeometry()->clone();
+
+            list.push_back(geo);
+        }
+    }
+
+    getSketchObjectPtr()->Geometry.setValues(std::move(list));
+}
+
+PyObject* SketchObjectPy::getGeometryId(PyObject *args)
+{
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    long Id;
+
+    if (this->getSketchObjectPtr()->getGeometryId(Index, Id)) {
+        std::stringstream str;
+        str << "Not able to get geometry Id of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        Py_Return;
+    }
+
+    return  Py::new_reference_to(Py::Long(Id));
+}
+
+PyObject* SketchObjectPy::setGeometryId(PyObject *args)
+{
+    int Index;
+    long Id;
+    if (!PyArg_ParseTuple(args, "il", &Index, &Id))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setGeometryId(Index, Id)) {
+        std::stringstream str;
+        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+
+
 
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const
 {

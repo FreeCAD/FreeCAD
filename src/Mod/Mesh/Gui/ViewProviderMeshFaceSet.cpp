@@ -167,7 +167,7 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
         }
 
         showOpenEdges(OpenEdges.getValue());
-        std::vector<unsigned long> selection;
+        std::vector<Mesh::FacetIndex> selection;
         mesh->getFacetsFromSelection(selection);
         if (selection.empty())
             unhighlightSelection();
@@ -181,7 +181,7 @@ void ViewProviderMeshFaceSet::showOpenEdges(bool show)
     if (pcOpenEdge) {
         // remove the node and destroy the data
         pcRoot->removeChild(pcOpenEdge);
-        pcOpenEdge = 0;
+        pcOpenEdge = nullptr;
     }
 
     if (show) {
@@ -204,7 +204,7 @@ void ViewProviderMeshFaceSet::showOpenEdges(bool show)
             const MeshCore::MeshFacetArray& rFaces = rMesh.GetFacets();
             for (MeshCore::MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
                 for (int i=0; i<3; i++) {
-                    if (it->_aulNeighbours[i] == ULONG_MAX) {
+                    if (it->_aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
                         lines->coordIndex.set1Value(index++,it->_aulPoints[i]);
                         lines->coordIndex.set1Value(index++,it->_aulPoints[(i+1)%3]);
                         lines->coordIndex.set1Value(index++,SO_END_LINE_INDEX);

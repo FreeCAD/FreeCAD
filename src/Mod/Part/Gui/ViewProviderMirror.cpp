@@ -63,7 +63,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
 ViewProviderMirror::ViewProviderMirror()
 {
-    sPixmap = "Part_Mirror.svg";
+    sPixmap = "Part_Mirror";
     pcEditNode = new SoSeparator();
     pcEditNode->ref();
 }
@@ -196,7 +196,7 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
 }
 
 void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)

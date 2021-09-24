@@ -83,7 +83,7 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "Tree_Part2D";
+    sPixmap = "Part_2D_object";
 }
 
 ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
@@ -304,6 +304,9 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
         App::PropertyFloat floatProp;
         floatProp.Restore(reader);
         static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+    }
+    else {
+        ViewProviderPart::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

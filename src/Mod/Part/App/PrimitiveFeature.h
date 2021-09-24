@@ -27,6 +27,7 @@
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
 #include "AttachExtension.h"
+#include "PrismExtension.h"
 
 namespace Part
 {
@@ -50,6 +51,8 @@ public:
 protected:
     void Restore(Base::XMLReader &reader) override;
     void onChanged (const App::Property* prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 };
 
 class PartExport Vertex : public Part::Primitive
@@ -176,7 +179,8 @@ public:
     }
 };
 
-class PartExport Cylinder : public Primitive
+class PartExport Cylinder : public Primitive,
+                            public PrismExtension
 {
     PROPERTY_HEADER(Part::Cylinder);
 
@@ -199,7 +203,8 @@ public:
     //@}
 };
 
-class PartExport Prism : public Primitive
+class PartExport Prism : public Primitive,
+                         public PrismExtension
 {
     PROPERTY_HEADER(Part::Prism);
 
@@ -209,8 +214,6 @@ public:
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
-    App::PropertyAngle FirstAngle;
-    App::PropertyAngle SecondAngle;
 
     /** @name methods override feature */
     //@{
@@ -310,6 +313,7 @@ public:
     App::PropertyLength Height;
     App::PropertyLength Radius;
     App::PropertyAngle Angle;
+    App::PropertyQuantityConstraint SegmentLength;
     App::PropertyEnumeration     LocalCoord;
     App::PropertyEnumeration     Style;
 
@@ -340,8 +344,9 @@ public:
     Spiral();
 
     App::PropertyLength Growth;
-    App::PropertyLength Rotations;
+    App::PropertyQuantityConstraint Rotations;
     App::PropertyLength Radius;
+    App::PropertyQuantityConstraint SegmentLength;
 
     /** @name methods override feature */
     //@{
@@ -391,7 +396,7 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-class Ellipse : public Part::Primitive
+class PartExport Ellipse : public Part::Primitive
 {
     PROPERTY_HEADER(Part::Ellipse);
 

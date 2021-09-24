@@ -36,7 +36,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 {
     workplace = new SoGroup();
 
-    //translation  = new SoTranslation   ; 
+    //translation  = new SoTranslation   ;
     //translation->translation.setValue(0,-1,0);
     //workplace->addChild(translation);
 
@@ -56,26 +56,26 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
     workplace->addChild(scale);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
-    
+
     this->setGeometry( hGrp->GetInt("RenderWindowPosX",100) ,
                        hGrp->GetInt("RenderWindowPosY",100) ,
                        hGrp->GetInt("RenderWindowSizeW",1920) ,
-                       hGrp->GetInt("RenderWindowSizeH",1080)                   
+                       hGrp->GetInt("RenderWindowSizeH",1080)
                      );
 
-    
+
     setBackgroundColor(SbColor(51,51,101));
     basePosition = SbVec3f(0.0f, 0.5f, 0.8f);
 }
 
 //void saveWinPosition(void)
 //{
-//  
-// 
+//
+//
 //
 //}
 
-View3DInventorRiftViewer::~View3DInventorRiftViewer() 
+View3DInventorRiftViewer::~View3DInventorRiftViewer()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
 

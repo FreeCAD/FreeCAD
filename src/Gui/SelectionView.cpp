@@ -65,9 +65,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     vLayout->setMargin (0);
 
     QLineEdit* searchBox = new QLineEdit(this);
-#if QT_VERSION >= 0x040700
     searchBox->setPlaceholderText(tr("Search"));
-#endif
     searchBox->setToolTip(tr("Searches object labels"));
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setSpacing(2);
@@ -97,10 +95,8 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     pickList->setVisible(false);
     vLayout->addWidget(pickList);
 
-#if QT_VERSION >= 0x040200
     selectionView->setMouseTracking(true); // needed for itemEntered() to work
     pickList->setMouseTracking(true);
-#endif
 
     resize(200, 200);
 

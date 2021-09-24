@@ -91,7 +91,9 @@ class _TaskPanel:
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
-            ["Edge"]
+            ["Edge"],
+            False,
+            True
         )
 
         # form made from param and selection widget

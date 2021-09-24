@@ -503,7 +503,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     const SbColor& t = textColor.getValue();
 
     // Set GL Properties
-    glLineWidth(2.f);
+    glLineWidth(this->lineWidth.getValue());
     glColor3f(t[0], t[1], t[2]);
 
     if (this->datumtype.getValue() == DISTANCE ||

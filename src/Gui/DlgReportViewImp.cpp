@@ -36,8 +36,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgReportViewImp */
 
 /**
- *  Constructs a DlgReportViewImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgReportViewImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -49,7 +49,7 @@ DlgReportViewImp::DlgReportViewImp( QWidget* parent )
     ui->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgReportViewImp::~DlgReportViewImp()

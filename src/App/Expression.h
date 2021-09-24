@@ -24,7 +24,7 @@
 #define EXPRESSION_H
 
 #include <string>
-#include <boost/tuple/tuple.hpp>
+#include <tuple>
 #include <Base/Exception.h>
 #include <Base/Unit.h>
 #include <App/PropertyLinks.h>

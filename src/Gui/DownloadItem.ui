@@ -33,7 +33,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="SqueezeLabel" name="fileNameLabel" native="true">
+      <widget class="SqueezeLabel" name="fileNameLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="SqueezeLabel" name="downloadInfoLabel" native="true">
+      <widget class="SqueezeLabel" name="downloadInfoLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>

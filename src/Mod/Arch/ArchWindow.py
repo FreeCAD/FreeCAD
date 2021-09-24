@@ -48,9 +48,9 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__="FreeCAD Window"
+__title__  = "FreeCAD Window"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
@@ -475,7 +475,7 @@ class _CommandWindow:
             self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i == 1:
+            elif i in [1,8]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
             elif i == 6:
                 self.im.load(":/ui/ParametersDoorGlass.svg")
@@ -491,7 +491,7 @@ class _CommandWindow:
                     if path.lower().endswith(".fcstd"):
                         try:
                             import zipfile,tempfile
-                        except:
+                        except Exception:
                             pass
                         else:
                             zfile=zipfile.ZipFile(path)
@@ -632,7 +632,10 @@ class _Window(ArchComponent.Component):
                 elif "Edge" in s:
                     hinge = int(s[4:])-1
                 elif "Mode" in s:
-                    omode = int(s[-1])
+                    omode = int(s[4:])
+                    if omode >= len(WindowOpeningModes):
+                        # Ignore modes not listed in WindowOpeningModes
+                        omode = None
             if wires:
                 max_length = 0
                 for w in wires:
@@ -1119,6 +1122,58 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                 ccol = (ccol[0],ccol[1],ccol[2],t)
         return ccol
 
+    def setupContextMenu(self,vobj,menu):
+
+        if hasattr(self,"Object"):
+            from PySide import QtCore,QtGui
+            import Draft_rc
+            action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert opening direction",menu)
+            QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.invertOpening)
+            menu.addAction(action1)
+            action2 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert hinge position",menu)
+            QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.invertHinge)
+            menu.addAction(action2)
+
+    def invertOpening(self):
+
+        """swaps the opening modes found in this window"""
+
+        pairs = [["Mode"+str(i),"Mode"+str(i+1)] for i in range(1,len(WindowOpeningModes),2)]
+        self.invertPairs(pairs)
+        FreeCAD.ActiveDocument.recompute()
+
+    def invertHinge(self):
+
+        """swaps the hinges found in this window"""
+
+        pairs = [["Edge6","Edge8"],["Edge5","Edge7"]]
+        self.invertPairs(pairs)
+        self.invertOpening()
+        FreeCAD.ActiveDocument.recompute()
+
+    def invertPairs(self,pairs):
+
+        """scans the WindowParts of this window and swaps the two elements of each pair, if found"""
+
+        if hasattr(self,"Object"):
+            windowparts = self.Object.WindowParts
+            nparts = []
+            for part in windowparts:
+                for pair in pairs:
+                    if pair[0] in part:
+                        part = part.replace(pair[0],pair[1])
+                        break
+                    elif pair[1] in part:
+                        part = part.replace(pair[1],pair[0])
+                        break
+                nparts.append(part)
+            if nparts != self.Object.WindowParts:
+                self.Object.WindowParts = nparts
+            else:
+                FreeCAD.Console.PrintWarning(translate("Arch","This window has no defined opening")+"\n")
+
+
+
 class _ArchWindowTaskPanel:
 
     '''The TaskPanel for Arch Windows'''
@@ -1183,6 +1238,18 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.delButton, 4, 6, 1, 1)
         self.delButton.setMaximumSize(QtCore.QSize(70,40))
         self.delButton.setEnabled(False)
+
+        # invert buttons
+        self.invertOpeningButton = QtGui.QPushButton(self.baseform)
+        self.invertOpeningButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
+        self.invertOpeningButton.clicked.connect(self.invertOpening)
+        self.grid.addWidget(self.invertOpeningButton, 5, 0, 1, 7)
+        self.invertOpeningButton.setEnabled(False)
+        self.invertHingeButton = QtGui.QPushButton(self.baseform)
+        self.invertHingeButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
+        self.invertHingeButton.clicked.connect(self.invertHinge)
+        self.grid.addWidget(self.invertHingeButton, 6, 0, 1, 7)
+        self.invertHingeButton.setEnabled(False)
 
         # add new
 
@@ -1327,9 +1394,11 @@ class _ArchWindowTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        if obj.isDerivedFrom("Sketcher::SketchObject"):
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
 
@@ -1355,7 +1424,7 @@ class _ArchWindowTaskPanel:
                     for p in range(0,len(self.obj.WindowParts),5):
                         item = QtGui.QTreeWidgetItem(self.comptree)
                         item.setText(0,self.obj.WindowParts[p])
-                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                 if hasattr(self.obj,"HoleWire"):
                     self.holeNumber.setText(str(self.obj.HoleWire))
                 else:
@@ -1364,6 +1433,11 @@ class _ArchWindowTaskPanel:
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
+            for wp in self.obj.WindowParts:
+                if ("Edge" in wp) and ("Mode" in wp):
+                    self.invertOpeningButton.setEnabled(True)
+                    self.invertHingeButton.setEnabled(True)
+                    break
 
     def addElement(self):
 
@@ -1373,6 +1447,8 @@ class _ArchWindowTaskPanel:
         self.field3.setText('')
         self.field4.setText('')
         self.field5.setText('')
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+        self.field7.setCurrentIndex(0)
         self.addp4.setChecked(False)
         self.addp5.setChecked(False)
         self.newtitle.setVisible(True)
@@ -1420,6 +1496,8 @@ class _ArchWindowTaskPanel:
             if self.obj:
                 if comp in self.obj.WindowParts:
                     ind = self.obj.WindowParts.index(comp)
+                    self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+                    self.field7.setCurrentIndex(0)
                     for i in range(5):
                         f = getattr(self,"field"+str(i+1))
                         t = self.obj.WindowParts[ind+i]
@@ -1437,7 +1515,11 @@ class _ArchWindowTaskPanel:
                                 elif "Edge" in l:
                                     self.field6.setText(l)
                                 elif "Mode" in l:
-                                    self.field7.setCurrentIndex(int(l[-1]))
+                                    if int(l[4:]) < len(WindowOpeningModes):
+                                        self.field7.setCurrentIndex(int(l[4:]))
+                                    else:
+                                        # Ignore modes not listed in WindowOpeningModes
+                                        self.field7.setCurrentIndex(0)
                             if wires:
                                 f.setText(",".join(wires))
 
@@ -1577,11 +1659,22 @@ class _ArchWindowTaskPanel:
         self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Offset value of this window will be added to the value entered here", None))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
+        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
+        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert hinge position", None))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None))
         for i in range(len(WindowOpeningModes)):
             self.field7.setItemText(i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None))
 
+    def invertOpening(self):
+
+        if self.obj:
+            self.obj.ViewObject.Proxy.invertOpening()
+
+    def invertHinge(self):
+
+        if self.obj:
+            self.obj.ViewObject.Proxy.invertHinge()
 
 
 if FreeCAD.GuiUp:

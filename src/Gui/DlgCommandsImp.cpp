@@ -118,11 +118,7 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
     ui->commandTreeWidget->setHeaderLabels(labels);
     ui->commandTreeWidget->header()->hide();
     ui->commandTreeWidget->setIconSize(QSize(32, 32));
-#if QT_VERSION >= 0x050000
     ui->commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    ui->commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
 
     ui->categoryTreeWidget->setCurrentItem(ui->categoryTreeWidget->topLevelItem(0));
 }

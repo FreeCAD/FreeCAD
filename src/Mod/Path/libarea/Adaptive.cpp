@@ -1,5 +1,6 @@
 /**************************************************************************
-*   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
+*   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+*                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
 *   This library is free software; you can redistribute it and/or         *
@@ -1705,7 +1706,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		helixRampDiameter = toolDiameter / 8;
 
 	helixRampRadiusScaled = long(helixRampDiameter * scaleFactor / 2);
-	finishPassOffsetScaled = long(stepOverScaled / 10);
+	if(finishingProfile)
+		finishPassOffsetScaled = long(stepOverScaled / 10);
 
 	ClipperOffset clipof;
 	Clipper clip;
@@ -3023,121 +3025,112 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 	//**********************************
 	//*  FINISHING PASS                *
 	//**********************************
+	if(finishingProfile) {
+		Paths finishingPaths;
+		clipof.Clear();
+		clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+		clipof.Execute(finishingPaths, -toolRadiusScaled);
 
-	Paths finishingPaths;
-	clipof.Clear();
-	clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-	clipof.Execute(finishingPaths, -toolRadiusScaled);
+		clipof.Clear();
+		clipof.AddPaths(finishingPaths, JoinType::jtRound, EndType::etClosedPolygon);
+		clipof.Execute(toolBoundPaths, -1);
 
-	clipof.Clear();
-	clipof.AddPaths(finishingPaths, JoinType::jtRound, EndType::etClosedPolygon);
-	clipof.Execute(toolBoundPaths, -1);
+		IntPoint lastPoint = toolPos;
+		Path finShiftedPath;
 
-	IntPoint lastPoint = toolPos;
-	Path finShiftedPath;
+		bool allCutsAllowed = true;
+		while(!stopProcessing && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath)) {
+			if(finShiftedPath.empty())
+				continue;
+			// skip finishing passes outside the stock boundary - no sense to cut where is no material
+			bool allPointsOutside = true;
+			IntPoint p1 = finShiftedPath.front();
+			for(const auto& pt : finShiftedPath) {
 
-	bool allCutsAllowed = true;
-	while (!stopProcessing && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath))
-	{
-		if (finShiftedPath.empty())
-			continue;
-		// skip finishing passes outside the stock boundary - no sense to cut where is no material
-		bool allPointsOutside = true;
-		IntPoint p1 = finShiftedPath.front();
-		for (const auto &pt : finShiftedPath)
-		{
+				// midpoint
+				if(IsPointWithinCutRegion(stockInputPaths, IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2))) {
+					allPointsOutside = false;
+					break;
+				}
+				//current point
+				if(IsPointWithinCutRegion(stockInputPaths, pt)) {
+					allPointsOutside = false;
+					break;
+				}
 
-			// midpoint
-			if (IsPointWithinCutRegion(stockInputPaths, IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2)))
-			{
-				allPointsOutside = false;
-				break;
+				p1 = pt;
 			}
-			//current point
-			if (IsPointWithinCutRegion(stockInputPaths, pt))
-			{
-				allPointsOutside = false;
-				break;
+			if(allPointsOutside)
+				continue;
+
+			progressPaths.push_back(TPath());
+			// show in progress cb
+			for(auto& pt : finShiftedPath) {
+				progressPaths.back().second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 			}
 
-			p1 = pt;
-		}
-		if (allPointsOutside)
-			continue;
+			if(!finShiftedPath.empty())
+				finShiftedPath << finShiftedPath.front(); // make sure its closed
 
-		progressPaths.push_back(TPath());
-		// show in progress cb
-		for (auto &pt : finShiftedPath)
-		{
-			progressPaths.back().second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
-		}
+			Path finCleaned;
+			CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
 
-		if (!finShiftedPath.empty())
-			finShiftedPath << finShiftedPath.front(); // make sure its closed
+			// sanity check for finishing paths - check the area of finishing cut
+			for(size_t i = 1; i < finCleaned.size(); i++) {
+				if(!IsAllowedToCutTrough(finCleaned.at(i - 1), finCleaned.at(i), cleared, toolBoundPaths, 2.0, true)) {
+					allCutsAllowed = false;
+				}
+			}
 
-		Path finCleaned;
-		CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
+			// make sure it's closed
+			finCleaned.push_back(finCleaned.front());
+			AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths);
 
-		// sanity check for finishing paths - check the area of finishing cut
-		for (size_t i = 1; i < finCleaned.size(); i++)
-		{
-			if (!IsAllowedToCutTrough(finCleaned.at(i - 1), finCleaned.at(i), cleared, toolBoundPaths, 2.0, true))
-			{
-				allCutsAllowed = false;
+			cleared.ExpandCleared(finCleaned);
+
+			if(!finCleaned.empty()) {
+				lastPoint.X = finCleaned.back().X;
+				lastPoint.Y = finCleaned.back().Y;
 			}
 		}
 
-		// make sure it's closed
-		finCleaned.push_back(finCleaned.front());
-		AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths);
+		Path returnPath;
+		returnPath << lastPoint;
+		returnPath << entryPoint;
+		output.ReturnMotionType = IsClearPath(returnPath, cleared) ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
 
-		cleared.ExpandCleared(finCleaned);
-
-		if (!finCleaned.empty())
-		{
-			lastPoint.X = finCleaned.back().X;
-			lastPoint.Y = finCleaned.back().Y;
-		}
-	}
-
-	Path returnPath;
-	returnPath << lastPoint;
-	returnPath << entryPoint;
-	output.ReturnMotionType = IsClearPath(returnPath, cleared) ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
-
-// dump performance results
+		// dump performance results
 #ifdef DEV_MODE
-	Perf_ProcessPolyNode.Stop();
-	Perf_ProcessPolyNode.DumpResults();
-	Perf_PointIterations.DumpResults();
-	Perf_CalcCutAreaCirc.DumpResults();
-	Perf_CalcCutAreaClip.DumpResults();
-	Perf_NextEngagePoint.DumpResults();
-	Perf_ExpandCleared.DumpResults();
-	Perf_DistanceToBoundary.DumpResults();
-	Perf_AppendToolPath.DumpResults();
-	Perf_IsAllowedToCutTrough.DumpResults();
-	Perf_IsClearPath.DumpResults();
+		Perf_ProcessPolyNode.Stop();
+		Perf_ProcessPolyNode.DumpResults();
+		Perf_PointIterations.DumpResults();
+		Perf_CalcCutAreaCirc.DumpResults();
+		Perf_CalcCutAreaClip.DumpResults();
+		Perf_NextEngagePoint.DumpResults();
+		Perf_ExpandCleared.DumpResults();
+		Perf_DistanceToBoundary.DumpResults();
+		Perf_AppendToolPath.DumpResults();
+		Perf_IsAllowedToCutTrough.DumpResults();
+		Perf_IsClearPath.DumpResults();
 #endif
-	CheckReportProgress(progressPaths, true);
+		CheckReportProgress(progressPaths, true);
 #ifdef DEV_MODE
-	double duration = ((double)(clock() - start_clock)) / CLOCKS_PER_SEC;
-	cout << "PolyNode perf:" << perf_total_len / double(scaleFactor) / duration << " mm/sec"
-		 << " processed_points:" << total_points
-		 << " output_points:" << total_output_points
-		 << " total_iterations:" << total_iterations
-		 << " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
-		 << " total_exceeded:" << total_exceeded << " (" << 100 * double(total_exceeded) / double(total_points) << "%)"
-		 << endl;
+		double duration = ((double) (clock() - start_clock)) / CLOCKS_PER_SEC;
+		cout << "PolyNode perf:" << perf_total_len / double(scaleFactor) / duration << " mm/sec"
+			<< " processed_points:" << total_points
+			<< " output_points:" << total_output_points
+			<< " total_iterations:" << total_iterations
+			<< " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
+			<< " total_exceeded:" << total_exceeded << " (" << 100 * double(total_exceeded) / double(total_points) << "%)"
+			<< endl;
 #endif
 
-	// warn about invalid paths being detected
-	if (!allCutsAllowed)
-	{
-		cerr << "Warning: some cuts may be above optimal step-over. Please double check the results." << endl
-			 << "Hint: try to modify accuracy and/or step-over." << endl;
+		// warn about invalid paths being detected
+		if(!allCutsAllowed) {
+			cerr << "Warning: some cuts may be above optimal step-over. Please double check the results." << endl
+				<< "Hint: try to modify accuracy and/or step-over." << endl;
+		}
 	}
-
 	results.push_back(output);
 }
 

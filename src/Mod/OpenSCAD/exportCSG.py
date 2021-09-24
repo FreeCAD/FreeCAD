@@ -29,18 +29,15 @@ __title__="FreeCAD OpenSCAD Workbench - CSG exporter Version"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 
-import FreeCAD, os, Part, math
-from FreeCAD import Vector
+import FreeCAD
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     gui = True
 else:
     gui = False
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
-global fafs
 #fafs = '$fa = 12, $fs = 2'
 #convexity = 'convexity = 10'
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -272,4 +269,4 @@ def export(exportList,filename):
     csg.write("}\n}\n")
     # close file              
     csg.close()
-    FreeCAD.Console.PrintMessage("successfully exported "+filename)
+    FreeCAD.Console.PrintMessage("successfully exported" + " " + filename)

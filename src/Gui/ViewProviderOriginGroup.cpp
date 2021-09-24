@@ -49,6 +49,6 @@ ViewProviderOriginGroup::ViewProviderOriginGroup ()
     initExtension(this);
 }
 
-ViewProviderOriginGroup::~ViewProviderOriginGroup () 
+ViewProviderOriginGroup::~ViewProviderOriginGroup ()
 {
 }

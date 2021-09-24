@@ -339,7 +339,7 @@ bool SweepWidget::accept()
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc)
             throw Base::RuntimeError("Document doesn't exist anymore");
-        doc->openCommand("Sweep");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();

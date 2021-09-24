@@ -60,11 +60,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskMirroredParameters */
 
 TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskMirroredParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskMirroredParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -80,10 +80,9 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
 }
 
 TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskMirroredParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskMirroredParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -280,10 +279,15 @@ void TaskMirroredParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0) {
+        Base::Console().Error("PartDesign MirroredPattern: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
     recomputeFeature();
 }
 
@@ -313,7 +317,6 @@ TaskMirroredParameters::~TaskMirroredParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }

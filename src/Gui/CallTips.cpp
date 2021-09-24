@@ -236,11 +236,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         PyObject* eval = 0;
         if (PyCode_Check(code)) {
-#if PY_MAJOR_VERSION >= 3
             eval = PyEval_EvalCode(code, dict.ptr(), dict.ptr());
-#else
-            eval = PyEval_EvalCode(reinterpret_cast<PyCodeObject*>(code), dict.ptr(), dict.ptr());
-#endif
         }
         Py_DECREF(code);
         if (!eval) {
@@ -276,14 +272,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
             obj = type;
         }
-#if PY_MAJOR_VERSION < 3
-        else if (PyInstance_Check(obj.ptr())) {
-            // instances of old style classes
-            PyInstanceObject* inst = reinterpret_cast<PyInstanceObject*>(obj.ptr());
-            PyObject* classobj = reinterpret_cast<PyObject*>(inst->in_class);
-            obj = Py::Object(classobj);
-        }
-#endif
         else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
             // New style class which can be a module, type, list, tuple, int, float, ...
             // Make sure it's not a type object

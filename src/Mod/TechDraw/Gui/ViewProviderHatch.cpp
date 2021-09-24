@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderHatch, Gui::ViewProviderDocumentObject)
 
 ViewProviderHatch::ViewProviderHatch()
 {
-    sPixmap = "TechDraw_Tree_Hatch";
+    sPixmap = "TechDraw_TreeHatch";
 
     static const char *vgroup = "Hatch";
     ADD_PROPERTY_TYPE(HatchColor,(TechDraw::DrawHatch::prefSvgHatchColor()),

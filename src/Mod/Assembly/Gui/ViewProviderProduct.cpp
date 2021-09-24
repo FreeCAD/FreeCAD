@@ -130,7 +130,7 @@ void ViewProviderProduct::setupContextMenu(QMenu* menu, QObject* receiver, const
     //QAction* toggle = menu->addAction(QObject::tr("Rigid subassembly"), receiver, member);
     //toggle->setData(QVariant(1000)); // identifier
     //toggle->setCheckable(true);
-    //toggle->setToolTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themselfe."));
+    //toggle->setToolTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themself."));
     //toggle->setStatusTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themself."));
     //bool prop = static_cast<Assembly::Product*>(getObject())->Rigid.getValue();
     //toggle->setChecked(prop);

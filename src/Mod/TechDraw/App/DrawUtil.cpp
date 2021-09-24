@@ -561,9 +561,8 @@ double DrawUtil::sensibleScale(double working_scale)
 
 double DrawUtil::getDefaultLineWeight(std::string lineType)
 {
-    std::string lgName = Preferences::lineGroup();
- 
-    auto lg = LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = LineGroup::lineGroupFactory(lgNumber);
 
     double weight = lg->getWeight(lineType);
     delete lg;                                    //Coverity CID 174671

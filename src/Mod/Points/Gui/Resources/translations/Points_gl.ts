@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Points</source>
       <translation>Puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>Merge point clouds</source>
       <translation>Misturar nube de puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
       <translation>Misturar varias nubes de puntos nunha</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Points</source>
       <translation>Puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Cut point cloud</source>
       <translation>Cortar nube de puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Corta unha nube de puntos cun polígono escollido</translation>
     </message>
@@ -99,20 +99,20 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Points</source>
       <translation>Puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Nube de puntos estruturados</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Converter os puntos nunha nube de puntos estruturados</translation>
     </message>
   </context>
   <context>
@@ -132,6 +132,30 @@
       <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
       <translation>Test para transformar unha nube de puntos</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="88"/>
+      <source>Import points</source>
+      <translation>Importar puntos</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="168"/>
+      <source>Transform points</source>
+      <translation>Transformar puntos</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="208"/>
+      <source>Convert to points</source>
+      <translation>Converter en puntos</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="468"/>
+      <location filename="../../ViewProvider.cpp" line="627"/>
+      <source>Cut points</source>
+      <translation>Puntos de corte</translation>
     </message>
   </context>
   <context>
@@ -294,12 +318,12 @@
       <translation>Tódolos ficheiros</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Enter maximum distance:</source>
       <translation>Insira a distancia máxima:</translation>
     </message>

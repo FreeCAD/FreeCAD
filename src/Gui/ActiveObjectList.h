@@ -44,7 +44,7 @@ namespace Gui
 	* @see Gui::MDIViewer
 	* @author Jürgen Riegel
 	*/
-    class GuiExport ActiveObjectList 
+    class GuiExport ActiveObjectList
     {
     public:
         ActiveObjectList(Document *doc)
@@ -85,4 +85,4 @@ namespace Gui
 static const char PDBODYKEY[] = "pdbody";
 static const char PARTKEY[] = "part";
 
-#endif 
+#endif

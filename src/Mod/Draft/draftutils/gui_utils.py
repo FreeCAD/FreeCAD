@@ -38,12 +38,11 @@ of the objects or the 3D view.
 # @{
 import math
 import os
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils
 
-from draftutils.messages import _msg, _wrn
+from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr, translate
 
 if App.GuiUp:
@@ -65,14 +64,19 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
-        v = Gui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
+        # FIXME The following two imports were added as part of PR4926
+        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        import FreeCADGui as Gui
+        from pivy import coin
+        if Gui.ActiveDocument:
+            v = Gui.ActiveDocument.ActiveView
+            if "View3DInventor" in str(type(v)):
+                return v
 
-        # print("Debug: Draft: Warning, not working in active view")
-        v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
+            # print("Debug: Draft: Warning, not working in active view")
+            v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+            if v:
+                return v[0]
 
     _wrn(_tr("No graphical interface"))
     return None
@@ -100,17 +104,17 @@ def autogroup(obj):
     obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    
+
     # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
     if not hasattr(Gui,"draftToolBar"):
         return
     if not hasattr(Gui.draftToolBar,"autogroup"):
-        return        
+        return
     if Gui.draftToolBar.isConstructionMode():
         return
-    
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
@@ -123,18 +127,25 @@ def autogroup(obj):
                 gr = active_group.Group
                 gr.append(obj)
                 active_group.Group = gr
-                
+
     else:
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
-            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
-            
+            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            if obj in active_arch_obj.InListRecursive:
+                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+                return
+            active_arch_obj.addObject(obj)
+
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
             # if not scaled. Modified accordingly to realthunder suggestions
-            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            if obj in active_part.InListRecursive:
+                # do not autogroup if obj points to active_part to prevent cyclic references
+                return
             matrix = parent.getSubObject(sub, retType=4)
             if matrix.hasScale() == 1:
                 err = translate("Draft",
@@ -161,7 +172,8 @@ def autogroup(obj):
             elif hasattr(obj,"Placement"):
                 # every object that have a placement is processed here
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-            p.addObject(obj)
+
+            active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
@@ -175,7 +187,7 @@ def dim_symbol(symbol=None, invert=False):
 
         A numerical value defines different markers
          * 0, `SoSphere`
-         * 1, `SoMarkerSet` with a circle
+         * 1, `SoSeparator` with a `SoLineSet`, a circle (in fact a 24 sided polygon)
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
@@ -190,8 +202,7 @@ def dim_symbol(symbol=None, invert=False):
     Returns
     -------
     Coin.SoNode
-        A `Coin.SoSphere`, or `Coin.SoMarkerSet` (circle),
-        or `Coin.SoSeparator` (cone, face, line)
+        A `Coin.SoSphere`, or `Coin.SoSeparator` (circle, cone, face, line)
         that will be used as a dimension symbol.
     """
     if symbol is None:
@@ -207,10 +218,14 @@ def dim_symbol(symbol=None, invert=False):
         marker = coin.SoSphere()
         return marker
     elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        # Should be the same as
-        # marker.markerIndex = 10
-        marker.markerIndex = Gui.getMarkerIndex("circle", 9)
+        marker = coin.SoSeparator()
+        v = coin.SoVertexProperty()
+        for i in range(25):
+            ang = math.radians(i * 15)
+            v.vertex.set1Value(i, (math.sin(ang), math.cos(ang), 0))
+        p = coin.SoLineSet()
+        p.vertexProperty = v
+        marker.addChild(p)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -228,15 +243,19 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 3:
         marker = coin.SoSeparator()
+        # hints are required otherwise only the bottom of the face is colored
+        h = coin.SoShapeHints()
+        h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
         c.point.setValues([(-1, -2, 0), (0, 2, 0),
                            (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
+        marker.addChild(h)
         marker.addChild(c)
         marker.addChild(f)
         return marker
     elif symbol == 4:
-        return dimDash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+        return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
     else:
         _wrn(_tr("Symbol not implemented. Use a default symbol."))
         return coin.SoSphere()
@@ -350,34 +369,43 @@ def format_object(target, origin=None):
     if ui:
         doc = App.ActiveDocument
         if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
-            gname = utils.get_param("constructiongroupname", "Construction")
-            grp = doc.getObject(gname)
+            lcol = fcol = ui.getDefaultColor("constr")
+            tcol = lcol
+            fcol = lcol
+            grp = doc.getObject("Draft_Construction")
             if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup", gname)
+                grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+                grp.Label = utils.get_param("constructiongroupname", "Construction")
             grp.addObject(target)
             if hasattr(obrep, "Transparency"):
                 obrep.Transparency = 80
         else:
-            col = ui.getDefaultColor("ui")
+            lcol = ui.getDefaultColor("line")
+            tcol = ui.getDefaultColor("text")
             fcol = ui.getDefaultColor("face")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
+        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
         fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
+        lw = utils.getParam("linewidth",2)
+        fs = utils.getParam("textheight",0.20)
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
             if "TextSize" in obrep.PropertiesList:
                 obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = col
+                obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
                 obrep.LineWidth = lw
             if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = col
+                obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = col
+                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
+                    # dimensions and other objects with text but no specific
+                    # TextColor property. TODO: Add TextColor property to dimensions
+                    obrep.LineColor = tcol
+                else:
+                    obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -594,63 +622,35 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             buffersize = p.byteCount()
             width = size[0]
             height = size[1]
-            numcomponents = int(float(buffersize) / (width * height))
+            numcomponents = int(buffersize / (width * height))
 
             img = coin.SoSFImage()
-            byteList = []
-            # isPy2 = sys.version_info.major < 3
-            isPy2 = six.PY2
+            byteList = bytearray()
 
             # The SoSFImage needs to be filled with bytes.
             # The pixel information is converted into a Qt color, gray,
             # red, green, blue, or transparency (alpha),
             # depending on the input image.
-            #
-            # If Python 2 is used, the color is turned into a character,
-            # which is of type 'byte', and added to the byte list.
-            # If Python 3 is used, characters are unicode strings,
-            # so they need to be encoded into 'latin-1'
-            # to produce the correct bytes for the list.
             for y in range(height):
                 # line = width*numcomponents*(height-(y));
                 for x in range(width):
-                    rgb = p.pixel(x, y)
-                    if numcomponents == 1 or numcomponents == 2:
-                        gray = chr(QtGui.qGray(rgb))
-                        if isPy2:
-                            byteList.append(gray)
-                        else:
-                            byteList.append(gray.encode('latin-1'))
+                    rgba = p.pixel(x, y)
+                    if numcomponents <= 2:
+                        byteList.append(QtGui.qGray(rgba))
 
                         if numcomponents == 2:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
-                    elif numcomponents == 3 or numcomponents == 4:
-                        red = chr(QtGui.qRed(rgb))
-                        green = chr(QtGui.qGreen(rgb))
-                        blue = chr(QtGui.qBlue(rgb))
+                            byteList.append(QtGui.qAlpha(rgba))
 
-                        if isPy2:
-                            byteList.append(red)
-                            byteList.append(green)
-                            byteList.append(blue)
-                        else:
-                            byteList.append(red.encode('latin-1'))
-                            byteList.append(green.encode('latin-1'))
-                            byteList.append(blue.encode('latin-1'))
+                    elif numcomponents <= 4:
+                        byteList.append(QtGui.qRed(rgba))
+                        byteList.append(QtGui.qGreen(rgba))
+                        byteList.append(QtGui.qBlue(rgba))
 
                         if numcomponents == 4:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
+                            byteList.append(QtGui.qAlpha(rgba))
                     # line += numcomponents
 
-            _bytes = b"".join(byteList)
+            _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
             _wrn("load_texture: {0}, {1}".format(exc.strerror,
@@ -676,5 +676,75 @@ def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
     for obj in doc.Objects:
         if utils.get_type(obj) == obj_type:
             obj.ViewObject.DisplayMode = mode
+
+
+def get_bbox(obj, debug=False):
+    """Return a BoundBox from any object that has a Coin RootNode.
+
+    Normally the bounding box of an object can be taken
+    from its `Part::TopoShape`.
+    ::
+        >>> print(obj.Shape.BoundBox)
+
+    However, for objects without a `Shape`, such as those
+    derived from `App::FeaturePython` like `Draft Text` and `Draft Dimension`,
+    the bounding box can be calculated from the `RootNode` of the viewprovider.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        Any object that has a `ViewObject.RootNode`.
+
+    Returns
+    -------
+    Base::BoundBox
+        It returns a `BoundBox` object which has information like
+        minimum and maximum values of X, Y, and Z, as well as bounding box
+        center.
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "get_bbox"
+    utils.print_header(_name, "Bounding box", debug=debug)
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(obj, str):
+        obj_str = obj
+
+    found, obj = utils.find_object(obj, doc)
+    if not found:
+        _msg("obj: {}".format(obj_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    if debug:
+        _msg("obj: {}".format(obj.Label))
+
+    if (not hasattr(obj, "ViewObject")
+            or not obj.ViewObject
+            or not hasattr(obj.ViewObject, "RootNode")):
+        _err(_tr("Does not have 'ViewObject.RootNode'."))
+
+    # For Draft Dimensions
+    # node = obj.ViewObject.Proxy.node
+    node = obj.ViewObject.RootNode
+
+    view = Gui.ActiveDocument.ActiveView
+    region = view.getViewer().getSoRenderManager().getViewportRegion()
+    action = coin.SoGetBoundingBoxAction(region)
+
+    node.getBoundingBox(action)
+    bb = action.getBoundingBox()
+
+    # xlength, ylength, zlength = bb.getSize().getValue()
+    xmin, ymin, zmin = bb.getMin().getValue()
+    xmax, ymax, zmax = bb.getMax().getValue()
+
+    return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 ## @}

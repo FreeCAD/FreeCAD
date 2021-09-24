@@ -1,5 +1,3 @@
-
-
 # shell and operating system
 import os, sys, re
 verbose = 0
@@ -43,7 +41,7 @@ def cpall(dirFrom, dirTo):
                 if verbose > 1: print('copying', pathFrom, 'to', pathTo)
                 cpfile(pathFrom, pathTo)
                 fcount = fcount+1
-            except:
+            except Exception:
                 print('Error copying', pathFrom, 'to', pathTo, '--skipped')
                 print(sys.exc_type, sys.exc_value)
         else:
@@ -52,7 +50,7 @@ def cpall(dirFrom, dirTo):
                 os.mkdir(pathTo)                          # make new subdir
                 cpall(pathFrom, pathTo)                   # recur into subdirs
                 dcount = dcount+1
-            except:
+            except Exception:
                 print('Error creating', pathTo, '--skipped')
                 print(sys.exc_type, sys.exc_value)
 
@@ -82,7 +80,7 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
                     if verbose > 1: print('copying', pathFrom, 'to', pathTo)
                     cpfile(pathFrom, pathTo)
                     fcount = fcount+1
-                except:
+                except Exception:
                     print('Error copying', pathFrom, 'to', pathTo, '--skipped')
                     print(sys.exc_type, sys.exc_value)
             else:
@@ -91,7 +89,7 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
                     os.mkdir(pathTo)                            # make new subdir
                     cpallWithFilter(pathFrom, pathTo,MatchList) # recur into subdirs
                     dcount = dcount+1
-                except:
+                except Exception:
                     print('Error creating', pathTo, '--skipped')
                     print(sys.exc_type, sys.exc_value)
 

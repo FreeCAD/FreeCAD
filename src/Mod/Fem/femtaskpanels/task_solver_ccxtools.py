@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver calculix ccx tools task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_solver_ccxtools
 #  \ingroup FEM
@@ -115,6 +115,11 @@ class _TaskPanel:
             self.select_check_mesh
         )
         QtCore.QObject.connect(
+            self.form.rb_buckling_analysis,
+            QtCore.SIGNAL("clicked()"),
+            self.select_buckling_analysis
+        )
+        QtCore.QObject.connect(
             self.Calculix,
             QtCore.SIGNAL("started()"),
             self.calculixStarted
@@ -161,6 +166,8 @@ class _TaskPanel:
             self.form.rb_thermomech_analysis.setChecked(True)
         elif self.fea.solver.AnalysisType == "check":
             self.form.rb_check_mesh.setChecked(True)
+        elif self.fea.solver.AnalysisType == "buckling":
+            self.form.rb_buckling_analysis.setChecked(True)
         return
 
     def femConsoleMessage(self, message="", color="#000000"):
@@ -285,7 +292,7 @@ class _TaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
-        except:
+        except Exception:
             FreeCAD.Console.PrintError("loading results failed\n")
 
         QApplication.restoreOverrideCursor()
@@ -349,6 +356,13 @@ class _TaskPanel:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
+        if self.fea.ccx_binary_present is False:
+            self.femConsoleMessage(
+                "CalculiX can not be started. No or wrong CalculiX binary: {}"
+                .format(self.fea.ccx_binary)
+            )
+            # TODO deactivate the run button
+            return
         # print("runCalculix")
         self.Start = time.time()
 
@@ -386,3 +400,6 @@ class _TaskPanel:
 
     def select_check_mesh(self):
         self.select_analysis_type("check")
+
+    def select_buckling_analysis(self):
+        self.select_analysis_type("buckling")

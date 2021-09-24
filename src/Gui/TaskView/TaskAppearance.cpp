@@ -101,9 +101,8 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
     // We pick out all the properties for which we need to update this dialog.
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     std::vector<Gui::ViewProvider*>::const_iterator vp = std::find_if
-        (Provider.begin(), Provider.end(), 
-        std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
-        const_cast<Gui::ViewProvider*>(&obj)));
+        (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
+
     if (vp != Provider.end()) {
         std::string prop_name = obj.getPropertyName(&prop);
         if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {

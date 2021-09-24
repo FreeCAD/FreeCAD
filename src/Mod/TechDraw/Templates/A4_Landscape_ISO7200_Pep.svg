@@ -196,8 +196,8 @@
        id="text81"
        y="198"
        x="174"
-       freecad:editable="DOCUMENT_TYPE">Mechanical assembly drawing<tspan
-   id="tspan79" />
+       freecad:editable="DOCUMENT_TYPE"><tspan
+   id="tspan79">Mechanical assembly drawing</tspan>
 </text>
     <text
        id="text85"

@@ -1,9 +1,5 @@
-# Test gui init module  
-# (c) 2003 Juergen Riegel
-#
-
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002,2003 Juergen Riegel <juergen.riegel@web.de>        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -23,10 +19,9 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
+# Test gui init module
 
 class TestWorkbench ( Workbench ):
     "Test workbench object"

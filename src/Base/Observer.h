@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,12 +10,12 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
@@ -44,7 +44,7 @@ template <class MessageType> class Subject;
 /** Observer class
  *  Implementation of the well known Observer Design Pattern.
  *  The observed object, which inherit FCSubject, will call all
- *  its observers in case of changes. A observer class has to 
+ *  its observers in case of changes. A observer class has to
  *  Attach itself to the observed object.
  *  @see FCSubject
  */
@@ -85,7 +85,7 @@ public:
 
   /**
    * This method can be reimplemented from the concrete Observer
-   * and returns the name of the observer. Needed to use the Get 
+   * and returns the name of the observer. Needed to use the Get
    * Method of the Subject.
    */
   virtual const char *Name(void){return 0L;}
@@ -94,7 +94,7 @@ public:
 /** Subject class
  *  Implementation of the well known Observer Design Pattern.
  *  The observed object, which inherit FCSubject, will call all
- *  its observers in case of changes. A observer class has to 
+ *  its observers in case of changes. A observer class has to
  *  Attach itself to the observed object.
  *  @see FCObserver
  */
@@ -105,8 +105,8 @@ public:
 
   typedef  Observer<_MessageType> ObserverType;
   typedef  _MessageType             MessageType;
-  typedef  Subject<_MessageType>  SubjectType;   
-     
+  typedef  Subject<_MessageType>  SubjectType;
+
   /**
    * A constructor.
    * No special function so far.
@@ -127,7 +127,7 @@ public:
   }
 
   /** Attach an Observer
-   * Attach an Observer to the list of Observers which get   
+   * Attach an Observer to the list of Observers which get
    * called when Notify is called.
    * @param ToObserv A pointer to a concrete Observer
    * @see Notify
@@ -146,7 +146,7 @@ public:
   }
 
   /** Detach an Observer
-   * Detach an Observer from the list of Observers which get   
+   * Detach an Observer from the list of Observers which get
    * called when Notify is called.
    * @param ToObserv A pointer to a concrete Observer
    * @see Notify
@@ -166,7 +166,7 @@ public:
 
   /** Notify all Observers
    * Send a message to all Observers attached to this subject.
-   * The Message depends on the implementation of a concrete 
+   * The Message depends on the implementation of a concrete
    * Oberserver and Subject.
    * @see Notify
    */
@@ -205,7 +205,7 @@ public:
     return 0L;
   }
 
-  /** Clears the list of all registered observers. 
+  /** Clears the list of all registered observers.
    * @note Using this function in your code may be an indication of design problems.
    */
   void ClearObserver()

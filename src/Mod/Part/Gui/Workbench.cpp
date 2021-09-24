@@ -70,7 +70,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cone"
           << "Part_Torus"
           << "Separator"
-          << "Part_MakeTube";
+          << "Part_Tube";
 
     Gui::MenuItem* copy = new Gui::MenuItem;
     copy->setCommand("Create a copy");
@@ -127,17 +127,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << bop << join << split << compound
           << "Separator"
-          << "Part_Section"
-          << "Part_CrossSections"
-          << "Part_MakeFace"
           << "Part_Extrude"
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Fillet"
           << "Part_Chamfer"
+          << "Part_MakeFace"
           << "Part_RuledSurface"
           << "Part_Loft"
           << "Part_Sweep"
+          << "Part_Section"
+          << "Part_CrossSections"
           << "Part_Offset"
           << "Part_Offset2D"
           << "Part_Thickness"
@@ -154,11 +154,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
-             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
-    // leave this for 0.14 until #0000477 is fixed
-#if 0
     Gui::MenuItem* view = root->findItem("&View");
     if (view) {
         Gui::MenuItem* appr = view->findItem("Std_RandomColor");
@@ -167,7 +165,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         face->setCommand("Part_ColorPerFace");
         view->insertItem(appr, face);
     }
-#endif
 
     return root;
 }
@@ -183,7 +180,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_Sphere"
             << "Part_Cone"
             << "Part_Torus"
-            << "Part_MakeTube"
+            << "Part_Tube"
             << "Part_Primitives"
             << "Part_Builder";
 
@@ -194,12 +191,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Mirror"
           << "Part_Fillet"
           << "Part_Chamfer"
+          << "Part_MakeFace"
           << "Part_RuledSurface"
           << "Part_Loft"
           << "Part_Sweep"
+          << "Part_Section"
+          << "Part_CrossSections"
           << "Part_CompOffset"
           << "Part_Thickness"
-          << "Part_ProjectionOnSurface";
+          << "Part_ProjectionOnSurface"
+          << "Part_ColorPerFace";  // See issues #0477 and #1954 in the tracker
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
@@ -211,9 +212,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_CompJoinFeatures"
             << "Part_CompSplitFeatures"
             << "Part_CheckGeometry"
-            << "Part_Defeaturing"
-            << "Part_Section"
-            << "Part_CrossSections";
+            << "Part_Defeaturing";
 
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
@@ -223,7 +222,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
-             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
     return root;

@@ -112,7 +112,8 @@ from draftutils.gui_utils import (get3DView,
                                   get_selection_ex,
                                   select,
                                   loadTexture,
-                                  load_texture)
+                                  load_texture,
+                                  get_bbox)
 
 from draftutils.gui_utils import (dim_symbol,
                                   dimSymbol,
@@ -420,5 +421,10 @@ from draftmake.make_text import (make_text,
 if App.GuiUp:
     from draftviewproviders.view_text import (ViewProviderText,
                                               ViewProviderDraftText)
+
+from draftobjects.hatch import (Draft_Hatch_Object)
+from draftmake.make_hatch import (make_hatch, makeHatch)
+if App.GuiUp:
+    from draftviewproviders.view_hatch import (Draft_Hatch_ViewProvider)
 
 ## @}

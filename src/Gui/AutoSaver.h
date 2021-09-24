@@ -29,7 +29,7 @@
 #include <map>
 #include <set>
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
 class Document;

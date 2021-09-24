@@ -45,6 +45,7 @@ public:
     App::PropertyLength      Length2;
     App::PropertyBool        UseCustomVector;
     App::PropertyVector      Direction;
+    App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
 
     /** @name methods override feature */

@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
+#include <Mod/Mesh/App/Types.h>
 
 class QAbstractButton;
 
@@ -68,7 +69,7 @@ class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
     Q_OBJECT
 
 public:
-    DlgEvaluateMeshImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgEvaluateMeshImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgEvaluateMeshImp();
 
     void setMesh(Mesh::Feature*);
@@ -127,7 +128,7 @@ protected:
     void refreshList();
     void showInformation();
     void cleanInformation();
-    void addViewProvider(const char* vp, const std::vector<unsigned long>& indices);
+    void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
     void changeEvent(QEvent *e);
@@ -146,7 +147,7 @@ class DockEvaluateMeshImp : public DlgEvaluateMeshImp
     Q_OBJECT
 
 protected:
-    DockEvaluateMeshImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DockEvaluateMeshImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DockEvaluateMeshImp();
     void closeEvent(QCloseEvent* e);
 

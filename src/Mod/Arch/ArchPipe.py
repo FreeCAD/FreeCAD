@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -23,8 +22,7 @@
 
 import FreeCAD, ArchComponent
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
-    from PySide import QtCore, QtGui
+    import FreeCADGui, Arch_rc
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -42,9 +40,9 @@ else:
 #  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
-__title__ = "Arch Pipe tools"
+__title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
@@ -248,7 +246,7 @@ class _ArchPipe(ArchComponent.Component):
         import Draft
         if Draft.getType(obj.Base) == "BezCurve":
             v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
-        else: 
+        else:
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
@@ -267,7 +265,7 @@ class _ArchPipe(ArchComponent.Component):
                 for pw in p.Wires:
                     sh = w.makePipeShell([pw],True,False,2)
                     shapes.append(sh)
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
             if len(shapes) == 0:
@@ -312,7 +310,7 @@ class _ArchPipe(ArchComponent.Component):
             if not obj.Profile.Shape.Wires[0].isClosed():
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not closed")+"\n")
                 return
-            p = obj.Profile.Shape
+            p = obj.Profile.Shape.Wires[0]
         else:
             if obj.Diameter.Value == 0:
                 return

@@ -76,7 +76,7 @@ private Q_SLOTS:
     void onColorChanged();
 
 private:
-    Ui_TaskGeomHatch * ui;
+    std::unique_ptr<Ui_TaskGeomHatch> ui;
     TechDraw::DrawGeomHatch* m_hatch;
     TechDrawGui::ViewProviderGeomHatch* m_Vp;
     App::DocumentObject* m_source;

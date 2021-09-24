@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,7 +69,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObj
 
 ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
-    sPixmap = "actions/techdraw-GeometricHatch";
+    sPixmap = "actions/TechDraw_GeometricHatch";
 
     static const char *vgroup = "GeomHatch";
 
@@ -186,8 +186,8 @@ void ViewProviderGeomHatch::updateGraphic(void)
 
 void ViewProviderGeomHatch::getParameters(void)
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Graphic");
     delete lg;                                                    //Coverity CID 174667
     WeightPattern.setValue(weight);

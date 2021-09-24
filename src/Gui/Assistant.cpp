@@ -61,7 +61,7 @@ void Assistant::showDocumentation(const QString &page)
     if (!page.isEmpty()) {
         QTextStream str(proc);
         str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/")
-            << page << QLatin1Char('\n') << endl;
+            << page << QLatin1String("\n\n");
     }
 }
 
@@ -91,7 +91,7 @@ bool Assistant::startAssistant()
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-#endif 
+#endif
         app += QLatin1String("assistant");
 
         // get the name of the executable and the doc path

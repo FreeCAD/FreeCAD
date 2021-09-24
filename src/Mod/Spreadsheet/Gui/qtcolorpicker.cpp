@@ -64,9 +64,7 @@
 #include <QtGui/QMouseEvent>
 #include <math.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 #include "qtcolorpicker.h"
 
@@ -316,11 +314,8 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (!toggled)
         return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     const QRect desktop = QApplication::primaryScreen()->geometry();
-#else
-    const QRect desktop = QApplication::desktop()->geometry();
-#endif
+
     // Make sure the popup is inside the desktop.
     QPoint pos = mapToGlobal(rect().bottomLeft());
     if (pos.x() < desktop.left())

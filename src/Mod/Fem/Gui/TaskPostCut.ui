@@ -49,7 +49,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="Container" native="true">
+    <widget class="QWidget" name="Container">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Minimum">
        <horstretch>0</horstretch>

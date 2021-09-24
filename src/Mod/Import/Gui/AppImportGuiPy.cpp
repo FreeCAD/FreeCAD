@@ -69,6 +69,11 @@
 # include <TopoDS_Iterator.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
+# include <TColStd_IndexedDataMapOfStringString.hxx>
+#if OCC_VERSION_HEX >= 0x070500
+# include <RWGltf_CafWriter.hxx>
+# include <Message_ProgressRange.hxx>
+#endif
 #if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
 # else
@@ -133,6 +138,7 @@
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
+namespace ImportGui {
 class OCAFBrowser
 {
 public:
@@ -377,7 +383,6 @@ public:
     }
 };
 
-namespace ImportGui {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
@@ -459,12 +464,17 @@ private:
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
+
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -491,12 +501,16 @@ private:
                         throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     }
 
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
@@ -628,11 +642,10 @@ private:
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
-                std::string scheme = hGrp_stp->GetASCII("Scheme", "AP214IS");
-                if (scheme == "AP203")
-                    Interface_Static::SetCVal("write.step.schema", "AP203");
-                else if (scheme == "AP214IS")
-                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                std::string scheme = hGrp_stp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+                std::list<std::string> supported = Part::supportedSTEPSchemes();
+                if (std::find(supported.begin(), supported.end(), scheme) != supported.end())
+                    Interface_Static::SetCVal("write.step.schema", scheme.c_str());
 
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);
@@ -648,7 +661,8 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
+                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
@@ -673,6 +687,23 @@ private:
                     PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
                 }
+            }
+            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+#if OCC_VERSION_HEX >= 0x070500
+                TColStd_IndexedDataMapOfStringString aMetadata;
+                RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
+                aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+                Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
+                if (!ret) {
+                    PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
+                    throw Py::Exception();
+                }
+#else
+                throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
+#endif
             }
 
             hApp->Close(hDoc);
@@ -710,12 +741,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }
 
+#if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
+#endif
                 aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
+#endif
             }
             else if (file.hasExtension("igs") || file.hasExtension("iges")) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -732,12 +767,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                 }
 
+#if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
+#endif
                 aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
+#endif
                 // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                 Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                         ->SetModel(new IGESData_IGESModel);

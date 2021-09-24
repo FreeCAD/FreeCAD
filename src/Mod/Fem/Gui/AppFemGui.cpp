@@ -40,6 +40,7 @@
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemInOutVtkImp.h"
 #include "DlgSettingsFemMaterialImp.h"
+#include "DlgSettingsFemMystranImp.h"
 #include "DlgSettingsFemZ88Imp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
@@ -56,6 +57,7 @@
 #include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
+#include "ViewProviderFemConstraintSpring.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderFemConstraintDisplacement.h"
@@ -128,6 +130,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemConstraintPulley                     ::init();
     FemGui::ViewProviderFemConstraintTemperature                ::init();
     FemGui::ViewProviderFemConstraintTransform                  ::init();
+    FemGui::ViewProviderFemConstraintSpring                     ::init();
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();
@@ -169,6 +172,7 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 

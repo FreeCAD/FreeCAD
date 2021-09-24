@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -106,7 +106,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_view = m_mdi->getQGVPage();
 
     setUiPrimary();
-    
+
     connect(ui->pbTracker, SIGNAL(clicked(bool)),
             this, SLOT(onTrackerClicked(bool)));
 
@@ -115,7 +115,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
 TaskCosVertex::~TaskCosVertex()
 {
-    delete ui;
 }
 
 void TaskCosVertex::updateTask()
@@ -162,11 +161,15 @@ void TaskCosVertex::updateUi(void)
 
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
+
 //    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
     Base::Vector3d pos(qPos.x(), -qPos.y());
-//    int idx = 
+//    int idx =
     (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
+
+    Gui::Command::commitCommand();
 }
 
 
@@ -350,7 +353,7 @@ bool TaskCosVertex::reject()
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

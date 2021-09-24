@@ -717,9 +717,12 @@ QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)
     std::vector<TechDraw::Wire *> fWires = f->wires;
     QPainterPath facePath;
     for(std::vector<TechDraw::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
-        QPainterPath wirePath;
         std::vector<TechDraw::BaseGeom*> geoms = (*wire)->geoms;
+        if (geoms.empty())
+            continue;
+
         TechDraw::BaseGeom* firstGeom = geoms.front();
+        QPainterPath wirePath;
         //QPointF startPoint(firstGeom->getStartPoint().x, firstGeom->getStartPoint().y);
         //wirePath.moveTo(startPoint);
         QPainterPath firstSeg = drawPainterPath(firstGeom);

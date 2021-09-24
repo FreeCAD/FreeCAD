@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM constraint initial flow velocity task panel for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_constraint_initialflowvelocity
 #  \ingroup FEM
@@ -107,14 +107,14 @@ class _TaskPanel(object):
             not self._paramWidget.velocityXBox.isChecked()
         if self._obj.VelocityXEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityXTxt.text())
-            self._obj.VelocityX = float(quantity.getValueAs(unit))
+            self._obj.VelocityX = quantity.getValueAs(unit).Value
         self._obj.VelocityYEnabled = \
             not self._paramWidget.velocityYBox.isChecked()
         if self._obj.VelocityYEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityYTxt.text())
-            self._obj.VelocityY = float(quantity.getValueAs(unit))
+            self._obj.VelocityY = quantity.getValueAs(unit).Value
         self._obj.VelocityZEnabled = \
             not self._paramWidget.velocityZBox.isChecked()
         if self._obj.VelocityZEnabled:
             quantity = Units.Quantity(self._paramWidget.velocityZTxt.text())
-            self._obj.VelocityZ = float(quantity.getValueAs(unit))
+            self._obj.VelocityZ = quantity.getValueAs(unit).Value

@@ -58,7 +58,7 @@ namespace Gui {
 namespace DockWnd {
 
 /** Combo View
-  * is a combination of a tree, property and TaskPanel for 
+  * is a combination of a tree, property and TaskPanel for
   * integrated user action.
  */
 class GuiExport ComboView : public Gui::DockWindow

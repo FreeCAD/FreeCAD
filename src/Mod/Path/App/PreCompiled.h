@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,12 +31,10 @@
 # define PathExport  __declspec(dllexport)
 //# define RobotExport __declspec(dllexport) uncomment this to use KDL
 # define PartExport __declspec(dllimport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define PathExport
 //# define RobotExport uncomment this to use KDL
 # define PartExport
-# define BaseExport
 #endif
 
 #ifdef _PreComp_

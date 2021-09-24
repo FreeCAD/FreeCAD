@@ -241,6 +241,47 @@
          </widget>
         </item>
         <item row="6" column="0">
+         <widget class="QLabel" name="label_fontsize">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Bounding box font size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="BoundingBoxFontSize">
+          <property name="toolTip">
+           <string>The font size of bounding boxes in the 3D view</string>
+          </property>
+          <property name="suffix">
+           <string notr="true">pt</string>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <double>64.000000000000000</double>
+          </property>
+          <property name="minimum">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BoundingBoxFontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="twosideRendering">
           <property name="minimumSize">
            <size>
@@ -250,7 +291,7 @@
           </property>
           <property name="toolTip">
            <string>Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option &quot;Backlight color&quot;
+If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</string>
           </property>
@@ -362,6 +403,11 @@ will be used or black.</string>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

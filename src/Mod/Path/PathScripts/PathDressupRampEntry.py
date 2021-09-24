@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Pekka Roivainen <pekkaroi@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
@@ -680,7 +679,7 @@ class CommandPathDressupRampEntry:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 

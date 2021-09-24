@@ -54,22 +54,20 @@ class Text(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a multi-line annotation. CTRL to snap."
 
         return {'Pixmap': 'Draft_Text',
                 'Accel': "T, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Text", "Text"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", "Creates a multi-line annotation. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Text")
-        super(Text, self).Activated(name)
+        super(Text, self).Activated(name="Text")
         if self.ui:
             self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()
@@ -88,6 +86,7 @@ class Text(gui_base_original.Creator):
     def createObject(self):
         """Create the actual object in the current document."""
         text_list = self.text
+        text_list = [text.replace("\"","\\\"") for text in text_list]
 
         # If the last element is an empty string "" we remove it
         if not text_list[-1]:

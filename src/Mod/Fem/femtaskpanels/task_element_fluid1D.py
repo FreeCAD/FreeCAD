@@ -25,7 +25,7 @@
 
 __title__ = "FreeCAD FEM element fluid 1D task panel for the document object"
 __author__ = "Ofentse Kgoa, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_element_fluid1D
 #  \ingroup FEM
@@ -36,6 +36,7 @@ from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
+from FreeCAD import Units
 
 from femguiutils import selection_widgets
 from femobjects import element_fluid1D
@@ -232,7 +233,10 @@ class _TaskPanel:
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Edge"]
+            obj.References,
+            ["Edge"],
+            False,
+            True
         )
 
         # form made from param and selection widget
@@ -419,24 +423,16 @@ class _TaskPanel:
         self.ContractArea2 = base_quantity_value
 
     def inlet_pressure_changed(self, base_quantity_value):
-        self.InletPressure = float(
-            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
-        )
+        self.InletPressure = Units.Quantity(base_quantity_value).getValueAs("MPa").Value
 
     def outlet_pressure_changed(self, base_quantity_value):
-        self.OutletPressure = float(
-            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("MPa")
-        )
+        self.OutletPressure = Units.Quantity(base_quantity_value).getValueAs("MPa").Value
 
     def inlet_flowrate_changed(self, base_quantity_value):
-        self.InletFlowRate = float(
-            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
-        )
+        self.InletFlowRate = Units.Quantity(base_quantity_value).getValueAs("kg/s").Value
 
     def outlet_flowrate_changed(self, base_quantity_value):
-        self.OutletFlowRate = float(
-            FreeCAD.Units.Quantity(base_quantity_value).getValueAs("kg/s")
-        )
+        self.OutletFlowRate = Units.Quantity(base_quantity_value).getValueAs("kg/s").Value
 
     def inlet_pressure_active(self, active):
         self.InletPressureActive = active

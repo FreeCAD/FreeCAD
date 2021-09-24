@@ -60,22 +60,28 @@ def make_ellipse(majradius, minradius, placement=None, face=True, support=None):
     support : 
         TODO: Describe.
     """
+
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
+
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Ellipse")
     Ellipse(obj)
+
     if minradius > majradius:
         majradius, minradius = minradius, majradius
     obj.MajorRadius = majradius
     obj.MinorRadius = minradius
     obj.Support = support
+
+    if face != None:
+        obj.MakeFace = face
+
     if placement:
         obj.Placement = placement
+
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)
-        #if not face:
-        #    obj.ViewObject.DisplayMode = "Wireframe"
         gui_utils.format_object(obj)
         gui_utils.select(obj)
 

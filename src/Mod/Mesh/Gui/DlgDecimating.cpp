@@ -144,7 +144,7 @@ bool TaskDecimating::accept()
     Gui::Selection().clearSelection();
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand("Mesh Decimating");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"));
 
     float tolerance = widget->tolerance();
     float reduction = widget->reduction();

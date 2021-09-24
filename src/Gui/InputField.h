@@ -107,11 +107,11 @@ public:
     /// (shown by the red pixmap in the gui)
     bool hasValidInput() { return validInput;}
 
-    /** sets the Unit this field is working with. 
+    /** sets the Unit this field is working with.
      *  After setting the Unit the field will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
-     *  Quantity. 
+     *  Quantity.
      */
     void setUnit(const Base::Unit&);
     const Base::Unit& getUnit() const;
@@ -120,33 +120,33 @@ public:
     void setToLastUsedValue(void);
     /// get the value of the singleStep property
     double singleStep(void)const;
-    /// set the value of the singleStep property 
+    /// set the value of the singleStep property
     void setSingleStep(double);
     /// get the value of the maximum property
     double maximum(void)const;
-    /// set the value of the maximum property 
+    /// set the value of the maximum property
     void setMaximum(double);
     /// get the value of the minimum property
     double minimum(void)const;
-    /// set the value of the minimum property 
+    /// set the value of the minimum property
     void setMinimum(double);
     /// get the value of the minimum property
     int historySize(void)const;
-    /// set the value of the minimum property 
+    /// set the value of the minimum property
     void setHistorySize(int);
-    /// set the unit by a string (can be used in the *.ui file)  
+    /// set the unit by a string (can be used in the *.ui file)
     void setUnitText(const QString&);
-    /// get the unit as a string (can be used in the *.ui file)  
-    QString getUnitText(void); 
+    /// get the unit as a string (can be used in the *.ui file)
+    QString getUnitText(void);
     /// get the value of the precision property
-    int getPrecision(void) const; 
-    /// set the value of the precision property (can be used in the *.ui file)  
+    int getPrecision(void) const;
+    /// set the value of the precision property (can be used in the *.ui file)
     void setPrecision(const int);
     /// get the value of the format property: "f" (fixed), "e" (scientific), "g" (general)
-    QString getFormat(void) const; 
-    /// set the value of the format property (can be used in the *.ui file)  
+    QString getFormat(void) const;
+    /// set the value of the format property (can be used in the *.ui file)
     void setFormat(const QString&);
-    /// set the number portion selected (use after setValue()) 
+    /// set the number portion selected (use after setValue())
     void selectNumber(void);
     /// input validation
     void fixup(QString& input) const;
@@ -159,11 +159,11 @@ public:
     QByteArray paramGrpPath () const;
     /// set the param group path where the widget writes and reads the default values
     void  setParamGrpPath  ( const QByteArray& name );
-    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToHistory(const QString &valueq = QString());
     /// get the history of the field, newest first
     std::vector<QString> getHistory(void);
-    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToSavedValues(const QString &valueq = QString());
     /// get the history of the field, newest first
     std::vector<QString> getSavedValues(void);
@@ -176,15 +176,15 @@ public:
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
-     *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/non-validated input use textChanged(const QString&) 
+     *  like: minimum, maximum and/or the right Unit (if specified).
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
     void valueChanged(const Base::Quantity&);
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
-     *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/non-validated input use textChanged(const QString&) 
+     *  like: minimum, maximum and/or the right Unit (if specified).
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
     void valueChanged(double);

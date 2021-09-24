@@ -34,7 +34,7 @@ import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base as gui_base
 
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -44,18 +44,13 @@ class Layer(gui_base.GuiCommandSimplest):
     """GuiCommand to create a Layer object in the document."""
 
     def __init__(self):
-        super(Layer, self).__init__(name=_tr("Layer"))
+        super(Layer, self).__init__(name=translate("draft","Layer"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = QT_TRANSLATE_NOOP("Draft_Layer",
-                                 "Adds a layer to the document.\n"
-                                 "Objects added to this layer can share "
-                                 "the same visual properties such as "
-                                 "line color, line width, and shape color.")
         return {'Pixmap': 'Draft_Layer',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
-                'ToolTip': _tip}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties such as line color, line width, and shape color.")}
 
     def Activated(self):
         """Execute when the command is called.

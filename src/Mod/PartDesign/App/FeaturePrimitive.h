@@ -29,6 +29,7 @@
 
 #include "FeatureAddSub.h"
 #include <Mod/Part/App/AttachExtension.h>
+#include <Mod/Part/App/PrismExtension.h>
 
 namespace PartDesign
 {
@@ -106,7 +107,7 @@ class PartDesignExport SubtractiveBox : public Box {
 };
 
 
-class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive {
+class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
     PROPERTY_HEADER(PartDesign::Cylinder);
 
@@ -123,9 +124,6 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-    
-protected:
-    
 };
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
@@ -307,28 +305,22 @@ class PartDesignExport SubtractiveTorus : public Torus {
 };
 
 
-class PartDesignExport Prism : public PartDesign::FeaturePrimitive {
+class PartDesignExport Prism : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
     PROPERTY_HEADER(PartDesign::Prism);
 
 public:
-    
     Prism();
-    
+
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
-    App::PropertyAngle FirstAngle;
-    App::PropertyAngle SecondAngle;
     
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-    
-protected:
-    
 };
 
 class PartDesignExport AdditivePrism : public Prism {

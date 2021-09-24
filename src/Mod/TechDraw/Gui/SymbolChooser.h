@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,7 +35,7 @@ class TechDrawGuiExport SymbolChooser : public QDialog
     Q_OBJECT
 
 public:
-    SymbolChooser(QWidget *parent = 0, 
+    SymbolChooser(QWidget *parent = 0,
                   QString startDir = QString(),
                   QString source = QString());
 
@@ -54,7 +54,7 @@ protected:
     void loadSymbolNames(QString pathToSymbols);
 
 private:
-    Ui_SymbolChooser* ui;
+    std::unique_ptr<Ui_SymbolChooser> ui;
     QString m_symbolDir;
     QString m_symbolPath;
     QString m_source;

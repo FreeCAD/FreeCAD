@@ -37,7 +37,7 @@ namespace dcm {
 //functors needed for implementation only
 //***************************************
 
-/* All objects are boost::shared_ptr, therefore they can be cleared by calling the reset() method. As
+/* All objects are std::shared_ptr, therefore they can be cleared by calling the reset() method. As
  * objects are stored within fusion::sequences a functor is needed to clear all of them.
  **/
 struct clear_ptr {
@@ -259,7 +259,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_extractor<Ob
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Functor>
-void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(boost::shared_ptr<ClusterGraph> into, Functor& functor) const {
+void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(std::shared_ptr<ClusterGraph> into, Functor& functor) const {
 
     //lists does not provide vertex index, so we have to build our own (can't use the internal
     //vertex_index_property as we would need to reset the indices and that's not possible in const graph)
@@ -289,7 +289,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(boost
 
     for(; it.first != it.second; it.first++) {
         //create the new Graph
-        boost::shared_ptr<ClusterGraph> ng = boost::shared_ptr<ClusterGraph> (new ClusterGraph(into));
+        std::shared_ptr<ClusterGraph> ng = std::shared_ptr<ClusterGraph> (new ClusterGraph(into));
 
         //we already have the new vertex, however, we need to find it
         GlobalVertex gv = getGlobalVertex((*it.first).first);
@@ -336,23 +336,23 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::setChanged() {
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-std::pair<boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, LocalVertex> ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::createCluster() {
+std::pair<std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, LocalVertex> ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::createCluster() {
     vertex_bundle vp;
     fusion::at_c<0> (vp) = m_id->generate();
     LocalVertex v = boost::add_vertex(vp, *this);
-    return std::pair<boost::shared_ptr<ClusterGraph>, LocalVertex> (m_clusters[v] = boost::shared_ptr<ClusterGraph> (new ClusterGraph(sp_base::shared_from_this())), v);
+    return std::pair<std::shared_ptr<ClusterGraph>, LocalVertex> (m_clusters[v] = std::shared_ptr<ClusterGraph> (new ClusterGraph(sp_base::shared_from_this())), v);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-inline boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
+inline std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>:: parent() 	{
-    return boost::shared_ptr<ClusterGraph> (m_parent);
+    return std::shared_ptr<ClusterGraph> (m_parent);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-inline const boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
+inline const std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::parent() const 	{
-    return boost::shared_ptr<ClusterGraph> (m_parent);
+    return std::shared_ptr<ClusterGraph> (m_parent);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
@@ -361,13 +361,13 @@ bool ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::isRoot() const
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
+std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::root()		{
     return isRoot() ? sp_base::shared_from_this() : parent()->root();
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-const boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
+const std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::root() const    {
     return isRoot() ? sp_base::shared_from_this() : parent()->root();
 };
@@ -396,7 +396,7 @@ bool ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::isCluster(cons
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
+std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getVertexCluster(LocalVertex v) {
     if(isCluster(v))
         return m_clusters[v];
@@ -406,7 +406,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getVertexCluster(Lo
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-LocalVertex	ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getClusterVertex(boost::shared_ptr<ClusterGraph> g) {
+LocalVertex	ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getClusterVertex(std::shared_ptr<ClusterGraph> g) {
     std::pair<cluster_iterator, cluster_iterator> it = clusters();
 
     for(; it.first != it.second; it.first++) {
@@ -419,12 +419,12 @@ LocalVertex	ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getClus
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Functor>
-void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(boost::shared_ptr<ClusterGraph> g, Functor& f) {
+void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(std::shared_ptr<ClusterGraph> g, Functor& f) {
     removeCluster(getClusterVertex(g), f);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(boost::shared_ptr<ClusterGraph> g) {
+void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(std::shared_ptr<ClusterGraph> g) {
     placehoder p;
     removeCluster(getClusterVertex(g), p);
 };
@@ -443,7 +443,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(
     if(it == m_clusters.end())
         throw details::cluster_error() <<  boost::errinfo_errno(11) << error_message("Cluster is not part of this graph");
 
-    std::pair<LocalVertex, boost::shared_ptr<ClusterGraph> > res = *it;
+    std::pair<LocalVertex, std::shared_ptr<ClusterGraph> > res = *it;
 
     //apply functor to all vertices and edges in the subclusters
     f(res.second);
@@ -659,7 +659,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getLocalVertex(Glob
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-fusion::vector<LocalVertex, boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, bool>
+fusion::vector<LocalVertex, std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, bool>
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getLocalVertexGraph(GlobalVertex v) {
     return getContainingVertexGraph(v);
 };
@@ -759,14 +759,14 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(Loc
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Obj, typename key>
-boost::shared_ptr<Obj>
+std::shared_ptr<Obj>
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getObject(key k) {
     return apply_to_bundle(k, obj_helper<details::get, Obj, key, ClusterGraph> (k));
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Obj, typename key>
-void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::setObject(key k, boost::shared_ptr<Obj> val) {
+void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::setObject(key k, std::shared_ptr<Obj> val) {
     apply_to_bundle(k, obj_helper<details::set, Obj, key, ClusterGraph> (k)) = val;
 
     setChanged();
@@ -794,7 +794,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::for_each(Funct
     std::pair<local_vertex_iterator, local_vertex_iterator>  it = boost::vertices(*this);
 
     for(; it.first != it.second; it.first++) {
-        boost::shared_ptr<Obj> ptr =  getObject<Obj> (* (it.first)) ;
+        std::shared_ptr<Obj> ptr =  getObject<Obj> (* (it.first)) ;
 
         if(ptr)
             f(ptr);
@@ -888,7 +888,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::initIndexMaps(
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 LocalVertex
-ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(LocalVertex v, boost::shared_ptr<ClusterGraph> cg) {
+ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(LocalVertex v, std::shared_ptr<ClusterGraph> cg) {
 
     LocalVertex cv = getClusterVertex(cg);
     return moveToSubcluster(v, cv, cg);
@@ -898,13 +898,13 @@ template< typename edge_prop, typename vertex_prop, typename cluster_prop, typen
 LocalVertex
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(LocalVertex v, LocalVertex Cluster) {
 
-    boost::shared_ptr<ClusterGraph> cg = getVertexCluster(Cluster);
+    std::shared_ptr<ClusterGraph> cg = getVertexCluster(Cluster);
     return moveToSubcluster(v, Cluster, cg);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 LocalVertex
-ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(LocalVertex v, LocalVertex Cluster, boost::shared_ptr<ClusterGraph> cg) {
+ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(LocalVertex v, LocalVertex Cluster, std::shared_ptr<ClusterGraph> cg) {
 
     std::pair<local_out_edge_iterator, local_out_edge_iterator> it =  boost::out_edges(v, *this);
 
@@ -1106,7 +1106,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getContainingVertex
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
-fusion::vector<LocalVertex, boost::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, bool>
+fusion::vector<LocalVertex, std::shared_ptr< ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> >, bool>
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getContainingVertexGraph(GlobalVertex id) {
 
     LocalVertex v;
@@ -1114,7 +1114,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getContainingVertex
     boost::tie(v, done) = getContainingVertex(id);
 
     if(!done)
-        return fusion::make_vector(LocalVertex(), boost::shared_ptr<ClusterGraph>(), false);
+        return fusion::make_vector(LocalVertex(), std::shared_ptr<ClusterGraph>(), false);
 
     if(isCluster(v) && (getGlobalVertex(v) != id))
         return m_clusters[v]->getContainingVertexGraph(id);
@@ -1185,7 +1185,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::apply_to_bundle(Glo
     }
 
     //check all clusters if they have the object
-    fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> res = getContainingVertexGraph(k);
+    fusion::vector<LocalVertex, std::shared_ptr<ClusterGraph>, bool> res = getContainingVertexGraph(k);
 
     if(!fusion::at_c<2> (res)) {
         //TODO: Throw (propeties return reference, but can't init a reference temporarily)

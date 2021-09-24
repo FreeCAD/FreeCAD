@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -121,7 +121,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     std::vector<std::string> edgeNames = getSubNames();
     int direction = DirExtent.getValue();
 
-    std::pair<Base::Vector3d, Base::Vector3d> endPoints = 
+    std::pair<Base::Vector3d, Base::Vector3d> endPoints =
                                         DrawDimHelper::minMax(dvp,
                                                               edgeNames,
                                                               direction);
@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
                 CosmeticVertex* cvTemp = dvp->getCosmeticVertex(cTags[0]);
                 cvTemp->permaPoint = refMin / scale;
                 cvTemp = dvp->getCosmeticVertex(cTags[1]);
-                cvTemp->permaPoint = refMax / scale; 
+                cvTemp->permaPoint = refMax / scale;
             }
         }
     }
@@ -169,7 +169,7 @@ std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 {
     std::vector<std::string> result;
     std::vector<std::string> edgeNames = Source.getSubValues();
-    if (!edgeNames.empty() && 
+    if (!edgeNames.empty() &&
          (edgeNames[0].size() == 0)) {
          //garbage first entry - nop
     } else {

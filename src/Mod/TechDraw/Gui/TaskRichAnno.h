@@ -103,7 +103,7 @@ protected:
     App::Color prefLineColor(void);
 
 private:
-    Ui_TaskRichAnno * ui;
+    std::unique_ptr<Ui_TaskRichAnno> ui;
     bool blockUpdate;
 
     MDIViewPage* m_mdi;

@@ -203,7 +203,7 @@ void ViewProviderPartRef::onChanged(const App::Property* prop) {
             m_switch->whichChild = 0;
 
             int counter = 0;
-            boost::shared_ptr<Part3D> part = static_cast<Assembly::PartRef*>(getObject())->m_part;
+            std::shared_ptr<Part3D> part = static_cast<Assembly::PartRef*>(getObject())->m_part;
 
             if(!part) {
                 ViewProviderItem::onChanged(prop);
@@ -253,7 +253,7 @@ void ViewProviderPartRef::onChanged(const App::Property* prop) {
             m_points->numPoints = counter;
 
             //test
-            boost::shared_ptr<Geometry3D> g = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_geometry[0];
+            std::shared_ptr<Geometry3D> g = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_geometry[0];
 
             std::stringstream str;
 

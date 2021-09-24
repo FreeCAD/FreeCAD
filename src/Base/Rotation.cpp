@@ -27,6 +27,7 @@
 # include <climits>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "Rotation.h"
 #include "Matrix.h"
 #include "Base/Exception.h"
@@ -124,7 +125,7 @@ void Rotation::evaluateVector()
     if ((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
         double rfAngle = acos(this->quat[3]) * 2.0;
         double scale = sin(rfAngle / 2.0);
-        // Get a normalized vector 
+        // Get a normalized vector
         double l = this->_axis.Length();
         if (l < Base::Vector3d::epsilon()) l = 1;
         this->_axis.x = this->quat[0] * l / scale;
@@ -274,7 +275,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v)
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();
@@ -672,13 +673,13 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     double qd2 = 2.0*(q13-q02);
 
     // handle gimbal lock
-    if (fabs(qd2-1.0) < DBL_EPSILON) {
+    if (fabs(qd2-1.0) <= DBL_EPSILON) {
         // north pole
         y = 0.0;
         p = D_PI/2.0;
         r = 2.0 * atan2(quat[0],quat[3]);
     }
-    else if (fabs(qd2+1.0) < DBL_EPSILON) {
+    else if (fabs(qd2+1.0) <= DBL_EPSILON) {
         // south pole
         y = 0.0;
         p = -D_PI/2.0;
@@ -711,4 +712,272 @@ bool Rotation::isNull() const
             this->quat[1] == 0.0 &&
             this->quat[2] == 0.0 &&
             this->quat[3] == 0.0);
+}
+
+//=======================================================================
+// The following code is borrowed from OCCT gp/gp_Quaternion.cxx
+
+namespace { // anonymous namespace
+//=======================================================================
+//function : translateEulerSequence
+//purpose  : 
+// Code supporting conversion between quaternion and generalized 
+// Euler angles (sequence of three rotations) is based on
+// algorithm by Ken Shoemake, published in Graphics Gems IV, p. 222-22
+// http://tog.acm.org/resources/GraphicsGems/gemsiv/euler_angle/EulerAngles.c
+//=======================================================================
+
+struct EulerSequence_Parameters
+{
+    int i;           // first rotation axis
+    int j;           // next axis of rotation
+    int k;           // third axis
+    bool isOdd;       // true if order of two first rotation axes is odd permutation, e.g. XZ
+    bool isTwoAxes;   // true if third rotation is about the same axis as first 
+    bool isExtrinsic; // true if rotations are made around fixed axes
+
+    EulerSequence_Parameters (int theAx1, 
+                              bool theisOdd, 
+                              bool theisTwoAxes,
+                              bool theisExtrinsic)
+        : i(theAx1), 
+        j(1 + (theAx1 + (theisOdd ? 1 : 0)) % 3), 
+        k(1 + (theAx1 + (theisOdd ? 0 : 1)) % 3), 
+        isOdd(theisOdd), 
+        isTwoAxes(theisTwoAxes), 
+        isExtrinsic(theisExtrinsic)
+        {}
+};
+
+EulerSequence_Parameters translateEulerSequence (const Rotation::EulerSequence theSeq)
+{
+    typedef EulerSequence_Parameters Params;
+    const bool F = false;
+    const bool T = true;
+
+    switch (theSeq)
+    {
+    case Rotation::Extrinsic_XYZ: return Params (1, F, F, T);
+    case Rotation::Extrinsic_XZY: return Params (1, T, F, T);
+    case Rotation::Extrinsic_YZX: return Params (2, F, F, T);
+    case Rotation::Extrinsic_YXZ: return Params (2, T, F, T);
+    case Rotation::Extrinsic_ZXY: return Params (3, F, F, T);
+    case Rotation::Extrinsic_ZYX: return Params (3, T, F, T);
+
+    // Conversion of intrinsic angles is made by the same code as for extrinsic,
+    // using equivalence rule: intrinsic rotation is equivalent to extrinsic
+    // rotation by the same angles but with inverted order of elemental rotations.
+    // Swapping of angles (Alpha <-> Gamma) is done inside conversion procedure;
+    // sequence of axes is inverted by setting appropriate parameters here.
+    // Note that proper Euler angles (last block below) are symmetric for sequence of axes.
+    case Rotation::Intrinsic_XYZ: return Params (3, T, F, F);
+    case Rotation::Intrinsic_XZY: return Params (2, F, F, F);
+    case Rotation::Intrinsic_YZX: return Params (1, T, F, F);
+    case Rotation::Intrinsic_YXZ: return Params (3, F, F, F);
+    case Rotation::Intrinsic_ZXY: return Params (2, T, F, F);
+    case Rotation::Intrinsic_ZYX: return Params (1, F, F, F);
+
+    case Rotation::Extrinsic_XYX: return Params (1, F, T, T);
+    case Rotation::Extrinsic_XZX: return Params (1, T, T, T);
+    case Rotation::Extrinsic_YZY: return Params (2, F, T, T);
+    case Rotation::Extrinsic_YXY: return Params (2, T, T, T);
+    case Rotation::Extrinsic_ZXZ: return Params (3, F, T, T);
+    case Rotation::Extrinsic_ZYZ: return Params (3, T, T, T);
+
+    case Rotation::Intrinsic_XYX: return Params (1, F, T, F);
+    case Rotation::Intrinsic_XZX: return Params (1, T, T, F);
+    case Rotation::Intrinsic_YZY: return Params (2, F, T, F);
+    case Rotation::Intrinsic_YXY: return Params (2, T, T, F);
+    case Rotation::Intrinsic_ZXZ: return Params (3, F, T, F);
+    case Rotation::Intrinsic_ZYZ: return Params (3, T, T, F);
+
+    default:
+    case Rotation::EulerAngles : return Params (3, F, T, F); // = Intrinsic_ZXZ
+    case Rotation::YawPitchRoll: return Params (1, F, F, F); // = Intrinsic_ZYX
+    };
+}
+
+class Mat : public Base::Matrix4D
+{
+public:
+    double operator()(int i, int j) const {
+        return this->operator[](i-1)[j-1];
+    }
+    double & operator()(int i, int j) {
+        return this->operator[](i-1)[j-1];
+    }
+};
+
+const char *EulerSequenceNames[] = {
+    //! Classic Euler angles, alias to Intrinsic_ZXZ
+    "Euler",
+
+    //! Yaw Pitch Roll (or nautical) angles, alias to Intrinsic_ZYX
+    "YawPitchRoll",
+
+    // Tait-Bryan angles (using three different axes)
+    "XYZ",
+    "XZY",
+    "YZX",
+    "YXZ",
+    "ZXY",
+    "ZYX",
+
+    "IXYZ",
+    "IXZY",
+    "IYZX",
+    "IYXZ",
+    "IZXY",
+    "IZYX",
+
+    // Proper Euler angles (using two different axes, first and third the same)
+    "XYX",
+    "XZX",
+    "YZY",
+    "YXY",
+    "ZYZ",
+    "ZXZ",
+
+    "IXYX",
+    "IXZX",
+    "IYZY",
+    "IYXY",
+    "IZXZ",
+    "IZYZ",
+};
+
+} // anonymous namespace
+
+const char * Rotation::eulerSequenceName(EulerSequence seq)
+{
+    if (seq == Invalid || seq >= EulerSequenceLast)
+        return 0;
+    return EulerSequenceNames[seq-1];
+}
+
+Rotation::EulerSequence Rotation::eulerSequenceFromName(const char *name)
+{
+    if (name) {
+        for (unsigned i=0; i<sizeof(EulerSequenceNames)/sizeof(EulerSequenceNames[0]); ++i) {
+            if (boost::iequals(name, EulerSequenceNames[i]))
+                return (EulerSequence)(i+1);
+        }
+    }
+    return Invalid;
+}
+
+void Rotation::setEulerAngles(EulerSequence theOrder,
+                              double theAlpha,
+                              double theBeta,
+                              double theGamma)
+{
+    if (theOrder == Invalid || theOrder >= EulerSequenceLast)
+        throw Base::ValueError("invalid euler sequence");
+
+    EulerSequence_Parameters o = translateEulerSequence (theOrder);
+
+    theAlpha *= D_PI/180.0;
+    theBeta *= D_PI/180.0;
+    theGamma *= D_PI/180.0;
+
+    double a = theAlpha, b = theBeta, c = theGamma;
+    if ( ! o.isExtrinsic )
+        std::swap(a, c);
+
+    if ( o.isOdd )
+        b = -b;
+
+    double ti = 0.5 * a; 
+    double tj = 0.5 * b; 
+    double th = 0.5 * c;
+    double ci = cos (ti);  
+    double cj = cos (tj);  
+    double ch = cos (th);
+    double si = sin (ti);
+    double sj = sin (tj);
+    double sh = sin (th);
+    double cc = ci * ch; 
+    double cs = ci * sh; 
+    double sc = si * ch; 
+    double ss = si * sh;
+
+    double values[4]; // w, x, y, z
+    if ( o.isTwoAxes ) 
+    {
+        values[o.i] = cj * (cs + sc);
+        values[o.j] = sj * (cc + ss);
+        values[o.k] = sj * (cs - sc);
+        values[0]   = cj * (cc - ss);
+    } 
+    else 
+    {
+        values[o.i] = cj * sc - sj * cs;
+        values[o.j] = cj * ss + sj * cc;
+        values[o.k] = cj * cs - sj * sc;
+        values[0]   = cj * cc + sj * ss;
+    }
+    if ( o.isOdd ) 
+        values[o.j] = -values[o.j];
+
+    quat[0] = values[1];
+    quat[1] = values[2];
+    quat[2] = values[3];
+    quat[3] = values[0];
+}
+
+void Rotation::getEulerAngles(EulerSequence theOrder,
+                              double& theAlpha,
+                              double& theBeta,
+                              double& theGamma) const
+{
+    Mat M;
+    getValue(M);
+
+    EulerSequence_Parameters o = translateEulerSequence (theOrder);
+    if ( o.isTwoAxes ) 
+    {
+        double sy = sqrt (M(o.i, o.j) * M(o.i, o.j) + M(o.i, o.k) * M(o.i, o.k));
+        if (sy > 16 * DBL_EPSILON) 
+        {
+            theAlpha = atan2 (M(o.i, o.j),  M(o.i, o.k));
+            theGamma = atan2 (M(o.j, o.i), -M(o.k, o.i));
+        } 
+        else 
+        {
+            theAlpha = atan2 (-M(o.j, o.k), M(o.j, o.j));
+            theGamma = 0.;
+        }
+        theBeta = atan2 (sy, M(o.i, o.i));
+    } 
+    else 
+    {
+        double cy = sqrt (M(o.i, o.i) * M(o.i, o.i) + M(o.j, o.i) * M(o.j, o.i));
+        if (cy > 16 * DBL_EPSILON) 
+        {
+            theAlpha = atan2 (M(o.k, o.j), M(o.k, o.k));
+            theGamma = atan2 (M(o.j, o.i), M(o.i, o.i));
+        } 
+        else 
+        {
+            theAlpha = atan2 (-M(o.j, o.k), M(o.j, o.j));
+            theGamma = 0.;
+        }
+        theBeta = atan2 (-M(o.k, o.i), cy);
+    }
+    if ( o.isOdd ) 
+    {
+        theAlpha = -theAlpha;
+        theBeta  = -theBeta;
+        theGamma = -theGamma;
+    }
+    if ( ! o.isExtrinsic ) 
+    { 
+        double aFirst = theAlpha; 
+        theAlpha = theGamma;
+        theGamma = aFirst;
+    }
+
+    theAlpha *= 180.0/D_PI;
+    theBeta *= 180.0/D_PI;
+    theGamma *= 180.0/D_PI;
 }

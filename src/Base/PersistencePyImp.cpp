@@ -149,6 +149,6 @@ PyObject *PersistencePy::getCustomAttributes(const char*) const
 
 int PersistencePy::setCustomAttributes(const char*,PyObject*)
 {
-    return 0; 
+    return 0;
 }
 

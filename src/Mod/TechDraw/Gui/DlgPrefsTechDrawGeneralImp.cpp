@@ -53,54 +53,59 @@ DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
 
 void DlgPrefsTechDrawGeneralImp::saveSettings()
 {
-    ui->pfc_DefTemp->onSave();
-    ui->pfc_DefDir->onSave();
-    ui->pfc_HatchFile->onSave();
-    ui->pfc_FilePattern->onSave();
-    ui->pfc_LineGroup->onSave();
-    ui->pfc_Welding->onSave();
-    ui->le_NamePattern->onSave();
-
-    ui->pfb_LabelFont->onSave();
-    ui->plsb_LabelSize->onSave();
-
     ui->cb_Global->onSave();
     ui->cb_Override->onSave();
     ui->cb_PageUpdate->onSave();
     ui->cb_AutoDist->onSave();
+
+    ui->pfb_LabelFont->onSave();
+    ui->plsb_LabelSize->onSave();
+
+    ui->cbProjAngle->onSave();
+    ui->cbHiddenLineStyle->onSave();
+
+    ui->pfc_DefTemp->onSave();
+    ui->pfc_DefDir->onSave();
+    ui->pfc_HatchFile->onSave();
+    ui->pfc_LineGroup->onSave();
+    ui->pfc_Welding->onSave();
+    ui->pfc_FilePattern->onSave();
+    ui->le_NamePattern->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
 {
-//    double labelDefault = 8.0;
-    double labelDefault = Preferences::labelFontSizeMM();
-    ui->plsb_LabelSize->setValue(labelDefault);
-    QFont prefFont(Preferences::labelFontQString());
-    ui->pfb_LabelFont->setCurrentFont(prefFont);
-//    ui->pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
-
-    ui->pfc_DefTemp->setFileName(Preferences::defaultTemplate());
-    ui->pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
-    ui->pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    ui->pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
-    ui->pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
-    ui->pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
-
-    ui->pfc_DefTemp->onRestore();
-    ui->pfc_DefDir->onRestore();
-    ui->pfc_HatchFile->onRestore();
-    ui->pfc_FilePattern->onRestore();
-    ui->pfc_LineGroup->onRestore();
-    ui->pfc_Welding->onRestore();
-    ui->le_NamePattern->onRestore();
-
-    ui->pfb_LabelFont->onRestore();
-    ui->plsb_LabelSize->onRestore();
-
     ui->cb_Global->onRestore();
     ui->cb_Override->onRestore();
     ui->cb_PageUpdate->onRestore();
     ui->cb_AutoDist->onRestore();
+
+    double labelDefault = Preferences::labelFontSizeMM();
+    ui->plsb_LabelSize->setValue(labelDefault);
+    QFont prefFont(Preferences::labelFontQString());
+    ui->pfb_LabelFont->setCurrentFont(prefFont);
+    //    ui->pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
+
+    ui->pfb_LabelFont->onRestore();
+    ui->plsb_LabelSize->onRestore();
+
+    ui->cbProjAngle->onRestore();
+    ui->cbHiddenLineStyle->onRestore(); 
+    
+    ui->pfc_DefTemp->setFileName(Preferences::defaultTemplate());
+    ui->pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
+    ui->pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
+    ui->pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
+    ui->pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
+    ui->pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
+    
+    ui->pfc_DefTemp->onRestore();
+    ui->pfc_DefDir->onRestore();
+    ui->pfc_HatchFile->onRestore();
+    ui->pfc_LineGroup->onRestore();
+    ui->pfc_Welding->onRestore();
+    ui->pfc_FilePattern->onRestore();
+    ui->le_NamePattern->onRestore();
 }
 
 /**

@@ -233,7 +233,7 @@ std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes(void) cons
 void ViewProviderFemPostFunction::dragStartCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
     reinterpret_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
 
     ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);

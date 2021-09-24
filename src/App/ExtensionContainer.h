@@ -79,7 +79,7 @@ namespace App {
  *    special macros.
  * 2. The extensions need to be initialised in the constructor
  *
- * Here a working example:
+ * Here is a working example:
  * @code
  * class AppExport Part : public App::DocumentObject, public App::FirstExtension, public App::SecondExtension {
  *   PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
@@ -195,7 +195,7 @@ private:
 #define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
   PROPERTY_HEADER_WITH_OVERRIDE(_class)
 
-/// We make sur that the PropertyData of the container is not connected to the one of the extension
+/// We make sure that the PropertyData of the container is not connected to the one of the extension
 #define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
     PROPERTY_SOURCE(_class_, _parentclass_)
 

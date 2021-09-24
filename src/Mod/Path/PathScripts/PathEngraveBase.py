@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +30,7 @@ import copy
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+Part = LazyLoader('Part', globals(), 'Part')
 
 from PySide import QtCore
 
@@ -71,22 +70,28 @@ class ObjectOp(PathOp.ObjectOp):
 
             # reorder the wire
             if hasattr(obj, 'StartVertex'):
-                offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
+                start_idx = obj.StartVertex
 
             edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
+            edges = Part.sortEdges(edges)[0];
+
             last = None
 
             for z in zValues:
+                PathLog.debug(z)
                 if last:
                     self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
 
                 first = True
                 if start_idx > len(edges)-1:
                     start_idx = len(edges)-1
-                
+
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
+                    PathLog.debug("points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point))
+                    PathLog.debug("valueat {} -> {}".format(edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
                     if first and (not last or not wire.isClosed()):
+                        PathLog.debug('processing first edge entry')
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
 
@@ -96,7 +101,8 @@ class ObjectOp(PathOp.ObjectOp):
                         self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
                     first = False
 
-                    if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
+                    if PathGeom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
+                    #if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in PathGeom.cmdsForEdge(edge):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point

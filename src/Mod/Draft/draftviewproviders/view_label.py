@@ -35,7 +35,6 @@ import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
@@ -233,7 +232,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         switchnode = coin.SoSeparator()
         switchnode.addChild(self.line)
-        switchnode.addChild(self.arrow)
         self.lineswitch.addChild(switchnode)
         self.lineswitch.whichChild = 0
 
@@ -450,37 +448,26 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         s = utils.ARROW_TYPES.index(vobj.ArrowType)
         self.symbol = gui_utils.dim_symbol(s)
-
-        if vobj.ArrowType == "Circle":
-            # TODO: fix behavior of the 'Circle' marker.
-            # Instead of appearing at the tip of the line
-            # the 'Circle' marker appears displaced and duplicated
-            # a certain distance from the tip, which is the `TargetPoint`.
-            # Somehow the translation is added to the position of the tip
-            # resulting in a wrong value.
-            # So the arrow position is reset; nevertheless, this doesn't
-            # entirely fix the issue.
-            coords2 = coin.SoCoordinate3()
-            coords2.point.setValues([obj.Points[-1]])
-            self.arrow.addChild(coords2)
-            self.arrowpos.translation.setValue((0, 0, 0))
-        else:
-            self.arrowpos.translation.setValue(obj.Points[-1])
         self.arrow.addChild(self.symbol)
 
-        v1 = obj.Points[-2].sub(obj.Points[-1])
+        prec = 10**(-utils.precision())
+        x_axis = App.Vector(1,0,0)
+        target_dir = None
+        # search in Points to get first point != to TargetPoint and use it
+        # to get the target line direction
+        for pnt in obj.Points[-2::-1]:
+            if not pnt.isEqual(obj.Points[-1],prec):
+                target_dir = pnt.sub(obj.Points[-1])
+                break
+        if target_dir is None:
+            target_dir = x_axis
+        target_dir_xy = obj.Placement.Rotation.inverted()*target_dir
+        angle = target_dir_xy.getAngle(x_axis)*App.Units.Radian
+        axis = x_axis.cross(target_dir_xy)
+        rot = App.Rotation(axis, angle)
 
-        if not DraftVecUtils.isNull(v1):
-            v1.normalize()
-            v2 = App.Vector(0, 0, 1)
-            if round(v2.getAngle(v1), 4) in [0, round(math.pi, 4)]:
-                v2 = App.Vector(0, 1, 0)
-
-            v3 = v1.cross(v2).negative()
-
-            _rot_mat = DraftVecUtils.getPlaneRotation(v1, v3, v2)
-            q = App.Placement(_rot_mat).Rotation.Q
-            self.arrowpos.rotation.setValue((q[0], q[1], q[2], q[3]))
+        self.arrowpos.rotation.setValue((obj.Placement.Rotation*rot).Q)
+        self.arrowpos.translation.setValue(obj.Points[-1])
 
     def draw_frame(self, obj, vobj):
         """Draw the frame around the text."""

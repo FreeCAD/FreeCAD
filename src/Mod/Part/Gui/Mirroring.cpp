@@ -77,7 +77,6 @@ Mirroring::Mirroring(QWidget* parent)
 Mirroring::~Mirroring()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void Mirroring::changeEvent(QEvent *e)

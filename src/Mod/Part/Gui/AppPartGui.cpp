@@ -38,6 +38,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderPython.h"
+#include "ViewProviderPrimitive.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCurveNet.h"
 #include "ViewProviderImport.h"
@@ -125,7 +126,12 @@ PyMOD_INIT_FUNC(PartGui)
 
     Base::Console().Log("Loading GUI of Part module... done\n");
 
-#if PY_MAJOR_VERSION >= 3
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/measure"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+
     static struct PyModuleDef pAttachEngineTextsModuleDef = {
         PyModuleDef_HEAD_INIT,
         "AttachEngineResources",
@@ -134,10 +140,6 @@ PyMOD_INIT_FUNC(PartGui)
         NULL, NULL, NULL, NULL
     };
     PyObject* pAttachEngineTextsModule = PyModule_Create(&pAttachEngineTextsModuleDef);
-#else
-    PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
-        "AttachEngine Gui resources");
-#endif
 
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
@@ -149,8 +151,11 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints                      ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderSplineExtension            ::init();
+    PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();
     PartGui::ViewProviderPart                       ::init();
+    PartGui::ViewProviderPrimitive                  ::init();
     PartGui::ViewProviderEllipsoid                  ::init();
     PartGui::ViewProviderPython                     ::init();
     PartGui::ViewProviderBox                        ::init();

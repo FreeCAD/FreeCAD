@@ -37,11 +37,7 @@ public:
     SheetViewHeader(QTableView *owner, Qt::Orientation o) 
         : QHeaderView(o),owner(owner) 
     {
-#if QT_VERSION >= 0x050000
         setSectionsClickable(true);
-#else
-        setClickable(true);
-#endif
     }
 Q_SIGNALS:
     void resizeFinished();
@@ -71,8 +67,10 @@ protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
     void insertRows();
+    void insertRowsAfter();
     void removeRows();
     void insertColumns();
+    void insertColumnsAfter();
     void removeColumns();
     void cellProperties();
 protected:

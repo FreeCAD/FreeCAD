@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,17 +33,10 @@
 
 using namespace Path;
 
-#if PY_MAJOR_VERSION >= 3
-#  define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
-#  define PYINT_TYPE                PyLong_Type
-#  define PYINT_FROMLONG(l)         PyLong_FromLong(l)
-#  define PYINT_ASLONG(o)           PyLong_AsLong(o)
-#else
-#  define PYSTRING_FROMSTRING(str)  PyString_FromString(str)
-#  define PYINT_TYPE                PyInt_Type
-#  define PYINT_FROMLONG(l)         PyInt_FromLong(l)
-#  define PYINT_ASLONG(o)           PyInt_AsLong(o)
-#endif
+#define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
+#define PYINT_TYPE                PyLong_Type
+#define PYINT_FROMLONG(l)         PyLong_FromLong(l)
+#define PYINT_ASLONG(o)           PyLong_AsLong(o)
 
 // returns a string which represents the object e.g. when printed in python
 std::string TooltablePy::representation(void) const
@@ -103,12 +96,12 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Dict TooltablePy::getTools(void) const
 {
-    PyObject *dict = PyDict_New();
-    for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
-        PyObject *tool = new Path::ToolPy(i->second);
-        PyDict_SetItem(dict,PYINT_FROMLONG(i->first),tool);
+    Py::Dict dict;
+    for(std::map<int,Path::ToolPtr>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
+        PyObject *tool = new Path::ToolPy(new Tool(*i->second));
+        dict.setItem(Py::Long(i->first), Py::asObject(tool));
     }
-    return Py::Dict(dict);
+    return dict;
 }
 
 void TooltablePy::setTools(Py::Dict arg)
@@ -237,7 +230,7 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-Py::Int TooltablePy::getVersion(void) const 
+Py::Int TooltablePy::getVersion(void) const
 {
     return Py::Int(getTooltablePtr()->Version);
 }
@@ -274,7 +267,7 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
 {
     (void)args;
     PyObject *dict = PyDict_New();
-    for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
+    for(std::map<int,Path::ToolPtr>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
         // The 'tool' object must be created on the heap otherwise Python
         // will fail to properly track the reference counts and aborts
         // in debug mode.

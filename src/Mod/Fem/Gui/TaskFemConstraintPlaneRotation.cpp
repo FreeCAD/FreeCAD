@@ -273,7 +273,7 @@ TaskDlgFemConstraintPlaneRotation::TaskDlgFemConstraintPlaneRotation(ViewProvide
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintPlaneRotation(ConstraintView);;
+    this->parameter = new TaskFemConstraintPlaneRotation(ConstraintView);
 
     Content.push_back(parameter);
 }

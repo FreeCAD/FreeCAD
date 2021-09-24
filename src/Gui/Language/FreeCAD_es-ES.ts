@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importar</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Borrar</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Pegar expresiones</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Hacer vínculo de grupo</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Crear vínculo</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Crear sub-vínculo</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importar vínculo</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importar todos los vínculos</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Insertar dimensión</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Insertar documento de texto</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Añadir una pieza</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Añade un grupo</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Alinear</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Ubicación</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Transformación de vínculo</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Medir distancia</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -202,6 +277,36 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Por defecto</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Color</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Introduzca una expresión...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expresión: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -254,7 +359,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 archivos de ayuda no encontrados (%2). Puede necesitar instalar el %1 de paquetes de la documentación.</translation>
+      <translation>%1 archivos de ayuda no encontrados (%2). Puede necesitar instalar el paquete de documentación %1.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -391,14 +496,6 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
       <translation>Tamaño de la palabra</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Créditos</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD no estaría en ninguna parte sin tus esfuerzos:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licencia</translation>
     </message>
@@ -411,7 +508,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Este software utiliza componentes de código abierto cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
+      <translation>Este software utiliza componentes de código abierto, cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
     </message>
     <message>
       <source>License</source>
@@ -420,6 +517,25 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     <message>
       <source>Collection</source>
       <translation>Colección</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Créditos</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD no sería posible sin las contribuciones de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Individuos</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizaciones</translation>
     </message>
   </context>
   <context>
@@ -431,6 +547,14 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     <message>
       <source>Out Of Range</source>
       <translation>Fuera de rango</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -500,7 +624,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation>Ajustar para ver la dirección</translation>
+      <translation>Ajuste a la dirección de la vista</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -654,7 +778,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Site:</source>
-      <translation>Sitio:</translation>
+      <translation>Sitio web:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
@@ -723,7 +847,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Punta de la herramienta:</translation>
+      <translation>sugerencia:</translation>
     </message>
     <message>
       <source>Menu text:</source>
@@ -1060,16 +1184,16 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
       <translation>Botones</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Limpiar</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Imprimir referencia</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Botones del SpaceBall</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reiniciar</translation>
     </message>
   </context>
   <context>
@@ -1088,11 +1212,11 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Ancho de la línea:</translation>
+      <translation>Ancho de línea:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Tamaño del punto:</translation>
+      <translation>Tamaño de punto:</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1187,7 +1311,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Obsidian</source>
-      <translation>Obsidian</translation>
+      <translation>Obsidiana</translation>
     </message>
     <message>
       <source>Pewter</source>
@@ -1246,7 +1370,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Sangrado</translation>
+      <translation>Sangría</translation>
     </message>
     <message>
       <source>Insert spaces</source>
@@ -1279,10 +1403,6 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source/>
       <translation>(Vacio)</translation>
-    </message>
-    <message>
-      <source>Code lines will be numbered </source>
-      <translation>Las líneas de código serán numeradas </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
@@ -1319,6 +1439,10 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source>Color:</source>
       <translation>Color:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Las líneas de código serán numeradas</translation>
     </message>
   </context>
   <context>
@@ -1411,9 +1535,9 @@ esto de acuerdo con el tamaño de la pantalla o el gusto personal</translation>
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
       <translation>Personalizar cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
 
-'ComboView': combinar vista de árbol y vista de propiedad en un panel.
-'TreeView and PropertyView': dividir vista de árbol y vista de propiedad en un panel separado.
-'Both': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
+'Vista Combinada': combinar vista de árbol y vista de propiedad en un panel.
+'Vista de Árbol y Vista de Propiedades': dividir vista de árbol y vista de propiedad en un panel separado.
+'Ambos': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
@@ -2104,10 +2228,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Filtrar por tipo</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Si está activado, entonces la selección de vista 3D se sincronizará con la jerarquía completa de objetos.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Sincronizar selección de sub-objetos</translation>
     </message>
@@ -2118,6 +2238,10 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Clear</source>
       <translation>Limpiar</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Si está activado, entonces la selección de vista 3D se sincronizará con la jerarquía completa de objetos.</translation>
     </message>
   </context>
   <context>
@@ -2264,11 +2388,11 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Los mensajes normales serán grabados</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Grabar mensajes normales</translation>
     </message>
   </context>
   <context>
@@ -2358,11 +2482,11 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Renderizado ortográfico</translation>
+      <translation>Renderizado ortogonal</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Renderizado&amp;g en perspectiva</translation>
+      <translation>Renderizado en perspectiva</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2455,10 +2579,6 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
       <translation>Centralizado</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Qué tipo de antialiasing multimuestra se utiliza </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objetos transparentes:</translation>
     </message>
@@ -2481,14 +2601,6 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distancia de ojo a ojo para modos estéreo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
-El valor especificado es un factor que se multiplicará con el tamaño del recuadro
-del objeto 3D que se muestra actualmente. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2522,6 +2634,41 @@ opening or creation</source>
     <message>
       <source>Show axis cross by default</source>
       <translation>Mostrar la cruz de los ejes por defecto</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Elegir radio (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Área para elegir elementos en la vista 3D.
+Valor más grande facilita la selección de cosas, pero puede hacer que las características pequeñas sean imposibles de seleccionar.               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Esta opción es útil para solucionar problemas de tarjeta gráfica y problemas en el controlador.
+
+Cambiar esta opción requiere reiniciar la aplicación.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Usar software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Qué tipo de antialiasing multimuestra se utiliza</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
+El valor especificado es un factor que se multiplicará con el tamaño del recuadro
+del objeto 3D que se muestra actualmente.</translation>
     </message>
   </context>
   <context>
@@ -3136,9 +3283,59 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (tal cual)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>Búfer de píxels</translation>
+      <source>Workbench Name</source>
+      <translation>Nombre del banco de trabajo</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation>¿Carga automática?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation>Cargar ahora</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar recursos, FreeCAD no carga los bancos de trabajo hasta que se usen. Cargarlos puede proporcionar acceso a preferencias adicionales relacionadas con su funcionalidad.&lt;/p&gt;&lt;p&gt;Los siguientes bancos de trabajo están disponibles en su instalación:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Escenario</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Carga automática</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Si está marcado</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>se cargará automáticamente cuando FreeCAD se inicie</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Este es el módulo de inicio actual y debe cargarse automáticamente. Ver Preferencias/General/Autocarga para cambiar.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Cargado</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Cargar ahora</translation>
     </message>
   </context>
   <context>
@@ -3210,6 +3407,34 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation>El directorio en el que la aplicación buscará macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menú de macros recientes</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Tamaño de la lista de macros reciente</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Cuántas macros debería aparecer en la lista de macros recientes</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Contador de accesos directos</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Cuántas macros recientes deben tener accesos directos</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modificadores de teclado</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modificadores de teclado, por defecto = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3327,12 +3552,6 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
       <translation>Paso de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Cuánto se ampliará.
-El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>La dirección de las operaciones de zoom se invertirá</translation>
     </message>
@@ -3355,12 +3574,8 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Las rotaciones en 3D usarán la posición actual del cursor como centro de rotación</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Girar el cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Dimetric</source>
@@ -3405,6 +3620,71 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Orientación de cámara por defecto al crear un nuevo documento o seleccionar la vista de inicio</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Modo de rotación</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centro de la ventana</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrastra el cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centro del objeto</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Girar al estado posible más cercano al hacer clic en una cara del cubo</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Girar al más cercano</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Tamaño del cubo</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Tamaño del cubo de navegación</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Cuánto se ampliará.
+El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selección</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Cambiar automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Auto expandir el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Preselecciona el objeto en la vista 3D cuando el puntero de ratón esté sobre el objeto del árbol</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Grabar selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Añadir casillas de selección en el árbol del documentos</translation>
     </message>
   </context>
   <context>
@@ -3509,6 +3789,10 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Imperial para Ing Civil (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, seg)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3545,10 +3829,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Color simple</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Elegir radio (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objeto editándose</translation>
     </message>
@@ -3563,12 +3843,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Activar resaltado de selección y usar el color especificado</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Área para elegir elementos en la vista 3D.
-Valor más grande facilita la selección de cosas, pero puede hacer que las características pequeñas sean imposibles de seleccionar.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3696,27 +3970,27 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unidad desconocida: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unidad incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unidad desconocida:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Espacios de trabajo</translation>
+      <translation>Escenarios</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Espacios de trabajo habilitados</translation>
+      <translation>Escenario habilitados</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation>Espacios de trabajo des-habilitados</translation>
+      <translation>Escenario des-habilitados</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -3732,7 +4006,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada de los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Retire el banco de trabajo seleccionado de los bancos de trabajo habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -3740,11 +4014,11 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada a los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mover el banco de trabajo seleccionado a los bancos de trabajo habilitados.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Clasificar espacios de trabajo habilitados</translation>
+      <translation>Clasificar escenarios habilitados</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -3756,7 +4030,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Agregar todos a espacios de trabajo habilitados</translation>
+      <translation>Agregar todos a escenarios habilitados</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
@@ -4228,32 +4502,32 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Por favor, seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o arista. Si en una cara o arista, el punto utilizado será el punto en la posición del mouse a lo largo de la cara o la arista. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y, si es necesario, se creará un nuevo eje personalizado. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de reporte, que puede ser útil al alinear objetos. Para su comodidad, cuando se usa la tecla Mayús + clic, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Alrededor del eje Y-:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Alrededor del eje Z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Alrededor del eje X:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Rotación alrededor del eje x</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Rotación alrededor del eje y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Rotación alrededor del eje z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Ángulos de Euler (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4416,6 +4690,15 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <source>Partial</source>
       <translation>Parcial</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Usar las Selecciones Originales</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ignorar lo precedente y continuar con los objetos seleccionados con prioridad a la apertura de este dialogo</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4490,27 +4773,27 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Mostrar tipos de mensajes</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Mensajes normales</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Mensajes de registro</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Advertencias</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Errores</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Mostrar vista del informe en</translation>
     </message>
   </context>
   <context>
@@ -4673,6 +4956,20 @@ Desea guardar los cambios?</translation>
     <message>
       <source>PDF file</source>
       <translation>Archivo PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Coincidencia exacta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Coincidencia exacta</translation>
     </message>
   </context>
   <context>
@@ -5164,6 +5461,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Expresión...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Auto expandir</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5296,6 +5597,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>Abrir archivo %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Archivo no encontrado</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>El archivo '%1' no se puede abrir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Ejecutar macro %1 (Shift+click para editar): %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5489,11 +5805,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Tamaño del punto:</translation>
+      <translation>Tamaño de punto:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Ancho de la línea:</translation>
+      <translation>Ancho de línea:</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -5635,7 +5951,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>Africaans</translation>
+      <translation>Africano</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -5732,6 +6048,18 @@ Do you want to specify another directory?</source>
     <message>
       <source>Vietnamese</source>
       <translation>Vietnamita</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Griego</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
     </message>
   </context>
   <context>
@@ -6634,6 +6962,98 @@ Seleccione 'Abortar' para abortar</translation>
       <source>Override colors...</source>
       <translation>Anular colores...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Ruta física idéntica detectada. ¡Puede causar sobreescritura no deseada del documento existente!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>¿Está seguro de que desea continuar?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Por favor, compruebe la vista del informe para más...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Documento: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Ruta: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Ruta física idéntica</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Hubo errores al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados en absoluto. Busque en la vista de informe para obtener información más específica sobre los objetos involucrados.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Hubo errores graves al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados. Guardar el proyecto muy probablemente resultará en la pérdida de datos.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Escenarios</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Trayectoria física: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7077,8 +7497,8 @@ Seleccione 'Abortar' para abortar</translation>
       <translation>Ninguna selección</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Por favor, seleccione el primero de los objetos que desea exportar.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Seleccione los objetos a exportar antes de elegir Exportar.</translation>
     </message>
   </context>
   <context>
@@ -7105,6 +7525,21 @@ Seleccione 'Abortar' para abortar</translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalcular caracteristicas o documento</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Ayuda</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donar</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Donar para apoyar el desarrollo</translation>
     </message>
   </context>
   <context>
@@ -7841,6 +8276,21 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Macros recientes</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Lista de macros recientes</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8377,6 +8827,17 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>Modo edición</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Determina el comportamiento cuando se edita un objeto del árbol</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -8549,7 +9010,7 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
     <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
@@ -8677,6 +9138,21 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Restaurar cámara guardada</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Restaurar configuraciones de la cámara guardada</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8719,6 +9195,21 @@ Seleccione 'Abortar' para abortar</translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Girar la vista a 90° en sentido horario</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Guardar cámara actual</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Guardar las configuraciones de la cámara actual</translation>
     </message>
   </context>
   <context>
@@ -9264,11 +9755,11 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <name>ViewIsometricCmd</name>
     <message>
       <source>Isometric</source>
-      <translation>Isométrico</translation>
+      <translation>Isométrica</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Configurar NaviCube al modo isométrico</translation>
+      <translation>Configurar NaviCube al modo Isométrico</translation>
     </message>
   </context>
   <context>
@@ -9369,6 +9860,10 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <source>Special Ops</source>
       <translation>Operaciones especiales</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonométrica</translation>
     </message>
   </context>
   <context>

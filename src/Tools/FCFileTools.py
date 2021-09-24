@@ -40,20 +40,20 @@ def cpall(dirFrom, dirTo):
         pathTo   = os.path.join(dirTo,   file)            # extend both paths
         if not os.path.isdir(pathFrom):                   # copy simple files
             try:
-                if verbose > 1: print('copying', pathFrom, 'to', pathTo)
+                if verbose > 1: print('copying ', pathFrom, ' to ', pathTo)
                 cpfile(pathFrom, pathTo)
                 fcount = fcount+1
-            except:
-                print('Error copying', pathFrom, 'to', pathTo, '--skipped')
+            except Exception:
+                print('Error copying ', pathFrom, ' to ', pathTo, ' -- skipped')
                 print(sys.exc_info()[0], sys.exc_info()[1])
         else:
-            if verbose: print('copying dir', pathFrom, 'to', pathTo)
+            if verbose: print('copying dir ', pathFrom, ' to ', pathTo)
             try:
                 os.mkdir(pathTo)                          # make new subdir
                 cpall(pathFrom, pathTo)                   # recur into subdirs
                 dcount = dcount+1
-            except:
-                print('Error creating', pathTo, '--skipped')
+            except Exception:
+                print('Error creating ', pathTo, ' -- skipped')
                 print(sys.exc_info()[0], sys.exc_info()[1])
 
 def SetUpFilter(MatchList):
@@ -79,20 +79,20 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
             pathTo   = os.path.join(dirTo,   file)            # extend both paths
             if not os.path.isdir(pathFrom):                   # copy simple files
                 try:
-                    if verbose > 1: print('copying', pathFrom, 'to', pathTo)
+                    if verbose > 1: print('copying ', pathFrom, ' to ', pathTo)
                     cpfile(pathFrom, pathTo)
                     fcount = fcount+1
-                except:
-                    print('Error copying', pathFrom, 'to', pathTo, '--skipped')
+                except Exception:
+                    print('Error copying ', pathFrom, ' to ', pathTo, ' -- skipped')
                     print(sys.exc_info()[0], sys.exc_info()[1])
             else:
-                if verbose: print('copying dir', pathFrom, 'to', pathTo)
+                if verbose: print('copying dir ', pathFrom, ' to ', pathTo)
                 try:
                     os.mkdir(pathTo)                            # make new subdir
                     cpallWithFilter(pathFrom, pathTo,MatchList) # recur into subdirs
                     dcount = dcount+1
-                except:
-                    print('Error creating', pathTo, '--skipped')
+                except Exception:
+                    print('Error creating ', pathTo, ' -- skipped')
                     print(sys.exc_info()[0], sys.exc_info()[1])
 
 ################################################################

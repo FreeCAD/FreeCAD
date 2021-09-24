@@ -97,7 +97,7 @@ public:
     std::map<std::string, ViewProviderMeshDefects*> vp;
     Mesh::Feature* meshFeature;
     QPointer<Gui::View3DInventor> view;
-    std::vector<unsigned long> self_intersections;
+    std::vector<Mesh::FacetIndex> self_intersections;
     bool enableFoldsCheck;
     bool checkNonManfoldPoints;
     bool strictlyDegenerated;
@@ -276,7 +276,7 @@ void DlgEvaluateMeshImp::setMesh(Mesh::Feature* m)
     }
 }
 
-void DlgEvaluateMeshImp::addViewProvider(const char* name, const std::vector<unsigned long>& indices)
+void DlgEvaluateMeshImp::addViewProvider(const char* name, const std::vector<Mesh::ElementIndex>& indices)
 {
     removeViewProvider(name);
 
@@ -440,7 +440,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalOrientation eval(rMesh);
-        std::vector<unsigned long> inds = eval.GetIndices();
+        std::vector<MeshCore::FacetIndex> inds = eval.GetIndices();
 #if 0
         if (inds.empty() && !eval.Evaluate()) {
             d->ui.checkOrientationButton->setText(tr("Flipped normals found"));
@@ -480,7 +480,7 @@ void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Harmonize normals");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize normals"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()"
@@ -532,7 +532,7 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
         MeshEvalTopology f_eval(rMesh);
         bool ok1 = f_eval.Evaluate();
         bool ok2 = true;
-        std::vector<unsigned long> point_indices;
+        std::vector<Mesh::PointIndex> point_indices;
 
         if (d->checkNonManfoldPoints) {
             MeshEvalPointManifolds p_eval(rMesh);
@@ -555,10 +555,10 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
             d->ui.repairAllTogether->setEnabled(true);
 
             if (!ok1) {
-                const std::vector<std::pair<unsigned long, unsigned long> >& inds = f_eval.GetIndices();
-                std::vector<unsigned long> indices;
+                const std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >& inds = f_eval.GetIndices();
+                std::vector<Mesh::FacetIndex> indices;
                 indices.reserve(2*inds.size());
-                std::vector<std::pair<unsigned long, unsigned long> >::const_iterator it;
+                std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >::const_iterator it;
                 for (it = inds.begin(); it != inds.end(); ++it) {
                     indices.push_back(it->first);
                     indices.push_back(it->second);
@@ -583,7 +583,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Remove non-manifolds");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove non-manifolds"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()"
@@ -682,7 +682,7 @@ void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Fix indices");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix indices"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()"
@@ -721,7 +721,7 @@ void DlgEvaluateMeshImp::on_analyzeDegeneratedButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDegeneratedFacets eval(rMesh, d->epsilonDegenerated);
-        std::vector<unsigned long> degen = eval.GetIndices();
+        std::vector<Mesh::FacetIndex> degen = eval.GetIndices();
         
         if (degen.empty()) {
             d->ui.checkDegenerationButton->setText(tr("No degenerations"));
@@ -748,7 +748,7 @@ void DlgEvaluateMeshImp::on_repairDegeneratedButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Remove degenerated faces");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove degenerated faces"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)"
@@ -787,7 +787,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedFacesButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDuplicateFacets eval(rMesh);
-        std::vector<unsigned long> dupl = eval.GetIndices();
+        std::vector<Mesh::FacetIndex> dupl = eval.GetIndices();
     
         if (dupl.empty()) {
             d->ui.checkDuplicatedFacesButton->setText(tr("No duplicated faces"));
@@ -815,7 +815,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Remove duplicated faces");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove duplicated faces"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()"
@@ -880,7 +880,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Remove duplicated points");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove duplicated points"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()"
@@ -919,7 +919,7 @@ void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalSelfIntersection eval(rMesh);
-        std::vector<std::pair<unsigned long, unsigned long> > intersection;
+        std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> > intersection;
         try {
             eval.GetIntersections(intersection);
         }
@@ -939,9 +939,9 @@ void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
             d->ui.repairSelfIntersectionButton->setEnabled(true);
             d->ui.repairAllTogether->setEnabled(true);
 
-            std::vector<unsigned long> indices;
+            std::vector<Mesh::FacetIndex> indices;
             indices.reserve(2*intersection.size());
-            std::vector<std::pair<unsigned long, unsigned long> >::iterator it;
+            std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >::iterator it;
             for (it = intersection.begin(); it != intersection.end(); ++it) {
                 indices.push_back(it->first);
                 indices.push_back(it->second);
@@ -964,7 +964,7 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
         const char* objName = d->meshFeature->getNameInDocument();
 #endif
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Fix self-intersections");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix self-intersections"));
 #if 0
         try {
             Gui::Application::Instance->runCommand(
@@ -1022,9 +1022,9 @@ void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
             removeViewProvider("MeshGui::ViewProviderMeshFolds");
         }
         else {
-            std::vector<unsigned long> inds  = f_eval.GetIndices();
-            std::vector<unsigned long> inds1 = s_eval.GetIndices();
-            std::vector<unsigned long> inds2 = b_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds  = f_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds1 = s_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds2 = b_eval.GetIndices();
             inds.insert(inds.end(), inds1.begin(), inds1.end());
             inds.insert(inds.end(), inds2.begin(), inds2.end());
 
@@ -1051,7 +1051,7 @@ void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         qApp->setOverrideCursor(Qt::WaitCursor);
-        doc->openCommand("Remove folds");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove folds"));
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()"
@@ -1091,7 +1091,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand("Repair mesh");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair mesh"));
 
         bool run = false;
         bool self = true;

@@ -40,6 +40,7 @@
 #include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "QuantitySpinBox_p.h"
 #include "propertyeditor/PropertyItem.h"
 
 using namespace Gui;
@@ -78,7 +79,7 @@ InputField::InputField(QWidget * parent)
 {
     setValidator(new InputValidator(this));
     setFocusPolicy(Qt::WheelFocus);
-    iconLabel = new QLabel(this);
+    iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
@@ -113,7 +114,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
     DocumentObject * docObj = getPath().getDocumentObject();
 
     if (docObj) {
-        boost::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
 
         if (expr)
             newInput(Tools::fromStdString(expr->toString()));
@@ -157,7 +158,7 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 void InputField::updateText(const Base::Quantity& quant)
 {
     if (isBound()) {
-        boost::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
 
         if (e) {
             setText(Tools::fromStdString(e->toString()));
@@ -240,7 +241,7 @@ void InputField::newInput(const QString & text)
         fixup(input);
 
         if (isBound()) {
-            boost::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
+            std::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
 
             setExpression(e);
 
@@ -314,7 +315,7 @@ void InputField::pushToHistory(const QString &valueq)
     for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
         if( *it == val)
             return;
-    
+
     std::string value(val.toUtf8());
     if(_handle.isValid()){
         char hist1[21];
@@ -489,7 +490,7 @@ double InputField::singleStep(void)const
     return StepSize;
 }
 
-/// set the value of the singleStep property 
+/// set the value of the singleStep property
 void InputField::setSingleStep(double s)
 {
     StepSize = s;
@@ -501,7 +502,7 @@ double InputField::maximum(void)const
     return Maximum;
 }
 
-/// set the value of the maximum property 
+/// set the value of the maximum property
 void InputField::setMaximum(double m)
 {
     Maximum = m;
@@ -517,7 +518,7 @@ double InputField::minimum(void)const
     return Minimum;
 }
 
-/// set the value of the minimum property 
+/// set the value of the minimum property
 void InputField::setMinimum(double m)
 {
     Minimum = m;
@@ -581,7 +582,7 @@ int InputField::historySize(void)const
     return HistorySize;
 }
 
-// set the value of the minimum property 
+// set the value of the minimum property
 void InputField::setHistorySize(int i)
 {
     assert(i>=0);
@@ -692,7 +693,7 @@ void InputField::wheelEvent (QWheelEvent * event)
     }
 
     double factor = event->modifiers() & Qt::ControlModifier ? 10 : 1;
-    double step = event->delta() > 0 ? StepSize : -StepSize;
+    double step = event->angleDelta().y() > 0 ? StepSize : -StepSize;
     double val = actUnitValue + factor * step;
     if (val > Maximum)
         val = Maximum;

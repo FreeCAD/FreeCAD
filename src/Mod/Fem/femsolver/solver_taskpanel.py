@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver job control task panel"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -72,13 +72,13 @@ class ControlTaskPanel(QtCore.QObject):
         self.form.abortClicked.connect(self.abort)
         self.form.directoryChanged.connect(self.updateMachine)
 
-        # Seems that the task panel doesn't get destroyed. Disconnect
+        # Seems that the task panel does not get destroyed. Disconnect
         # as soon as the widget of the task panel gets destroyed.
         self.form.destroyed.connect(self._disconnectMachine)
         self.form.destroyed.connect(self._timer.stop)
-        self.form.destroyed.connect(
-            lambda: self.machineStatusChanged.disconnect(
-                self.form.appendStatus))
+        # self.form.destroyed.connect(
+        #     lambda: self.machineStatusChanged.disconnect(
+        #         self.form.appendStatus))
 
         # Connect all proxy signals.
         self.machineStarted.connect(self._timer.start)

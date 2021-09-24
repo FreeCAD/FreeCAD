@@ -40,18 +40,27 @@ def myCustomFusionRoutine(list_of_shapes):
     ... (use attributes and methods of ao) ..."""
 
     def __define_attributes(self):
-        self.gfa_return = None #stores the data returned by generalFuse, supplied to class constructor
+        # stores the data returned by generalFuse, supplied to class constructor
+        self.gfa_return = None 
 
-        self.pieces = None #pieces that resulted from intersetion routine. List of shapes (non-decorated).
-        self._piece_to_index = {} # key = decorated shape. Value = index (int) into self.pieces
+        # pieces that resulted from intersetion routine. List of shapes (non-decorated).
+        self.pieces = None
+        # key = decorated shape. Value = index (int) into self.pieces
+        self._piece_to_index = {}
 
-        self.source_shapes = [] # list of shapes that was supplied to generalFuse (plus the self-shape). List of shapes (non-decorated)
-        self._source_to_index = {} # key = decorated shape. Value = index (int) into self.source_shapes
+        # list of shapes that was supplied to generalFuse (plus the self-shape). List of shapes (non-decorated)
+        self.source_shapes = []
+        # key = decorated shape. Value = index (int) into self.source_shapes
+        self._source_to_index = {}
 
-        self._pieces_of_source = [] #list of pieces (indexes) generated from a source shape, by index of source shape. List of lists of ints.
-        self._sources_of_piece = [] #list of source shapes (indexes) the piece came from, by index of piece. List of lists of ints.
+        #list of pieces (indexes) generated from a source shape, by index of source shape. List of lists of ints.
+        self._pieces_of_source = []
+        #list of source shapes (indexes) the piece came from, by index of piece. List of lists of ints.
+        self._sources_of_piece = []
 
-        self._element_to_source = {} #dictionary for finding, which source shapes did an element of pieces come from. key = HashableShape (element). Value = set of ints
+        # dictionary for finding, which source shapes did an element of pieces come from.
+        # key = HashableShape (element). Value = set of ints
+        self._element_to_source = {} 
 
         self._freeze()
 
@@ -138,7 +147,8 @@ def myCustomFusionRoutine(list_of_shapes):
             for iSource in range(len(map)):
                 if len(map[iSource]) == 0:
                     import FreeCAD as App
-                    App.Console.PrintWarning("Map entry {num} is empty. Source-to-piece correspondence information is probably incomplete.".format(num= iSource))
+                    App.Console.PrintWarning("Map entry {num} is empty. "
+                                             "Source-to-piece correspondence information is probably incomplete.".format(num=iSource))
 
         self._pieces_of_source = [[] for i in range(len(self.source_shapes))]
         self._sources_of_piece = [[] for i in range(len(self.pieces))]
@@ -311,7 +321,8 @@ def myCustomFusionRoutine(list_of_shapes):
             #can't split the shape
             return [shape]
 
-        # for each joint, test if all bits it's connected to are from same number of sources. If not, this is a joint for splitting
+        # for each joint, test if all bits it's connected to are from same number of sources.
+        # If not, this is a joint for splitting
         # FIXME: this is slow, and maybe can be optimized
         splits = []
         for joint in joint_extractor(shape):
@@ -372,7 +383,9 @@ class GeneralFuseReturnBuilder(FrozenClass):
     "GeneralFuseReturnBuilder: utility class used by splitAggregates to build fake return of generalFuse, for re-parsing."
     def __define_attributes(self):
         self.pieces = []
-        self._piece_to_index = {} # key = hasher_class(shape). Value = (index_into_self_dot_pieces, shape). Note that GeneralFuseResult uses this item directly.
+        # key = hasher_class(shape). Value = (index_into_self_dot_pieces, shape).
+        # Note that GeneralFuseResult uses this item directly.
+        self._piece_to_index = {}
 
         self._pieces_from_source = [] #list of list of ints
         self.source_shapes = []

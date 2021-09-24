@@ -1153,7 +1153,7 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
 
 ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier &other) const
 {
-    ObjectIdentifier result(owner);
+    ObjectIdentifier result(other.getOwner());
     ResolveResults thisresult(*this);
     ResolveResults otherresult(other);
 
@@ -1490,14 +1490,14 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
         else {
             str.resize(str.size()-1);
             auto mapped = reader->getName(str.c_str());
-            auto obj = owner->getDocument()->getObject(mapped);
-            if (!obj) {
+            auto objForMapped = owner->getDocument()->getObject(mapped);
+            if (!objForMapped) {
                 FC_ERR("Cannot find object " << str);
             }
             else {
                 isString = true;
                 forceIdentifier = false;
-                str = obj->Label.getValue();
+                str = objForMapped->Label.getValue();
             }
         }
     }
@@ -1548,11 +1548,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         GET_MODULE(re);
         break;
     case PseudoBuiltins:
-#if PY_MAJOR_VERSION < 3
-        GET_MODULE(__builtin__);
-#else
         GET_MODULE(builtins);
-#endif
         break;
     case PseudoMath:
         GET_MODULE(math);

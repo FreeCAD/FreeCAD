@@ -139,8 +139,8 @@ bool MeshProjection::connectLines(std::list< std::pair<Base::Vector3f, Base::Vec
 }
 
 bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
-                                       const Base::Vector3f& v1, unsigned long f1,
-                                       const Base::Vector3f& v2, unsigned long f2,
+                                       const Base::Vector3f& v1, FacetIndex f1,
+                                       const Base::Vector3f& v2, FacetIndex f2,
                                        const Base::Vector3f& vd,
                                        std::vector<Base::Vector3f>& polyline)
 {
@@ -150,7 +150,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
     dir.Normalize();
 
 
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
 
     // special case: start and endpoint inside same facet
     if (f1 == f2) {
@@ -172,8 +172,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
 
     // cut all facets with plane
     std::list< std::pair<Base::Vector3f, Base::Vector3f> > cutLine;
-    //unsigned long start = 0, end = 0;
-    for (std::vector<unsigned long>::iterator it = facets.begin(); it != facets.end(); ++it) {
+    for (std::vector<FacetIndex>::iterator it = facets.begin(); it != facets.end(); ++it) {
         Base::Vector3f e1, e2;
         MeshGeomFacet tria = kernel.GetFacet(*it);
         if (bboxInsideRectangle(tria.GetBoundBox(), v1, v2, vd)) {

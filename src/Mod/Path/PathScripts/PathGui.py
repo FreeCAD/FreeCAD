@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,19 +29,14 @@ import PySide
 
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "A collection of helper and utility functions for the Path GUI."
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def updateInputField(obj, prop, widget, onBeforeChange=None):
@@ -55,7 +48,8 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     If onBeforeChange is specified it is called before a new value is assigned to the property.
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
     '''
-    value = FreeCAD.Units.Quantity(widget.text()).Value
+    PathLog.track()
+    value = widget.property('rawValue')
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, 'Value') else attr
 
@@ -102,28 +96,41 @@ class QuantitySpinBox:
     '''
 
     def __init__(self, widget, obj, prop, onBeforeChange=None):
-        self.obj = obj
+        PathLog.track(widget)
         self.widget = widget
-        self.prop = prop
         self.onBeforeChange = onBeforeChange
+        self.prop = None
+        self.obj = obj
+        self.attachTo(obj, prop)
 
-        attr = PathUtil.getProperty(self.obj, self.prop)
-        if attr is not None:
-            if hasattr(attr, 'Value'):
-                widget.setProperty('unit', attr.getUserPreferred()[2])
-            widget.setProperty('binding', "%s.%s" % (obj.Name, prop))
-            self.valid = True
+    def attachTo(self, obj, prop = None):
+        '''attachTo(obj, prop=None) ... use an existing editor for the given object and property'''
+        PathLog.track(self.prop, prop)
+        self.obj = obj
+        self.prop = prop
+        if obj and prop:
+            attr = PathUtil.getProperty(obj, prop)
+            if attr is not None:
+                if hasattr(attr, 'Value'):
+                    self.widget.setProperty('unit', attr.getUserPreferred()[2])
+                self.widget.setProperty('binding', "%s.%s" % (obj.Name, prop))
+                self.valid = True
+            else:
+                PathLog.warning(translate('PathGui', "Cannot find property %s of %s") % (prop, obj.Label))
+                self.valid = False
         else:
-            PathLog.warning(translate('PathGui', "Cannot find property %s of %s") % (prop, obj.Label))
             self.valid = False
 
     def expression(self):
         '''expression() ... returns the expression if one is bound to the property'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             return self.widget.property('expression')
         return ''
 
     def setMinimum(self, quantity):
+        '''setMinimum(quantity) ... set the minimum'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('setMinimum', value)
@@ -132,14 +139,27 @@ class QuantitySpinBox:
         '''updateSpinBox(quantity=None) ... update the display value of the spin box.
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float.'''
+        PathLog.track(self.prop, self.valid)
+
         if self.valid:
+            expr  = self._hasExpression()
             if quantity is None:
-                quantity = PathUtil.getProperty(self.obj, self.prop)
+                if expr:
+                    quantity = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+                else:
+                    quantity = PathUtil.getProperty(self.obj, self.prop)
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('rawValue', value)
 
     def updateProperty(self):
         '''updateProperty() ... update the bound property with the value from the spin box'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
+        return None
+
+    def _hasExpression(self):
+        for (prop, exp) in self.obj.ExpressionEngine:
+            if prop == self.prop:
+                return exp
         return None

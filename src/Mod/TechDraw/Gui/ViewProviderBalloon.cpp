@@ -26,6 +26,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -38,6 +40,7 @@
 #include <App/DocumentObject.h>
 
 #include <Gui/Application.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -47,7 +50,6 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
 #include "TaskBalloon.h"
@@ -67,17 +69,16 @@ ViewProviderBalloon::ViewProviderBalloon()
 
     static const char *group = "Balloon Format";
 
-    ADD_PROPERTY_TYPE(Font,(Preferences::labelFont().c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(Preferences::dimFontSizeMM()),
-                                group,(App::PropertyType)(App::Prop_None),"Balloon text size in units");
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()), group, App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
+                                group, (App::PropertyType)(App::Prop_None), "Balloon text size in units");
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
-
-    ADD_PROPERTY_TYPE(Color,(PreferencesGui::dimColor()),
-                                              group,App::Prop_None,"Color of the balloon");
+    ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
+    ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
+    ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
@@ -101,6 +102,33 @@ std::vector<std::string> ViewProviderBalloon::getDisplayModes(void) const
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
+}
+
+bool ViewProviderBalloon::doubleClicked(void)
+{
+    startDefaultEditMode();
+    return true;
+}
+
+void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    act->setData(QVariant((int)ViewProvider::Default));
+    func->trigger(act, boost::bind(&ViewProviderBalloon::startDefaultEditMode, this));
+
+    ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
+}
+
+void ViewProviderBalloon::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
 }
 
 bool ViewProviderBalloon::setEdit(int ModNum)
@@ -132,12 +160,6 @@ void ViewProviderBalloon::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderBalloon::doubleClicked(void)
-{
-    setEdit(ViewProvider::Default);
-    return true;
-}
-
 void ViewProviderBalloon::updateData(const App::Property* p)
 {
     ViewProviderDrawingView::updateData(p);
@@ -148,7 +170,8 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
     if ((p == &Font)  ||
         (p == &Fontsize) ||
         (p == &Color) ||
-        (p == &LineWidth)) {
+        (p == &LineWidth) ||
+        (p == &LineVisible)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -171,6 +194,9 @@ void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, con
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

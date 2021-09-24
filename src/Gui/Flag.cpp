@@ -274,13 +274,13 @@ void FlagLayout::setGeometry(const QRect &rect)
 
         if (position == TopLeft) {
             topHeight += spacing();
-            item->setGeometry(QRect(rect.x() + spacing(), topHeight, 
+            item->setGeometry(QRect(rect.x() + spacing(), topHeight,
                                     item->sizeHint().width(), item->sizeHint().height()));
 
             topHeight += item->geometry().height();
         } else if (position == BottomLeft) {
             bottomHeight += item->geometry().height() + spacing();
-            item->setGeometry(QRect(rect.x() + spacing(), rect.height() - bottomHeight, 
+            item->setGeometry(QRect(rect.x() + spacing(), rect.height() - bottomHeight,
                                     item->sizeHint().width(), item->sizeHint().height()));
         }
     }
@@ -296,13 +296,13 @@ void FlagLayout::setGeometry(const QRect &rect)
         int rightpos = item->sizeHint().width() + spacing();
         if (position == TopRight) {
             topHeight += spacing();
-            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, topHeight, 
+            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, topHeight,
                                     item->sizeHint().width(), item->sizeHint().height()));
 
             topHeight += item->geometry().height();
         } else if (position == BottomRight) {
             bottomHeight += item->geometry().height() + spacing();
-            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, rect.height() - bottomHeight, 
+            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, rect.height() - bottomHeight,
                                     item->sizeHint().width(), item->sizeHint().height()));
         }
     }

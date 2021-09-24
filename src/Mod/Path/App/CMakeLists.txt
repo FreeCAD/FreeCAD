@@ -36,6 +36,10 @@ generate_from_xml(TooltablePy)
 generate_from_xml(FeaturePathCompoundPy)
 generate_from_xml(AreaPy)
 generate_from_xml(FeatureAreaPy)
+generate_from_xml(VoronoiPy)
+generate_from_xml(VoronoiCellPy)
+generate_from_xml(VoronoiEdgePy)
+generate_from_xml(VoronoiVertexPy)
 
 SET(Python_SRCS
     CommandPy.xml
@@ -52,6 +56,14 @@ SET(Python_SRCS
     AreaPyImp.cpp
     FeatureAreaPy.xml
     FeatureAreaPyImp.cpp
+    VoronoiPy.xml
+    VoronoiPyImp.cpp
+    VoronoiCellPy.xml
+    VoronoiCellPyImp.cpp
+    VoronoiEdgePy.xml
+    VoronoiEdgePyImp.cpp
+    VoronoiVertexPy.xml
+    VoronoiVertexPyImp.cpp
 )
 
 SET(Mod_SRCS
@@ -90,6 +102,14 @@ SET(Path_SRCS
     FeatureArea.h
     PathSegmentWalker.h
     PathSegmentWalker.cpp
+    Voronoi.cpp
+    Voronoi.h
+    VoronoiCell.cpp
+    VoronoiCell.h
+    VoronoiEdge.cpp
+    VoronoiEdge.h
+    VoronoiVertex.cpp
+    VoronoiVertex.h
     ${Mod_SRCS}
     ${Python_SRCS}
 )
@@ -120,6 +140,21 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
+
+# Boost >= 1.75.0
+if(NOT ${Boost_VERSION} LESS 107500)
+    set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(Path PROPERTIES CXX_STANDARD 14)
+
+    # Suppress -Wc++17-extensions when using  OCCT 7.5 or newer
+    if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+        unset(_flag_found CACHE)
+        check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
+        if (_flag_found)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
+        endif()
+    endif()
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

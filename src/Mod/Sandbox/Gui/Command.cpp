@@ -54,11 +54,9 @@
 # include <boost/thread/thread.hpp>
 # include <boost/thread/mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
-# if BOOST_VERSION >= 104100
 # include <boost/thread/future.hpp>
-# endif
 # include <boost/bind/bind.hpp>
-# include <boost/shared_ptr.hpp>
+# include <memory>
 #endif
 
 #include <Base/Console.h>
@@ -629,7 +627,6 @@ CmdSandboxMeshLoaderBoost::CmdSandboxMeshLoaderBoost()
 
 void CmdSandboxMeshLoaderBoost::activated(int)
 {
-# if BOOST_VERSION >= 104100
     // use current path as default
     QStringList filter;
     filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj)");
@@ -655,16 +652,11 @@ void CmdSandboxMeshLoaderBoost::activated(int)
     Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)fi.get());
     mesh->purgeTouched();
-#endif
 }
 
 bool CmdSandboxMeshLoaderBoost::isActive(void)
 {
-# if BOOST_VERSION >= 104100
     return hasActiveDocument();
-#else
-    return false;
-#endif
 }
 
 DEF_STD_CMD_A(CmdSandboxMeshLoaderFuture)
@@ -893,12 +885,12 @@ CmdSandboxMeshTestRef::CmdSandboxMeshTestRef()
 void CmdSandboxMeshTestRef::activated(int)
 {
     Gui::WaitCursor wc;
-    std::vector< boost::shared_ptr<QThread> > threads;
+    std::vector< std::shared_ptr<QThread> > threads;
     Base::Reference<Mesh::MeshObject> mesh(new Mesh::MeshObject);
     int num = mesh.getRefCount();
 
     for (int i=0; i<10; i++) {
-        boost::shared_ptr<QThread> trd(new MeshThread(mesh));
+        std::shared_ptr<QThread> trd(new MeshThread(mesh));
         trd->start();
         threads.push_back(trd);
     }

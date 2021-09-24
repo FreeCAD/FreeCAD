@@ -158,6 +158,8 @@ SET(FemConstraints_SRCS
     FemConstraintFluidBoundary.h
     FemConstraintPressure.cpp
     FemConstraintPressure.h
+    FemConstraintSpring.cpp
+    FemConstraintSpring.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp
@@ -176,7 +178,7 @@ SET(FemConstraints_SRCS
     FemConstraintContact.h
     FemConstraintTransform.cpp
     FemConstraintTransform.h
-    )
+)
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
 
@@ -197,6 +199,12 @@ endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+
+# external SMESH doesn't support C++17 yet
+if(FREECAD_USE_EXTERNAL_SMESH)
+    set_target_properties(Fem PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(Fem PROPERTIES CXX_STANDARD 14)
+endif()
 
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)

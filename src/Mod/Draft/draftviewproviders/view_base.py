@@ -104,7 +104,9 @@ class ViewProviderDraft(object):
                              "Pattern",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+            patterns = list(utils.svg_patterns().keys())
+            patterns.sort()
+            vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
             _tip = "Defines the size of the hatch pattern."
@@ -112,7 +114,7 @@ class ViewProviderDraft(object):
                              "PatternSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.PatternSize = 1
+            vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
     def __getstate__(self):
         """Return a tuple of all serializable objects or None.
@@ -286,8 +288,9 @@ class ViewProviderDraft(object):
                     if path and vobj.RootNode:
                         if vobj.RootNode.getChildren().getLength() > 2:
                             if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
-                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
-                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                                innodes = vobj.RootNode.getChild(2).getChild(0).getChildren().getLength()
+                                if  innodes > 2:
+                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(innodes-1)
                                     i = QtCore.QFileInfo(path)
                                     if self.texture:
                                         r.removeChild(self.texture)
@@ -382,14 +385,22 @@ class ViewProviderDraft(object):
 
         Returns
         -------
-        bool
+        bool or None
             It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
+            None if mode is not zero.
             It is `False` otherwise.
         """
-        if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
+        if mode != 0:
+            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
+            # case of an unrecognized context menu action)
+            return None
+        elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
             return True
-        return False
+        else:
+            _wrn = "Please load the Draft Workbench to enable editing this object"
+            App.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft", _wrn))
+            return False
 
     def unsetEdit(self, vobj, mode=0):
         """Terminate the edit mode of the object.
@@ -416,7 +427,7 @@ class ViewProviderDraft(object):
             This is `obj.ViewObject`.
 
         mode : int, optional
-            It defaults to 0. It is not used.
+            It defaults to 0.
             It indicates the type of edit in the underlying C++ code.
 
         Returns
@@ -425,6 +436,8 @@ class ViewProviderDraft(object):
             This method always returns `False` so it passes
             control to the base class to finish the edit mode.
         """
+        if mode != 0:
+            return False
         if App.activeDraftCommand:
             App.activeDraftCommand.finish()
         if App.GuiUp: # remove guard after splitting every viewprovider
@@ -448,17 +461,20 @@ class ViewProviderDraft(object):
         str
             `':/icons/Draft_Draft.svg'`
         """
-        tp = self.Object.Proxy.Type
-        if tp in ('Line', 'Wire', 'Polyline'):
-            return ":/icons/Draft_N-Linear.svg"
-        elif tp in ('Rectangle', 'Polygon'):
-            return ":/icons/Draft_N-Polygon.svg"
-        elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
-            return ":/icons/Draft_N-Curve.svg"
-        elif tp in ("ShapeString"):
-            return ":/icons/Draft_ShapeString_tree.svg"
-        else:
-            return ":/icons/Draft_Draft.svg"
+        if hasattr(self.Object,"Proxy") and hasattr(self.Object.Proxy,"Type"):
+            tp = self.Object.Proxy.Type
+            if tp in ('Line', 'Wire', 'Polyline'):
+                return ":/icons/Draft_N-Linear.svg"
+            elif tp in ('Rectangle', 'Polygon'):
+                return ":/icons/Draft_N-Polygon.svg"
+            elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
+                return ":/icons/Draft_N-Curve.svg"
+            elif tp in ("ShapeString"):
+                return ":/icons/Draft_ShapeString_tree.svg"
+        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
+        return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
         """Return objects that will be placed under it in the tree view.
@@ -514,14 +530,14 @@ _ViewProviderDraftAlt = ViewProviderDraftAlt
 class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
-    The `getIcon` method is overridden to provide `Tree_Part.svg`.
+    The `getIcon` method is overridden to provide `Part_3D_object.svg`.
     """
 
     def __init__(self, vobj):
         super(ViewProviderDraftPart, self).__init__(vobj)
 
     def getIcon(self):
-        return ":/icons/Tree_Part.svg"
+        return ":/icons/Part_3D_object.svg"
 
 
 # Alias for compatibility with v0.18 and earlier

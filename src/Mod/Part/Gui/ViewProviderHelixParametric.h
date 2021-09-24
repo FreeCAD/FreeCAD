@@ -25,11 +25,12 @@
 #define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 
 #include "ViewProviderSpline.h"
+#include "ViewProviderPrimitive.h"
 
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderHelixParametric : public ViewProviderSpline
+class PartGuiExport ViewProviderHelixParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderHelixParametric);
 
@@ -39,9 +40,13 @@ public:
     /// destructor
     virtual ~ViewProviderHelixParametric();
     std::vector<std::string> getDisplayModes(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+private:
+    ViewProviderSplineExtension extension;
 };
 
-class PartGuiExport ViewProviderSpiralParametric : public ViewProviderSpline
+class PartGuiExport ViewProviderSpiralParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderSpiralParametric);
 
@@ -51,6 +56,10 @@ public:
     /// destructor
     virtual ~ViewProviderSpiralParametric();
     std::vector<std::string> getDisplayModes(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+private:
+    ViewProviderSplineExtension extension;
 };
 
 } // namespace PartGui

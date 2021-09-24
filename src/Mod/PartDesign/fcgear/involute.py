@@ -22,7 +22,7 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, pi, acos, asin, atan, sqrt
+from math import cos, sin, pi, acos, atan, sqrt
 
 import sys
 if sys.version_info.major >= 3:

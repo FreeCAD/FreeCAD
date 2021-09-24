@@ -35,21 +35,21 @@ struct MES  : public Sys::Kernel::MappedEquationSystem {
     typedef typename Sys::Cluster Cluster;
     typedef typename system_traits<Sys>::template getModule<m3d>::type module3d;
     typedef typename module3d::Geometry3D Geometry3D;
-    typedef boost::shared_ptr<Geometry3D> Geom;
+    typedef std::shared_ptr<Geometry3D> Geom;
     typedef typename module3d::Constraint3D Constraint3D;
-    typedef boost::shared_ptr<Constraint3D> Cons;
+    typedef std::shared_ptr<Constraint3D> Cons;
     typedef typename module3d::math_prop math_prop;
     typedef typename module3d::fix_prop fix_prop;
     typedef typename Kernel::number_type Scalar;
     typedef typename Sys::Kernel::MappedEquationSystem Base;
 
-    boost::shared_ptr<Cluster> m_cluster;
+    std::shared_ptr<Cluster> m_cluster;
     
 #ifdef USE_LOGGING
     dcm_logger log;
 #endif
 
-    MES(boost::shared_ptr<Cluster> cl, int par, int eqn);
+    MES(std::shared_ptr<Cluster> cl, int par, int eqn);
     virtual void recalculate();
     virtual void removeLocalGradientZeros();
 };
@@ -62,9 +62,9 @@ struct SystemSolver : public Job<Sys> {
     typedef typename Kernel::number_type Scalar;
     typedef typename system_traits<Sys>::template getModule<m3d>::type module3d;
     typedef typename module3d::Geometry3D Geometry3D;
-    typedef boost::shared_ptr<Geometry3D> Geom;
+    typedef std::shared_ptr<Geometry3D> Geom;
     typedef typename module3d::Constraint3D Constraint3D;
-    typedef boost::shared_ptr<Constraint3D> Cons;
+    typedef std::shared_ptr<Constraint3D> Cons;
     typedef typename module3d::math_prop math_prop;
     typedef typename module3d::fix_prop fix_prop;
     typedef typename module3d::vertex_prop vertex_prop;
@@ -76,17 +76,17 @@ struct SystemSolver : public Job<Sys> {
 #endif
     struct Rescaler {
 
-        boost::shared_ptr<Cluster> cluster;
+        std::shared_ptr<Cluster> cluster;
         Mes& mes;
         int rescales;
 
-        Rescaler(boost::shared_ptr<Cluster> c, Mes& m);
+        Rescaler(std::shared_ptr<Cluster> c, Mes& m);
 
         void operator()();
 
 	Scalar calculateScale();
         Scalar scaleClusters(Scalar sc);
-        void collectPseudoPoints(boost::shared_ptr<Cluster> parent,
+        void collectPseudoPoints(std::shared_ptr<Cluster> parent,
                                  LocalVertex cluster,
                                  std::vector<typename Kernel::Vector3,
                                  Eigen::aligned_allocator<typename Kernel::Vector3> >& vec);
@@ -111,8 +111,8 @@ struct SystemSolver : public Job<Sys> {
 
     SystemSolver();
     virtual void execute(Sys& sys);
-    void solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sys);
-    void finish(boost::shared_ptr< Cluster > cluster, Sys& sys, Mes& mes);
+    void solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys);
+    void finish(std::shared_ptr< Cluster > cluster, Sys& sys, Mes& mes);
 };
 
 }//details

@@ -39,14 +39,14 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
   , ui(new Ui_DlgStartPreferences)
 {
     ui->setupUi(this);
-    
+
     // Hide currently unused controls
     ui->label_12->hide();
     ui->label_7->hide();
     ui->colorButton_7->hide();
     ui->radioButton_1->hide();
     ui->radioButton_2->hide();
-    
+
     // fills the combo box with all available workbenches
     // sorted by their menu text
     QStringList work = Gui::Application::Instance->workbenches();
@@ -73,10 +73,10 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
         else
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
-    
+
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgStartPreferencesImp::~DlgStartPreferencesImp()

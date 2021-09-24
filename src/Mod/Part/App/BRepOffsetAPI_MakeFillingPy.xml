@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+      Father="PyObjectBase"
+      Name="BRepOffsetAPI_MakeFillingPy"
+      PythonName="Part.BRepOffsetAPI_MakeFilling"
+      Twin="BRepOffsetAPI_MakeFilling"
+      TwinPointer="BRepOffsetAPI_MakeFilling"
+      Include="BRepOffsetAPI_MakeFilling.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+      <Documentation>
+          <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+          <UserDocu>N-Side Filling</UserDocu>
+      </Documentation>
+      <Methode Name="setConstrParam" Keyword="true">
+          <Documentation>
+              <UserDocu>
+                  setConstrParam(Tol2d=0.00001, Tol3d=0.0001, TolAng=0.01, TolCurv=0.1)
+                  Sets the values of Tolerances used to control the constraint.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="setResolParam" Keyword="true">
+          <Documentation>
+              <UserDocu>
+                  setResolParam(Degree=3, NbPtsOnCur=15, NbIter=2, Anisotropy=False)
+                  Sets the parameters used for resolution.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="setApproxParam" Keyword="true">
+          <Documentation>
+              <UserDocu>
+                  setApproxParam(MaxDeg=8, MaxSegments=9)
+                  Sets the parameters used to approximate the filling the surface
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="loadInitSurface">
+          <Documentation>
+              <UserDocu>
+                  loadInitSurface(face)
+                  Loads the initial surface.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="add" Keyword="true">
+          <Documentation>
+              <UserDocu>
+                  add(Edge, Order, IsBound=True)
+                  add(Edge, Support, Order, IsBound=True)
+                  add(Support, Order)
+                  add(Point)
+                  add(U, V, Support, Order)
+                  Adds a new constraint.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="build">
+          <Documentation>
+              <UserDocu>Builds the resulting faces.</UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="isDone">
+          <Documentation>
+              <UserDocu>Tests whether computation of the filling plate has been completed.</UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="G0Error">
+          <Documentation>
+              <UserDocu>
+                  G0Error([int])
+                  Returns the maximum distance between the result and the constraints.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="G1Error">
+          <Documentation>
+              <UserDocu>
+                  G1Error([int])
+                  Returns the maximum angle between the result and the constraints.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="G2Error">
+          <Documentation>
+              <UserDocu>
+                  G2Error([int])
+                  Returns the greatest difference in curvature between the result and the constraints.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="shape">
+          <Documentation>
+              <UserDocu>
+                  shape()
+                  Returns the resulting shape.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+  </PythonExport>
+</GenerateModel>

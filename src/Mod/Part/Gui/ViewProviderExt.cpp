@@ -236,11 +236,18 @@ ViewProviderPartExt::ViewProviderPartExt()
     forceUpdateCount = 0;
     NormalsFromUV = true;
 
+    // get default line color
     unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
-    float r,g,b;
-    r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
+    float lr,lg,lb;
+    lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
+    // get default vertex color
+    unsigned long vcol = Gui::ViewParams::instance()->getDefaultShapeVertexColor(); 
+    float vr,vg,vb;
+    vr = ((vcol >> 24) & 0xff) / 255.0; vg = ((vcol >> 16) & 0xff) / 255.0; vb = ((vcol >> 8) & 0xff) / 255.0;
     int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
     int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
+	
+
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
@@ -256,17 +263,26 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     static const char *osgroup = "Object Style";
 
-    App::Material mat;
-    mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(r,g,b);
-    mat.specularColor.set(0.0f,0.0f,0.0f);
-    mat.emissiveColor.set(0.0f,0.0f,0.0f);
-    mat.shininess = 1.0f;
-    mat.transparency = 0.0f;
-    ADD_PROPERTY_TYPE(LineMaterial,(mat), osgroup, App::Prop_None, "Object line material.");
-    ADD_PROPERTY_TYPE(PointMaterial,(mat), osgroup, App::Prop_None, "Object point material.");
-    ADD_PROPERTY_TYPE(LineColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
-    ADD_PROPERTY_TYPE(PointColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
+    App::Material lmat;
+    lmat.ambientColor.set(0.2f,0.2f,0.2f);
+    lmat.diffuseColor.set(lr,lg,lb);
+    lmat.specularColor.set(0.0f,0.0f,0.0f);
+    lmat.emissiveColor.set(0.0f,0.0f,0.0f);
+    lmat.shininess = 1.0f;
+    lmat.transparency = 0.0f;
+
+    App::Material vmat;
+    vmat.ambientColor.set(0.2f,0.2f,0.2f);
+    vmat.diffuseColor.set(vr,vg,vb);
+    vmat.specularColor.set(0.0f,0.0f,0.0f);
+    vmat.emissiveColor.set(0.0f,0.0f,0.0f);
+    vmat.shininess = 1.0f;
+    vmat.transparency = 0.0f;	
+	
+    ADD_PROPERTY_TYPE(LineMaterial,(lmat), osgroup, App::Prop_None, "Object line material.");
+    ADD_PROPERTY_TYPE(PointMaterial,(vmat), osgroup, App::Prop_None, "Object point material.");
+    ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
+    ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
     ADD_PROPERTY_TYPE(DiffuseColor,(ShapeColor.getValue()), osgroup, App::Prop_None, "Object diffuse color.");
     ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
@@ -334,7 +350,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     Lighting.touch();
     DrawStyle.touch();
 
-    sPixmap = "Tree_Part";
+    sPixmap = "Part_3D_object";
     loadParameter();
 }
 
@@ -962,21 +978,26 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
+bool ViewProviderPartExt::changeFaceColors()
+{
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        Gui::Control().showDialog(dlg);
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskFaceColors(this));
+    return true;
+}
+
 bool ViewProviderPartExt::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        if (dlg) {
-            Gui::Control().showDialog(dlg);
-            return false;
-        }
-
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskFaceColors(this));
-        return true;
+        return changeFaceColors();
     }
     else {
         return Gui::ViewProviderGeometryObject::setEdit(ModNum);
@@ -1128,7 +1149,10 @@ void ViewProviderPartExt::updateVisual()
             const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
-            if (mesh.IsNull()) continue;
+            if (mesh.IsNull()) {
+                parts[ii] = 0;
+                continue;
+            }
 
             // getting the transformation of the shape/face
             gp_Trsf myTransf;

@@ -194,7 +194,7 @@ def setAttributes(obj,ifcproduct):
             if value:
                 try:
                     setattr(obj,attr,value)
-                except:
+                except Exception:
                     pass
 
 

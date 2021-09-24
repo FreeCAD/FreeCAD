@@ -62,7 +62,6 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 SketcherSettings::~SketcherSettings()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettings::saveSettings()
@@ -141,21 +140,25 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
 SketcherSettingsDisplay::~SketcherSettingsDisplay()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettingsDisplay::saveSettings()
 {
     ui->EditSketcherFontSize->onSave();
+    ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxHideUnits->onSave();
+    ui->checkBoxShowDimensionalName->onSave();
+    ui->prefDimensionalStringFormat->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
+    ui->checkBoxTVForceOrtho->onSave();
+    ui->checkBoxTVSectionView->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -166,15 +169,21 @@ void SketcherSettingsDisplay::saveSettings()
 void SketcherSettingsDisplay::loadSettings()
 {
     ui->EditSketcherFontSize->onRestore();
+    ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxHideUnits->onRestore();
+    ui->checkBoxShowDimensionalName->onRestore();
+    ui->prefDimensionalStringFormat->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
+    ui->checkBoxTVForceOrtho->onRestore();
+    this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
+    ui->checkBoxTVSectionView->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -206,11 +215,15 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
             "        sketch.ViewObject.HideDependent = %s\n"
             "        sketch.ViewObject.ShowLinks = %s\n"
             "        sketch.ViewObject.ShowSupport = %s\n"
-            "        sketch.ViewObject.RestoreCamera = %s\n",
+            "        sketch.ViewObject.RestoreCamera = %s\n"
+            "        sketch.ViewObject.ForceOrtho = %s\n"
+            "        sketch.ViewObject.SectionView = %s\n",
             this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
             this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
             this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
-            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False");
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False",
+            this->ui->checkBoxTVForceOrtho->isChecked()    ? "True": "False",
+            this->ui->checkBoxTVSectionView->isChecked()   ? "True": "False");
     } catch (Base::PyException &e){
         Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
         e.ReportException();
@@ -231,14 +244,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
 {
     ui->setupUi(this);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
 }
 
 /**
@@ -247,7 +252,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
 SketcherSettingsColors::~SketcherSettingsColors()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettingsColors::saveSettings()
@@ -259,17 +263,19 @@ void SketcherSettingsColors::saveSettings()
     ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
+    ui->InvalidSketchColor->onSave();
     ui->FullyConstrainedColor->onSave();
+    ui->InternalAlignedGeoColor->onSave();
+    ui->FullyConstraintElementColor->onSave();
+    ui->FullyConstraintConstructionElementColor->onSave();
+    ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
     ui->ExprBasedConstrDimColor->onSave();
     ui->DeactivatedConstrDimColor->onSave();
-
-    ui->SketcherDatumWidth->onSave();
-    ui->DefaultSketcherVertexWidth->onSave();
-    ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
@@ -285,17 +291,19 @@ void SketcherSettingsColors::loadSettings()
     ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
+    ui->InvalidSketchColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
+    ui->InternalAlignedGeoColor->onRestore();
+    ui->FullyConstraintElementColor->onRestore();
+    ui->FullyConstraintConstructionElementColor->onRestore();
+    ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
     ui->ExprBasedConstrDimColor->onRestore();
     ui->DeactivatedConstrDimColor->onRestore();
-
-    ui->SketcherDatumWidth->onRestore();
-    ui->DefaultSketcherVertexWidth->onRestore();
-    ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();

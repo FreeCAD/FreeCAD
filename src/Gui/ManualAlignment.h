@@ -31,7 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class SbVec3f;
 class SoPickedPoint;
@@ -67,7 +67,7 @@ public:
     void addView(App::DocumentObject*);
     std::vector<App::DocumentObject*> getViews() const;
     /**
-     * Checks for the view provider of one of the added views. 
+     * Checks for the view provider of one of the added views.
      */
     bool hasView(Gui::ViewProviderDocumentObject*) const;
     /**

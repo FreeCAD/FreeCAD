@@ -244,7 +244,7 @@ This allows to point the direction and type the distance.</string>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBox_2">
           <property name="toolTip">
-           <string>If this option is set, when creating Draft objects on top of an existing face of another object, the &quot;Support&quot; property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
+           <string>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
           </property>
           <property name="text">
            <string>Set the Support property when possible</string>

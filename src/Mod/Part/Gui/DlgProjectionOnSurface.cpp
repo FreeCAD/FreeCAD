@@ -178,7 +178,12 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   delete ui;
   for ( auto it : m_projectionSurfaceVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    try {
+      higlight_object(it.partFeature, it.partName, false, 0);
+    }
+    catch (Standard_NoSuchObject& e) {
+      Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s", e.GetMessageString());
+    }
     PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(it.partFeature));
     if (vp)
     {

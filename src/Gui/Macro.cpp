@@ -103,7 +103,7 @@ void MacroManager::open(MacroType eType, const char *sName)
 void MacroManager::commit(void)
 {
     QFile file(this->macroName);
-    if (file.open(QFile::WriteOnly)) 
+    if (file.open(QFile::WriteOnly))
     {
         // sort import lines and avoid duplicates
         QTextStream str(&file);
@@ -172,7 +172,7 @@ void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
     if(pending) {
         if(!sLine)
             pendingLine.clear();
-        else 
+        else
             pendingLine.emplace_back(Type,sLine);
         return;
     }
@@ -263,7 +263,7 @@ namespace Gui {
 
 void MacroManager::run(MacroType eType, const char *sName)
 {
-    Q_UNUSED(eType); 
+    Q_UNUSED(eType);
 
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()

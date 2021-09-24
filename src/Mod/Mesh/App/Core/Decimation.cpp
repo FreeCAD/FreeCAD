@@ -52,6 +52,7 @@ void MeshSimplify::simplify(float tolerance, float reduction)
     const MeshPointArray& points = myKernel.GetPoints();
     for (std::size_t i = 0; i < points.size(); i++) {
         Simplify::Vertex v;
+        v.tstart = 0;
         v.p = points[i];
         alg.vertices.push_back(v);
     }
@@ -59,6 +60,8 @@ void MeshSimplify::simplify(float tolerance, float reduction)
     const MeshFacetArray& facets = myKernel.GetFacets();
     for (std::size_t i = 0; i < facets.size(); i++) {
         Simplify::Triangle t;
+        for (int j = 0; j < 4; j++)
+            t.err[j] = 0.0;
         for (int j = 0; j < 3; j++)
             t.v[j] = facets[i]._aulPoints[j];
         alg.triangles.push_back(t);
@@ -103,6 +106,7 @@ void MeshSimplify::simplify(int targetSize)
     const MeshPointArray& points = myKernel.GetPoints();
     for (std::size_t i = 0; i < points.size(); i++) {
         Simplify::Vertex v;
+        v.tstart = 0;
         v.p = points[i];
         alg.vertices.push_back(v);
     }
@@ -110,6 +114,8 @@ void MeshSimplify::simplify(int targetSize)
     const MeshFacetArray& facets = myKernel.GetFacets();
     for (std::size_t i = 0; i < facets.size(); i++) {
         Simplify::Triangle t;
+        for (int j = 0; j < 4; j++)
+            t.err[j] = 0.0;
         for (int j = 0; j < 3; j++)
             t.v[j] = facets[i]._aulPoints[j];
         alg.triangles.push_back(t);

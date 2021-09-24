@@ -79,3 +79,4 @@ T_EXTERNALLINKS = translate("StartPage", "To open any of the links above in your
 T_CREATIONDATE = translate("StartPage", "Creation date")
 T_LASTMODIFIED = translate("StartPage", "Last modification")
 T_NOTES = translate("StartPage", "Notes")
+T_VTOOLTIP = translate("StartPage", "Open start page preferences")

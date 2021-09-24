@@ -98,4 +98,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SelectionObject_H 
+#endif // GUI_SelectionObject_H

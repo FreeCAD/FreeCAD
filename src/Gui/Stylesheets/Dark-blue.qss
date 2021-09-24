@@ -101,6 +101,18 @@ QMdiArea {
 
 
 /*==================================================================================================
+Sub windows
+==================================================================================================*/
+QMdiSubWindow {
+    border:1px solid #505050;
+    margin-top: 30px;    
+    margin-left: 4px;    
+    margin-right: 4px;
+    margin-bottom:4px;
+}
+
+
+/*==================================================================================================
 MENUS
 ==================================================================================================*/
 QMenuBar,
@@ -1507,6 +1519,18 @@ QPushButton:checked {
     border-color: #3874f2;
 }
 
+/*==================================================================================================
+Tool button Icon fix in save dialogs
+==================================================================================================*/
+/* found under Tools -> Save Picture */ /* Draft -> ShapeString -> Font file */
+
+QFileDialog#QFileDialog QToolButton {
+    background-color: transparent;
+    padding: 1px;
+    border: 1px;
+    margin: 0px;
+}
+
 
 /*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons
@@ -1864,6 +1888,7 @@ QToolBar > QPushButton:!checked {
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #6e6e6e, stop:1 #646464);
     border: 1px solid #5a5a5a;
     border-bottom-color: #505050; /* simulates shadow under the button */
+    text-align: left; /* bug fix #4559 */
 }
 
 QToolBar > QPushButton:checked:hover {

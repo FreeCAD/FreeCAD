@@ -33,7 +33,7 @@ namespace Dialog {
  * \author Werner Mayer
  */
 class UndoDialog : public QMenu
-{ 
+{
     Q_OBJECT
 
 public:
@@ -49,7 +49,7 @@ protected Q_SLOTS:
  * \author Werner Mayer
  */
 class RedoDialog : public QMenu
-{ 
+{
     Q_OBJECT
 
 public:

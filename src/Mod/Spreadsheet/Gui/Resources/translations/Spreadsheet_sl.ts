@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Poravnaj navpično sredinsko</translation>
+      <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Združi celice</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Razcepi celice</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Levo poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Sredinjenje polja</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Desno poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Gornje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Spodnje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Sredinjenje polj po navpičnici</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Nastavi na krepko besedilo</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Nastavi na ležeče besedilo</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Nastavi na podčrtano besedilo</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Nastavi lastnosti polja</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Uredi polje</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vstavi vrstice</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrani vrstice</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vstavi stolpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Počisti polje (i, a)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Nastavi barvo ospredja</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Nastavi barvo ozadja</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -357,22 +440,21 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Preglednica pri lepljenju na podpira obsegovnega izbora.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopiranje in Lepljenje spodletelo</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Vzdevek vsebuje neveljavne znake!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +540,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Vsebina:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Vzdevek:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>
@@ -481,24 +563,80 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Vstavi vrstice</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Odstrani vrstice</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Vstavi stolpce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Odstrani stolpce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Lastnosti …</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Vstavi zgoraj %n vrsto</numerusform>
+        <numerusform>Vstavi zgoraj %n vrsti</numerusform>
+        <numerusform>Vstavi zgoraj %n vrste</numerusform>
+        <numerusform>Vstavi zgoraj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Vstavi spodaj %n vrsto</numerusform>
+        <numerusform>Vstavi spodaj %n vrsti</numerusform>
+        <numerusform>Vstavi spodaj %n vrste</numerusform>
+        <numerusform>Vstavi spodaj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezno vrstico</numerusform>
+        <numerusform>Vstavi %n nezvezni vrstici</numerusform>
+        <numerusform>Vstavi %n nezvezne vrstice</numerusform>
+        <numerusform>Vstavi %n nezveznih vrstic</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Odstrani vrstico</numerusform>
+        <numerusform>Odstrani vrstici</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec levo</numerusform>
+        <numerusform>Vstavi %n stolpca levo</numerusform>
+        <numerusform>Vstavi %n stolpce levo</numerusform>
+        <numerusform>Vstavi %n stolpcev levo</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec desno</numerusform>
+        <numerusform>Vstavi %n stolpca desno</numerusform>
+        <numerusform>Vstavi %n stolpce desno</numerusform>
+        <numerusform>Vstavi %n stolpcev desno</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezen stolpec</numerusform>
+        <numerusform>Vstavi %n nezvezna stolpca</numerusform>
+        <numerusform>Vstavi %n nezvezne stolpce</numerusform>
+        <numerusform>Vstavi %n nezveznih stolpcev</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Odstrani stolpec</numerusform>
+        <numerusform>Odstrani stolpca</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+      </translation>
     </message>
   </context>
   <context>

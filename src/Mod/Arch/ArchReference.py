@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch External Reference"
+__title__  = "FreeCAD Arch External Reference"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 import FreeCAD
@@ -102,6 +102,8 @@ class ArchReference:
                     obj.ReferenceMode = "Transient"
                 obj.removeProperty("TransientReference")
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" TransientReference property to ReferenceMode\n")
+        if not "FuseArch" in pl:
+            obj.addProperty("App::PropertyBool","FuseArch", "Reference", QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material"))
         self.Type = "Reference"
 
     def onDocumentRestored(self,obj):
@@ -158,11 +160,9 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
-                            import Part
-                            shape = Part.Shape()
                             if sys.version_info.major >= 3:
                                 shapedata = shapedata.decode("utf8")
-                            shape.importBrepFromString(shapedata)
+                            shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
                                 obj.Placement = pl
@@ -170,8 +170,53 @@ class ArchReference:
                             print("Part not found in file")
             self.reload = False
 
+    def cleanShape(self,shapedata,obj,materials):
+
+        "cleans the imported shape"
+
+        import Part
+        shape = Part.Shape()
+        shape.importBrepFromString(shapedata)
+        if obj.FuseArch and materials:
+            # separate lone edges
+            shapes = []
+            for edge in shape.Edges:
+                found = False
+                for solid in shape.Solids:
+                    if found:
+                        break
+                    for soledge in solid.Edges:
+                        if found:
+                            break
+                        if edge.hashCode() == soledge.hashCode():
+                            found = True
+                            break
+            else:
+                shapes.append(edge)
+            print("solids:",len(shape.Solids),"mattable:",materials)
+            for key,solindexes in materials.items():
+                if key == "Undefined":
+                    # do not join objects with no defined material
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        shapes.append(shape.Solids[solindex])
+                else:
+                    fusion = None
+                    for solindex in [int(i) for i in solindexes.split(",")]:
+                        if not fusion:
+                            fusion = shape.Solids[solindex]
+                        else:
+                            fusion = fusion.fuse(shape.Solids[solindex])
+                    if fusion:
+                        shapes.append(fusion)
+            shape = Part.makeCompound(shapes)
+            try:
+                shape = shape.removeSplitter()
+            except Exception:
+                print(obj.Label,": error removing splitter")
+        return shape
+
     def getFile(self,obj,filename=None):
-        
+
         "gets a valid file, if possible"
 
         if not filename:
@@ -202,10 +247,11 @@ class ArchReference:
         return filename
 
     def getPartsList(self,obj,filename=None):
-        
+
         "returns a list of Part-based objects in a FCStd file"
 
         parts = {}
+        materials = {}
         filename = self.getFile(obj,filename)
         if not filename:
             return parts
@@ -214,6 +260,7 @@ class ArchReference:
             name = None
             label = None
             part = None
+            materials = {}
             writemode = False
             for line in docf:
                 if sys.version_info.major >= 3:
@@ -236,11 +283,23 @@ class ArchReference:
                     if n:
                         part = n[0]
                         writemode = False
-                if name and label and part:
-                    parts[name] = [label,part]
+                elif "<Property name=\"MaterialsTable\" type=\"App::PropertyMap\"" in line:
+                    writemode = True
+                elif writemode and "<Item key=" in line:
+                    n = re.findall('key=\"(.*?)\"',line)
+                    v = re.findall('value=\"(.*?)\"',line)
+                    if n and v:
+                        materials[n[0]] = v[0]
+                elif writemode and "</Map>" in line:
+                    writemode = False
+                elif "</Object>" in line:
+                    if name and label and part:
+                        parts[name] = [label,part,materials]
                     name = None
                     label = None
                     part = None
+                    materials = {}
+                    writemode = False
         return parts
 
     def getColors(self,obj):
@@ -291,9 +350,9 @@ class ArchReference:
         return None
 
     def splitall(self,path):
-    
+
         "splits a path between its components"
-    
+
         allparts = []
         while 1:
             parts = os.path.split(path)
@@ -369,7 +428,7 @@ class ViewProviderArchReference:
         return None
 
     def updateData(self,obj,prop):
-        
+
         if (prop == "Shape") and hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
             if obj.Shape and not obj.Shape.isNull():
                 colors = obj.Proxy.getColors(obj)
@@ -379,7 +438,7 @@ class ViewProviderArchReference:
                 todo.delay(self.recolorize,obj.ViewObject)
 
     def recolorize(self,vobj):
-        
+
         if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors") and vobj.UpdateColors:
             vobj.DiffuseColor = vobj.DiffuseColor
 
@@ -460,7 +519,7 @@ class ViewProviderArchReference:
                 FreeCAD.openDocument(self.Object.File)
 
     def loadInventor(self,obj):
-        
+
         "loads an openinventor file and replace the root node of this object"
 
         # check inventor contents
@@ -481,7 +540,7 @@ class ViewProviderArchReference:
         flatlines = lwnode
         shaded = lwnode.getChild(0)
         wireframe = lwnode.getChild(1)
-        
+
         # check node contents
         rootnode = obj.ViewObject.RootNode
         if rootnode.getNumChildren() < 3:
@@ -503,7 +562,7 @@ class ViewProviderArchReference:
         switch.replaceChild(2,wireframe)
 
     def unloadInventor(self,obj):
-        
+
         "restore original nodes"
 
         if (not hasattr(self,"orig_flatlines")) or (not self.orig_flatlines):
@@ -523,18 +582,18 @@ class ViewProviderArchReference:
             FreeCAD.Console.PrintError("Invalid root node in "+obj.Label+"\n")
             return
 
-        # replace root node of object        
+        # replace root node of object
         switch.replaceChild(0,self.orig_flatlines)
         switch.replaceChild(1,self.orig_shaded)
         switch.replaceChild(2,self.orig_wireframe)
-        
+
         # discard old content
         self.orig_flatlines = None
         self.orig_shaded = None
         self.orig_wireframe = None
 
     def getInventorString(self,obj):
-        
+
         "locates and loads an iv file saved together with an object, if existing"
 
         filename = obj.Proxy.getFile(obj)

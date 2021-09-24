@@ -49,7 +49,7 @@ class Ui_DlgCustomActions;
  * \author Werner Mayer
  */
 class DlgCustomActionsImp : public CustomizeActionPage
-{ 
+{
     Q_OBJECT
 
 public:

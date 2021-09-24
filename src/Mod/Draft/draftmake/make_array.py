@@ -35,7 +35,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _wrn, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftobjects.array import Array
 
 if App.GuiUp:
@@ -82,7 +82,7 @@ def make_array(base_object,
     """
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     if use_link:

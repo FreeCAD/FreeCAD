@@ -78,6 +78,15 @@ Base::Vector3d Plane::getNormal()
     return normal;
 }
 
+void Plane::Restore(Base::XMLReader& reader)
+{
+    // set it to Manual to avoid to automatically adjust
+    // Length because it will be read before ResizeMode
+    // See bug #0004540
+    ResizeMode.setValue("Manual");
+    Datum::Restore(reader);
+}
+
 void Plane::onChanged(const App::Property *prop)
 {
     if (prop == &ResizeMode) {

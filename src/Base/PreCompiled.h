@@ -46,14 +46,22 @@
 #ifdef FC_OS_WIN32
 #include <direct.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #include <crtdbg.h>
 #include <shellapi.h>
 #include <Rpc.h>
 #endif
 
-// STL 
+#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#endif
+
+// STL
 #include <string>
 #include <list>
 #include <map>
@@ -90,7 +98,7 @@
 #include <xercesc/util/XMLUni.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/platformutils.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>

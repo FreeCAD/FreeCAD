@@ -23,7 +23,7 @@
 
 __title__ = "Tools for FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import os
 import sys
@@ -147,6 +147,12 @@ def get_fem_test_defs(
     cf.write("'''\n")
     cf.write("from femtest.app.support_utils import get_fem_test_defs\n")
     cf.write("get_fem_test_defs()\n")
+    cf.write("\n")
+    cf.write("\n")
+    cf.write("# all FEM App tests\n")
+    cf.write("make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'\n")
+    cf.write("\n")
+    cf.write("make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'\n")
     cf.write("\n")
     cf.write("\n")
     cf.write("'''\n")

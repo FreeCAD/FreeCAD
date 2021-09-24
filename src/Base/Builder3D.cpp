@@ -69,8 +69,8 @@ Builder3D::~Builder3D()
 
 /**
  * Starts the definition of point set with the given point size and color.
- * If possible don't make too many startPoints() and endPoints() calls. 
- * Try to put all points in one set. 
+ * If possible don't make too many startPoints() and endPoints() calls.
+ * Try to put all points in one set.
  * @see endPoints()
  * @param pointSize the point size in pixel that are displayed.
  * @param color_r red part of the point color (0.0 - 1.0).
@@ -146,7 +146,7 @@ void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float
 
 
 /**
- * Add a Text with a given position to the 3D set. The origin is the 
+ * Add a Text with a given position to the 3D set. The origin is the
  * lower leftmost corner.
  * @param pos_x,pos_y,pos_z origin of the text
  * @param text the text to display.
@@ -159,8 +159,8 @@ void Builder3D::addText(float pos_x, float pos_y , float pos_z,const char * text
   // addSinglePoint() not between startXXX() and endXXX() allowed
   assert( bStartEndOpen == false );
 
-  result << "Separator { "  
-         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} " 
+  result << "Separator { "
+         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} "
          <<   "Transform { translation " << pos_x << " "<< pos_y << " "<< pos_z << "} "
          <<   "Text2 { string \" " << text << "\" " << "} "
          << "} ";
@@ -193,12 +193,12 @@ void Builder3D::addSingleLine(Vector3f pt1, Vector3f pt2, short lineSize, float 
   //strcat(lp, buf);
 
   result << "Separator { "
-         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} " 
+         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} "
          <<   "DrawStyle { lineWidth " << lineSize << " linePattern " << lp << " } "
          <<   "Coordinate3 { "
          <<     "point [ "
          <<        pt1.x << " " << pt1.y << " " << pt1.z << ","
-         <<        pt2.x << " " << pt2.y << " " << pt2.z 
+         <<        pt2.x << " " << pt2.y << " " << pt2.z
          <<     "] "
          <<   "} "
          <<   "LineSet { } "
@@ -224,12 +224,12 @@ void Builder3D::addSingleArrow(Vector3f pt1, Vector3f pt2, short lineSize, float
     float a = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
 
     result << "Separator { "
-         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} " 
+         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} "
          <<   "DrawStyle { lineWidth " << lineSize << "} "
          <<   "Coordinate3 { "
          <<     "point [ "
          <<        pt1.x << " " << pt1.y << " " << pt1.z << ","
-         <<        pt2s.x << " " << pt2s.y << " " << pt2s.z 
+         <<        pt2s.x << " " << pt2s.y << " " << pt2s.z
          <<     "] "
          <<   "} "
          <<   "LineSet { } "
@@ -254,7 +254,7 @@ void Builder3D::addSingleTriangle(Vector3f pt0, Vector3f pt1, Vector3f pt2, bool
   }
 
     result << "Separator { "
-         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} " 
+         <<   "Material { diffuseColor " << color_r << " "<< color_g << " "<< color_b << "} "
          <<   "DrawStyle { lineWidth " << lineSize << "} "
          <<   "Coordinate3 { "
          <<     "point [ "
@@ -293,15 +293,15 @@ void Builder3D::addTransformation(const Base::Vector3f& translation, const Base:
 
 /**
  * Save the resulting inventor 3D representation to the Console().Log() facility.
- * In DEBUG mode the Gui (if running) will trigger on that and show the representation in 
- * the active Viewer/Document. It shows only one representation on time. If you need to 
+ * In DEBUG mode the Gui (if running) will trigger on that and show the representation in
+ * the active Viewer/Document. It shows only one representation on time. If you need to
  * show more then one representation use saveToFile() instead.
  * @see saveToFile()
  */
 void Builder3D::saveToLog(void)
 {
     result <<   "} ";
-    // Note: The string can become very long, so that ConsoleSingelton::Log() will internally 
+    // Note: The string can become very long, so that ConsoleSingelton::Log() will internally
     // truncate the string which causes Inventor to fail to interpret the truncated string.
     // So, we send the string directly to the observer that handles the Inventor stuff.
     //Console().Log("Vdbg: %s \n",result.str().c_str());
@@ -323,7 +323,7 @@ void Builder3D::saveToFile(const char* FileName)
 {
   result <<   "} ";
   std::ofstream  file(FileName);
-  if(!file) 
+  if(!file)
     throw FileException("Builder3D::saveToFile(): Can not open file...");
 
   file << "#Inventor V2.1 ascii " << std::endl;
@@ -456,8 +456,8 @@ void InventorBuilder::addPolygonOffset(float factor, float units, const char* st
 
 /**
  * Starts the definition of point set.
- * If possible don't make too many beginPoints() and endPoints() calls. 
- * Try to put all points in one set. 
+ * If possible don't make too many beginPoints() and endPoints() calls.
+ * Try to put all points in one set.
  * @see startPoints()
  * @see endPoints()
  */
@@ -528,7 +528,7 @@ void InventorBuilder::addLineSet()
 
 
 /**
- * Add a Text with a given position to the 3D set. The origin is the 
+ * Add a Text with a given position to the 3D set. The origin is the
  * lower leftmost corner.
  * @param pos_x,pos_y,pos_z origin of the text
  * @param text the text to display.
@@ -651,9 +651,9 @@ void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, short line
     result << "2";
     for (size_t i=1; i<ct; i++)
     {
-      result << ","; 
+      result << ",";
       if (i%16==0)
-        result << std::endl << "          "; 
+        result << std::endl << "          ";
       result << "2";
     }
   }*/
@@ -763,7 +763,7 @@ void InventorBuilder::addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1
 }
 
 void InventorBuilder::addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY,
-                                     float length, float width, bool filled, short lineSize, 
+                                     float length, float width, bool filled, short lineSize,
                                      float color_r,float color_g,float color_b)
 {
     Vector3f pt0 = base;
@@ -806,7 +806,7 @@ void InventorBuilder::addNurbsSurface(const std::vector<Base::Vector3f>& control
     result << "  Separator { " << std::endl
            << "    Coordinate3 { " << std::endl
            << "      point [ ";
-    for (std::vector<Base::Vector3f>::const_iterator it = 
+    for (std::vector<Base::Vector3f>::const_iterator it =
         controlPoints.begin(); it != controlPoints.end(); ++it) {
         if (it != controlPoints.begin())
             result << "," << std::endl << "          ";
@@ -914,10 +914,10 @@ void InventorBuilder::addTransformation(const Matrix4D& transform)
 void InventorBuilder::addTransformation(const Vector3f& translation, const Vector3f& rotationaxis, float fAngle)
 {
     result << Base::blanks(indent) << "Transform {" << std::endl;
-    result << Base::blanks(indent) << "  translation " 
+    result << Base::blanks(indent) << "  translation "
          << translation.x << " " << translation.y << " " << translation.z << std::endl;
-    result << Base::blanks(indent) << "  rotation " 
-         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z 
+    result << Base::blanks(indent) << "  rotation "
+         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
          << " " << fAngle << std::endl;
     result << Base::blanks(indent) <<  "}" << std::endl;
 }

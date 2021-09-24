@@ -167,23 +167,23 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "UiMode", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize"):
+                 "snapStyle", "dimstyle", "gridSize","gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
-                   "FontFile", "ClonePrefix",
+                   "FontFile", "ClonePrefix","overrideUnit",
                    "labeltype") or "inCommandShortcut" in param:
         return "string"
     elif param in ("textheight", "tolerance", "gridSpacing",
                    "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot"):
+                   "dimovershoot", "extovershoot","HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "saveonexit", "maxSnap",
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit",
+                   "DiscretizeEllipses", "showUnit","coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",
@@ -463,7 +463,7 @@ def get_objects_of_type(objects, typ):
 getObjectsOfType = get_objects_of_type
 
 
-def is_clone(obj, objtype, recursive=False):
+def is_clone(obj, objtype=None, recursive=False):
     """Return True if the given object is a clone of a certain type.
 
     A clone is of type `'Clone'`, and has a reference
@@ -510,23 +510,27 @@ def is_clone(obj, objtype, recursive=False):
     """
     if isinstance(objtype, list):
         return any([isClone(obj, t, recursive) for t in objtype])
-
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
-            if getType(obj.Objects[0]) == objtype:
-                return True
+            if objtype:
+                if getType(obj.Objects[0]) == objtype:
+                    return True
             elif recursive and (getType(obj.Objects[0]) == "Clone"):
                 return isClone(obj.Objects[0], objtype, recursive)
     elif hasattr(obj, "CloneOf"):
         if obj.CloneOf:
-            return True
+            if objtype:
+                if getType(obj.CloneOf) == objtype:
+                    return True
+            else:
+                return True
     return False
 
 
 isClone = is_clone
 
 
-def get_clone_base(obj, strict=False):
+def get_clone_base(obj, strict=False, recursive=True):
     """Return the object cloned by this object, if any.
 
     Parameters
@@ -538,6 +542,13 @@ def get_clone_base(obj, strict=False):
         It defaults to `False`.
         If it is `True`, and this object is not a clone,
         this function will return `False`.
+
+    recursive: bool, optional
+        It defaults to `True`
+        If it is `True`, it call recursively to itself to
+        get base object and if it is `False` then it just
+        return base object, not call recursively to find
+        base object.
 
     Returns
     -------
@@ -556,10 +567,13 @@ def get_clone_base(obj, strict=False):
         It will return `False` if `obj` is not a clone,
         and `strict` is `True`.
     """
-    if hasattr(obj, "CloneOf"):
-        if obj.CloneOf:
+    if hasattr(obj, "CloneOf") and obj.CloneOf:
+        if recursive:
             return get_clone_base(obj.CloneOf)
+        return obj.CloneOf
     if get_type(obj) == "Clone" and obj.Objects:
+        if recursive:
+            return get_clone_base(obj.Objects[0])
         return obj.Objects[0]
     if strict:
         return False
@@ -713,7 +727,7 @@ def load_svg_patterns():
     import importSVG
     App.svgpatterns = {}
 
-    # Getting default patterns in the resource file
+    # Get default patterns in the resource file
     patfiles = QtCore.QDir(":/patterns").entryList()
     for fn in patfiles:
         file = ":/patterns/" + str(fn)
@@ -735,6 +749,21 @@ def load_svg_patterns():
                 if p:
                     for k in p:
                         p[k] = [p[k], file]
+                    App.svgpatterns.update(p)
+
+    # Get TechDraw patterns
+    altpat = os.path.join(App.getResourceDir(),"Mod","TechDraw","Patterns")
+    if os.path.isdir(altpat):
+        for f in os.listdir(altpat):
+            if f[-4:].upper() == ".SVG":
+                file = os.path.join(altpat, f)
+                p = importSVG.getContents(file, 'pattern')
+                if p:
+                    for k in p:
+                        p[k] = [p[k], file]
+                else:
+                    # some TD pattern files have no <pattern> definition but can still be used by Draft
+                    p = {f[:-4]:["<pattern></pattern>",file]}
                     App.svgpatterns.update(p)
 
 

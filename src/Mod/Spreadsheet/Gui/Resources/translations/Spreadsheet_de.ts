@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Zellen verbinden</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Zelle teilen</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Zelle links ausrichten</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Zelle zentrieren</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Zelle rechts ausrichten</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Zelle oben ausrichten</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Zelle unten ausrichten</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Zellen Vertikal zentrieren</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Text in Fettdruck</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Text in Kursivdruck</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Text unterstreichen</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Kalkulationstabelle erstellen</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Zelleneigenschaften festlegen</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Zelle bearbeiten</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Zeilen einfügen</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Zeilen entfernen</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Spalten einfügen</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Zell(en) löschen</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Vordergrundfarbe wählen</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Hintergrundfarbe wählen</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -340,7 +423,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Vordergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Vordergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -348,7 +431,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Hintergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Hintergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -357,7 +440,7 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation>Tabellenblatt unterstützt beim Einfügen keine Bereichsauswahl.
+      <translation>Kalkulationstabelle unterstützt beim Einfügen keine Bereichsauswahl.
 Bitte nur eine Zelle auswählen.</translation>
     </message>
     <message>
@@ -481,24 +564,64 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Zeilen einfügen</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Zeilen entfernen</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Spalten einfügen</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Spalten entfernen</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Eigenschaften...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>%n Zeile darüber einfügen</numerusform>
+        <numerusform>%n Zeilen darüber einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>%n Zeile darunter einfügen</numerusform>
+        <numerusform>%n Zeilen darunter einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>%n nicht verbundene Zeile einfügen</numerusform>
+        <numerusform>%n nicht verbundene Zeilen einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Zeile entfernen</numerusform>
+        <numerusform>Zeilen entfernen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>%n Spalte links einfügen</numerusform>
+        <numerusform>%n Spalten links einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>%n Spalte rechts einfügen</numerusform>
+        <numerusform>%n Spalten rechts einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>%n nicht verbundene Spalte einfügen</numerusform>
+        <numerusform>%n nicht verbundene Spalten einfügen</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Spalte entfernen</numerusform>
+        <numerusform>Spalten entfernen</numerusform>
+      </translation>
     </message>
   </context>
   <context>

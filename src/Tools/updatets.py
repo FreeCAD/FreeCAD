@@ -65,21 +65,19 @@ DirFilter = ["^Attic$",
 
 # python folders that need a special pylupdate command
 PyCommands = [["src/Mod/Draft",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Draft.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Draft.ts'],
               ["src/Mod/Arch",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Arch.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Arch.ts'],
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
+              ["src/Mod/Start",
+               "lupdate Gui/*.ui Gui/*.cpp -ts Gui/Resources/translations/StartPage.ts"],
               ["src/Mod/Start",
                "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPagepy.ts"],
               ["src/Mod/Start",
                'lconvert -i Gui/Resources/translations/StartPagepy.ts Gui/Resources/translations/StartPage.ts -o Gui/Resources/translations/StartPage.ts'],
               ["src/Mod/Start",
                'rm Gui/Resources/translations/StartPagepy.ts'],
-              ["src/Mod/Ship",
-               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Ship.ts'],
-              ["src/Mod/Plot",
-               'pylupdate `find ./ -name "*.py"` -ts resources/translations/Plot.ts'],
               ["src/Mod/Path",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Pathpy.ts'],
               ["src/Mod/Path",
@@ -100,6 +98,12 @@ PyCommands = [["src/Mod/Draft",
                'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part.ts -o Gui/Resources/translations/Part.ts'],
               ["src/Mod/Part",
                'rm Gui/Resources/translations/Partpy.ts'],
+              ["src/Mod/PartDesign",
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/PartDesignpy.ts'],
+              ["src/Mod/PartDesign",
+               'lconvert -i Gui/Resources/translations/PartDesignpy.ts Gui/Resources/translations/PartDesign.ts -o Gui/Resources/translations/PartDesign.ts'],
+              ["src/Mod/PartDesign",
+               'rm Gui/Resources/translations/PartDesignpy.ts'],
               ["src/Mod/Image",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Imagepy.ts'],
               ["src/Mod/Image",
@@ -112,7 +116,7 @@ PyCommands = [["src/Mod/Draft",
 
 # add python folders to exclude list
 for c in PyCommands:
-    DirFilter.append(c[0])
+    DirFilter.append(c[0]+"$")
 
 QMAKE = ""
 LUPDATE = ""
@@ -146,7 +150,9 @@ def find_tools(noobsolete=True):
             LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
-    if (os.system("pylupdate -version") == 0):
+    if (os.system("pyside2-lupdate -version") == 0):
+        PYLUPDATE = "pyside2-lupdate"
+    elif (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"
@@ -187,6 +193,7 @@ def update_translation(path):
     global QMAKE, LUPDATE
     cur = os.getcwd()
     os.chdir(path)
+    existingjsons = [f for f in os.listdir(".") if f.endswith(".json")]
     filename = os.path.basename(path) + ".pro"
     os.system(QMAKE + " -project")
     #os.system(LUPDATE + " " + filename)
@@ -198,6 +205,10 @@ def update_translation(path):
         tsname = " -ts "+os.path.join("Language", "FreeCAD.ts")
     os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
+    # lupdate creates json files since Qt5.something. Remove them here too
+    for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
+        if not jsonfile in existingjsons:
+            os.remove(jsonfile)
     os.chdir(cur)
 
 def update_python_translation(item):

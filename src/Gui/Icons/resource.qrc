@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
+        <file>freecadabout.png</file>
         <file>background.png</file>
         <file>mouse_pointer.svg</file>
         <file>Document.svg</file>
@@ -26,6 +27,7 @@
         <file>preferences-display.svg</file>
         <file>preferences-general.svg</file>
         <file>preferences-import-export.svg</file>
+        <file>preferences-workbenches.svg</file>
         <file>utilities-terminal.svg</file>
         <file>ClassBrowser/const_member.png</file>
         <file>ClassBrowser/member.png</file>
@@ -141,6 +143,7 @@
         <file>DrawStyleHiddenLine.svg</file>
         <file>DrawStyleNoShading.svg</file>
         <file>user.svg</file>
+        <file>Std_AxisCross.svg</file>
         <file>Std_CoordinateSystem.svg</file>
         <file>Std_CoordinateSystem_alt.svg</file>
         <file>Std_Placement.svg</file>
@@ -152,6 +155,29 @@
         <file>Param_UInt.svg</file>
         <file>PolygonPick.svg</file>
         <file>Python.svg</file>
+        <file>Std_CloseActiveWindow.svg</file>
+        <file>Std_CloseAllWindows.svg</file>
+        <file>Std_Export.svg</file>
+        <file>Std_HideObjects.svg</file>
+        <file>Std_HideSelection.svg</file>
+        <file>Std_Import.svg</file>
+        <file>Std_MergeProjects.svg</file>
+        <file>Std_MarkToRecompute.svg</file>
+        <file>Std_PrintPdf.svg</file>
+        <file>Std_RandomColor.svg</file>
+        <file>Std_RecentFiles.svg</file>
+        <file>Std_Revert.svg</file>
+        <file>Std_SaveAll.svg</file>
+        <file>Std_SaveCopy.svg</file>
+        <file>Std_SelectVisibleObjects.svg</file>
+        <file>Std_SetAppearance.svg</file>
+        <file>Std_ShowObjects.svg</file>
+        <file>Std_ShowSelection.svg</file>
+        <file>Std_TextureMapping.svg</file>
+        <file>Std_ToggleClipPlane.svg</file>
+        <file>Std_ToggleNavigation.svg</file>
+        <file>Std_ToggleObjects.svg</file>
+        <file>Std_ToggleVisibility.svg</file>
         <file>Std_Tool1.svg</file>
         <file>Std_Tool2.svg</file>
         <file>Std_Tool3.svg</file>
@@ -164,16 +190,33 @@
         <file>Std_Tool10.svg</file>
         <file>Std_Tool11.svg</file>
         <file>Std_Tool12.svg</file>
+        <file>Std_TransformManip.svg</file>
+        <file>Std_ViewDimetric.svg</file>
+        <file>Std_ViewHome.svg</file>
+        <file>Std_ViewIvIssueCamPos.svg</file>
+        <file>Std_ViewIvStereoInterleavedColumns.svg</file>
+        <file>Std_ViewIvStereoInterleavedRows.svg</file>
+        <file>Std_ViewIvStereoOff.svg</file>
+        <file>Std_ViewIvStereoQuadBuff.svg</file>
+        <file>Std_ViewIvStereoRedGreen.svg</file>
+        <file>Std_ViewTrimetric.svg</file>
+        <file>Std_Windows.svg</file>
         <file>Std_WindowCascade.svg</file>
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
         <file>Std_WindowTileVer.svg</file>
+        <file>Std_DemoMode.svg</file>
+        <file>Std_DependencyGraph.svg</file>
+        <file>Std_DlgParameter.svg</file>
+        <file>Std_ProjectUtil.svg</file>
+        <file>Std_SceneInspector.svg</file>
         <file>WhatsThis.svg</file>
         <file>colors.svg</file>
         <file>px.svg</file>
         <file>AddonManager.svg</file>
         <file>Group.svg</file>
         <file>Geofeaturegroup.svg</file>
+        <file>Geoassembly.svg</file>
         <file>Std_Axis.svg</file>
         <file>Std_Plane.svg</file>
         <file>Link.svg</file>
@@ -196,6 +239,12 @@
         <file>folder.svg</file>
         <file>document-python.svg</file>
         <file>document-package.svg</file>
+        <file>Std_Alignment.svg</file>
+        <file>Std_DuplicateSelection.svg</file>
+        <file>EditModeDefault.svg</file>
+        <file>EditModeTransform.svg</file>
+        <file>EditModeCutting.svg</file>
+        <file>EditModeColor.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

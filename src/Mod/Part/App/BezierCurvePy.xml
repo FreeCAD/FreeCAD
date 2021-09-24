@@ -156,5 +156,15 @@ ensures that:
 |t1-t0| &lt; UTolerance =""==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="interpolate">
+			<Documentation>
+				<UserDocu>Interpolates a list of constraints.
+				Each constraint is a list of a point and some optional derivatives
+				An optional list of parameters can be passed. It must be of same size as constraint list.
+				Otherwise, a simple uniform parametrization is used.
+				Example :
+				bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>

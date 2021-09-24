@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Base</source>
-      <translation>Pagrindas</translation>
+      <translation>Pagrindiniai dydžiai</translation>
     </message>
   </context>
   <context>
@@ -118,6 +118,81 @@
     <message>
       <source>Toggle measurement</source>
       <translation>Įjungti/išjungti matavimą</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Taisyti</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Įkelti</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Naikinti</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Sukurti saitą</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importuoti saitus</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importuoti visus saitus</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Pridėti dalį</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Pridėti grupę</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Išdėstymas</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Keisti</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Matuoti atstumą</translation>
     </message>
   </context>
   <context>
@@ -199,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>Rinkmenos pavadinimas</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Numatytasis</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Keisti</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation type="unfinished">Cutting</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Spalva</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -390,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Žodžio dydis</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Kūrėjai</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>„FreeCAD“ nebūtų be jų pastangų:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licencija</translation>
     </message>
@@ -418,7 +515,26 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Kolekcija</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Kūrėjai</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -430,6 +546,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Nėra tokio mygtuko</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1183,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Mygtukai</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Išvalyti</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Spausdinti šaltinį</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Rutulinio manipuliatoriaus mygtukai</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Atstatyti</translation>
     </message>
   </context>
   <context>
@@ -1280,10 +1404,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation type="unfinished"/>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Kodo eilutės turi būti sunumeruotos </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
     </message>
@@ -1318,6 +1438,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Color:</source>
       <translation>Spalva:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -1380,7 +1504,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Kiek failų turėtų būti nurodyta naujausių failų sąraše</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -1463,7 +1587,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
@@ -1838,7 +1962,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Greita paieška</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
@@ -1846,7 +1970,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Paieškos grupė</translation>
     </message>
   </context>
   <context>
@@ -1928,7 +2052,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Paieškos grupė</translation>
     </message>
   </context>
   <context>
@@ -2025,7 +2149,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Programos versija:</translation>
     </message>
   </context>
   <context>
@@ -2102,10 +2226,6 @@ Prašome nurodti kitą aplanką.</translation>
       <translation>Atrinkta pagal rūšį</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation type="unfinished">Sync sub-object selection</translation>
     </message>
@@ -2116,6 +2236,10 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <source>Clear</source>
       <translation>Išvalyti</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2457,10 +2581,6 @@ but slower response to any scene changes.</translation>
       <translation type="unfinished">Centralized</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation type="unfinished">Transparent objects:</translation>
     </message>
@@ -2483,13 +2603,6 @@ but slower response to any scene changes.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation type="unfinished">Eye to eye distance for stereo modes</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Atstumas tarp vyzdžių, naudojamas stereo atvaizdavimui.
-Nurodytasis dydis yra dauginamas iš ribinių dabar erdviniame rodinyje rodomo daikto matmenų. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2524,6 +2637,42 @@ opening or creation</translation>
     <message>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Pasirinkimo spindulys (taškais):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -2794,12 +2943,12 @@ opening or creation</translation>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Leisti vartotojui nutraukti perskaičiavimą nuspaudžiant „ESC“ mygtuką.
+Ši galimybė gali truputį prailginti perskaičiavimo trukmę.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Leisti perskaičiavimo nutraukimą</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -3139,9 +3288,59 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation type="unfinished">Framebuffer (as is)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation type="unfinished">Pixel buffer</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Darbastalis</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3213,6 +3412,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3330,12 +3557,6 @@ The value is the diameter of the sphere to fit on the screen.</translation>
       <translation>Priartinimo žingsnis</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation type="unfinished">Direction of zoom operations will be inverted</translation>
     </message>
@@ -3358,10 +3579,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>Sukti apie žymeklį</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3410,6 +3627,71 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Atranka</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Savaime perjungti erdvinį rodinį su pasirinktuoju nariu</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Savaime išplėsti medžio šaką, kuomet pasirenkamas atitinkamas daiktas erdviniame rodinyje</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Paryškinti daiktą erdviniame rodinyje kai pelės žymeklis yra virš atitinkamo medžio nario</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Įrašyti atranką medžio rodinyje kad po to būtų galima judėti atgal ar pirmyn naudojantis naršymo mygtuku</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3514,6 +3796,10 @@ Mouse tilting is not disabled by this setting.</translation>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3550,10 +3836,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Vienspalvis</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Pasirinkimo spindulys (taškais):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Taisomasis daiktas</translation>
     </message>
@@ -3568,12 +3850,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3701,12 +3977,12 @@ The preference system is the one set in the general preferences.</translation>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>nežinomas mato vienetas: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>nesutampa mato vienetas</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -4200,7 +4476,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas padėties vertes!</translation>
+      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas išdėstymo vertes!</translation>
     </message>
     <message>
       <source>Use center of mass</source>
@@ -4231,32 +4507,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Prieš paspausdami šį mygtuką, pažymėkite 1–3 taškus. Taškas turi būti viršūnėje, sienoje ar kraštinėje. Jei taškas yra sienoje ar kraštinėje, naudojamas taškas bus žymeklio vietoje esantis taškas, sutampantis su siena ar kraštine. Jei pasirinktas vienas taškas, jis bus naudojamas kaip sukimosi taškas. Jei pasirinkti du taškai, tai jas jungiančios atkarpos vidurio taškas bus naudojamas kaip sukimosi taškas; jei reikės, bus sukurta ir sukimosi ašis. Jei pasirinkti trys taškai, pirmasis pasirinktas taškas bus sukimosi taškas, kuris yra vektoriuje, statmename trimis taškais apibrėžtai plokštumai. Tam tikri atstumo ir kampo duomenys, naudingi daiktų sutapdinimui, bus pateikiami ataskaitos rodinyje. Jūsų patogumui, paspaudus „Shift“ ir pelės mygtuką, atitinkamas atstumas ar kampas bus nukopijuotas į mainų sritį.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Apie y ašį:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Apie z ašį:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Apie x ašį:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Sukimas apie x ašį</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Sukimas apie y ašį</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Sukimas apie z ašį</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Oilerio kampai (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4419,6 +4695,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Partial</source>
       <translation>Dalinis</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4439,7 +4725,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Model</source>
@@ -4591,7 +4877,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selection View</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -4676,6 +4962,20 @@ Ar norite įrašyti keitimus?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF failas</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -5171,6 +5471,10 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
       <source>Expression...</source>
       <translation>Išraiška...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5303,6 +5607,21 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Atidaryti failą %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Failas nerastas</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Neįmanoma atverti failo „%1“.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5512,7 +5831,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Dokumento langas:</translation>
+      <translation>Dokumento rodinys:</translation>
     </message>
   </context>
   <context>
@@ -5740,12 +6059,24 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamiečių</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Graikų</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
   </context>
   <context>
@@ -5867,7 +6198,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation>Įgalinti dalinius savybių perskaičiavimus</translation>
+      <translation>Leisti dalinius savybių perskaičiavimus</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -6063,7 +6394,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
     <message>
       <source>Property view</source>
@@ -6071,15 +6402,15 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Ataskaitos langas</translation>
+      <translation>Ataskaitos rodinys</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6095,7 +6426,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>DAG View</source>
-      <translation>DAG langas</translation>
+      <translation>DAG rodinys</translation>
     </message>
   </context>
   <context>
@@ -6643,6 +6974,98 @@ Choose 'Abort' to abort</translation>
       <source>Override colors...</source>
       <translation>Pakeisti spalvas...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Klaida</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Įkeliant failą įvyko klaidų. Kai kurie duomenys gali būti pakeisti arba atstatyti ne iki galo. Norėdami sužinoti daugiau apie paveiktus objektus, pažvelkite į ataskaitos rodinį.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Darbastaliai</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6663,7 +7086,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>Stačiakampio gretasienio nario pasirinkimas</translation>
     </message>
   </context>
   <context>
@@ -7086,8 +7509,8 @@ Choose 'Abort' to abort</translation>
       <translation>Niekas nepasirinkta</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Pirmiausia pasirinkite daiktus, kuriuos norite eksportuoti.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
     </message>
   </context>
   <context>
@@ -7114,6 +7537,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Perskaičiuoti savybes arba dokumentą</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Žinynas</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Paaukokite</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
@@ -7850,6 +8288,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makrokomandos</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8386,6 +8839,17 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -8686,6 +9150,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8728,6 +9207,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Pasukti vaizdą 90° kampu pagal laikrodžio rodyklę</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -9060,7 +9554,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Document window</source>
-      <translation>Dokumento langas</translation>
+      <translation>Dokumento rodinys</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -9378,6 +9872,10 @@ Ar vis dar norite tęsti?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Ypatingi veiksmai</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Aksonometrinis</translation>
     </message>
   </context>
   <context>

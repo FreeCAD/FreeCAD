@@ -47,3 +47,5 @@ class StartWorkbench ( Workbench ):
         return "StartGui::Workbench"
 
 Gui.addWorkbench(StartWorkbench())
+
+FreeCAD.__unit_test__ += [ "TestStartGui" ]

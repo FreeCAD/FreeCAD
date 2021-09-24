@@ -56,7 +56,7 @@ class DlgDisplayPropertiesImp : public QDialog,
     Q_OBJECT
 
 public:
-    DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = 0);
+    DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgDisplayPropertiesImp();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

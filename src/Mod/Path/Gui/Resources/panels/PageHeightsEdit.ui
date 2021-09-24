@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../Path.qrc">
-    <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
+    <normaloff>:/icons/Path_Heights.svg</normaloff>:/icons/Path_Heights.svg</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

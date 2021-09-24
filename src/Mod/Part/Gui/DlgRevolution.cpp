@@ -101,10 +101,10 @@ public:
 };
 
 DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), filter(0)
+  : QDialog(parent, fl)
+  , ui(new Ui_DlgRevolution)
+  , filter(0)
 {
-    ui = new Ui_DlgRevolution();
-
     ui->setupUi(this);
 
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
@@ -141,7 +141,6 @@ DlgRevolution::~DlgRevolution()
 {
     // no need to delete child widgets, Qt does it all for us
     Gui::Selection().rmvSelectionGate();
-    delete ui;
 }
 
 Base::Vector3d DlgRevolution::getDirection() const

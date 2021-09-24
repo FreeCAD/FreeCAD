@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsDocumentImp */
 
 /**
- *  Constructs a DlgSettingsDocumentImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsDocumentImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     : PreferencePage( parent )
@@ -58,7 +58,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     connect( ui->prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsDocumentImp::~DlgSettingsDocumentImp()
@@ -143,8 +143,8 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
     }
 }
 
-/** 
- * Set the correct URL depending on the license type 
+/**
+ * Set the correct URL depending on the license type
  */
 void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {

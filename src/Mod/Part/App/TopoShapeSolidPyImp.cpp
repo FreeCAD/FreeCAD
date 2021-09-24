@@ -79,6 +79,13 @@ PyObject *TopoShapeSolidPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 // constructor method
 int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Solid
+        getTopoShapePtr()->setShape(TopoDS_Solid());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &obj))
         return -1;
@@ -116,7 +123,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             BRepBuilderAPI_MakeSolid mkSolid(compsolid);
             TopoDS_Solid solid = mkSolid.Solid();
             getTopoShapePtr()->setShape(solid);
-        } else if (count > 1) {
+        } else /*if (count > 1)*/ {
             Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
 

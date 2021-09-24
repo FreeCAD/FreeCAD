@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QTreeWidget>
+# include <QPushButton>
 #endif
 
 #include <Base/Console.h>
@@ -43,22 +44,21 @@ DlgObjectSelection::DlgObjectSelection(
         const std::vector<App::DocumentObject*> &objs, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgObjectSelection)
 {
+    /**
+     * make a copy of the originally selected objects
+     *  so we can return them if the user clicks useOriginalsBtn
+     */
+    this->originalSelections = objs;
+
     ui->setupUi(this);
 
     // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
     ui->depList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    ui->depList->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(1, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(2, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(3, QHeaderView::ResizeToContents);
-    ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
+
     ui->depList->header()->setStretchLastSection(false);
     ui->depList->headerItem()->setText(0, tr("Dependency"));
     ui->depList->headerItem()->setText(1, tr("Document"));
@@ -104,6 +104,14 @@ DlgObjectSelection::DlgObjectSelection(
             v.second.inList[obj] = &it->second;
         }
     }
+    /**
+     * create useOriginalsBtn and add to the button box
+     * tried adding to .ui file, but could never get the
+     * formatting exactly the way I wanted it. -- <TheMarkster>
+     */
+    useOriginalsBtn = new QPushButton(tr("&Use Original Selections"));
+    useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with objects\noriginally selected prior to opening this dialog"));
+    ui->buttonBox->addButton(useOriginalsBtn,QDialogButtonBox::ActionRole);
 
     connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
             this, SLOT(onItemExpanded(QTreeWidgetItem*)));
@@ -117,6 +125,7 @@ DlgObjectSelection::DlgObjectSelection(
             this, SLOT(onDepSelectionChanged()));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(useOriginalsBtn, SIGNAL(clicked()), this, SLOT(onUseOriginalsBtnClicked()));
 }
 
 /**
@@ -196,7 +205,7 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
 }
 
 void DlgObjectSelection::onItemExpanded(QTreeWidgetItem * item) {
-    if(item->childCount()) 
+    if(item->childCount())
         return;
     auto obj = objFromItem(item);
     if(!obj)
@@ -300,6 +309,11 @@ void DlgObjectSelection::onItemChanged(QTreeWidgetItem * item, int column) {
 }
 
 std::vector<App::DocumentObject*> DlgObjectSelection::getSelections() const {
+
+    if (returnOriginals){
+        return originalSelections;
+    }
+
     std::vector<App::DocumentObject*> res;
     for(auto &v : objMap) {
         if(v.second.checkState != Qt::Unchecked)
@@ -361,6 +375,11 @@ void DlgObjectSelection::onDepSelectionChanged() {
     }
     if(scroll)
         ui->treeWidget->scrollToItem(scroll);
+}
+
+void DlgObjectSelection::onUseOriginalsBtnClicked(){
+    returnOriginals = true;
+    QDialog::accept();
 }
 
 void DlgObjectSelection::accept() {

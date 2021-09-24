@@ -82,7 +82,7 @@ class MeshGuiExport SegmentationBestFit : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationBestFit();
     void accept();
 

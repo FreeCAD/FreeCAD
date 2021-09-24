@@ -64,7 +64,7 @@ struct generator : karma::grammar<Iterator, Sys&()> {
 
     karma::rule<Iterator, Sys& ()> start;
 
-    karma::rule<Iterator, std::pair<GlobalVertex, boost::shared_ptr<graph> >()> cluster_pair;
+    karma::rule<Iterator, std::pair<GlobalVertex, std::shared_ptr<graph> >()> cluster_pair;
     karma::rule<Iterator, graph&()> cluster;   
     karma::rule<Iterator, Sys&()>   system;
     

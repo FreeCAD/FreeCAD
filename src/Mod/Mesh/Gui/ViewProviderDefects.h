@@ -50,7 +50,7 @@ public:
     // Build up the initial Inventor node
     virtual void attach(App::DocumentObject* pcFeature) = 0;
     /// Fill up the Inventor node with data
-    virtual void showDefects(const std::vector<unsigned long>&) = 0;
+    virtual void showDefects(const std::vector<Mesh::ElementIndex>&) = 0;
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -72,7 +72,7 @@ public:
     virtual ~ViewProviderMeshOrientation();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoFaceSet* pcFaces;
@@ -90,7 +90,7 @@ public:
     virtual ~ViewProviderMeshNonManifolds();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoLineSet* pcLines;
@@ -108,7 +108,7 @@ public:
     virtual ~ViewProviderMeshNonManifoldPoints();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoPointSet* pcPoints;
@@ -126,7 +126,7 @@ public:
     virtual ~ViewProviderMeshDuplicatedFaces();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoFaceSet* pcFaces;
@@ -144,7 +144,7 @@ public:
     virtual ~ViewProviderMeshDegenerations();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoLineSet* pcLines;
@@ -159,7 +159,7 @@ public:
     virtual ~ViewProviderMeshDuplicatedPoints();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoPointSet* pcPoints;
@@ -174,7 +174,7 @@ public:
     virtual ~ViewProviderMeshIndices();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoFaceSet* pcFaces;
@@ -192,7 +192,7 @@ public:
     virtual ~ViewProviderMeshSelfIntersections();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoLineSet* pcLines;
@@ -207,7 +207,7 @@ public:
     virtual ~ViewProviderMeshFolds();
 
     void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<unsigned long>&);
+    void showDefects(const std::vector<Mesh::ElementIndex>&);
 
 protected:
     SoFaceSet* pcFaces;

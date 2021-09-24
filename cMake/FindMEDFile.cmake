@@ -5,6 +5,7 @@
 #   MEDFILE_LIBRARIES
 #   MEDFILE_C_LIBRARIES
 #   MEDFILE_F_LIBRARIES
+#   MEDFILE_VERSION
 #
 #  The CMake (or environment) variable MEDFILE_ROOT_DIR can be set to
 #  guide the detection and indicate a root directory to look into.
@@ -56,3 +57,14 @@ ENDIF(MEDFILE_F_LIBRARIES)
 
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
+
+IF(meddotH)
+    FILE(READ "${meddotH}" _med_h)
+    STRING(REGEX MATCH "define[ \t]+MED_MAJOR_NUM[ \t]+([0-9?])" _med_major_version_match "${_med_h}")
+    SET(MED_MAJOR_VERSION "${CMAKE_MATCH_1}")
+    STRING(REGEX MATCH "define[ \t]+MED_MINOR_NUM[ \t]+([0-9?])" _med_minor_version_match "${_med_h}")
+    SET(MED_MINOR_VERSION "${CMAKE_MATCH_1}")
+    STRING(REGEX MATCH "define[ \t]+MED_RELEASE_NUM[ \t]+([0-9?])" _med_release_version_match "${_med_h}")
+    SET(MED_RELEASE_VERSION "${CMAKE_MATCH_1}")
+    SET(MEDFILE_VERSION "${MED_MAJOR_VERSION}.${MED_MINOR_VERSION}.${MED_RELEASE_VERSION}")
+ENDIF()

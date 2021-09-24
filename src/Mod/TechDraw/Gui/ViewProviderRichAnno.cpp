@@ -60,25 +60,30 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-// there are only 5 frame line styles
-App::PropertyIntegerConstraint::Constraints ViewProviderRichAnno::LineStyleRange = {0, 5, 1};
-
 PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDrawingView)
+
+const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
+                                                  "Continuous",
+                                                  "Dash",
+                                                  "Dot",
+                                                  "DashDot",
+                                                  "DashDotDot",
+                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-RichTextAnnotation";
+    sPixmap = "actions/TechDraw_RichTextAnnotation";
 
     static const char *group = "Frame Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line width");
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Frame line style index");
-    ADD_PROPERTY_TYPE(LineColor,(getDefLineColor()),group,App::Prop_None,"The color of the frame");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group,(App::PropertyType)(App::Prop_None), "Frame line width");
+    LineStyle.setEnums(LineStyleEnums);
+    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Frame line style");
+    ADD_PROPERTY_TYPE(LineColor, (getDefLineColor()), group, App::Prop_None, "The color of the frame");
 
-    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
@@ -94,7 +99,7 @@ bool ViewProviderRichAnno::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
     if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        if (Gui::Control().activeDialog()) { //TaskPanel already open!
             return false;
         }
         Gui::Selection().clearSelection();
@@ -184,8 +189,8 @@ double ViewProviderRichAnno::getDefFontSize()
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
     double result = 0.0;
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     result = lg->getWeight("Graphics");
     delete lg;
     return result;
@@ -194,7 +199,7 @@ double ViewProviderRichAnno::getDefLineWeight(void)
 void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 // transforms properties that had been changed
 {
-    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    // property LineWidth had App::PropertyFloat and was changed to App::PropertyLength
     if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat LineWidthProperty;
         // restore the PropertyFloat to be able to set its value
@@ -202,12 +207,24 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
         LineWidth.setValue(LineWidthProperty.getValue());
     }
 
-    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+    // property LineStyle had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
         // restore the PropertyInteger to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    // property LineStyle had App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+        App::PropertyIntegerConstraint LineStyleProperty;
+        // restore the PropertyIntegerConstraint to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

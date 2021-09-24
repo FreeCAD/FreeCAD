@@ -1,8 +1,28 @@
 %{
-/* Lexer for the FreeCAD Expression language   */
-/* (c) 2010 Jürgen Riegel LGPL                 */
-/* (c) 2015 Eivind Kvedalen LGPL               */
+/***************************************************************************
+ *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
+/* Lexer for the FreeCAD Expression language   */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -28,7 +48,7 @@ extern int column;
 /* the manual says "somewhat more optimized" */
 %option batch
 
-%option never-interactive 
+%option never-interactive
 
 /* no support for include files is planned */
 %option noyywrap nounput
@@ -211,7 +231,7 @@ EXPO     [eE][-+]?[0-9]+
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 "mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
 
-"mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour 
+"mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour
 "sqft"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::SquareFoot;          yylval.quantity.unitStr = yytext; return UNIT; // square foot
 "cft"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::CubicFoot;           yylval.quantity.unitStr = yytext; return UNIT; // cubic foot
 
@@ -227,6 +247,12 @@ EXPO     [eE][-+]?[0-9]+
 "mN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return UNIT; // milli Newton
 "kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Newton
 "MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // mega Newton
+
+"N/m"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonPerMeter;      yylval.quantity.unitStr = yytext; return UNIT; // NewtonPerMeter (N/m or kg/s^2)
+"mN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewtonPerMeter; yylval.quantity.unitStr = yytext; return UNIT; // milli NewtonPerMeter 
+"kN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewtonPerMeter;  yylval.quantity.unitStr = yytext; return UNIT; // kilo NewtonPerMeter 
+"MN/m"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewtonPerMeter;  yylval.quantity.unitStr = yytext; return UNIT; // mega NewtonPerMeter
+
 
 "Pa"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
 "kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Pascal
@@ -254,6 +280,8 @@ EXPO     [eE][-+]?[0-9]+
 "kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
 "mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 
+"MS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // mega Siemens
+"kS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // kilo Siemens
 "S"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Siemens;             yylval.quantity.unitStr = yytext; return UNIT; // Siemens (A^2*s^3/kg/m^2)
 "mS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // milli Siemens
 "uS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens
@@ -343,7 +371,7 @@ $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDR
                             std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
                               yylval.func.first = j->second;
-                            else 
+                            else
                             { yylval.func.first = FunctionExpression::NONE; yylval.func.second = std::move(s); }
                             return FUNC;
                         }

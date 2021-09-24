@@ -41,7 +41,7 @@ std::string BaseClassPy::representation(void) const
 PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
 {
     char *name;
-    if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C
         return NULL;                    // NULL triggers exception
 
     Base::Type type = Base::Type::fromName(name);
@@ -51,9 +51,9 @@ PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
 
 PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                    // NULL triggers exception
-    
+
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
     Py::List res;
@@ -87,7 +87,7 @@ PyObject *BaseClassPy::getCustomAttributes(const char* /*attr*/) const
 
 int BaseClassPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

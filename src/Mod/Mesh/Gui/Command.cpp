@@ -107,7 +107,7 @@ void CmdMeshTransform::activated(int)
   std::string fName = getUniqueObjectName("Move");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand("Mesh Mesh Create");
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -146,7 +146,7 @@ void CmdMeshDemolding::activated(int)
   std::string fName = getUniqueObjectName("Demolding");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand("Mesh Mesh Create");
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -185,7 +185,7 @@ void CmdMeshToolMesh::activated(int)
     App::DocumentObject* mesh = fea.front();
     App::DocumentObject* tool = fea.back();
 
-    openCommand("Segment by tool mesh");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Segment by tool mesh"));
     doCommand(Doc, "import Mesh");
     doCommand(Gui, "import MeshGui");
     doCommand(Doc,
@@ -240,7 +240,7 @@ void CmdMeshUnion::activated(int)
     std::string name3 = getUniqueObjectName("Union");
 
     try {
-        openCommand("Mesh union");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh union"));
         doCommand(Doc,
             "import OpenSCADUtils\n"
             "mesh = OpenSCADUtils.meshoptempfile('union',(App.ActiveDocument.%s.Mesh,App.ActiveDocument.%s.Mesh))\n"
@@ -309,7 +309,7 @@ void CmdMeshDifference::activated(int)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Difference");
-    openCommand("Mesh difference");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh difference"));
 
     try {
         doCommand(Doc,
@@ -380,7 +380,7 @@ void CmdMeshIntersection::activated(int)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Intersection");
-    openCommand("Mesh intersection");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh intersection"));
 
     try {
         doCommand(Doc,
@@ -442,7 +442,7 @@ CmdMeshImport::CmdMeshImport()
     sToolTipText  = QT_TR_NOOP("Imports a mesh from file");
     sWhatsThis    = "Mesh_Import";
     sStatusTip    = QT_TR_NOOP("Imports a mesh from file");
-    sPixmap       = "Mesh_Import_Mesh";
+    sPixmap       = "Mesh_Import";
 }
 
 void CmdMeshImport::activated(int)
@@ -466,7 +466,7 @@ void CmdMeshImport::activated(int)
     for (QStringList::Iterator it = fn.begin(); it != fn.end(); ++it) {
         std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
         unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
-        openCommand("Import Mesh");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Mesh"));
         doCommand(Doc,"import Mesh");
         doCommand(Doc,"Mesh.insert(u\"%s\")",
                   unicodepath.c_str());
@@ -493,7 +493,7 @@ CmdMeshExport::CmdMeshExport()
     sToolTipText  = QT_TR_NOOP("Exports a mesh to file");
     sWhatsThis    = "Mesh_Export";
     sStatusTip    = QT_TR_NOOP("Exports a mesh to file");
-    sPixmap       = "Mesh_Export_Mesh";
+    sPixmap       = "Mesh_Export";
 }
 
 void CmdMeshExport::activated(int)
@@ -573,7 +573,7 @@ void CmdMeshFromGeometry::activated(int)
 {
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Meshing Tolerance"),
-        QObject::tr("Enter tolerance for meshing geometry:"), 0.1, 0.01,10.0,2,&ok);
+        QObject::tr("Enter tolerance for meshing geometry:"), 0.1, 0.01, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
@@ -625,7 +625,7 @@ CmdMeshFromPartShape::CmdMeshFromPartShape()
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
     sWhatsThis    = "Mesh_FromPartShape";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Mesh_Mesh_from_Shape.svg";
+    sPixmap       = "Mesh_FromPartShape.svg";
 }
 
 void CmdMeshFromPartShape::activated(int)
@@ -651,7 +651,7 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
     sToolTipText  = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
     sWhatsThis    = "Mesh_VertexCurvature";
     sStatusTip    = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
-    sPixmap       = "Mesh_Curvature_Plot";
+    sPixmap       = "Mesh_VertexCurvature";
 }
 
 void CmdMeshVertexCurvature::activated(int)
@@ -662,7 +662,7 @@ void CmdMeshVertexCurvature::activated(int)
         fName += "_Curvature";
         fName = getUniqueObjectName(fName.c_str());
 
-        openCommand("Mesh VertexCurvature");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh VertexCurvature"));
         App::DocumentObject* grp = App::DocumentObjectGroup::getGroupOfObject( *it );
         if (grp)
             doCommand(Doc,"App.activeDocument().getObject(\"%s\").newObject(\"Mesh::Curvature\",\"%s\")",grp->getNameInDocument(), fName.c_str());
@@ -694,7 +694,7 @@ CmdMeshVertexCurvatureInfo::CmdMeshVertexCurvatureInfo()
     sToolTipText  = QT_TR_NOOP("Information about curvature");
     sWhatsThis    = "Mesh_CurvatureInfo";
     sStatusTip    = QT_TR_NOOP("Information about curvature");
-    sPixmap       = "Mesh_Curvature_Info";
+    sPixmap       = "Mesh_CurvatureInfo";
 }
 
 void CmdMeshVertexCurvatureInfo::activated(int)
@@ -706,7 +706,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
         viewer->setEditing(true);
         viewer->setRedirectToSceneGraph(true);
         viewer->setSelectionEnabled(false);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
+        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("Mesh_Pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoEvent::getClassTypeId(),
             MeshGui::ViewProviderMeshCurvature::curvatureInfoCallback);
      }
@@ -849,7 +849,7 @@ CmdMeshAddFacet::CmdMeshAddFacet()
     sToolTipText  = QT_TR_NOOP("Add triangle manually to a mesh");
     sWhatsThis    = "Mesh_AddFacet";
     sStatusTip    = QT_TR_NOOP("Add triangle manually to a mesh");
-    sPixmap       = "Mesh_Add_Facet";
+    sPixmap       = "Mesh_AddFacet";
 }
 
 void CmdMeshAddFacet::activated(int)
@@ -896,7 +896,7 @@ CmdMeshPolyCut::CmdMeshPolyCut()
     sToolTipText  = QT_TR_NOOP("Cuts a mesh with a picked polygon");
     sWhatsThis    = "Mesh_PolyCut";
     sStatusTip    = QT_TR_NOOP("Cuts a mesh with a picked polygon");
-    sPixmap       = "mesh_cut";
+    sPixmap       = "Mesh_PolyCut";
 }
 
 void CmdMeshPolyCut::activated(int)
@@ -957,7 +957,7 @@ CmdMeshPolyTrim::CmdMeshPolyTrim()
     sToolTipText  = QT_TR_NOOP("Trims a mesh with a picked polygon");
     sWhatsThis    = "Mesh_PolyTrim";
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a picked polygon");
-    sPixmap       = "Mesh_Poly_Trim";
+    sPixmap       = "Mesh_PolyTrim";
 }
 
 void CmdMeshPolyTrim::activated(int)
@@ -1017,7 +1017,7 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
     sMenuText     = QT_TR_NOOP("Trim mesh with a plane");
     sToolTipText  = QT_TR_NOOP("Trims a mesh with a plane");
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a plane");
-    sPixmap       = "Mesh_Trim_by_Plane";
+    sPixmap       = "Mesh_TrimByPlane";
 }
 
 void CmdMeshTrimByPlane::activated(int)
@@ -1046,7 +1046,7 @@ CmdMeshSectionByPlane::CmdMeshSectionByPlane()
     sMenuText     = QT_TR_NOOP("Create section from mesh and plane");
     sToolTipText  = QT_TR_NOOP("Section from mesh and plane");
     sStatusTip    = QT_TR_NOOP("Section from mesh and plane");
-    sPixmap       = "Mesh_Section_by_Plane";
+    sPixmap       = "Mesh_SectionByPlane";
 }
 
 void CmdMeshSectionByPlane::activated(int)
@@ -1075,7 +1075,7 @@ CmdMeshCrossSections::CmdMeshCrossSections()
     sMenuText     = QT_TR_NOOP("Cross-sections...");
     sToolTipText  = QT_TR_NOOP("Cross-sections");
     sStatusTip    = QT_TR_NOOP("Cross-sections");
-    sPixmap       = "Mesh_Cross_Sections";
+    sPixmap       = "Mesh_CrossSections";
 }
 
 void CmdMeshCrossSections::activated(int)
@@ -1199,7 +1199,7 @@ CmdMeshEvaluateFacet::CmdMeshEvaluateFacet()
     sToolTipText  = QT_TR_NOOP("Information about face");
     sWhatsThis    = "Mesh_EvaluateFacet";
     sStatusTip    = QT_TR_NOOP("Information about face");
-    sPixmap       = "mesh_pipette";
+    sPixmap       = "Mesh_EvaluateFacet";
 }
 
 void CmdMeshEvaluateFacet::activated(int)
@@ -1209,7 +1209,7 @@ void CmdMeshEvaluateFacet::activated(int)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
+        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("Mesh_Pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::faceInfoCallback);
      }
 }
@@ -1242,7 +1242,7 @@ CmdMeshRemoveComponents::CmdMeshRemoveComponents()
     sToolTipText  = QT_TR_NOOP("Remove topologic independent components from the mesh");
     sWhatsThis    = "Mesh_RemoveComponents";
     sStatusTip    = QT_TR_NOOP("Remove topologic independent components from the mesh");
-    sPixmap       = "Mesh_Remove_Components";
+    sPixmap       = "Mesh_RemoveComponents";
 }
 
 void CmdMeshRemoveComponents::activated(int)
@@ -1287,7 +1287,7 @@ CmdMeshRemeshGmsh::CmdMeshRemeshGmsh()
     sToolTipText  = QT_TR_NOOP("Refine existing mesh");
     sStatusTip    = QT_TR_NOOP("Refine existing mesh");
     sWhatsThis    = "Mesh_RemeshGmsh";
-    sPixmap       = "Mesh_Remesh_Gmsh";
+    sPixmap       = "Mesh_RemeshGmsh";
 }
 
 void CmdMeshRemeshGmsh::activated(int)
@@ -1320,7 +1320,7 @@ CmdMeshRemoveCompByHand::CmdMeshRemoveCompByHand()
     sToolTipText  = QT_TR_NOOP("Mark a component to remove it from the mesh");
     sWhatsThis    = "Mesh_RemoveCompByHand";
     sStatusTip    = QT_TR_NOOP("Mark a component to remove it from the mesh");
-    sPixmap       = "Mesh_Remove_Comp_by_Hand";
+    sPixmap       = "Mesh_RemoveCompByHand";
 }
 
 void CmdMeshRemoveCompByHand::activated(int)
@@ -1364,7 +1364,7 @@ CmdMeshEvaluateSolid::CmdMeshEvaluateSolid()
     sToolTipText  = QT_TR_NOOP("Checks whether the mesh is a solid");
     sWhatsThis    = "Mesh_EvaluateSolid";
     sStatusTip    = QT_TR_NOOP("Checks whether the mesh is a solid");
-    sPixmap       = "Mesh_Evaluate_Solid";
+    sPixmap       = "Mesh_EvaluateSolid";
 }
 
 void CmdMeshEvaluateSolid::activated(int)
@@ -1411,7 +1411,7 @@ void CmdMeshSmoothing::activated(int)
     MeshGui::SmoothingDialog dlg(Gui::getMainWindow());
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
-        openCommand("Mesh Smoothing");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
         std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
             Mesh::Feature* mesh = (Mesh::Feature*)*it;
@@ -1496,13 +1496,13 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
     sToolTipText  = QT_TR_NOOP("Harmonizes the normals of the mesh");
     sWhatsThis    = "Mesh_HarmonizeNormals";
     sStatusTip    = QT_TR_NOOP("Harmonizes the normals of the mesh");
-    sPixmap       = "Mesh_Harmonize_Normals";
+    sPixmap       = "Mesh_HarmonizeNormals";
 }
 
 void CmdMeshHarmonizeNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    openCommand("Harmonize mesh normals");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize mesh normals"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.harmonizeNormals()"
                      ,(*it)->getNameInDocument());
@@ -1530,13 +1530,13 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
     sToolTipText  = QT_TR_NOOP("Flips the normals of the mesh");
     sWhatsThis    = "Mesh_FlipNormals";
     sStatusTip    = QT_TR_NOOP("Flips the normals of the mesh");
-    sPixmap       = "Mesh_Flip_Normals";
+    sPixmap       = "Mesh_FlipNormals";
 }
 
 void CmdMeshFlipNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    openCommand("Flip mesh normals");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Flip mesh normals"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.flipNormals()"
                      ,(*it)->getNameInDocument());
@@ -1564,7 +1564,7 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
     sToolTipText  = QT_TR_NOOP("Shows the boundings of the selected mesh");
     sWhatsThis    = "Mesh_BoundingBox";
     sStatusTip    = QT_TR_NOOP("Shows the boundings of the selected mesh");
-    sPixmap       = "Mesh_Bounding_Box";
+    sPixmap       = "Mesh_BoundingBox";
 }
 
 void CmdMeshBoundingBox::activated(int)
@@ -1606,7 +1606,7 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
     sToolTipText  = QT_TR_NOOP("Builds a regular solid");
     sWhatsThis    = "Mesh_BuildRegularSolid";
     sStatusTip    = QT_TR_NOOP("Builds a regular solid");
-    sPixmap       = "Mesh_Regular_Solid";
+    sPixmap       = "Mesh_BuildRegularSolid";
 }
 
 void CmdMeshBuildRegularSolid::activated(int)
@@ -1637,7 +1637,7 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
     sToolTipText  = QT_TR_NOOP("Fill holes of the mesh");
     sWhatsThis    = "Mesh_FillupHoles";
     sStatusTip    = QT_TR_NOOP("Fill holes of the mesh");
-    sPixmap       = "Mesh_Fill_up_Holes";
+    sPixmap       = "Mesh_FillupHoles";
 }
 
 void CmdMeshFillupHoles::activated(int)
@@ -1645,9 +1645,9 @@ void CmdMeshFillupHoles::activated(int)
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     bool ok;
     int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
-                                QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok);
+                                QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
-    openCommand("Fill up holes");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fill up holes"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.fillupHoles(%d)"
                      ,(*it)->getNameInDocument(), FillupHolesOfLength);
@@ -1675,7 +1675,7 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
     sToolTipText  = QT_TR_NOOP("Close holes interactively");
     sWhatsThis    = "Mesh_FillInteractiveHole";
     sStatusTip    = QT_TR_NOOP("Close holes interactively");
-    sPixmap       = "mesh_boundary";
+    sPixmap       = "Mesh_FillInteractiveHole";
 }
 
 void CmdMeshFillInteractiveHole::activated(int)
@@ -1753,7 +1753,7 @@ CmdMeshSegmentationBestFit::CmdMeshSegmentationBestFit()
     sToolTipText  = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
     sWhatsThis    = "Mesh_SegmentationBestFit";
     sStatusTip    = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
-    sPixmap       = "Mesh_Segmentation_Best_Fit";
+    sPixmap       = "Mesh_SegmentationBestFit";
 }
 
 void CmdMeshSegmentationBestFit::activated(int)
@@ -1798,7 +1798,7 @@ void CmdMeshMerge::activated(int)
     if (!pcDoc)
         return;
 
-    openCommand("Mesh merge");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
     Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1817,6 +1817,52 @@ void CmdMeshMerge::activated(int)
 bool CmdMeshMerge::isActive(void)
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshSplitComponents)
+
+CmdMeshSplitComponents::CmdMeshSplitComponents()
+  : Command("Mesh_SplitComponents")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Split by components");
+    sToolTipText  = QT_TR_NOOP("Split selected mesh into its components");
+    sWhatsThis    = "Mesh_SplitComponents";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Mesh_SplitComponents";
+}
+
+void CmdMeshSplitComponents::activated(int)
+{
+    App::Document *pcDoc = App::GetApplication().getActiveDocument();
+    if (!pcDoc)
+        return;
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh split"));
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+        std::vector<std::vector<Mesh::FacetIndex> > comps = mesh.getComponents();
+
+        for (const auto& comp : comps) {
+            std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
+            kernel->setTransform(mesh.getTransform());
+
+            Mesh::Feature* feature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            feature->Mesh.setValuePtr(kernel.release());
+        }
+    }
+
+    updateActive();
+    commitCommand();
+}
+
+bool CmdMeshSplitComponents::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1843,11 +1889,11 @@ void CmdMeshScale::activated(int)
 
     bool ok;
     double factor = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Scaling"),
-        QObject::tr("Enter scaling factor:"), 1, 0, DBL_MAX, 5, &ok);
+        QObject::tr("Enter scaling factor:"), 1, 0, DBL_MAX, 5, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok || factor == 0)
         return;
 
-    openCommand("Mesh scale");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh scale"));
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     Base::Matrix4D mat;
     mat.scale(factor,factor,factor);
@@ -1909,5 +1955,6 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
     rcCmdMgr.addCommand(new CmdMeshSegmentationBestFit);
     rcCmdMgr.addCommand(new CmdMeshMerge());
+    rcCmdMgr.addCommand(new CmdMeshSplitComponents());
     rcCmdMgr.addCommand(new CmdMeshScale());
 }

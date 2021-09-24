@@ -185,11 +185,12 @@ public:
     }
     operator T() const
     {
-        // cast the PyObject pointer to the matching sub-class
-        // and call then the defined member function
+        return getValue();
+    }
+    PyT* getPy() const
+    {
         PyT* py = static_cast<PyT*>(ptr());
-        T* v = (py->*valuePtr)();
-        return *v;
+        return py;
     }
 
 private:

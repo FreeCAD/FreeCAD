@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,8 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
+
 #include "../FCConfig.h"
 
 #ifdef _PreComp_
@@ -53,7 +53,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2020\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2021\n"\
                        "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
                        "FreeCAD wouldn't be possible without FreeCAD community.\n"\
                        "  #####                 ####  ###   ####  \n" \
@@ -71,6 +71,13 @@ int main( int argc, char ** argv )
     // Make sure that we use '.' as decimal point
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
+
+#if defined(__MINGW32__)
+    const char* mingw_prefix = getenv("MINGW_PREFIX");
+    const char* py_home = getenv("PYTHONHOME");
+    if (!py_home && mingw_prefix)
+        _putenv_s("PYTHONHOME", mingw_prefix);
+#endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";

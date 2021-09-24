@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2013 Wandererfan <wandererfan@gmail.com>                *
+# *   Copyright (c) 2013 WandererFan <wandererfan@gmail.com>                *
 # *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -45,7 +45,7 @@ import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 
 from draftutils.messages import _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -68,18 +68,12 @@ class PathArray(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Path array"
-        _tip = ("Creates copies of the selected object "
-                "along a selected path.\n"
-                "First select the object, and then select the path.\n"
-                "The path can be a polyline, B-spline, Bezier curve, "
-                "or even edges from other objects.")
 
         return {'Pixmap': 'Draft_PathArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathArray", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathArray", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathArray", "Path array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathArray", "Creates copies of the selected object along a selected path.\nFirst select the object, and then select the path.\nThe path can be a polyline, B-spline, Bezier curve, or even edges from other objects.")}
 
-    def Activated(self, name=_tr("Path array")):
+    def Activated(self, name="Path array"):
         """Execute when the command is called."""
         super(PathArray, self).Activated(name=name)
         self.name = name
@@ -103,14 +97,9 @@ class PathArray(gui_base_original.Modifier):
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
-            _err(_tr("Please select exactly two objects, "
-                     "the base object and the path object, "
-                     "before calling this command."))
+            _err(translate("draft","Please select exactly two objects, the base object and the path object, before calling this command."))
         else:
             base_object = sel[0].Object
             path_object = sel[1].Object
@@ -151,7 +140,7 @@ class PathArray(gui_base_original.Modifier):
             _cmd_list = ["_obj_ = " + _cmd,
                          "Draft.autogroup(_obj_)",
                          "App.ActiveDocument.recompute()"]
-            self.commit(_tr(self.name), _cmd_list)
+            self.commit(translate("draft","Path array"), _cmd_list)
 
         # Commit the transaction and execute the commands
         # through the parent class
@@ -169,19 +158,14 @@ class PathLinkArray(PathArray):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Path Link array"
-        _tip = ("Like the PathArray tool, but creates a 'Link array' "
-                "instead.\n"
-                "A 'Link array' is more efficient when handling many copies "
-                "but the 'Fuse' option cannot be used.")
 
         return {'Pixmap': 'Draft_PathLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathLinkArray", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Path Link array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Like the PathArray tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(PathLinkArray, self).Activated(name=_tr("Path link array"))
+        super(PathLinkArray, self).Activated(name="Path link array")
 
 
 Gui.addCommand('Draft_PathLinkArray', PathLinkArray())

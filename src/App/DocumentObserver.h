@@ -25,7 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <set>
 #include <memory>
 
@@ -209,6 +209,34 @@ public:
 
 private:
     std::string subname;
+};
+
+/**
+ * The PropertyLinkT class is a helper class to create Python statements for proprty links.
+ */
+class AppExport PropertyLinkT
+{
+public:
+    /*! Constructor */
+    PropertyLinkT();
+
+    /*! Constructor */
+    PropertyLinkT(DocumentObject *obj);
+
+    /*! Constructor */
+    PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames);
+
+    /*! Constructor */
+    PropertyLinkT(const std::vector<DocumentObject*>& objs);
+
+    /*! Constructor */
+    PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames);
+
+    /*! Get the property as Python command. */
+    std::string getPropertyPython() const;
+
+private:
+    std::string toPython;
 };
 
 /**

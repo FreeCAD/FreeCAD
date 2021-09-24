@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,12 +33,15 @@ import os
 
 from PySide import QtCore, QtGui
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 class CommandJobCreate:
     '''
@@ -53,7 +54,7 @@ class CommandJobCreate:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Job',
+        return {'Pixmap': 'Path_Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
                 'Accel': "P, J",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
@@ -89,12 +90,11 @@ class CommandJobTemplateExport:
     on Job creation and be available for selection.
     '''
 
-
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ExportTemplate',
+        return {'Pixmap': 'Path_ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 
@@ -113,7 +113,6 @@ class CommandJobTemplateExport:
                 return job
         return None
 
-
     def IsActive(self):
         return self.GetJob() is not None
 
@@ -129,7 +128,7 @@ class CommandJobTemplateExport:
                 "Path - Job Template",
                 PathPreferences.filePath(),
                 "job_*.json")[0]
-        if foo: 
+        if foo:
             if not os.path.basename(foo).startswith('job_'):
                 foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
             if not foo.endswith('.json'):
@@ -147,7 +146,7 @@ class CommandJobTemplateExport:
             attrs.pop(PathJob.JobTemplate.PostProcessorOutputFile, None)
 
         # tool controller settings
-        toolControllers = dialog.includeToolControllers() if dialog else job.ToolController
+        toolControllers = dialog.includeToolControllers() if dialog else job.Tools.Group
         if toolControllers:
             tcAttrs = [tc.Proxy.templateAttrs(tc) for tc in toolControllers]
             attrs[PathJob.JobTemplate.ToolController] = tcAttrs
@@ -165,7 +164,12 @@ class CommandJobTemplateExport:
         # setup sheet
         setupSheetAttrs = None
         if dialog:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths(), dialog.includeSettingOpsSettings())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(
+                dialog.includeSettingToolRapid(),
+                dialog.includeSettingCoolant(),
+                dialog.includeSettingOperationHeights(),
+                dialog.includeSettingOperationDepths(),
+                dialog.includeSettingOpsSettings())
         else:
             setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
@@ -176,10 +180,10 @@ class CommandJobTemplateExport:
         with open(PathUtil.toUnicode(path), 'w') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Job', CommandJobCreate())
     FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
 
 FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")
-

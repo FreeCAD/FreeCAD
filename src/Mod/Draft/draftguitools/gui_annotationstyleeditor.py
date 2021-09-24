@@ -35,7 +35,7 @@ import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 
 from FreeCAD import Units as U
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftutils.utils import ANNOTATION_STYLE as DEFAULT
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -65,7 +65,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(AnnotationStyleEditor, self).__init__(name=_tr("Annotation style editor"))
+        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation style editor"))
         self.doc = None
         self.styles = {}
         self.renamed = {}
@@ -111,6 +111,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form.pushButtonRename.setIcon(QtGui.QIcon(":/icons/accessories-text-editor.svg"))
         self.form.pushButtonDelete.resize(self.form.pushButtonDelete.sizeHint())
         self.form.pushButtonRename.resize(self.form.pushButtonRename.sizeHint())
+        self.form.pushButtonImport.setIcon(QtGui.QIcon(":/icons/Std_Import.svg"))
+        self.form.pushButtonExport.setIcon(QtGui.QIcon(":/icons/Std_Export.svg"))
 
         # fill the styles combo
         self.styles = self.read_meta()
@@ -121,6 +123,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form.comboBoxStyles.currentIndexChanged.connect(self.on_style_changed)
         self.form.pushButtonDelete.clicked.connect(self.on_delete)
         self.form.pushButtonRename.clicked.connect(self.on_rename)
+        self.form.pushButtonImport.clicked.connect(self.on_import)
+        self.form.pushButtonExport.clicked.connect(self.on_export)
         for attr in DEFAULT.keys():
             control = getattr(self.form, attr)
             for signal in ("clicked", "textChanged",
@@ -197,10 +201,10 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                             if hasattr(vobj, attr):
                                 try:
                                     getattr(vobj,attr).setValue(attrvalue)
-                                except:
+                                except Exception:
                                     try:
                                         setattr(vobj,attr,attrvalue)
-                                    except:
+                                    except Exception:
                                         unitvalue = U.Quantity(attrvalue, U.Length).Value
                                         setattr(vobj,attr,unitvalue)
                 else:
@@ -279,6 +283,42 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 del self.styles[style]
                 self.styles[newname] = value
                 self.renamed[style] = newname
+
+
+    def on_import(self):
+        """imports styles from a json file"""
+        filename = QtGui.QFileDialog.getOpenFileName(
+            QtGui.QApplication.activeWindow(),
+            translate("draft","Open styles file"),
+            None,
+            translate("draft","JSON file (*.json)"))
+        if filename and filename[0]:
+            with open(filename[0]) as f:
+                nstyles = json.load(f)
+                if nstyles:
+                    self.styles.update(nstyles)
+                    l1 = self.form.comboBoxStyles.itemText(0)
+                    l2 = self.form.comboBoxStyles.itemText(1)
+                    self.form.comboBoxStyles.clear()
+                    self.form.comboBoxStyles.addItem(l1)
+                    self.form.comboBoxStyles.addItem(l2)
+                    for style in self.styles.keys():
+                        self.form.comboBoxStyles.addItem(style)
+                    print("Styles updated from "+filename[0])
+
+
+    def on_export(self):
+        """exports styles to a json file"""
+        filename = QtGui.QFileDialog.getSaveFileName(
+            QtGui.QApplication.activeWindow(),
+            translate("draft","Save styles file"),
+            None,
+            translate("draft","JSON file (*.json)"))
+        if filename and filename[0]:
+            with open(filename[0],"w") as f:
+                json.dump(self.styles,f,indent=4)
+            print("Styles saved to "+filename[0])
+
 
     def fill_editor(self, style):
         """Fill the editor fields with the contents of a style."""

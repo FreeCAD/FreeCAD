@@ -44,9 +44,9 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 return ":/icons/Draft_PolarArray.svg"
             elif self.Object.ArrayType == 'circular':
                 return ":/icons/Draft_CircularArray.svg"
-        elif hasattr(self.Object, "PointList"):
+        elif hasattr(self.Object, "PointObject"):
             return ":/icons/Draft_PointArray.svg"
-        elif self.Object.Proxy.Type == "PathTwistedArray":
+        elif hasattr(self.Object, "RotationFactor"):
             return ":/icons/Draft_PathTwistedArray.svg"
         else:
             return ":/icons/Draft_PathArray.svg"
@@ -60,8 +60,7 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 else:
                     c = vobj.Object.Base.ViewObject.ShapeColor
                     c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    for f in vobj.Object.Base.Shape.Faces:
-                        colors.append(c)
+                    colors += [c] * len(vobj.Object.Base.Shape.Faces)
         if colors:
             n = 1
             if hasattr(vobj.Object,"ArrayType"):

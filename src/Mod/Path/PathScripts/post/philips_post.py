@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2016 Christoph Blaue <blaue@fh-westkueste.de>           *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -22,15 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-# reload in python console:
-#   import generic_post
-#   reload(generic_post)
+# 03-24-2021  Sliptonic:  I've removed the PathUtils import and job lookup
+# post processors shouldn't be reaching back to the job.  This can cause a
+# proxy error.
 
 import FreeCAD
 import argparse
 import time
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 import math
 
 TOOLTIP = '''Post processor for Maho M 600E mill
@@ -191,7 +188,7 @@ SPINDLE_DECIMALS = 0
 SUPPRESS_ZERO_FEED = True
 # possible values: True    if feed is zero the F command is suppressed
 #                  False   F commands are written even if they are zero
-# This is useful for machines without special speeds for the G0 command. They could be 
+# This is useful for machines without special speeds for the G0 command. They could be
 # left zero and are suppressed in the output
 
 # The header is divided into two parts, one is dynamic, the other is a static GCode header.
@@ -234,16 +231,17 @@ def processArguments(argstring):
             SHOW_EDITOR = False
 
 def mkHeader(selection):
-    job = PathUtils.findParentJob(selection[0])
+    # job = PathUtils.findParentJob(selection[0])
   # this is within a function, because otherwise filename and time don't change when changing the FreeCAD project
     #  now = datetime.datetime.now()
     now = time.strftime("%Y-%m-%d %H:%M")
     originfile = FreeCAD.ActiveDocument.FileName
     headerNoNumber = "%PM\n"     # this line gets no linenumber
-    if hasattr(job, "Description"):
-        description = job.Description
-    else:
-        description = ""
+    # if hasattr(job, "Description"):
+    #     description = job.Description
+    # else:
+    #     description = ""
+    description = ""
     # this line gets no linenumber, it is already a specially numbered
     headerNoNumber += "N9XXX (" + description + ", " + now + ")\n"
     header = ""
@@ -386,7 +384,7 @@ def export(objectslist, filename, argstring):
 # #\better:   append iff MODAL == False
 #                   if command == lastcommand:
 #                       outstring.pop(0)
-                if c.Parameters >= 1:
+                if len(c.Parameters) >= 1:
                     for param in params:
                         # test   print("param: " + param + ",  command: " + command)
                         if param in c.Parameters:

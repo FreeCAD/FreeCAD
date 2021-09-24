@@ -202,7 +202,7 @@ void SoFCVectorizeSVGActionP::printText(const SoVectorizeText * item) const
 
     std::ostream& str = publ->getSVGOutput()->getFileStream();
     str << "<text x=\"" << posx << "\" y=\"" << posy << "\" "
-           "font-size=\"" << item->fontsize * mul[1] << "px\">" 
+           "font-size=\"" << item->fontsize * mul[1] << "px\">"
         << item->string.getString() << "</text>" << std::endl;
 }
 
@@ -246,7 +246,7 @@ Separator {
   Material {
     diffuseColor [ 1 1 0, 0 0 1, 1 0 0 ]
   }
-  
+
   MaterialBinding {
     value PER_VERTEX
   }
@@ -314,17 +314,17 @@ void SoFCVectorizeSVGActionP::printTriangle(const SbVec3f * v, const SbColor * c
 void SoFCVectorizeSVGActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
     // todo
-    Q_UNUSED(v); 
-    Q_UNUSED(c); 
-    Q_UNUSED(radius); 
+    Q_UNUSED(v);
+    Q_UNUSED(c);
+    Q_UNUSED(radius);
 }
 
 void SoFCVectorizeSVGActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
     // todo
-    Q_UNUSED(v); 
-    Q_UNUSED(c); 
-    Q_UNUSED(size); 
+    Q_UNUSED(v);
+    Q_UNUSED(c);
+    Q_UNUSED(size);
 }
 
 void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
@@ -359,13 +359,13 @@ void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
 void SoFCVectorizeSVGActionP::printPoint(const SoVectorizePoint * item) const
 {
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 {
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 // -------------------------------------------------------

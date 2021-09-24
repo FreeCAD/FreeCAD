@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM material document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package material_common
 #  \ingroup FEM

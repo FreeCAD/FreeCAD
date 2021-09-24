@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>インポート</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>式を貼り付け</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>リンクグループを作成</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>リンクを作成</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>サブリンクを作成</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>リンクをインポート</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>全てのリンクをインポート</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>寸法を挿入</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>テキストドキュメントを挿入</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>パーツを追加</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>グループを追加</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>配置</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>変換</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>リンク変換</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>距離を測定</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -199,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>ファイル名</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>デフォルト</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>変換</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>切断</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>色</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>式を入力...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>式: </translation>
     </message>
   </context>
   <context>
@@ -390,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>ワードサイズ</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>謝辞</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>彼らの貢献なしにはFreeCADは存在し得なかったでしょう:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>ライセンス</translation>
     </message>
@@ -420,6 +517,25 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Collection</source>
       <translation>コレクション</translation>
     </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>謝辞</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD は以下の貢献がなければあり得なかったでしょう: </translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>個人</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>組織</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -430,6 +546,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>範囲外</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -1060,16 +1184,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>ボタン</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>クリア</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>リファレンスを印刷</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>SpaceNavigatorのボタン</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>リセット</translation>
     </message>
   </context>
   <context>
@@ -1281,10 +1405,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>[empty string]</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>コード行に番号を付ける </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>&lt;Tab&gt;を押すと定義されたインデント・サイズが挿入されます。</translation>
     </message>
@@ -1319,6 +1439,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Color:</source>
       <translation>色：</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>コード行に番号を付ける</translation>
     </message>
   </context>
   <context>
@@ -1381,7 +1505,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation>最近のファイルのリストにいくつのファイルを表示するか</translation>
+      <translation>最近使用したファイルのリストにいくつのファイルを表示するか</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -2097,10 +2221,6 @@ Specify another directory, please.</source>
       <translation>タイプでフィルタリング</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>有効な場合、3D ビューでの選択はオブジェクト階層全体と同期します。</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>サブオブジェクト選択と動機</translation>
     </message>
@@ -2111,6 +2231,10 @@ Specify another directory, please.</source>
     <message>
       <source>Clear</source>
       <translation>クリア</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>有効な場合、3D ビューでの選択はオブジェクト階層全体と同期します。</translation>
     </message>
   </context>
   <context>
@@ -2255,11 +2379,11 @@ from Python console to Report view panel</source>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>通常メッセージが記録されます。</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>通常メッセージを記録</translation>
     </message>
   </context>
   <context>
@@ -2436,10 +2560,6 @@ but slower response to any scene changes.</source>
       <translation>集中</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>使用されているマルチサンプル・アンチエイリアスの種類</translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>透明オブジェクト:</translation>
     </message>
@@ -2449,11 +2569,11 @@ but slower response to any scene changes.</source>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>ワンパス</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>バックフェイスパス</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2462,13 +2582,6 @@ but slower response to any scene changes.</source>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>ステレオモードでの目と目の間の距離　</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>ステレオ投影で使用される目と目の間の距離。
-現在表示されている 3D オブジェクトのバウンディングボックスサイズと掛け合わされる係数の値を指定します。</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2502,6 +2615,40 @@ opening or creation</source>
     <message>
       <source>Show axis cross by default</source>
       <translation>既定で交差軸を表示</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>ピック半径（px）:</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>3D ビューでの要素ピック範囲。
+大きな値を設定するとピックが容易になりますが、小さなフィーチャーを選択できなくなります。</translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>このオプションはグラフィックカードとドライバーの問題のトラブルシューティングに役立ちます。
+
+このオプションを変更するとアプリケーションの再起動が必要になります。</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>ソフトウェア OpenGL を使用</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>使用されているマルチサンプル・アンチエイリアスの種類</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>ステレオ投影で使用される目と目の間の距離。
+現在表示されている 3D オブジェクトのバウンディングボックスサイズと掛け合わされる係数の値を指定します。</translation>
     </message>
   </context>
   <context>
@@ -3112,9 +3259,59 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
       <source>Framebuffer (as is)</source>
       <translation>フレームバッファ (そのまま)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>ピクセルバッファ</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>ワークベンチ</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3186,6 +3383,34 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation>アプリケーションがマクロを検索するディレクトリ</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>最近使用したマクロのメニュー</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>最近使用したマクロ一覧のサイズ</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>最近使用したマクロのリストにいくつのマクロを表示するか</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>ショートカットの数</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>ショートカットを持つ最近のマクロの数</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>キーボード修飾子</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>キーボード修飾子、デフォルト = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3303,13 +3528,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>ズーム量</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>どの程度ズームを行うか。
-ズーム量「1」はズーム 1 段階ごとに 7.5 倍することを意味します。
- </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>ズーム操作の方向を反転</translation>
     </message>
@@ -3330,10 +3548,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>3D回転では現在のカーソル位置が回転中心として使用されます。</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>カーソル位置で回転</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3373,15 +3587,80 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Custom</source>
-      <translation>色の編集</translation>
+      <translation>カスタム設定</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>デフォルトのカメラの向き</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+      <translation>新しいドキュメントを作成、またはホームビューを選択した場合のデフォルトのカメラの向き</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>回転モード</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>ウィンドウの中央</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>カーソル位置にドラッグ</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>オブジェクトの中央</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>キューブ面をクリックした時に最も近い状態へ回転</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>最も近い状態へ回転</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>キューブのサイズ</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>ナビゲーションキューブのサイズ</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>どの程度ズームを行うか。
+ズーム量「1」はズーム 1 段階ごとに 7.5 倍することを意味します。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>選択範囲</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>選択したアイテムを含む3Dビューへ自動切り替え</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>対応するオブジェクトが3Dビューで選択された場合にツリーアイテムを自動的に展開</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>ツリーアイテムの上をマウスが通過した時に 3D ビューでオブジェクトを事前選択</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>ナビゲーションボタンを使用した戻る/進むの動作のためにツリー ビューでの選択を記録</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>ドキュメントツリーに選択用のチェックボックスを追加</translation>
     </message>
   </context>
   <context>
@@ -3486,6 +3765,10 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>土木用 帝国単位 (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sec)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3522,10 +3805,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>単色</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>ピック半径（px）:</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>編集中のオブジェクト</translation>
     </message>
@@ -3540,12 +3819,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>選択時の強調表示を有効にし、指定色を使用</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>3D ビューでの要素ピック範囲。
-大きな値を設定するとピックが容易になりますが、小さなフィーチャーを選択できなくなります。</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3673,12 +3946,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>不明な単位: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>単位の不一致</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>未知の単位:</translation>
     </message>
   </context>
   <context>
@@ -4205,32 +4478,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>このボタンをクリックする前に1つ、2つ、または3つの点を選択してください。 点は頂点、面、またはエッジ上にあります。面またはエッジ上の点を使用する場合は面またはエッジに沿ったマウス位置にある点を使います。1つの点を選択した場合には点が回転中心として使用されます。2つの点を選択した場合にはその中点が回転中心となり、必要に応じて新しいカスタム軸が作成されます。3つの点を選択した場合には1つ目の点が回転中心となり、3点によって定義される平面の法線となるベクトル上に配置されます。距離と角度の情報はレポートビューに表示されます。この情報はオブジェクトを配置する際に便利です。簡単のために Shift + クリックで適切な距離と角度がクリップボードにコピーされます。</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Y軸周り:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Z軸周り:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>X軸周り:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>X軸周りの回転</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Y軸周りの回転</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Z軸周りの回転</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>オイラー角度 (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4393,6 +4666,16 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Partial</source>
       <translation>部分</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>元の選択を使用 (&amp;U)</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>依存関係を無視し、このダイアログを開く前に最初に選択されたオブジェクト
+を続行します</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4467,27 +4750,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>表示メッセージタイプ</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>通常メッセージ</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>ログメッセージ</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>警告</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>エラー</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>レポートビューを表示</translation>
     </message>
   </context>
   <context>
@@ -4649,6 +4932,20 @@ Do you want to save your changes?</source>
     <message>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>完全一致</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>完全一致</translation>
     </message>
   </context>
   <context>
@@ -5140,6 +5437,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>条件式...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>自動展開</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5271,6 +5572,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>%1 ファイルを開く</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>ファイルが見つかりませんでした</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>ファイル '%1' を開くことができませんでした。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>マクロ実行 %1 (Shift + クリックで編集) ショートカット: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5708,6 +6024,18 @@ Do you want to specify another directory?</source>
       <source>Vietnamese</source>
       <translation>ベトナム語</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>ギリシャ語</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -5862,7 +6190,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>表</translation>
     </message>
     <message>
       <source>...</source>
@@ -6608,6 +6936,97 @@ Choose 'Abort' to abort</source>
       <source>Override colors...</source>
       <translation>色を上書き...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>同一の物理パスが検出されました。既存ドキュメントへの不適切な上書きが実行される可能性があります！
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>本当に続行しますか？</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+詳細はレポート表示を確認してください...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>ドキュメント: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  パス: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>同一の物理パス</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>エラー</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>ファイルの読み込み中にエラーが発生しました。一部のデータが変更、または完全に復元されていない可能性があります。関連するオブジェクトのより詳細な情報についてはレポートビューを確認してください。</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>ファイルの読み込み中に重大なエラーが発生しました。一部のデータが変更されたか、完全に復元されていない可能性があります。 プロジェクトを保存すると、データが失われる恐れがあります。</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>ワークベンチ</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+物理パス: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6890,7 +7309,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>カスタマイズツールバーとコマンドバー</translation>
+      <translation>ツールバーとコマンドバーのカスタマイズ</translation>
     </message>
   </context>
   <context>
@@ -7051,8 +7470,8 @@ Choose 'Abort' to abort</source>
       <translation>選択されていません</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>まず最初にエクスポートしたいオブジェクトを選択してください。</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>エクスポートを選択する前にエクスポートするオブジェクトを選択してください。</translation>
     </message>
   </context>
   <context>
@@ -7079,6 +7498,21 @@ Choose 'Abort' to abort</source>
     <message>
       <source>Recompute feature or document</source>
       <translation>フィーチャーまたはドキュメントを再計算</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>ヘルプ</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>寄付する</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>FreeCAD の開発に寄付する</translation>
     </message>
   </context>
   <context>
@@ -7270,7 +7704,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Import links</source>
-      <translation>リンクのインポート</translation>
+      <translation>リンクをインポート</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7285,7 +7719,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Import all links</source>
-      <translation>全てのリンクをインポートする</translation>
+      <translation>全てのリンクをインポート</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
@@ -7420,11 +7854,11 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>リンク解除</translation>
+      <translation>リンクを解除</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>リンクのレベルを除去</translation>
     </message>
   </context>
   <context>
@@ -7815,6 +8249,21 @@ Choose 'Abort' to abort</source>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>マクロ</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>最近使用したマクロ</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>最近使用したマクロ一覧</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7976,7 +8425,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
+      <translation>バックアップされた選択を繰り返し</translation>
     </message>
   </context>
   <context>
@@ -8343,11 +8792,22 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation>単位計算（&amp;U）</translation>
+      <translation>単位計算(&amp;U)</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
       <translation>単位計算機を表示します。</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>編集モード</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>ツリーからオブジェクトを編集するときの動作を定義します。</translation>
     </message>
   </context>
   <context>
@@ -8512,7 +8972,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>デフォルトのホームビューに設定</translation>
     </message>
   </context>
   <context>
@@ -8651,6 +9111,21 @@ Choose 'Abort' to abort</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>保存したカメラを復元</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>保存したカメラ設定を復元</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8693,6 +9168,21 @@ Choose 'Abort' to abort</source>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>ビューを時計回りに90度回転</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>現在のカメラを保存</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>現在のカメラ設定を保存</translation>
     </message>
   </context>
   <context>
@@ -8928,7 +9418,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>最初に選択した項目までスクロール</translation>
+      <translation>最初の選択項目までスクロール</translation>
     </message>
   </context>
   <context>
@@ -9343,6 +9833,10 @@ Do you still want to proceed?</source>
     <message>
       <source>Special Ops</source>
       <translation>特殊設定</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>不等角投影</translation>
     </message>
   </context>
   <context>

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +27,7 @@ import PathScripts.PathProfile as PathProfile
 
 __title__ = "Path Profile Edges Operation (depreciated)"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Path Profile operation based on edges (depreciated)."
 __contributors__ = "russ4262 (Russell Johnson)"
 
@@ -45,9 +43,9 @@ def SetupProperties():
     return PathProfile.SetupProperties()
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Profile operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name)
+    obj.Proxy = ObjectProfile(obj, name, parentJob)
     return obj

@@ -170,7 +170,7 @@ std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
     FileEntry temp;
     temp.FileName = getUniqueFileName(Name);
     temp.Object = Object;
-  
+
     FileList.push_back(temp);
 
     FileNames.push_back( temp.FileName );
@@ -240,7 +240,7 @@ void Writer::decInd(void)
 
 // ----------------------------------------------------------------------------
 
-ZipWriter::ZipWriter(const char* FileName) 
+ZipWriter::ZipWriter(const char* FileName)
   : ZipStream(FileName)
 {
 #ifdef _MSC_VER
@@ -252,7 +252,7 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
-ZipWriter::ZipWriter(std::ostream& os) 
+ZipWriter::ZipWriter(std::ostream& os)
   : ZipStream(os)
 {
 #ifdef _MSC_VER

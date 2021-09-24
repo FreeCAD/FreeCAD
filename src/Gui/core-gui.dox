@@ -1,6 +1,6 @@
 /** \defgroup GUI Gui
- * \ingroup CORE 
- * \brief The Graphical User Interface of FreeCAD and the 3D View
+ *  \ingroup CORE 
+ *  \brief The Graphical User Interface of FreeCAD and the 3D View
  */
 
 /** \namespace Gui

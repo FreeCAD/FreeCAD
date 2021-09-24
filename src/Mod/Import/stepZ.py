@@ -20,8 +20,9 @@ import ImportGui
 import PySide
 from PySide import QtGui, QtCore
 import tempfile
+import shutil
 
-___stpZversion___ = "1.3.7"
+___stpZversion___ = "1.3.8"
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
@@ -175,10 +176,10 @@ def export(objs,filename):
             f_out.close()
         if os.path.exists(outfpath):
             os.remove(outfpath)
-            os.rename(outfpathT_str, outfpath)
+            shutil.move(outfpathT_str, outfpath)
             #os.remove(outfpathT_stp)
         else:
-            os.rename(outfpathT_str, outfpath)
+            shutil.move(outfpathT_str, outfpath)
             #os.remove(outfpathT_stp)
 
 ####

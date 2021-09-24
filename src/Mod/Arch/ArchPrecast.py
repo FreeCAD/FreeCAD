@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__= "FreeCAD Precast concrete module"
+__title__  = "FreeCAD Precast concrete module"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 """This module contains tools to build basic precast concrete elements:
 Beams, pillars, slabs and panels"""
@@ -29,8 +29,6 @@ Beams, pillars, slabs and panels"""
 import ArchCommands,ArchComponent,FreeCAD
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -867,7 +865,7 @@ class _PrecastTaskPanel:
         self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelTread,18,0,1,1)
         self.grid.addWidget(self.valueTread,18,1,1,1)
-        
+
         # signals/slots
         QtCore.QObject.connect(self.valueChamfer,QtCore.SIGNAL("valueChanged(double)"),self.setChamfer)
         QtCore.QObject.connect(self.valueDentLength,QtCore.SIGNAL("valueChanged(double)"),self.setDentLength)

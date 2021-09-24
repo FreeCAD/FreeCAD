@@ -30,7 +30,7 @@
 namespace Part {
 
     template <typename T>
-    class PartExport GeometryDefaultExtension: public Part::GeometryExtension
+    class PartExport GeometryDefaultExtension: public Part::GeometryPersistenceExtension
     {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
     public:
@@ -41,14 +41,14 @@ namespace Part {
         inline void setValue(const T& val) {value = val;};
         inline const T &getValue() const {return value;};
 
-        // Persistence implementer ---------------------
-        virtual unsigned int getMemSize(void) const override;
-        virtual void Save(Base::Writer &/*writer*/) const override;
-        virtual void Restore(Base::XMLReader &/*reader*/) override;
-
         virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
         virtual PyObject *getPyObject(void) override;
+
+    protected:
+        virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+        virtual void restoreAttributes(Base::XMLReader &reader) override;
+        virtual void saveAttributes(Base::Writer &writer) const override;
 
     private:
         GeometryDefaultExtension(const GeometryDefaultExtension<T>&) = default;
@@ -85,6 +85,15 @@ namespace Part {
     // 4. Provide a specialisation of getPyObject to generate a py object of the corresponding type (cpp file)
     // 5. Provide specialisations if your type does not meet the assumptions above (e.g. for serialisation) (cpp file)
     // 6. Register your type and corresponding python type in AppPart.cpp
+
+    template <typename T>
+    Base::Type GeometryDefaultExtension<T>::classTypeId{Base::Type::badType()};
+
+    // Must be explicitly declared here
+    template<> void * GeometryDefaultExtension<long>::create();
+    template<> void * GeometryDefaultExtension<std::string>::create();
+    template<> void * GeometryDefaultExtension<bool>::create();
+    template<> void * GeometryDefaultExtension<double>::create();
 
     template <typename T>
     inline GeometryDefaultExtension<T>::GeometryDefaultExtension():value{}{}

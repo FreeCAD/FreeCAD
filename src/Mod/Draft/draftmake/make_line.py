@@ -39,7 +39,7 @@ def make_line(first_param, last_param=None):
     Parameters
     ----------
     first_param : 
-        Base.Vector -> First point of the line (if p2 == None)
+        Base.Vector -> First point of the line (if p2 is None)
         Part.LineSegment -> Line is created from the given Linesegment
         Shape -> Line is created from the give Shape
 

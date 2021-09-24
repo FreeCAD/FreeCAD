@@ -62,6 +62,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
+    drafttests/test_draftgeomutils.py
     drafttests/draft_test_objects.py
     drafttests/README.md
 )
@@ -98,6 +99,8 @@ SET(Draft_functions
     draftfunctions/scale.py
     draftfunctions/split.py
     draftfunctions/svg.py
+    draftfunctions/svgshapes.py
+    draftfunctions/svgtext.py
     draftfunctions/upgrade.py
     draftfunctions/README.md
 )
@@ -134,6 +137,7 @@ SET(Draft_make_functions
     draftmake/make_text.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
+    draftmake/make_hatch.py
     draftmake/README.md
 )
 
@@ -166,6 +170,7 @@ SET(Draft_objects
     draftobjects/text.py
     draftobjects/wire.py
     draftobjects/wpproxy.py
+    draftobjects/hatch.py
     draftobjects/README.md
 )
 
@@ -191,6 +196,7 @@ SET(Draft_view_providers
     draftviewproviders/view_text.py
     draftviewproviders/view_wire.py
     draftviewproviders/view_wpproxy.py
+    draftviewproviders/view_hatch.py
     draftviewproviders/README.md
 )
 
@@ -210,6 +216,7 @@ SET(Creator_tools
     draftguitools/gui_points.py
     draftguitools/gui_facebinders.py
     draftguitools/gui_labels.py
+    draftguitools/gui_hatch.py
 )
 
 SET(Modifier_tools
@@ -266,6 +273,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
     draftguitools/gui_layers.py
+    draftguitools/gui_setstyle.py
     ${Creator_tools}
     ${Modifier_tools}
     draftguitools/README.md

@@ -44,7 +44,7 @@ MeshPointArray::MeshPointArray(const MeshPointArray& ary)
 {
 }
 
-unsigned long MeshPointArray::Get (const MeshPoint &rclPoint)
+PointIndex MeshPointArray::Get (const MeshPoint &rclPoint)
 {
   iterator clIter;
 
@@ -52,17 +52,17 @@ unsigned long MeshPointArray::Get (const MeshPoint &rclPoint)
   if (clIter != end())
     return clIter - begin();
   else
-    return ULONG_MAX;  
+    return POINT_INDEX_MAX;
 }
 
-unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
+PointIndex MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
 {
-  unsigned long ulIndex;
+  PointIndex ulIndex;
 
-  if ((ulIndex = Get(rclPoint)) == ULONG_MAX)
+  if ((ulIndex = Get(rclPoint)) == POINT_INDEX_MAX)
   {
     push_back(rclPoint);
-    return static_cast<unsigned long>(size() - 1);
+    return static_cast<PointIndex>(size() - 1);
   }
   else
     return ulIndex;
@@ -83,7 +83,7 @@ void MeshPointArray::SetProperty (unsigned long ulVal) const
   for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->SetProperty(ulVal);
 }
 
-void MeshPointArray::ResetInvalid (void) const
+void MeshPointArray::ResetInvalid () const
 {
   for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->ResetInvalid();
 }
@@ -110,9 +110,9 @@ MeshFacetArray::MeshFacetArray(const MeshFacetArray& ary)
 
 void MeshFacetArray::Erase (_TIterator pIter)
 {
-  unsigned long i, *pulN;
+  FacetIndex i, *pulN;
   _TIterator  pPass, pEnd;
-  unsigned long ulInd = pIter - begin();
+  FacetIndex ulInd = pIter - begin();
   erase(pIter);
   pPass = begin();
   pEnd  = end();
@@ -121,14 +121,14 @@ void MeshFacetArray::Erase (_TIterator pIter)
     for (i = 0; i < 3; i++)
     {
       pulN = &pPass->_aulNeighbours[i];
-      if ((*pulN > ulInd) && (*pulN != ULONG_MAX))
+      if ((*pulN > ulInd) && (*pulN != FACET_INDEX_MAX))
         (*pulN)--;
     }
     pPass++;
   }
 }
 
-void MeshFacetArray::TransposeIndices (unsigned long ulOrig, unsigned long ulNew)
+void MeshFacetArray::TransposeIndices (PointIndex ulOrig, PointIndex ulNew)
 {
   _TIterator  pIter = begin(), pEnd = end();
 
@@ -139,7 +139,7 @@ void MeshFacetArray::TransposeIndices (unsigned long ulOrig, unsigned long ulNew
   }
 }
 
-void MeshFacetArray::DecrementIndices (unsigned long ulIndex)
+void MeshFacetArray::DecrementIndices (PointIndex ulIndex)
 {
   _TIterator  pIter = begin(), pEnd = end();
 
@@ -165,7 +165,7 @@ void MeshFacetArray::SetProperty (unsigned long ulVal) const
   for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->SetProperty(ulVal);
 }
 
-void MeshFacetArray::ResetInvalid (void) const
+void MeshFacetArray::ResetInvalid () const
 {
   for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->ResetInvalid();
 }
@@ -352,7 +352,7 @@ void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f &linePt, const Base:
 
 // -----------------------------------------------------------------
 
-MeshGeomFacet::MeshGeomFacet (void) 
+MeshGeomFacet::MeshGeomFacet () 
   : _bNormalCalculated(false),
     _ucFlag(0), _ulProp(0)
 { 
@@ -497,7 +497,7 @@ void MeshGeomFacet::Enlarge (float fDist)
 {
   Base::Vector3f  clM, clU, clV, clPNew[3];
   float      fA, fD;
-  unsigned long i, ulP1, ulP2, ulP3;
+  PointIndex i, ulP1, ulP2, ulP3;
 
   for (i = 0; i < 3; i++)
   {
@@ -987,6 +987,12 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
     rclPt0.x = isectpt1[0]; rclPt0.y = isectpt1[1]; rclPt0.z = isectpt1[2];
     rclPt1.x = isectpt2[0]; rclPt1.y = isectpt2[1]; rclPt1.z = isectpt2[2];
+
+    // Note: tri_tri_intersect_with_isection() does not return line of
+    // intersection when triangles are coplanar. See tritritest.h:18 and 658.
+    // So rclPt* may be garbage values and we cannot continue.
+    if (coplanar)
+        return 2; // equivalent to rclPt0 != rclPt1
 
     // With extremely acute-angled triangles it may happen that the algorithm
     // claims an intersection but the intersection points are far outside the

@@ -59,7 +59,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation>Riesegui</translation>
+      <translation>Esegui di nuovo</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
@@ -70,9 +70,9 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selettore della geometria di riferimento per </translation>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Selettore della geometria di riferimento per</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -85,6 +85,41 @@
       <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista. Se all'elenco non viene aggiunta nessuna geometria, sono utilizzate tutte quelli restanti. Si possono selezionare i seguenti elementi geometrici: </translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli all'elenco.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>È consentito selezionare i seguenti elementi di geometria: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation>Cliccare su "Aggiungi" e selezionare gli elementi geometrici da aggiungere alla lista. {} I seguenti elementi geometrici sono ammessi per essere selezionati: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Se non viene aggiunta alcuna geometria all'elenco, vengono usate tutte quelle rimanenti.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici da aggiungere all'elenco.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli all'elenco.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>{} Se nessuna geometria è aggiunta alla lista, vengono usate tutte.</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
       <translation>Modalità di selezione</translation>
@@ -93,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Solido</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selettore della geometria di riferimento per </translation>
     </message>
   </context>
   <context>
@@ -165,12 +205,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Vincolo fonte di calore</translation>
+      <translation>Vincolo sorgente di calore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Crea un vincolo FEM fonte di calore del corpo</translation>
+      <translation>Crea un vincolo FEM sorgente di calore del corpo</translation>
     </message>
   </context>
   <context>
@@ -204,7 +244,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Vincolo velocità di flusso iniziale</translation>
+      <translation>Vincolo velocità iniziale di flusso</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
@@ -581,7 +621,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Esegui i calcoli con il solutore</translation>
+      <translation>Avvia il solutore</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
@@ -892,7 +932,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Esegui i calcoli con il solutore</translation>
+      <translation>Avvia il solutore</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>

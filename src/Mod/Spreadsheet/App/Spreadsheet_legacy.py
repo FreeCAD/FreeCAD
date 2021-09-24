@@ -1,6 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013 - Yorik van Havre <yorik@uncreated.net>            *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -856,7 +855,7 @@ class SpreadsheetView(QtGui.QWidget):
                         v = float(value)
                     except:
                         try:
-                            v = v = str(value)
+                            v = str(value)
                         except:
                             v = value
                 setattr(self.spreadsheet.Proxy,key,v)

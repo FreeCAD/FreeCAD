@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 # include <QMdiArea>
 # include <QMdiSubWindow>
 # include <QUrl>
+# include <QIcon>
 #endif
 
 #include <Base/Console.h>
@@ -63,7 +64,7 @@ public:
         add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
         );
         add_varargs_method("open",&Module::openBrowser,
-            "open(string)\n"
+            "open(htmlcode,baseurl,[title,iconpath])\n"
             "Load a local (X)HTML file."
         );
         add_varargs_method("insert",&Module::openBrowser,
@@ -99,8 +100,9 @@ private:
     {
         const char* HtmlCode;
         const char* BaseUrl;
+        const char* IconPath;
         char* TabName = nullptr;
-        if (! PyArg_ParseTuple(args.ptr(), "ss|et", &HtmlCode, &BaseUrl, "utf-8", &TabName))
+        if (! PyArg_ParseTuple(args.ptr(), "ss|ets", &HtmlCode, &BaseUrl, "utf-8", &TabName, &IconPath))
             throw Py::Exception();
 
         std::string EncodedName = "Browser";
@@ -114,6 +116,8 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
+        if (IconPath)
+            pcBrowserView->setWindowIcon(QIcon(QString::fromUtf8(IconPath)));
         Gui::getMainWindow()->addWindow(pcBrowserView);
         if (!Gui::getMainWindow()->activeWindow())
             Gui::getMainWindow()->setActiveWindow(pcBrowserView);

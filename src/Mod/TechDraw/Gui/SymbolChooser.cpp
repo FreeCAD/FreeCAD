@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,7 +66,7 @@ void SymbolChooser::setUiPrimary()
     } else {
         std::string resourceDir = App::Application::getResourceDir();
         std::string defPath = "Mod/TechDraw/Symbols/Welding/AWS/";
-        resourceDir = resourceDir + defPath; 
+        resourceDir = resourceDir + defPath;
         QString defDir = QString::fromUtf8(resourceDir.c_str());
         ui->fcSymbolDir->setFileName(defDir);
         loadSymbolNames(defDir);
@@ -83,12 +83,12 @@ void SymbolChooser::setUiPrimary()
 
 void SymbolChooser::onOKClicked()
 {
-    QDialog::accept(); 
+    QDialog::accept();
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     if (!sourceItem)
         return;
     QString targetText = sourceItem->text();
-    m_symbolPath = m_symbolDir + 
+    m_symbolPath = m_symbolDir +
                    targetText +
                    QString::fromUtf8(".svg");
 
@@ -107,7 +107,7 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
     //are item and currentItem() the same?  should use item?
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     QString targetText = sourceItem->text();
-    m_symbolPath = m_symbolDir + 
+    m_symbolPath = m_symbolDir +
                    targetText +
                    QString::fromUtf8(".svg");
     Q_EMIT symbolSelected(m_symbolPath, m_source);
@@ -135,7 +135,7 @@ void SymbolChooser::loadSymbolNames(QString pathToSymbols)
         QFileInfo fi(fn);
         item->setText(fi.baseName());
         QIcon symbolIcon(pathToSymbols + fn);
-        item->setIcon(symbolIcon); 
+        item->setIcon(symbolIcon);
         ui->lwSymbols->addItem(item);
     }
     ui->lwSymbols->setCurrentRow(0);

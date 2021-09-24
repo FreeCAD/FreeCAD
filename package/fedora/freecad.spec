@@ -31,8 +31,8 @@
 
 Name:           %{name}
 Epoch:          1
-Version:    	0.19
-Release:        pre_{{{ git_commit_no }}}
+Version:    	0.20
+Release:        pre_{{{git_commit_no}}}%{?dist}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 
@@ -50,7 +50,9 @@ BuildRequires:  git
 # Development Libraries
 
 BuildRequires:  Coin4-devel
+%if 0%{?fedora} < 35
 BuildRequires:  Inventor-devel
+%endif
 BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
@@ -245,6 +247,9 @@ mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_metainfodir}/
 mkdir %{buildroot}%{_datadir}/applications/
 mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
 
+mkdir -p %{buildroot}%{_datadir}/thumbnailers/
+mv %{buildroot}%{_libdir}/%{name}/share/thumbnailers/* %{buildroot}%{_datadir}/thumbnailers/
+
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/
 mv %{buildroot}%{_libdir}/%{name}/share/icons/hicolor/scalable/* %{buildroot}%{_datadir}/icons/hicolor/scalable/
 
@@ -264,7 +269,8 @@ popd
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
 # Belongs in %%license not %%doc
-rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+#No longer present?
+#rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -330,7 +336,10 @@ fi
 %{_datadir}/icons/hicolor/scalable/*
 %{_datadir}/pixmaps/*
 %{_datadir}/mime/packages/*
+%{_datadir}/thumbnailers/*
 
 %files data
 %{_datadir}/%{name}/
 %{_docdir}/%{name}/%{name}.q*
+%{_docdir}/%{name}/CONTRIBUTORS
+%{_docdir}/%{name}/LICENSE.html

@@ -35,7 +35,7 @@ class Origin;
 class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::OriginGroupExtension);
-    
+
 public:
     OriginGroupExtension ();
     virtual ~OriginGroupExtension ();
@@ -48,22 +48,22 @@ public:
         return "Gui::ViewProviderOriginGroup";
     }
 
-    /** 
+    /**
      * Returns the origin group which contains this object.
-     * In case this object is not part of any geoFeatureGroup 0 is returned.
+     * In case this object is not part of any geoFeatureGroup, 0 is returned.
      * @param obj       the object to search for
      */
     static DocumentObject* getGroupOfObject (const DocumentObject* obj);
 
     /// Returns true on changing OriginFeature set
     virtual short extensionMustExecute () override;
-    
+
     /// Origin linked to the group
     PropertyLink Origin;
-    
-    //changes all links of obj to a origin to point to this groupes origin
+
+    // changes all links of obj to a origin to point to this groups origin
     void relinkToOrigin(App::DocumentObject* obj);
-    
+
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
     virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
 

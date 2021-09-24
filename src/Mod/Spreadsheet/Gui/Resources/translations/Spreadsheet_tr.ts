@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Hücreleri birleştir</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Hücreyi Böl</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Sola hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Ortala</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Sağa hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Yukarı hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Aşağı hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Hücreleri dikey olarak ortala</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Metni kalınlaştır</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Metni eğimle</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Metnin altını çiz</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Elektronik Tablo Oluştur</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Hücre özelliklerini ayarla</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Hücreyi düzenle</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Satır ekle</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Satır sil</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Sütun ekle</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Hücreyi(leri) temizle</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ön plan rengini ayarla</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Arka plan rengini ayarla</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -366,13 +449,12 @@ Lütfen yalnızca bir hücre seçin.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Alias geçersiz karakterler içeriyor!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>
@@ -458,17 +540,16 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;İçerik:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>
@@ -481,24 +562,64 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Satır ekle</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Satır sil</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Sütun ekle</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Sütunları Kaldır</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Özellikler...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Üste %n satır ekle</numerusform>
+        <numerusform>Üste %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Alta %n satır ekle</numerusform>
+        <numerusform>Alta %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Bitişik olmayan %n satır ekle</numerusform>
+        <numerusform>Bitişik olmayan %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Satır(lar) ı sil</numerusform>
+        <numerusform>Satır(lar) ı sil</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Sola %n sütun(lar) ekle</numerusform>
+        <numerusform>Sola %n sütun(lar) ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Sağa %n sütun(lar) ekle</numerusform>
+        <numerusform>Sağa %n sütun(lar) ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Bitişik olmayan %n sütun ekle</numerusform>
+        <numerusform>Bitişik olmayan %n sütun ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Sütun(lar) kaldır</numerusform>
+        <numerusform>Sütun(lar) kaldır</numerusform>
+      </translation>
     </message>
   </context>
   <context>

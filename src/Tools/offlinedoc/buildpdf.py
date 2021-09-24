@@ -30,6 +30,8 @@ __url__ = "http://www.freecadweb.org"
 This script builds a pdf file from a local copy of the wiki
 """
 
+Workbenches=["Part","PartDesign","Sketcher","Constraints","Draft","Path","Fem","Arch","TechDraw","Raytracing","OpenSCAD","Robot","Mesh"]
+
 TOC="""Online_Help_Startpage
 About_FreeCAD
 Feature_list
@@ -41,269 +43,7 @@ Property_editor
 Import_Export
 Workbenches
 
-begin
-
-Part_Workbench
-Part_Box
-Part_Cone
-Part_Cylinder
-Part_Sphere
-Part_Torus
-Part_CreatePrimitives
-Part_Plane
-Part_Prism
-Part_Wedge
-Part_Helix
-Part_Spiral
-Part_Circle
-Part_Ellipse
-Part_Line
-Part_Point
-Part_RegularPolygon
-Part_Booleans
-# Part_Common
-# Part_Cut
-Part_Fuse
-# Part_Shapebuilder
-Part_Extrude
-Part_Fillet
-Part_Revolve
-Part_SectionCross
-Part_Chamfer
-Part_Mirror
-Part_RuledSurface
-Part_Sweep
-Part_Loft
-Part_Offset
-Part_Thickness
-Part_RefineShape
-Part_CheckGeometry
-
-begin
-
-PartDesign_Workbench
-PartDesign_Pad
-PartDesign_Pocket
-PartDesign_Revolution
-PartDesign_Groove
-
-Sketcher_Point
-Sketcher_Line
-Sketcher_Arc
-Sketcher_Circle
-Sketcher_Ellipse
-Sketcher_Arc_of_Ellipse
-Sketcher_Polyline
-Sketcher_Rectangle
-Sketcher_Triangle
-Sketcher_Square
-Sketcher_Pentagon
-Sketcher_Hexagon
-Sketcher_Heptagon
-Sketcher_Octagon
-Sketcher_Slot
-Sketcher_Fillet
-Sketcher_Trimming
-# Sketcher_Arc3Point
-# Sketcher_Circle3Point
-# Sketcher_ConicSections
-# Sketcher_Ellipse_by_3_Points
-
-Constraint_PointOnPoint
-Constraint_Vertical
-Constraint_Horizontal
-Constraint_Parallel
-Constraint_Perpendicular
-Constraint_Tangent
-Constraint_EqualLength
-Constraint_Symmetric
-Constraint_Lock
-Constraint_HorizontalDistance
-Constraint_VerticalDistance
-Constraint_Length
-Constraint_Radius
-Constraint_InternalAngle
-Constraint_SnellsLaw
-Constraint_Internal_Alignment
-# Constraint_PointOnObject
-
-Sketcher_MapSketch
-Sketcher_Reorient
-Sketcher_Validate
-Sketcher_Show_Hide_Internal_Geometry
-# Sketcher_MergeSketch
-Sketcher_CloseShape
-Sketcher_ConnectLines
-# Sketcher_SelectConstraints
-# Sketcher_SelectOrigin
-# Sketcher_SelectVerticalAxis
-# Sketcher_SelectHorizontalAxis
-# Sketcher_SelectRedundantConstraints
-# Sketcher_SelectConflictingConstraints
-# Sketcher_SelectElementsAssociatedWithConstraints
-
-PartDesign_Fillet
-PartDesign_Chamfer
-PartDesign_Draft
-PartDesign_Mirrored
-PartDesign_LinearPattern
-PartDesign_PolarPattern
-PartDesign_Scaled
-PartDesign_MultiTransform
-PartDesign_WizardShaft
-PartDesign_InvoluteGear
-
-Sketcher_Tutorial
-
-begin
-
-Draft_Workbench
-Draft_Line
-Draft_Wire
-Draft_Circle
-Draft_Arc
-Draft_Ellipse
-Draft_Polygon
-Draft_Rectangle
-Draft_Text
-Draft_Dimension
-Draft_BSpline
-Draft_Point
-Draft_ShapeString
-Draft_Facebinder
-Draft_BezCurve
-Draft_Move
-Draft_Rotate
-Draft_Offset
-Draft_Trimex
-Draft_Upgrade
-Draft_Downgrade
-Draft_Scale
-Draft_Edit
-Draft_WireToBSpline
-Draft_AddPoint
-Draft_DelPoint
-Draft_Shape2DView
-Draft_Draft2Sketch
-Draft_Array
-Draft_Clone
-Draft_SelectPlane
-Draft_VisGroup
-
-begin
-
-Arch_Workbench
-Arch_Wall
-Arch_Structure
-Arch_Rebar
-Arch_Floor
-Arch_Building
-Arch_Site
-Arch_Window
-Arch_SectionPlane
-Arch_Axis
-Arch_Roof
-Arch_Space
-Arch_Stairs
-Arch_Panel
-Arch_Frame
-Arch_Equipment
-Arch_CutPlane
-Arch_Add
-Arch_Remove
-Arch_Survey
-Arch_tutorial
-
-begin
-
-Drawing_Workbench
-Drawing_Landscape_A3
-Drawing_View
-Drawing_Annotation
-Drawing_Clip
-Drawing_Openbrowser
-Drawing_Symbol
-Drawing_DraftView
-Drawing_Save
-Drawing_ProjectShape
-# Drawing_Othoviews
-
-begin
-
-Raytracing_Workbench
-# Raytracing_New
-# Raytracing_Lux
-# Raytracing_Part
-# Raytracing_ResetCamera
-# Raytracing_Export
-# Raytracing_Render
-
-begin
-
-Robot_Workbench
-# Robot_createRobot
-# Robot_Simulate
-# Robot_Export
-# Robot_SetHomePos
-# Robot_RestoreHomePos
-# Robot_CreateTrajectory
-# Robot_SetDefaultOrientation
-# Robot_InsertWaypoint
-# Robot_InsertWaypointPre
-# Robot_Edge2Trac
-# Robot_TrajectoryDressUp
-# Robot_TrajectoryCompound
-
-begin
-
-OpenSCAD_Workbench
-OpenSCAD_AddOpenSCADElement
-# OpenSCAD_ColorCodeShape
-# OpenSCAD_ReplaceObject
-# OpenSCAD_RemoveSubtree
-# OpenSCAD_RefineShapeFeature
-# OpenSCAD_IncreaseTolerance
-# OpenSCAD_Edgestofaces
-# OpenSCAD_ExpandPlacements
-# OpenSCAD_ExplodeGroup
-# OpenSCAD_MeshBoolean
-# OpenSCAD_Hull
-# OpenSCAD_Minkowski
-
-begin
-
-Fem_Workbench
-FEM_Analysis
-# FEM_Solver
-# FEM_Create
-# FEM_Material
-# FEM_Calculation
-# FEM_DefineNodes
-# FEM_FixedConstraint
-# FEM_ForceConstraint
-# FEM_BearingConstraint
-# FEM_GearConstraint
-# FEM_PulleyConstraint
-# FEM_ShowResult
-
-begin
-
-Plot_Module
-Plot_Save
-Plot_Basic_tutorial
-Plot_MultiAxes_tutorial
-# Plot_Axes
-# Plot_Series
-# Plot_Grid
-# Plot_Legend
-# Plot_Labels
-# Plot_Positions
-
-begin
-
-Mesh_Workbench
-
-end
+WorkbenchesList
 
 Interface_Customization
 Preferences_Editor
@@ -330,9 +70,8 @@ Embedding_FreeCAD
 Embedding_FreeCADGui
 Code_snippets"""
 
-import sys, os, re, tempfile, getopt, shutil, time
+import sys, os, shutil, time
 from urllib.request import urlopen
-from urllib.error import HTTPError
 
 #    CONFIGURATION       #################################################
 
@@ -359,7 +98,7 @@ def crawl():
     if PDFCONVERTOR == 'pisa':
         try:
             import ho.pisa as pisa
-        except:
+        except Exception:
             "Error: Python-pisa not installed, exiting."
             return 1
     elif PDFCONVERTOR == 'htmldoc':
@@ -368,7 +107,7 @@ def crawl():
             return 1
     try:
         from PyPDF2 import PdfFileReader,PdfFileWriter
-    except:
+    except Exception:
         print("Error: Python-pypdf2 not installed, exiting.")
 
     # run ########################################################
@@ -476,7 +215,7 @@ def joinpdf():
     result.addPage(inputfile.getPage(0))
     count = 1
 
-    tocfile = TOC.split("\n")
+    tocfile = createTOC()
     parent = False
     for page in tocfile:
         page = page.strip()
@@ -489,7 +228,7 @@ def joinpdf():
             if page == "end":
                 parent = False
                 continue
-            if VERBOSE: print('Appending',page, "at position",count)
+            if VERBOSE: print('Appending ',page, " at position ",count)
             title = page.replace("_"," ")
             pdffile = page + ".pdf"
             if exists(pdffile,True):
@@ -505,7 +244,7 @@ def joinpdf():
                     result.addBookmark(title,count,parent)
                 count += numpages
             else:
-                print("page",pdffile,"not found, aborting.")
+                print("page ",pdffile," not found, aborting.")
                 sys.exit()
 
     if VERBOSE: print("Writing...")
@@ -515,6 +254,31 @@ def joinpdf():
     if VERBOSE: 
         print(' ')
         print('Successfully created '+FOLDER+os.sep+'freecad.pdf')
+
+
+def createTOC():
+    "populates the TOC"
+    tocfile = TOC.split("\n")
+    files = [f for f in os.listdir(FOLDER) if f.endswith(".pdf")]
+    wbpages = []
+    for wb in Workbenches:
+        wbpage += "begin"
+        if wb+"_Workbench" in files:
+            wbpages.append(wb+"_Workbench")
+        for f in files:
+            if f.lower().startswith(wb.lower()+"_"):
+                if (not f.lower().endswith("_workbench")) and (not f.lower().endswith("tutorial")):
+                    wb.append(f)
+        if wb+"_tutorial" in files:
+            wbpages.append(wb+"_tutorial")
+    wbpages.append("end")
+    toc = []
+    for i in tocfile:
+        if i == "WorkbenchesList":
+            toc.extend(wbpages)
+        else:
+            toc.append(i)
+    return toc
 
 
 def local(page,image=False):

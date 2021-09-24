@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Če želite dodati sklice, jih izberite v pogledu 3D in kliknite "Dodaj".</translation>
+      <translation>Če želite dodati sklice, jih izberite v 3D pogledu in kliknite "Dodaj".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Če želiš dodati sklice: izberi jih v 3D pogledu in klikni "Dodaj".</translation>
+      <translation>Če želite dodati sklice: v 3D pogledu jih izberite in kliknite "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -70,9 +70,9 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Izbirnik referenčne geometrije za </translation>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation>Izbirnik referenčne geometrije za</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -85,6 +85,41 @@
       <translation>Kliknite "Dodaj" in izberite geometrijske elemente, ki jih želite dodati na seznam. Če noben element ni dodan na seznam so vsi ostali uporabljeni. Dovoljeno je izbrati sledeče geometrijske elemente: </translation>
     </message>
     <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation>Dovoljeno je izbrati naslednje geometrijske prvine: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
+      <translation>Kliknite "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.{}Dovoljeno je izbrati naslednje geometrijske prvine: {}{}{}</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>Če na seznam ni dodane nobene geometrije, se uporabi vse obstoječe.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on "Add" and select geometric elements to add to the list.</source>
+      <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation>Kliknite na "Dodaj" in izberite geometrijske prvine, ki jih želite dodati na seznam.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="286"/>
+      <source>{}If no geometry is added to the list, all remaining ones are used.</source>
+      <translation>{}Če na seznam ni dodane nobene geometrije, se uporabi vse obstoječe.</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
       <translation>Način izbiranja</translation>
@@ -93,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Telo</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Izbirnik referenčne geometrije za </translation>
     </message>
   </context>
   <context>
@@ -638,7 +678,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
+      <translation>Ustvari MKE prostorninsko ploskovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -832,7 +872,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
+      <translation>Ustvari MKE prostorninsko ploskovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -1133,7 +1173,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>Ustvari omejitev MKE za pritrjeno geometrično prvino</translation>
+      <translation>Ustvari omejilo MKE za nepremično geometrično prvino</translation>
     </message>
   </context>
   <context>
@@ -1411,7 +1451,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
       <source>You must specify at least one reference</source>
-      <translation>Navesti morate vsaj eno osnovo</translation>
+      <translation>Navesti morate vsaj en sklic</translation>
     </message>
   </context>
   <context>
@@ -1479,12 +1519,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation>Uredi mrežo MKE</translation>
+      <translation>Uredi ploskovje MKE</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ploskovjenje</translation>
+      <translation>Napaka pri ploskovjenju</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1540,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Parametri omejitve MKE</translation>
+      <translation>Določilke omejila MKE</translation>
     </message>
   </context>
   <context>
@@ -1523,7 +1563,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Uporabite samo en osnovo za ležajno omejitev</translation>
+      <translation>Uporabite samo en sklic za ležajno omejitev</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -1595,12 +1635,12 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejilo</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Izberete lahko samo ploskve, robove in temena</translation>
+      <translation>Izberete lahko le ploskve, robove in oglišča</translation>
     </message>
   </context>
   <context>
@@ -1637,12 +1677,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejilo</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Izberete lahko samo ploskve, robove in temena</translation>
+      <translation>Izberete lahko le ploskve, robove in oglišča</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -1729,7 +1769,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation>Parameter tetraedra</translation>
+      <translation>Določilka tetraedra</translation>
     </message>
   </context>
   <context>
@@ -1745,7 +1785,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ploskovjenje</translation>
+      <translation>Napaka pri ploskovjenju</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
@@ -1872,7 +1912,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="26"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Snov</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
@@ -1967,7 +2007,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation>Izberi rob, ploskev ali telo. Dovoljeno je izbrati samo eno telo.</translation>
+      <translation>Izberite rob, ploskev ali telo. Dovoljeno je izbrati samo eno telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -2369,7 +2409,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation>Pritrjen</translation>
+      <translation>Nepremičen</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>

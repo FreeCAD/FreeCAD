@@ -48,13 +48,13 @@ class BaseExport Stream
 {
 public:
     enum ByteOrder { BigEndian, LittleEndian };
-    
+
     ByteOrder byteOrder() const;
     void setByteOrder(ByteOrder);
 
 protected:
     Stream();
-    virtual ~Stream(); 
+    virtual ~Stream();
 
     bool _swap;
 };
@@ -171,9 +171,9 @@ protected:
     virtual std::streamsize showmanyc();
     virtual pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
-        std::ios_base::openmode which = 
+        std::ios_base::openmode which =
             std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type pos, 
+    virtual pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
 
@@ -292,9 +292,9 @@ protected:
     virtual std::streamsize showmanyc();
     virtual pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
-        std::ios_base::openmode which = 
+        std::ios_base::openmode which =
             std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type pos, 
+    virtual pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
 
@@ -340,7 +340,7 @@ public:
 class ifstream : public std::ifstream
 {
 public:
-    ifstream(const FileInfo& fi, ios_base::openmode mode = 
+    ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
 #ifdef _MSC_VER
     : std::ifstream(fi.toStdWString().c_str(), mode)

@@ -21,27 +21,37 @@
         <file>icons/DynamicData_workbench_icon.svg</file>
         <file>icons/EM_workbench_icon.svg</file>
         <file>icons/ExplodedAssembly_workbench_icon.svg</file>
+        <file>icons/ExtMan_workbench_icon.svg</file>
         <file>icons/fasteners_workbench_icon.svg</file>
         <file>icons/flamingo_workbench_icon.svg</file>
+        <file>icons/FEM_FrontISTR_workbench_icon.svg</file>
         <file>icons/GDML_workbench_icon.svg</file>
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/FCGear_workbench_icon.svg</file>
         <file>icons/Geomatics_workbench_icon.svg</file>
+        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>icons/InventorLoader_workbench_icon.svg</file>
         <file>icons/kicadStepUpMod_workbench_icon.svg</file>
         <file>icons/lattice2_workbench_icon.svg</file>
         <file>icons/LCInterlocking_workbench_icon.svg</file>
         <file>icons/Lithophane_workbench_icon.svg</file>
+        <file>icons/Maker_workbench_icon.svg</file>
         <file>icons/Manipulator_workbench_icon.svg</file>
+        <file>icons/Marz_workbench_icon.svg</file>
         <file>icons/MeshRemodel_workbench_icon.svg</file>
         <file>icons/ModernUI_workbench_icon.svg</file>
         <file>icons/MOOC_workbench_icon.svg</file>
+        <file>icons/MnesarcoUtils_workbench_icon.svg</file>
+        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
         <file>icons/Part-o-magic_workbench_icon.svg</file>
         <file>icons/Plot_workbench_icon.svg</file>
+        <file>icons/POV-Ray-Rendering_workbench_icon.svg</file>
+        <file>icons/Pyramids-and-Polyhedrons_workbench_icon.svg</file>
         <file>icons/pyrate_workbench_icon.svg</file>
         <file>icons/Reinforcement_workbench_icon.svg</file>
         <file>icons/Reporting_workbench_icon.svg</file>
         <file>icons/Render_workbench_icon.svg</file>
+        <file>icons/Rocket_workbench_icon.svg</file>
         <file>icons/sheetmetal_workbench_icon.svg</file>
         <file>icons/slic3r-tools_workbench_icon.svg</file>
         <file>icons/Ship_workbench_icon.svg</file>
@@ -51,8 +61,6 @@
         <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
-        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
-        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>
@@ -90,5 +98,7 @@
         <file>translations/AddonManager_vi.qm</file>
         <file>translations/AddonManager_zh-CN.qm</file>
         <file>translations/AddonManager_zh-TW.qm</file>
+        <file>translations/AddonManager_es-AR.qm</file>
+        <file>translations/AddonManager_bg.qm</file>
     </qresource>
 </RCC>

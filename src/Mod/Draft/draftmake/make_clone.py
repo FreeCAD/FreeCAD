@@ -80,7 +80,7 @@ def make_clone(obj, delta=None, forcedraft=False):
         else:
             try:
                 clonefunc = getattr(Arch,"make"+obj[0].Proxy.Type)
-            except:
+            except Exception:
                 pass # not a standard Arch object... Fall back to Draft mode
             else:
                 cl = clonefunc()
@@ -96,7 +96,7 @@ def make_clone(obj, delta=None, forcedraft=False):
                 cl.Role = base.Role
                 cl.Description = base.Description
                 cl.Tag = base.Tag
-            except:
+            except Exception:
                 pass
             if App.GuiUp:
                 gui_utils.format_object(cl,base)
@@ -108,7 +108,7 @@ def make_clone(obj, delta=None, forcedraft=False):
     # fall back to Draft clone mode
     if not cl:
         cl = App.ActiveDocument.addObject("Part::FeaturePython","Clone")
-        cl.addExtension("Part::AttachExtensionPython", None)
+        cl.addExtension("Part::AttachExtensionPython")
         cl.Label = prefix + obj[0].Label
     Clone(cl)
     if App.GuiUp:

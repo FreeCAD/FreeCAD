@@ -28,11 +28,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
-#ifndef BOOST_105400
 #include <boost/any.hpp>
-#else
-#include <boost_any_1_55.hpp>
-#endif
 #include <string>
 #include <bitset>
 

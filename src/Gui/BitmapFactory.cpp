@@ -37,14 +37,6 @@
 # include <QStyleOption>
 # include <sstream>
 #endif
-#if defined (FC_OS_WIN32) && QT_VERSION < 0x050000
-#define QTWEBKIT
-#endif
-
-#ifdef QTWEBKIT
-#include <QWebView>
-#include <QWebFrame>
-#endif
 
 #include <string>
 #include <Inventor/fields/SoSFImage.h>
@@ -177,9 +169,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
         filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
-#if QT_VERSION >= 0x040500
     paths.removeDuplicates();
-#endif
     for (QStringList::ConstIterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
         d.setNameFilters(filters);
@@ -188,9 +178,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
             files << it->absoluteFilePath();
     }
 
-#if QT_VERSION >= 0x040500
     files.removeDuplicates();
-#endif
     return files;
 }
 
@@ -334,7 +322,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
 }
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
-    const std::map<unsigned long, unsigned long>& colorMapping) const
+                                         const std::map<unsigned long, unsigned long>& colorMapping) const
 {
     QString stringContents = QString::fromUtf8(originalContents);
     for ( const auto &colorToColor : colorMapping ) {
@@ -346,91 +334,6 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     }
     QByteArray contents = stringContents.toUtf8();
 
-#ifdef QTWEBKIT
-    // There is a crash when using the Webkit engine in debug mode
-    // for a couple of SVG files. Thus, use the qsvg plugin.
-#if QT_VERSION < 0x040800 || !defined(_DEBUG)
-    QWebView webView;
-    QPalette pal = webView.palette();
-    pal.setColor(QPalette::Background, Qt::transparent);
-    webView.setPalette(pal);
-    webView.setContent(contents, QString::fromLatin1("image/svg+xml"));
-    QString node = QString::fromLatin1("document.rootElement.nodeName");
-    QWebFrame* frame = webView.page()->mainFrame();
-    if (!frame) {
-        return QPixmap();
-    }
-
-    QString root = frame->evaluateJavaScript(node).toString();
-    if (root.isEmpty() || root.compare(QLatin1String("svg"), Qt::CaseInsensitive)) {
-        return QPixmap();
-    }
-
-    QString w = QString::fromLatin1("document.rootElement.width.baseVal.value");
-    QString h = QString::fromLatin1("document.rootElement.height.baseVal.value");
-    double ww = frame->evaluateJavaScript(w).toDouble();
-    double hh = frame->evaluateJavaScript(h).toDouble();
-    if (ww == 0.0 || hh == 0.0)
-        return QPixmap();
-
-    QImage image(size, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-
-    QPainter p(&image);
-    qreal xs = size.isValid() ? size.width() / ww : 1.0;
-    qreal ys = size.isValid() ? size.height() / hh : 1.0;
-    p.scale(xs, ys);
-
-    // the best quality
-    p.setRenderHint(QPainter::Antialiasing);
-    p.setRenderHint(QPainter::TextAntialiasing);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
-    p.setOpacity(0); // important to keep transparent background
-    frame->render(&p);
-    p.end();
-
-    return QPixmap::fromImage(image);
-#else // QT_VERSION
-    QWebPage webPage;
-    QPalette pal = webPage.palette();
-    pal.setColor(QPalette::Background, Qt::transparent);
-    webPage.setPalette(pal);
-    QWebFrame* frame = webPage.mainFrame();
-    if (!frame) {
-        return QPixmap();
-    }
-    frame->setContent(contents, QString::fromLatin1("image/svg+xml"));
-    // Important to exclude user events here because otherwise
-    // it may happen that an item the icon is created for gets
-    // deleted in the meantime. This happens e.g. dragging over
-    // the categories in the commands panel very quickly.
-    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-    webPage.setViewportSize(webPage.mainFrame()->contentsSize());
-
-    double ww = webPage.viewportSize().width();
-    double hh = webPage.viewportSize().height();
-    if (ww == 0.0 || hh == 0.0)
-        return QPixmap();
-
-    QImage image(size, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-
-    QPainter p(&image);
-    qreal xs = size.isValid() ? size.width() / ww : 1.0;
-    qreal ys = size.isValid() ? size.height() / hh : 1.0;
-    p.scale(xs, ys);
-
-    // the best quality
-    p.setRenderHint(QPainter::Antialiasing);
-    p.setRenderHint(QPainter::TextAntialiasing);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
-    p.setOpacity(0); // important to keep transparent background
-    frame->render(&p);
-    p.end();
-
-    return QPixmap::fromImage(image);
-#endif // QT_VERSION
-#else //QTWEBKIT
     QImage image(size.toSize(), QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
@@ -443,7 +346,6 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     p.end();
 
     return QPixmap::fromImage(image);
-#endif
 }
 
 QStringList BitmapFactoryInst::pixmapNames() const
@@ -583,13 +485,8 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
-#if QT_VERSION >= 0x050000
     qreal dpr1 = p1.devicePixelRatio();
     qreal dpr2 = p2.devicePixelRatio();
-#else
-    qreal dpr1 = 1;
-    qreal dpr2 = 1;
-#endif
 
     switch (pos)
     {

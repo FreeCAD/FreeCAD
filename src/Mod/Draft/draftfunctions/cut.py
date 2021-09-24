@@ -30,7 +30,7 @@
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftutils.messages import _err
 
 
@@ -54,7 +54,7 @@ def cut(object1, object2):
         If there is a problem and the new object can't be created.
     """
     if not App.activeDocument():
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return
 
     obj = App.activeDocument().addObject("Part::Cut", "Cut")

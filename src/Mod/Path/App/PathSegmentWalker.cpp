@@ -1,6 +1,4 @@
-/*
- ***************************************************************************
- *                                                                         *
+/***************************************************************************
  *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,8 +17,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- ***************************************************************************
- */
+ ***************************************************************************/
+
+
 #include "PreCompiled.h"
 #include "PathSegmentWalker.h"
 
@@ -53,7 +52,7 @@ Base::Vector3d compensateRotation(const Base::Vector3d &pt, const Base::Rotation
 
 Base::Rotation yawPitchRoll(double a, double b, double c)
 {
-    Base::Rotation rot; 
+    Base::Rotation rot;
     rot.setYawPitchRoll(-c, -b, -a);
     return rot;
 }

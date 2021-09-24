@@ -185,10 +185,10 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_4">
         <property name="toolTip">
-         <string>By default, new objects will have their &quot;Move with host&quot; property set to False, which means they won't move when their host object is moved.</string>
+         <string>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</string>
         </property>
         <property name="text">
-         <string>Set &quot;Move with host&quot; property to True by default</string>
+         <string>Set "Move with host" property to True by default</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -204,7 +204,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_5">
         <property name="text">
-         <string>Set &quot;Move base&quot; property to True by default</string>
+         <string>Set "Move base" property to True by default</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -705,7 +705,7 @@ a Footprint display mode</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is selected, the &quot;Open BimServer in browser&quot;
+           <string>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</string>
           </property>

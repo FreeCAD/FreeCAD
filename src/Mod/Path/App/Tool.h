@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,6 +23,7 @@
 #ifndef PATH_TOOL_H
 #define PATH_TOOL_H
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <map>
@@ -99,6 +100,8 @@ namespace Path
         static ToolMaterial getToolMaterial(std::string mat);
         static const char* MaterialName(ToolMaterial mat);
     };
+
+    using ToolPtr = std::shared_ptr<Tool>;
 } //namespace Path
 
 #endif // PATH_TOOL_H

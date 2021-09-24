@@ -48,9 +48,7 @@
 #include <Quarter/devices/Keyboard.h>
 #include <Quarter/devices/SpaceNavigatorDevice.h>
 
-#if QT_VERSION >= 0x050000
 #include <QGuiApplication>
-#endif
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -78,9 +76,7 @@ public:
 
     SbVec2s mousepos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
     // the following corrects for high-dpi displays (e.g. mac retina)
-#if QT_VERSION >= 0x050000
     mousepos *= quarterwidget->devicePixelRatio();
-#endif
     foreach(InputDevice * device, this->devices) {
       device->setMousePosition(mousepos);
     }

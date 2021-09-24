@@ -38,3 +38,8 @@ install(
     FILES org.freecadweb.FreeCAD.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
 )
+
+install(
+    FILES FreeCAD.thumbnailer
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/thumbnailers
+)

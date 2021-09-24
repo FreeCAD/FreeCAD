@@ -25,6 +25,7 @@
 #define SKETCHERGUI_SKETCHERSETTINGS_H
 
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace SketcherGui {
 class Ui_SketcherSettings;
@@ -50,7 +51,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_SketcherSettings* ui;
+    std::unique_ptr<Ui_SketcherSettings> ui;
     SketcherGeneralWidget* form;
 };
 
@@ -76,7 +77,7 @@ private Q_SLOTS:
     void onBtnTVApplyClicked(bool);
 
 private:
-    Ui_SketcherSettingsDisplay* ui;
+    std::unique_ptr<Ui_SketcherSettingsDisplay> ui;
 };
 
 /**
@@ -98,7 +99,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_SketcherSettingsColors* ui;
+    std::unique_ptr<Ui_SketcherSettingsColors> ui;
 };
 
 } // namespace SketcherGui

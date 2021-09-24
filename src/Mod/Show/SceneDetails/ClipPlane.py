@@ -39,7 +39,7 @@ class ClipPlane(SceneDetail):
         if enable is not None:
             if placement is not None and offset != 0.0:
                 placement = placement.copy()
-                dir = placement.multVec(App.Vector(0,0,1))
+                dir = placement.Rotation.multVec(App.Vector(0,0,1))
                 placement.Base = placement.Base + dir*offset
             self.data = (enable, placement)
         

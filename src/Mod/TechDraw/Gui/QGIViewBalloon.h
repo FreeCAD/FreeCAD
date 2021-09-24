@@ -164,6 +164,7 @@ public Q_SLOTS:
 
 protected:
     void draw() override;
+    void drawBalloon(bool dragged = false);
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -183,6 +184,7 @@ protected:
 
     TechDraw::DrawView* getSourceView() const;
     bool m_dragInProgress;
+    bool m_originDragged = false;
     bool m_ctrl;
     Base::Vector3d m_saveOffset;
 

@@ -40,7 +40,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftobjects.pointarray import PointArray
 
 if App.GuiUp:
@@ -105,7 +105,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     if isinstance(base_object, str):
@@ -114,7 +114,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     found, base_object = utils.find_object(base_object, doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("base_object: {}".format(base_object.Label))
@@ -125,15 +125,14 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     found, point_object = utils.find_object(point_object, doc)
     if not found:
         _msg("point_object: {}".format(point_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("point_object: {}".format(point_object.Label))
     if (not hasattr(point_object, "Geometry")
             and not hasattr(point_object, "Links")
             and not hasattr(point_object, "Components")):
-        _err(_tr("Wrong input: point object doesn't have "
-                 "'Geometry', 'Links', or 'Components'."))
+        _err(translate("draft","Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'."))
         return None
 
     _msg("extra: {}".format(extra))
@@ -145,8 +144,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
                                    App.Rotation))],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a placement, a vector, "
-                 "or a rotation."))
+        _err(translate("draft","Wrong input: must be a placement, a vector, or a rotation."))
         return None
 
     # Convert the vector or rotation to a full placement

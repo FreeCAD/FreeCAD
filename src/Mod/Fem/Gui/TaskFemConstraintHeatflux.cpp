@@ -383,7 +383,7 @@ TaskDlgFemConstraintHeatflux::TaskDlgFemConstraintHeatflux(ViewProviderFemConstr
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintHeatflux(ConstraintView);;
+    this->parameter = new TaskFemConstraintHeatflux(ConstraintView);
 
     Content.push_back(parameter);
 }

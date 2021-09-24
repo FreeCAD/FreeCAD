@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -73,6 +71,11 @@ def getPropertyValueString(obj, prop):
 def setProperty(obj, prop, value):
     '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
     o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
+    if not attr is None and type(value) == str:
+        if type(attr) == int:
+            value = int(value, 0)
+        elif type(attr) == bool:
+            value = value.lower() in ['true', '1', 'yes', 'ok']
     if o and name:
         setattr(o, name, value)
 

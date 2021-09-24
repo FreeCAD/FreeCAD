@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Spajanje ćelija</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Podijeli ćeliju</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Ćeliju poravnaj lijevo</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>centriraj ćeliju</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Ćeliju poravnaj desno</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Ćeliju poravnaj  na gore</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Ćeliju poravnaj  na dolje</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Ćeliju centriraj uspravno</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Postavi podebljani tekst</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Postavi ukošeni tekst</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Postavi podcrtani tekst</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Stvori proračunsku tablicu</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Postavi svojstava ćelija</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Uredi ćeliju</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Umetni redove</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Ukloni redove</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Umetni stupce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Obriši ćeliju(e)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Postavi boju prednjeg plana</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Postavi boju pozadine</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -488,24 +571,72 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Umetni redove</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Ukloni redove</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Umetni stupce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Ukloni stupce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Svojstva...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

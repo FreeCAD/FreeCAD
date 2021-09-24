@@ -50,6 +50,9 @@ public:
 
     Base::Vector3d getNormal();
 
+protected:
+    virtual void Restore(Base::XMLReader& reader);
+
 private:
     static const char* ResizeModeEnums[];
 };

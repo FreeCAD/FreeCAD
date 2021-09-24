@@ -83,11 +83,11 @@ public:
     Unit pow(signed char exp)const;
     //@}
     /// get the unit signature
-    const UnitSignature & getSignature(void)const {return Sig;} 
+    const UnitSignature & getSignature(void)const {return Sig;}
     bool isEmpty(void)const;
-    
+
     QString getString(void) const;
-    /// get the type as an string such as "Area", "Length" or "Pressure". 
+    /// get the type as an string such as "Area", "Length" or "Pressure".
     QString getTypeString(void) const;
 
     /** Predefined Unit types. */
@@ -100,7 +100,7 @@ public:
     /// Angle
     static Unit Angle;
     static Unit AngleOfFriction;
-    
+
     static Unit Density;
 
     static Unit Area;
@@ -121,6 +121,7 @@ public:
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
     static Unit ElectricalResistance;
+    static Unit ElectricalConductivity;
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 
@@ -133,6 +134,8 @@ public:
     static Unit YieldStrength;
     static Unit YoungsModulus;
 
+    static Unit Stiffness;
+    
     static Unit Force;
     static Unit Work;
     static Unit Power;

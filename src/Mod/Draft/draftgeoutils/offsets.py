@@ -32,7 +32,7 @@ import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import geomType, vec
-from draftgeoutils.geometry import getNormal
+from draftgeoutils.geometry import get_normal
 from draftgeoutils.wires import isReallyClosed
 from draftgeoutils.intersections import wiresIntersect, connect
 
@@ -153,8 +153,16 @@ def offset(edge, vector, trim=False):
             return Part.ArcOfCircle(curve,
                                     edge.FirstParameter,
                                     edge.LastParameter).toShape()
+    elif geomType(edge) == "Ellipse":
+        rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
+        curve = edge.Curve.copy()
+        if vector.getAngle(rad) < 1:
+            curve.MajorRadius = curve.MajorRadius+vector.Length
+            curve.MinorRadius = curve.MinorRadius+vector.Length
         else:
-            return curve.toShape()
+            curve.MajorRadius = curve.MajorRadius-vector.Length
+            curve.MinorRadius = curve.MinorRadius-vector.Length
+        return curve.toShape()
     else:
         return None
 
@@ -223,7 +231,10 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     if normal:
         norm = normal
     else:
-        norm = getNormal(wire)  # norm = Vector(0, 0, 1)
+        norm = get_normal(wire)  # norm = Vector(0, 0, 1)
+        # for backward compatibility with previous getNormal implementation
+        if norm is None:
+            norm = App.Vector(0, 0, 1)
 
     closed = isReallyClosed(wire)
     nedges = []
@@ -277,20 +288,21 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     # ('legacy/backward-compatible' mode)
     if not firstDir:
         # need to test against Part.Circle, not Part.ArcOfCircle
-        if isinstance(e.Curve, Part.Circle):
+        if isinstance(e.Curve, (Part.Circle,Part.Ellipse)):
             v0 = e.tangentAt(e.FirstParameter).cross(norm)
         else:
             v0 = vec(e).cross(norm)
         # check against dvec provided for the offset direction
         # would not know if dvec is vector of width (Left/Right Align)
         # or width/2 (Center Align)
-        dvec0 = DraftVecUtils.scaleTo(v0, dvec.Length)
-        if DraftVecUtils.equals(dvec0, dvec):
+        v0.normalize()
+        v1 = App.Vector(dvec).normalize()
+        if v0.isEqual(v1, 0.0001):
             # "Left Offset" (Left Align or 'left offset' in Centre Align)
             firstDir = 1
             firstAlign = 'Left'
             alignListC.append('Left')
-        elif DraftVecUtils.equals(dvec0, dvec.negative()):
+        elif v0.isEqual(v1.negative(), 0.0001):
             # "Right Offset" (Right Align or 'right offset' in Centre Align)
             firstDir = -1
             firstAlign = 'Right'

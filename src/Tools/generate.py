@@ -4,6 +4,11 @@
 
 from __future__ import print_function # this allows py2 to print(str1, str2) correctly
 
+import os,sys,getopt
+import generateBase.generateModel_Module
+import generateTemplates.templateModule
+import generateTemplates.templateClassPyExport
+
 Usage = """generate - generates a FreeCAD Module out of an XML model
 
 Usage:
@@ -24,11 +29,6 @@ Version:
   0.2
 """
 
-import os,sys,string,re,getopt,codecs,binascii
-import generateBase.generateModel_Module
-import generateTemplates.templateModule
-import generateTemplates.templateClassPyExport
-
 
 # Globals
 
@@ -45,7 +45,7 @@ def generate(filename,path):
   else:
     Export = generateTemplates.templateClassPyExport.TemplateClassPyExport()
     Export.path = path+"/"
-    Export.dirname = os.path.dirname(filename)+"/";
+    Export.dirname = os.path.dirname(filename)+"/"
     Export.export = GenerateModelInst.PythonExport[0]
     Export.Generate()
     print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
@@ -83,8 +83,7 @@ def main():
 
     # running through the files
     if (len(args) ==0):
-        #sys.stderr.write(Usage)
-        generate("../Mod/PartDesign/PartDesign_Model.xml")
+        sys.stderr.write(Usage)
     else:
         for i in args:
             filename = os.path.abspath(i)

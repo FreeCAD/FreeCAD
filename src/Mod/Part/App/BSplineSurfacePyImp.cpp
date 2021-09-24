@@ -35,6 +35,7 @@
 # include <GeomAPI_PointsToBSplineSurface.hxx>
 # include <GeomAbs_Shape.hxx>
 #endif
+# include <GeomFill_NSections.hxx>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
@@ -283,11 +284,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -348,11 +345,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -454,10 +447,10 @@ PyObject* BSplineSurfacePy::setVKnot(PyObject *args)
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
     if (M == -1) {
-        surf->SetUKnot(Index, K);
+        surf->SetVKnot(Index, K);
     }
     else {
-        surf->SetUKnot(Index, K, M);
+        surf->SetVKnot(Index, K, M);
     }
 
     Py_Return;
@@ -1422,11 +1415,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Py::Sequence umultssq(umults);
         Standard_Integer index = 1;
         for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long mult(*it);
-#else
-            Py::Int mult(*it);
-#endif
             if (index < occumults.Length() || PyObject_Not(uperiodic)) {
                 sum_of_umults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
@@ -1435,11 +1424,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Py::Sequence vmultssq(vmults);
         index = 1;
         for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long mult(*it);
-#else
-            Py::Int mult(*it);
-#endif
             if (index < occvmults.Length() || PyObject_Not(vperiodic)) {
                 sum_of_vmults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
@@ -1508,6 +1493,67 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Standard_CString msg = e.GetMessageString();
         PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
+    }
+}
+
+/*!
+ * \code
+import math
+c = Part.Circle()
+c.Radius=50
+c = c.trim(0, math.pi)
+
+e1 = Part.Ellipse()
+e1.Center = (0, 0, 75)
+e1.MajorRadius = 30
+e1.MinorRadius = 5
+e1 = e1.trim(0, math.pi)
+
+e2 = Part.Ellipse()
+e2.Center = (0, 0, 100)
+e2.MajorRadius = 20
+e2.MinorRadius = 5
+e2 = e2.trim(0, math.pi)
+
+bs = Part.BSplineSurface()
+bs.buildFromNSections([c, e1, e2])
+ * \endcode
+ */
+PyObject* BSplineSurfacePy::buildFromNSections(PyObject *args)
+{
+    PyObject* list;
+    PyObject* refSurf = Py_False;
+    if (!PyArg_ParseTuple(args, "O|O!", &list, &PyBool_Type, &refSurf))
+        return nullptr;
+
+    try {
+        TColGeom_SequenceOfCurve curveSeq;
+        Py::Sequence curves(list);
+        for (Py::Sequence::iterator it = curves.begin(); it != curves.end(); ++it) {
+            Py::Object obj(*it);
+            if (PyObject_TypeCheck(obj.ptr(), &GeometryCurvePy::Type)) {
+                GeomCurve* geom = static_cast<GeometryCurvePy*>(obj.ptr())->getGeomCurvePtr();
+                curveSeq.Append(Handle(Geom_Curve)::DownCast(geom->handle()));
+            }
+        }
+
+        GeomFill_NSections fillOp(curveSeq);
+        if (PyObject_IsTrue(refSurf)) {
+            Handle(Geom_BSplineSurface) ref = Handle(Geom_BSplineSurface)::DownCast
+                (getGeometryPtr()->handle());
+            fillOp.SetSurface(ref);
+        }
+
+        fillOp.ComputeSurface();
+
+        Handle(Geom_BSplineSurface) aSurf = fillOp.BSplineSurface();
+        this->getGeomBSplineSurfacePtr()->setHandle(aSurf);
+        Py_Return;
+    }
+    catch (const Standard_Failure& e) {
+        Standard_CString msg = e.GetMessageString();
+        PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
+        return nullptr;
     }
 }
 

@@ -79,7 +79,7 @@ class DraftLink(DraftObject):
     def attach(self, obj):
         """Set up the properties when the object is attached."""
         if self.use_link:
-            obj.addExtension('App::LinkExtensionPython', None)
+            obj.addExtension('App::LinkExtensionPython')
             self.linkSetup(obj)
 
     def canLinkProperties(self, _obj):
@@ -175,10 +175,14 @@ class DraftLink(DraftObject):
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList', 'Immutable')
                 obj.Count = len(pls)
+        elif hasattr(obj, 'Count') and obj.Count != len(pls): # required for regular pointarrays
+            obj.Count = len(pls)
 
         if obj.Base:
-            shape = Part.getShape(obj.Base)
-            if shape.isNull():
+            shape = getattr(obj.Base, 'Shape', None)
+            if not isinstance(shape, Part.Shape):
+                obj.Shape = Part.Shape()
+            elif shape.isNull():
                 _err_msg = ("'{}' cannot build shape "
                             "from '{}'\n".format(obj.Label, obj.Base.Label))
                 raise RuntimeError(_err_msg)

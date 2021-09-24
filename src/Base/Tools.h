@@ -24,50 +24,18 @@
 #ifndef BASE_TOOLS_H
 #define BASE_TOOLS_H
 
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 #include <functional>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QString>
 #include <QObject>
-
-#if (QT_VERSION < 0x050300)
-class QSignalBlocker
-{
-public:
-    QSignalBlocker(QObject *object)
-      : object(object)
-      , blocked(object && object->blockSignals(true))
-      , inhibited(false)
-    {
-    }
-    ~QSignalBlocker()
-    {
-        if (object && !inhibited)
-            object->blockSignals(blocked);
-    }
-    void reblock()
-    {
-        if (object)
-            object->blockSignals(true);
-        inhibited = false;
-    }
-    void unblock()
-    {
-        if (object)
-            object->blockSignals(blocked);
-        inhibited = true;
-    }
-
-private:
-    QObject *object;
-    bool blocked;
-    bool inhibited;
-};
-#endif
 
 // ----------------------------------------------------------------------------
 
@@ -248,7 +216,7 @@ template<typename T>
 class BitsetLocker
 {
 public:
-    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
+    BitsetLocker(T& flags, std::size_t flag, bool value = true)
         : flags(flags), flag(flag)
     { oldValue = flags.test(flag); flags.set(flag,value); }
     ~BitsetLocker()

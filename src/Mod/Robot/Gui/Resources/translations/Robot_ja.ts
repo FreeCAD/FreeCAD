@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>新しい空の軌道を作成 </translation>
+      <source>Create a new empty trajectory</source>
+      <translation type="unfinished">Create a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -1008,7 +1008,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Robot</source>
-      <translation>ロボット (&amp;R)</translation>
+      <translation>ロボット(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

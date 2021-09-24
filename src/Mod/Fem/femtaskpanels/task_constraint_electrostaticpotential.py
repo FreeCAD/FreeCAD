@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM constraint electrostatic potential task panel for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_constraint_electrostaticpotential
 #  \ingroup FEM
@@ -131,7 +131,8 @@ class _TaskPanel(object):
                     .format(self._paramWidget.potentialTxt.text())
                 )
             if quantity is not None:
-                self._obj.Potential = float(quantity.getValueAs(unit))
+                self._obj.Potential = quantity.getValueAs(unit).Value
+
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
         self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()

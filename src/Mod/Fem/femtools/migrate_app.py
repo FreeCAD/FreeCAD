@@ -26,9 +26,9 @@ see module end as well as forum topic
 https://forum.freecadweb.org/viewtopic.php?&t=46218
 """
 
-__title__ = "migrate app"
+__title__ = "FEM class and methods that migrates old App objects"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 
@@ -122,6 +122,8 @@ class FemMigrateApp(object):
         if fullname == "PyObjects._FemResultMechanical":
             return self
         if fullname == "PyObjects._FemSolverCalculix":
+            return self
+        if fullname == "PyObjects._FemSolverZ88":
             return self
 
         if fullname == "PyObjects._FemBeamSection":
@@ -310,6 +312,9 @@ class FemMigrateApp(object):
         if module.__name__ == "PyObjects._FemSolverCalculix":
             import femobjects.solver_ccxtools
             module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
+        if module.__name__ == "PyObjects._FemSolverZ88":
+            import femsolver.z88.solver
+            module._FemSolverZ88 = femsolver.z88.solver.Proxy
 
         if module.__name__ == "PyObjects._FemBeamSection":
             import femobjects.element_geometry1D
@@ -451,6 +456,7 @@ module="PyObjects._FemMeshRegion"
 module="PyObjects._FemMeshResult"
 module="PyObjects._FemResultMechanical"
 module="PyObjects._FemSolverCalculix"
+module="PyObjects._FemSolverZ88"
 
 renamed between the second and third big moveings
 module="PyObjects._FemBeamSection"

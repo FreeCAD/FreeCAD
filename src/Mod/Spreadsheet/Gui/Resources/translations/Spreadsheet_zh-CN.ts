@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>合并单元格</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>拆分单元格</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>左对齐单元格</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>居中单元格</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>右对齐单元格</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>顶对齐单元格</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>底对齐单元格</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>垂直居中对齐单元格</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>设置粗体文本</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>设置斜体文本</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>设置下划线文本</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>创建工作表</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>设置单元格属性</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>编辑单元格</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>插入行</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>删除行</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>插入列</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>清除单元格</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>设置前景色</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>设置背景颜色</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -366,13 +449,13 @@ Please select one cell only.</source>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>别名包含无效字符！</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>通过别名引用单元格，例如用
+Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +541,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>内容（&amp;C）:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>别名（&amp;A）：</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>通过别名引用单元格，例如用
+Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -481,24 +564,56 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>插入行</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>删除行</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>插入列</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>删除列</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>属性...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

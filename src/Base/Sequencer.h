@@ -67,10 +67,10 @@ class SequencerLauncher;
  * at a time. But note, that only the first instance has an effect. Any further
  * sequencer instance doesn't influence the total number of iteration steps. This
  * is simply because it's impossible to get the exact number of iteration steps
- * for nested instances and thus we have either too few steps estimated then the 
+ * for nested instances and thus we have either too few steps estimated then the
  * sequencer may indicate 100% but the algorithm still running or we have too many
  * steps estimated so that the an algorithm may stop long before the sequencer
- * reaches 100%. 
+ * reaches 100%.
  *
  *  \code
  *  try {

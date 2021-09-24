@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,9 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
@@ -40,16 +40,11 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):
@@ -160,7 +155,7 @@ class ViewProvider(object):
         if self.Object.Active:
             return self.OpIcon
         else:
-            return ":/icons/Path-OpActive.svg"
+            return ":/icons/Path_OpActive.svg"
 
     def getTaskPanelOpPage(self, obj):
         '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''
@@ -213,10 +208,11 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = 'Operation'
 
-    def setParent(self, parent):
-        '''setParent() ... used to transfer parent object link to child class.
-        Do not overwrite.'''
-        self.parent = parent
+        if self._installTCUpdate():
+            PathJob.Notification.updateTC.connect(self.resetToolController)
+
+    def _installTCUpdate(self):
+        return hasattr(self.form, 'toolController')
 
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
@@ -248,6 +244,8 @@ class TaskPanelPage(object):
     def pageCleanup(self):
         '''pageCleanup() ... internal callback.
         Do not overwrite, implement cleanupPage(obj) instead.'''
+        if self._installTCUpdate():
+            PathJob.Notification.updateTC.disconnect(self.resetToolController)
         self.cleanupPage(self.obj)
 
     def pageRegisterSignalHandlers(self):
@@ -363,6 +361,12 @@ class TaskPanelPage(object):
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
 
+    def resetToolController(self, job, tc):
+        if self.obj is not None:
+            self.obj.ToolController = tc
+            combo = self.form.toolController
+            self.setupToolController(self.obj, combo)
+
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
@@ -375,7 +379,7 @@ class TaskPanelPage(object):
         combo.blockSignals(False)
 
         if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj)
+            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
@@ -383,7 +387,7 @@ class TaskPanelPage(object):
         '''updateToolController(obj, combo) ...
         helper function to update obj's ToolController property if a different
         one has been selected in the combo box.'''
-        tc = PathUtils.findToolController(obj, combo.currentText())
+        tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
 
@@ -432,7 +436,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
 
         self.panelTitle = 'Base Geometry'
-        self.OpIcon = ":/icons/Path-BaseGeometry.svg"
+        self.OpIcon = ":/icons/Path_BaseGeometry.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -537,7 +541,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
-            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
@@ -553,6 +557,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         return False
 
     def addBase(self):
+        PathLog.track()
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
             # self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
@@ -593,12 +598,13 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def importBaseGeometry(self):
         opLabel = str(self.form.geometryImportList.currentText())
         ops = FreeCAD.ActiveDocument.getObjectsByLabel(opLabel)
-        if ops.__len__() > 1:
+        if len(ops) > 1:
             msg = translate('PathOpGui', 'Mulitiple operations are labeled as')
             msg += " {}\n".format(opLabel)
             FreeCAD.Console.PrintWarning(msg)
-        for (base, subList) in ops[0].Base:
-            FreeCADGui.Selection.addSelection(base, subList)
+        (base, subList) = ops[0].Base[0]
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(base, subList)
         self.addBase()
 
     def registerSignalHandlers(self, obj):
@@ -622,11 +628,19 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         # Set base geometry list window to resize based on contents
         # Code reference:
         # https://stackoverflow.com/questions/6337589/qlistwidget-adjust-size-to-content
+        # ml: disabling this logic because I can't get it to work on HPD monitor.
+        #     On my systems the values returned by the list object are also incorrect on
+        #     creation, leading to a list object of size 15. count() always returns 0 until
+        #     the list is actually displayed. The same is true for sizeHintForRow(0), which
+        #     returns -1 until the widget is rendered. The widget claims to have a size of
+        #     (100, 30), once it becomes visible the size is (535, 192).
+        #     Leaving the framework here in case somebody figures out how to set this up
+        #     properly.
         qList = self.form.baseList
-        # qList.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        col = qList.width()  # 300
         row = (qList.count() + qList.frameWidth()) * 15
-        qList.setFixedSize(col, row)
+        #qList.setMinimumHeight(row)
+        PathLog.debug("baseList({}, {}) {} * {}".format(qList.size(), row, qList.count(), qList.sizeHintForRow(0)))
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
@@ -755,7 +769,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = None
         self.safeHeight = None
         self.panelTitle = 'Heights'
-        self.OpIcon = ":/icons/Path-Heights.svg"
+        self.OpIcon = ":/icons/Path_Heights.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -799,7 +813,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finishDepth = None
         self.stepDown = None
         self.panelTitle = 'Depths'
-        self.OpIcon = ":/icons/Path-Depths.svg"
+        self.OpIcon = ":/icons/Path_Depths.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -929,6 +943,45 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.setEnabled(False)
 
 
+class TaskPanelDiametersPage(TaskPanelPage):
+    '''Page controller for diameters.'''
+
+    def __init__(self, obj, features):
+        super(TaskPanelDiametersPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.clearanceHeight = None
+        self.safeHeight = None
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageDiametersEdit.ui")
+
+    def initPage(self, obj):
+        self.minDiameter = PathGui.QuantitySpinBox(self.form.minDiameter, obj, 'MinDiameter')
+        self.maxDiameter = PathGui.QuantitySpinBox(self.form.maxDiameter, obj, 'MaxDiameter')
+
+    def getTitle(self, obj):
+        return translate("Path", "Diameters")
+
+    def getFields(self, obj):
+        self.minDiameter.updateProperty()
+        self.maxDiameter.updateProperty()
+
+    def setFields(self, obj):
+        self.minDiameter.updateSpinBox()
+        self.maxDiameter.updateSpinBox()
+
+    def getSignalsForUpdate(self, obj):
+        signals = []
+        signals.append(self.form.minDiameter.editingFinished)
+        signals.append(self.form.maxDiameter.editingFinished)
+        return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in ['MinDiameter', 'MaxDiameter']:
+            self.setFields(obj)
+
+
 class TaskPanel(object):
     '''
     Generic TaskPanel implementation handling the standard Path operation layout.
@@ -942,8 +995,10 @@ class TaskPanel(object):
     def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
         PathLog.track(obj.Label, deleteOnReject, opPage, selectionFactory)
         FreeCAD.ActiveDocument.openTransaction(translate("Path", "AreaOp Operation"))
+        self.obj = obj
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
+        self.parent = None
 
         # members initialized later
         self.clearanceHeight = None
@@ -953,6 +1008,8 @@ class TaskPanel(object):
         self.finalDepth = None
         self.stepDown = None
         self.buttonBox = None
+        self.minDiameter = None
+        self.maxDiameter = None
 
         features = obj.Proxy.opFeatures(obj)
         opPage.features = features
@@ -981,12 +1038,18 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
 
+        if PathOp.FeatureDiameters & features:
+            if hasattr(opPage, 'taskPanelDiametersPage'):
+                self.featurePages.append(opPage.taskPanelDiametersPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelDiametersPage(obj, features))
+
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
+            page.parent = self  # save pointer to this current class as "parent"
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
-            page.setParent(self)
 
         taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
 
@@ -1026,8 +1089,9 @@ class TaskPanel(object):
             self.form = forms
 
         self.selectionFactory = selectionFactory
-        self.obj = obj
         self.isdirty = deleteOnReject
+        self.visibility = obj.ViewObject.Visibility
+        obj.ViewObject.Visibility = True
 
     def isDirty(self):
         '''isDirty() ... returns true if the model is not in sync with the UI anymore.'''
@@ -1045,7 +1109,7 @@ class TaskPanel(object):
     def accept(self, resetEdit=True):
         '''accept() ... callback invoked when user presses the task panel OK button.'''
         self.preCleanup()
-        if self.isDirty:
+        if self.isDirty():
             self.panelGetFields()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
@@ -1071,6 +1135,7 @@ class TaskPanel(object):
         PathSelection.clear()
         FreeCADGui.Selection.removeObserver(self)
         self.obj.ViewObject.Proxy.clearTaskPanel()
+        self.obj.ViewObject.Visibility = self.visibility
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
@@ -1108,6 +1173,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         '''panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI.'''
         PathLog.track()
+        self.obj.Proxy.sanitizeBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 
@@ -1137,7 +1203,18 @@ class TaskPanel(object):
                     page.clearBase()
                     page.addBaseGeometry(sel)
 
+        # Update properties based upon expressions in case expression value has changed
+        for (prp, expr) in self.obj.ExpressionEngine:
+            val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+            value = val.Value if hasattr(val, 'Value') else val
+            prop = getattr(self.obj, prp)
+            if hasattr(prop, "Value"):
+                prop.Value = value
+            else:
+                prop = value
+
         self.panelSetFields()
+
         for page in self.featurePages:
             page.pageRegisterSignalHandlers()
 
@@ -1178,7 +1255,7 @@ class CommandSetStartPoint:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-StartPoint',
+        return {'Pixmap': 'Path_StartPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point")}
 
@@ -1199,6 +1276,8 @@ class CommandSetStartPoint:
         obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def Activated(self):
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
 
@@ -1208,11 +1287,12 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
-
+        obj.ViewObject.Visibility = False
         FreeCAD.ActiveDocument.commitTransaction()
+
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
@@ -1256,6 +1336,7 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
+        self.job = None
 
 
 def SetupOperation(name,

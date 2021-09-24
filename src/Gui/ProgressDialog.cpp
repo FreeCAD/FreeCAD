@@ -152,7 +152,15 @@ void SequencerDialog::nextStep(bool canAbort)
 
 void SequencerDialog::setProgress(size_t step)
 {
-    d->dlg->show();
+    QThread* currentThread = QThread::currentThread();
+    QThread* thr = d->dlg->thread(); // this is the main thread
+    if (thr != currentThread) {
+        QMetaObject::invokeMethod(d->dlg, "show", Qt::QueuedConnection);
+    }
+    else {
+        d->dlg->show();
+    }
+
     setValue((int)step);
 }
 
@@ -240,7 +248,7 @@ void SequencerDialog::resetData()
     }
     else {
         d->dlg->resetEx();
-        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice 
+        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
         d->dlg->hide();
@@ -312,7 +320,7 @@ void ProgressDialog::onCancel()
 bool ProgressDialog::canAbort() const
 {
     int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes, 
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
     QMessageBox::No|QMessageBox::Default);
 
     return (ret == QMessageBox::Yes) ? true : false;

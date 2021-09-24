@@ -203,14 +203,15 @@ def convertToDxf(dwgfilename):
     """
     import os, tempfile, subprocess, sys
 
-    import shutil
-    if shutil.which("dwg2dxf"):
+    try:
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
         proc.communicate()
         return result
+    except Exception:
+        pass
 
     teigha = getTeighaConverter()
     if teigha:
@@ -219,8 +220,8 @@ def convertToDxf(dwgfilename):
         basename = os.path.basename(dwgfilename)
         cmdline = ('"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"'
                    % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting: ")
-                         + cmdline + "\n")
+        FCC.PrintMessage(translate("ImportDWG", "Converting:")
+                         + " " + cmdline + "\n")
         if six.PY2:
             if isinstance(cmdline, six.text_type):
                 encoding = sys.getfilesystemencoding()
@@ -272,8 +273,8 @@ def convertToDwg(dxffilename, dwgfilename):
         basename = os.path.basename(dxffilename)
         cmdline = ('"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"'
                    % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting: ")
-                         + cmdline + "\n")
+        FCC.PrintMessage(translate("ImportDWG", "Converting:")
+                         + " " + cmdline + "\n")
         subprocess.call(cmdline, shell=True)  # os.system(cmdline)
         return dwgfilename
     return None

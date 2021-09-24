@@ -49,7 +49,6 @@ SketchMirrorDialog::SketchMirrorDialog(void)
 
 SketchMirrorDialog::~SketchMirrorDialog()
 {
-    delete ui;
 }
 
 void SketchMirrorDialog::accept()

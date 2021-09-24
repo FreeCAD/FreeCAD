@@ -86,6 +86,7 @@ class TestHole(unittest.TestCase):
         self.Hole.DepthType = 0
         self.Hole.DrillPoint = 1
         self.Hole.Tapered = 0
+        self.Hole.DrillForDepth = 1
         self.Doc.recompute()
         self.assertEqual(len(self.Hole.Shape.Faces), 8)
 

@@ -20,13 +20,11 @@
 #***************************************************************************
 
 import FreeCAD
-import WorkingPlane
 import math
 import Draft
 import ArchCommands
 import DraftVecUtils
 import ArchComponent
-import os
 import re
 import tempfile
 import uuid
@@ -137,7 +135,7 @@ def getSectionData(source):
 
 
 def looksLikeDraft(o):
-    
+
     """Does this object look like a Draft shape? (flat, no solid, etc)"""
 
     # If there is no shape at all ignore it
@@ -152,9 +150,9 @@ def looksLikeDraft(o):
 
 
 def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
-    
+
     """
-    returns a list of shapes (visible, hidden, cut lines...) 
+    returns a list of shapes (visible, hidden, cut lines...)
     obtained from performing a series of booleans against the given cut plane
     """
 
@@ -211,11 +209,11 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shapes,clip)
     shapes = []
-    if cutvolume:
-        for o, shapeList in objectShapes:
-            tmpSshapes = []
-            for sh in shapeList:
-                for sol in sh.Solids:
+    for o, shapeList in objectShapes:
+        tmpSshapes = []
+        for sh in shapeList:
+            for sol in sh.Solids:
+                if cutvolume:
                     if sol.Volume < 0:
                         sol.reverse()
                     c = sol.cut(cutvolume)
@@ -235,6 +233,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     if showHidden:
                         c = sol.cut(invcutvolume)
                         hshapes.append(c)
+                else:
+                    shapes.extend(sol.Solids)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
@@ -249,7 +249,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
 
 def getFillForObject(o, defaultFill, source):
-    
+
     """returns a color tuple from an object's material"""
 
     if hasattr(source, 'UseMaterialColorForFill') and source.UseMaterialColorForFill:
@@ -259,13 +259,15 @@ def getFillForObject(o, defaultFill, source):
         elif isinstance(o,str):
             material = FreeCAD.ActiveDocument.getObject(o)
         if material:
-            if hasattr(material, 'Color') and material.Color:
+            if hasattr(material, 'SectionColor') and material.SectionColor:
+                return material.SectionColor
+            elif hasattr(material, 'Color') and material.Color:
                 return material.Color
     return defaultFill
 
 
 def isOriented(obj,plane):
-    
+
     """determines if an annotation is facing the cutplane or not"""
 
     norm1 = plane.normalAt(0,0)
@@ -318,7 +320,7 @@ def getSVG(source,
            lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
            showFill=False,
-           fillColor=(0.8, 0.8, 0.8),
+           fillColor=(1.0, 1.0, 1.0),
            techdraw=False,
            fillSpaces=False,
            cutlinewidth=0,
@@ -368,16 +370,19 @@ def getSVG(source,
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["AngularDimension","LinearDimension","Annotation","Label","Text"]:
+        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text", "DraftText"]:
             if isOriented(o,cutplane):
-                drafts.append(o) 
+                drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
+        elif o.isDerivedFrom("App::DocumentObjectGroup"):
+            # These will have been expanded by getSectionData already
+            pass
         elif looksLikeDraft(o):
             drafts.append(o)
         else:
             nonspaces.append(o)
-        if Draft.getType(o) == "Window":
+        if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)
     objs = nonspaces
 
@@ -398,10 +403,10 @@ def getSVG(source,
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = archUserParameters.GetString("archHiddenPattern","30,10")
     svgHiddenPattern = hiddenPattern.replace(" ","")
-    fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-    fillpattern += ' x="0" y="0" width="10" height="10">'
-    fillpattern += '<g>'
-    fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+    #fillpattern += ' x="0" y="0" width="10" height="10">'
+    #fillpattern += '<g>'
+    #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
     svgLineColor = Draft.getrgb(lineColor)
     svg = ''
     # reading cached version
@@ -442,11 +447,16 @@ def getSVG(source,
                 render.cut(cutplane,showHidden)
             else:
                 render.cut(cutplane)
-            svgcache += '<g transform="scale(1,-1)">\n'
+            g = '<g transform="scale(1,-1)">\n'
+            if hasattr(source.ViewObject,"RotateSolidRender"):
+                if (source.ViewObject.RotateSolidRender.Value != 0):
+                    g = '<g transform="scale(1,-1) rotate('
+                    g += str(source.ViewObject.RotateSolidRender.Value)
+                    g += ')">\n'
+            svgcache += g
             svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
-            svgcache += fillpattern
-            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",
-                                        fillpattern="sectionfill")
+            #svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
             svgcache += '</g>\n'
@@ -507,7 +517,7 @@ def getSVG(source,
                                 # temporarily disabling fill patterns
                                 svgcache += Draft.get_svg(s,
                                                           linewidth=0,
-                                                          fillstyle=Draft.getrgb(objectFill),
+                                                          fillstyle=Draft.getrgb(objectFill,testbw=False),
                                                           direction=direction.negative(),
                                                           color=lineColor)
                     svgcache += "</g>\n"
@@ -573,11 +583,12 @@ def getSVG(source,
     if windows:
         sh = []
         for w in windows:
-            if not hasattr(w.Proxy,"sshapes"):
-                w.Proxy.execute(w)
-            if hasattr(w.Proxy,"sshapes"):
-                if w.Proxy.sshapes and (w.Name in cutwindows):
-                    c = Part.makeCompound(w.Proxy.sshapes)
+            wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
+            if not hasattr(wlo.Proxy,"sshapes"):
+                wlo.Proxy.execute(wlo)
+            if hasattr(wlo.Proxy,"sshapes"):
+                if wlo.Proxy.sshapes and (w.Name in cutwindows):
+                    c = Part.makeCompound(wlo.Proxy.sshapes)
                     c.Placement = w.Placement
                     sh.append(c)
             # buggy for now...
@@ -680,7 +691,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     global ISRENDERING
     while ISRENDERING:
         time.sleep(0.1)
-    
+
     ISRENDERING = True
 
     # a name to save a temp file
@@ -850,9 +861,9 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
 
 
 def closeViewer(name):
-    
+
     """Close temporary viewers"""
-    
+
     mw = FreeCADGui.getMainWindow()
     for sw in mw.findChildren(QtGui.QMdiSubWindow):
         if sw.windowTitle() == name:
@@ -918,6 +929,8 @@ class _SectionPlane:
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
+        if not "Depth" in pl:
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
@@ -1011,6 +1024,15 @@ class _ViewProviderSectionPlane:
         if not "CutMargin" in pl:
             vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
             vobj.CutMargin = 1
+        if not "ShowLabel" in pl:
+            vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"))
+        if not "FontName" in pl:
+            vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+            vobj.FontName = Draft.getParam("textfont","")
+        if not "FontSize" in pl:
+            vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+            vobj.FontSize = Draft.getParam("textheight",10)
+
 
     def onDocumentRestored(self,vobj):
 
@@ -1042,9 +1064,16 @@ class _ViewProviderSectionPlane:
         self.lcoords = coin.SoCoordinate3()
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
+        self.txtcoords = coin.SoTransform()
+        self.txtfont = coin.SoFont()
+        self.txtfont.name = ""
+        self.txt = coin.SoAsciiText()
+        self.txt.justification = coin.SoText2.LEFT
+        self.txt.string.setValue(" ")
         sep = coin.SoSeparator()
         psep = coin.SoSeparator()
         fsep = coin.SoSeparator()
+        tsep = coin.SoSeparator()
         fsep.addChild(self.mat2)
         fsep.addChild(self.fcoords)
         fsep.addChild(fs)
@@ -1052,8 +1081,13 @@ class _ViewProviderSectionPlane:
         psep.addChild(self.drawstyle)
         psep.addChild(self.lcoords)
         psep.addChild(ls)
+        tsep.addChild(self.mat1)
+        tsep.addChild(self.txtcoords)
+        tsep.addChild(self.txtfont)
+        tsep.addChild(self.txt)
         sep.addChild(fsep)
         sep.addChild(psep)
+        sep.addChild(tsep)
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"DisplayLength")
         self.onChanged(vobj,"LineColor")
@@ -1075,8 +1109,13 @@ class _ViewProviderSectionPlane:
     def updateData(self,obj,prop):
 
         if prop in ["Placement"]:
+            # for some reason the text doesn't rotate with the host placement??
+            self.txtcoords.rotation.setValue(obj.Placement.Rotation.Q)
             self.onChanged(obj.ViewObject,"DisplayLength")
             self.onChanged(obj.ViewObject,"CutView")
+        elif prop == "Label":
+            if hasattr(obj.ViewObject,"ShowLabel") and obj.ViewObject.ShowLabel:
+                self.txt.string = obj.Label
         return
 
     def onChanged(self,vobj,prop):
@@ -1102,13 +1141,13 @@ class _ViewProviderSectionPlane:
                 hd = 1
             verts = []
             fverts = []
+            pl = FreeCAD.Placement(vobj.Object.Placement)
+            if hasattr(vobj,"ArrowSize"):
+                l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
+            else:
+                l1 = 0.1
+            l2 = l1/3
             for v in [[-ld,-hd],[ld,-hd],[ld,hd],[-ld,hd]]:
-                if hasattr(vobj,"ArrowSize"):
-                    l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
-                else:
-                    l1 = 0.1
-                l2 = l1/3
-                pl = FreeCAD.Placement(vobj.Object.Placement)
                 p1 = pl.multVec(Vector(v[0],v[1],0))
                 p2 = pl.multVec(Vector(v[0],v[1],-l1))
                 p3 = pl.multVec(Vector(v[0]-l2,v[1],-l1+l2))
@@ -1119,9 +1158,12 @@ class _ViewProviderSectionPlane:
                 fverts.append([p1.x,p1.y,p1.z])
                 verts.extend([[p2.x,p2.y,p2.z],[p3.x,p3.y,p3.z],[p4.x,p4.y,p4.z],[p2.x,p2.y,p2.z]])
                 verts.extend([[p2.x,p2.y,p2.z],[p5.x,p5.y,p5.z],[p6.x,p6.y,p6.z],[p2.x,p2.y,p2.z]])
+            p7 = pl.multVec(Vector(-ld+l2,-hd+l2,0)) # text pos
             verts.extend(fverts+[fverts[0]])
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
+            self.txtcoords.translation.setValue([p7.x,p7.y,p7.z])
+            #self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
@@ -1157,6 +1199,20 @@ class _ViewProviderSectionPlane:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
+        elif prop == "ShowLabel":
+            if vobj.ShowLabel:
+                self.txt.string = vobj.Object.Label or " "
+            else:
+                self.txt.string = " "
+        elif prop == "FontName":
+            if hasattr(self,"txtfont") and hasattr(vobj,"FontName"):
+                if vobj.FontName:
+                    self.txtfont.name = vobj.FontName
+                else:
+                    self.txtfont.name = ""
+        elif prop == "FontSize":
+            if hasattr(self,"txtfont") and hasattr(vobj,"FontSize"):
+                self.txtfont.size = vobj.FontSize.Value
         return
 
     def __getstate__(self):
@@ -1190,12 +1246,12 @@ class _ViewProviderSectionPlane:
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Toggle Cutview",menu)
         action1.triggered.connect(lambda f=self.contextCutview, arg=vobj:f(arg))
         menu.addAction(action1)
-    
+
     def contextCutview(self,vobj):
         """CONTEXT MENU command to toggle CutView property on and off"""
         if vobj.CutView:
             vobj.CutView = False
-        else: vobj.CutView = True        
+        else: vobj.CutView = True
 
 
 class _ArchDrawingView:
@@ -1354,8 +1410,9 @@ class SectionPlaneTaskPanel:
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
         'fills the treewidget'

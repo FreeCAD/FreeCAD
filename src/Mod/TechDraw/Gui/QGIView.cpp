@@ -113,7 +113,7 @@ QGIView::QGIView()
     addToGroup(m_caption);
     m_lock = new QGCustomImage();
     m_lock->setParentItem(m_border);
-    m_lock->load(QString::fromUtf8(":/icons/techdraw-lock.png"));
+    m_lock->load(QString::fromUtf8(":/icons/TechDraw_Lock.svg"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();

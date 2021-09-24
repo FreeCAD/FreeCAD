@@ -252,7 +252,7 @@ TaskDlgFemConstraintFixed::TaskDlgFemConstraintFixed(ViewProviderFemConstraintFi
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintFixed(ConstraintView);;
+    this->parameter = new TaskFemConstraintFixed(ConstraintView);
 
     Content.push_back(parameter);
 }

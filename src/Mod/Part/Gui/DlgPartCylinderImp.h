@@ -34,7 +34,7 @@ class DlgPartCylinderImp : public Gui::LocationDialogUiImp
     Q_OBJECT
 
 public:
-    DlgPartCylinderImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgPartCylinderImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPartCylinderImp();
 
     double getRadius() const;

@@ -42,7 +42,7 @@ import Draft_rc
 import draftutils.utils as utils
 import draftguitools.gui_base as gui_base
 
-from draftutils.translate import _tr, translate
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -61,23 +61,14 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(LineSlope, self).__init__(name=_tr("Change slope"))
+        super(LineSlope, self).__init__(name=translate("draft","Change slope"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Set slope"
-        _tip = ("Sets the slope of the selected line "
-                "by changing the value of the Z value of one of its points.\n"
-                "If a polyline is selected, it will apply the slope "
-                "transformation to each of its segments.\n\n"
-                "The slope will always change the Z value, therefore "
-                "this command only works well for\n"
-                "straight Draft lines that are drawn in the XY plane. "
-                "Selected objects that aren't single lines will be ignored.")
 
         return {'Pixmap': 'Draft_Slope',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Slope", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Slope", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.")}
 
     def Activated(self):
         """Execute when the command is called."""

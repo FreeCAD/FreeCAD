@@ -89,7 +89,7 @@ public:
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
     // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
-    App::PropertyColorList DiffuseColor;    
+    App::PropertyColorList DiffuseColor;
 
     virtual void attach(App::DocumentObject *) override;
     virtual void setDisplayMode(const char* ModeName) override;
@@ -97,6 +97,8 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Update the view representation
     void reload();
+    /// If no other task is pending it opens a dialog to allow to change face colors
+    bool changeFaceColors();
 
     virtual void updateData(const App::Property*) override;
 

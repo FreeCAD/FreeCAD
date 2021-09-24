@@ -23,7 +23,7 @@
 #ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 #define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 
-#include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
 
 namespace PartDesignGui {
 
@@ -44,6 +44,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
 
     virtual bool onDelete(const std::vector<std::string> &);
+
 };
 
 } /* PartDesignGui  */

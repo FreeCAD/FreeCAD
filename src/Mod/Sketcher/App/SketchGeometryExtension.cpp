@@ -31,55 +31,61 @@
 
 using namespace Sketcher;
 
-//---------- Geometry Extension
 
-TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
+//---------- Geometry Extension
+constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
+constexpr std::array<const char *,GeometryMode::NumGeometryMode> SketchGeometryExtension::geometrymode2str;
+
+TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryPersistenceExtension)
 
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
 
-SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID)
+SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID),InternalGeometryType(InternalType::None)
 {
 
 }
 
-SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid)
+SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeometryType(InternalType::None)
 {
 
 }
 
-// Persistence implementer
-unsigned int SketchGeometryExtension::getMemSize (void) const
+void SketchGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
 {
-    return sizeof(long int);
+    Part::GeometryPersistenceExtension::copyAttributes(cpy);
+
+    static_cast<SketchGeometryExtension *>(cpy)->Id = this->Id;
+    static_cast<SketchGeometryExtension *>(cpy)->InternalGeometryType = this->InternalGeometryType;
+    static_cast<SketchGeometryExtension *>(cpy)->GeometryModeFlags  = this->GeometryModeFlags;
 }
 
-void SketchGeometryExtension::Save(Base::Writer &writer) const
+void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
 {
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    const std::string name = getName();
+    if(reader.hasAttribute("id"))
+        Id = reader.getAttributeAsInteger("id");
 
-    if(name.size() > 0)
-        writer.Stream() << "\" name=\"" << name;
+    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
 
-    writer.Stream() << "\" id=\"" << Id << "\"/>" << std::endl;
+    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
 }
 
-void SketchGeometryExtension::Restore(Base::XMLReader &reader)
+void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::saveAttributes(writer);
 
-    Id = reader.getAttributeAsInteger("id");
+    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
+                    << "\" internalGeometryType=\"" << (int) InternalGeometryType
+                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string();
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
-    cpy->Id = this->Id;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
@@ -91,5 +97,41 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
 PyObject * SketchGeometryExtension::getPyObject(void)
 {
     return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
+}
+
+bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalType::InternalType &type)
+{
+    auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
+                                SketchGeometryExtension::internaltype2str.end(),
+                                [str](const char * val) {
+                                    return strcmp(val,str.c_str())==0;}
+                                );
+
+    if( pos != SketchGeometryExtension::internaltype2str.end()) {
+            int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
+
+            type = static_cast<InternalType::InternalType>(index);
+            return true;
+    }
+
+    return false;
+}
+
+bool SketchGeometryExtension::getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type)
+{
+    auto pos = std::find_if(    SketchGeometryExtension::geometrymode2str.begin(),
+                                SketchGeometryExtension::geometrymode2str.end(),
+                                [str](const char * val) {
+                                    return strcmp(val,str.c_str())==0;}
+                                );
+
+    if( pos != SketchGeometryExtension::geometrymode2str.end()) {
+            int index = std::distance( SketchGeometryExtension::geometrymode2str.begin(), pos );
+
+            type = static_cast<GeometryMode::GeometryMode>(index);
+            return true;
+    }
+
+    return false;
 }
 

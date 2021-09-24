@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusionner des cellules</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Diviser la cellule</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Aligner la cellule à gauche</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centrer la cellule</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Aligner la cellule à droite</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Aligner la cellule en haut</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Aligner la cellule en bas</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Centrer les cellules verticalement</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Mettre le texte en gras</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Mettre le texte en italique</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Souligner le texte</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Créer une feuille de calcul</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Modifier les propriétés des cellules</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Modifier la cellule</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Insérer des lignes</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Supprimer des lignes</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Insérer des colonnes</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Effacer la/les cellule(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Définir la couleur du premier-plan</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Définir la couleur de l'arrière-plan</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -457,11 +540,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Contenu:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
@@ -479,24 +562,64 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Insérer des lignes</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Supprimer des lignes</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Insérer des colonnes</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Supprimer des colonnes</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propriétés...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Insérer %n ligne au-dessus</numerusform>
+        <numerusform>Insérer %n lignes au-dessus</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Insérer %n lignes non contiguës</numerusform>
+        <numerusform>Insérer %n lignes non contiguës</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
+        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Insérer %n colonne(s) à droite</numerusform>
+        <numerusform>Insérer %n colonne(s) à droite</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Insérer %n colonnes non contiguës</numerusform>
+        <numerusform>Insérer %n colonnes non contiguës</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Supprimer une/des colonne</numerusform>
+        <numerusform>Supprimer une/des colonnes</numerusform>
+      </translation>
     </message>
   </context>
   <context>

@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                        *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +21,8 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
 from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
@@ -46,6 +49,7 @@ Arguments for centroid:
     --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
     --feed-precision=1               ... number of digits of precision for feed rate.  Default=1
     --axis-precision=4               ... number of digits of precision for axis moves.  Default=4
+    --inches                         ... Convert output for US imperial mode (G20)
 '''
 now = datetime.datetime.now()
 
@@ -63,8 +67,9 @@ COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
-UNITS = "G20"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'mm/min'
+UNITS = "G21"  # G21 for metric, G20 for us standard
+UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = 'mm/min'
 MACHINE_NAME = "Centroid"
 CORNER_MIN = {'x': -609.6, 'y': -152.4, 'z': 0}  # use metric for internal units
 CORNER_MAX = {'x': 609.6, 'y': 152.4, 'z': 304.8}  # use metric for internal units
@@ -89,7 +94,8 @@ PREAMBLE = '''G53 G00 G17
 POSTAMBLE = '''M99
 '''
 
-TOOLRETURN = '''M5 M25
+TOOLRETURN = '''M5
+M25
 G49 H0
 '''  # spindle off,height offset canceled,spindle retracted (M25 is a centroid command to retract spindle)
 
@@ -123,6 +129,9 @@ def processArguments(argstring):
     global SHOW_EDITOR
     global AXIS_PRECISION
     global FEED_PRECISION
+    global UNIT_SPEED_FORMAT
+    global UNIT_FORMAT
+    global UNITS
 
     for arg in argstring.split():
         if arg == '--header':
@@ -145,6 +154,10 @@ def processArguments(argstring):
             AXIS_PRECISION = arg.split('=')[1]
         elif arg.split('=')[0] == '--feed-precision':
             FEED_PRECISION = arg.split('=')[1]
+        elif arg == '--inches':
+            UNITS = 'G20'
+            UNIT_SPEED_FORMAT = 'in/min'
+            UNIT_FORMAT = 'in'
 
 
 def export(objectslist, filename, argstring):
@@ -154,6 +167,7 @@ def export(objectslist, filename, argstring):
         print(i.Name)
     global UNITS
     global UNIT_FORMAT
+    global UNIT_SPEED_FORMAT
 
     print("postprocessing...")
     gcode = ""
@@ -167,7 +181,7 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         for item in objectslist:
-            if isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
+            if hasattr(item, "Proxy") and isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
                 gcode += ";T{}={}\n".format(item.ToolNumber, item.Name)
         gcode += linenumber() + ";begin preamble\n"
     for line in PREAMBLE.splitlines(True):
@@ -277,7 +291,7 @@ def parse(pathobj):
                         if c.Name not in ["G0", "G00"]:  # centroid doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             commandlist.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), feed_precision_string))
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), feed_precision_string))
                     elif param == 'H':
                         commandlist.append(param + str(int(c.Parameters['H'])))
                     elif param == 'S':
@@ -285,8 +299,9 @@ def parse(pathobj):
                     elif param == 'T':
                         commandlist.append(param + str(int(c.Parameters['T'])))
                     else:
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         commandlist.append(
-                            param + format(c.Parameters[param], axis_precision_string))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), axis_precision_string))
             outstr = str(commandlist)
             outstr = outstr.replace('[', '')
             outstr = outstr.replace(']', '')

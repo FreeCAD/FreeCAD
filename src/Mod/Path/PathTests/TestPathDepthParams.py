@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathUtils as PU
+import PathScripts.PathUtils as PathUtils
 import unittest
 
 
@@ -40,7 +38,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[8,6,4,2,1,0]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -58,7 +56,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[-2, -4, -6, -8, -10]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -75,7 +73,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[10]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -84,7 +82,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -101,7 +99,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[2, 4, 8, 10, 11, 12]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -118,7 +116,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[-2, -4, -6, -8, -9, -10]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -136,7 +134,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[7.5, 5.0, 2.5, 0]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -154,7 +152,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[7.0, 4.0, 1.0, 0]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths, equalstep=True)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 
@@ -171,7 +169,7 @@ class depthTestCases(unittest.TestCase):
 
         expected =[1.0, 0]
 
-        d = PU.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
+        d = PathUtils.depth_params(clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths)
         r = [i for i in d]
         self.assertListEqual (r, expected)
 

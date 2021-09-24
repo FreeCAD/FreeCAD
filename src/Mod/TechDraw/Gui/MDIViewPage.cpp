@@ -39,7 +39,7 @@
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
-    #include <boost/signals2.hpp>
+    #include <boost_signals2.hpp>
     #include <boost_bind_bind.hpp>
 
 #endif  // #ifndef _PreComp_
@@ -47,6 +47,7 @@
 #include <math.h>
 
 #include "MDIViewPage.h"
+#include "MDIViewPagePy.h"
 
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -117,8 +118,10 @@ TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
-    m_orientation(QPrinter::Landscape),
-    m_paperSize(QPrinter::A4),
+    m_orientation(QPageLayout::Landscape),
+    m_paperSize(QPageSize::A4),
+    pagewidth(0.0),
+    pageheight(0.0),
     m_vpPage(pageVp)
 {
 
@@ -307,13 +310,13 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
     m_view->setPageTemplate(obj);
-    double width  =  obj->Width.getValue();
-    double height =  obj->Height.getValue();
-    m_paperSize = getPaperSize(int(round(width)),int(round(height)));
-    if (width > height) {
-        m_orientation = QPrinter::Landscape;
+    pagewidth  =  obj->Width.getValue();
+    pageheight =  obj->Height.getValue();
+    m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
+    if (pagewidth > pageheight) {
+        m_orientation = QPageLayout::Landscape;
     } else {
-        m_orientation = QPrinter::Portrait;
+        m_orientation = QPageLayout::Portrait;
     }
 }
 
@@ -478,22 +481,15 @@ void MDIViewPage::fixOrphans(bool force)
             m_view->removeQView(qv);
         } else {
             TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-            if (thisPage != pp) {
+            /** avoid crash where a view might have more than one parent page
+             * if the user duplicated the page without duplicating dependencies
+             */
+            int numParentPages = qv->getViewObject()->countParentPages();
+            if (thisPage != pp && numParentPages == 0) {
                m_view->removeQView(qv);
             }
         }
     }
-
-    // Update all the QGIVxxxx
-    // WF: why do we do this?  views should be keeping themselves up to date.
-//    const std::vector<QGIView *> &upviews = m_view->getViews();
-//    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-//        Base::Console().Message("TRACE - MDIVP::fixOrphans - updating a QGIVxxxx\n");
-//        if((*it)->getViewObject()->isTouched() ||
-//           forceUpdate) {
-//            (*it)->updateView(forceUpdate);
-//        }
-//    }
 }
 
 //NOTE: this doesn't add missing views.  see fixOrphans()
@@ -517,6 +513,7 @@ void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
         }
     }
 }
+
 void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing)
 {
     for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
@@ -663,12 +660,17 @@ void MDIViewPage::printPdf(std::string file)
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
-    if (m_paperSize == QPrinter::Ledger)  {
-        printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
+
+    if (m_paperSize == QPageSize::Ledger)  {
+        printer.setPageOrientation((QPageLayout::Orientation) (1 - m_orientation));  //reverse 0/1
     } else {
-        printer.setOrientation(m_orientation);
+        printer.setPageOrientation(m_orientation);
     }
-    printer.setPaperSize(m_paperSize);
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
     print(&printer);
 }
 
@@ -676,8 +678,13 @@ void MDIViewPage::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPaperSize(m_paperSize);
-    printer.setOrientation(m_orientation);
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
+    printer.setPageOrientation(m_orientation);
+
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
@@ -688,8 +695,12 @@ void MDIViewPage::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPaperSize(m_paperSize);
-    printer.setOrientation(m_orientation);
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
+    printer.setPageOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -713,16 +724,13 @@ void MDIViewPage::print(QPrinter* printer)
     // a certain scaling effect can be observed and the content becomes smaller.
     QPaintEngine::Type paintType = printer->paintEngine()->type();
     if (printer->outputFormat() == QPrinter::NativeFormat) {
-        int w = printer->widthMM();
-        int h = printer->heightMM();
-        QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
-        QPrinter::PaperSize psPrtSetting = printer->paperSize();
+        QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
-        if (doPrint && printer->orientation() != m_orientation) {
+        if (doPrint && printer->pageLayout().orientation() != m_orientation) {
             int ret = QMessageBox::warning(this, tr("Different orientation"),
                 tr("The printer uses a different orientation  than the drawing.\n"
                    "Do you want to continue?"),
@@ -730,15 +738,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && psPrtCalcd != m_paperSize) {
-            int ret = QMessageBox::warning(this, tr("Different paper size"),
-                tr("The printer uses a different paper size than the drawing.\n"
-                   "Do you want to continue?"),
-                   QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes)
-                return;
-        }
-        else if (doPrint && psPrtSetting != m_paperSize) {
+        if (doPrint && psPrtSetting != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -757,12 +757,13 @@ void MDIViewPage::print(QPrinter* printer)
         return;
     }
 
-    QRect targetRect = printer->paperRect();
+    QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
+
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        targetRect = printer->pageRect();
+        targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
 #endif
 
     //bool block =
@@ -796,68 +797,13 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(false));
 }
 
-
-QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
-{
-    static const float paperSizes[][2] = {
-        {210, 297}, // A4
-        {176, 250}, // B5
-        {215.9f, 279.4f}, // Letter
-        {215.9f, 355.6f}, // Legal
-        {190.5f, 254}, // Executive
-        {841, 1189}, // A0
-        {594, 841}, // A1
-        {420, 594}, // A2
-        {297, 420}, // A3
-        {148, 210}, // A5
-        {105, 148}, // A6
-        {74, 105}, // A7
-        {52, 74}, // A8
-        {37, 52}, // A8
-        {1000, 1414}, // B0
-        {707, 1000}, // B1
-        {31, 44}, // B10
-        {500, 707}, // B2
-        {353, 500}, // B3
-        {250, 353}, // B4
-        {125, 176}, // B6
-        {88, 125}, // B7
-        {62, 88}, // B8
-        {33, 62}, // B9
-        {163, 229}, // C5E
-        {105, 241}, // US Common
-        {110, 220}, // DLE
-        {210, 330}, // Folio
-        {431.8f, 279.4f}, // Ledger (28)   note, two names for same size paper (ANSI B)
-        {279.4f, 431.8f} // Tabloid (29)   causes trouble with orientation on PDF export
-    };
-
-    QPrinter::PaperSize ps = QPrinter::Custom;
-    for (int i=0; i<30; i++) {
-        if (std::abs(paperSizes[i][0]-w) <= 1 &&
-            std::abs(paperSizes[i][1]-h) <= 1) {
-            ps = static_cast<QPrinter::PaperSize>(i);
-            break;
-        }
-        else                                          //handle landscape & portrait w/h
-        if (std::abs(paperSizes[i][0]-h) <= 1 &&
-            std::abs(paperSizes[i][1]-w) <= 1) {
-            ps = static_cast<QPrinter::PaperSize>(i);
-            break;
-        }
-    }
-    if (ps == QPrinter::Ledger)  {                    //check if really Tabloid
-        if (w < 431) {
-            ps = QPrinter::Tabloid;
-        }
-    }
-
-    return ps;
-}
-
 PyObject* MDIViewPage::getPyObject()
 {
-    return Gui::MDIView::getPyObject();
+    if (!pythonObject)
+        pythonObject = new MDIViewPagePy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
@@ -917,7 +863,7 @@ void MDIViewPage::saveDXF()
 {
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
                                                    defaultDir,
                                                    QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
     if (fileName.isEmpty()) {
@@ -933,7 +879,7 @@ void MDIViewPage::saveDXF(std::string fileName)
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    Gui::Command::openCommand("Save page to dxf");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
                             PageName.c_str(),(const char*)fileName.c_str());

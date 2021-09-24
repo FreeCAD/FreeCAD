@@ -8,7 +8,6 @@
 import sys, os, getopt, tarfile, gzip, time, io, platform, shutil
 
 def main():
-    srcdir="."
     bindir="."
     dfsg=False
     check=False
@@ -20,7 +19,7 @@ def main():
 
     for o, a in opts:
         if o in ("-s", "--srcdir"):
-            srcdir = a
+            print("%s is deprecated -- ignoring" % (o))
         if o in ("-b", "--bindir"):
             bindir = a
         if o in ("--dfsg"):

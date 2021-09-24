@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +29,7 @@ from PySide import QtCore
 
 __title__ = "Path Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Pocket operation page controller and command implementation."
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
@@ -44,9 +42,9 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Pocket 3D',
         PathPocket.Create,
         TaskPanelOpPage,
-        'Path-3DPocket',
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "3D Pocket"),
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path 3D Pocket object from a face or faces"),
+        'Path_3DPocket',
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "3D Pocket"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path 3D Pocket object from a face or faces"),
         PathPocket.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

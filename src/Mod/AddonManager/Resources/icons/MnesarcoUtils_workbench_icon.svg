@@ -1,0 +1,11 @@
+<svg class="bi bi-tools" width="48" height="48" fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="linearGradient860" x1="28.348" x2="-.72543" y1="25.774" y2="-3.2989" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#eeeeec" offset="0"/>
+   <stop stop-color="#fff" offset="1"/>
+  </linearGradient>
+ </defs>
+ <circle transform="matrix(.48154 0 0 .48154 1.3297 2.5822)" cx="13.852" cy="11.251" r="14.465" fill="url(#linearGradient860)" stroke="#000" stroke-linejoin="round" stroke-width="2.7689" style="paint-order:stroke fill markers"/>
+ <circle transform="matrix(.39011 0 0 .39011 -2.5526 -.19871)" cx="27" cy="21" r="17" fill="none" stroke="#729fcf" stroke-linejoin="round" stroke-width="1.7089" style="paint-order:stroke fill markers"/>
+ <path transform="scale(.33333)" d="m27.854 9.043a9.3494 9.3494 0 0 0-9.0898 11.797l-10.385 10.533a17.228 17.228 0 0 0 5.9687 6.916l11.012-10.857a9.3588 9.3588 0 0 0 11.465-11.451l-6.6719 6.6738-5.4766-1.1348-1.1348-5.4785 6.6758-6.6758a9.3494 9.3494 0 0 0-2.3633-0.32227z" fill="#3465a4" fill-rule="evenodd" stroke-width="3"/>
+</svg>

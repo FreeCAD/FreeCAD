@@ -643,6 +643,7 @@ class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
 
     def __init__(self):
+        super().__init__()
         """Retrieve Draft parameters and initialize."""
         _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
         params = FreeCAD.ParamGet(_prefs)
@@ -1810,21 +1811,28 @@ def export(exportList, filename):
 
     # Determine the size of the page by adding the bounding boxes
     # of all shapes
-    bb = None
-    for ob in exportList:
-        if ob.isDerivedFrom("Part::Feature"):
-            if bb:
-                bb.add(ob.Shape.BoundBox)
-            else:
-                bb = ob.Shape.BoundBox
-    if bb:
-        minx = bb.XMin
-        maxx = bb.XMax
-        miny = bb.YMin
-        maxy = bb.YMax
-    else:
-        _err("The export list contains no shape")
+    bb = FreeCAD.BoundBox()
+    for obj in exportList:
+        if (hasattr(obj, "Shape")
+                and obj.Shape
+                and obj.Shape.BoundBox.isValid()):
+            bb.add(obj.Shape.BoundBox)
+        else:
+            # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
+            _wrn("'{}': no Shape, "
+                 "calculate manual bounding box".format(obj.Label))
+            bb.add(Draft.get_bbox(obj))
+
+    if not bb.isValid():
+        _err(translate("ImportSVG",
+                       "The export list contains no object "
+                       "with a valid bounding box"))
         return
+
+    minx = bb.XMin
+    maxx = bb.XMax
+    miny = bb.YMin
+    maxy = bb.YMax
 
     if svg_export_style == 0:
         # translated-style exports get a bit of a margin
@@ -1860,6 +1868,7 @@ def export(exportList, filename):
         # We need the negative Y here because SVG is upside down, and we
         # flip the sketch right-way up with a scale later
         svg.write(' viewBox="%f %f %f %f"' % (minx, -maxy, sizex, sizey))
+
     svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
     svg.write('>\n')
 
@@ -1876,6 +1885,7 @@ def export(exportList, filename):
         else:
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
+
         svg.write(Draft.get_svg(ob))
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')

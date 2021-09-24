@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer writer"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -68,7 +68,7 @@ class Writer(object):
         self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
-        Console.PrintMessage("Write elmer input files to: {}".format(self.directory))
+        Console.PrintMessage("Write elmer input files to: {}\n".format(self.directory))
         self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()
@@ -79,7 +79,7 @@ class Writer(object):
     def getHandledConstraints(self):
         return self._handledObjects
 
-    def write(self):
+    def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleHeat()
@@ -154,7 +154,10 @@ class Writer(object):
                 "N": "mol",
                 "J": "cd",
             }
-        elif self.unit_schema > Units.Scheme.SI2 and self.unit_schema != Units.Scheme.FemMilliMeterNewton:
+        elif (
+            self.unit_schema > Units.Scheme.SI2
+            and self.unit_schema != Units.Scheme.FemMilliMeterNewton
+        ):
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "
@@ -633,12 +636,24 @@ class Writer(object):
         return None
 
     def _handleElasticityMaterial(self, bodies):
+        # density
+        # is needed for self weight constraints and frequency analysis
+        density_needed = False
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
+                if equation.DoFrequencyAnalysis is True:
+                    density_needed = True
+                    break  # there could be a second equation without frequency
         gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
+        if gravObj is not None:
+            density_needed = True
+        # temperature
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
             refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
+        # get the material data for all boddies
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
             refs = (
@@ -647,7 +662,7 @@ class Writer(object):
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
-                if gravObj:
+                if density_needed is True:
                     self._material(
                         name, "Density",
                         self._getDensity(m)

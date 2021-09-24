@@ -23,7 +23,7 @@
 
 __title__ = "Objects FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import sys
 import unittest
@@ -87,7 +87,7 @@ class TestObjectCreate(unittest.TestCase):
         # solver children: equations --> 6
         # gmsh mesh children: group, region, boundary layer --> 3
         # resule children: mesh result --> 1
-        # post pipeline childeren: region, scalar, cut, wrap --> 4
+        # post pipeline children: region, scalar, cut, wrap --> 4
         # analysis itself is not in analysis group --> 1
         # thus: -14
 
@@ -194,6 +194,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintFluidBoundary(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintSpring",
+            type_of_obj(ObjectsFem.makeConstraintSpring(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintForce",
             type_of_obj(ObjectsFem.makeConstraintForce(doc))
         )
@@ -232,6 +236,10 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::ConstraintSelfWeight",
             type_of_obj(ObjectsFem.makeConstraintSelfWeight(doc))
+        )
+        self.assertEqual(
+            "Fem::ConstraintCentrif",
+            type_of_obj(ObjectsFem.makeConstraintCentrif(doc))
         )
         self.assertEqual(
             "Fem::ConstraintTemperature",
@@ -319,7 +327,11 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(solverelmer)
         )
         self.assertEqual(
-            "Fem::FemSolverZ88",
+            "Fem::SolverMystran",
+            type_of_obj(ObjectsFem.makeSolverMystran(doc))
+        )
+        self.assertEqual(
+            "Fem::SolverZ88",
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
         self.assertEqual(
@@ -403,6 +415,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintFluidBoundary"
         ))
         self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintSpring(doc),
+            "Fem::ConstraintSpring"
+        ))
+        self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintForce(doc),
             "Fem::ConstraintForce"
         ))
@@ -441,6 +457,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSelfWeight(doc),
             "Fem::ConstraintSelfWeight"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintCentrif(doc),
+            "Fem::ConstraintCentrif"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintTemperature(doc),
@@ -530,8 +550,12 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverElmer"
         ))
         self.assertTrue(is_of_type(
+            ObjectsFem.makeSolverMystran(doc),
+            "Fem::SolverMystran"
+        ))
+        self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
-            "Fem::FemSolverZ88"
+            "Fem::SolverZ88"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
@@ -721,6 +745,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintFluidBoundary"
         ))
 
+        # ConstraintSpring
+        constraint_spring = ObjectsFem.makeConstraintSpring(doc)
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "Fem::Constraint"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "Fem::ConstraintSpring"
+        ))
+
         # ConstraintForce
         constraint_force = ObjectsFem.makeConstraintForce(doc)
         self.assertTrue(is_derived_from(
@@ -871,6 +910,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintSelfWeight"
         ))
 
+        # ConstraintCentrif
+        constraint_centrif = ObjectsFem.makeConstraintCentrif(doc)
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_centrif,
+            "Fem::ConstraintCentrif"
+        ))
+
         # ConstraintTemperature
         constraint_temperature = ObjectsFem.makeConstraintTemperature(doc)
         self.assertTrue(is_derived_from(
@@ -916,7 +970,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintTransform"
         ))
 
-        # FemElementFluid1D
+        # ElementFluid1D
         fluid1d = ObjectsFem.makeElementFluid1D(doc)
         self.assertTrue(is_derived_from(
             fluid1d,
@@ -931,7 +985,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementFluid1D"
         ))
 
-        # FemElementGeometry1D
+        # ElementGeometry1D
         geometry1d = ObjectsFem.makeElementGeometry1D(doc)
         self.assertTrue(is_derived_from(
             geometry1d,
@@ -946,7 +1000,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementGeometry1D"
         ))
 
-        # FemElementGeometry2D
+        # ElementGeometry2D
         geometry2d = ObjectsFem.makeElementGeometry2D(doc)
         self.assertTrue(is_derived_from(
             geometry2d,
@@ -961,7 +1015,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementGeometry2D"
         ))
 
-        # FemElementRotation1D
+        # ElementRotation1D
         rotation1d = ObjectsFem.makeElementRotation1D(doc)
         self.assertTrue(is_derived_from(
             rotation1d,
@@ -1051,7 +1105,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemMeshGmsh"
         ))
 
-        # FemMeshBoundaryLayer
+        # MeshBoundaryLayer
         mesh_boundarylayer = ObjectsFem.makeMeshBoundaryLayer(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_boundarylayer,
@@ -1066,7 +1120,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshBoundaryLayer"
         ))
 
-        # FemMeshGroup
+        # MeshGroup
         mesh_group = ObjectsFem.makeMeshGroup(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_group,
@@ -1081,7 +1135,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshGroup"
         ))
 
-        # FemMeshRegion
+        # MeshRegion
         mesh_region = ObjectsFem.makeMeshRegion(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_region,
@@ -1107,7 +1161,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemMeshShapeNetgenObject"
         ))
 
-        # FemMeshResult
+        # MeshResult
         mesh_result = ObjectsFem.makeMeshResult(doc)
         self.assertTrue(is_derived_from(
             mesh_result,
@@ -1122,7 +1176,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshResult"
         ))
 
-        # FemResultMechanical
+        # ResultMechanical
         result_mechanical = ObjectsFem.makeResultMechanical(doc)
         self.assertTrue(is_derived_from(
             result_mechanical,
@@ -1137,7 +1191,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ResultMechanical"
         ))
 
-        # FemSolverCalculixCcxTools
+        # SolverCcxTools
         solver_ccxtools = ObjectsFem.makeSolverCalculixCcxTools(doc)
         self.assertTrue(is_derived_from(
             solver_ccxtools,
@@ -1156,7 +1210,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverCcxTools"
         ))
 
-        # FemSolverObjectCalculix
+        # SolverCalculix
         solver_calculix = ObjectsFem.makeSolverCalculix(doc)
         self.assertTrue(is_derived_from(
             solver_calculix,
@@ -1175,7 +1229,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverCalculix"
         ))
 
-        # FemSolverObjectElmer
+        # SolverElmer
         solver_elmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_derived_from(
             solver_elmer,
@@ -1194,7 +1248,26 @@ class TestObjectType(unittest.TestCase):
             "Fem::SolverElmer"
         ))
 
-        # FemSolverObjectZ88
+        # SolverMystran
+        solver_mystran = ObjectsFem.makeSolverMystran(doc)
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObject"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::FemSolverObjectPython"
+        ))
+        self.assertTrue(is_derived_from(
+            solver_mystran,
+            "Fem::SolverMystran"
+        ))
+
+        # SolverZ88
         solver_z88 = ObjectsFem.makeSolverZ88(doc)
         self.assertTrue(is_derived_from(
             solver_z88,
@@ -1210,10 +1283,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_z88,
-            "Fem::FemSolverZ88"
+            "Fem::SolverZ88"
         ))
 
-        # FemEquationElmerElasticity
+        # EquationElmerElasticity
         equation_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_elasticity,
@@ -1228,7 +1301,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElasticity"
         ))
 
-        # FemEquationElmerElectricforce
+        # EquationElmerElectricforce
         equation_elasticity = ObjectsFem.makeEquationElectricforce(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_elasticity,
@@ -1243,7 +1316,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElectricforce"
         ))
 
-        # FemEquationElmerElectrostatic
+        # EquationElmerElectrostatic
         equation_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_electrostatic,
@@ -1258,7 +1331,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElectrostatic"
         ))
 
-        # FemEquationElmerFlow
+        # EquationElmerFlow
         equation_flow = ObjectsFem.makeEquationFlow(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flow,
@@ -1273,7 +1346,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
 
-        # FemEquationElmerFlux
+        # EquationElmerFlux
         equation_flux = ObjectsFem.makeEquationFlux(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flux,
@@ -1288,7 +1361,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlux"
         ))
 
-        # FemEquationElmerHeat
+        # EquationElmerHeat
         equation_heat = ObjectsFem.makeEquationHeat(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_heat,
@@ -1366,6 +1439,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintFluidBoundary")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintSpring(
+                doc
+            ).isDerivedFrom("Fem::ConstraintSpring")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintForce(
                 doc
             ).isDerivedFrom("Fem::ConstraintForce")
@@ -1412,6 +1490,11 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(
             ObjectsFem.makeConstraintSelfWeight(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstraintCentrif(
                 doc
             ).isDerivedFrom("Fem::ConstraintPython")
         )
@@ -1521,6 +1604,11 @@ class TestObjectType(unittest.TestCase):
             solverelmer.isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
+            ObjectsFem.makeSolverMystran(
+                doc
+            ).isDerivedFrom("Fem::FemSolverObjectPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeSolverZ88(
                 doc
             ).isDerivedFrom("Fem::FemSolverObjectPython")
@@ -1585,6 +1673,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
     analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSpring(doc))
     analysis.addObject(ObjectsFem.makeConstraintForce(doc))
     analysis.addObject(ObjectsFem.makeConstraintGear(doc))
     analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
@@ -1595,6 +1684,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
     analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
     analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
+    analysis.addObject(ObjectsFem.makeConstraintCentrif(doc))
     analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintTie(doc))
     analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
@@ -1628,6 +1718,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
+    analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationElasticity(doc, sol)

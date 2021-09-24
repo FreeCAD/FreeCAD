@@ -34,7 +34,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Path 
+class AppExport Path
 {
 protected:
 	std::vector<Base::Persistence *> _PathVector;

@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class Ui_TaskSketcherMessages;
 typedef boost::signals2::connection Connection;
@@ -63,7 +63,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherMessages* ui;
+    std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
 } //namespace SketcherGui
