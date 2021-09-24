@@ -104,7 +104,9 @@ class ViewProviderDraft(object):
                              "Pattern",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+            patterns = list(utils.svg_patterns().keys())
+            patterns.sort()
+            vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
             _tip = "Defines the size of the hatch pattern."
