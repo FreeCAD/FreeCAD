@@ -6,12 +6,12 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation>Эвольвентная передача...</translation>
+      <translation>Мастер проектирования шестерни с эвольвентным профилем...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation>Создание или редактирование свойств эвольвентной шестерни.</translation>
+      <translation>Создать или править свойства эвольвентной шестерни.</translation>
     </message>
   </context>
   <context>
@@ -19,12 +19,12 @@
     <message>
       <location filename="SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation>Звездочка...</translation>
+      <translation>Мастер проектирования цепного колеса (звёздочки)...</translation>
     </message>
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Создать или отредактировать профиль цепного колеса.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Мастер проектирования вала...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Запускает мастер проектирования вала</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Тип ограничения</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
@@ -111,12 +111,12 @@
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Additive loft</source>
-      <translation>Аддитивный лофт</translation>
+      <translation>Аддитивный профиль</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Создание переходной формы между двумя и более эскизными контурами</translation>
+      <translation>Создает переходную форму между двумя и более эскизными контурами</translation>
     </message>
   </context>
   <context>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Additive pipe</source>
-      <translation>Аддитивный сдвиг</translation>
+      <translation>Аддитивный профиль по траектории</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
@@ -206,7 +206,7 @@
     <message>
       <location filename="../../Command.cpp" line="1956"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Притупить фаской выбранные ребра фигуры</translation>
+      <translation>Добавить фаску на выбранные ребра фигуры</translation>
     </message>
   </context>
   <context>
@@ -242,7 +242,7 @@
     <message>
       <location filename="../../Command.cpp" line="1985"/>
       <source>Make a draft on a face</source>
-      <translation>Сделать уклон грани</translation>
+      <translation>Сделать уклон граней</translation>
     </message>
   </context>
   <context>
@@ -435,7 +435,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
-      <translation>Установка кончика</translation>
+      <translation>Установить точку завершения расчета тела</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
@@ -665,12 +665,12 @@
     <message>
       <location filename="../../Command.cpp" line="1644"/>
       <source>Subtractive loft</source>
-      <translation>Субтрактивный лофт</translation>
+      <translation>Субтрактивный профиль</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1645"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Создание переходной формы между двумя и более эскизными контурами с дальнейшим вычитанием полученной фигуры из пересекаемого ею тела</translation>
+      <translation>Создает переходную форму между двумя и более эскизными контурами с дальнейшим вычитанием полученной фигуры из пересекаемого ею тела</translation>
     </message>
   </context>
   <context>
@@ -683,7 +683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Subtractive pipe</source>
-      <translation>Субтрактивный сдвиг</translation>
+      <translation>Субтрактивный профиль по траектории</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1545"/>
@@ -706,7 +706,7 @@
     <message>
       <location filename="../../Command.cpp" line="2042"/>
       <source>Make a thick solid</source>
-      <translation>Создать полое тело</translation>
+      <translation>Преобразовать твердое тело в полое, с указанием толщины граней</translation>
     </message>
   </context>
   <context>
@@ -1642,12 +1642,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="115"/>
       <source>Pull direction</source>
-      <translation>Направление вытягивания</translation>
+      <translation>Направление уклона</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="130"/>
       <source>Reverse pull direction</source>
-      <translation>Развернуть направление вытягивания</translation>
+      <translation>Развернуть направление уклона</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="153"/>
@@ -2004,27 +2004,27 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular profile</source>
-      <translation>ISO метрический грубый профиль</translation>
+      <translation>ISO метрическая резьба с крупным шагом</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO метрический тонкий профиль</translation>
+      <translation>ISO метрическая резьба с мелким шагом</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse profile</source>
-      <translation>UTC грубый профиль</translation>
+      <translation>UTC c грубым шагом</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine profile</source>
-      <translation>UTC тонкий профиль</translation>
+      <translation>UTC с мелким шагом</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine profile</source>
-      <translation>UTC экстра тонкий профиль</translation>
+      <translation>UTC с очень мелким шагом</translation>
     </message>
   </context>
   <context>
@@ -2140,7 +2140,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Параметры лофта</translation>
+      <translation>Параметры профиля</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="81"/>
@@ -2589,7 +2589,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="75"/>
       <source>Pipe parameters</source>
-      <translation>Параметры сдвига</translation>
+      <translation>Параметры траектории</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="95"/>
@@ -3011,7 +3011,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
       <source>Join Type</source>
-      <translation>Тип соединения</translation>
+      <translation>Форма граней</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -3042,7 +3042,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="150"/>
       <source>Make thickness inwards</source>
-      <translation>Расчет толщины внутрь</translation>
+      <translation>Наращивать стены внутрь тела</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="153"/>
@@ -3144,12 +3144,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Создать аддитивный параллелепипед, указав его ширину, высоту и длину</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Создать аддитивный цилиндр, указав его радиус, высоту и угол наклона</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3192,7 +3192,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Создать субтрактивный цилиндр, указав его радиус, высоту и угол</translation>
+      <translation>Создать субтрактивный цилиндр, указав его радиус, высоту и угол наклона</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
@@ -3364,12 +3364,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>Невозможно применить данную команду, в связи с отсутствием твердого для вычитания формы.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
+      <translation>Убедитесь в том что тело содержит хоть какую-нибудь форму, перед попыткой применения субтрактивной команды.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
@@ -3384,12 +3384,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>No sketch to work on</source>
-      <translation>Нет эскиза для работы над ним</translation>
+      <translation>Не найден эскиз для работы с ним</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>No sketch is available in the document</source>
-      <translation>В документе нет эскизов</translation>
+      <translation>В документе отсутствуют эскизы для применения данного действия</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1829"/>
@@ -3443,12 +3443,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
-      <translation>Отсутствуют допустимые детали в этом документе.</translation>
+      <translation>В документе не обнаружено тел с пригодными геометрическими формами .</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2158"/>
       <source>Please create a feature first.</source>
-      <translation type="unfinished">Please create a feature first.</translation>
+      <translation>Создайте хоть какую-нибудь форму, прежде чем применить данную команду. </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2167"/>
@@ -3666,9 +3666,9 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Для использования верстака "Проектирование детали" необходимо активное тело в документе. Сделайте существующее тело активным (двойным кликом) или создайте новое тело.
+      <translation>Для использования верстака Part Design необходимо наличие активного тела в документе. Сделайте существующее тело активным (двойным кликом) или создайте новое тело.
 
-Если у вас устаревший документ с объектами "Проектирование детали" без тела, то используйте функцию миграции в меню "Проектирование детали", чтобы вложить объекты в тело.</translation>
+Если у вас устаревший документ содержащий объекты Part Design без тела, тогда используйте функцию миграции в меню "Проектирование детали", чтобы вложить объекты в тело.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="159"/>
@@ -3768,7 +3768,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="79"/>
       <source>Edit loft</source>
-      <translation>Редактировать лофт</translation>
+      <translation>Редактировать профиль</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3778,7 +3778,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="87"/>
       <source>Edit pipe</source>
-      <translation>Редактировать сдвиг</translation>
+      <translation>Редактировать траекторию</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="53"/>
@@ -3870,7 +3870,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation type="unfinished">Sprocket parameter</translation>
+      <translation>Параметры цепного колеса</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -3880,7 +3880,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation type="unfinished">Sprocket Reference</translation>
+      <translation>Стандарт цепного колеса:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
@@ -3920,47 +3920,47 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
       <source>Bicycle with Derailleur</source>
-      <translation type="unfinished">Bicycle with Derailleur</translation>
+      <translation>Велосипедное с переключением скоростей</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="123"/>
       <source>Bicycle without Derailleur</source>
-      <translation type="unfinished">Bicycle without Derailleur</translation>
+      <translation>Велосипедное без переключения скоростей</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
@@ -4000,52 +4000,52 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation type="unfinished">Motorcycle 420</translation>
+      <translation>Для мотоцикла 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation type="unfinished">Motorcycle 425</translation>
+      <translation>Для мотоцикла 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation type="unfinished">Motorcycle 428</translation>
+      <translation>Для мотоцикла 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation type="unfinished">Motorcycle 520</translation>
+      <translation>Для мотоцикла 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation type="unfinished">Motorcycle 525</translation>
+      <translation>Для мотоцикла 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation type="unfinished">Motorcycle 530</translation>
+      <translation>Для мотоцикла 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation type="unfinished">Motorcycle 630</translation>
+      <translation>Для мотоцикла 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Шаг цепи:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 в</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Диаметр ролика цепи:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4212,12 +4212,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Будет ли отверстие иметь смоделированную резьбу</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Отображать резьбу</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
@@ -4234,23 +4234,23 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation type="unfinished">Customize thread clearance</translation>
+      <translation>Указать внутреннее отклонение диаметра резьбы</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation type="unfinished">Custom Thread Clearance</translation>
+      <translation>Указать откл. диаметра</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Отклонение</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation type="unfinished">Custom Thread clearance value</translation>
+      <translation>Значение внутреннего отклонения диаметра резьбы в мм</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="171"/>
@@ -4276,8 +4276,8 @@ Note that the calculation can take some time</translation>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation type="unfinished">Hole clearance
-Only available for holes without thread</translation>
+      <translation>Отверстие под резьбу
+Доступно только для отверстий без резьбы</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
@@ -4296,12 +4296,12 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="285"/>
       <location filename="../../TaskHoleParameters.cpp" line="582"/>
       <source>Wide</source>
-      <translation type="unfinished">Wide</translation>
+      <translation>Wide (макс. допуск)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="299"/>
       <source>Class</source>
-      <translation>Класс</translation>
+      <translation>Поле допуска</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
@@ -4317,7 +4317,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <source>Hole diameter</source>
-      <translation type="unfinished">Hole diameter</translation>
+      <translation>Диаметр отверстия</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="369"/>
@@ -4339,12 +4339,12 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="421"/>
       <source>Thread Depth</source>
-      <translation type="unfinished">Thread Depth</translation>
+      <translation>Глубина резьбы</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="441"/>
       <source>Hole depth</source>
-      <translation type="unfinished">Hole depth</translation>
+      <translation>На глубину дна</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
@@ -4448,7 +4448,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>Loose (макс. допуск)</translation>
     </message>
   </context>
   <context>
@@ -4484,12 +4484,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
-      <translation type="unfinished">Create an additive feature</translation>
+      <translation>Аддитивные преобразования</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <translation>Субтрактивные преобразования</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4504,12 +4504,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation>Звездочка...</translation>
+      <translation>Мастер проектирования цепного колеса (звёздочки)...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation>Эвольвентная передача...</translation>
+      <translation>Мастер проектирования шестерни с эвольвентным профилем...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>

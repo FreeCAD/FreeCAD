@@ -261,6 +261,16 @@ Het maakt een 'Samengesteld Filter' voor elke vorm.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleaanse fragmenten</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Splits voorwerpen waar ze overlappen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Booleaanse fragmenten</translation>
@@ -348,16 +358,6 @@ Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt 
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Versnijden tot groep</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleaanse fragmenten</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Splits voorwerpen waar ze overlappen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>

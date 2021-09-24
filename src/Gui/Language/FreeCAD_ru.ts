@@ -3290,10 +3290,6 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Незагруженные верстаки</translation>
-    </message>
-    <message>
       <source>Workbench Name</source>
       <translation>Название верстака</translation>
     </message>
@@ -3308,6 +3304,10 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сэкономить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. После загрузки верстака, если это предусмотрено в настройках может появится дополнительный раздел с настройкам, связанным с функциональностью загруженного верстака.&lt;/p&gt;&lt;p&gt;В текущий момент доступны следующие верстаки, которые можно загрузить, если это требуется:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
     </message>
   </context>
   <context>
@@ -4508,32 +4508,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Пожалуйста, выберите 1, 2 или 3 точки, прежде чем нажать эту кнопку. Точка может быть на вершине, грани или кромке. Если используемая точка на грани или кромке, то она будет точкой на позиции мыши вдоль грани или кромки. Если выбрана 1 точка, то она будет использоваться в качестве центра вращения. Если выбраны 2 точки, то посредине между ними будет центр вращения, и, при необходимости, будет создана новая пользовательская ось. Если выбраны 3 точки, то первая точка становится центром вращения, и будет лежать на векторе, который перпендикулярен плоскости, проходящей через эти 3 точки. Некоторые расстояния и углы содержатся в отчёте, который может быть полезен при выравнивании объектов. Для Вашего удобства при использовании Shift + щелчок мыши соответствующее расстояние или угол копируются в буфер обмена.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Вокруг оси y:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Вокруг оси z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Вокруг оси x:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Поворот вокруг оси X</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Поворот вокруг оси Y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Поворот вокруг оси Z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Углы Эйлера (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6055,6 +6055,18 @@ Do you want to specify another directory?</source>
       <source>Vietnamese</source>
       <translation>Вьетнамский</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Греческий</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -7014,6 +7026,38 @@ Physical path: </source>
       <translation>
 
 Физический путь:</translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -9821,6 +9865,10 @@ Do you still want to proceed?</source>
     <message>
       <source>Special Ops</source>
       <translation>Специальные операции</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Аксонометрия</translation>
     </message>
   </context>
   <context>

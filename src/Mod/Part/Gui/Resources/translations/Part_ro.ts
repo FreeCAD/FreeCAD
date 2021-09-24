@@ -261,6 +261,16 @@ Va crea un "Filtru compus" pentru fiecare formă.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmente booleene</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Separă obiectele acolo unde se intersectează</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Fragmente booleene</translation>
@@ -348,16 +358,6 @@ Faceţi clic pe "Continuaţi" pentru a crea forma oricum sau pe 'Abandonați' pe
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Slice to compound</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmente booleene</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Separă obiectele acolo unde se intersectează</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>

@@ -2036,12 +2036,12 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Zero ez bada, ardatza ez dira irudikatuko lerro oso gisa, emandako luzera duten bi lerro gisa baizik</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Balio honetaz haratago dagoen geometria moztu egingo da. Ezarri zero mugagabea izan dadin.</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
@@ -2056,12 +2056,12 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Fusionatu material bereko objektuak</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Estrusio-bidearen luzera kalkulatua</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
@@ -3829,7 +3829,7 @@ Solairuaren sorrera utzi egin da.</translation>
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Sortu egiturak hautapenetik</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
@@ -3839,17 +3839,17 @@ Solairuaren sorrera utzi egin da.</translation>
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Hautatu gutxienez ardatz-objektu bat</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Estrusio-tresnak</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Hautapen-tresna...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4633,7 +4633,7 @@ Solairuaren sorrera utzi egin da.</translation>
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Egitura anitz</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
@@ -4643,17 +4643,17 @@ Solairuaren sorrera utzi egin da.</translation>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Egiturazko sistema</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Sortu egiturazko sistemen objektu bat hautatutako egitura bat eta ardatz bat erabilita</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Egitura-tresnak</translation>
     </message>
   </context>
   <context>

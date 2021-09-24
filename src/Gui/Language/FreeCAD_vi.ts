@@ -3294,10 +3294,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
-    </message>
-    <message>
       <source>Workbench Name</source>
       <translation type="unfinished">Workbench Name</translation>
     </message>
@@ -3312,6 +3308,10 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
     </message>
   </context>
   <context>
@@ -4511,32 +4511,32 @@ Cột 'Trạng thái' cho biết liệu tài liệu có thể được khôi ph�
       <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation type="unfinished">Rotation around the x-axis</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation type="unfinished">Rotation around the y-axis</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation type="unfinished">Rotation around the z-axis</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation type="unfinished">Euler angles (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6062,6 +6062,18 @@ Bạn có muốn chỉ định thư mục khác không?</translation>
       <source>Vietnamese</source>
       <translation type="unfinished">Vietnamese</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Tiếng Hy Lạp</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -7025,6 +7037,38 @@ Physical path: </source>
       <translation type="unfinished">
 
 Physical path: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -9832,6 +9876,10 @@ Do you still want to proceed?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Tính năng đặc biệt</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Phép chiếu có trục đo</translation>
     </message>
   </context>
   <context>

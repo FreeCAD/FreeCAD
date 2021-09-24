@@ -2046,17 +2046,17 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Doğruysa yalnızca katı cisimler, diğer dosyalardan tasdiklenen bu nesne tarafından toplanacaktır</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Bir malzemeAdı: Katı cismi ilişkilendiren malzeme isimleri KatıİçindekilerListesi haritası, diğer dosylardan bu nesneyi tasdiklenmesi için kullanılır</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Aynı malzemenin nesnelerini kaynaştırın</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="678"/>

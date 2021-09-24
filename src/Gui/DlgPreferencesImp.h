@@ -26,6 +26,7 @@
 
 #include <QDialog>
 #include <memory>
+#include <FCGlobal.h>
 
 class QAbstractButton;
 class QListWidgetItem;

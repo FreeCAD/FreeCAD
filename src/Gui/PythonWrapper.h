@@ -48,8 +48,8 @@ public:
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
-    Py::Object fromQObject(QObject*, const char* className=0);
-    Py::Object fromQWidget(QWidget*, const char* className=0);
+    Py::Object fromQObject(QObject*, const char* className=nullptr);
+    Py::Object fromQWidget(QWidget*, const char* className=nullptr);
     const char* getWrapperName(QObject*) const;
     /*!
       Create a Python wrapper for the icon. The icon must be created on the heap

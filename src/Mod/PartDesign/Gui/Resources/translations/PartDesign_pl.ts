@@ -3016,7 +3016,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
       <source>Skin</source>
-      <translation>Skóra</translation>
+      <translation>Powłoka</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="114"/>

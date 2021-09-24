@@ -6,12 +6,12 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Engranaje inbolutua...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Engranaje inbolutuaren definizioa sortzen edo editatzen du.</translation>
     </message>
   </context>
   <context>
@@ -19,12 +19,12 @@
     <message>
       <location filename="SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Piñoia...</translation>
     </message>
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Piñoi-definizioa sortzen edo editatzen du.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Ziria diseinatzeko morroia...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Abiarazi ziria diseinatzeko morroia</translation>
     </message>
   </context>
   <context>
@@ -634,7 +634,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>Sortu azpiobjektu baten forma-zorroa</translation>
     </message>
   </context>
   <context>
@@ -1479,8 +1479,8 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the chamfers</translation>
+      <translation>- hautatu elementu bat hura nabarmentzeko
+- egin klik bikoitza elementu batean alakak ikusteko</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
@@ -1979,7 +1979,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Gazta-burua (zaharkitua)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
@@ -2307,8 +2307,8 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskPadParameters.ui" line="60"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Erabili bektore pertsonalizatua estrusioaren norabiderako,
+bestela krokisaren planoren bektore normala erabiliko da</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="64"/>
@@ -2349,28 +2349,28 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskPadParameters.ui" line="166"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Markatu ez bada, luzera neurtuko da
+zehaztutako norabidean</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="170"/>
       <source>Length along sketch normal</source>
-      <translation type="unfinished">Length along sketch normal</translation>
+      <translation>Luzera krokisaren normalaren luzeran</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="185"/>
       <source>Offset to face</source>
-      <translation type="unfinished">Offset to face</translation>
+      <translation>Desplazamendua aurpegiarekiko</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="192"/>
       <source>Offset from face in which pad will end</source>
-      <translation type="unfinished">Offset from face in which pad will end</translation>
+      <translation>Estrusioa amaituko den aurpegitik dagoen desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="207"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Luzera simetrikoki aplikatzen dio krokisaren planoari</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="210"/>
@@ -2380,7 +2380,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="217"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>Estrusioaren norabidea alderantzikatzen du</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="220"/>
@@ -2995,8 +2995,8 @@ sakatu berriro hautapena amaitzeko</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- hautatu elementu bat hura nabarmentzeko
+- egin klik bikoitza elementu batean elementuak ikusteko</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3144,12 +3144,12 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Sortu kutxa gehitzaile bat bere zabalera, altuera eta luzera erabiliz</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Sortu zilindro gehitzaile bat bere erradioa, altuera eta angelua erabiliz</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3258,12 +3258,12 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>Lekuz aldatutako elementua unean ezarritako puntaren ondoren ageri da.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Azken elementua punta berria izan dadin nahi duzu?</translation>
     </message>
   </context>
   <context>
@@ -3293,7 +3293,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Azpiformaren zorroa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
@@ -3369,7 +3369,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
+      <translation>Ziurtatu gorputzak elementu bat duela kenketako komandoa erabiltzen saiatu baino lehen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
@@ -4039,7 +4039,7 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 hazbete</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
@@ -4201,7 +4201,7 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
     <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
       <source>Whether the hole gets a thread</source>
-      <translation type="unfinished">Whether the hole gets a thread</translation>
+      <translation>Zuloak hari bat izango duen ala ez</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="71"/>
@@ -4211,12 +4211,12 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Zuloak eredu-hari bat izango duen ala ez</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Eredu-haria</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
@@ -4233,23 +4233,23 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation type="unfinished">Customize thread clearance</translation>
+      <translation>Pertsonalizatu hari-garbiketa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation type="unfinished">Custom Thread Clearance</translation>
+      <translation>Hari-garbiketa pertsonalizatua</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Garbiketa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation type="unfinished">Custom Thread clearance value</translation>
+      <translation>Hari-garbiketaren balio pertsonalizatua</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="171"/>
@@ -4275,8 +4275,8 @@ Note that the calculation can take some time</translation>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation type="unfinished">Hole clearance
-Only available for holes without thread</translation>
+      <translation>Zulo-garbiketa
+Haririk ez duten zuloetan soilik erabilgarri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
@@ -4295,7 +4295,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="285"/>
       <location filename="../../TaskHoleParameters.cpp" line="582"/>
       <source>Wide</source>
-      <translation type="unfinished">Wide</translation>
+      <translation>Zabala</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="299"/>
@@ -4406,7 +4406,7 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Take into account for depth</source>
-      <translation type="unfinished">Take into account for depth</translation>
+      <translation>Hartu kontuan sakonerarako</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>
@@ -4447,7 +4447,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>Lasaia</translation>
     </message>
   </context>
   <context>
@@ -4503,17 +4503,17 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Piñoia...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Engranaje inbolutua...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>Ziria diseinatzeko morroia</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -4523,12 +4523,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Part Design Helper</source>
-      <translation type="unfinished">Part Design Helper</translation>
+      <translation>Piezen diseinuaren laguntza</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Part Design Modeling</source>
-      <translation type="unfinished">Part Design Modeling</translation>
+      <translation>Piezen diseinuaren ereduak sortzea</translation>
     </message>
   </context>
 </TS>

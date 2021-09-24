@@ -25,6 +25,9 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <limits>
+# include <QWidget>
+# include <QIcon>
+# include <QDir>
 #endif
 #include <QMetaType>
 
@@ -154,7 +157,7 @@ PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
     if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
         return toCppPointerConvFuncQuantity;
     else
-        return 0;
+        return nullptr;
 }
 
 void BaseQuantity_PythonToCpp_QVariant(PyObject* pyIn, void* cppOut)
@@ -167,7 +170,7 @@ PythonToCppFunc isBaseQuantity_PythonToCpp_QVariantConvertible(PyObject* obj)
 {
     if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
         return BaseQuantity_PythonToCpp_QVariant;
-    return 0;
+    return nullptr;
 }
 
 #if defined (HAVE_PYSIDE)
@@ -360,7 +363,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return reinterpret_cast<QObject*>(ptr);
 #endif
 
-    return 0;
+    return nullptr;
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
@@ -413,7 +416,7 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
 #else
     Q_UNUSED(pyobj);
 #endif
-    return 0;
+    return nullptr;
 }
 
 Py::Object PythonWrapper::fromQDir(const QDir& dir)
@@ -424,6 +427,8 @@ Py::Object PythonWrapper::fromQDir(const QDir& dir)
         const_cast<QDir*>(&dir), false, false, typeName);
     if (pyobj)
         return Py::asObject(pyobj);
+#else
+    Q_UNUSED(dir)
 #endif
     throw Py::RuntimeError("Failed to wrap icon");
 }

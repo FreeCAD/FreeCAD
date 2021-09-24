@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Помощник за проектиране на валове...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Стартира помощника за проектиране на валове</translation>
     </message>
   </context>
   <context>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Добавъчна спирала</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Издърпва избраната скица по спирала</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create sketch</source>
-      <translation type="unfinished">Create sketch</translation>
+      <translation>Създаване скица</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="489"/>
@@ -489,12 +489,12 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Pad</source>
-      <translation>Подложка</translation>
+      <translation>Протрузия</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>Pad a selected sketch</source>
-      <translation>Подложка на избрана скица</translation>
+      <translation>Протрузия от избрана скица</translation>
     </message>
   </context>
   <context>
@@ -4516,7 +4516,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>Помощник за проектиране на валове</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>

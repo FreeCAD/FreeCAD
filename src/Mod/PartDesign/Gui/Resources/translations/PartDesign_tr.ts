@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Mil tasarım sihirbazı...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Mil tasarım sihirbazını başlat</translation>
     </message>
   </context>
   <context>
@@ -45,42 +45,42 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Uzunluk [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Çap [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>İç çap [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Kısıtlama türü</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Başlangıç kenar tipi</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Başlangıç kenar boyutu</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Bitiş kenar tipi</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Bitiş kenar boyutu</translation>
     </message>
   </context>
   <context>
@@ -3809,7 +3809,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>Sınır nesneyi seçin</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3851,9 +3851,9 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Not: Geçiş İşlevini seçerseniz, dosyayı eski bir FreeCAD sürümüyle düzenleyemezsiniz.
+Geçiş İşlevini reddederseniz, Gövdeler ve Parçalar gibi yeni ParçaTasarım özelliklerini kullanamazsınız. Sonuç olarak, parçalarınızı Montaj Çalışma Tezgahında kullanamazsınız.
+Buna karşın, daha sonra istediğiniz an 'ParçaTasarımı-&gt;Geçiş...' 'Part Design-&gt; Migrate'. menüsü ile geçiş işlevini gerçekleştirebilirsiniz.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>

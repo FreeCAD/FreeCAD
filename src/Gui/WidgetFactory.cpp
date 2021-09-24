@@ -52,26 +52,26 @@
 
 using namespace Gui;
 
-Gui::WidgetFactoryInst* Gui::WidgetFactoryInst::_pcSingleton = NULL;
+Gui::WidgetFactoryInst* Gui::WidgetFactoryInst::_pcSingleton = nullptr;
 
 WidgetFactoryInst& WidgetFactoryInst::instance()
 {
-    if (_pcSingleton == 0L)
+    if (_pcSingleton == nullptr)
         _pcSingleton = new WidgetFactoryInst;
     return *_pcSingleton;
 }
 
 void WidgetFactoryInst::destruct ()
 {
-    if (_pcSingleton != 0)
+    if (_pcSingleton != nullptr)
         delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
  * To create an instance of this widget once it must has been registered.
- * If there is no appropriate widget registered 0 is returned.
+ * If there is no appropriate widget registered nullptr is returned.
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
 {
@@ -84,7 +84,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 #else
         Base::Console().Log("\"%s\" is not registered\n", sName);
 #endif
-        return 0;
+        return nullptr;
     }
 
     try {
@@ -100,7 +100,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
         Base::Console().Log("%s does not inherit from \"QWidget\"\n", sName);
 #endif
         delete w;
-        return 0;
+        return nullptr;
     }
 
     // set the parent to the widget
@@ -113,7 +113,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
  * To create an instance of this widget once it must has been registered.
- * If there is no appropriate widget registered 0 is returned.
+ * If there is no appropriate widget registered nullptr is returned.
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
 {
@@ -126,7 +126,7 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 #else
         Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
 #endif
-        return 0;
+        return nullptr;
     }
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
@@ -139,7 +139,7 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
         Base::Console().Error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
 #endif
         delete w;
-        return 0;
+        return nullptr;
     }
 
     // set the parent to the widget
@@ -153,7 +153,7 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
  * Creates a preference widget with the name \a sName and the preference name \a sPref
  * which is a child of \a parent.
  * To create an instance of this widget once it must has been registered.
- * If there is no appropriate widget registered 0 is returned.
+ * If there is no appropriate widget registered nullptr is returned.
  * After creation of this widget its recent preferences are restored automatically.
  */
 QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent, const char* sPref)
@@ -161,7 +161,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     QWidget* w = createWidget(sName);
     // this widget class is not registered
     if (!w)
-        return 0; // no valid QWidget object
+        return nullptr; // no valid QWidget object
 
     // set the parent to the widget
     w->setParent(parent);
@@ -178,7 +178,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
         Base::Console().Error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
 #endif
         delete w;
-        return 0;
+        return nullptr;
     }
 
     return w;
@@ -186,7 +186,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
 
 // ----------------------------------------------------
 
-WidgetFactorySupplier* WidgetFactorySupplier::_pcSingleton = 0L;
+WidgetFactorySupplier* WidgetFactorySupplier::_pcSingleton = nullptr;
 
 WidgetFactorySupplier & WidgetFactorySupplier::instance()
 {
@@ -201,7 +201,7 @@ void WidgetFactorySupplier::destruct()
     // delete the widget factory and all its producers first
     WidgetFactoryInst::destruct();
     delete _pcSingleton;
-    _pcSingleton=0;
+    _pcSingleton=nullptr;
 }
 
 // ----------------------------------------------------
@@ -254,13 +254,13 @@ void* PrefPagePyProducer::Produce () const
         QWidget* widget = new Gui::Dialog::PreferencePagePython(page);
         if (!widget->layout()) {
             delete widget;
-            widget = 0;
+            widget = nullptr;
         }
         return widget;
     }
     catch (Py::Exception&) {
         PyErr_Print();
-        return 0;
+        return nullptr;
     }
 }
 
@@ -405,7 +405,7 @@ void PyResource::init_type()
     add_varargs_method("connect",&PyResource::connect);
 }
 
-PyResource::PyResource() : myDlg(0)
+PyResource::PyResource() : myDlg(nullptr)
 {
 }
 
@@ -462,7 +462,7 @@ void PyResource::load(const char* name)
         }
     }
 
-    QWidget* w=0;
+    QWidget* w=nullptr;
     try {
         UiLoader loader;
         loader.setLanguageChangeEnabled(true);
@@ -497,13 +497,13 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     if ( !myDlg )
         return false;
 
-    QObject* objS=0L;
+    QObject* objS=nullptr;
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-    QList<QWidget*>::const_iterator it = list.begin();
+    QList<QWidget*>::const_iterator it = list.cbegin();
     QObject *obj;
     QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
-    while ( it != list.end() ) {
+    while ( it != list.cend() ) {
         obj = *it;
         ++it;
         if (obj->objectName() == QLatin1String(sender)) {
@@ -534,7 +534,7 @@ Py::Object PyResource::repr()
 /**
  * Searches for a widget and its value in the argument object \a args
  * to returns its value as Python object.
- * In the case it fails 0 is returned.
+ * In the case it fails nullptr is returned.
  */
 Py::Object PyResource::value(const Py::Tuple& args)
 {
@@ -546,11 +546,11 @@ Py::Object PyResource::value(const Py::Tuple& args)
     QVariant v;
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-        QList<QWidget*>::const_iterator it = list.begin();
+        QList<QWidget*>::const_iterator it = list.cbegin();
         QObject *obj;
 
         bool fnd = false;
-        while ( it != list.end() ) {
+        while ( it != list.cend() ) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {
@@ -605,7 +605,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
 /**
  * Searches for a widget, its value name and the new value in the argument object \a args
  * to set even this new value.
- * In the case it fails 0 is returned.
+ * In the case it fails nullptr is returned.
  */
 Py::Object PyResource::setValue(const Py::Tuple& args)
 {
@@ -646,11 +646,11 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
-        QList<QWidget*>::const_iterator it = list.begin();
+        QList<QWidget*>::const_iterator it = list.cbegin();
         QObject *obj;
 
         bool fnd = false;
-        while ( it != list.end() ) {
+        while ( it != list.cend() ) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {
@@ -693,7 +693,7 @@ Py::Object PyResource::show(const Py::Tuple&)
 
 /**
  * Searches for the sender, the signal and the callback function to connect with
- * in the argument object \a args. In the case it fails 0 is returned.
+ * in the argument object \a args. In the case it fails nullptr is returned.
  */
 Py::Object PyResource::connect(const Py::Tuple& args)
 {
