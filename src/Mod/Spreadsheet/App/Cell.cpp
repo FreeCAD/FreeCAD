@@ -1335,7 +1335,7 @@ bool Cell::setEditData(const QVariant &d) {
         
         auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(owner->getContainer());
         std::ostringstream ss;
-        ss << std::setprecision(std::numeric_limits<double>::digits10 + 2)
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1)
            << q.getValue() << " " << q.getUnit().getStdString();
         auto res = Expression::parse(parent,ss.str());
         auto expr = SimpleStatement::cast<App::ListExpression>(expression.get());
