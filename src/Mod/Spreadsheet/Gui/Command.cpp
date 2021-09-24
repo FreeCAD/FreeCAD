@@ -201,26 +201,26 @@ void CmdSpreadsheetImport::activated(int iMsg)
         QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter","tab"));
         QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter","\""));
         QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter","\\"));
-        group->SetASCII("ImportExportDelimiter", Base::Tools::toStdString(delimiter).c_str()); //create parameters that do not already exist for user convenience
-        group->SetASCII("ImportExportQuoteCharacter", Base::Tools::toStdString(quoteChar).c_str());
-        group->SetASCII("ImportExportEscapeCharacter", Base::Tools::toStdString(escapeChar).c_str());
+        group->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str()); //create parameters that do not already exist for user convenience
+        group->SetASCII("ImportExportQuoteCharacter", quoteChar.toStdString().c_str());
+        group->SetASCII("ImportExportEscapeCharacter", escapeChar.toStdString().c_str());
         char delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
         if (delimiter.compare(QString::fromStdString("tab"), Qt::CaseInsensitive) == 0 || delimiter.compare(QString::fromStdString("\\t"),Qt::CaseInsensitive) == 0){
             delim = '\t';
         }
         if(delim != '\0' && quoteChar.size() == 1 && escapeChar.size() == 1){
-            sheet->importFromFile(Base::Tools::toStdString(fileName),  delim, quoteChar[0].toLatin1(), escapeChar[0].toLatin1());
+            sheet->importFromFile(fileName.toStdString(),  delim, quoteChar[0].toLatin1(), escapeChar[0].toLatin1());
             sheet->execute();
         } else {
             std::stringstream errMsg("Invalid spreadsheet Import/Export parameter.\n");
             if (delim == '\0') {
-                errMsg << "Unrecognized delimiter: " << Base::Tools::toStdString(delimiter).c_str() << " (recognized tokens: tab, semicolon, comma, or any single character)\n";
+                errMsg << "Unrecognized delimiter: " << delimiter.toStdString() << " (recognized tokens: tab, semicolon, comma, or any single character)\n";
             }
             if (quoteChar.size() != 1){
-                errMsg << "Invalid quote character: " << Base::Tools::toStdString(quoteChar).c_str() << " (quote character must be one single character)\n";
+                errMsg << "Invalid quote character: " << quoteChar.toStdString() << " (quote character must be one single character)\n";
             }
             if (escapeChar.size() != 1){
-                errMsg << "Invalid escape character: " << Base::Tools::toStdString(escapeChar).c_str() << " (escape character must be one single character)\n";
+                errMsg << "Invalid escape character: " << escapeChar.toStdString() << " (escape character must be one single character)\n";
             }
             errMsg << "Import not done.\n";
             Base::Console().Error(errMsg.str().c_str());
@@ -281,21 +281,21 @@ void CmdSpreadsheetExport::activated(int iMsg)
                 } else if (delimiter.compare(QString::fromStdString("semicolon"), Qt::CaseInsensitive) == 0){
                     delim = ';';
                 }
-                group->SetASCII("ImportExportDelimiter", Base::Tools::toStdString(delimiter).c_str()); //create parameters that do not already exist for user convenience
-                group->SetASCII("ImportExportQuoteCharacter", Base::Tools::toStdString(quoteChar).c_str());
-                group->SetASCII("ImportExportEscapeCharacter", Base::Tools::toStdString(escapeChar).c_str());
+                group->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str()); //create parameters that do not already exist for user convenience
+                group->SetASCII("ImportExportQuoteCharacter", quoteChar.toStdString().c_str());
+                group->SetASCII("ImportExportEscapeCharacter", escapeChar.toStdString().c_str());
                 if(delim != '\0' && quoteChar.size() == 1 && escapeChar.size() == 1){
-                    sheet->exportToFile(Base::Tools::toStdString(fileName), delim, quoteChar[0].toLatin1(), escapeChar[0].toLatin1());
+                    sheet->exportToFile(fileName.toStdString(), delim, quoteChar[0].toLatin1(), escapeChar[0].toLatin1());
                 } else {
                     std::stringstream errMsg("Invalid spreadsheet Import/Export parameter.\n");
                     if (delim == '\0') {
-                        errMsg << "Unrecognized delimiter: " << Base::Tools::toStdString(delimiter).c_str() << " (recognized tokens: tab, semicolon, comma, or any single character)\n";
+                        errMsg << "Unrecognized delimiter: " << delimiter.toStdString() << " (recognized tokens: tab, semicolon, comma, or any single character)\n";
                     }
                     if (quoteChar.size() != 1){
-                        errMsg << "Invalid quote character: " << Base::Tools::toStdString(quoteChar).c_str() << " (quote character must be one single character)\n";
+                        errMsg << "Invalid quote character: " << quoteChar.toStdString() << " (quote character must be one single character)\n";
                     }
                     if (escapeChar.size() != 1){
-                        errMsg << "Invalid escape character: " << Base::Tools::toStdString(escapeChar).c_str() << " (escape character must be one single character)\n";
+                        errMsg << "Invalid escape character: " << escapeChar.toStdString() << " (escape character must be one single character)\n";
                     }
                     errMsg << "Export not done.\n";
                     Base::Console().Error(errMsg.str().c_str());
