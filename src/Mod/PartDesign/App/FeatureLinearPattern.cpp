@@ -32,8 +32,6 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
-
-#include "FeatureLinearPattern.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
 #include <App/OriginFeature.h>
@@ -42,6 +40,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
+#include "FeatureLinearPattern.h"
+
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -49,7 +49,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
 
 LinearPattern::LinearPattern()
 {
@@ -199,6 +199,9 @@ void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const cha
         // restore the PropertyInteger to be able to set its value
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

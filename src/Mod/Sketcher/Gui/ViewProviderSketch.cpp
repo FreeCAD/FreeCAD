@@ -3164,23 +3164,35 @@ bool ViewProviderSketch::doubleClicked(void)
 
 QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
 {
-    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
-    bool                            iHideUnits;
-    QString                         userStr; // final return string
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits and ShowDimensionalName option
+    bool                            iHideUnits; // internal HideUnits setting
+    bool                            iShowDimName; // internal ShowDimensionalName setting
+    QString                         nameStr; // name parameter string
+    QString                         valueStr; // dimensional value string
+    QString                         presentationStr; // final return string
     QString                         unitStr;  // the actual unit string
     QString                         baseUnitStr; // the expected base unit string
+    QString                         formatStr; // the user defined format for the representation string
     double                          factor; // unit scaling factor, currently not used
     Base::UnitSystem                unitSys; // current unit system
 
     if(!constraint->isActive)
         return QString::fromLatin1(" ");
 
-    // Get value of HideUnits option. Default is false.
+    // get parameter group for Sketcher display settings
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    // Get value of HideUnits option. Default is false.
     iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
+    // Get Value of ShowDimensionalName option. Default is true.
+    iShowDimName = hGrpSketcher->GetBool("ShowDimensionalName", false);
+    // Get the defined format string
+    formatStr = QString::fromStdString(hGrpSketcher->GetASCII("DimensionalStringFormat", "%N = %V"));
 
-    // Get the current display string including units
-    userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+    // Get the current name parameter string of the constraint
+    nameStr = QString::fromStdString(constraint->Name);
+
+    // Get the current value string including units
+    valueStr = constraint->getPresentationValue().getUserString(factor, unitStr);
 
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
@@ -3225,19 +3237,45 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
-                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+                valueStr.remove(rxUnits);                      //getUserString(defaultDecimals) without units
             }
         }
     }
 
     if (constraint->Type == Sketcher::Diameter){
-        userStr.insert(0, QChar(8960)); // Diameter sign
+        valueStr.insert(0, QChar(8960)); // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius){
-        userStr.insert(0, QChar(82)); // Capital letter R
+        valueStr.insert(0, QChar(82)); // Capital letter R
     }
 
-    return userStr;
+    /**
+    Create the representation string from the user defined format string
+    Format options are:
+    %N - the constraint name parameter
+    %V - the value of the dimensional constraint, including any unit characters
+    */
+    if (iShowDimName && !nameStr.isEmpty())
+    {
+        if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%N")))
+        {
+            presentationStr = formatStr;
+            presentationStr.replace(QLatin1String("%N"), nameStr);
+            presentationStr.replace(QLatin1String("%V"), valueStr);
+        }
+        else
+        {
+            // user defined format string does not contain any valid parameter, using default format "%N = %V"
+            presentationStr = nameStr + QLatin1String(" = ") + valueStr;
+            FC_WARN("When parsing dimensional format string \""
+                    << QString(formatStr).toStdString()
+                    << "\", no valid parameter found, using default format.");
+        }
+
+        return presentationStr;
+    }
+
+    return valueStr;
 }
 
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
@@ -3417,6 +3455,7 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
+        thisIcon.visible = (*it)->isInVirtualSpace == getIsShownVirtualSpace();
 
         if ((*it)->Type==Symmetric) {
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
@@ -3501,36 +3540,44 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
+        // and only icons that are visible
+        if(init.type != QString::fromLatin1("Constraint_Symmetric") && init.visible){
 
             IconQueue::iterator i = iconQueue.begin();
+
+
             while(i != iconQueue.end()) {
-                bool addedToGroup = false;
+                if((*i).visible) {
+                    bool addedToGroup = false;
 
-                for(IconQueue::iterator j = thisGroup.begin();
-                    j != thisGroup.end(); ++j) {
-                    float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
-                        // Found an icon in iconQueue that's close enough to
-                        // a member of thisGroup, so move it into thisGroup
-                        thisGroup.push_back(*i);
-                        i = iconQueue.erase(i);
-                        addedToGroup = true;
-                        break;
+                    for(IconQueue::iterator j = thisGroup.begin();
+                        j != thisGroup.end(); ++j) {
+                        float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
+                        if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
+                            // Found an icon in iconQueue that's close enough to
+                            // a member of thisGroup, so move it into thisGroup
+                            thisGroup.push_back(*i);
+                            i = iconQueue.erase(i);
+                            addedToGroup = true;
+                            break;
+                        }
                     }
-                }
 
-                if(addedToGroup) {
-                    if(i == iconQueue.end())
-                        // We just got the last icon out of iconQueue
-                        break;
-                    else
-                        // Start looking through the iconQueue again, in case
-                        // we have an icon that's now close enough to thisGroup
-                        i = iconQueue.begin();
-                } else
-                    ++i;
+                    if(addedToGroup) {
+                        if(i == iconQueue.end())
+                            // We just got the last icon out of iconQueue
+                            break;
+                        else
+                            // Start looking through the iconQueue again, in case
+                            // we have an icon that's now close enough to thisGroup
+                            i = iconQueue.begin();
+                    } else
+                        ++i;
+                }
+                else // if !visible we skip it
+                   i++;
             }
+
         }
 
         if(thisGroup.size() == 1) {

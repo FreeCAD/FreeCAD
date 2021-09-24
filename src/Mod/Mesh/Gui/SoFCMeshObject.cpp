@@ -388,7 +388,7 @@ void SoFCMeshPickNode::pick(SoPickAction * action)
     const SbVec3f& dir = line.getDirection();
     Base::Vector3f pt(pos[0],pos[1],pos[2]);
     Base::Vector3f dr(dir[0],dir[1],dir[2]);
-    unsigned long index;
+    Mesh::FacetIndex index;
     if (alg.NearestFacetOnRay(pt, dr, *meshGrid, pt, index)) {
         SoPickedPoint* pp = raypick->addIntersection(SbVec3f(pt.x,pt.y,pt.z));
         if (pp) {
@@ -1350,7 +1350,7 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (mesh->countSegments() <= this->index.getValue())
         return;
-    const std::vector<unsigned long> rSegm = mesh->getSegment
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment
         (this->index.getValue()).getIndices();
     bool perVertex = (mb && bind == PER_VERTEX_INDEXED);
     bool perFace = (mb && bind == PER_FACE_INDEXED);
@@ -1360,7 +1360,7 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
         glBegin(GL_TRIANGLES);
         if (ccw) {
             // counterclockwise ordering
-            for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
+            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
             {
                 const MeshCore::MeshFacet& f = rFacets[*it];
                 const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1389,7 +1389,7 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
         }
         else {
             // clockwise ordering
-            for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
+            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
             {
                 const MeshCore::MeshFacet& f = rFacets[*it];
                 const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1412,7 +1412,7 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
     }
     else {
         glBegin(GL_TRIANGLES);
-        for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
+        for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
         {
             const MeshCore::MeshFacet& f = rFacets[*it];
             glVertex(rPoints[f._aulPoints[0]]);
@@ -1432,7 +1432,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject * mesh, SbBool need
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (mesh->countSegments() <= this->index.getValue())
         return;
-    const std::vector<unsigned long> rSegm = mesh->getSegment
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment
         (this->index.getValue()).getIndices();
     int mod = rSegm.size()/renderTriangleLimit+1;
 
@@ -1444,7 +1444,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject * mesh, SbBool need
         glBegin(GL_POINTS);
         int ct=0;
         if (ccw) {
-            for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
+            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
             {
                 if (ct%mod==0) {
                     const MeshCore::MeshFacet& f = rFacets[*it];
@@ -1469,7 +1469,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject * mesh, SbBool need
             }
         }
         else {
-            for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
+            for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
             {
                 if (ct%mod==0) {
                     const MeshCore::MeshFacet& f = rFacets[*it];
@@ -1498,7 +1498,7 @@ void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject * mesh, SbBool need
     else {
         glBegin(GL_POINTS);
         int ct=0;
-        for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
+        for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it, ct++)
         {
             if (ct%mod==0) {
                 const MeshCore::MeshFacet& f = rFacets[*it];
@@ -1536,7 +1536,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
         return;
     if (mesh->countSegments() <= this->index.getValue())
         return;
-    const std::vector<unsigned long> rSegm = mesh->getSegment
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment
         (this->index.getValue()).getIndices();
 
     // get material binding
@@ -1552,7 +1552,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     beginShape(action, TRIANGLES, &faceDetail);
     try 
     {
-        for (std::vector<unsigned long>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
+        for (std::vector<Mesh::FacetIndex>::const_iterator it = rSegm.begin(); it != rSegm.end(); ++it)
         {
             const MeshCore::MeshFacet& f = rFacets[*it];
             const MeshCore::MeshPoint& v0 = rPoints[f._aulPoints[0]];
@@ -1618,13 +1618,13 @@ void SoFCMeshSegmentShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &
     const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
     if (mesh && mesh->countSegments() > this->index.getValue()) {
         const Mesh::Segment& segm = mesh->getSegment(this->index.getValue());
-        const std::vector<unsigned long>& indices = segm.getIndices();
+        const std::vector<Mesh::FacetIndex>& indices = segm.getIndices();
         Base::BoundBox3f cBox;
         if (!indices.empty()) {
             const MeshCore::MeshPointArray& rPoint = mesh->getKernel().GetPoints();
             const MeshCore::MeshFacetArray& rFaces = mesh->getKernel().GetFacets();
 
-            for (std::vector<unsigned long>::const_iterator it = indices.begin();
+            for (std::vector<Mesh::FacetIndex>::const_iterator it = indices.begin();
                 it != indices.end(); ++it) {
                     const MeshCore::MeshFacet& face = rFaces[*it];
                     cBox.Add(rPoint[face._aulPoints[0]]);
@@ -1709,7 +1709,7 @@ void SoFCMeshObjectBoundary::drawLines(const Mesh::MeshObject * mesh) const
     glBegin(GL_LINES);
     for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
         for (int i=0; i<3; i++) {
-            if (it->_aulNeighbours[i] == ULONG_MAX) {
+            if (it->_aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
                 glVertex(rPoints[it->_aulPoints[i]]);
                 glVertex(rPoints[it->_aulPoints[(i+1)%3]]);
             }
@@ -1741,7 +1741,7 @@ void SoFCMeshObjectBoundary::generatePrimitives(SoAction* action)
     for (MeshCore::MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it)
     {
         for (int i=0; i<3; i++) {
-            if (it->_aulNeighbours[i] == ULONG_MAX) {
+            if (it->_aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
                 const MeshCore::MeshPoint& v0 = rPoints[it->_aulPoints[i]];
                 const MeshCore::MeshPoint& v1 = rPoints[it->_aulPoints[(i+1)%3]];
 
@@ -1805,7 +1805,7 @@ void SoFCMeshObjectBoundary::getPrimitiveCount(SoGetPrimitiveCountAction * actio
     int ctEdges=0;
     for (MeshCore::MeshFacetArray::_TConstIterator jt = rFaces.begin(); jt != rFaces.end(); ++jt) {
         for (int i=0; i<3; i++) {
-            if (jt->_aulNeighbours[i] == ULONG_MAX) {
+            if (jt->_aulNeighbours[i] == MeshCore::FACET_INDEX_MAX) {
                 ctEdges++;
             }
         }

@@ -74,7 +74,7 @@ public:
 
 private:
     void apply(const Mesh::MeshObject& mesh, bool addDefaultColor, const App::Color& defaultColor, float max_dist, MeshCore::Material &material);
-    unsigned long findIndex(const Base::Vector3f& p, float max_dist) const {
+    PointIndex findIndex(const Base::Vector3f& p, float max_dist) const {
         if (max_dist < 0.0f) {
             return kdTree->FindExact(p);
         }

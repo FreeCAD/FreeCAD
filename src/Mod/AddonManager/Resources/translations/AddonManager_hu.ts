@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="530"/>
+      <location filename="addonmanager_workers.py" line="535"/>
       <source>Installed location</source>
       <translation>Telepített hely</translation>
     </message>
@@ -22,257 +22,257 @@
       <translation>Nem olvasható be a makró leírása.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="84"/>
+      <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Az itt telepíthető bővítmények hivatalosan nem részei a FreeCAD-nek, és azokat nem vizsgáljfelül a FreeCAD csapata. Győződjön meg róla, hogy ismeri, amit telepíteni akar!</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="198"/>
+      <location filename="AddonManager.py" line="199"/>
       <source>Addon manager</source>
       <translation>Kiegészítők kezelője</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="203"/>
+      <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>A módosítások érvénybe léptetéséhez újra kell indítania a FreeCAD programot. A FreeCAD újraindításához nyomja meg az Ok gombot, vagy a Mégse gombra indítsa újra később.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="242"/>
+      <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Frissítés keresése...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="261"/>
+      <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Alkalmaz</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="262"/>
+      <location filename="AddonManager.py" line="263"/>
       <source>update(s)</source>
       <translation>frissítés(ek)</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="265"/>
+      <location filename="AddonManager.py" line="266"/>
       <source>No update available</source>
       <translation>Nem érhető el frissítés</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="432"/>
+      <location filename="AddonManager.py" line="433"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
       <translation>A makró telepítése sikeresen megtörtént. A makró már elérhető a makrók párbeszédpanelről.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="434"/>
+      <location filename="AddonManager.py" line="435"/>
       <source>Unable to install</source>
       <translation>Nem telepíthető</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="493"/>
+      <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
       <translation>Az kiegészítő sikeresen eltávolítva. Indítsa újra a FreeCAD</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="495"/>
+      <location filename="AddonManager.py" line="496"/>
       <source>Unable to remove this addon</source>
       <translation>A kiegészítő eltávolítása nem lehetséges</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="501"/>
+      <location filename="AddonManager.py" line="502"/>
       <source>Macro successfully removed.</source>
       <translation>Makró sikeresen törölve.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="503"/>
+      <location filename="AddonManager.py" line="504"/>
       <source>Macro could not be removed.</source>
       <translation>Makró eltávolítása sikertelen.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="166"/>
+      <location filename="addonmanager_workers.py" line="167"/>
       <source>Unable to download addon list.</source>
       <translation>A kiegészítő letöltése sikertelen.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="171"/>
+      <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
       <translation>A munkafelületek listája frissítve.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="733"/>
+      <location filename="addonmanager_workers.py" line="738"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Elavult GitPython észlelve, fontolja meg a frissítés a pip-el.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="291"/>
+      <location filename="addonmanager_workers.py" line="296"/>
       <source>List of macros successfully retrieved.</source>
       <translation>A sikeresen beolvasott makrók listája.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="646"/>
+      <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Leírások lekérdezése...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="386"/>
+      <location filename="addonmanager_workers.py" line="391"/>
       <source>Retrieving info from</source>
       <translation>Információ beolvasása ettől</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="528"/>
+      <location filename="addonmanager_workers.py" line="533"/>
       <source>An update is available for this addon.</source>
       <translation>Ehhez a kiegészítőhöz egy frissítés érhető el.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="516"/>
+      <location filename="addonmanager_workers.py" line="521"/>
       <source>This addon is already installed.</source>
       <translation>Ez a kiegészítő már telepítve van.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="648"/>
+      <location filename="addonmanager_workers.py" line="653"/>
       <source>Retrieving info from git</source>
       <translation>Információ beolvasása git-ből</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="651"/>
+      <location filename="addonmanager_workers.py" line="656"/>
       <source>Retrieving info from wiki</source>
       <translation>Információ beolvasása wiki-ből</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="695"/>
+      <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython nem található. Szokásos letöltési hely használata.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="700"/>
+      <location filename="addonmanager_workers.py" line="705"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>A Python verziója úgy tűnik, nem támogatja a zip fájlokat. Nem folytatható.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="781"/>
+      <location filename="addonmanager_workers.py" line="786"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Munkafelület sikeresen telepítve. A változtatások alkalmazásához indítsa újra a FreeCAD programot.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="830"/>
+      <location filename="addonmanager_workers.py" line="835"/>
       <source>Missing workbench</source>
       <translation>Hiányzó munkafelület</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="839"/>
+      <location filename="addonmanager_workers.py" line="844"/>
       <source>Missing python module</source>
       <translation>Hiányzó python modul</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="849"/>
+      <location filename="addonmanager_workers.py" line="854"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Hiányzó kiegészítő python modul (nem állítja meg a telepítése)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="852"/>
+      <location filename="addonmanager_workers.py" line="857"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Néhány hibát talált, amely megakadályozza, hogy telepítse ezt a munkafelületet</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
+      <location filename="addonmanager_workers.py" line="859"/>
       <source>Please install the missing components first.</source>
       <translation>Kérem először telepítse a hiányzó összetevőket.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="875"/>
+      <location filename="addonmanager_workers.py" line="880"/>
       <source>Error: Unable to download</source>
       <translation>Hiba: Nem lehet letölteni</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="888"/>
+      <location filename="addonmanager_workers.py" line="893"/>
       <source>Successfully installed</source>
       <translation>Sikeresen telepítve</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="305"/>
+      <location filename="addonmanager_workers.py" line="310"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython nincs telepítve! Nem olvashatók be a makrók a git-ből</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="566"/>
+      <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Telepítve</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="585"/>
+      <location filename="AddonManager.py" line="586"/>
       <source>Update available</source>
       <translation>Frissítés elérhető</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="541"/>
+      <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Újraindítás szükséges</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="660"/>
+      <location filename="addonmanager_workers.py" line="665"/>
       <source>This macro is already installed.</source>
       <translation>Ez a makró már telepítve van.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="794"/>
+      <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>A makró telepítve van, és elérhető a Makró -&gt; Makrók menüben</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="542"/>
+      <location filename="addonmanager_workers.py" line="547"/>
       <source>This addon is marked as obsolete</source>
       <translation>Ez a bővítmény elavultként jelölt</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="546"/>
+      <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Ez általában azt jelenti, hogy már nem tartják karban, és a lista néhány fejlettebb bővítménye ugyanazokat a funkciókat nyújtja.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="868"/>
+      <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Hiba: Nem található a zip formátum</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="314"/>
+      <location filename="addonmanager_workers.py" line="319"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation>Valami elromlott a Git makró visszakeresésnél, esetleg a futtatható Git nincs az elérési úton</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="554"/>
+      <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Ez a bővítmény csak Python 2-ként van megjelölve</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="559"/>
+      <location filename="addonmanager_workers.py" line="564"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Előfordulhat, hogy ez a munkafelület már nem karbantartható, és a Python 3 rendszerre való telepítése több mint valószínű, hogy hibákat fog eredményezni indításkor vagy használat közben.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="722"/>
+      <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>A felhasználó egy Python 2 munkaterület frissítését kérte egy Python 3-at futtató rendszeren - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="758"/>
+      <location filename="addonmanager_workers.py" line="763"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>A munkaterület frissítése sikeresen megtörtént. A módosítások alkalmazásához indítsa újra a FreeCAD programot.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="766"/>
+      <location filename="addonmanager_workers.py" line="771"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>A felhasználó python 2 munkafelület telepítését kérte egy Python 3-at futtató rendszeren - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="338"/>
+      <location filename="addonmanager_workers.py" line="343"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation>Úgy tűnik, hogy a wikihez való kapcsolódási probléma, ezért jelenleg nem lehet beolvasni a Wiki makrólistát</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="428"/>
+      <location filename="addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
       <translation>Nyers leíró megjelenítése</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="430"/>
+      <location filename="addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
       <translation>Python leíró könyvtár hiányzik.</translation>
     </message>

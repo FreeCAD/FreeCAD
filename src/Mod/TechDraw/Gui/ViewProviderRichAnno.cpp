@@ -208,7 +208,7 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 
     // property LineStyle had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
         // restore the PropertyInteger to be able to set its value
         LineStyleProperty.Restore(reader);
@@ -216,11 +216,15 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 
     // property LineStyle had App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+    else if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
         App::PropertyIntegerConstraint LineStyleProperty;
         // restore the PropertyIntegerConstraint to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

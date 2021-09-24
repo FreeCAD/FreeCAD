@@ -72,8 +72,8 @@ const char* Helix::ModeEnums[] = {"pitch-height-angle", "pitch-turns-angle", "he
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 // we purposely use not FLT_MAX because this would not be computable
-const App::PropertyFloatConstraint::Constraints floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
-const App::PropertyAngle::Constraints floatAngle = { -89.0, 89.0, 1.0 };
+const App::PropertyFloatConstraint::Constraints Helix::floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
+const App::PropertyAngle::Constraints Helix::floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
 {
@@ -513,6 +513,9 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
         // restore the PropertyFloat to be able to set its value
         TurnsProperty.Restore(reader);
         Turns.setValue(TurnsProperty.getValue());
+    }
+    else {
+        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

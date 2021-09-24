@@ -254,8 +254,8 @@ void MeshSelection::fullSelection()
     for (std::list<ViewProviderMesh*>::iterator it = views.begin(); it != views.end(); ++it) {
         Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
-        std::vector<unsigned long> faces(mo->countFacets());
-        std::generate(faces.begin(), faces.end(), Base::iotaGen<unsigned long>(0));
+        std::vector<Mesh::FacetIndex> faces(mo->countFacets());
+        std::generate(faces.begin(), faces.end(), Base::iotaGen<Mesh::FacetIndex>(0));
         (*it)->addSelection(faces);
     }
 }
@@ -301,12 +301,12 @@ bool MeshSelection::deleteSelectionBorder()
         Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
 
         // mark the selected facet as visited
-        std::vector<unsigned long> selection, remove;
-        std::set<unsigned long> borderPoints;
+        std::vector<Mesh::FacetIndex> selection, remove;
+        std::set<Mesh::PointIndex> borderPoints;
         MeshCore::MeshAlgorithm meshAlg(mf->Mesh.getValue().getKernel());
         meshAlg.GetFacetsFlag(selection, MeshCore::MeshFacet::SELECTED);
         meshAlg.GetBorderPoints(selection, borderPoints);
-        std::vector<unsigned long> border;
+        std::vector<Mesh::PointIndex> border;
         border.insert(border.begin(), borderPoints.begin(), borderPoints.end());
 
         meshAlg.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
@@ -359,13 +359,13 @@ void MeshSelection::selectComponent(int size)
         Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
 
-        std::vector<std::vector<unsigned long> > segm;
+        std::vector<std::vector<Mesh::FacetIndex> > segm;
         MeshCore::MeshComponents comp(mo->getKernel());
         comp.SearchForComponents(MeshCore::MeshComponents::OverEdge,segm);
 
-        std::vector<unsigned long> faces;
-        for (std::vector<std::vector<unsigned long> >::iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-            if (jt->size() < (unsigned long)size)
+        std::vector<Mesh::FacetIndex> faces;
+        for (std::vector<std::vector<Mesh::FacetIndex> >::iterator jt = segm.begin(); jt != segm.end(); ++jt) {
+            if (jt->size() < (Mesh::FacetIndex)size)
                 faces.insert(faces.end(), jt->begin(), jt->end());
         }
 
@@ -380,13 +380,13 @@ void MeshSelection::deselectComponent(int size)
         Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
         const Mesh::MeshObject* mo = mf->Mesh.getValuePtr();
 
-        std::vector<std::vector<unsigned long> > segm;
+        std::vector<std::vector<Mesh::FacetIndex> > segm;
         MeshCore::MeshComponents comp(mo->getKernel());
         comp.SearchForComponents(MeshCore::MeshComponents::OverEdge,segm);
 
-        std::vector<unsigned long> faces;
-        for (std::vector<std::vector<unsigned long> >::iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-            if (jt->size() > (unsigned long)size)
+        std::vector<Mesh::FacetIndex> faces;
+        for (std::vector<std::vector<Mesh::FacetIndex> >::iterator jt = segm.begin(); jt != segm.end(); ++jt) {
+            if (jt->size() > (Mesh::FacetIndex)size)
                 faces.insert(faces.end(), jt->begin(), jt->end());
         }
 
@@ -472,7 +472,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
     for (std::list<ViewProviderMesh*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderMesh* vp = *it;
 
-        std::vector<unsigned long> faces;
+        std::vector<Mesh::FacetIndex> faces;
         const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>((*it)->getObject())->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
@@ -494,23 +494,23 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
                 const SbVec2s& p = *it;
                 rect.extendBy(SbVec2s(p[0],height-p[1]));
             }
-            std::vector<unsigned long> rf; rf.swap(faces);
-            std::vector<unsigned long> vf = vp->getVisibleFacetsAfterZoom
+            std::vector<Mesh::FacetIndex> rf; rf.swap(faces);
+            std::vector<Mesh::FacetIndex> vf = vp->getVisibleFacetsAfterZoom
                 (rect, view->getSoRenderManager()->getViewportRegion(), view->getSoRenderManager()->getCamera());
 
             // get common facets of the viewport and the visible one
             std::sort(vf.begin(), vf.end());
             std::sort(rf.begin(), rf.end());
-            std::back_insert_iterator<std::vector<unsigned long> > biit(faces);
+            std::back_insert_iterator<std::vector<Mesh::FacetIndex> > biit(faces);
             std::set_intersection(vf.begin(), vf.end(), rf.begin(), rf.end(), biit);
         }
 
         // if set filter out all triangles which do not point into user direction
         if (self->onlyPointToUserTriangles) {
-            std::vector<unsigned long> screen;
+            std::vector<Mesh::FacetIndex> screen;
             screen.reserve(faces.size());
             MeshCore::MeshFacetIterator it_f(kernel);
-            for (std::vector<unsigned long>::iterator it = faces.begin(); it != faces.end(); ++it) {
+            for (std::vector<Mesh::FacetIndex>::iterator it = faces.begin(); it != faces.end(); ++it) {
                 it_f.Set(*it);
                 if (it_f->GetNormal() * normal > 0.0f) {
                     screen.push_back(*it);
@@ -560,7 +560,7 @@ void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)
             const SoDetail* detail = point->getDetail(/*mesh->getShapeNode()*/);
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                 // get the boundary to the picked facet
-                unsigned long uFacet = static_cast<const SoFaceDetail*>(detail)->getFaceIndex();
+                Mesh::FacetIndex uFacet = static_cast<const SoFaceDetail*>(detail)->getFaceIndex();
                 if (self->addToSelection) {
                     if (self->addComponent)
                         mesh->selectComponent(uFacet);

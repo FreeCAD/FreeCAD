@@ -474,15 +474,15 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Dark red</source>
-      <translation>Тёмно-красный</translation>
+      <translation>Бордовый</translation>
     </message>
     <message>
       <source>Green</source>
-      <translation>Зеленый</translation>
+      <translation>Лайм</translation>
     </message>
     <message>
       <source>Dark green</source>
-      <translation>Тёмно-зелёный</translation>
+      <translation>Зелёный</translation>
     </message>
     <message>
       <source>Blue</source>
@@ -498,15 +498,15 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Dark cyan</source>
-      <translation>Тёмно-голубой</translation>
+      <translation>Морской волны</translation>
     </message>
     <message>
       <source>Magenta</source>
-      <translation>Малиновый</translation>
+      <translation>Розовый</translation>
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation>Тёмно-малиновый</translation>
+      <translation>Фиолетовый</translation>
     </message>
     <message>
       <source>Yellow</source>
@@ -514,7 +514,7 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Dark yellow</source>
-      <translation>Тёмно-жёлтый</translation>
+      <translation>Оливковый</translation>
     </message>
     <message>
       <source>Gray</source>
@@ -569,74 +569,74 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Вставить %n строку выше</numerusform>
+        <numerusform>Вставить %n строки выше</numerusform>
+        <numerusform>Вставить %n строк выше</numerusform>
+        <numerusform>Вставить %n строк выше</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Вставить %n строку ниже</numerusform>
+        <numerusform>Вставить %n строки ниже</numerusform>
+        <numerusform>Вставить %n строк ниже</numerusform>
+        <numerusform>Вставить %n строк ниже</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Вставить %n строку с пропуском строк</numerusform>
+        <numerusform>Вставить %n строки с пропуском строк</numerusform>
+        <numerusform>Вставить %n строк с пропуском строк</numerusform>
+        <numerusform>Вставить %n строк с пропуском строк</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Удалить строку</numerusform>
+        <numerusform>Удалить строки</numerusform>
+        <numerusform>Удалить строки</numerusform>
+        <numerusform>Удалить строки</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Вставить %n столбец слева</numerusform>
+        <numerusform>Вставить %n столбца слева</numerusform>
+        <numerusform>Вставить %n столбцов слева</numerusform>
+        <numerusform>Вставить %n столбцов слева</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Вставить %n столбец справа</numerusform>
+        <numerusform>Вставить %n столбца справа</numerusform>
+        <numerusform>Вставить %n столбцов справа</numerusform>
+        <numerusform>Вставить %n столбцов справа</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Вставить %n столбец с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбца с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбцов с пропуском столбцов</numerusform>
+        <numerusform>Вставить %n столбцов с пропуском столбцов</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Удалить столбец</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
+        <numerusform>Удалить столбцы</numerusform>
       </translation>
     </message>
   </context>

@@ -21,19 +21,13 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
-import PathScripts.PathFeatureExtensions as FeatureExtensions
 import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 
-from PySide import QtCore, QtGui
-from pivy import coin
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

@@ -187,6 +187,10 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         unitString = QString::fromLatin1("psi");
         factor = 6.894744825494;
     }
+    else if (unit == Unit::Stiffness) {
+        unitString = QString::fromLatin1("lbf/in");
+        factor = 4.448222/0.0254;
+    }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
         factor = 25.4 / 60;
@@ -359,6 +363,10 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
     else if (unit == Unit::Pressure) {
             unitString = QString::fromLatin1("psi");
             factor = 6.894744825494;
+    }
+    else if (unit == Unit::Stiffness) {
+        unitString = QString::fromLatin1("lbf/in");
+        factor = 4.448222/0.0254;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mph");

@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Insert view in drawing</source>
-      <translation>Wstaw widok w rysunku</translation>
+      <translation>Wstaw widok do rysunku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -444,7 +444,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
       <source>Vertical tilt</source>
-      <translation>Pionowe pochylenie</translation>
+      <translation>Nachylenie w pionie</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="605"/>
@@ -568,12 +568,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Visible sewn edges</source>
-      <translation>Widoczne przerywane krawędzie</translation>
+      <translation>Widoczne krawędzie szwu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
-      <translation>Widoczny obrys krawędzi</translation>
+      <translation>Widoczne krawędzie konturu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -593,12 +593,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="58"/>
       <source>Hidden sewn edges</source>
-      <translation>Ukryte przerywane krawędzie</translation>
+      <translation>Ukryte krawędzie szwu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
-      <translation>Ukryty obrys krawędzi</translation>
+      <translation>Ukryte krawędzie konturu</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="60"/>

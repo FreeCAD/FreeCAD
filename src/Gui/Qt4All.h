@@ -157,9 +157,6 @@
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>
-// QtUiTools
-#include <QUiLoader>
-#include <QtDesigner/QFormBuilder>
 
 #include "qmath.h"
 #include <QGraphicsView>

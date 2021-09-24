@@ -75,11 +75,6 @@
       <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Gehitu</translation>
@@ -102,7 +97,7 @@
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.{} Honako geometria-elementuak hautatu daitezke: {}{}{}</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
@@ -112,7 +107,7 @@
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+      <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
@@ -122,7 +117,7 @@
     <message>
       <location filename="selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Zerrendari geometriarik gehitzen ez bazaio, geratzen direnak erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -133,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Solidoa</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
   </context>
   <context>

@@ -53,16 +53,16 @@ void MeshTrimming::SetInnerOrOuter(TMode tMode)
     }
 }
 
-void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigned long> &raulFacets) const
+void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<FacetIndex> &raulFacets) const
 {
-    std::vector<unsigned long>::iterator it;
+    std::vector<FacetIndex>::iterator it;
     MeshFacetIterator clIter(myMesh, 0);
 
     // cut inner: use grid to accelerate search
     if (myInner) {
         Base::BoundBox3f clBBox3d;
         Base::BoundBox2d clViewBBox, clPolyBBox;
-        std::vector<unsigned long> aulAllElements;
+        std::vector<FacetIndex> aulAllElements;
 
         // BBox of polygon
         clPolyBBox = myPoly.CalcBoundBox();
@@ -103,13 +103,11 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
 
 bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
 {
-    size_t i;
-    unsigned long j;
     Base::Polygon2d clPoly;
     Base::Line2d clFacLine, clPolyLine;
     Base::Vector2d S;
     // is corner of facet inside the polygon
-    for (i=0; i<3; i++) {
+    for (size_t i=0; i<3; i++) {
         Base::Vector3f clPt2d = myProj->operator ()(rclFacet._aclPoints[i]);
         if (myPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) == myInner)
             return true;
@@ -118,17 +116,17 @@ bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
     }
 
     // is corner of polygon inside the facet
-    for (j=0; j<myPoly.GetCtVectors(); j++) {
+    for (size_t j=0; j<myPoly.GetCtVectors(); j++) {
         if (clPoly.Contains(myPoly[j]))
             return true;
     }
   
     // check for other intersections
-    for (j=0; j<myPoly.GetCtVectors(); j++) {
+    for (size_t j=0; j<myPoly.GetCtVectors(); j++) {
         clPolyLine.clV1 = myPoly[j];
         clPolyLine.clV2 = myPoly[(j+1)%myPoly.GetCtVectors()];
 
-        for (i=0; i<3; i++) {
+        for (size_t i=0; i<3; i++) {
             clFacLine.clV1 = clPoly[i];
             clFacLine.clV2 = clPoly[(i+1)%3];
 
@@ -141,7 +139,7 @@ bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
     return false;
 }
 
-bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, unsigned long ulIndex) const
+bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, FacetIndex ulIndex) const
 {
     const MeshFacet &rclFacet = myMesh._aclFacetArray[ulIndex];
     for (int i=0; i<3; i++) {
@@ -154,7 +152,7 @@ bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, unsigned long ulInd
     return true;
 }
 
-bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& clPoint)
+bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clPoint)
 {
     Base::Vector2d A, B, C, P;
     float u,v,w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
@@ -171,7 +169,7 @@ bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& 
     C = clFacPoly[2];
     fDetABC = static_cast<float>(A.x*B.y+A.y*C.x+B.x*C.y-(B.y*C.x+A.y*B.x+A.x*C.y));
 
-    for (unsigned long j=0; j<myPoly.GetCtVectors(); j++) {
+    for (size_t j=0; j<myPoly.GetCtVectors(); j++) {
         // facet contains a polygon point -> calculate the corresponding 3d-point
         if (clFacPoly.Contains(myPoly[j])) {
             P = myPoly[j];
@@ -195,7 +193,7 @@ bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& 
     return false;
 }
 
-bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex, int& iSide, std::vector<Base::Vector3f>& raclPoints) const
+bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, int& iSide, std::vector<Base::Vector3f>& raclPoints) const
 {
     MeshGeomFacet clFac(myMesh.GetFacet(ulIndex));
     Base::Vector2d S;
@@ -206,7 +204,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
     // Edge with no intersection
     iSide = -1;
 
-    for (unsigned long i=0; i<myPoly.GetCtVectors(); i++) {
+    for (size_t i=0; i<myPoly.GetCtVectors(); i++) {
         // totally only four intersections allowed
         if (iIntersections == 4)
             break;
@@ -335,7 +333,7 @@ void MeshTrimming::AdjustFacet(MeshFacet& facet, int iInd)
     }
 }
 
-bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::vector<Base::Vector3f>& raclPoints, std::vector<MeshGeomFacet>& aclNewFacets)
+bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vector<Base::Vector3f>& raclPoints, std::vector<MeshGeomFacet>& aclNewFacets)
 {
     MeshGeomFacet clFac;
 
@@ -603,7 +601,7 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     return true;
 }
 
-bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::vector<Base::Vector3f>& raclPoints, Base::Vector3f& clP3,
+bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vector<Base::Vector3f>& raclPoints, Base::Vector3f& clP3,
                                 std::vector<MeshGeomFacet>& aclNewFacets)
 {
     // no valid triangulation possible
@@ -716,14 +714,14 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     return true;
 }
 
-void MeshTrimming::TrimFacets(const std::vector<unsigned long>& raulFacets, std::vector<MeshGeomFacet>& aclNewFacets)
+void MeshTrimming::TrimFacets(const std::vector<FacetIndex>& raulFacets, std::vector<MeshGeomFacet>& aclNewFacets)
 {
     Base::Vector3f clP;
     std::vector<Base::Vector3f> clIntsct;
     int iSide;
 
     Base::SequencerLauncher seq("trimming facets...", raulFacets.size());
-    for (std::vector<unsigned long>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); ++it) {
+    for (std::vector<FacetIndex>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); ++it) {
         clIntsct.clear();
         if (IsPolygonPointInFacet(*it, clP) == false) {
             // facet must be trimmed

@@ -26,6 +26,9 @@
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 

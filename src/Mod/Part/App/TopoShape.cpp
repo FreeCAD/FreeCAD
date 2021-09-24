@@ -1812,9 +1812,9 @@ bool TopoShape::isClosed() const
 TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return this->_Shape;
     BRepAlgoAPI_Cut mkCut(this->_Shape, shape);
     return makeShell(mkCut.Shape());
 }
@@ -1822,7 +1822,7 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
 TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
@@ -1858,9 +1858,9 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return shape;
     BRepAlgoAPI_Common mkCommon(this->_Shape, shape);
     return makeShell(mkCommon.Shape());
 }
@@ -1868,7 +1868,7 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
 TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
@@ -1904,9 +1904,9 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return this->_Shape;
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return makeShell(mkFuse.Shape());
 }

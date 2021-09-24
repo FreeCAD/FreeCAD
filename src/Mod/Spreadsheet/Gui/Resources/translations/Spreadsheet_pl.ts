@@ -558,7 +558,7 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation>Bez nazwy</translation>
+      <translation>Nienazwany</translation>
     </message>
   </context>
   <context>

@@ -24,6 +24,9 @@
 #ifndef BASE_TOOLS_H
 #define BASE_TOOLS_H
 
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 #include <functional>
 #include <algorithm>
 #include <cmath>

@@ -51,11 +51,11 @@ PyObject* ViewProviderMeshPy::setSelection(PyObject *args)
         return 0;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -71,11 +71,11 @@ PyObject* ViewProviderMeshPy::addSelection(PyObject *args)
         return 0;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -91,11 +91,11 @@ PyObject* ViewProviderMeshPy::removeSelection(PyObject *args)
         return 0;
 
     Py::Sequence list(obj);
-    std::vector<unsigned long> selection;
+    std::vector<Mesh::FacetIndex> selection;
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        unsigned long value = static_cast<unsigned long>(index);
+        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 

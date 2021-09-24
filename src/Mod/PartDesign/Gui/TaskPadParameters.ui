@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>373</height>
+    <height>497</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,6 +52,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxDirection">
+     <property name="text">
+      <string>Use custom direction</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxDirection">
      <property name="enabled">
       <bool>true</bool>
@@ -60,11 +67,8 @@
       <string>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</string>
      </property>
-     <property name="title">
-      <string>Use custom direction</string>
-     </property>
      <property name="checkable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">

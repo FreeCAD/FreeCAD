@@ -30,6 +30,9 @@
 #include <string>
 #include <map>
 #include <typeinfo>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 class QAtomicInt;
 

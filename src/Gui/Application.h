@@ -27,6 +27,7 @@
 #include <QPixmap>
 #include <string>
 #include <vector>
+#include <map>
 
 #define  putpix()
 
@@ -133,6 +134,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    /// signal on changing user edit mode
+    boost::signals2::signal<void (int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
@@ -227,6 +230,28 @@ public:
     static void runApplication(void);
     void tryClose( QCloseEvent * e );
     //@}
+    
+    /** @name User edit mode */
+    //@{
+protected:
+    // the below std::map is a translation of 'EditMode' enum in ViewProvider.h
+    // to add a new edit mode, it should first be added there
+    // this is only used for GUI user interaction (menu, toolbar, Python API)
+    const std::map <int, std::string> userEditModes {
+        {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
+        {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
+        {2, QT_TRANSLATE_NOOP("EditMode", "Cutting")},
+        {3, QT_TRANSLATE_NOOP("EditMode", "Color")}
+    };
+    int userEditMode = userEditModes.begin()->first;
+
+public:
+    std::map <int, std::string> listUserEditModes() const { return userEditModes; }
+    int getUserEditMode(const std::string &mode = "") const;
+    std::string getUserEditModeName(int mode = -1) const;
+    bool setUserEditMode(int mode);
+    bool setUserEditMode(const std::string &mode);
+    //@}
 
 public:
     //---------------------------------------------------------------------
@@ -293,6 +318,10 @@ public:
 
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
+    
+    static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
+    static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
+    static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[];
 

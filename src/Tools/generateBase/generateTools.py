@@ -63,7 +63,7 @@ class copier:
             # uncomment for debug: print ('!!! replacing',match.group(1))
             expr = self.preproc(match.group(1), 'eval')
             try: return str(eval(expr, self.globals, self.locals))
-            except: return str(self.handle(expr))
+            except Exception: return str(self.handle(expr))
         block = self.locals['_bl']
         if last is None: last = len(block)
         while i<last:

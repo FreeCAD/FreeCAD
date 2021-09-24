@@ -31,8 +31,6 @@
 # include <BRepAdaptor_Curve.hxx>
 #endif
 
-
-#include "FeaturePolarPattern.h"
 #include "DatumLine.h"
 #include <Base/Axis.h>
 #include <Base/Exception.h>
@@ -40,6 +38,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/OriginFeature.h>
+
+#include "FeaturePolarPattern.h"
 
 using namespace PartDesign;
 
@@ -188,6 +188,9 @@ void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char
         // restore the PropertyInteger to be able to set its value
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

@@ -194,6 +194,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintFluidBoundary(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintSpring",
+            type_of_obj(ObjectsFem.makeConstraintSpring(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintForce",
             type_of_obj(ObjectsFem.makeConstraintForce(doc))
         )
@@ -409,6 +413,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintFluidBoundary(doc),
             "Fem::ConstraintFluidBoundary"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintSpring(doc),
+            "Fem::ConstraintSpring"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintForce(doc),
@@ -735,6 +743,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_fluid_boundary,
             "Fem::ConstraintFluidBoundary"
+        ))
+
+        # ConstraintSpring
+        constraint_spring = ObjectsFem.makeConstraintSpring(doc)
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "Fem::Constraint"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_spring,
+            "Fem::ConstraintSpring"
         ))
 
         # ConstraintForce
@@ -1416,6 +1439,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintFluidBoundary")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintSpring(
+                doc
+            ).isDerivedFrom("Fem::ConstraintSpring")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintForce(
                 doc
             ).isDerivedFrom("Fem::ConstraintForce")
@@ -1645,6 +1673,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
     analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSpring(doc))
     analysis.addObject(ObjectsFem.makeConstraintForce(doc))
     analysis.addObject(ObjectsFem.makeConstraintGear(doc))
     analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))

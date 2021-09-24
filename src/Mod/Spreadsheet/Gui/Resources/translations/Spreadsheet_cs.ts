@@ -348,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Střed</translation>
+      <translation>Na střed</translation>
     </message>
     <message>
       <source>Right</source>
@@ -384,7 +384,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Zobrazit jednotku</translation>
+      <translation>&amp;Zobrazit jednotku</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -570,7 +570,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n řádek(ků) nad</numerusform>
+        <numerusform>Vložit %n řádek(řádků) nad</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
@@ -579,7 +579,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n řádek(ků) pod</numerusform>
+        <numerusform>Vložit %n řádek(řádků) pod</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
@@ -597,7 +597,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Odstranit řádek(y)</numerusform>
+        <numerusform>Odstranit řádek(řádky)</numerusform>
         <numerusform>Remove row(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
@@ -606,7 +606,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n sloupec(ů) vlevo</numerusform>
+        <numerusform>Vložit %n sloupec(sloupců) vlevo</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
@@ -615,7 +615,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Vložit %n sloupec(ů) vpravo</numerusform>
+        <numerusform>Vložit %n sloupec(sloupců) vpravo</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
@@ -633,7 +633,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Odstranit sloupec(ů)</numerusform>
+        <numerusform>Odstranit sloupec(ce)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>

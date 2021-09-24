@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="530"/>
+      <location filename="addonmanager_workers.py" line="531"/>
       <source>Installed location</source>
       <translation>Место инсталираног</translation>
     </message>
@@ -22,257 +22,257 @@
       <translation>Не могу да добавим опис за овај макро.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="84"/>
+      <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Додаци који се могу инсталирати овде нису званични део FreeCAD-а, и нису прегледани од стране тима FreeCAD-а. Уверите се да знате шта то инсталирате!</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="198"/>
+      <location filename="AddonManager.py" line="199"/>
       <source>Addon manager</source>
       <translation>Управник додацима</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="203"/>
+      <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Морате поново да покренете FreeCAD да би измене ступиле у дејство. Притисните „У реду“ да сада поново покренете FreeCAD, или „Откажи“ да га поново покренете касније.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="242"/>
+      <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Проверавам ажурирања...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="261"/>
+      <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Примени</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="262"/>
+      <location filename="AddonManager.py" line="263"/>
       <source>update(s)</source>
       <translation>ажурирање(а)</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="265"/>
+      <location filename="AddonManager.py" line="266"/>
       <source>No update available</source>
       <translation>Нема доступних ажурирања</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="432"/>
+      <location filename="AddonManager.py" line="433"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
       <translation>Макро је успешно инсталиран. Сада је доступан из прозорчета макроа.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="434"/>
+      <location filename="AddonManager.py" line="435"/>
       <source>Unable to install</source>
       <translation>Не могу да инсталирам</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="493"/>
+      <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
       <translation>Додатак је успешно уклоњен. Поново покрените FreeCAD</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="495"/>
+      <location filename="AddonManager.py" line="496"/>
       <source>Unable to remove this addon</source>
       <translation>Не могу да уклоним овај додатак</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="501"/>
+      <location filename="AddonManager.py" line="502"/>
       <source>Macro successfully removed.</source>
       <translation>Макро је успешно уклоњен.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="503"/>
+      <location filename="AddonManager.py" line="504"/>
       <source>Macro could not be removed.</source>
       <translation>Макро се не може уклонити.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="166"/>
+      <location filename="addonmanager_workers.py" line="167"/>
       <source>Unable to download addon list.</source>
       <translation>Не могу да преузмем списак додатака.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="171"/>
+      <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
       <translation>Списак радних станица је освежен.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="733"/>
+      <location filename="addonmanager_workers.py" line="734"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Откривен је застарели Гит Питон, размотрите надоградњу са пип-ом.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="291"/>
+      <location filename="addonmanager_workers.py" line="292"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Списак макроа је успешно довучен.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="646"/>
+      <location filename="addonmanager_workers.py" line="647"/>
       <source>Retrieving description...</source>
       <translation>Довлачим опис...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="386"/>
+      <location filename="addonmanager_workers.py" line="387"/>
       <source>Retrieving info from</source>
       <translation>Довлачим информације са</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="528"/>
+      <location filename="addonmanager_workers.py" line="529"/>
       <source>An update is available for this addon.</source>
       <translation>Ажурирање је доступно за овај додатак.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="516"/>
+      <location filename="addonmanager_workers.py" line="517"/>
       <source>This addon is already installed.</source>
       <translation>Овај додатак је већ инсталиран.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="648"/>
+      <location filename="addonmanager_workers.py" line="649"/>
       <source>Retrieving info from git</source>
       <translation>Довлачим информације са гита</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="651"/>
+      <location filename="addonmanager_workers.py" line="652"/>
       <source>Retrieving info from wiki</source>
       <translation>Довлачим информације са викија</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="695"/>
+      <location filename="addonmanager_workers.py" line="696"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>Нисам нашао Гит Питона. Користим уобичајено преузимање.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="700"/>
+      <location filename="addonmanager_workers.py" line="701"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Ваше издање питона не изгледа да подржава ЗИП датотеке. Не могу да наставим.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="781"/>
+      <location filename="addonmanager_workers.py" line="782"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Радна станица је успешно инсталирана. Поново покрените FreeCAD да примените измене.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="830"/>
+      <location filename="addonmanager_workers.py" line="831"/>
       <source>Missing workbench</source>
       <translation>Недостаје радна станица</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="839"/>
+      <location filename="addonmanager_workers.py" line="840"/>
       <source>Missing python module</source>
       <translation>Недостаје модул питона</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="849"/>
+      <location filename="addonmanager_workers.py" line="850"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Недостаје изборни модул питона (не спречава инсталацију)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="852"/>
+      <location filename="addonmanager_workers.py" line="853"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Нађох неке грешке које спречавају инсталирање ове радне станице</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
+      <location filename="addonmanager_workers.py" line="855"/>
       <source>Please install the missing components first.</source>
       <translation>Прво инсталирајте недостајуће компоненте.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="875"/>
+      <location filename="addonmanager_workers.py" line="876"/>
       <source>Error: Unable to download</source>
       <translation>Грешка: Не могу да преузмем</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="888"/>
+      <location filename="addonmanager_workers.py" line="889"/>
       <source>Successfully installed</source>
       <translation>Успешно је инсталирано</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="305"/>
+      <location filename="addonmanager_workers.py" line="306"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>Гит Питон није инсталиран! Не могу да довучем макрое са гита</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="566"/>
+      <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Инсталиран</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="585"/>
+      <location filename="AddonManager.py" line="586"/>
       <source>Update available</source>
       <translation>Доступно је ажурирање</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="541"/>
+      <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Поновно покретање је потребно</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="660"/>
+      <location filename="addonmanager_workers.py" line="661"/>
       <source>This macro is already installed.</source>
       <translation>Овај макро је већ инсталиран.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="794"/>
+      <location filename="addonmanager_workers.py" line="795"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Макро је инсталиран и доступан је у изборнику „Макро → Макрои“</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="542"/>
+      <location filename="addonmanager_workers.py" line="543"/>
       <source>This addon is marked as obsolete</source>
       <translation>Овај додатак је означен као застарео</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="546"/>
+      <location filename="addonmanager_workers.py" line="547"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Ово обично значи да више није одржаван, а неки напреднији додатак на овом списку обезбеђује исту функционалност.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="868"/>
+      <location filename="addonmanager_workers.py" line="869"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Грешка: Не могу да нађем зип из</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="314"/>
+      <location filename="addonmanager_workers.py" line="315"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation>Нешто је пошло наопако са довлачењем Гит Макроа, вероватно Гитова извршна није у путањи</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="554"/>
+      <location filename="addonmanager_workers.py" line="555"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Овај додатак је означен само као Питон 2</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="559"/>
+      <location filename="addonmanager_workers.py" line="560"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Ова радна станица се можда више не одржава и њена инсталација на систему Питона 3 ће више него вероватно резултирати у грешкама при покретању или приликом коришћења.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="722"/>
+      <location filename="addonmanager_workers.py" line="723"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Корисник је затражио ажурирање радне станице Питона 2 на систему који покреће Питон 3 – </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="758"/>
+      <location filename="addonmanager_workers.py" line="759"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Радна станица је успешно ажурирана. Поново покрените FreeCAD да примените измене.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="766"/>
+      <location filename="addonmanager_workers.py" line="767"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>Корисник је затражио инсталацију радне станице Питона 2 на систему који покреће Питон 3 – </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="338"/>
+      <location filename="addonmanager_workers.py" line="339"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation>Изгледа да постоји проблем у повезивању са Викијем, стога не могу да довучем Вики списак макроа у овом тренутку</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="428"/>
+      <location filename="addonmanager_workers.py" line="429"/>
       <source>Raw markdown displayed</source>
       <translation>Приказано је сирово обележавање</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="430"/>
+      <location filename="addonmanager_workers.py" line="431"/>
       <source>Python Markdown library is missing.</source>
       <translation>Недостаје библиотека Питоновог обележавања.</translation>
     </message>

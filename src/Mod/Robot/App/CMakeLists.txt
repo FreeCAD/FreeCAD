@@ -131,6 +131,10 @@ if (_flag_found)
   target_compile_options(Robot PRIVATE -Wno-deprecated-copy)
 endif()
 
+if(MINGW)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
+endif()
+
 SET_BIN_DIR(Robot Robot /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(Robot)
 

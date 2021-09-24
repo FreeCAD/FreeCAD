@@ -297,7 +297,7 @@ class Draft_SetStyle_TaskPanel:
         try:
             import json
             from json.decoder import JSONDecodeError
-        except:
+        except Exception:
             return
         if os.path.exists(PRESETPATH):
             with open(PRESETPATH,"r") as f:
@@ -313,7 +313,7 @@ class Draft_SetStyle_TaskPanel:
 
         try:
             import json
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(translate("Draft","Error: json module not found. Unable to save style")+"\n")
             return
         folder = os.path.dirname(PRESETPATH)

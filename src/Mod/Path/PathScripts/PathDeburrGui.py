@@ -22,12 +22,10 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import Part
 from PySide import QtCore, QtGui
 
 __title__ = "Path Deburr Operation UI"
@@ -35,13 +33,9 @@ __author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
-LOGLEVEL = False
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):

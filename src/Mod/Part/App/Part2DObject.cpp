@@ -274,6 +274,9 @@ void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
         }
         this->MapMode.setValue(Attacher::mmFlatFace);
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void Part2DObject::handleChangedPropertyName(Base::XMLReader &reader,

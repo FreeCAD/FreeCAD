@@ -51,6 +51,8 @@ public:
 protected:
     void Restore(Base::XMLReader &reader) override;
     void onChanged (const App::Property* prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 };
 
 class PartExport Vertex : public Part::Primitive

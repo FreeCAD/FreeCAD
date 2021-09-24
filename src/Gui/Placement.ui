@@ -347,7 +347,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Around y-axis:</string>
+               <string>Pitch (around y-axis):</string>
               </property>
              </widget>
             </item>
@@ -360,7 +360,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Around z-axis:</string>
+               <string>Roll (around x-axis):</string>
               </property>
              </widget>
             </item>
@@ -373,28 +373,28 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Around x-axis:</string>
+               <string>Yaw (around z-axis):</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle">
+             <widget class="Gui::QuantitySpinBox" name="yawAngle">
               <property name="toolTip">
-               <string>Rotation around the x-axis</string>
+               <string>Yaw (around z-axis)</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="pitchAngle">
               <property name="toolTip">
-               <string>Rotation around the y-axis</string>
+               <string>Pitch (around y-axis)</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle">
+             <widget class="Gui::QuantitySpinBox" name="rollAngle">
               <property name="toolTip">
-               <string>Rotation around the z-axis</string>
+               <string>Roll (around the x-axis)</string>
               </property>
              </widget>
             </item>
@@ -414,7 +414,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Euler angles (xy'z'')</string>
+          <string>Euler angles (zy'x'')</string>
          </property>
         </item>
        </widget>

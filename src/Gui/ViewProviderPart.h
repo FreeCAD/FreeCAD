@@ -48,7 +48,7 @@ public:
     
     /// deliver the icon shown in the tree view
     /// override from ViewProvider.h
-    virtual QIcon getIcon(void) const;
+    virtual QIcon getIcon(void) const override;
 
 protected:
     /// get called by the container whenever a property has been changed
