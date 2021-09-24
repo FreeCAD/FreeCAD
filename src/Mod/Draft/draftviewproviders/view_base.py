@@ -388,15 +388,17 @@ class ViewProviderDraft(object):
             None if mode is not zero.
             It is `False` otherwise.
         """
-        if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
-            Gui.runCommand("Draft_Edit")
-            return True
-        elif mode != 0:
+        if mode != 0:
             # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
             # case of an unrecognized context menu action)
-            return None 
-
-        return False
+            return None
+        elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
+            Gui.runCommand("Draft_Edit")
+            return True
+        else:
+            _wrn = "Please load the Draft Workbench to enable editing this object"
+            App.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft", _wrn))
+            return False
 
     def unsetEdit(self, vobj, mode=0):
         """Terminate the edit mode of the object.
@@ -423,7 +425,7 @@ class ViewProviderDraft(object):
             This is `obj.ViewObject`.
 
         mode : int, optional
-            It defaults to 0. It is not used.
+            It defaults to 0.
             It indicates the type of edit in the underlying C++ code.
 
         Returns
@@ -432,6 +434,8 @@ class ViewProviderDraft(object):
             This method always returns `False` so it passes
             control to the base class to finish the edit mode.
         """
+        if mode != 0:
+            return False
         if App.activeDraftCommand:
             App.activeDraftCommand.finish()
         if App.GuiUp: # remove guard after splitting every viewprovider
