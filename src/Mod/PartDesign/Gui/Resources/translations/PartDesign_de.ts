@@ -65,22 +65,22 @@
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Art der Anfangskante</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Größe der Anfangskante</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Art der Endkante</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Größe der Endkante</translation>
     </message>
   </context>
   <context>
@@ -260,7 +260,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="608"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Dupliziert das ausgewählte Element und fügt es dem aktiven Körper hinzu</translation>
+      <translation>Dupliziert das ausgewählte Objekt und fügt es dem aktiven Körper hinzu</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../Command.cpp" line="2252"/>
       <source>Create a linear pattern feature</source>
-      <translation>Erzeugen eines linearen Musters</translation>
+      <translation>Lineares Muster erzeugen</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Pad</source>
-      <translation>Extrudieren</translation>
+      <translation>Aufpolsterung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
@@ -706,7 +706,7 @@
     <message>
       <location filename="../../Command.cpp" line="2042"/>
       <source>Make a thick solid</source>
-      <translation>Erzeugen eines aufgedickten Volumenkörpers</translation>
+      <translation>Aufgedickten Festkörper erzeugen</translation>
     </message>
   </context>
   <context>
@@ -720,7 +720,7 @@
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Erzeugen eines zusätzlichen Grundkörpers</translation>
+      <translation>Hinzuzufügende Grundkörper</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="195"/>
@@ -2404,7 +2404,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="57"/>
       <source>Pad parameters</source>
-      <translation>Parameter der Extrusion</translation>
+      <translation>Parameter der Aufpolsterung</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="64"/>
@@ -3440,7 +3440,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
-      <translation>Keine gültigen Features in diesem Dokument</translation>
+      <translation>Keine gültigen Elemente in diesem Dokument</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2158"/>
@@ -4161,7 +4161,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
       <source>Counterbore/sink dia</source>
-      <translation>Durchmesser der Flachsenkung</translation>
+      <translation>Durchmesser der Senkung</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>

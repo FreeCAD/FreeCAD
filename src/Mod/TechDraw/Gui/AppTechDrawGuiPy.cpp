@@ -45,7 +45,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WidgetFactory.h>   //for PythonWrappers
+#include <Gui/PythonWrapper.h>
 
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/TechDraw/App/DrawPage.h>

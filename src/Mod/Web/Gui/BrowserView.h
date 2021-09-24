@@ -100,6 +100,7 @@ public:
     bool canClose (void);
 
 #ifdef QTWEBENGINE
+public Q_SLOTS:
     void setWindowIcon(const QIcon &icon);
 #endif
 

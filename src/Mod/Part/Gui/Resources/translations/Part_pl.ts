@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation>Załączony w trybie {mode}</translation>
+      <translation>Dołączono w trybie {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -140,17 +140,17 @@ do filtrowania według kolizji lub odległości.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation>Filtr kombinacji: usuń dzieci z kombinacji</translation>
+      <translation>Filtr złożeń: usuń niektóre elementy ze złożenia</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation>Zaznacz kształt, który jest związkiem, po raz pierwszy! Drugi wybrany element (opcjonalnie) będzie traktowany jako szablon.</translation>
+      <translation>Wybierz kształt, który jest złożony, jako pierwszy! Drugi wybrany element (opcjonalny) będzie traktowany jako kształt szablonu.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Najpierw wybierz kształt, który jest kształtem złożonym. Jeśli wybrany zostanie drugi obiekt (opcjonalnie) zostanie on traktowany jako szablon.</translation>
+      <translation>Najpierw wybierz kształt, który jest kształtem złożonym. Jeśli wybrany zostanie drugi obiekt (opcjonalnie) zostanie on potraktowany jako kształt szablonu.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -261,6 +261,16 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Fragmentacja funkcją logiczną</translation>
@@ -348,16 +358,6 @@ Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby a
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Krojenie na kształty złożone</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -1332,7 +1332,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="227"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Styczny</translation>
+      <translation>Stycznie</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="228"/>
@@ -2604,7 +2604,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1412"/>
       <source>Fillet...</source>
-      <translation>Zaokrąglenie...</translation>
+      <translation>Zaokrąglenie ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1413"/>
@@ -2676,7 +2676,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Wyciągnięcie po profilach...</translation>
+      <translation>Wyciągnięcie po profilach ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
@@ -2802,7 +2802,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Create primitives...</source>
-      <translation>Utwórz bryły pierwotne...</translation>
+      <translation>Utwórz bryły pierwotne ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -2897,7 +2897,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Make a section of two shapes</source>
-      <translation>Utwórz iloraz dwóch obiektów</translation>
+      <translation>Utwórz część wspólną z dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -3399,7 +3399,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
       <source>Against:</source>
-      <translation>Przeciwko:</translation>
+      <translation>Przeciwnie:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
@@ -3414,7 +3414,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
       <source>Symmetric</source>
-      <translation>Symetryczna</translation>
+      <translation>Symetrycznie</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="276"/>
@@ -5184,7 +5184,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation>Skóra</translation>
+      <translation>Powłoka</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
@@ -5204,12 +5204,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
       <source>Arc</source>
-      <translation>Łuk</translation>
+      <translation>Wzdłuż łuku</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>
       <source>Tangent</source>
-      <translation>Styczny</translation>
+      <translation>Stycznie</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="78"/>
