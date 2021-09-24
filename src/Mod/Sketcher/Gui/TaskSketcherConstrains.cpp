@@ -682,11 +682,15 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(emitHideSelection3DVisibility()),
         this                     , SLOT  (on_listWidgetConstraints_emitHideSelection3DVisibility())
-       );
+        );
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(emitShowSelection3DVisibility()),
         this                     , SLOT  (on_listWidgetConstraints_emitShowSelection3DVisibility())
-       );
+        );
+    QObject::connect(
+        ui->visualisationTrackingFilter, SIGNAL(stateChanged(int)),
+        this                     , SLOT  (on_visualisationTrackingFilter_stateChanged(int))
+        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -843,6 +847,12 @@ void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
 {
     Q_UNUSED(state);
     slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_visualisationTrackingFilter_stateChanged(int state)
+{
+    if(state)
+        change3DViewVisibilityToTrackFilter();
 }
 
 void TaskSketcherConstrains::on_extendedInformation_stateChanged(int state)

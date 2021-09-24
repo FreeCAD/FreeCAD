@@ -128,6 +128,7 @@ public Q_SLOTS:
     void on_listWidgetConstraints_emitCenterSelectedItems(void);
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
+    void on_visualisationTrackingFilter_stateChanged(int state);
     void on_showAllButton_clicked(bool);
     void on_hideAllButton_clicked(bool);
     void on_listWidgetConstraints_emitShowSelection3DVisibility();
