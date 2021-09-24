@@ -261,6 +261,16 @@ Es wird einen 'Compound-Filter' für jede Form erzeugen.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Boolesche Fragmente</translation>
@@ -344,16 +354,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Teilen zu einem Verbund</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>

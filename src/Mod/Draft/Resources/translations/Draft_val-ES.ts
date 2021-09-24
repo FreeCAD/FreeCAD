@@ -6,27 +6,27 @@
     <message>
       <location filename="fillet.py" line="47"/>
       <source>The start point of this line.</source>
-      <translation type="unfinished">The start point of this line.</translation>
+      <translation>El punt d'inici d'esta línia.</translation>
     </message>
     <message>
       <location filename="fillet.py" line="55"/>
       <source>The end point of this line.</source>
-      <translation type="unfinished">The end point of this line.</translation>
+      <translation>El punt final d'esta línia.</translation>
     </message>
     <message>
       <location filename="fillet.py" line="63"/>
       <source>The length of this line.</source>
-      <translation type="unfinished">The length of this line.</translation>
+      <translation>La longitud d'esta línia.</translation>
     </message>
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Radi a utilitzar per a arredonir el cantó.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>El objecte base que s'ha de duplicar</translation>
     </message>
     <message>
       <location filename="array.py" line="98"/>
@@ -34,118 +34,118 @@
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>El tipus de matriu a crear.
+- Orto: posa les copies en la direcció dels eixos globals X, Y, Z.
+- Polar: posa les copies al voltant d'un arc circular, fins un angle especificat i amb una certa orientació definida per un centre i un eix.
+- Circular: posa les copies en capes circulars concèntriques al voltant de l'objecte base.</translation>
     </message>
     <message>
       <location filename="array.py" line="109"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>Especifica si les còpies haurien d'estar fusionades entre elles si es toquen (més lent)</translation>
     </message>
     <message>
       <location filename="array.py" line="122"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>Nombre de còpies en la direcció X</translation>
     </message>
     <message>
       <location filename="array.py" line="131"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Nombre de còpies en la direcció Y</translation>
     </message>
     <message>
       <location filename="array.py" line="140"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Nombre de còpies en la direcció Z</translation>
     </message>
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció X</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció Y</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció Z</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>La direcció de l'eix al voltant del qual els elements en una matriu polar o circular seràn creats</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>Punt central per a matrius circulars i polars.
+L'eix passa per este punt.</translation>
     </message>
     <message>
       <location filename="array.py" line="215"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>L'objecte eix que sobreescriu el valor de "Eix" i "Centre". Per example: una línia de referència (datum).
+La seua ubicació, posició i rotació serà utilitzada quan es creen les matrius polars i circulars.
+Deixa esta propietat buida per a introduir les dades de "Eix" i "Centre" manualment.</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>Nombre de còpies en la direcció polar</translation>
     </message>
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció de l'eix</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Angle per a cobrir amb còpies</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Distància entre les capes circulars</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>Distància entre les còpies d'una mateixa capa circular</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
+      <translation>Nombre de capes circulars. L'objecte "Base" compta com una capa.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes  the circular array will have.</translation>
+      <translation>Un paràmetre que determina quants plànols simètrics tindrà la matriu circular.</translation>
     </message>
     <message>
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>Nombre total d'elements en la matriu.
+Esta propietat es només de lectura, pel fet que este nombre depén dels paràmetres de la matriu.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Mostra els elements individuals de la matriu (només per a matrius enllaçades)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Els components d'este bloc</translation>
     </message>
     <message>
       <location filename="hatch.py" line="46"/>
@@ -155,52 +155,52 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Longitud del rectangle</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Altura del rectangle</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Radi a utilitzar per a arredonir els cantons</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Mida del xamfrà que cal donar als cantons</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Crea una cara</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Subdivisió horitzontal d'este rectangle</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Subdivisió vertical d'este rectangle</translation>
     </message>
     <message>
       <location filename="wire.py" line="93"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>L'àrea d'este objecte</translation>
     </message>
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>La direcció normal al text de la cota</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>L'objecte mesurat per esta cota</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -212,13 +212,13 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.
 </source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>L'objecte, i els subelements específics d'este, 
+que esta cota està mesurant.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.
+Hi han vàries possibilitats:
+- Un objecte, i una de les seves arestes.
+- Un objecte, i dos dels seus vèrtexs.
+- Un objecte arc, i la seua aresta.
 </translation>
     </message>
     <message>
@@ -231,14 +231,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Un punt per el que pasarà la línia de cota, o una extrapolaciò d'esta.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- Per a cotes lineals, esta propietat controla com de prop està la línia de 
+cota de l'objecte a mesurar.
+- Per a cotes radials, esta propietat controla la direcció de la línia de cota 
+que mostra el radi o diàmetre mesurat.
+- Per a cotes angulars, esta propietat controla el radi de la cota de l'arc 
+que mostra l'angle mesurat.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -246,10 +246,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Punt d'inici de la línia de cota.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Si es una cota de radi, serà el centre de l'arc.
+Si es una cota de diàmetre, serà un punt que estiga contingut en l'arc.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -257,17 +257,16 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
-
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+      <translation>Punt final de la línia de cota.
+Si es una cota de radi o de diàmetre serà 
+un punt que està contingut en l'arc.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>La direcció de la línia de cota.
+Si es manté "(0,0,0)", la direcció serà calculada automàticament.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -278,34 +277,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>El valor de la mida.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Esta propietat es només de lectura perquè el valor es calcula
+des de les propietats de "Inici" i "Final".
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Si la "Geometria Enllaçada" es un arc o un cercle, esta "Distància"
+es el radi o el diàmetre, depenent de la propietat "Diàmetre".</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Quan es mesuren arcs circulars, determina si mostrar el 
+valor del radi o el diàmetre</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle d'inici de la cota lineal (arc circular).
+L'arc es dibuixat en sentit contrari a les agulles del rellotge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle final de la cota lineal (arc circular).
+L'arc es dibuixat en sentit contrari a les agulles del rellotge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +312,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>El punt central de la cota lineal, que es un arc circular.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Este sol ser el punt on els dos segments de línia, o les seues extensions, 
+intersecten, resultant en la mida de l'angle entre ells.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -324,27 +323,27 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>El valor de la mida.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Esta propietat es només de lectura perquè el valor es calcula
+des de les propietats de "Primer Angle" i "Angle Final".</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>L'ubicació del punt base de la primera línia</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>El text mostrat per este objecte.
+Si es una línia de sequències, cada element en la lista serà mostrat en la seua pròpia línia.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Angle d'inici de l'arc</translation>
     </message>
     <message>
       <location filename="circle.py" line="50"/>
@@ -690,17 +689,17 @@ This is useful to adjust for the difference between shape centre and shape refer
     <message>
       <location filename="patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Vector d'alineació per al mode "Tangent"</translation>
     </message>
     <message>
       <location filename="patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Força utilitzada per el "Vector Vertical" com a direcció local Z quan s'utilitza el mode l'alineació "Original" o "Tangent"</translation>
     </message>
     <message>
       <location filename="patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Direcció de l'eix local Z quan la "Força Vertical" es vertadera</translation>
     </message>
     <message>
       <location filename="patharray.py" line="251"/>
@@ -710,19 +709,19 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>Mètode per a orientar les còpies al llarg de la trajectòria.
+- Original: X es tangent a la curva, Y es normal, i Z es el producte vectorial.
+- Frenet: alinea l'objecte seguint el sistema local de coordenades al llarg de la trajectòria.
+- Tangent: similar a "Original" però l'eix local X està pre-alineat al "Vector Tangent".
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+Per a obtindre millors resultats amb "Original" i "Tangent" vosté haurà de configurar la "Força Vertical" com vertadera.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Orienta les còpies al llarg de la trajectòria depenent del "Mode d'Alineació".
+En cas contrari les còpies tindràn la mateixa orientació de l'objecte Base.</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="66"/>
@@ -732,12 +731,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="73"/>
       <source>Projection direction</source>
-      <translation type="unfinished">Projection direction</translation>
+      <translation>Direcció de la projecció</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="80"/>
       <source>The width of the lines inside this object</source>
-      <translation type="unfinished">The width of the lines inside this object</translation>
+      <translation>L'amplària de les línies dins d'este objecte</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="88"/>
@@ -747,22 +746,22 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="96"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>L'espaiat entre línies de text</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="103"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>El color dels objectes projectats</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="110"/>
       <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
+      <translation>Estil de farciment de la forma</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="118"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>Estil de línia</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="127"/>
@@ -772,112 +771,112 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>Cares enllaçades</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Especifica si cal eliminar línies de separació</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Un valor opcional d'extrusió per a aplicar a totes les cares</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Un valor opcional de desplaçament per a aplicar a totes les cares</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Especifica si les formes es cusen</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>L'àrea de les cares d'esta Col·lecció de Cares</translation>
     </message>
     <message>
       <location filename="clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Els objectes inclosos en este clon</translation>
     </message>
     <message>
       <location filename="clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>El factor d'escala d'este clon</translation>
     </message>
     <message>
       <location filename="clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Si els Clons inclouen varios objectes,
+configura Vertader per a fusionar o Fals per a compondre</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>Factor d'escala general que afecta l'anotació uniformement
+perquè escala el text, i les línies decoratives, si n'hi ha, 
+en la mateixa proporció.</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="100"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>Estil d'anotació per a aplicar a este objecte.
+Quan s'utilitza un estil guardat, algunes de les propietats de la vista es converteixen en sols per a lectura;
+sols podràn ser editables canviant l'estil des de la ferramenta "Editor d'estil d'Anotació".</translation>
     </message>
     <message>
       <location filename="wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Els vèrtexs del filferro</translation>
     </message>
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Si el filferro està tancat o no</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte base és el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte eina és el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>El punt d'inici d'esta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>El punt final d'esta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>La longitud d'esta línia</translation>
     </message>
     <message>
       <location filename="wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Crea una cara si este objecte està tancat</translation>
     </message>
     <message>
       <location filename="wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>El nombre de subdivisions de cada aresta</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="137"/>
@@ -892,31 +891,31 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>L'espaiat entre el text i la línia de cota</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Gira el text de la cota 180 graus</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>Posició del Text.
+Deixa "(0,0,0)" per a posició automàtica</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>Sobreescritura del Text.
+Escriu "$dim" per a que això siga reemplaçat per la longitud de la cota.</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>El nombre de decimals que cal mostrar</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -936,71 +935,70 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
     <message>
       <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Gira les fletxes de la cota 180 graus</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>La distància en què la cota lineal s'estén més enllà de les línies d'extensió</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="269"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Longitud de les línies d'extensió</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="279"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>Longitud de la línea d'extensió
+més enllà de la línea de cota</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Mostra la cota lineal i les fletxes</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Si es vertader, els objectes continguts en esta capa adoptaran el color de línea de la capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Si es vertader, el color d'impressió serà utilitzat quan els objectes en esta capa siguen introduïts en una pàgina TechDraw</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>El color de línia dels objectes continguts en esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>El color de forma dels objectes continguts en esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>El gruix de línia dels objectes continguts en esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>El estil de dibuix dels objectes continguts en esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>La transparència dels objectes continguts en esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>El color de línia dels objectes continguts en esta capa, quen s'utilitzen en una pàgina TechDraw</translation>
     </message>
     <message>
       <location filename="view_label.py" line="176"/>
@@ -1015,7 +1013,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>La mida del text</translation>
     </message>
     <message>
       <location filename="view_label.py" line="82"/>
@@ -1164,6 +1162,11 @@ Use 'arch' to force US arch notation</translation>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
       <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1506,27 +1509,27 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation type="unfinished">Add new layer</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation type="unfinished">Toggles Grid On/Off</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation type="unfinished">Object snapping</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation type="unfinished">Toggles Ortho On/Off</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
@@ -2986,12 +2989,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation type="unfinished">Toggles Grid On/Off</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation type="unfinished">Toggle Draft Grid</translation>
     </message>
@@ -5315,7 +5318,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
@@ -6397,17 +6400,17 @@ Per a permetre que FreeCAD descarregue aquestes llibreries responeu Sí.</transl
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation type="unfinished">custom</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation type="unfinished">Unable to convert input into a scale factor</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
     </message>

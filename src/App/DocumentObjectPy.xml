@@ -55,7 +55,7 @@
                 <UserDocu>Register an expression for a property</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="evalExpression">
+        <Methode Name="evalExpression" Class="true">
             <Documentation>
                 <UserDocu>Evaluate an expression</UserDocu>
             </Documentation>

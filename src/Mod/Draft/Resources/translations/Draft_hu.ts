@@ -961,7 +961,7 @@ a méretvonalon túl</translation>
       <translation>A dimenzióvonal és a nyilak megjelenítve</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Ha igaz, a réteg tárgyai öröklik a réteg vonalszínét</translation>
     </message>
@@ -1136,32 +1136,37 @@ Használja az 'arch' kifejezést amerikai US arch jelölésének kikényszerít�
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>A tárgy által használt elsődleges tárgy</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>A tárgy által használt PAT-fájl</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>A tárgy által használt mintanév</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>A tárgy által használt minta lépték</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>A tárgy által használt minta elforgatás</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Ha hamisra állított, a kitöltés a felületekhez hasonlóan, fordítás nélkül kerül alkalmazásra (ez rossz eredményeket adhat a nem XY felületek esetében)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1504,27 +1509,27 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
       <translation>Új réteg hozzáadása</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Rács be-/kikapcsolása</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Tárgy illesztés</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>A vizuális segédméretek be- és kikapcsolása</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Merőleges be- és kikapcsolása</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Be- és kikapcsolja a kényszerítést a munkasíkra</translation>
     </message>
@@ -1714,7 +1719,7 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>A parancs használata előtt ki kell választania egy elsődleges tárgyat</translation>
     </message>
   </context>
   <context>
@@ -2535,7 +2540,7 @@ Ha más tárgyak vannak kijelölve, a program figyelmen kívül hagyja őket.</t
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Nyílások létrehozása a kijelölt felületeken</translation>
     </message>
   </context>
   <context>
@@ -2983,12 +2988,12 @@ egyenes piszkozatvonalak működik jól. A program figyelmen kívül hagyja a ne
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Rács be-/kikapcsolása</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Tervrajz rácsok kapcsolása</translation>
     </message>
@@ -3857,12 +3862,12 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>minta fájlok (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT fájl:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3872,7 +3877,7 @@ módosíthatja rajzolás közben</translation>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Minta:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -5308,7 +5313,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Nem találtam elég koordinátát</translation>
     </message>
   </context>
   <context>
@@ -5340,7 +5345,7 @@ Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translat
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation>Tervrajz illesztése</translation>
     </message>
@@ -6423,17 +6428,17 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Réteg tartalom kijelölése</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>egyéni</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Nem lehet a bemenetet léptéktényezővé alakítani</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Egyéni jegyzetméret beállítása x:x, x=x formátumban</translation>
     </message>

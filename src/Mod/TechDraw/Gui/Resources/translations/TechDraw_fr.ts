@@ -368,6 +368,116 @@
     </message>
   </context>
   <context>
+    <name>CmdTechDrawExtensionCircleCenterLines</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="90"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="91"/>
+      <source>Draw circle center lines</source>
+      <translation type="unfinished">Draw circle center lines</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="92"/>
+      <source>Draw circle center line cross at circles
+    - select many circles or arcs
+    - click this button</source>
+      <translation type="unfinished">Draw circle center line cross at circles
+    - select many circles or arcs
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadBoltBottom</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="324"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="325"/>
+      <source>Cosmetic thread bolt bottom view</source>
+      <translation type="unfinished">Cosmetic thread bolt bottom view</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="326"/>
+      <source>Draw cosmetic screw thread ground view
+    - select many circles
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic screw thread ground view
+    - select many circles
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadBoltSide</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="218"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="219"/>
+      <source>Cosmetic thread bolt side view</source>
+      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="220"/>
+      <source>Draw cosmetic screw thread side view
+    - select two parallel lines
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic screw thread side view
+    - select two parallel lines
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadHoleBottom</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="271"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="272"/>
+      <source>Cosmetic thread hole bottom view</source>
+      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="273"/>
+      <source>Draw cosmetic hole thread ground view
+    - select many circles
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic hole thread ground view
+    - select many circles
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadHoleSide</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="165"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="166"/>
+      <source>Cosmetic thread hole side view</source>
+      <translation type="unfinished">Cosmetic thread hole side view</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="167"/>
+      <source>Draw cosmetic thread hole side view
+    - select two parallel lines
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic thread hole side view
+    - select two parallel lines
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1054"/>
@@ -843,7 +953,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1388"/>
-      <location filename="../../MDIViewPage.cpp" line="878"/>
+      <location filename="../../MDIViewPage.cpp" line="882"/>
       <source>Save page to dxf</source>
       <translation>Enregistrer la page en dxf</translation>
     </message>
@@ -1753,28 +1863,28 @@
       <translation>Impossible de déterminer la page correcte.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="637"/>
-      <location filename="../../MDIViewPage.cpp" line="837"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>All Files (*.*)</source>
       <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="638"/>
+      <location filename="../../MDIViewPage.cpp" line="642"/>
       <source>Export Page As PDF</source>
       <translation>Exporter la page au format PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="836"/>
+      <location filename="../../MDIViewPage.cpp" line="840"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="838"/>
+      <location filename="../../MDIViewPage.cpp" line="842"/>
       <source>Export page as SVG</source>
       <translation>Exporter la page au format SVG</translation>
     </message>
@@ -1906,18 +2016,72 @@
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="106"/>
+      <location filename="../../CommandExtensionPack.cpp" line="113"/>
+      <source>TechDraw Circle Centerlines</source>
+      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="107"/>
+      <location filename="../../CommandExtensionPack.cpp" line="182"/>
+      <location filename="../../CommandExtensionPack.cpp" line="235"/>
+      <location filename="../../CommandExtensionPack.cpp" line="288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="341"/>
+      <source>Selection is empty</source>
+      <translation type="unfinished">Selection is empty</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="114"/>
+      <location filename="../../CommandExtensionPack.cpp" line="189"/>
+      <location filename="../../CommandExtensionPack.cpp" line="242"/>
+      <location filename="../../CommandExtensionPack.cpp" line="295"/>
+      <location filename="../../CommandExtensionPack.cpp" line="348"/>
+      <source>No object selected</source>
+      <translation type="unfinished">No object selected</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="181"/>
+      <location filename="../../CommandExtensionPack.cpp" line="188"/>
+      <location filename="../../CommandExtensionPack.cpp" line="436"/>
+      <source>TechDraw Thread Hole Side</source>
+      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="234"/>
+      <location filename="../../CommandExtensionPack.cpp" line="241"/>
+      <source>TechDraw Thread Bolt Side</source>
+      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="294"/>
+      <source>TechDraw Thread Hole Bottom</source>
+      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="340"/>
+      <location filename="../../CommandExtensionPack.cpp" line="347"/>
+      <source>TechDraw Tread Bolt Bottom</source>
+      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="437"/>
+      <source>Please select two straight lines</source>
+      <translation type="unfinished">Please select two straight lines</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="253"/>
+      <location filename="../../ViewProviderLeader.cpp" line="257"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette ligne de référence car
  elle a un symbole de soudure qui serait cassé.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="256"/>
+      <location filename="../../ViewProviderLeader.cpp" line="260"/>
       <location filename="../../ViewProviderPage.cpp" line="232"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="217"/>
@@ -1926,9 +2090,9 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="196"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="204"/>
       <location filename="../../ViewProviderTemplate.cpp" line="208"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="355"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="363"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="371"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="366"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="374"/>
       <location filename="../../ViewProviderWeld.cpp" line="197"/>
       <source>Object dependencies</source>
       <translation>Dépendances des objets</translation>
@@ -1940,19 +2104,19 @@ it has a weld symbol that would become broken.</source>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="185"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="352"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="355"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette vue car elle comporte une vue en coupe qui sera cassée.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="193"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="360"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="363"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette vue car elle comporte une vue de détail qui sera cassée.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="201"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="368"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="371"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette vue car elle comporte une ligne de référence qui sera cassée.</translation>
     </message>
@@ -3439,49 +3603,49 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>Exporter vers PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="730"/>
+      <location filename="../../MDIViewPage.cpp" line="734"/>
       <source>Different orientation</source>
       <translation>Orientation différente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="731"/>
+      <location filename="../../MDIViewPage.cpp" line="735"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise une autre orientation que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="738"/>
+      <location filename="../../MDIViewPage.cpp" line="742"/>
       <source>Different paper size</source>
       <translation>Format de papier différent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="739"/>
+      <location filename="../../MDIViewPage.cpp" line="743"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="750"/>
+      <location filename="../../MDIViewPage.cpp" line="754"/>
       <source>Opening file failed</source>
       <translation>L'ouverture du fichier a échoué</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="751"/>
+      <location filename="../../MDIViewPage.cpp" line="755"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Impossible d’ouvrir le fichier %1 en écriture.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="862"/>
+      <location filename="../../MDIViewPage.cpp" line="866"/>
       <source>Save Dxf File</source>
       <translation>Enregistrez le fichier Dxf</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="864"/>
+      <location filename="../../MDIViewPage.cpp" line="868"/>
       <source>Dxf (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1349"/>
+      <location filename="../../MDIViewPage.cpp" line="1353"/>
       <source>Selected:</source>
       <translation>Sélectionné:</translation>
     </message>

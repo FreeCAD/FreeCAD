@@ -5285,7 +5285,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="preferences-arch.ui" line="14"/>
       <source>General settings</source>
-      <translation>Общие настройки</translation>
+      <translation>Основные настройки</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="139"/>

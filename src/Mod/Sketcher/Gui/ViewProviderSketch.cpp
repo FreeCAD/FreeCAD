@@ -3455,6 +3455,7 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
+        thisIcon.visible = (*it)->isInVirtualSpace == getIsShownVirtualSpace();
 
         if ((*it)->Type==Symmetric) {
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
@@ -3539,36 +3540,44 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
+        // and only icons that are visible
+        if(init.type != QString::fromLatin1("Constraint_Symmetric") && init.visible){
 
             IconQueue::iterator i = iconQueue.begin();
+
+
             while(i != iconQueue.end()) {
-                bool addedToGroup = false;
+                if((*i).visible) {
+                    bool addedToGroup = false;
 
-                for(IconQueue::iterator j = thisGroup.begin();
-                    j != thisGroup.end(); ++j) {
-                    float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
-                        // Found an icon in iconQueue that's close enough to
-                        // a member of thisGroup, so move it into thisGroup
-                        thisGroup.push_back(*i);
-                        i = iconQueue.erase(i);
-                        addedToGroup = true;
-                        break;
+                    for(IconQueue::iterator j = thisGroup.begin();
+                        j != thisGroup.end(); ++j) {
+                        float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
+                        if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
+                            // Found an icon in iconQueue that's close enough to
+                            // a member of thisGroup, so move it into thisGroup
+                            thisGroup.push_back(*i);
+                            i = iconQueue.erase(i);
+                            addedToGroup = true;
+                            break;
+                        }
                     }
-                }
 
-                if(addedToGroup) {
-                    if(i == iconQueue.end())
-                        // We just got the last icon out of iconQueue
-                        break;
-                    else
-                        // Start looking through the iconQueue again, in case
-                        // we have an icon that's now close enough to thisGroup
-                        i = iconQueue.begin();
-                } else
-                    ++i;
+                    if(addedToGroup) {
+                        if(i == iconQueue.end())
+                            // We just got the last icon out of iconQueue
+                            break;
+                        else
+                            // Start looking through the iconQueue again, in case
+                            // we have an icon that's now close enough to thisGroup
+                            i = iconQueue.begin();
+                    } else
+                        ++i;
+                }
+                else // if !visible we skip it
+                   i++;
             }
+
         }
 
         if(thisGroup.size() == 1) {
