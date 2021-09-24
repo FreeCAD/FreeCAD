@@ -301,7 +301,7 @@ def updateTranslatorCpp(lncode):
         if l.startswith("    d->mapLanguageTopLevelDomain[QT_TR_NOOP("):
             lastentry = i
             if "\""+lncode+"\"" in l:
-                print(lnname+" ("+lncode+") already exists in Translator.cpp")
+                #print(lnname+" ("+lncode+") already exists in Translator.cpp")
                 return
 
     # find the position to insert
@@ -313,7 +313,7 @@ def updateTranslatorCpp(lncode):
     # inserting new entry just before the above line
     line = "    d->mapLanguageTopLevelDomain[QT_TR_NOOP(\""+lnname+"\")] = \""+lncode+"\";\n"
     cppcode.insert(pos,line)
-    print(lnname+" ("+lncode+") inserted in Translator.cpp")
+    print(lnname+" ("+lncode+") added Translator.cpp")
 
     # writing the file
     f = open(cppfile,"w")

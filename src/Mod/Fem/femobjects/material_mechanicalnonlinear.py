@@ -41,44 +41,62 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super(MaterialMechanicalNonlinear, self).__init__(obj)
+        self.add_properties(obj)
 
-        obj.addProperty(
-            "App::PropertyLink",
-            "LinearBaseMaterial",
-            "Base",
-            "Set the linear material the nonlinear builds upon."
-        )
+    def onDocumentRestored(self, obj):
 
-        choices_nonlinear_material_models = ["simple hardening"]
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "MaterialModelNonlinearity",
-            "Fem",
-            "Set the type on nonlinear material model"
-        )
-        obj.MaterialModelNonlinearity = choices_nonlinear_material_models
-        obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
+        # YieldPoints was (until 0.19) stored as 3 separate variables. Consolidate them if present.
+        yield_points = []
+        if hasattr(obj, "YieldPoint1"):
+            if obj.YieldPoint1:
+                yield_points.append(obj.YieldPoint1)
+            obj.removeProperty("YieldPoint1")
+            if hasattr(obj, "YieldPoint2"):
+                if obj.YieldPoint2:
+                    yield_points.append(obj.YieldPoint2)
+                obj.removeProperty("YieldPoint2")
+            if hasattr(obj, "YieldPoint3"):
+                if obj.YieldPoint3:
+                    yield_points.append(obj.YieldPoint3)
+                obj.removeProperty("YieldPoint3")
 
-        obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint1",
-            "Fem",
-            "Set stress and strain for yield point one, separated by a comma."
-        )
-        obj.YieldPoint1 = "235.0, 0.0"
+        self.add_properties(obj)
+        if yield_points:
+            obj.YieldPoints = yield_points
 
-        obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint2",
-            "Fem",
-            "Set stress and strain for yield point two, separated by a comma."
-        )
-        obj.YieldPoint2 = "241.0, 0.025"
+        # TODO: If in the future more nonlinear options are added, update choices here.
 
-        obj.addProperty(
-            "App::PropertyString",
-            "YieldPoint3",
-            "Fem",
-            "Set stress and strain for yield point three, separated by a comma."
-        )
-        obj.YieldPoint3 = ""
+    def add_properties(self, obj):
+
+        # this method is called from onDocumentRestored
+        # thus only add and or set a attribute
+        # if the attribute does not exist
+
+        if not hasattr(obj, "LinearBaseMaterial"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "LinearBaseMaterial",
+                "Base",
+                "Set the linear material the nonlinear builds upon."
+            )
+
+        if not hasattr(obj, "MaterialModelNonlinearity"):
+            choices_nonlinear_material_models = ["simple hardening"]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "MaterialModelNonlinearity",
+                "Fem",
+                "Set the type on nonlinear material model"
+            )
+            obj.MaterialModelNonlinearity = choices_nonlinear_material_models
+            obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
+
+        if not hasattr(obj, "YieldPoints"):
+            obj.addProperty(
+                "App::PropertyStringList",
+                "YieldPoints",
+                "Fem",
+                "Set stress and strain for yield points as a list of strings, "
+                "each point \"stress, plastic strain\""
+            )
+            obj.YieldPoints = []

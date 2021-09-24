@@ -391,14 +391,16 @@ void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
                 roffset = addr.row() - from.row();
                 coffset = addr.col() - from.col();
             }else
-                range.next();
+                if (!range.next())
+                    break;
             while(src!=*range) {
                 CellAddress dst(*range);
                 dst.setRow(dst.row()+roffset);
                 dst.setCol(dst.col()+coffset);
                 owner->clear(dst);
                 owner->cellUpdated(dst);
-                range.next();
+                if (!range.next())
+                    break;
             }
             CellAddress dst(src.row()+roffset, src.col()+coffset);
             auto cell = owner->getNewCell(dst);

@@ -25,7 +25,7 @@
 
 #include "PropertyPage.h"
 #include "PrefWidgets.h"
-#include "WidgetFactory.h"
+#include "UiLoader.h"
 #include <Base/Console.h>
 
 using namespace Gui::Dialog;

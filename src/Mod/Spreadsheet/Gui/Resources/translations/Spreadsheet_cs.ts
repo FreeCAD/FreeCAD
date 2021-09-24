@@ -348,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Střed</translation>
+      <translation>Na střed</translation>
     </message>
     <message>
       <source>Right</source>
@@ -384,7 +384,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Zobrazit jednotku</translation>
+      <translation>&amp;Zobrazit jednotku</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -633,7 +633,7 @@ Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Odstranit sloupec(ů)</numerusform>
+        <numerusform>Odstranit sloupec(ce)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>

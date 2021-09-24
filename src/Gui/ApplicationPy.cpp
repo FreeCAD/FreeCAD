@@ -52,6 +52,7 @@
 #include "SplitView3DInventor.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
+#include "PythonWrapper.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"

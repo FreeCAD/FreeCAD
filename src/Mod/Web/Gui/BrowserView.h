@@ -97,7 +97,12 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
-    bool canClose(void);
+    bool canClose (void);
+
+#ifdef QTWEBENGINE
+public Q_SLOTS:
+    void setWindowIcon(const QIcon &icon);
+#endif
 
 protected Q_SLOTS:
     void onLoadStarted();
@@ -107,7 +112,6 @@ protected Q_SLOTS:
     void urlFilter(const QUrl &url);
 #ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
-    void setWindowIcon(const QIcon &icon);
     void onLinkHovered(const QString& url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);

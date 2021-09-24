@@ -99,6 +99,13 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
 
 void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
 
+    std::vector< std::string > FaceNames;
+
+    getContinuousEdges(TopShape, SubNames, FaceNames);
+}
+
+void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames, std::vector< std::string >& FaceNames) {
+
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
     TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
@@ -153,6 +160,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
 
             }
 
+            FaceNames.push_back(aSubName.c_str());
             SubNames.erase(SubNames.begin()+i);
         }
         // empty name or any other sub-element

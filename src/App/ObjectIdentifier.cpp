@@ -1490,14 +1490,14 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
         else {
             str.resize(str.size()-1);
             auto mapped = reader->getName(str.c_str());
-            auto obj = owner->getDocument()->getObject(mapped);
-            if (!obj) {
+            auto objForMapped = owner->getDocument()->getObject(mapped);
+            if (!objForMapped) {
                 FC_ERR("Cannot find object " << str);
             }
             else {
                 isString = true;
                 forceIdentifier = false;
-                str = obj->Label.getValue();
+                str = objForMapped->Label.getValue();
             }
         }
     }

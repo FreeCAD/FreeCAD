@@ -210,7 +210,7 @@ def convertToDxf(dwgfilename):
         proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
         proc.communicate()
         return result
-    except:
+    except Exception:
         pass
 
     teigha = getTeighaConverter()

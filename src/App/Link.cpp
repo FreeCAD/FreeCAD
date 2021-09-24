@@ -1322,8 +1322,8 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
 
         auto objs = getElementListValue();
         getElementListProperty()->setValue();
-        for(auto obj : objs)
-            detachElement(obj);
+        for(auto thisObj : objs)
+            detachElement(thisObj);
         return;
     }
 

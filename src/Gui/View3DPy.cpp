@@ -51,7 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 
 
 #include <Base/Console.h>

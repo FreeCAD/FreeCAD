@@ -115,7 +115,9 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContinuousEdges(TopShape, SubNames);
+    std::vector<std::string> FaceNames;
+  
+    getContinuousEdges(TopShape, SubNames, FaceNames);
 
     if (SubNames.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
@@ -138,16 +140,35 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     try {
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape.getShape());
 
-        TopTools_IndexedMapOfShape mapOfEdges;
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-        TopExp::MapShapes(baseShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
-        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
-            const TopoDS_Face& face = (chamferType != 0 && flipDirection) ?
-                TopoDS::Face(mapEdgeFace.FindFromKey(edge).Last()) :
-                TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+        for (const auto &itSN : SubNames) {
+            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(itSN.c_str()));
+
+            const TopoDS_Shape& faceLast = mapEdgeFace.FindFromKey(edge).Last();
+            const TopoDS_Shape& faceFirst = mapEdgeFace.FindFromKey(edge).First();
+
+            // Set the face based on flipDirection for all edges by default. Note for chamferType==0 it does not matter which face is used.
+            TopoDS_Face face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
+    
+            // for chamfer types otherthan Equal (type = 0) check if one of the faces associated with the edge
+            // is one of the originally selected faces. If so use the other face by default or the selected face if "flipDirection" is set
+            if (chamferType != 0) {
+
+                // for each selected face
+                for (const auto &itFN : FaceNames) {
+                    const TopoDS_Shape selFace = baseShape.getSubShape(itFN.c_str());
+
+                    if ( faceLast.IsEqual(selFace) ) 
+                        face = TopoDS::Face( flipDirection ? faceFirst : faceLast );
+                    
+                    else if ( faceFirst.IsEqual(selFace) ) 
+                        face = TopoDS::Face( flipDirection ? faceLast : faceFirst );
+                }
+
+            } 
+
             switch (chamferType) {
                 case 0: // Equal distance
                     mkChamfer.Add(size, size, edge, face);
