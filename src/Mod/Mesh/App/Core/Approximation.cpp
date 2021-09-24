@@ -117,7 +117,7 @@ Base::Vector3f Approximation::GetGravity() const
     return clGravity;
 }
 
-unsigned long Approximation::CountPoints() const
+std::size_t Approximation::CountPoints() const
 { 
     return _vPoints.size();
 }
@@ -418,7 +418,7 @@ Base::BoundBox3f PlaneFit::GetBoundings() const
 {
     Base::BoundBox3f bbox;
     std::vector<Base::Vector3f> pts = GetLocalPoints();
-    for (auto it : pts)
+    for (const auto& it : pts)
         bbox.Add(it);
     return bbox;
 }
@@ -462,7 +462,7 @@ const double& QuadraticFit::GetCoeffArray() const
     return _fCoeff[0];
 }
 
-double QuadraticFit::GetCoeff(unsigned long ulIndex) const
+double QuadraticFit::GetCoeff(std::size_t ulIndex) const
 {
     assert(ulIndex < 10);
 

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="848"/>
       <source>Add triangle</source>
-      <translation type="unfinished">Add triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="849"/>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -209,13 +209,13 @@
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Close hole</source>
-      <translation type="unfinished">Close hole</translation>
+      <translation>구멍 닫기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1675"/>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Close holes interactively</source>
-      <translation type="unfinished">Close holes interactively</translation>
+      <translation>대화식으로 구멍 닫기</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Fill holes...</source>
-      <translation type="unfinished">Fill holes...</translation>
+      <translation>구멍 메우기...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
@@ -492,7 +492,7 @@
       <location filename="../../Command.cpp" line="1320"/>
       <location filename="../../Command.cpp" line="1322"/>
       <source>Mark a component to remove it from the mesh</source>
-      <translation type="unfinished">Mark a component to remove it from the mesh</translation>
+      <translation>메시에서 제거할 구성요소를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
       <location filename="../../Command.cpp" line="1242"/>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation type="unfinished">Remove topologic independent components from the mesh</translation>
+      <translation>메시에서 토폴로지 독립 구성요소 제거</translation>
     </message>
   </context>
   <context>
@@ -1704,7 +1704,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
       <source>Add triangle</source>
-      <translation type="unfinished">Add triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>

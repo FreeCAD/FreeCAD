@@ -77,6 +77,13 @@ class GuiExport MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    enum ConfirmSaveResult {
+        Cancel = 0,
+        Save,
+        SaveAll,
+        Discard,
+        DiscardAll
+    };
     /**
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.

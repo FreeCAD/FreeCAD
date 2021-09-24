@@ -25,6 +25,9 @@
 #define BASE_ROTATION_H
 
 #include "Vector3D.h"
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 
@@ -63,6 +66,53 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+
+    enum EulerSequence
+    {
+        Invalid,
+
+        //! Classic Euler angles, alias to Intrinsic_ZXZ
+        EulerAngles,
+
+        //! Yaw Pitch Roll (or nautical) angles, alias to Intrinsic_ZYX
+        YawPitchRoll,
+
+        // Tait-Bryan angles (using three different axes)
+        Extrinsic_XYZ,
+        Extrinsic_XZY,
+        Extrinsic_YZX,
+        Extrinsic_YXZ,
+        Extrinsic_ZXY,
+        Extrinsic_ZYX,
+
+        Intrinsic_XYZ,
+        Intrinsic_XZY,
+        Intrinsic_YZX,
+        Intrinsic_YXZ,
+        Intrinsic_ZXY,
+        Intrinsic_ZYX,
+
+        // Proper Euler angles (using two different axes, first and third the same)
+        Extrinsic_XYX,
+        Extrinsic_XZX,
+        Extrinsic_YZY,
+        Extrinsic_YXY,
+        Extrinsic_ZYZ,
+        Extrinsic_ZXZ,
+
+        Intrinsic_XYX,
+        Intrinsic_XZX,
+        Intrinsic_YZY,
+        Intrinsic_YXY,
+        Intrinsic_ZXZ,
+        Intrinsic_ZYZ,
+
+        EulerSequenceLast,
+    };
+    static const char *eulerSequenceName(EulerSequence seq);
+    static EulerSequence eulerSequenceFromName(const char *name);
+    void getEulerAngles(EulerSequence seq, double &alpha, double &beta, double &gamma) const;
+    void setEulerAngles(EulerSequence seq, double alpha, double beta, double gamma);
     bool isIdentity() const;
     bool isNull() const;
     //@}

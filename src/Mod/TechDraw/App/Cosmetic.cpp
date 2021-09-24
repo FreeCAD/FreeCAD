@@ -1003,6 +1003,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
                                                       double rotate, bool flip)
                                                       
 {
+    Q_UNUSED(flip)
+
 //    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d edgeNames: %d\n", mode, flip, edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {

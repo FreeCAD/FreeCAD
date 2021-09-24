@@ -488,7 +488,7 @@ class MapWireToTag:
                         commands.extend(PathGeom.cmdsForEdge(e, False, False, self.segm, hSpeed = self.hSpeed, vSpeed = self.vSpeed))
                 if rapid:
                     commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
-                    rapid = None
+                    # rapid = None  # commented out per LGTM suggestion
                 return commands
             except Exception as e: # pylint: disable=broad-except
                 PathLog.error("Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag" % (self.tag.x, self.tag.y, e.args[0]))
@@ -665,7 +665,7 @@ class PathData:
 
         return tags
 
-    def copyTags(self, obj, fromObj, width, height, angle, radius):
+    def copyTags(self, obj, fromObj, width, height, angle, radius, production=True):
         print("copyTags(%s, %s, %.2f, %.2f, %.2f, %.2f" % (obj.Label, fromObj.Label, width, height, angle, radius))
         W = width  if width  else self.defaultTagWidth()
         H = height if height else self.defaultTagHeight()
@@ -678,7 +678,9 @@ class PathData:
             print("tag[%d]" % i)
             if not i in fromObj.Disabled:
                 dist = self.baseWire.distToShape(Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ)))
-                if True or dist[0] < W:
+                if production or dist[0] < W:
+                    # russ4262:: `production` variable was a `True` declaration, forcing True branch to be processed always
+                    #   The application of the `production` argument/variable is to appease LGTM
                     print("tag[%d/%d]: (%.2f, %.2f, %.2f)" % (i, j, pos.x, pos.y, self.minZ))
                     at = dist[1][0][0]
                     tags.append(Tag(j, at.x, at.y,  W, H, A, R, True))

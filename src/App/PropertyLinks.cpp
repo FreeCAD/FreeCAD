@@ -2729,9 +2729,9 @@ public:
         // potentially unchanged. So we just touch at most one.
         std::set<Document*> docs;
         for(auto link : links) {
-            auto doc = static_cast<DocumentObject*>(link->getContainer())->getDocument();
-            auto ret = docs.insert(doc);
-            if(ret.second && !doc->isTouched())
+            auto linkdoc = static_cast<DocumentObject*>(link->getContainer())->getDocument();
+            auto ret = docs.insert(linkdoc);
+            if(ret.second && !linkdoc->isTouched())
                 link->touch();
         }
     }

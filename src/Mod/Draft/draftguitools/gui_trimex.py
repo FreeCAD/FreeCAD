@@ -74,7 +74,10 @@ class Trimex(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Trimex',
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", "Trims or extends the selected object, or extrudes single faces.\nCTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
+                    "Trims or extends the selected object, or extrudes single"
+                    + " faces.\nCTRL snaps, SHIFT constrains to current segment"
+                    + " or to normal, ALT inverts.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -201,7 +204,7 @@ class Trimex(gui_base_original.Modifier):
                 self.snapped = self.view.getObjectInfo((arg["Position"][0],
                                                         arg["Position"][1]))
             if self.extrudeMode:
-                dist = self.extrude(self.shift)
+                dist, ang = (self.extrude(self.shift), None)
             else:
                 # If the geomType of the edge is "Line" ang will be None,
                 # else dist will be None.

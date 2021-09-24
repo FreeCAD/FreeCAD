@@ -29,7 +29,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation>Çalışma dizini</translation>
+      <translation>Çalışma Dizini</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation>Geçen zaman:</translation>
+      <translation>Geçen Süre:</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
@@ -72,12 +72,7 @@
     <message>
       <location filename="selection_widgets.py" line="274"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometri referans seçici için bir </translation>
+      <translation>için geometri kaynak noktası seçici</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -92,37 +87,37 @@
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>Click on "Add" and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+      <translation>"Ekle" düğmesine basın ve listeye eklemek için geometrik elemanlar seçin.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="281"/>
       <source>The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+      <translation>Aşağıdaki geometri elemanlarının seçilmesine izin veriliyor: </translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>"Ekle" düğmesine basın ve listeye eklemek için geometrik elemanlar seçin.{}Aşağıdaki geometri elemanlarının seçilmesine izin veriliyor: {}{}{}</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>Eğer hiçbir geometri listeye eklenmemişse, kalan tüm elemanlar kullanılır.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on "Add" and select geometric elements to add to the list.</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add to the list.</translation>
+      <translation>"Ekle" düğmesine basın ve listeye eklemek için geometrik elemanlar seçin.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="285"/>
       <source>Click on 'Add' and select geometric elements to add them to the list.</source>
-      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+      <translation>"Ekle" düğmesine basın ve listeye eklemek için geometrik elemanlar seçin.</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Eğer hiçbir geometri listeye eklenmemişse, kalan tüm elemanlar kullanılır.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -133,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Katı</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometri referans seçici için bir </translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation>Çubuk Döndürme</translation>
+      <translation>Kiriş Döndürme</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
@@ -322,12 +322,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation>Esneklik denklemi</translation>
+      <translation>Elastisite denklemi</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation>Esneklik için bir FEM denklemi oluşturur</translation>
+      <translation>Elastisite için bir FEM denklemi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -2399,7 +2399,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation>Ücretsiz</translation>
+      <translation>Serbest</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2409,7 +2409,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation>Onarıldı</translation>
+      <translation>Sabitle</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>

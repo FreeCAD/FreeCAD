@@ -75,11 +75,6 @@
       <translation>Selector de referencia de geometría para un</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selector de referencia de geometría para una </translation>
-    </message>
-    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
       <source>Add</source>
       <translation>Añadir</translation>
@@ -102,7 +97,7 @@
     <message>
       <location filename="selection_widgets.py" line="283"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Clic en "Agregar" y seleccione los elementos geométricos para añadirlos a la lista.{} Los siguientes elementos geométricos se pueden seleccionar: {}{}{}</translation>
     </message>
     <message>
       <location filename="selection_widgets.py" line="283"/>
@@ -122,7 +117,7 @@
     <message>
       <location filename="selection_widgets.py" line="286"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Si no se agrega geometría a la lista, se utilizarán todos los restantes.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -133,6 +128,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
       <source>Solid</source>
       <translation>Sólido</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selector de referencia de geometría para una </translation>
     </message>
   </context>
   <context>

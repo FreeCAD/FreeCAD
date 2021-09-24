@@ -85,6 +85,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     virtual DrawPage* findParentPage() const;
+    virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(void) const;
     virtual double autoScale(double w, double h) const;

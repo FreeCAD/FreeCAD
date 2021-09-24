@@ -27,6 +27,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <Mod/Image/ImageGlobal.h>
 
 namespace Image
 {

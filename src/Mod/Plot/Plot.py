@@ -26,25 +26,26 @@ import FreeCAD
 import PySide
 from PySide import QtCore, QtGui
 from distutils.version import LooseVersion as V
+import sys
 
 try:
     import matplotlib
-    matplotlib.use('Qt4Agg')
-    matplotlib.rcParams['backend.qt4']='PySide'
-    import matplotlib.pyplot as plt
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    if V(matplotlib.__version__) < V("1.4.0"):
-       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+    matplotlib.use('Qt5Agg')
+    
+    # Force matplotlib to use PySide backend by temporarily unloading PyQt
+    if 'PyQt5.QtCore' in sys.modules:
+        del sys.modules['PyQt5.QtCore']
+        import matplotlib.pyplot as plt
+        import PyQt5.QtCore
     else:
-       from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+        import matplotlib.pyplot as plt
+
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
     from matplotlib.figure import Figure
 except ImportError:
-    msg = PySide.QtGui.QApplication.translate(
-        "plot_console",
-        "matplotlib not found, so Plot module can not be loaded",
-        None)
-    FreeCAD.Console.PrintMessage(msg + '\n')
+    FreeCAD.Console.PrintWarning('matplotlib not found, so Plot module can not be loaded\n')
     raise ImportError("matplotlib not installed")
 
 
@@ -198,7 +199,7 @@ def legend(status=True, pos=None, fontsize=None):
             # Get resultant position
             try:
                 fax = axes.get_frame().get_extents()
-            except:
+            except Exception:
                 fax = axes.patch.get_extents()
             fl = l.get_frame()
             plt.legPos = (

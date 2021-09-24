@@ -2,6 +2,88 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nl" sourcelanguage="en">
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Complex tandwiel...</translation>
+    </message>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Maakt of bewerkt de complexe tandwieldefinitie.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Tandwiel...</translation>
+    </message>
+    <message>
+      <location filename="SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Maakt of bewerkt de tandwieldefinitie.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Drijfas ontwerp wizard...</translation>
+    </message>
+    <message>
+      <location filename="WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Begin met de drijfas ontwerp wizard</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Lengte [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Diameter [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Binnenste diameter [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Beperkingstype</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Begin randtype</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Begin randgrootte</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Einde randtype</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Begin randgrootte</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
       <location filename="../../Command.cpp" line="1692"/>
@@ -16,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Veeg een geselecteerde schets langs een helix</translation>
     </message>
   </context>
   <context>
@@ -552,7 +634,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>Maak een subobject(en) vormenbinder</translation>
     </message>
   </context>
   <context>
@@ -570,7 +652,7 @@
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Veeg een geselecteerde schets langs een helix en verwijder het van het lichaam</translation>
     </message>
   </context>
   <context>
@@ -740,17 +822,17 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>ShapeBinder bewerken</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>ShapeBinder maken</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>SubShapeBinder maken</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -771,12 +853,12 @@
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Create a new Sketch</source>
-      <translation type="unfinished">Create a new Sketch</translation>
+      <translation>Maak een nieuwe schets</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Converteer naar Multi-Transformatie functie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2568"/>
@@ -791,17 +873,17 @@
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>Migreer legacy onderdeel ontwerpfuncties naar lichamen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>Verplaats tip naar geselecteerde functie</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
-      <translation type="unfinished">Duplicate a PartDesign object</translation>
+      <translation>Dupliceer een PartDesign object</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="738"/>
@@ -811,7 +893,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="887"/>
       <source>Move an object inside tree</source>
-      <translation type="unfinished">Move an object inside tree</translation>
+      <translation>Verplaats een object binnen de boom</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="296"/>
@@ -821,7 +903,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="322"/>
       <source>Make LinearPattern</source>
-      <translation type="unfinished">Make LinearPattern</translation>
+      <translation>Lineair patroon maken</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
@@ -943,10 +1025,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>De gevraagde functie kan niet worden gemaakt. De reden kan zijn:
+  - het actieve lichaam bevat geen basisvorm, dus er is geen
+  materiaal om te verwijderen;
+  - de geselecteerde schets behoort niet tot de actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -957,10 +1039,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>De gevraagde functie kan niet worden gemaakt. De reden kan zijn:
+  - het actieve lichaam bevat geen basisvorm, dus er is geen
+  materiaal om te verwijderen;
+  - de geselecteerde schets behoort niet tot de actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -971,10 +1053,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>De gevraagde functie kan niet worden gemaakt. De reden kan zijn:
+  - het actieve lichaam bevat geen basisvorm, dus er is geen
+  materiaal om te verwijderen;
+  - de geselecteerde schets behoort niet tot de actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -985,16 +1067,16 @@
       <translation>Geometrische basisvormen</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
-      <source>Width:</source>
-      <translation>Breedte:</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
       <translation>Lengte:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
+      <source>Width:</source>
+      <translation>Breedte:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1004,12 +1086,6 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
       <translation>Hoogte:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
-      <source>Angle:</source>
-      <translation>Hoek:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1062,6 +1138,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2:</source>
       <translation>Straal 2:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
+      <source>Angle:</source>
+      <translation>Hoek:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
@@ -1233,14 +1315,14 @@ If zero, it is equal to Radius2</translation>
       <translation>Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
-      <source>End point</source>
-      <translation>Eindpunt</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
       <translation>Beginpunt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
+      <source>End point</source>
+      <translation>Eindpunt</translation>
     </message>
   </context>
   <context>
@@ -1389,6 +1471,11 @@ click again to end selection</translation>
       <translation>Toevoegen</translation>
     </message>
     <message>
+      <location filename="../../TaskChamferParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
@@ -1434,11 +1521,6 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
       <source>Angle</source>
       <translation>Hoek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Verwijderen</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="176"/>
@@ -1715,6 +1797,11 @@ click again to end selection</translation>
       <translation>Toevoegen</translation>
     </message>
     <message>
+      <location filename="../../TaskFilletParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
@@ -1725,11 +1812,6 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
       <source>Radius:</source>
       <translation>Straal:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Verwijderen</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="131"/>
@@ -1885,16 +1967,6 @@ click again to end selection</translation>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="60"/>
-      <source>Hole parameters</source>
-      <translation>Gat parameters</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
-      <source>None</source>
-      <translation>Geen</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleParameters.cpp" line="52"/>
       <source>Counterbore</source>
       <translation>Verzinkboor</translation>
@@ -1918,6 +1990,16 @@ click again to end selection</translation>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
       <translation type="unfinished">Cap screw (deprecated)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
+      <source>Hole parameters</source>
+      <translation>Gat parameters</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <source>None</source>
+      <translation>Geen</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -3285,6 +3367,11 @@ click again to end selection</translation>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Zorg ervoor dat het lichaam een eigenschap heeft voordat je een aftrekkend commando probeert.</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
@@ -3323,30 +3410,15 @@ click again to end selection</translation>
       <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
-      <source>Select an edge, face, or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2158"/>
-      <source>Please create a feature first.</source>
-      <translation type="unfinished">Please create a feature first.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2167"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Selectie niet in actief lichaam</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Zorg ervoor dat het lichaam een eigenschap heeft voordat je een aftrekkend commando probeert.</translation>
+      <location filename="../../Command.cpp" line="1839"/>
+      <source>Select an edge, face, or body from an active body.</source>
+      <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3372,6 +3444,16 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
       <translation>Geen geldige functies in dit document</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2158"/>
+      <source>Please create a feature first.</source>
+      <translation type="unfinished">Please create a feature first.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2167"/>
+      <source>Please select only one feature in an active body.</source>
+      <translation type="unfinished">Please select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -4109,9 +4191,24 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Taak gat parameters</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="26"/>
+      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Draadtype en grootte&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="39"/>
+      <source>Profile</source>
+      <translation>Profiel</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
       <source>Whether the hole gets a thread</source>
       <translation type="unfinished">Whether the hole gets a thread</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="71"/>
+      <source>Threaded</source>
+      <translation>Voorzien van schroefdraad</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
@@ -4157,6 +4254,26 @@ Note that the calculation can take some time</translation>
       <translation type="unfinished">Custom Thread clearance value</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="171"/>
+      <source>Direction</source>
+      <translation>Richting</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="190"/>
+      <source>Right hand</source>
+      <translation>Rechtsdraaiend</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="206"/>
+      <source>Left hand</source>
+      <translation>Linkerhand</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="222"/>
+      <source>Size</source>
+      <translation>Grootte</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
@@ -4183,14 +4300,42 @@ Only available for holes without thread</translation>
       <translation type="unfinished">Wide</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="299"/>
+      <source>Class</source>
+      <translation>Klasse</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation type="unfinished">Tolerance class for threaded holes according to hole profile</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="331"/>
+      <location filename="../../TaskHoleParameters.ui" line="536"/>
+      <source>Diameter</source>
+      <translation>Diameter</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <source>Hole diameter</source>
       <translation type="unfinished">Hole diameter</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="369"/>
+      <location filename="../../TaskHoleParameters.ui" line="577"/>
+      <source>Depth</source>
+      <translation>Diepte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="389"/>
+      <location filename="../../TaskHoleParameters.ui" line="446"/>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="394"/>
+      <source>Through all</source>
+      <translation>Langs alle</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="421"/>
@@ -4208,10 +4353,72 @@ Only available for holes without thread</translation>
       <translation type="unfinished">Tapped (DIN76)</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="475"/>
+      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Gat maken&lt;/b&gt;</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <location filename="../../TaskHoleParameters.ui" line="666"/>
       <source>Type</source>
       <translation>Type</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <source>Cut type for screw heads</source>
+      <translation type="unfinished">Cut type for screw heads</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="520"/>
+      <source>Check to override the values predefined by the 'Type'</source>
+      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="523"/>
+      <source>Custom values</source>
+      <translation type="unfinished">Custom values</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="615"/>
+      <source>Countersink angle</source>
+      <translation>Verzink hoek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="650"/>
+      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Boor punt&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="682"/>
+      <source>Flat</source>
+      <translation>Plat</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="698"/>
+      <source>Angled</source>
+      <translation>Schuin</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="730"/>
+      <source>The size of the drill point will be taken into
+account for the depth of blind holes</source>
+      <translation type="unfinished">The size of the drill point will be taken into
+account for the depth of blind holes</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
+      <source>Take into account for depth</source>
+      <translation type="unfinished">Take into account for depth</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="741"/>
+      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Overig&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="754"/>
+      <source>Tapered</source>
+      <translation>Taps toelopend</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="767"/>
@@ -4233,131 +4440,6 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../TaskHoleParameters.ui" line="792"/>
       <source>Reversed</source>
       <translation>Omgekeerd</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="331"/>
-      <location filename="../../TaskHoleParameters.ui" line="536"/>
-      <source>Diameter</source>
-      <translation>Diameter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="369"/>
-      <location filename="../../TaskHoleParameters.ui" line="577"/>
-      <source>Depth</source>
-      <translation>Diepte</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="299"/>
-      <source>Class</source>
-      <translation>Klasse</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
-      <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="520"/>
-      <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="523"/>
-      <source>Custom values</source>
-      <translation type="unfinished">Custom values</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="730"/>
-      <source>The size of the drill point will be taken into
-account for the depth of blind holes</source>
-      <translation type="unfinished">The size of the drill point will be taken into
-account for the depth of blind holes</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="734"/>
-      <source>Take into account for depth</source>
-      <translation type="unfinished">Take into account for depth</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="754"/>
-      <source>Tapered</source>
-      <translation>Taps toelopend</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="171"/>
-      <source>Direction</source>
-      <translation>Richting</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="682"/>
-      <source>Flat</source>
-      <translation>Plat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="698"/>
-      <source>Angled</source>
-      <translation>Schuin</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="190"/>
-      <source>Right hand</source>
-      <translation>Rechtsdraaiend</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="206"/>
-      <source>Left hand</source>
-      <translation>Linkerhand</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="71"/>
-      <source>Threaded</source>
-      <translation>Voorzien van schroefdraad</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="39"/>
-      <source>Profile</source>
-      <translation>Profiel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="615"/>
-      <source>Countersink angle</source>
-      <translation>Verzink hoek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="389"/>
-      <location filename="../../TaskHoleParameters.ui" line="446"/>
-      <source>Dimension</source>
-      <translation>Afmeting</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="394"/>
-      <source>Through all</source>
-      <translation>Langs alle</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="222"/>
-      <source>Size</source>
-      <translation>Grootte</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="650"/>
-      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Boor punt&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="741"/>
-      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Overig&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="475"/>
-      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Gat maken&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="26"/>
-      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Draadtype en grootte&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="591"/>
@@ -4386,14 +4468,14 @@ account for the depth of blind holes</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>&amp;Part Design</source>
-      <translation type="unfinished">&amp;Part Design</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation type="unfinished">&amp;Sketch</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Part Design</source>
+      <translation type="unfinished">&amp;Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -4423,12 +4505,12 @@ account for the depth of blind holes</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Tandwiel...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Complex tandwiel...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>

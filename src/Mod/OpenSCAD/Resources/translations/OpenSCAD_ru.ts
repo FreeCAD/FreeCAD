@@ -6,7 +6,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Общие настройки</translation>
+      <translation>Основные настройки</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="26"/>
@@ -142,12 +142,12 @@
       <translation>Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Неподдерживаемая функция</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Нажмите кнопку OK</translation>
     </message>
@@ -194,12 +194,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Загрузить</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Сохранить</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>

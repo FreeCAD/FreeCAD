@@ -142,12 +142,12 @@
       <translation>Prašome pirma pasirinkti 3 kūnus</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
       <translation>Nepalaikoma funkcija</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1355"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation>Paspauskite „Gerai“</translation>
     </message>
@@ -264,7 +264,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Pašalinti sąlają, pritaikyti atsitiktinį pavaldžiųjų ir spalvų išdėstymą</translation>
+      <translation>Pašalinti sąlają, pritaikyti išdėstymą pavaldiesiems nariams ir nuspalvinti atsitiktinėmis spalvomis</translation>
     </message>
   </context>
   <context>

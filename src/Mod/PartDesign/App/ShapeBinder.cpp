@@ -224,6 +224,9 @@ void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char 
     if (prop == &Support && strcmp(TypeName, "App::PropertyLinkSubList") == 0) {
         Support.Restore(reader);
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ShapeBinder::onSettingDocument()
@@ -727,8 +730,9 @@ void SubShapeBinder::handleChangedPropertyType(
 {
    if(prop == &Support) {
        Support.upgrade(reader,TypeName);
-       return;
    }
-   inherited::handleChangedPropertyType(reader,TypeName,prop);
+   else {
+       inherited::handleChangedPropertyType(reader,TypeName,prop);
+   }
 }
 

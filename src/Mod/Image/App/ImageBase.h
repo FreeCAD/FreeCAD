@@ -18,6 +18,8 @@
 #ifndef IMAGEBASE_H
 #define IMAGEBASE_H
 
+#include <Mod/Image/ImageGlobal.h>
+
 namespace Image
 {
 

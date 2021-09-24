@@ -49,6 +49,8 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/convert.hpp>
+#include <boost/convert/spirit.hpp>
 
 
 using namespace MeshCore;
@@ -58,7 +60,7 @@ char *upper(char * string)
     int i;
     int l;
 
-    if (string != NULL) {
+    if (string != nullptr) {
         l = std::strlen(string);
         for (i=0; i<l; i++)
             string[i] = toupper(string[i]);
@@ -258,8 +260,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     upper(szBuf);
 
     try {
-        if ((strstr(szBuf, "SOLID") == NULL)  && (strstr(szBuf, "FACET") == NULL)    && (strstr(szBuf, "NORMAL") == NULL) &&
-            (strstr(szBuf, "VERTEX") == NULL) && (strstr(szBuf, "ENDFACET") == NULL) && (strstr(szBuf, "ENDLOOP") == NULL)) {
+        if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
+            (strstr(szBuf, "VERTEX") == nullptr) && (strstr(szBuf, "ENDFACET") == nullptr) && (strstr(szBuf, "ENDLOOP") == nullptr)) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(rstrIn);
@@ -1578,7 +1580,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
         }
         // read the point indices of the facets
         else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
-            unsigned long ulPoints[3];
+            PointIndex ulPoints[3];
             facets = true;
             unsigned long ulCt = 0;
             // Get the next line and check for the index field which might begin
@@ -1656,31 +1658,88 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
-        if (line.find("GRID*") == 0) {
+        if (line.empty()) {
+            // Skip all the following tests
         }
-        else if (line.find('*') == 0) {
+        else if (line.rfind("GRID*", 0) == 0) {
+            // This element is the 16-digit-precision GRID element, which occupies two lines of the card. Note that
+            // FreeCAD discards the extra precision, downcasting to an four-byte float.
+	    //
+	    // The two lines are:
+	    // 1      8               24             40             56
+	    // GRID*  Index(16)       Blank(16)      x(16)          y(at least one)
+	    // *      z(at least one)
+	    //
+	    // The first character is typically the sign, and may be omitted for positive numbers,
+	    // so it is possible for a field to begin with a blank. Trailing zeros may be omitted, so
+	    // a field may also end with blanks. No space or other delimiter is required between
+	    // the numbers. The following is a valid NASTRAN GRID* element:
+	    //
+	    // GRID*  1                               0.1234567890120.
+	    // *      1.
+	    //
+            if (line.length() < 8 + 16 + 16 + 16 + 1) // Element type(8), index(16), empty(16), x(16), y(>=1)
+                continue;
+            auto indexView = std::string_view(&line[8], 16);
+            auto blankView = std::string_view(&line[8+16], 16);
+            auto xView = std::string_view(&line[8+16+16], 16);
+            auto yView = std::string_view(&line[8+16+16+16]);
+
+            std::string line2;
+            std::getline(rstrIn, line2);
+            if ((!line2.empty() && line2[0] != '*') ||
+                line2.length() < 9)
+                continue; // File format error: second line is not a continuation line
+            auto zView = std::string_view(&line2[8]);
+
+            // We have to strip off any whitespace (technically really just any *trailing* whitespace):
+            auto indexString = boost::trim_copy(std::string(indexView));
+            auto xString = boost::trim_copy(std::string(xView));
+            auto yString = boost::trim_copy(std::string(yView));
+            auto zString = boost::trim_copy(std::string(zView));
+
+            auto converter = boost::cnv::spirit();
+            auto indexCheck = boost::convert<int>(indexString, converter);
+            if (!indexCheck.is_initialized())
+                // File format error: index couldn't be converted to an integer
+                continue;
+            index = indexCheck.get();
+
+            // Get the high-precision versions first
+            auto x = boost::convert<double>(xString, converter);
+            auto y = boost::convert<double>(yString, converter);
+            auto z = boost::convert<double>(zString, converter);
+
+            if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized())
+                // File format error: x, y or z could not be converted
+                continue;
+
+            // Now drop precision:
+            mNode[index].x = (float)x.get();
+            mNode[index].y = (float)y.get();
+            mNode[index].z = (float)z.get();
         }
-        // insert the read-in vertex into a map to preserve the order
-        else if (line.find("GRID") == 0) {
+        else if (line.rfind("GRID", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_p)) {
+                // insert the read-in vertex into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mNode[index].x = (float)std::atof(what[2].first);
                 mNode[index].y = (float)std::atof(what[5].first);
                 mNode[index].z = (float)std::atof(what[8].first);
             }
         }
-        // insert the read-in triangle into a map to preserve the order
-        else if (line.find("CTRIA3 ") == 0) {
+        else if (line.rfind("CTRIA3 ", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_t)) {
+                // insert the read-in triangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mTria[index].iV[0] = std::atol(what[3].first)-1;
                 mTria[index].iV[1] = std::atol(what[4].first)-1;
                 mTria[index].iV[2] = std::atol(what[5].first)-1;
             }
         }
-        // insert the read-in quadrangle into a map to preserve the order
-        else if (line.find("CQUAD4") == 0) {
+        else if (line.rfind("CQUAD4", 0) == 0) {
             if (boost::regex_match(line.c_str(), what, rx_q)) {
+                // insert the read-in quadrangle into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mQuad[index].iV[0] = std::atol(what[3].first)-1;
                 mQuad[index].iV[1] = std::atol(what[4].first)-1;
@@ -2062,7 +2121,6 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
     clIter.Transform(this->_transform);
     const MeshGeomFacet *pclFacet;
-    unsigned long i;
 
     if (!rstrOut || rstrOut.bad() == true || _rclMesh.CountFacets() == 0)
         return false;
@@ -2088,7 +2146,7 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
         rstrOut << "    outer loop\n";
 
         // vertices
-        for (i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             rstrOut << "      vertex "  << pclFacet->_aclPoints[i].x << " "
                                         << pclFacet->_aclPoints[i].y << " "
                                         << pclFacet->_aclPoints[i].z << '\n';
@@ -2305,7 +2363,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
 
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     if (first || prev != Kd[*it]) {
                         first = false;
@@ -2326,7 +2384,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         else {
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
-                for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                for (std::vector<FacetIndex>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
                                 << f._aulPoints[1]+1 << "//" << *it + 1 << " "
@@ -3473,7 +3531,7 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
   : pointArray(p)
   , facetArray(f)
-  , materialArray(0)
+  , materialArray(nullptr)
 {
 }
 
@@ -3553,12 +3611,12 @@ void MeshCleanup::RemoveInvalidPoints()
                     [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
     if (countInvalidPoints > 0) {
         // generate array of decrements
-        std::vector<unsigned long> decrements;
+        std::vector<PointIndex> decrements;
         decrements.resize(pointArray.size());
-        unsigned long decr = 0;
+        PointIndex decr = 0;
 
         MeshPointArray::_TIterator p_end = pointArray.end();
-        std::vector<unsigned long>::iterator decr_it = decrements.begin();
+        std::vector<PointIndex>::iterator decr_it = decrements.begin();
         for (MeshPointArray::_TIterator p_it = pointArray.begin(); p_it != p_end; ++p_it, ++decr_it) {
             *decr_it = decr;
             if (!p_it->IsValid())
@@ -3655,7 +3713,7 @@ void MeshPointFacetAdjacency::SetFacetNeighbourhood()
             }
 
             if (!success) {
-                facet1._aulNeighbours[i] = ULONG_MAX;
+                facet1._aulNeighbours[i] = FACET_INDEX_MAX;
             }
         }
     }

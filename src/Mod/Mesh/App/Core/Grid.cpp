@@ -45,8 +45,8 @@ MeshGrid::MeshGrid (const MeshKernel &rclM)
 {
 }
 
-MeshGrid::MeshGrid (void)
-: _pclMesh(NULL),
+MeshGrid::MeshGrid ()
+: _pclMesh(nullptr),
   _ulCtElements(0),
   _ulCtGridsX(MESH_CT_GRID), _ulCtGridsY(MESH_CT_GRID), _ulCtGridsZ(MESH_CT_GRID),
   _fGridLenX(0.0f), _fGridLenY(0.0f), _fGridLenZ(0.0f),
@@ -60,10 +60,10 @@ void MeshGrid::Attach (const MeshKernel &rclM)
   RebuildGrid();
 }
 
-void MeshGrid::Clear (void)
+void MeshGrid::Clear ()
 {
   _aulGrid.clear();
-  _pclMesh = NULL;  
+  _pclMesh = nullptr;  
 }
 
 void MeshGrid::Rebuild (unsigned long ulX, unsigned long ulY, unsigned long ulZ)
@@ -89,9 +89,9 @@ void MeshGrid::Rebuild (int iCtGridPerAxis)
   RebuildGrid();
 }
 
-void MeshGrid::InitGrid (void)
+void MeshGrid::InitGrid ()
 {
-  assert(_pclMesh != NULL);
+  assert(_pclMesh != nullptr);
 
   unsigned long i, j;
 
@@ -138,7 +138,7 @@ void MeshGrid::InitGrid (void)
   }
 }
 
-unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsigned long> &raulElements,
+unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<ElementIndex> &raulElements,
                                 bool bDelDoubles) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
@@ -170,7 +170,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsig
   return raulElements.size();
 }
 
-unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsigned long> &raulElements,
+unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<ElementIndex> &raulElements,
                                 const Base::Vector3f &rclOrg, float fMaxDist, bool bDelDoubles) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
@@ -205,7 +205,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<unsig
   return raulElements.size();
 }
 
-unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::set<unsigned long> &raulElements) const
+unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::set<ElementIndex> &raulElements) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
   
@@ -450,7 +450,7 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
   }
 }
 
-void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<unsigned long> &raclInd) const
+void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<ElementIndex> &raclInd) const
 {
   raclInd.clear();
   Base::BoundBox3f  clBB = GetBoundBox();
@@ -563,7 +563,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
 }
 
 void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
-                        unsigned long ulDistance, std::set<unsigned long> &raclInd) const
+                        unsigned long ulDistance, std::set<ElementIndex> &raclInd) const
 {
   int nX1 = std::max<int>(0, int(ulX) - int(ulDistance));
   int nY1 = std::max<int>(0, int(ulY) - int(ulDistance));
@@ -643,9 +643,9 @@ void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
 }
 
 unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsigned long ulZ,  
-                                     std::set<unsigned long> &raclInd) const
+                                     std::set<ElementIndex> &raclInd) const
 {
-  const std::set<unsigned long> &rclSet = _aulGrid[ulX][ulY][ulZ];
+  const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
   if (rclSet.size() > 0)
   {
     raclInd.insert(rclSet.begin(), rclSet.end());
@@ -655,7 +655,7 @@ unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsig
   return 0;
 }
 
-unsigned long MeshGrid::GetElements(const Base::Vector3f &rclPoint, std::vector<unsigned long>& aulFacets) const
+unsigned long MeshGrid::GetElements(const Base::Vector3f &rclPoint, std::vector<ElementIndex>& aulFacets) const
 {
   unsigned long ulX, ulY, ulZ;
   if (!CheckPosition(rclPoint, ulX, ulY, ulZ))
@@ -728,9 +728,9 @@ void MeshFacetGrid::Validate (const MeshKernel &rclMesh)
     RebuildGrid();
 }
 
-void MeshFacetGrid::Validate (void)
+void MeshFacetGrid::Validate ()
 {
-  if (_pclMesh == NULL)
+  if (_pclMesh == nullptr)
     return;
 
   if (_pclMesh->CountFacets() != _ulCtElements)
@@ -748,9 +748,9 @@ bool MeshFacetGrid::Verify() const
   MeshFacetIterator cF(*_pclMesh);
   for ( it.Init(); it.More(); it.Next() )
   {
-    std::vector<unsigned long> aulElements;
+    std::vector<ElementIndex> aulElements;
     it.GetElements( aulElements );
-    for ( std::vector<unsigned long>::iterator itF = aulElements.begin(); itF != aulElements.end(); ++itF )
+    for ( std::vector<ElementIndex>::iterator itF = aulElements.begin(); itF != aulElements.end(); ++itF )
     {
       cF.Set( *itF );
       if ( cF->IntersectBoundingBox( it.GetBoundBox() ) == false )
@@ -761,7 +761,7 @@ bool MeshFacetGrid::Verify() const
   return true;
 }
 
-void MeshFacetGrid::RebuildGrid (void)
+void MeshFacetGrid::RebuildGrid ()
 {
   _ulCtElements = _pclMesh->CountFacets();
 
@@ -781,7 +781,7 @@ void MeshFacetGrid::RebuildGrid (void)
 
 unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt) const
 {
-  unsigned long ulFacetInd = ULONG_MAX;
+  ElementIndex ulFacetInd = ELEMENT_INDEX_MAX;
   float fMinDist    = FLOAT_MAX;
   Base::BoundBox3f  clBB = GetBoundBox();
 
@@ -897,8 +897,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
 unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, float fMaxSearchArea) const
 {
-  std::vector<unsigned long> aulFacets;
-  unsigned long ulFacetInd = ULONG_MAX;
+  std::vector<ElementIndex> aulFacets;
+  ElementIndex ulFacetInd = ELEMENT_INDEX_MAX;
   float fMinDist   = fMaxSearchArea;
 
   MeshAlgorithm clFTool(*_pclMesh);
@@ -908,7 +908,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
   Inside(clBB, aulFacets, rclPt, fMaxSearchArea, true);
 
-  for (std::vector<unsigned long>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
+  for (std::vector<ElementIndex>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
   {    
     float fDist;
 
@@ -924,7 +924,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
 
 void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
                                               unsigned long ulDistance, const Base::Vector3f &rclPt,
-                                              unsigned long &rulFacetInd, float &rfMinDist) const
+                                              ElementIndex &rulFacetInd, float &rfMinDist) const
 {
   int nX1 = std::max<int>(0, int(ulX) - int(ulDistance));
   int nY1 = std::max<int>(0, int(ulY) - int(ulDistance));
@@ -1005,10 +1005,10 @@ void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long u
 
 void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
                                              const Base::Vector3f &rclPt, float &rfMinDist,
-                                             unsigned long &rulFacetInd) const
+                                             ElementIndex &rulFacetInd) const
 {
-  const std::set<unsigned long> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  for (std::set<unsigned long>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); ++pI)
+  const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
+  for (std::set<ElementIndex>::const_iterator pI = rclSet.begin(); pI != rclSet.end(); ++pI)
   {
     float fDist = _pclMesh->GetFacet(*pI).DistanceToPoint(rclPt);
     if (fDist < rfMinDist)
@@ -1027,7 +1027,7 @@ MeshPointGrid::MeshPointGrid (const MeshKernel &rclM)
   RebuildGrid();
 }
 
-MeshPointGrid::MeshPointGrid (void)
+MeshPointGrid::MeshPointGrid ()
  : MeshGrid() 
 {
 }
@@ -1053,7 +1053,7 @@ MeshPointGrid::MeshPointGrid (const MeshKernel &rclM, float fGridLen)
           std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthZ() / fGridLen), 1));
 }
 
-void MeshPointGrid::AddPoint (const MeshPoint &rclPt, unsigned long ulPtIndex, float fEpsilon)
+void MeshPointGrid::AddPoint (const MeshPoint &rclPt, ElementIndex ulPtIndex, float fEpsilon)
 {
   (void)fEpsilon;
   unsigned long ulX, ulY, ulZ;
@@ -1070,9 +1070,9 @@ void MeshPointGrid::Validate (const MeshKernel &rclMesh)
     RebuildGrid();
 }
 
-void MeshPointGrid::Validate (void)
+void MeshPointGrid::Validate ()
 {
-  if (_pclMesh == NULL)
+  if (_pclMesh == nullptr)
     return;
 
   if (_pclMesh->CountPoints() != _ulCtElements)
@@ -1090,9 +1090,9 @@ bool MeshPointGrid::Verify() const
   MeshPointIterator cP(*_pclMesh);
   for ( it.Init(); it.More(); it.Next() )
   {
-    std::vector<unsigned long> aulElements;
+    std::vector<ElementIndex> aulElements;
     it.GetElements( aulElements );
-    for ( std::vector<unsigned long>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
+    for ( std::vector<ElementIndex>::iterator itP = aulElements.begin(); itP != aulElements.end(); ++itP )
     {
       cP.Set( *itP );
       if ( it.GetBoundBox().IsInBox( *cP ) == false )
@@ -1103,7 +1103,7 @@ bool MeshPointGrid::Verify() const
   return true;
 }
 
-void MeshPointGrid::RebuildGrid (void)
+void MeshPointGrid::RebuildGrid ()
 {
   _ulCtElements = _pclMesh->CountPoints();
 
@@ -1127,7 +1127,7 @@ void MeshPointGrid::Pos (const Base::Vector3f &rclPoint, unsigned long &rulX, un
   rulZ = static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ);
 }
 
-unsigned long MeshPointGrid::FindElements (const Base::Vector3f &rclPoint, std::set<unsigned long>& aulElements) const
+unsigned long MeshPointGrid::FindElements (const Base::Vector3f &rclPoint, std::set<ElementIndex>& aulElements) const
 {
   unsigned long ulX, ulY, ulZ;
   Pos(rclPoint, ulX, ulY, ulZ);
@@ -1154,7 +1154,7 @@ MeshGridIterator::MeshGridIterator (const MeshGrid &rclG)
 }
 
 bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxSearchArea,
-                                  std::vector<unsigned long> &raulElements)
+                                  std::vector<ElementIndex> &raulElements)
 {
   bool ret = InitOnRay (rclPt, rclDir, raulElements);
   _fMaxSearchArea = fMaxSearchArea;
@@ -1162,7 +1162,7 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
 }
 
 bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir,
-                                  std::vector<unsigned long> &raulElements)
+                                  std::vector<ElementIndex> &raulElements)
 {
   // needed in NextOnRay() to avoid an infinite loop
   _cSearchPositions.clear();
@@ -1200,7 +1200,7 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
   return _bValidRay;
 }
 
-bool MeshGridIterator::NextOnRay (std::vector<unsigned long> &raulElements)
+bool MeshGridIterator::NextOnRay (std::vector<ElementIndex> &raulElements)
 {
   if (_bValidRay == false)
     return false;  // nicht initialisiert oder Strahl ausgetreten

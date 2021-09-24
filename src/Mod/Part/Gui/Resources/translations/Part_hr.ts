@@ -269,6 +269,16 @@ Stvorit će 'Složeni filtar' za svaki oblik.
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleovi Fragmenti</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Razdjeli objekate gdje se sijeku</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Boolean Fragmenti</translation>
@@ -395,16 +405,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 ili s oblicima unutar složenog spoja.
 To znači da će se ukloniti preklapajući volumeni oblika.
 'Složeni filtar' može se koristiti za izdvajanje preostalih dijelova.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleovi Fragmenti</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Razdjeli objekate gdje se sijeku</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

@@ -457,7 +457,7 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Se for selecionado, o ícone 'Novo Arquivo' mostra um ícone gradiente em vez do ícone normal</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,12 +467,12 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>Escolher para qual bancada alternar depois do programa abrir</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Se marcado, fechará automaticamente a página inicial quando o FreeCAD iniciar</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

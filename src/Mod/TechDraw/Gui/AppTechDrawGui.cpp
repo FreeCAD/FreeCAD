@@ -75,6 +75,7 @@ void CreateTechDrawCommands(void);
 void CreateTechDrawCommandsDims(void);
 void CreateTechDrawCommandsDecorate(void);
 void CreateTechDrawCommandsAnnotate(void);
+void CreateTechDrawCommandsExtensions(void);
 
 void loadTechDrawResource()
 {
@@ -120,6 +121,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
     CreateTechDrawCommandsAnnotate();
+    CreateTechDrawCommandsExtensions();
 
     TechDrawGui::Workbench::init();
     TechDrawGui::MDIViewPage::init();

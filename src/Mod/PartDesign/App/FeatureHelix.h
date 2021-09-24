@@ -90,6 +90,8 @@ protected:
 
     // handle changed property
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    static const App::PropertyFloatConstraint::Constraints floatTurns;
+    static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* ModeEnums[];

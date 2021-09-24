@@ -57,6 +57,7 @@
 #include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
+#include "ViewProviderFemConstraintSpring.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderFemConstraintDisplacement.h"
@@ -129,6 +130,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemConstraintPulley                     ::init();
     FemGui::ViewProviderFemConstraintTemperature                ::init();
     FemGui::ViewProviderFemConstraintTransform                  ::init();
+    FemGui::ViewProviderFemConstraintSpring                     ::init();
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();

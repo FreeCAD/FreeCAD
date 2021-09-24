@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="addonmanager_workers.py" line="530"/>
+      <location filename="addonmanager_workers.py" line="535"/>
       <source>Installed location</source>
       <translation>Lokasi pemasangan</translation>
     </message>
@@ -22,257 +22,257 @@
       <translation>Tidak dapat mengambil deskripsi untuk makro ini.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="84"/>
+      <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>AddOn yang dapat diinstal di sini bukan bagian resmi dari FreeCAD dan tidak ditinjau oleh tim FreeCAD. Pastikan Anda tahu betul AddOn yang Anda instal!</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="198"/>
+      <location filename="AddonManager.py" line="199"/>
       <source>Addon manager</source>
       <translation>Manajer addon</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="203"/>
+      <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Anda harus memulai ulang FreeCAD agar perubahan diterapkan. Tekan OK untuk memulai kembali FreeCAD sekarang atau Batal untuk memulai kembali nanti.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="242"/>
+      <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Memeriksa pembaruan...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="261"/>
+      <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation type="unfinished">Apply</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="262"/>
+      <location filename="AddonManager.py" line="263"/>
       <source>update(s)</source>
       <translation>pembaruan</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="265"/>
+      <location filename="AddonManager.py" line="266"/>
       <source>No update available</source>
       <translation>Tidak ada pembaruan yang tersedia</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="432"/>
+      <location filename="AddonManager.py" line="433"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
       <translation>Makro berhasil diinstal. Makro sekarang tersedia dari dialog makro.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="434"/>
+      <location filename="AddonManager.py" line="435"/>
       <source>Unable to install</source>
       <translation>Tidak dapat memasang</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="493"/>
+      <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
       <translation>Addon berhasil dihapus. Silakan mulai kembali FreeCAD</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="495"/>
+      <location filename="AddonManager.py" line="496"/>
       <source>Unable to remove this addon</source>
       <translation>Tidak dapat menghapus addon ini.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="501"/>
+      <location filename="AddonManager.py" line="502"/>
       <source>Macro successfully removed.</source>
       <translation>Makro berhasil di hapus</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="503"/>
+      <location filename="AddonManager.py" line="504"/>
       <source>Macro could not be removed.</source>
       <translation>Makro tidak dapat dihapus.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="166"/>
+      <location filename="addonmanager_workers.py" line="167"/>
       <source>Unable to download addon list.</source>
       <translation>Tidak dapat mengunduh daftar addon.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="171"/>
+      <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
       <translation>Daftar meja kerja sudah diperbarui.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="733"/>
+      <location filename="addonmanager_workers.py" line="738"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>GitPython yang kedaluwarsa terdeteksi, pertimbangkan untuk meningkatkan dengan pip.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="291"/>
+      <location filename="addonmanager_workers.py" line="296"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Daftar makro berhasil diambil.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="646"/>
+      <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Mengambil deskripsi...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="386"/>
+      <location filename="addonmanager_workers.py" line="391"/>
       <source>Retrieving info from</source>
       <translation>Mengambil info dari</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="528"/>
+      <location filename="addonmanager_workers.py" line="533"/>
       <source>An update is available for this addon.</source>
       <translation>Pembaruan tersedia untuk addon ini.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="516"/>
+      <location filename="addonmanager_workers.py" line="521"/>
       <source>This addon is already installed.</source>
       <translation>Addon ini sudah diinstal.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="648"/>
+      <location filename="addonmanager_workers.py" line="653"/>
       <source>Retrieving info from git</source>
       <translation>Mengambil info dari git</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="651"/>
+      <location filename="addonmanager_workers.py" line="656"/>
       <source>Retrieving info from wiki</source>
       <translation>Mengambil info dari wiki</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="695"/>
+      <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython tidak ditemukan. Sebaliknya, gunakan unduhan standar.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="700"/>
+      <location filename="addonmanager_workers.py" line="705"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Versi python Anda tampaknya tidak mendukung file ZIP. Tidak dapat melanjutkan.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="781"/>
+      <location filename="addonmanager_workers.py" line="786"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Meja kerja berhasil diinstal. Silakan mulai kembali FreeCAD untuk menerapkan perubahan.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="830"/>
+      <location filename="addonmanager_workers.py" line="835"/>
       <source>Missing workbench</source>
       <translation>Meja kerja tidak ada</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="839"/>
+      <location filename="addonmanager_workers.py" line="844"/>
       <source>Missing python module</source>
       <translation>Modul python tidak ada</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="849"/>
+      <location filename="addonmanager_workers.py" line="854"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Modul python opsional tidak ada (tidak mencegah penginstalan)</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="852"/>
+      <location filename="addonmanager_workers.py" line="857"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Beberapa kesalahan ditemukan yang mencegah untuk menginstal meja kerja ini</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
+      <location filename="addonmanager_workers.py" line="859"/>
       <source>Please install the missing components first.</source>
       <translation>Silakan instal komponen yang hilang terlebih dahulu.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="875"/>
+      <location filename="addonmanager_workers.py" line="880"/>
       <source>Error: Unable to download</source>
       <translation>Kesalahan: Tidak dapat mengunduh</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="888"/>
+      <location filename="addonmanager_workers.py" line="893"/>
       <source>Successfully installed</source>
       <translation>Berhasil diinstal</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="305"/>
+      <location filename="addonmanager_workers.py" line="310"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython tidak diinstal! Tidak dapat mengambil makro dari git</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="566"/>
+      <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Telah diinstal</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="585"/>
+      <location filename="AddonManager.py" line="586"/>
       <source>Update available</source>
       <translation>Pembaruan tersedia</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="541"/>
+      <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Mulai ulang diperlukan</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="660"/>
+      <location filename="addonmanager_workers.py" line="665"/>
       <source>This macro is already installed.</source>
       <translation>Makro ini sudah diinstal.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="794"/>
+      <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Sebuah makro sudah diinstal dan tersedia di bawah menu Makro -&gt; Makro</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="542"/>
+      <location filename="addonmanager_workers.py" line="547"/>
       <source>This addon is marked as obsolete</source>
       <translation>Addon ini ditandai sebagai usang</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="546"/>
+      <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Addon ini biasanya tidak lagi dipertahankan dan beberapa addon lebih canggih di daftar ini menyediakan fungsionalitas yang sama.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="868"/>
+      <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Kesalahan: Tidak dapat menemukan zip dari</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="314"/>
+      <location filename="addonmanager_workers.py" line="319"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
       <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="554"/>
+      <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation type="unfinished">This addon is marked as Python 2 Only</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="559"/>
+      <location filename="addonmanager_workers.py" line="564"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Meja kerja ini tidak lagi diurus dan memasangnya pada sistem Python 3 mungkin akan lebih sering menyebabkan galat saat memulai atau saat menggunakan.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="722"/>
+      <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Pengguna minta memperbaharui meja kerja Python 2 di sistem yang menjalankan Python 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="758"/>
+      <location filename="addonmanager_workers.py" line="763"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Meja kerja berhasil diperbaharui. Tolong mulai ulang FreeCAD untuk menerapkan perubahan.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="766"/>
+      <location filename="addonmanager_workers.py" line="771"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="338"/>
+      <location filename="addonmanager_workers.py" line="343"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
       <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="428"/>
+      <location filename="addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
       <translation type="unfinished">Raw markdown displayed</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="430"/>
+      <location filename="addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
       <translation type="unfinished">Python Markdown library is missing.</translation>
     </message>

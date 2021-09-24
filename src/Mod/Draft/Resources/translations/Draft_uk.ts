@@ -147,7 +147,7 @@ This property is read-only, as the number depends on the parameters of the array
       <translation>Складові цього блоку</translation>
     </message>
     <message>
-      <location filename="wpproxy.py" line="42"/>
+      <location filename="hatch.py" line="46"/>
       <source>The placement of this object</source>
       <translation>Розміщення цього об'єкта</translation>
     </message>
@@ -718,8 +718,8 @@ To get better results with 'Original' or 'Tangent' you may have to set 'Force Ve
       <location filename="patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Розташуйте копії по контуру залежно від 'Режиму вирівнювання'.
+В іншому випадку копії матимуть однакову орієнтацію, як оригінальний базовий об'єкт.</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="66"/>
@@ -769,27 +769,27 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>Зв'язані поверхні</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Вказує, чи потрібно видаляти роздільні лінії</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Необов’язкове значення видавлювання, яке застосовується до всіх граней</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Необов’язкове значення видавлювання, яке застосовується до всіх граней</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Це визначає, чи фігури зшиті</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
@@ -913,7 +913,7 @@ Write '$dim' so that it is replaced by the dimension length.</source>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Показати кількість десяткових знаків</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -933,14 +933,14 @@ Write '$dim' so that it is replaced by the dimension length.</source>
     <message>
       <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Поверніть розмірні стрілки на 180 градусів</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Відстань розмірної лінії продовжено
+за лініями розширення</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="269"/>
@@ -960,44 +960,44 @@ beyond the dimension line</source>
       <translation>Показує розмірну лінію та стрілки</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Якщо це обрано, об'єкту, що містяться в цьому шарі, матимуть кольори ліній цього шару</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Якщо це обрано, то друкуватиметься колір коли об’єкти в цьому шарі розміщеному на сторінці Креслення</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>Колір лінії об'єкта, що міститься в цьому шарі</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>Колір форми об'єктів, що міститься в цьому шарі</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>Колір лінії об'єкта, що міститься в цьому шарі</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>Стиль малювання об’єктів, що містяться в цьому шарі</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>Прозорість об'єктів, що міститься в цьому шарі</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>Колір лінії об'єктів, що міститься в цьому шарі, при використанні сторінки TechDraw</translation>
     </message>
     <message>
       <location filename="view_label.py" line="176"/>
@@ -1057,7 +1057,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_label.py" line="167"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>Показати виносну лінію чи ні</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
@@ -1084,14 +1084,14 @@ beyond the dimension line</source>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Одиниця виміру.
+Залиште пустим  для системи за замовчуванням.
+Використовуйте 'арку', щоб змусити позначення арки США</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Список виняткових точок. Будь-яке ребра, торкаючись будь-якого з цих точок, не буде намальовано.</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="98"/>
@@ -1103,28 +1103,68 @@ Use 'arch' to force US arch notation</translation>
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Довжина відрізків ліній, якщо фрагментувати еліпси або B-сплайни
+на відрізки лінії</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Якщо це Істина, обробляється лише суцільна геометрія. Це замінює властивість Тільки твердих тіл базового об'єкта</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="127"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Якщо це Істина, вміст відсікається до меж площини перерізу, якщо це можливо. Це замінює властивість Обрізки базового об'єкта</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Якщо це Обрано цей об'єкт буде включати лише видимі об'єкти</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Цей об'єкт буде переобчислено лише за умови Обрано.</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation>Базовий об'єкт використовується цим об’єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation>Файл PAT, який використовується цим об’єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation>Назва шаблону, що використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation>Якщо встановлено False, штрих застосовується як до поверхонь, без перекладу (це може призвести до неправильних результатів для поверхонь, відмінних від XY)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1132,7 +1172,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>Редактор стилів анотації</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -1142,12 +1182,12 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Додати новий...</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Перейменовує вибрані стилі</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -1157,7 +1197,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Видаляє вибраний стиль</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="113"/>
@@ -1177,7 +1217,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="183"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Інтервал</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="193"/>
@@ -1187,7 +1227,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>Шрифт для використання в текстах та розмірах</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="239"/>
@@ -1197,22 +1237,22 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>Множник масштабу</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Десяткові знаки</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="268"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Задати величину</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Показати величини</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="331"/>
@@ -1227,7 +1267,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>Розширення перекриття</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="360"/>
@@ -1242,12 +1282,12 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Dimension overshoot</source>
-      <translation type="unfinished">Dimension overshoot</translation>
+      <translation>Перевищення розміру</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>Виноски</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="400"/>
@@ -1262,7 +1302,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="433"/>
       <source>The width of the dimension lines</source>
-      <translation type="unfinished">The width of the dimension lines</translation>
+      <translation>Ширина розмірних ліній</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="436"/>
@@ -1272,7 +1312,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The color of dimension lines, arrows and texts</source>
-      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+      <translation>Колір розмірних ліній, стрілок та тексту</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="476"/>
@@ -1287,72 +1327,72 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Позначка</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Назва вашого стилю. Існуючі назви стилів можна редагувати.</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Розмір шрифту в системних одиницях</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="180"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>Інтервал між рядками в системних одиницях</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="285"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Фактор мультиплікатора, що впливає на розмір текстів і маркерів</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Кількість десяткових знаків для відображення для значень виміру</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Вкажіть припустиму одиницю довжини, як mm, in, ft, щоб примусово відобразити значення розміру в цих одиницях</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="315"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Якщо це позначено, він покаже одиницю виміру поряд із значенням розміру</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Відстань, на яку продовжуються додаткові лінії за межами розмірної лінії</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Розмір стрілок розміру або маркерів в системних одиницях</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Якщо позначено, то відобразиться розмірна лінія</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>Відстань, на яку розташована лінія розміру додатково продовжена</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="524"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Довжина виносних ліній</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Тип стрілок чи міток для використання в кінці ліній розміру</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="481"/>
@@ -1362,7 +1402,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="496"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Тік-2</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="120"/>
@@ -1382,9 +1422,9 @@ Use 'arch' to force US arch notation</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Помилка завантаження бібліотек dxf
+Будь ласка, встановіть бібліотеку dxf вручну
+з меню Інструменти -&gt; Менеджер додатків</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="145"/>
@@ -1404,7 +1444,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Інструменти утиліту креслення</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="166"/>
@@ -1419,12 +1459,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>&amp;Зміна</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Утиліти</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1439,12 +1479,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="pointarray.py" line="305"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>Об’єкт точки не має перервану точку, його не можна використати для масиву.</translation>
     </message>
     <message>
       <location filename="bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Закрита з тією ж першою/останньою точкою. Геометрія не оновилася.</translation>
     </message>
     <message>
       <location filename="view_wpproxy.py" line="102"/>
@@ -1454,47 +1494,47 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Запис  об’єктів показати/приховати стан</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>Об'єднати дублікати шарів</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Додати новий шар</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Увімкнути/вимкнути сітку</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>Прив'язка до об'єктів</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>Вмикати розміри видимої пропозиції</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
-      <translation type="unfinished">Toggles Ortho On/Off</translation>
+      <translation>Вкл./викл Орто</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
+      <translation>Перемикає обмеження в робочій площині Вкл/Викл</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="150"/>
+      <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>Не вдалося вставити новий об'єкт в масштабовану частину</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1544,12 +1584,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="task_scale.py" line="140"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Змінити піделементи</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="141"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Оберіть від/до точки</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="142"/>
@@ -1569,7 +1609,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="gui_circulararray.py" line="66"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Круговий масив</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="68"/>
@@ -1577,15 +1617,15 @@ from menu Tools -&gt; Addon Manager</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Створює копії обраного об'єкту і розміщує копії у радіальному нарисі
+створення різних круглих шарів.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Масив може бути перетворений на ортогональний або полярний масив шляхом зміни його типу.</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Полярний масив</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="68"/>
@@ -1593,10 +1633,10 @@ The array can be turned into an orthogonal or a polar array by changing its type
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Створює копії обраного об'єкту і розміщує копії в полярному візерунку
+визначеному за центром обертання та його кута.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+Масив може бути перетворений на ортогональний або круговий масив шляхом зміни його типу.</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
@@ -1606,7 +1646,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Створюйте різні типи масивів, включаючи прямокутні, полярні, кругові, контури та точки</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
@@ -1619,10 +1659,10 @@ The array can be turned into an orthogonal or a circular array by changing its t
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Створює копії обраного об'єкту та розміщує копії за ортогональною схемою,
+значення копій йдуть у вказаному напрямку в осі X, Y, Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Масив може бути перетворений на полярний або круговий масив шляхом зміни його типу.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="65"/>
@@ -1632,12 +1672,12 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Створює скруглення між двома вибраними каркасом або ребром.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Видалити початкові об'єкти</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="96"/>
@@ -1645,34 +1685,39 @@ The array can be turned into a polar or a circular array by changing its type.</
       <translation>Створити фаску</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="326"/>
+      <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Напрямок зміщення не визначено. Будь ласка, перемістіть курсор миші на обидві сторони об'єкта спочатку для вказівки напрямку</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Зберегти стиль</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Назва нового стилю:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Назва вже існує. Перезаписати?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Помилка: модуль json не знайдено. Неможливо зберегти стиль</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
       <translation>Увага</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation>Вам слід вибрати базовий об'єкт перед використанням цієї команди</translation>
     </message>
   </context>
   <context>
@@ -1680,19 +1725,19 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Круговий масив</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Координати точки, через яку проходить вісь обертання.
+Змініть напрямок вісі в редакторі властивостей.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Центр обертання</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="69"/>
@@ -1712,7 +1757,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="131"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Скинути координати центру обертання.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="134"/>
@@ -1723,8 +1768,8 @@ Change the direction of the axis itself in the property editor.</translation>
       <location filename="TaskPanel_CircularArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Якщо цей прапорець установлено, то об’єкти, що відображаються у масиві, будуть склеєні при торканні.
+Це працює лише при вимкненому "масиві посилання".</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="150"/>
@@ -1735,30 +1780,30 @@ This only works if "Link array" is off.</translation>
       <location filename="TaskPanel_CircularArray.ui" line="157"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Якщо цей прапорець встановлений, кінцевий об'єкт буде "масив посилання" замість звичайного масиву.
+Масив посилань є більш ефективним при створенні декількох копій, але його не можна об'єднати.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Масив посилань</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="186"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation type="unfinished">Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</translation>
+      <translation>Відстань від одного елементу масиву до одного елементу масиву до наступного елементу у тому ж округленні.
+Він не може бути нулем.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="179"/>
       <source>Tangential distance</source>
-      <translation type="unfinished">Tangential distance</translation>
+      <translation>Дотична відстань</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="210"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects.</translation>
+      <translation>Відстань від одного шару об'єктів до наступного шару об'єктів.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="203"/>
@@ -1768,19 +1813,19 @@ It cannot be zero.</translation>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="261"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>Число симетричних ліній в круговому масиві.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="250"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Кількість кругових шарів або кілець для створення, включаючи копію вихідного об’єкта.
+Його має бути не менше 2.</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="254"/>
       <source>Number of circular layers</source>
-      <translation type="unfinished">Number of circular layers</translation>
+      <translation>Кількість циклічних шарів</translation>
     </message>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="264"/>
@@ -1790,7 +1835,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="TaskPanel_CircularArray.ui" line="273"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Бланк для піктограми)</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1857,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="49"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Z інтервали</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="385"/>
@@ -1832,7 +1877,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="353"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>Скинути відстань.</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="125"/>
@@ -1843,8 +1888,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="TaskPanel_OrthoArray.ui" line="137"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Якщо цей прапорець установлено, то об’єкти, що відображаються у масиві, будуть склеєні при торканні.
+Це працює лише при вимкненому "масиві посилання".</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="141"/>
@@ -1855,18 +1900,18 @@ This only works if "Link array" is off.</translation>
       <location filename="TaskPanel_OrthoArray.ui" line="148"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Якщо цей прапорець встановлений, кінцевий об'єкт буде "масив посилання" замість звичайного масиву.
+Масив посилань є більш ефективним при створенні декількох копій, але його не можна об'єднати.</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Масив посилань</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="177"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Бланк для піктограми)</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="184"/>
@@ -1892,14 +1937,14 @@ Negative values will result in copies produced in the negative direction.</sourc
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Відстань між елементами у напрямку Y.
+Зазвичай необхідне лише значення Y; Інші два значення можуть дати додатковий зсув у відповідних напрямках.
+Негативні значення призведуть до створення копій у негативному напрямку.</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="280"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Y інтервали</translation>
     </message>
     <message>
       <location filename="TaskPanel_OrthoArray.ui" line="356"/>
@@ -1924,19 +1969,19 @@ The number must be at least 1 in each direction.</source>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Полярний масив</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Координати точки, через яку проходить вісь обертання.
+Змініть напрямок вісі в редакторі властивостей.</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Центр обертання</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="69"/>
@@ -1956,7 +2001,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="131"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Скинути координати центру обертання.</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="134"/>
@@ -1967,8 +2012,8 @@ Change the direction of the axis itself in the property editor.</translation>
       <location filename="TaskPanel_PolarArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Якщо цей прапорець установлено, то об’єкти, що відображаються у масиві, будуть склеєні при торканні.
+Це працює лише при вимкненому "масиві посилання".</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="150"/>
@@ -1979,22 +2024,22 @@ This only works if "Link array" is off.</translation>
       <location filename="TaskPanel_PolarArray.ui" line="157"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Якщо цей прапорець встановлений, кінцевий об'єкт буде "масив посилання" замість звичайного масиву.
+Масив посилань є більш ефективним при створенні декількох копій, але його не можна об'єднати.</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Масив посилань</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="187"/>
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation type="unfinished">Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</translation>
+      <translation>Кут розгортки полярного розподілу.
+Негативний кут створює полярний малюнок у протилежному напрямку.
+Максимальне абсолютне значення - 360 градусів.</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="180"/>
@@ -2005,8 +2050,8 @@ The maximum absolute value is 360 degrees.</translation>
       <location filename="TaskPanel_PolarArray.ui" line="219"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of elements in the array, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Кількість елементів у масиві включно із копією початкового об'єкту.
+Кількість елементів має бути принаймні 2.</translation>
     </message>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="212"/>
@@ -2016,7 +2061,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="TaskPanel_PolarArray.ui" line="235"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Бланк для піктограми)</translation>
     </message>
   </context>
   <context>
@@ -2069,7 +2114,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="TaskShapeString.ui" line="73"/>
       <source>Enter coordinates or select point with mouse.</source>
-      <translation type="unfinished">Enter coordinates or select point with mouse.</translation>
+      <translation>Введіть координати або виберіть точку з мишкою.</translation>
     </message>
     <message>
       <location filename="TaskShapeString.ui" line="186"/>
@@ -2085,12 +2130,12 @@ It must be at least 2.</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="gui_groups.py" line="343"/>
+      <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
       <translation>Додати до групи Будівництво</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="345"/>
+      <location filename="gui_groups.py" line="367"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -2104,7 +2149,7 @@ It creates a construction group if it doesn't exist.</source>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Додати точку</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
@@ -2115,17 +2160,17 @@ It creates a construction group if it doesn't exist.</source>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="gui_groups.py" line="67"/>
+      <location filename="gui_groups.py" line="68"/>
       <source>Ungroup</source>
       <translation>Розгрупувати</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="72"/>
+      <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
       <translation>Перемістити до групи</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="74"/>
+      <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>Переміщує вибрані об'єкти в існуючу групу або видаляє їх з будь-якої групи.
@@ -2137,7 +2182,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>Стилі анотації...</translation>
     </message>
   </context>
   <context>
@@ -2150,7 +2195,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Застосовує поточний стиль, визначений в панелі інструментів (ширина та кольори) до вибраних об'єктів і груп.</translation>
     </message>
   </context>
   <context>
@@ -2194,21 +2239,21 @@ CTRL для прив'язки, SHIFT для обмеження.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Створює масив із вибраного об’єкта.
+За замовчуванням це ортогональний масив 2x2.
+Після створення масиву його тип можна змінити
+До полярного або кругового, і його властивості можна змінювати.</translation>
     </message>
   </context>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="gui_groups.py" line="239"/>
+      <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
       <translation>Автогрупування</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="242"/>
+      <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Виберіть групу, до якої слід додати всі об’єкти Чернеткы та Аркы.</translation>
     </message>
@@ -2223,7 +2268,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює багатоточковий B-сплайн. CTRL для прив'язки, SHIFT для обмеження.</translation>
     </message>
   </context>
   <context>
@@ -2246,7 +2291,7 @@ CTRL для прив'язки, SHIFT для обмеження.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation type="unfinished">Bezier tools</translation>
+      <translation>Інструменти для побудови кривої Безьє</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -2280,8 +2325,8 @@ CTRL для прив'язки, ALT для вибору дотичного обʼ
       <location filename="gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Створює клон обраних об'єктів.
+Отриманий клон можна масштабувати в кожному з цих трьох напрямків.</translation>
     </message>
   </context>
   <context>
@@ -2294,7 +2339,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="125"/>
       <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation type="unfinished">Closes the line being drawn, and finishes the operation.</translation>
+      <translation>Закриває креслення та завершує операцію.</translation>
     </message>
   </context>
   <context>
@@ -2309,9 +2354,9 @@ The resulting clone can be scaled in each of its three directions.</translation>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює криву Безьє з двох градусів (квадратичний) та 3-х градусів (кубічних) сегментів. Натисніть і потягніть для визначення кожного відрізку.
+Після створення кривої ви зможете повернутися до редагування кожної контрольної точки і встановити властивості кожного вузла.
+CTRL для створення знімків, SHIFT для обмеження.</translation>
     </message>
   </context>
   <context>
@@ -2324,7 +2369,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline.</translation>
+      <translation>Видаляє точку з існуючої Ламаної або B-сплайну.</translation>
     </message>
   </context>
   <context>
@@ -2348,18 +2393,18 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Створює вимір,
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Вибрати 3 точки, щоб створити простий лінійний вимір.
+- Вибрати пряму лінію для створення лінійного виміру, що пов'язана з цією лінією.
+- Вибрати дугу або коло, щоб створити радіус або розмір діаметру, пов'язаний з цією дугою.
+- Вибрати дві прямі лінії, щоб створити кутовий вимір між ними.
+CTRL для прив'язки, SHIFT до обмеження, ALT для вибору краю або дуги.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Ви можете обрати один рядок, або один круговий дуга перед початком цієї команди
+для створення відповідного пов'язаного виміру.
+Ви також можете вибрати об'єкт 'Програма:MeasureDistance' перед запуском цієї команди
+щоб перетворити її в об'єкт 'Встановіть величину креслення'.</translation>
     </message>
   </context>
   <context>
@@ -2374,9 +2419,9 @@ to turn it into a 'Draft Dimension' object.</translation>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Знижує обрані об'єкти у простіші форми.
+Результат операції залежить від типів об'єктів, які можуть бути понижені кілька разів поспіль.
+Наприклад, він вибухає обрані полілінії до простіших поверхонь, сітки і потім країв. Також можна віднімати поверхні.</translation>
     </message>
   </context>
   <context>
@@ -2384,16 +2429,16 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Креслення в Ескіз</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Конвертувати двонаправлено між об'єктами чернетками і ескізами.
+Багато об'єктів з чернеток будуть конвертовані в єдиний необмежений ескіз.
+Тим не менш, єдиний ескіз із роз'єднаними слідами буде перетворено на кілька об'єктів Draft для кожного об'єкта.</translation>
     </message>
   </context>
   <context>
@@ -2408,9 +2453,9 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
-      <translation type="unfinished">Creates a 2D projection on a Drawing Workbench page from the selected objects.
-This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
-Use TechDraw Workbench instead for generating technical drawings.</translation>
+      <translation>Створює 2D проекцію на сторінці креслення з вибраного об'єкту.
+Ця команда є OBSOLETE так як робочий простір малювання став застарілим в 0. 7.
+Використовуйте TechDraw Workbench натомість для створення технічних креслень.</translation>
     </message>
   </context>
   <context>
@@ -2425,9 +2470,9 @@ Use TechDraw Workbench instead for generating technical drawings.</translation>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Редагує активний об'єкт.
+Натисніть E або ALT+LeftClick щоб відобразити контекстне меню
+на підтримуваних вузлах та на підтримуваних об'єктах.</translation>
     </message>
   </context>
   <context>
@@ -2480,8 +2525,21 @@ on supported nodes and on supported objects.</translation>
       <location filename="gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Переверніть перпендикулярний напрямок вибраних розмірів (лінійний, радіальний, кутовий).
+Якщо вибрано інші об’єкти, вони ігноруються.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Hatch</name>
+    <message>
+      <location filename="gui_hatch.py" line="37"/>
+      <source>Hatch</source>
+      <translation type="unfinished">Hatch</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="41"/>
+      <source>Create hatches on selected faces</source>
+      <translation>Створити штрихування на вибраних поверхнях</translation>
     </message>
   </context>
   <context>
@@ -2496,9 +2554,9 @@ If other objects are selected they are ignored.</translation>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Виправити дефектні проекти, збережені в попередній версії програми.
+Якщо об’єкт вибрано, він намагатиметься зцілити цей об’єкт, зокрема,
+Інакше він спробує виправити всі об’єкти в активному документі.</translation>
     </message>
   </context>
   <context>
@@ -2512,8 +2570,8 @@ otherwise it will try to heal all objects in the active document.</translation>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Об’єднує позначені лінії або полілінії в один об'єкт.
+Рядки повинні бути розділені спільною точкою початку або в кінці для досягнення операції.</translation>
     </message>
   </context>
   <context>
@@ -2534,15 +2592,15 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Створює етикетку, необов'язково прикріплену до обраного об'єкту чи піделементу.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Спочатку виберіть вершину, ребро або поверхню об'єкта, а потім назвіть цю команду,
+А потім поставили позицію виносної лінії та текстової мітки.
+Етикетки зможуть відображати інформацію про цей об'єкт і про вибрану допоміжну інформацію,
+якщо така є яка.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Якщо вибрано багато об'єктів або багато субелементів, тільки перший у кожному випадку
+буде використовуватись для надання інформації мітці.</translation>
     </message>
   </context>
   <context>
@@ -2556,8 +2614,8 @@ will be used to provide information to the label.</translation>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>Додає шар до документа.
+Об'єкти додані до цього шару можуть використовувати такі ж візуальні властивості, як колір лінії, ширина та колір фігури.</translation>
     </message>
   </context>
   <context>
@@ -2570,7 +2628,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює криву Безьє. CTRL для притягування, SHIFT для обмеження.</translation>
     </message>
   </context>
   <context>
@@ -2578,14 +2636,14 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>Масив Посилань</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Як і інструмент масиву, але натомість створює масив посилань.
+При обробці багатьох копій «посилання більш ефективний, але не вдалося використати параметр «Fuse».</translation>
     </message>
   </context>
   <context>
@@ -2598,7 +2656,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Віддзеркалити обрані об'єкти вздовж лінії, яка визначена двома точками.</translation>
     </message>
   </context>
   <context>
@@ -2613,9 +2671,9 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Переміщує вибрані об'єкти з однієї точки до іншої точки.
+Якщо опція "копіювання" активна, вона створить переміщені копії.
+CTRL для прив'язки, SHIFT для обмеження.</translation>
     </message>
   </context>
   <context>
@@ -2630,9 +2688,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Зсув вибраного об'єкта.
+Він також може створити копію зсуву оригінального об’єкта.
+CTRL для створення знімків, SHIFT для обмеження. Утримуйте ALT та натисніть га об'єкт, щоб створити нову копію з кожним кліком.</translation>
     </message>
   </context>
   <context>
@@ -2640,16 +2698,16 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Шлях масиву</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Створює копії обраного об'єкту вздовж обраної траєкторії.
+Спочатку виберіть об'єкт та виберіть шлях.
+Шлях може бути багатолінійним, B-сплайном, кривою Безьє або навіть ребра інших об'єктів.</translation>
     </message>
   </context>
   <context>
@@ -2657,14 +2715,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Траєкторія масиву посилань</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Як і інструмент PathArray (PathArray але замість нього створює масив Link.
+При обробці багатьох копій «посилання більш ефективний, але  параметр «Fuse» недоступний.</translation>
     </message>
   </context>
   <context>
@@ -2672,16 +2730,16 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Траєкторія скручування масиву</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Створює копії обраного об'єкту вздовж обраного шляху і спотворює його копії.
+Спочатку виберіть об'єкт і виберіть потрібну траєкторію.
+Шлях може бути багатолінійним, B-сплайном, кривою Безьє або навіть ребра від інших об'єктів.</translation>
     </message>
   </context>
   <context>
@@ -2689,14 +2747,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation type="unfinished">Path twisted Link array</translation>
+      <translation>Траєкторія скручування масиву</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Як і інструмент PathTwistedArray але замість нього створює масив посилань.
+При обробці багатьох копій «посилання більш ефективний, але не вдалося використати параметр «Fuse».</translation>
     </message>
   </context>
   <context>
@@ -2709,7 +2767,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Створює об'єкт точки. Натисніть будь-де на 3D-перегляді.</translation>
     </message>
   </context>
   <context>
@@ -2717,7 +2775,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Масив точок</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2728,13 +2786,13 @@ To create this compound, select various points and then use the Part Compound to
 or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
 
 Select the base object, and then select the compound or the sketch to create the point array.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies at the position of various points.
+      <translation>Створює копії вибраного об'єкту та розміщує копії на позиції різних точок.
 
-The points need to be grouped under a compound of points before using this tool.
-To create this compound, select various points and then use the Part Compound tool,
-or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
+Точки мають бути згруповані під накопиченням точок перед цим інструментом.
+Щоб створити цей компас, виберіть різні точки, а потім скористайтеся інструментом частини - сполученого,
+або скористайтеся інструментом Покращення Draft для створення 'Block', або створення ескізу і додавання простих балів до нього.
 
-Select the base object, and then select the compound or the sketch to create the point array.</translation>
+Виберіть основний об'єкт, а потім виберіть склад або ескіз, щоб створити масив точок.</translation>
     </message>
   </context>
   <context>
@@ -2742,7 +2800,7 @@ Select the base object, and then select the compound or the sketch to create the
     <message>
       <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>Артикул</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="144"/>
@@ -2815,12 +2873,12 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="gui_groups.py" line="165"/>
+      <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
       <translation>Вибрати групу</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="168"/>
+      <location filename="gui_groups.py" line="192"/>
       <source>If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.
 
 If the selection is a simple object inside a group, it will select the "brother" objects, that is,
@@ -2860,23 +2918,6 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     </message>
   </context>
   <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="gui_planeproxy.py" line="50"/>
-      <source>Create working plane proxy</source>
-      <translation>Створити проксі робочої площини</translation>
-    </message>
-    <message>
-      <location filename="gui_planeproxy.py" line="52"/>
-      <source>Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Shape2DView</name>
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
@@ -2913,12 +2954,12 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="gui_snaps.py" line="576"/>
+      <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
       <translation type="unfinished">Show snap toolbar</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="579"/>
+      <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
     </message>
@@ -2947,12 +2988,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Увімкнути/вимкнути сітку</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation type="unfinished">Toggle Draft Grid</translation>
     </message>
@@ -2960,12 +3001,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="gui_snaps.py" line="331"/>
+      <location filename="gui_snaps.py" line="344"/>
       <source>Angle</source>
       <translation>Кут</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="334"/>
+      <location filename="gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
     </message>
@@ -2973,12 +3014,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="gui_snaps.py" line="361"/>
+      <location filename="gui_snaps.py" line="374"/>
       <source>Center</source>
       <translation>Центр</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="364"/>
+      <location filename="gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation type="unfinished">Set snapping to the center of a circular arc.</translation>
     </message>
@@ -2986,12 +3027,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="gui_snaps.py" line="513"/>
+      <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
       <translation type="unfinished">Show dimensions</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="516"/>
+      <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
     </message>
@@ -2999,12 +3040,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="300"/>
+      <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
       <translation type="unfinished">Endpoint</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="303"/>
+      <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
     </message>
@@ -3012,12 +3053,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="gui_snaps.py" line="391"/>
+      <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
       <translation>Розширення</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="394"/>
+      <location filename="gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation type="unfinished">Set snapping to the extension of an edge.</translation>
     </message>
@@ -3025,12 +3066,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="gui_snaps.py" line="210"/>
+      <location filename="gui_snaps.py" line="223"/>
       <source>Grid</source>
       <translation>Сітка</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="213"/>
+      <location filename="gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation type="unfinished">Set snapping to the intersection of grid lines.</translation>
     </message>
@@ -3038,12 +3079,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="gui_snaps.py" line="240"/>
+      <location filename="gui_snaps.py" line="253"/>
       <source>Intersection</source>
       <translation>Перетин</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="243"/>
+      <location filename="gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation type="unfinished">Set snapping to the intersection of edges.</translation>
     </message>
@@ -3051,12 +3092,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="gui_snaps.py" line="120"/>
+      <location filename="gui_snaps.py" line="133"/>
       <source>Main snapping toggle On/Off</source>
       <translation type="unfinished">Main snapping toggle On/Off</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="123"/>
+      <location filename="gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
     </message>
@@ -3064,12 +3105,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="gui_snaps.py" line="150"/>
+      <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
       <translation>Центр</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="153"/>
+      <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
     </message>
@@ -3077,12 +3118,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="gui_snaps.py" line="421"/>
+      <location filename="gui_snaps.py" line="434"/>
       <source>Nearest</source>
       <translation type="unfinished">Nearest</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="424"/>
+      <location filename="gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
     </message>
@@ -3090,12 +3131,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="gui_snaps.py" line="452"/>
+      <location filename="gui_snaps.py" line="465"/>
       <source>Orthogonal</source>
       <translation type="unfinished">Orthogonal</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="455"/>
+      <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
     </message>
@@ -3103,12 +3144,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="gui_snaps.py" line="270"/>
+      <location filename="gui_snaps.py" line="283"/>
       <source>Parallel</source>
       <translation>Паралельно</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="273"/>
+      <location filename="gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
     </message>
@@ -3116,12 +3157,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="gui_snaps.py" line="180"/>
+      <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
       <translation type="unfinished">Perpendicular</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="183"/>
+      <location filename="gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
     </message>
@@ -3129,12 +3170,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="gui_snaps.py" line="482"/>
+      <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="485"/>
+      <location filename="gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation type="unfinished">Set snapping to the special points defined inside an object.</translation>
     </message>
@@ -3142,12 +3183,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="gui_snaps.py" line="546"/>
+      <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
       <translation type="unfinished">Working plane</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="549"/>
+      <location filename="gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -3178,7 +3219,7 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Розтягнути</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="67"/>
@@ -3283,10 +3324,10 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Тримекс</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="79"/>
+      <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
@@ -3349,6 +3390,23 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_WorkingPlaneProxy</name>
+    <message>
+      <location filename="gui_planeproxy.py" line="50"/>
+      <source>Create working plane proxy</source>
+      <translation>Створити проксі робочої площини</translation>
+    </message>
+    <message>
+      <location filename="gui_planeproxy.py" line="52"/>
+      <source>Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</source>
+      <translation type="unfinished">Creates a proxy object from the current working plane.
+Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
+Then you can use it to save a different camera position and objects' states any time you need.</translation>
     </message>
   </context>
   <context>
@@ -3580,12 +3638,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="224"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Позначка</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="229"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Тік-2</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="271"/>
@@ -3600,7 +3658,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="318"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Показати величини</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="80"/>
@@ -3615,7 +3673,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="257"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>Шрифт для використання в текстах та розмірах</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="101"/>
@@ -3650,7 +3708,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="332"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Задати величину</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="339"/>
@@ -3785,17 +3843,60 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Відступ тексту від розмірної лінії</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="363"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Інтервал</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="370"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Інтервал між рядками тексту</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation>файли шаблонів (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation>PAT-файл:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Масштабування</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation>Шаблон:</translation>
+    </message>
+    <message>
+      <location filename="dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Обертання:</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Група</translation>
     </message>
   </context>
   <context>
@@ -4564,12 +4665,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Позначка</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="343"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Тік-2</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="326"/>
@@ -5198,7 +5299,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="71"/>
@@ -5209,16 +5310,24 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
     </message>
   </context>
   <context>
+    <name>ImportAirfoilDAT</name>
+    <message>
+      <location filename="importAirfoilDAT.py" line="186"/>
+      <source>Did not find enough coordinates</source>
+      <translation type="unfinished">Did not find enough coordinates</translation>
+    </message>
+  </context>
+  <context>
     <name>ImportDWG</name>
     <message>
-      <location filename="importDWG.py" line="232"/>
+      <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
       <translation type="unfinished">Conversion successful</translation>
     </message>
     <message>
-      <location filename="importDWG.py" line="276"/>
+      <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Перетворення:</translation>
     </message>
   </context>
   <context>
@@ -5237,7 +5346,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
@@ -5265,7 +5374,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>активна команда:</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="277"/>
+      <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Немає</translation>
     </message>
@@ -5320,7 +5429,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Довжина</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="332"/>
+      <location filename="gui_trimex.py" line="220"/>
       <source>Angle</source>
       <translation>Кут</translation>
     </message>
@@ -5365,7 +5474,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Кількість сторін</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="321"/>
+      <location filename="gui_offset.py" line="324"/>
       <source>Offset</source>
       <translation>Зміщення</translation>
     </message>
@@ -5445,7 +5554,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Позначка</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="316"/>
+      <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>Відстань</translation>
     </message>
@@ -5651,7 +5760,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="DraftGui.py" line="755"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Заповнено</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="761"/>
@@ -5711,7 +5820,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="DraftGui.py" line="797"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Змінити піделементи</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="798"/>
@@ -5719,22 +5828,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="367"/>
+      <location filename="gui_selectplane.py" line="369"/>
       <source>Top</source>
       <translation>Згори</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="379"/>
+      <location filename="gui_selectplane.py" line="381"/>
       <source>Front</source>
       <translation>Фронт</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="391"/>
+      <location filename="gui_selectplane.py" line="393"/>
       <source>Side</source>
       <translation>Сторона</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="534"/>
+      <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
       <translation type="unfinished">Current working plane</translation>
     </message>
@@ -5759,14 +5868,9 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1040"/>
+      <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1098"/>
-      <source>Trim distance</source>
-      <translation type="unfinished">Trim distance</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
@@ -5986,17 +6090,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Підтримка:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation type="unfinished">Map mode:</translation>
+      <translation>Режим карти:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>довжина:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
@@ -6026,7 +6130,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="task_circulararray.py" line="491"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Круговий масив</translation>
     </message>
     <message>
       <location filename="make_circulararray.py" line="144"/>
@@ -6046,7 +6150,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="task_polararray.py" line="438"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Полярний масив</translation>
     </message>
     <message>
       <location filename="make_label.py" line="314"/>
@@ -6325,17 +6429,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>На замовлення</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation type="unfinished">Unable to convert input into a scale factor</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
     </message>
@@ -6357,7 +6461,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Об'єкт:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
@@ -6407,7 +6511,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Перервано:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
@@ -6670,7 +6774,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Upgrade</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="204"/>
+      <location filename="gui_move.py" line="205"/>
       <source>Move</source>
       <translation>Переміщення</translation>
     </message>
@@ -6685,7 +6789,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Pick start point</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="302"/>
+      <location filename="gui_move.py" line="303"/>
       <source>Pick end point</source>
       <translation type="unfinished">Pick end point</translation>
     </message>
@@ -6697,7 +6801,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Масив точок</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="104"/>
@@ -6725,82 +6829,82 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Toggle display mode</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="113"/>
+      <location filename="gui_snaps.py" line="126"/>
       <source>Main toggle snap</source>
       <translation type="unfinished">Main toggle snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="144"/>
+      <location filename="gui_snaps.py" line="157"/>
       <source>Midpoint snap</source>
       <translation type="unfinished">Midpoint snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="174"/>
+      <location filename="gui_snaps.py" line="187"/>
       <source>Perpendicular snap</source>
       <translation type="unfinished">Perpendicular snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="204"/>
+      <location filename="gui_snaps.py" line="217"/>
       <source>Grid snap</source>
       <translation>Прив'язка до сітки</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="234"/>
+      <location filename="gui_snaps.py" line="247"/>
       <source>Intersection snap</source>
       <translation type="unfinished">Intersection snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="264"/>
+      <location filename="gui_snaps.py" line="277"/>
       <source>Parallel snap</source>
       <translation type="unfinished">Parallel snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="294"/>
+      <location filename="gui_snaps.py" line="307"/>
       <source>Endpoint snap</source>
       <translation type="unfinished">Endpoint snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="325"/>
+      <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
       <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="355"/>
+      <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
       <translation type="unfinished">Arc center snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="385"/>
+      <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
       <translation type="unfinished">Edge extension snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="415"/>
+      <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
       <translation type="unfinished">Near snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="446"/>
+      <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
       <translation type="unfinished">Orthogonal snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="476"/>
+      <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
       <translation type="unfinished">Special point snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="507"/>
+      <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
       <translation type="unfinished">Dimension display</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="540"/>
+      <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
       <translation type="unfinished">Working plane snap</translation>
     </message>
     <message>
-      <location filename="gui_snaps.py" line="570"/>
+      <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
       <translation type="unfinished">Show snap toolbar</translation>
     </message>
@@ -6935,9 +7039,9 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Перевернути розмірність</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="474"/>
+      <location filename="gui_stretch.py" line="478"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Розтягнути</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="75"/>
@@ -6945,27 +7049,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Select an object to stretch</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="124"/>
+      <location filename="gui_stretch.py" line="128"/>
       <source>Pick first point of selection rectangle</source>
       <translation type="unfinished">Pick first point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="161"/>
+      <location filename="gui_stretch.py" line="165"/>
       <source>Pick opposite point of selection rectangle</source>
       <translation type="unfinished">Pick opposite point of selection rectangle</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="170"/>
+      <location filename="gui_stretch.py" line="174"/>
       <source>Pick start point of displacement</source>
       <translation type="unfinished">Pick start point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="233"/>
+      <location filename="gui_stretch.py" line="237"/>
       <source>Pick end point of displacement</source>
       <translation type="unfinished">Pick end point of displacement</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="445"/>
+      <location filename="gui_stretch.py" line="449"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation type="unfinished">Turning one Rectangle into a Wire</translation>
     </message>
@@ -7040,14 +7144,14 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">No edit point found for selected object</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="822"/>
+      <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation type="unfinished">: this object is not editable</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Шлях масиву</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
@@ -7057,50 +7161,40 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Траєкторія скручування масиву</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Тримекс</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="91"/>
+      <location filename="gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
       <translation type="unfinished">Select objects to trim or extend</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="140"/>
+      <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="318"/>
-      <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="334"/>
-      <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="472"/>
+      <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="477"/>
+      <location filename="gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="494"/>
+      <location filename="gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
       <translation type="unfinished">These objects don't intersect.</translation>
     </message>
     <message>
-      <location filename="gui_trimex.py" line="497"/>
+      <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
       <translation type="unfinished">Too many intersection points.</translation>
     </message>
@@ -7130,22 +7224,22 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Create B-spline</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="144"/>
+      <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
       <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="267"/>
+      <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
       <translation type="unfinished">Working plane aligned to global placement of</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="516"/>
+      <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
       <translation type="unfinished">Dir</translation>
     </message>
     <message>
-      <location filename="gui_selectplane.py" line="532"/>
+      <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Підлаштувати</translation>
     </message>
@@ -7240,27 +7334,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Change Style</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="64"/>
+      <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
       <translation type="unfinished">Add to group</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="159"/>
+      <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Вибрати групу</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="233"/>
+      <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
       <translation>Автогрупування</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="283"/>
+      <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
       <translation type="unfinished">Add new Layer</translation>
     </message>
     <message>
-      <location filename="gui_groups.py" line="337"/>
+      <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation type="unfinished">Add to construction group</translation>
     </message>
@@ -7280,7 +7374,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Cannot offset this object type</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="120"/>
+      <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
     </message>
@@ -7465,7 +7559,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Розміщення:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="333"/>
@@ -7478,14 +7572,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
-      <location filename="gui_edit.py" line="814"/>
+      <location filename="gui_edit.py" line="815"/>
       <source>Too many objects selected, max number set to:</source>
       <translation type="unfinished">Too many objects selected, max number set to:</translation>
     </message>
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>відображено</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
@@ -7498,6 +7592,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 </source>
       <translation>Обрані форми повинні визначити площину
 </translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation>Кут зміщення</translation>
     </message>
   </context>
   <context>

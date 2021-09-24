@@ -79,7 +79,7 @@ struct MeshExport Material
 
 struct MeshExport Group
 {
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
     std::string name;
 };
 

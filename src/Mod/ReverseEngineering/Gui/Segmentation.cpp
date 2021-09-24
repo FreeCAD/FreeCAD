@@ -111,7 +111,7 @@ void Segmentation::accept()
         // For each planar segment compute a plane and use this then for a more accurate 2nd segmentation
         if (strcmp((*it)->GetType(), "Plane") == 0) {
             for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-                std::vector<unsigned long> indexes = kernel.GetFacetPoints(*jt);
+                std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(*jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
                 if (fit.Fit() < FLOAT_MAX) {
@@ -213,7 +213,7 @@ void Segmentation::accept()
 
     if (createUnused) {
         // collect all facets that don't have set the flag TMP0
-        std::vector<unsigned long> unusedFacets;
+        std::vector<MeshCore::FacetIndex> unusedFacets;
         algo.GetFacetsFlag(unusedFacets, MeshCore::MeshFacet::TMP0);
 
         if (!unusedFacets.empty()) {

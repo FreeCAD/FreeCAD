@@ -2,6 +2,88 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sl" sourcelanguage="en">
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Evolventni zobnik ...</translation>
+    </message>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Ustvari ali uredi določilo evolventnega zobnika.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Verižnik ...</translation>
+    </message>
+    <message>
+      <location filename="SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Ustvari ali uredi določilo verižnika.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Čarovnik za snovanje gredi ...</translation>
+    </message>
+    <message>
+      <location filename="WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Zaženi čarovnik za snovanje gredi</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Dolžina [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Premer [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Notranji premer [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Vrsta omejila</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Vrsta začetnega roba</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Velikost začetnega roba</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Vrsta končnega roba</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Velikost končnega roba</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
       <location filename="../../Command.cpp" line="1692"/>
@@ -982,16 +1064,16 @@
       <translation>Geometrijski osnovniki</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
-      <source>Width:</source>
-      <translation>Širina:</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
       <translation>Dolžina:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
+      <source>Width:</source>
+      <translation>Širina:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1001,12 +1083,6 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
       <translation>Višina:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
-      <source>Angle:</source>
-      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1059,6 +1135,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2:</source>
       <translation>Polmer 2:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
+      <source>Angle:</source>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
@@ -1230,14 +1312,14 @@ If zero, it is equal to Radius2</source>
       <translation>Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
-      <source>End point</source>
-      <translation>Končna točka</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
       <translation>Začetna točka</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
+      <source>End point</source>
+      <translation>Končna točka</translation>
     </message>
   </context>
   <context>
@@ -1386,6 +1468,11 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Dodaj</translation>
     </message>
     <message>
+      <location filename="../../TaskChamferParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Odstrani</translation>
+    </message>
+    <message>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
@@ -1431,11 +1518,6 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
       <source>Angle</source>
       <translation>Kot</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Odstrani</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="176"/>
@@ -1712,6 +1794,11 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Dodaj</translation>
     </message>
     <message>
+      <location filename="../../TaskFilletParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Odstrani</translation>
+    </message>
+    <message>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
@@ -1722,11 +1809,6 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
       <source>Radius:</source>
       <translation>Polmer:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Odstrani</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="131"/>
@@ -1882,16 +1964,6 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="60"/>
-      <source>Hole parameters</source>
-      <translation>Določilke luknje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
-      <source>None</source>
-      <translation>Brez</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleParameters.cpp" line="52"/>
       <source>Counterbore</source>
       <translation>Valjno grezenje</translation>
@@ -1915,6 +1987,16 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
       <translation>Valjni vijak (zastarelo)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
+      <source>Hole parameters</source>
+      <translation>Določilke luknje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <source>None</source>
+      <translation>Brez</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -3282,6 +3364,11 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Tega ukaza ni mogoče izvesti, ker ni telesa, od katerega bi odštevali.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Izbranega predmeta ni mogoče uporabiti. Izbrani predmet mora biti del dejavnega telesa</translation>
@@ -3320,30 +3407,15 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Izberi rob, ploskev ali telo enega samega telesa.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
-      <source>Select an edge, face, or body from an active body.</source>
-      <translation>Izberi rob, ploskev ali telo iz dejavnega telesa.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2158"/>
-      <source>Please create a feature first.</source>
-      <translation>Najprej ustvari značilnost.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2167"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Izberite le eno značilnost dejavnega telesa.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>Izbira ni v Aktivnem Telesu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
+      <location filename="../../Command.cpp" line="1839"/>
+      <source>Select an edge, face, or body from an active body.</source>
+      <translation>Izberi rob, ploskev ali telo iz dejavnega telesa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3369,6 +3441,16 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
       <translation>Ni veljavnih značilnosti v tem dokumentu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2158"/>
+      <source>Please create a feature first.</source>
+      <translation>Najprej ustvari značilnost.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2167"/>
+      <source>Please select only one feature in an active body.</source>
+      <translation>Izberite le eno značilnost dejavnega telesa.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -3961,7 +4043,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Premer valjčka:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4106,9 +4188,24 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
       <translation>Določilke luknje</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="26"/>
+      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Navoj in velikost&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="39"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
       <source>Whether the hole gets a thread</source>
       <translation>Ali se luknji doda navoj</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="71"/>
+      <source>Threaded</source>
+      <translation>Z navojem</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
@@ -4154,6 +4251,26 @@ Pozor, izračunavanje lahko traja neka časa</translation>
       <translation>Vrednost zračnosti navoja po meri</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="171"/>
+      <source>Direction</source>
+      <translation>Smer</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="190"/>
+      <source>Right hand</source>
+      <translation>Desnosučni</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="206"/>
+      <source>Left hand</source>
+      <translation>Levosučni</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="222"/>
+      <source>Size</source>
+      <translation>Velikost</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
@@ -4180,14 +4297,42 @@ Na voljo le pri luknjah breh navoja</translation>
       <translation>Velika</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="299"/>
+      <source>Class</source>
+      <translation>Razred</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>Razred dopustnega odstopanja pri notranjih navojih glede na presek luknje</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="331"/>
+      <location filename="../../TaskHoleParameters.ui" line="536"/>
+      <source>Diameter</source>
+      <translation>Premer</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <source>Hole diameter</source>
       <translation>Premer luknje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="369"/>
+      <location filename="../../TaskHoleParameters.ui" line="577"/>
+      <source>Depth</source>
+      <translation>Globina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="389"/>
+      <location filename="../../TaskHoleParameters.ui" line="446"/>
+      <source>Dimension</source>
+      <translation>Mera</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="394"/>
+      <source>Through all</source>
+      <translation>Skozi vse</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="421"/>
@@ -4205,10 +4350,72 @@ Na voljo le pri luknjah breh navoja</translation>
       <translation>Koničasta (DIN76)</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="475"/>
+      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Izvrtina&lt;/b&gt;</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <location filename="../../TaskHoleParameters.ui" line="666"/>
       <source>Type</source>
       <translation>Vrsta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <source>Cut type for screw heads</source>
+      <translation>Vrsta zareza za glavice vijakov</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="520"/>
+      <source>Check to override the values predefined by the 'Type'</source>
+      <translation>Označite, če želite povoziti prednastavljene vrednosti v "Vrsti"</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="523"/>
+      <source>Custom values</source>
+      <translation>Vrednosti po meri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="615"/>
+      <source>Countersink angle</source>
+      <translation>Kot stožčaste izvrtine</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="650"/>
+      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Konica vrtanja&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="682"/>
+      <source>Flat</source>
+      <translation>Plosko</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="698"/>
+      <source>Angled</source>
+      <translation>Pod kotom</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="730"/>
+      <source>The size of the drill point will be taken into
+account for the depth of blind holes</source>
+      <translation>Pri globini slepih lukenj
+bo upoštevana velikost vrtalne konice</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
+      <source>Take into account for depth</source>
+      <translation>Upoštevaj pri globini</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="741"/>
+      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Ostalo&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="754"/>
+      <source>Tapered</source>
+      <translation>Koničast</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="767"/>
@@ -4232,131 +4439,6 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Obratno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="331"/>
-      <location filename="../../TaskHoleParameters.ui" line="536"/>
-      <source>Diameter</source>
-      <translation>Premer</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="369"/>
-      <location filename="../../TaskHoleParameters.ui" line="577"/>
-      <source>Depth</source>
-      <translation>Globina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="299"/>
-      <source>Class</source>
-      <translation>Razred</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
-      <source>Cut type for screw heads</source>
-      <translation>Vrsta zareza za glavice vijakov</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="520"/>
-      <source>Check to override the values predefined by the 'Type'</source>
-      <translation>Označite, če želite povoziti prednastavljene vrednosti v "Vrsti"</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="523"/>
-      <source>Custom values</source>
-      <translation>Vrednosti po meri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="730"/>
-      <source>The size of the drill point will be taken into
-account for the depth of blind holes</source>
-      <translation>Pri globini slepih lukenj
-bo upoštevana velikost vrtalne konice</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="734"/>
-      <source>Take into account for depth</source>
-      <translation>Upoštevaj pri globini</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="754"/>
-      <source>Tapered</source>
-      <translation>Koničast</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="171"/>
-      <source>Direction</source>
-      <translation>Smer</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="682"/>
-      <source>Flat</source>
-      <translation>Plosko</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="698"/>
-      <source>Angled</source>
-      <translation>Pod kotom</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="190"/>
-      <source>Right hand</source>
-      <translation>Desnosučni</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="206"/>
-      <source>Left hand</source>
-      <translation>Levosučni</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="71"/>
-      <source>Threaded</source>
-      <translation>Z navojem</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="39"/>
-      <source>Profile</source>
-      <translation>Profil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="615"/>
-      <source>Countersink angle</source>
-      <translation>Kot stožčaste izvrtine</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="389"/>
-      <location filename="../../TaskHoleParameters.ui" line="446"/>
-      <source>Dimension</source>
-      <translation>Mera</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="394"/>
-      <source>Through all</source>
-      <translation>Skozi vse</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="222"/>
-      <source>Size</source>
-      <translation>Velikost</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="650"/>
-      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Konica vrtanja&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="741"/>
-      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Ostalo&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="475"/>
-      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Izvrtina&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="26"/>
-      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Navoj in velikost&lt;/b&gt;</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleParameters.cpp" line="591"/>
       <source>Normal</source>
       <translation>Običajno</translation>
@@ -4364,7 +4446,7 @@ bo upoštevana velikost vrtalne konice</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>Ohlapno</translation>
     </message>
   </context>
   <context>
@@ -4383,14 +4465,14 @@ bo upoštevana velikost vrtalne konice</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>&amp;Part Design</source>
-      <translation>Oblikovanje &amp;delov</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation>&amp;Očrt</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Part Design</source>
+      <translation>Oblikovanje &amp;delov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -4430,7 +4512,7 @@ bo upoštevana velikost vrtalne konice</translation>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>Čarovnik za snovanje gredi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>

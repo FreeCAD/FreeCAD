@@ -277,6 +277,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Lehenetsia</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformatu</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Moztea</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kolorea</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -3275,24 +3294,55 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Deskargatutako lan-mahaiak</translation>
+      <source>Workbench Name</source>
+      <translation>Lan-mahaiaren izena</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kargatu hautatutako lan-mahaiak eta gehitu haien hobespen-leihoak hobespenen elkarrizketa-koadroari.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation>Automatikoki kargatu?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Kargatu hautatua</translation>
+      <source>Load Now</source>
+      <translation>Kargatu orain</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deskargatutako lan-mahai erabilgarriak&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baliabideak aurrezteko, FreeCADek ez ditu laneko mahaiak kargatzen haiek erabili nahi diren arte. Kargatzen direnean, haien funtzionaltasunari lotutako hobespen gehigarriak agertuko dira.&lt;/p&gt;&lt;p&gt;Honako laneko mahaiak daude erabilgarri zure instalazioan:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baliabideak aurrezteko, FreeCADek ez ditu laneko mahaiak kargatzen haiek erabili nahi diren arte. Kargatzen direnean, haien funtzionaltasunari lotutako hobespen gehigarriak agertuko dira.&lt;/p&gt;&lt;p&gt;Honako laneko mahaiak daude erabilgarri zure instalazioan (oraindik kargatu gabe daude):&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Lan-mahaia</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Kargatu automatikoki</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Markatuta badago</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>automatikoki kargatuko da FreeCAD abiarazten denean</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Uneko abioko modulua da hau, eta automatikoki kargatu behar da. Ikusi 'Hobespenak - Orokorra - Automatikoki kargatu' hura aldatzeko.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Kargatuta</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Kargatu orain</translation>
     </message>
   </context>
   <context>
@@ -4461,32 +4511,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Hautatu 1, 2 edo 3 puntu botoi hau sakatu baino lehen. Puntuak erpin batean, aurpegi batean edo ertz batean egon daitezke. Aurpegi edo ertz batean badago, erabiliko den puntua saguak aurpegian edo ertzean duen kokapenaren puntua izango da. Puntu bat hautatzen bada, biraketa-zentro gisa erabiliko da. Bi puntu hautatzen badira, bien arteko erdiko puntua izango da biraketa-zentroa eta ardatz pertsonalizatu berria sortuko da, beharrezkoa bada. Hiru puntu hautatzen badira, lehen puntua biraketa-zentroa izango da eta hiru puntuek definitutako planoarekiko normala den bektorean egongo da. Txosten-bistak distantziari eta angeluari buruzko informazioa ematen du. Informazio hori erabilgarria izan daiteke objektuak lerrokatzean. Shift + klik erabiltzen denean, distantzia edo angelu egokia arbelera kopiatuko da.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Y ardatzaren inguruan:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Z ardatzaren inguruan:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>X ardatzaren inguruan:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Biraketa X ardatzaren inguruan</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Biraketa Y ardatzaren inguruan</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Biraketa Z ardatzaren inguruan</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Euler angeluak (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4648,6 +4698,17 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Partial</source>
       <translation>Partziala</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>Erabili &amp;jatorrizko hautapenak</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ez ikusiarena egin mendekotasunei eta jarraitu 
+elkarrizketa-koadro hau ireki baino lehen jatorriz
+hautatutako objektuekin</translation>
     </message>
   </context>
   <context>
@@ -6002,6 +6063,18 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamiera</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Greziera</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6965,6 +7038,38 @@ Physical path: </source>
       <translation>
 
 Bide-izen fisikoa: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -8739,6 +8844,17 @@ Bide-izen fisikoa: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>Edizio modua</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Zuhaitzeko objektu bat editatzean izango den portaera definitzen du</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -9761,6 +9877,10 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Eragiketa bereziak</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonometrikoa</translation>
     </message>
   </context>
   <context>

@@ -362,7 +362,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation type="unfinished">Max mesh deviation:</translation>
+      <translation>Максимальне відхилення полігональної сітки:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
@@ -449,7 +449,7 @@ Do you want to continue?</source>
       <location filename="../../DlgSettingsRay.ui" line="298"/>
       <location filename="../../DlgSettingsRay.ui" line="314"/>
       <source>Used by utility tools</source>
-      <translation type="unfinished">Used by utility tools</translation>
+      <translation>Використовується допоміжними інструментами</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="291"/>

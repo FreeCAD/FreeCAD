@@ -2,6 +2,88 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Engranaje envolvente...</translation>
+    </message>
+    <message>
+      <location filename="InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Crear o editar la precisión de la herramienta definida.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Piñón...</translation>
+    </message>
+    <message>
+      <location filename="SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Crear o editar la precisión del avance.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Asistente de diseño de engranajes.</translation>
+    </message>
+    <message>
+      <location filename="WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Iniciar el asistente de diseño de engranajes.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Longitud [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Diámetro [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Diámetro interior [mm]</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Tipo de restricción</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Tipo de borde inicial</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Tamaño del borde inicial</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Tipo de borde final</translation>
+    </message>
+    <message>
+      <location filename="WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Tamaño del borde final</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
       <location filename="../../Command.cpp" line="1692"/>
@@ -16,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation>Hacer un barrido al boceto seleccionado a lo largo de una hélice</translation>
+      <translation>Hacer un barrido al croquis seleccionado a lo largo de una hélice</translation>
     </message>
   </context>
   <context>
@@ -353,7 +435,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
-      <translation>Definir esquina</translation>
+      <translation>Definir punto de trabajo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
@@ -570,7 +652,7 @@
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Hacer un barrido al boceto seleccionado a lo largo de una hélice y eliminarlo del cuerpo</translation>
+      <translation>Hacer un barrido al croquis seleccionado a lo largo de una hélice y eliminarlo del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -606,7 +688,7 @@
     <message>
       <location filename="../../Command.cpp" line="1545"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Vaciar del cuerpo un barrido del boceto seleccionado a través de una trayectoria u otros perfiles,</translation>
+      <translation>Vaciar del cuerpo un barrido del croquis seleccionado a través de una trayectoria u otros perfiles,</translation>
     </message>
   </context>
   <context>
@@ -985,16 +1067,16 @@
       <translation>Primitivas geométricas</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
-      <source>Width:</source>
-      <translation>Ancho:</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="153"/>
       <source>Length:</source>
       <translation>Longitud:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
+      <source>Width:</source>
+      <translation>Ancho:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1004,12 +1086,6 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
       <translation>Altura:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
-      <source>Angle:</source>
-      <translation>Ángulo:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1062,6 +1138,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2:</source>
       <translation>Radio 2:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
+      <source>Angle:</source>
+      <translation>Ángulo:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
@@ -1233,14 +1315,14 @@ Si es cero, es igual a Radio2</translation>
       <translation>Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
-      <source>End point</source>
-      <translation>Punto final</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
       <translation>Punto de inicio</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
+      <source>End point</source>
+      <translation>Punto final</translation>
     </message>
   </context>
   <context>
@@ -1389,6 +1471,11 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>Añadir</translation>
     </message>
     <message>
+      <location filename="../../TaskChamferParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Quitar</translation>
+    </message>
+    <message>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
@@ -1434,11 +1521,6 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Quitar</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="176"/>
@@ -1715,6 +1797,11 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>Añadir</translation>
     </message>
     <message>
+      <location filename="../../TaskFilletParameters.ui" line="40"/>
+      <source>Remove</source>
+      <translation>Quitar</translation>
+    </message>
+    <message>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
@@ -1725,11 +1812,6 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
       <source>Radius:</source>
       <translation>Radio:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFilletParameters.ui" line="40"/>
-      <source>Remove</source>
-      <translation>Quitar</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="131"/>
@@ -1885,16 +1967,6 @@ haga clic de nuevo para finalizar la selección</translation>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="60"/>
-      <source>Hole parameters</source>
-      <translation>Parámetros de taladro</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
-      <source>None</source>
-      <translation>Nada</translation>
-    </message>
-    <message>
       <location filename="../../TaskHoleParameters.cpp" line="52"/>
       <source>Counterbore</source>
       <translation>Cajeado</translation>
@@ -1918,6 +1990,16 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
       <translation>Cabeza de tornillo (obsoleto)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
+      <source>Hole parameters</source>
+      <translation>Parámetros de taladro</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <source>None</source>
+      <translation>Nada</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -3284,6 +3366,11 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>No se puede usar este comando ya que no hay un sólido del que restar.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1057"/>
+      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
+      <translation>Asegúrate de que el cuerpo contenga una característica antes de intentar un comando sustractivo.</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>No se puede utilizar el objeto seleccionado. El objeto seleccionado debe pertenecer al cuerpo activo</translation>
@@ -3322,30 +3409,15 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>Seleccione un borde, cara o cuerpo de un solo cuerpo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
-      <source>Select an edge, face, or body from an active body.</source>
-      <translation>Seleccione un borde, cara o cuerpo de un cuerpo activo.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2158"/>
-      <source>Please create a feature first.</source>
-      <translation>Por favor, cree una característica primero.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2167"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Por favor, seleccione sólo una característica en un cuerpo activo.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1838"/>
       <location filename="../../Command.cpp" line="2166"/>
       <source>Selection is not in Active Body</source>
       <translation>La selección no está en un Cuerpo Activo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
-      <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Asegúrate de que el cuerpo contenga una característica antes de intentar un comando sustractivo.</translation>
+      <location filename="../../Command.cpp" line="1839"/>
+      <source>Select an edge, face, or body from an active body.</source>
+      <translation>Seleccione un borde, cara o cuerpo de un cuerpo activo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -3371,6 +3443,16 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../Command.cpp" line="2157"/>
       <source>No valid features in this document</source>
       <translation>operaciones no válidas en este documento</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2158"/>
+      <source>Please create a feature first.</source>
+      <translation>Por favor, cree una característica primero.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2167"/>
+      <source>Please select only one feature in an active body.</source>
+      <translation>Por favor, seleccione sólo una característica en un cuerpo activo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -4103,9 +4185,24 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
       <translation>Parámetros de tarea taladro</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="26"/>
+      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Roscado y tamaño&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="39"/>
+      <source>Profile</source>
+      <translation>Perfíl</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="68"/>
       <source>Whether the hole gets a thread</source>
       <translation>Si el agujero tendrá rosca</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="71"/>
+      <source>Threaded</source>
+      <translation>Roscado</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="84"/>
@@ -4151,6 +4248,26 @@ Tenga en cuenta que el cálculo puede tomar algún tiempo</translation>
       <translation>Valor de holgura de rosca personalizado</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="171"/>
+      <source>Direction</source>
+      <translation>Dirección</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="190"/>
+      <source>Right hand</source>
+      <translation>Mano derecha</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="206"/>
+      <source>Left hand</source>
+      <translation>Mano izquierda</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="222"/>
+      <source>Size</source>
+      <translation>Tamaño</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
@@ -4177,14 +4294,42 @@ Sólo disponible para agujeros sin rosca</translation>
       <translation>Ancho</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="299"/>
+      <source>Class</source>
+      <translation>Clase</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>Clase de tolerancia para los agujeros roscados según el perfil del agujero</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="331"/>
+      <location filename="../../TaskHoleParameters.ui" line="536"/>
+      <source>Diameter</source>
+      <translation>Diámetro</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <source>Hole diameter</source>
       <translation>Diámetro del agujero</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="369"/>
+      <location filename="../../TaskHoleParameters.ui" line="577"/>
+      <source>Depth</source>
+      <translation>Profundidad</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="389"/>
+      <location filename="../../TaskHoleParameters.ui" line="446"/>
+      <source>Dimension</source>
+      <translation>Cota</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="394"/>
+      <source>Through all</source>
+      <translation>A través de todos</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="421"/>
@@ -4202,10 +4347,72 @@ Sólo disponible para agujeros sin rosca</translation>
       <translation>Roscado (DIN76)</translation>
     </message>
     <message>
+      <location filename="../../TaskHoleParameters.ui" line="475"/>
+      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Orificio de corte&lt;/b&gt;</translation>
+    </message>
+    <message>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <location filename="../../TaskHoleParameters.ui" line="666"/>
       <source>Type</source>
       <translation>Tipo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <source>Cut type for screw heads</source>
+      <translation>Tipo de corte para cabezas de tornillo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="520"/>
+      <source>Check to override the values predefined by the 'Type'</source>
+      <translation>Marcar para reemplazar los valores predefinidos por el 'Tipo'</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="523"/>
+      <source>Custom values</source>
+      <translation>Valores personalizados</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="615"/>
+      <source>Countersink angle</source>
+      <translation>Ángulo de avellanado</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="650"/>
+      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Taladro del punto&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="682"/>
+      <source>Flat</source>
+      <translation>Plano</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="698"/>
+      <source>Angled</source>
+      <translation>Angular</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="730"/>
+      <source>The size of the drill point will be taken into
+account for the depth of blind holes</source>
+      <translation>El tamaño del punto de taladro se tendrá en cuenta en
+la profundidad de los agujeros ciegos</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
+      <source>Take into account for depth</source>
+      <translation>Tener en cuenta para profundidad</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="741"/>
+      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
+      <translation>&lt;b&gt;Miscelánea&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="754"/>
+      <source>Tapered</source>
+      <translation>Cónica</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="767"/>
@@ -4227,131 +4434,6 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <location filename="../../TaskHoleParameters.ui" line="792"/>
       <source>Reversed</source>
       <translation>Invertido</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="331"/>
-      <location filename="../../TaskHoleParameters.ui" line="536"/>
-      <source>Diameter</source>
-      <translation>Diámetro</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="369"/>
-      <location filename="../../TaskHoleParameters.ui" line="577"/>
-      <source>Depth</source>
-      <translation>Profundidad</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="299"/>
-      <source>Class</source>
-      <translation>Clase</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
-      <source>Cut type for screw heads</source>
-      <translation>Tipo de corte para cabezas de tornillo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="520"/>
-      <source>Check to override the values predefined by the 'Type'</source>
-      <translation>Marcar para reemplazar los valores predefinidos por el 'Tipo'</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="523"/>
-      <source>Custom values</source>
-      <translation>Valores personalizados</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="730"/>
-      <source>The size of the drill point will be taken into
-account for the depth of blind holes</source>
-      <translation>El tamaño del punto de taladro se tendrá en cuenta en
-la profundidad de los agujeros ciegos</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="734"/>
-      <source>Take into account for depth</source>
-      <translation>Tener en cuenta para profundidad</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="754"/>
-      <source>Tapered</source>
-      <translation>Cónica</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="171"/>
-      <source>Direction</source>
-      <translation>Dirección</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="682"/>
-      <source>Flat</source>
-      <translation>Plano</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="698"/>
-      <source>Angled</source>
-      <translation>Angular</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="190"/>
-      <source>Right hand</source>
-      <translation>Mano derecha</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="206"/>
-      <source>Left hand</source>
-      <translation>Mano izquierda</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="71"/>
-      <source>Threaded</source>
-      <translation>Roscado</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="39"/>
-      <source>Profile</source>
-      <translation>Perfíl</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="615"/>
-      <source>Countersink angle</source>
-      <translation>Ángulo de avellanado</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="389"/>
-      <location filename="../../TaskHoleParameters.ui" line="446"/>
-      <source>Dimension</source>
-      <translation>Cota</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="394"/>
-      <source>Through all</source>
-      <translation>A través de todos</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="222"/>
-      <source>Size</source>
-      <translation>Tamaño</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="650"/>
-      <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Taladro del punto&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="741"/>
-      <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Miscelánea&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="475"/>
-      <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Orificio de corte&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.ui" line="26"/>
-      <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Roscado y tamaño&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="591"/>
@@ -4380,14 +4462,14 @@ la profundidad de los agujeros ciegos</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>&amp;Part Design</source>
-      <translation>&amp;Part Design</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
       <translation>&amp;Croquis</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Part Design</source>
+      <translation>&amp;Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

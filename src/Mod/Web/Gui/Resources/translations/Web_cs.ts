@@ -128,7 +128,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../AppWebGui.cpp" line="89"/>
       <location filename="../../BrowserView.cpp" line="713"/>
       <source>Browser</source>
       <translation>Prohlížeč</translation>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="524"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Při načítání souboru došlo k vážným chybám. Některá data mohla být změněna nebo vůbec neobnovena. Uložení projektu s největší pravděpodobností povede ke ztrátě dat.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="684"/>

@@ -629,6 +629,9 @@ void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
         Value.setValue(v.getValue());
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 App::DocumentObjectExecReturn *Thickness::execute(void)
