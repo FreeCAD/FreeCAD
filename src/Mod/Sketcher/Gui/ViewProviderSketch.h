@@ -370,6 +370,8 @@ protected:
 
         /// Angle to rotate an icon
         double iconRotation;
+
+        bool visible;
     };
 
     /// Internal type used for drawing constraint icons

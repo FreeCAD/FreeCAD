@@ -337,7 +337,7 @@ bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName
          std::getline(inFile,line);
          std::string nameTag = line.substr(0,1);
          std::string patternName;
-         unsigned long int commaPos;
+         std::size_t commaPos;
          if ((nameTag == ";")  ||
              (nameTag == " ")  ||
              (line.empty()) )  {           //is cr/lf empty?
@@ -394,7 +394,7 @@ std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
         std::string line;
         std::getline(inFile,line);
         std::string nameTag = line.substr(0,1);               //dupl code here
-        unsigned long int commaPos;
+        std::size_t commaPos;
         if (nameTag == "*") {  //found a pattern
             commaPos = line.find(',',1);
             std::string patternName;

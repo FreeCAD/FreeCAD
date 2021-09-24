@@ -69,6 +69,7 @@
 #include "DocumentPy.h"
 #include "View.h"
 #include "View3DPy.h"
+#include "UiLoader.h"
 #include "WidgetFactory.h"
 #include "Command.h"
 #include "Macro.h"

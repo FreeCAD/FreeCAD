@@ -25,6 +25,7 @@
 #define GUI_DIALOG_PROPERTYPAGE_H
 
 #include <QWidget>
+#include <FCGlobal.h>
 
 namespace Gui {
 namespace Dialog {

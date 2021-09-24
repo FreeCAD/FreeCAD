@@ -26,7 +26,7 @@ def main():
             output = a
     git = SubWCRev.GitControl()
     
-    if(git.extractInfo(input)):
+    if(git.extractInfo(input, "")):
         print(git.hash)
         print(git.branch)
         print(git.rev[0:4])

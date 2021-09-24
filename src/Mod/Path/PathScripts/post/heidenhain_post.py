@@ -238,7 +238,7 @@ def processArguments(argstring):
             SHOW_EDITOR = False
         if args.no_warns:
             SKIP_WARNS = True
-    except:
+    except Exception:
         return False
 
     return True

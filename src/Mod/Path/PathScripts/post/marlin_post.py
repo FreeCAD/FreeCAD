@@ -319,7 +319,7 @@ def dump(obj):
                 print('==============\n', attr_text)
                 if 'mm/s' in attr_text:
                     print('===> metric values <===')
-        except:  # Insignificant errors
+        except Exception:  # Insignificant errors
             # print('==>', obj, attr)
             pass
 

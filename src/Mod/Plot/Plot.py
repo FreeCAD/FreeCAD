@@ -199,7 +199,7 @@ def legend(status=True, pos=None, fontsize=None):
             # Get resultant position
             try:
                 fax = axes.get_frame().get_extents()
-            except:
+            except Exception:
                 fax = axes.patch.get_extents()
             fl = l.get_frame()
             plt.legPos = (
