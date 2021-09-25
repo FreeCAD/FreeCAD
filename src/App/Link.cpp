@@ -965,7 +965,7 @@ int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reas
     if(subname != element && isSubnameHidden(getContainer(),subname))
         return 0;
 
-    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    int index = _getShowElementValue()?getElementIndex(subname):getArrayIndex(subname);
     if (index < 0 && !_getShowElementValue())
         return -1;
 
