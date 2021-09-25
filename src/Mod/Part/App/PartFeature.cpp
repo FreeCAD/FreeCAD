@@ -804,7 +804,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
             TopoShape shape;
 
-            if(!subObj || baseShape.isNull()) {
+            if(!subObj || baseShape.isNull() || mat.hasScale() < 0) {
                 shape = _getTopoShape(owner,sub.c_str(),true,0,&subObj,false,false,nextHiddens,nextLink);
                 if(shape.isNull())
                     continue;
