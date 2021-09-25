@@ -36,10 +36,6 @@ using namespace SpreadsheetGui;
 
 /* TRANSLATOR SpreadsheetGui::DlgSettingsImp */
 
-/**
- *  Constructs a DlgSettingsImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f' 
- */
 DlgSettingsImp::DlgSettingsImp( QWidget* parent )
   : PreferencePage( parent )
   , ui(new Ui_DlgSettings)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2021 Mark Ganson <TheMarkster>                          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@ class Ui_DlgSettings;
 /**
  * The DlgSettingsImp class implements a preference page to change settings
  * for the Spreadsheet workbench.
- * \author Mark Ganson <TheMarkster>
+ * /author TheMarkster, based on work by Jürgen Riegel
  */
 class DlgSettingsImp : public Gui::Dialog::PreferencePage
 {
