@@ -893,8 +893,10 @@ PyObject *PropertyShapeCache::getPyObject() {
 void PropertyShapeCache::setPyObject(PyObject *value) {
     if(!value)
         return;
-    if(value == Py_None)
+    if(value == Py_None) {
         cache.clear();
+        return;
+    }
     App::PropertyStringList prop;
     prop.setPyObject(value);
     for(const auto &sub : prop.getValues())
