@@ -237,6 +237,7 @@ private:
     static const char* DrawStyleEnums[];
 
     Part::TopoShape cachedShape;
+    boost::signals2::scoped_connection conn;
 };
 
 }

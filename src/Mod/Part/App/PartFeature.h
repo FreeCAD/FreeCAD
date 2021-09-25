@@ -148,6 +148,8 @@ public:
 
     virtual const std::vector<const char*>& getElementTypes(bool all=false) const override;
 
+    boost::signals2::signal<void (App::Document *)> signalMapShapeColors;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;

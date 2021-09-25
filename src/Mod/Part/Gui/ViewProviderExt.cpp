@@ -611,6 +611,12 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // call parent attach method
     ViewProviderGeometryObject::attach(pcFeat);
 
+    if (auto feat = Base::freecad_dynamic_cast<Part::Feature>(pcFeat)) {
+        conn = feat->signalMapShapeColors.connect([this](App::Document *doc) {
+            updateColors(doc, true);
+        });
+    }
+
     // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
     auto* pcNormalRoot = new SoSeparator();
     auto* pcFlatRoot = new SoSeparator();
