@@ -1717,7 +1717,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<Sub value=\"";
         if(exporting) {
             std::string exportName;
-            writer.Stream() << exportSubName(exportName,_pcLinkSub,sub.c_str());
+            writer.Stream() << encodeAttribute(exportSubName(exportName,_pcLinkSub,sub.c_str()));
             if(shadow.second.size() && shadow.first == _cSubList[i])
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
@@ -2555,7 +2555,7 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
         if(exporting) {
             std::string exportName;
-            writer.Stream() << exportSubName(exportName,obj,sub.c_str());
+            writer.Stream() << encodeAttribute(exportSubName(exportName,obj,sub.c_str()));
             if(shadow.second.size() && _lSubList[i]==shadow.first)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
@@ -3735,7 +3735,8 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
         if(exporting) {
             std::string exportName;
-            writer.Stream() << "\" sub=\"" << exportSubName(exportName,_pcLink,sub.c_str());
+            writer.Stream() << "\" sub=\"" << 
+                encodeAttribute(exportSubName(exportName,_pcLink,sub.c_str()));
             if(shadowSub.second.size() && shadowSub.first==subName)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         }else{
@@ -3760,7 +3761,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             writer.Stream() << writer.ind() << "<Sub value=\"";
             if(exporting) {
                 std::string exportName;
-                writer.Stream() << exportSubName(exportName,_pcLink,sub.c_str());
+                writer.Stream() << encodeAttribute(exportSubName(exportName,_pcLink,sub.c_str()));
                 if(shadow.second.size() && shadow.first == _SubList[i])
                     writer.Stream() << "\" " ATTR_MAPPED "=\"1";
             } else {
