@@ -6,7 +6,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Общие настройки</translation>
+      <translation>Основные настройки</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="26"/>

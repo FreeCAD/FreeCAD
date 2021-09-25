@@ -346,15 +346,31 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
-PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
+PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
 {
     const char *expr;
-    if (!PyArg_ParseTuple(args, "s", &expr))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "s", &expr))
+        return nullptr;
+
+    // HINT:
+    // The standard behaviour of Python for class methods is to always pass the class
+    // object as first argument.
+    // For FreeCAD-specific types the behaviour is a bit different:
+    // When calling this method for an instance then this is passed as first argument
+    // and otherwise the class object is passed.
+    // This behaviour is achieved by the function _getattr() that passed 'this' to
+    // PyCFunction_New().
+    //
+    // evalExpression() is a class method and thus 'self' can either be an instance of
+    // DocumentObjectPy or a type object.
+    App::DocumentObject* obj = nullptr;
+    if (self && PyObject_TypeCheck(self, &DocumentObjectPy::Type)) {
+        obj = static_cast<DocumentObjectPy*>(self)->getDocumentObjectPtr();
+    }
 
     PY_TRY {
-        std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
-        if(shared_expr)
+        std::shared_ptr<Expression> shared_expr(Expression::parse(obj, expr));
+        if (shared_expr)
             return Py::new_reference_to(shared_expr->getPyValue());
         Py_Return;
     } PY_CATCH

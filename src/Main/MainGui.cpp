@@ -127,6 +127,11 @@ int main( int argc, char ** argv )
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
     putenv("PYTHONPATH=");
+#elif defined(__MINGW32__)
+    const char* mingw_prefix = getenv("MINGW_PREFIX");
+    const char* py_home = getenv("PYTHONHOME");
+    if (!py_home && mingw_prefix)
+        _putenv_s("PYTHONHOME", mingw_prefix);
 #else
     _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288

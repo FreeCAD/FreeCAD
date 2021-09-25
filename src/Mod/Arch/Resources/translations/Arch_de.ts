@@ -2061,7 +2061,7 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Die berechnete Länge des Extrusionspfades</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>

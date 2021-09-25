@@ -45,11 +45,11 @@ class ViewProviderWorkingPlaneProxy:
 
         _tip = "The display length of this section plane"
         vobj.addProperty("App::PropertyLength", "DisplaySize",
-                         "Arch", QT_TRANSLATE_NOOP("App::Property", _tip))
+                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
 
         _tip = "The size of the arrows of this section plane"
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Arch",QT_TRANSLATE_NOOP("App::Property", _tip))
+        vobj.addProperty("App::PropertyLength", "ArrowSize",
+                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
 
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
 

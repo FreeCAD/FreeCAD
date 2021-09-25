@@ -99,7 +99,7 @@ public:
      * point \a rP must be near to this edge and must not be coincident with any
      * corner vertices of the facet.
      */
-    void SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide,
+    bool SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide,
                        const Base::Vector3f& rP);
     /**
      * Splits the facet with index \a ulFacetPos into up to three facets. The points
