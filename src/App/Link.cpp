@@ -1299,7 +1299,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
             }
             auto matrixList = getMatrixListProperty();
             if(matrixList && matrixList->getSize()>idx)
-                *mat = (*matrixList)[idx] * (*mat);
+                *mat *= (*matrixList)[idx];
         }
     }
 
