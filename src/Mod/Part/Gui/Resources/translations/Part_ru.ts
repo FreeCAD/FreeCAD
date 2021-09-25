@@ -261,6 +261,16 @@ It will create a 'Compound Filter' for each shape.</source>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Получить все фрагменты булевой операции</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Разделение объектов там, где они пересекаются</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Логические фрагменты</translation>
@@ -348,16 +358,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Надрезать</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Получить все фрагменты булевой операции</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Разделение объектов там, где они пересекаются</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -2352,7 +2352,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Притупить фаской выбранные ребра фигуры</translation>
+      <translation>Добавить фаску на выбранные ребра фигуры</translation>
     </message>
   </context>
   <context>
@@ -2675,12 +2675,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Лофт...</translation>
+      <translation>Профиль...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Утилита лофта</translation>
+      <translation>Утилита для профиля</translation>
     </message>
   </context>
   <context>
@@ -4688,7 +4688,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Лофт</translation>
+      <translation>Профиль</translation>
     </message>
   </context>
   <context>
@@ -5148,7 +5148,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Лофт</translation>
+      <translation>Профиль</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>

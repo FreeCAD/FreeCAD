@@ -541,20 +541,12 @@ void ConstraintView::updateActiveStatus()
 
 void ConstraintView::showConstraints()
 {
-    QList<QListWidgetItem *> items = selectedItems();
-    for (auto it : items) {
-        if (it->checkState() != Qt::Checked)
-            it->setCheckState(Qt::Checked);
-    }
+    Q_EMIT emitShowSelection3DVisibility();
 }
 
 void ConstraintView::hideConstraints()
 {
-    QList<QListWidgetItem *> items = selectedItems();
-    for (auto it : items) {
-        if (it->checkState() != Qt::Unchecked)
-            it->setCheckState(Qt::Unchecked);
-    }
+    Q_EMIT emitHideSelection3DVisibility();
 }
 
 void ConstraintView::modifyCurrentItem()
@@ -679,6 +671,26 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         ui->extendedInformation, SIGNAL(stateChanged(int)),
                      this                     , SLOT  (on_extendedInformation_stateChanged(int))
         );
+    QObject::connect(
+        ui->showAllButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_showAllButton_clicked(bool))
+        );
+    QObject::connect(
+        ui->hideAllButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_hideAllButton_clicked(bool))
+        );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(emitHideSelection3DVisibility()),
+        this                     , SLOT  (on_listWidgetConstraints_emitHideSelection3DVisibility())
+        );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(emitShowSelection3DVisibility()),
+        this                     , SLOT  (on_listWidgetConstraints_emitShowSelection3DVisibility())
+        );
+    QObject::connect(
+        ui->visualisationTrackingFilter, SIGNAL(stateChanged(int)),
+        this                     , SLOT  (on_visualisationTrackingFilter_stateChanged(int))
+        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -696,6 +708,85 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
+}
+
+void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget target)
+{
+    assert(sketchView);
+    const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
+
+    bool doCommit = false;
+
+    auto selecteditems = ui->listWidgetConstraints->selectedItems();
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+
+    for(int i = 0; i < ui->listWidgetConstraints->count(); ++i)
+    {
+        QListWidgetItem* item = ui->listWidgetConstraints->item(i);
+
+        bool processItem = false;
+
+        if(target == ActionTarget::All) {
+            processItem = !item->isHidden();
+        }
+        else if(target == ActionTarget::Selected) {
+            if(std::find(selecteditems.begin(), selecteditems.end(), item) != selecteditems.end())
+                processItem = true;
+        }
+
+        if(processItem) { // The item is shown in the filtered list
+            const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
+
+            if (!it)
+                continue;
+
+            // must change state is shown and is to be hidden or hidden and must change state is shown
+            if((it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace() && !show) ||
+               (it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace() && show)) {
+
+
+                try {
+                    Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                                it->ConstraintNbr,
+                                show?"False":"True");
+
+                    doCommit = true;
+                }
+                catch (const Base::Exception & e) {
+                    Gui::Command::abortCommand();
+
+                    QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                                QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+
+                    return;
+                }
+            }
+        }
+    }
+
+    if(doCommit)
+        Gui::Command::commitCommand();
+}
+
+void TaskSketcherConstrains::on_showAllButton_clicked(bool)
+{
+    changeFilteredVisibility(true);
+}
+
+void TaskSketcherConstrains::on_hideAllButton_clicked(bool)
+{
+    changeFilteredVisibility(false);
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_emitHideSelection3DVisibility()
+{
+    changeFilteredVisibility(false, ActionTarget::Selected);
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_emitShowSelection3DVisibility()
+{
+    changeFilteredVisibility(true, ActionTarget::Selected);
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -743,13 +834,25 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
 
 void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
 {
-    slotConstraintsChanged();
+    // enforce constraint visibility
+    bool visibilityTracksFilter = ui->visualisationTrackingFilter->isChecked();
+
+    if(visibilityTracksFilter)
+        change3DViewVisibilityToTrackFilter(); // it will call slotConstraintChanged via update mechanism
+    else
+        slotConstraintsChanged();
 }
 
 void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
 {
     Q_UNUSED(state);
     slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_visualisationTrackingFilter_stateChanged(int state)
+{
+    if(state)
+        change3DViewVisibilityToTrackFilter();
 }
 
 void TaskSketcherConstrains::on_extendedInformation_stateChanged(int state)
@@ -872,6 +975,149 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     inEditMode = false;
 }
 
+void TaskSketcherConstrains::change3DViewVisibilityToTrackFilter()
+{
+    assert(sketchView);
+    // Build up ListView with the constraints
+    const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
+    const std::vector< Sketcher::Constraint * > &vals = sketch->Constraints.getValues();
+
+    bool doCommit = false;
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+
+    for(std::size_t i = 0; i < vals.size(); ++i) {
+        ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+
+        bool visible = !isConstraintFiltered(it);
+
+        // If the constraint is filteredout and it was previously shown in 3D view
+        if( !visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
+            try {
+                Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                              it->ConstraintNbr,
+                              "True");
+
+               doCommit = true;
+
+            }
+            catch (const Base::Exception & e) {
+                Gui::Command::abortCommand();
+
+                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+
+               return;
+            }
+        }
+        else if( visible && it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace() ) {
+            try {
+                Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                              it->ConstraintNbr,
+                              "False");
+
+                doCommit = true;
+
+            }
+            catch (const Base::Exception & e) {
+                Gui::Command::abortCommand();
+
+                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+
+               return;
+            }
+        }
+    }
+
+     if(doCommit)
+          Gui::Command::commitCommand();
+
+}
+
+bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
+{
+    assert(sketchView);
+    const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
+    const std::vector< Sketcher::Constraint * > &vals = sketch->Constraints.getValues();
+    ConstraintItem * it = static_cast<ConstraintItem*>(item);
+    const Sketcher::Constraint * constraint = vals[it->ConstraintNbr];
+
+    int Filter = ui->comboBoxFilter->currentIndex();
+    bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
+
+    bool visible = true;
+    bool showAll = (Filter == FilterValue::All);
+    bool showGeometric = (Filter == FilterValue::Geometric);
+    bool showDatums = (Filter == FilterValue::Datums);
+    bool showNamed = (Filter == FilterValue::Named && !(constraint->Name.empty()));
+    bool showNonDriving = (Filter == FilterValue::NonDriving && !constraint->isDriving);
+
+    switch(constraint->Type) {
+        case Sketcher::Horizontal:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Horizontal);
+            break;
+        case Sketcher::Vertical:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Vertical);
+            break;
+        case Sketcher::Coincident:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Coincident);
+            break;
+        case Sketcher::PointOnObject:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::PointOnObject);
+            break;
+        case Sketcher::Parallel:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Parallel);
+            break;
+        case Sketcher::Perpendicular:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Perpendicular);
+            break;
+        case Sketcher::Tangent:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Tangent);
+            break;
+        case Sketcher::Equal:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Equality);
+            break;
+        case Sketcher::Symmetric:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Symmetric);
+            break;
+        case Sketcher::Block:
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Block);
+            break;
+        case Sketcher::Distance:
+            visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Distance);
+            break;
+        case Sketcher::DistanceX:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::HorizontalDistance);
+            break;
+        case Sketcher::DistanceY:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::VerticalDistance);
+            break;
+        case Sketcher::Radius:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Radius);
+            break;
+        case Sketcher::Weight:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Weight);
+            break;
+        case Sketcher::Diameter:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Diameter);
+            break;
+        case Sketcher::Angle:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Angle);
+            break;
+        case Sketcher::SnellsLaw:
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::SnellsLaw);
+            break;
+        case Sketcher::InternalAlignment:
+            visible = (( showAll || showGeometric || showNamed || Filter == FilterValue::InternalAlignment) &&
+                        (!hideInternalAlignment || (Filter == FilterValue::InternalAlignment)));
+        default:
+            break;
+    }
+
+    return !visible;
+}
+
 void TaskSketcherConstrains::slotConstraintsChanged(void)
 {
     assert(sketchView);
@@ -906,54 +1152,11 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     ui->listWidgetConstraints->blockSignals(false);
 
     /* Update filtering */
-    int Filter = ui->comboBoxFilter->currentIndex();
     for(std::size_t i = 0; i < vals.size(); ++i) {
         const Sketcher::Constraint * constraint = vals[i];
         ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-        bool visible = true;
 
-        /* Filter
-         0 <=> All
-         1 <=> Normal
-         2 <=> Datums
-         3 <=> Named
-         4 <=> Non-Driving
-        */
-
-        bool showNormal = (Filter < 2);
-        bool showDatums = (Filter < 3);
-        bool showNamed = (Filter == 3 && !(constraint->Name.empty()));
-        bool showNonDriving = (Filter == 4 && !constraint->isDriving);
-        bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
-
-        switch(constraint->Type) {
-        case Sketcher::Horizontal:
-        case Sketcher::Vertical:
-        case Sketcher::Coincident:
-        case Sketcher::PointOnObject:
-        case Sketcher::Parallel:
-        case Sketcher::Perpendicular:
-        case Sketcher::Tangent:
-        case Sketcher::Equal:
-        case Sketcher::Symmetric:
-        case Sketcher::Block:
-            visible = showNormal || showNamed;
-            break;
-        case Sketcher::Distance:
-        case Sketcher::DistanceX:
-        case Sketcher::DistanceY:
-        case Sketcher::Radius:
-        case Sketcher::Weight:
-        case Sketcher::Diameter:
-        case Sketcher::Angle:
-        case Sketcher::SnellsLaw:
-            visible = (showDatums || showNamed || showNonDriving);
-            break;
-        case Sketcher::InternalAlignment:
-            visible = ((showNormal || showNamed) && !hideInternalAlignment);
-        default:
-            break;
-        }
+        bool visible = !isConstraintFiltered(it);
 
         // block signals as there is no need to invoke the
         // on_listWidgetConstraints_itemChanged() slot in
@@ -964,6 +1167,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         it->setHidden(!visible);
         it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
         model->blockSignals(block);
+
     }
 }
 

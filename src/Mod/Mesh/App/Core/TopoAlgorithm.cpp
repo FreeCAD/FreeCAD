@@ -121,9 +121,7 @@ bool MeshTopoAlgorithm::SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& 
       // Point is on the edge
       if ( cNo3.Length() < FLOAT_EPS )
       {
-        unsigned long uCt = _rclMesh.CountFacets();
-        SplitOpenEdge(ulFacetPos, i, rP);
-        return uCt < _rclMesh.CountFacets();
+        return SplitOpenEdge(ulFacetPos, i, rP);
       }
       else if ( (rP - rPt1)*cNo2 > 0.0f && fD2 >= fTV && fTV >= 0.0f )
       {
@@ -719,18 +717,18 @@ bool MeshTopoAlgorithm::SplitEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour,
     return true;
 }
 
-void MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide, const Base::Vector3f& rP)
+bool MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSide, const Base::Vector3f& rP)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];
     if (rclF._aulNeighbours[uSide] != FACET_INDEX_MAX)
-        return; // not open
+        return false; // not open
 
     PointIndex uPtCnt = _rclMesh._aclPointArray.size();
     PointIndex uPtInd = this->GetOrAddIndex(rP);
     FacetIndex ulSize = _rclMesh._aclFacetArray.size();
 
     if (uPtInd < uPtCnt)
-        return; // the given point is already part of the mesh => creating new facets would be an illegal operation
+        return false; // the given point is already part of the mesh => creating new facets would be an illegal operation
 
     // adjust the neighbourhood
     if (rclF._aulNeighbours[(uSide+1)%3] != FACET_INDEX_MAX)
@@ -750,6 +748,7 @@ void MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos, unsigned short uSid
 
     // insert new facets
     _rclMesh._aclFacetArray.push_back(cNew);
+    return true;
 }
 
 bool MeshTopoAlgorithm::Vertex_Less::operator ()(const Base::Vector3f& u,

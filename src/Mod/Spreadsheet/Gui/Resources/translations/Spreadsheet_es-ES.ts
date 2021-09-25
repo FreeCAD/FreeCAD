@@ -576,16 +576,16 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insertar %n fila(s) debajo</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insertar %n filas debajo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insertar %n filas no contiguas</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insertar %n filas no contiguas</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -611,9 +611,9 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Insertar %n columnas no contiguas</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insertar %n columnas no contiguas</numerusform>
       </translation>
     </message>
     <message numerus="yes">

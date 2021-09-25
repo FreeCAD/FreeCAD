@@ -112,6 +112,13 @@ const QByteArray& ServerEvent::request() const
 AppServer::AppServer(QObject* parent)
   : QTcpServer(parent)
 {
+    PyObject* mod = PyImport_ImportModule("__main__");
+    if (mod) {
+        module = mod;
+    }
+    else {
+        throw Py::RuntimeError("Cannot load __main__ module");
+    }
 }
 
 void AppServer::incomingConnection(qintptr socket)
@@ -147,10 +154,33 @@ void AppServer::customEvent(QEvent* e)
     QByteArray msg = ev->request();
     QTcpSocket* socket = ev->socket();
 
-    std::string str = runPython(msg);
+    std::string str;
+    if (msg.startsWith("GET ")) {
+        msg = QByteArray("GET = ") + msg.mid(4);
+        str = runPython(msg);
+        if (str == "None") {
+            str = getRequest(str);
+        }
+    }
+    else {
+        str = runPython(msg);
+    }
 
     socket->write(str.c_str());
     socket->close();
+}
+
+std::string AppServer::getRequest(const std::string& str) const
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object attr = module.getAttr(std::string("GET"));
+        return attr.as_string();
+    }
+    catch (Py::Exception &e) {
+        e.clear();
+        return str;
+    }
 }
 
 std::string AppServer::runPython(const QByteArray& msg)

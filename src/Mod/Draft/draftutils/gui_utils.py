@@ -187,7 +187,7 @@ def dim_symbol(symbol=None, invert=False):
 
         A numerical value defines different markers
          * 0, `SoSphere`
-         * 1, `SoMarkerSet` with a circle
+         * 1, `SoSeparator` with a `SoLineSet`, a circle (in fact a 24 sided polygon)
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
@@ -202,8 +202,7 @@ def dim_symbol(symbol=None, invert=False):
     Returns
     -------
     Coin.SoNode
-        A `Coin.SoSphere`, or `Coin.SoMarkerSet` (circle),
-        or `Coin.SoSeparator` (cone, face, line)
+        A `Coin.SoSphere`, or `Coin.SoSeparator` (circle, cone, face, line)
         that will be used as a dimension symbol.
     """
     if symbol is None:
@@ -219,10 +218,14 @@ def dim_symbol(symbol=None, invert=False):
         marker = coin.SoSphere()
         return marker
     elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        # Should be the same as
-        # marker.markerIndex = 10
-        marker.markerIndex = Gui.getMarkerIndex("circle", 9)
+        marker = coin.SoSeparator()
+        v = coin.SoVertexProperty()
+        for i in range(25):
+            ang = math.radians(i * 15)
+            v.vertex.set1Value(i, (math.sin(ang), math.cos(ang), 0))
+        p = coin.SoLineSet()
+        p.vertexProperty = v
+        marker.addChild(p)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -240,15 +243,19 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 3:
         marker = coin.SoSeparator()
+        # hints are required otherwise only the bottom of the face is colored
+        h = coin.SoShapeHints()
+        h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
         c.point.setValues([(-1, -2, 0), (0, 2, 0),
                            (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
+        marker.addChild(h)
         marker.addChild(c)
         marker.addChild(f)
         return marker
     elif symbol == 4:
-        return dimDash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+        return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
     else:
         _wrn(_tr("Symbol not implemented. Use a default symbol."))
         return coin.SoSphere()

@@ -960,7 +960,7 @@ beyond the dimension line</source>
       <translation>Показує розмірну лінію та стрілки</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Якщо це обрано, об'єкту, що містяться в цьому шарі, матимуть кольори ліній цього шару</translation>
     </message>
@@ -1134,32 +1134,37 @@ Use 'arch' to force US arch notation</source>
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Базовий об'єкт використовується цим об’єктом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Файл PAT, який використовується цим об’єктом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Назва шаблону, що використовується цим об'єктом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Якщо встановлено False, штрих застосовується як до поверхонь, без перекладу (це може призвести до неправильних результатів для поверхонь, відмінних від XY)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1502,27 +1507,27 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Додати новий шар</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Увімкнути/вимкнути сітку</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Прив'язка до об'єктів</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Вмикати розміри видимої пропозиції</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Вкл./викл Орто</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Перемикає обмеження в робочій площині Вкл/Викл</translation>
     </message>
@@ -1712,7 +1717,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Вам слід вибрати базовий об'єкт перед використанням цієї команди</translation>
     </message>
   </context>
   <context>
@@ -2534,7 +2539,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Створити штрихування на вибраних поверхнях</translation>
     </message>
   </context>
   <context>
@@ -2748,8 +2753,8 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
       <location filename="gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Як і інструмент PathTwistedArray але замість нього створює масив посилань.
+При обробці багатьох копій «посилання більш ефективний, але не вдалося використати параметр «Fuse».</translation>
     </message>
   </context>
   <context>
@@ -2762,7 +2767,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Створює об'єкт точки. Натисніть будь-де на 3D-перегляді.</translation>
     </message>
   </context>
   <context>
@@ -2770,7 +2775,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Масив точок</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2781,13 +2786,13 @@ To create this compound, select various points and then use the Part Compound to
 or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
 
 Select the base object, and then select the compound or the sketch to create the point array.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies at the position of various points.
+      <translation>Створює копії вибраного об'єкту та розміщує копії на позиції різних точок.
 
-The points need to be grouped under a compound of points before using this tool.
-To create this compound, select various points and then use the Part Compound tool,
-or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
+Точки мають бути згруповані під накопиченням точок перед цим інструментом.
+Щоб створити цей компас, виберіть різні точки, а потім скористайтеся інструментом частини - сполученого,
+або скористайтеся інструментом Покращення Draft для створення 'Block', або створення ескізу і додавання простих балів до нього.
 
-Select the base object, and then select the compound or the sketch to create the point array.</translation>
+Виберіть основний об'єкт, а потім виберіть склад або ескіз, щоб створити масив точок.</translation>
     </message>
   </context>
   <context>
@@ -2795,7 +2800,7 @@ Select the base object, and then select the compound or the sketch to create the
     <message>
       <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>Артикул</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="144"/>
@@ -2983,12 +2988,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Увімкнути/вимкнути сітку</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation type="unfinished">Toggle Draft Grid</translation>
     </message>
@@ -3858,12 +3863,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>файли шаблонів (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT-файл:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3873,7 +3878,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Шаблон:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -5341,7 +5346,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
@@ -6424,17 +6429,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>На замовлення</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation type="unfinished">Unable to convert input into a scale factor</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
     </message>
@@ -6796,7 +6801,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_pointarray.py" line="122"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Масив точок</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="104"/>

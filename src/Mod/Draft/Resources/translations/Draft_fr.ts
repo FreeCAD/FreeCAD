@@ -956,7 +956,7 @@ au-delà de la ligne de cote</translation>
       <translation>Afficher la ligne et les flèches de cotes</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Si c'est vrai, les objets contenus dans ce calque adopteront la couleur de ligne du calque</translation>
     </message>
@@ -1129,32 +1129,37 @@ Utilisez 'arch' pour forcer la notation architecturale US</translation>
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>L'objet de base utilisé par cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Le fichier PAT utilisé par cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Le nom du motif utilisé par cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>La mise à l'échelle du motif utilisée par cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>La rotation du motif utilisée par cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Si réglé à False, le hachurage est appliqué tel quel sur les faces, sans déplacement (peut donner de mauvais résultats sur les faces non XY)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1495,27 +1500,27 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Ajouter un nouveau calque</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Active/désactive la grille</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Aimantation aux objets</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Active/désactive les Cotes de l'Aide Visuelle</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
       <translation>Active/désactive le mode Orthogonal</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Active/désactive l'Accrochage au Plan de Travail</translation>
     </message>
@@ -1705,7 +1710,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Vous devez choisir un objet de base avant d'utiliser cette commande</translation>
     </message>
   </context>
   <context>
@@ -2526,7 +2531,7 @@ Si d'autres objets sont sélectionnés, ils sont ignorés.</translation>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Créer des hachures sur les faces sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -2975,12 +2980,12 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Active/désactive la grille</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Basculer la Grille Draft</translation>
     </message>
@@ -3849,12 +3854,12 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>fichiers de motif (*.pat)</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>Fichier PAT:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="37"/>
@@ -3864,7 +3869,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Motif:</translation>
     </message>
     <message>
       <location filename="dialogHatch.ui" line="64"/>
@@ -5295,7 +5300,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Pas assez de coordonnées</translation>
     </message>
   </context>
   <context>
@@ -5327,7 +5332,7 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation>Aimantation Draft</translation>
     </message>
@@ -6403,17 +6408,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Sélectionner le contenu du calque</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>personnalisé</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Impossible de convertir l'entrée en un facteur d'échelle</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Définir l'échelle d'annotation personnalisée au format x:x, x=x</translation>
     </message>

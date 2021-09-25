@@ -956,7 +956,7 @@ beyond the dimension line</source>
       <translation>Отображать размерную линию и стрелки</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="77"/>
+      <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Если истина, объекты данного слоя будут иметь цвет линий слоя</translation>
     </message>
@@ -1130,12 +1130,12 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Базовый объект, используется данным объектом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>PAT-файл, используется данным объектом</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1156,6 +1156,11 @@ Use 'arch' to force US arch notation</translation>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
       <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
   </context>
   <context>
@@ -1496,27 +1501,27 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Добавить новый слой</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="244"/>
+      <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Вкл/выкл Сетку</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="262"/>
+      <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
       <translation>Привязка к объекту</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="294"/>
+      <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="314"/>
+      <location filename="init_draft_statusbar.py" line="322"/>
       <source>Toggles Ortho On/Off</source>
-      <translation type="unfinished">Toggles Ortho On/Off</translation>
+      <translation>Вкл/выкл ортографический вид</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="332"/>
+      <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
     </message>
@@ -1661,7 +1666,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Создаёт скругление между двумя ломанными или рёбрами.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="90"/>
@@ -2973,12 +2978,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
   <context>
     <name>Draft_Snap</name>
     <message>
-      <location filename="gui_snapper.py" line="1535"/>
+      <location filename="gui_snapper.py" line="1529"/>
       <source>Toggles Grid On/Off</source>
       <translation>Вкл/выкл Сетку</translation>
     </message>
     <message>
-      <location filename="gui_snapper.py" line="1536"/>
+      <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
       <translation>Вкл/выкл сетку Draft</translation>
     </message>
@@ -3992,7 +3997,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draft.ui" line="14"/>
       <source>General settings</source>
-      <translation>Общие настройки</translation>
+      <translation>Основные настройки</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="380"/>
@@ -5266,7 +5271,7 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="preferences-draftinterface.ui" line="895"/>
       <source>G</source>
-      <translation type="unfinished">G</translation>
+      <translation>G</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="71"/>
@@ -5313,7 +5318,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="gui_snapper.py" line="1476"/>
+      <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
       <translation type="unfinished">Draft Snap</translation>
     </message>
@@ -6076,7 +6081,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>Радиус слишком большой</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -6395,17 +6400,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="147"/>
+      <location filename="init_draft_statusbar.py" line="155"/>
       <source>custom</source>
       <translation>произвольный, пользовательский</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="133"/>
+      <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation type="unfinished">Unable to convert input into a scale factor</translation>
     </message>
     <message>
-      <location filename="init_draft_statusbar.py" line="151"/>
+      <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Задать произвольный масштаб заметки в формате x:x, x=x</translation>
     </message>
@@ -7242,12 +7247,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Радиус скругления</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Радиус скругления</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="113"/>
@@ -7262,12 +7267,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_fillets.py" line="137"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Тип фаски:</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="154"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
+      <translation>Необходимы два элемента.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="161"/>

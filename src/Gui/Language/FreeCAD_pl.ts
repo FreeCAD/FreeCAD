@@ -3289,10 +3289,6 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Niezaładowane Środowiska pracy</translation>
-    </message>
-    <message>
       <source>Workbench Name</source>
       <translation>Nazwa środowiska pracy</translation>
     </message>
@@ -3308,6 +3304,10 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby oszczędzać zasoby, FreeCAD nie ładuje środowisk pracy, dopóki nie zostaną użyte. Ich załadowanie może zapewnić dostęp do dodatkowych preferencji związanych z ich funkcjonalnością.&lt;/p&gt;&lt;p&gt;Następujące środowiska pracy są dostępne w twojej instalacji, ale nie są jeszcze załadowane:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
@@ -3321,7 +3321,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     </message>
     <message>
       <source>If checked</source>
-      <translation>Jeśli zaznaczone</translation>
+      <translation>Jeśli opcja jest zaznaczona</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
@@ -4507,32 +4507,32 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
       <translation>Proszę wybrać 1, 2 lub 3 punkty przed kliknięciem na ten przycisk. Punktem może być wierzchołek, ściana lub krawędź. Jeśli zostanie wybrany punkt na ścianie lub na krawędzi, zostanie użyty punkt pozycji myszy na tej ścianie lub wzdłuż tej krawędzi. Jeśli zostanie wybrany 1 punkt, to zostanie on użyty jako środek obrotu. Jeśli zostaną wybrane 2 punkty, to punkt pomiędzy nimi zostanie wybrany jako środek obrotu, a te punkty utworzą nową oś, jeśli jest taka potrzeba. Jeśli zostaną wybrane 3 punkty to pierwszy punkt zostanie użyty jako środek obrotu i jako wierzchołek wektora normalnego do płaszczyzny zdefiniowanej przez te 3 punkty. Niektóre odległości i kąty są pokazane na widoku raportu, mogę być one pomocne przy dopasowywaniu obiektów. Dla Twojej wygody, gdy naciśniesz Shift+Click, to odpowiednia odległość lub kąt są skopiowane do schowka.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>W okolicy osi Y:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>W okolicy osi Z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>W okolicy osi X:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Obrót wokół osi X</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Obrót wokół osi Y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Obrót wokół osi Z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Kąty Eulera (XY'Z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4697,13 +4697,13 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Użyj wyboru początkowego</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ignoruj zależności i kontynuuj z obiektami
+wstępnie wybranymi przed otwarciem tego okna</translation>
     </message>
   </context>
   <context>
@@ -4849,7 +4849,7 @@ originally selected prior to opening this dialog</translation>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
-      <translation>Wybiera i lokalizuje ten obiekt w oknie widoku 3D</translation>
+      <translation>Zaznacza i dopasowuje ten obiekt w oknie widoku 3D</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -6052,6 +6052,18 @@ Do you want to specify another directory?</source>
       <source>Vietnamese</source>
       <translation>wietnamski</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>grecki</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -7012,6 +7024,38 @@ Physical path: </source>
       <translation>
 
 Ścieżka fizyczna: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -8092,7 +8136,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Umiejscowienie...</translation>
+      <translation>Umiejscowienie ...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
@@ -8789,11 +8833,11 @@ Physical path: </source>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Tryb edycji</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Definiuje zachowanie podczas edycji obiektu w widoku drzewa</translation>
     </message>
   </context>
   <context>
@@ -9819,6 +9863,10 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Opcje specjalne</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Aksonometryczny</translation>
     </message>
   </context>
   <context>

@@ -243,7 +243,7 @@
       <translation>泊松曲面重构</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
       <translation>段</translation>
     </message>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="311"/>
       <source>Create</source>
       <translation>创建</translation>
     </message>
