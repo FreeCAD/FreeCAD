@@ -64,6 +64,9 @@ SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_XML_SRCS}
     AppSpreadsheetGui.cpp
     Command.cpp
+    DlgSettings.ui
+    DlgSettingsImp.cpp
+    DlgSettingsImp.h
     LineEdit.h
     LineEdit.cpp
     ViewProviderSpreadsheet.cpp
@@ -92,6 +95,28 @@ SET(SpreadsheetGui_SRCS
 SET(SpreadsheetGuiIcon_SVG
     Resources/icons/SpreadsheetWorkbench.svg
 )
+
+set(SpreadsheetGui_MOC_HDRS
+    DlgSettingsImp.h
+)
+
+SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
+
+SET(Resource_SRCS
+    ${Resource_SRCS}
+    Resources/Spreadsheet.qrc
+)
+
+set(SpreadsheetGui_UIC_SRCS
+    DlgSettings.ui
+)
+
+
+if (BUILD_QT5)
+    qt5_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
+endif()
 
 add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
