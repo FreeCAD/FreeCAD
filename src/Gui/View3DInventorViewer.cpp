@@ -3991,19 +3991,18 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
     SoSkipBoundingBoxElement::set(action.getState(), SoSkipBoundingGroup::EXCLUDE_BBOX);
 
     auto manager = selectionRoot->getRenderManager();
-    if (manager && guiDocument && guiDocument->getDocument()->getObjects().size()>1) {
-        SbBox3f bbox;
+    SbBox3f bbox;
+    if (manager && manager->getSceneNodeId() == selectionRoot->getNodeId())
         manager->getBoundingBox(bbox);
-        if (!bbox.isEmpty()) {
-            float minx,miny,minz,maxx,maxy,maxz;
-            bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
-            box.MinX = minx;
-            box.MinY = miny;
-            box.MinZ = minz;
-            box.MaxX = maxx;
-            box.MaxY = maxy;
-            box.MaxZ = maxz;
-        }
+    if (!bbox.isEmpty()) {
+        float minx,miny,minz,maxx,maxy,maxz;
+        bbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+        box.MinX = minx;
+        box.MinY = miny;
+        box.MinZ = minz;
+        box.MaxX = maxx;
+        box.MaxY = maxy;
+        box.MaxZ = maxz;
     } else {
         if(guiDocument && ViewParams::instance()->getUseTightBoundingBox()) {
             for(int i=0;i<pcViewProviderRoot->getNumChildren();++i) {
