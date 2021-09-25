@@ -330,6 +330,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->PreferencePacks->setColumnCount(3);
     ui->PreferencePacks->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
+    ui->PreferencePacks->horizontalHeader()->setStretchLastSection(false);
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::Stretch);
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
@@ -351,6 +352,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
         packNames[PreferencePack::Type::Combination].size());
 
     int row = 0;
+    QIcon icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
     for (const auto& packGroup : packNames) {
         for (const auto& pack : packGroup.second) {
             auto name = new QTableWidgetItem(QString::fromStdString(pack));
@@ -363,16 +365,13 @@ void DlgGeneralImp::recreatePreferencePackMenu()
             default: kind = new QTableWidgetItem(QString::fromUtf8("[ERR: UNKNOWN TYPE]")); break;
             }
             ui->PreferencePacks->setItem(row, 1, kind);
-            auto button = new QPushButton(tr("Apply"));
-            button->setToolTip(tr("Apply the ") +
-                QString::fromStdString(pack) + QString::fromUtf8(" ") +
-                tr("Preference Pack"));
+            auto button = new QPushButton(icon, tr("Apply"));
+            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack)));
             connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack); });
             ui->PreferencePacks->setCellWidget(row, 2, button);
             ++row;
         }
     }
-    ui->PreferencePacks->setRangeSelected(QTableWidgetSelectionRange(), true);
 }
 
 void DlgGeneralImp::saveAsNewPreferencePack()
