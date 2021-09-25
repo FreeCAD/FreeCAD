@@ -97,6 +97,7 @@ def _tostr(v):
         res = '%.*f' % (_Decimals, v)
         if len(res) > 128: # probably infinite shape
             res = '?'
+        return res
     if isinstance(v, FreeCAD.Vector):
         return _vec_tostr(v)
     if isinstance(v, FreeCAD.Placement):
