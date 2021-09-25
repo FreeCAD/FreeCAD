@@ -2894,7 +2894,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 }
 
 void ViewProviderLink::_setupContextMenu(
-        const App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
+        App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
 {
     if(linkEdit(ext)) {
         if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
@@ -2903,6 +2903,22 @@ void ViewProviderLink::_setupContextMenu(
             linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
     }
 
+    if(ext->getLinkedObjectProperty()
+            && ext->_getShowElementProperty()
+            && ext->_getElementCountValue() > 1)
+    {
+        auto action = menu->addAction(QObject::tr("Toggle array elements"), [ext] {
+            try {
+                App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
+                ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+        action->setToolTip(QObject::tr(
+                    "Change whether show each link array element as individual objects"));
+    }
 
     if((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
             || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly()))
@@ -3981,9 +3997,13 @@ bool ViewProviderLink::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
     if (ev->type() == QEvent::MouseButtonPress) {
         if (tag == _refreshIconTag()) {
             if (auto ext = getLinkExtension()) {
-                App::AutoTransaction guard("Link refresh");
-                ext->syncCopyOnChange();
-                Command::updateActive();
+                try {
+                    App::AutoTransaction guard("Link refresh");
+                    ext->syncCopyOnChange();
+                    Command::updateActive();
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
             }
             return true;
         } else if (tag == _mutateIconTag()) {
