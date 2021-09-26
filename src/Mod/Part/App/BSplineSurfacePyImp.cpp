@@ -1644,14 +1644,10 @@ Py::List BSplineSurfacePy::getUKnotSequence(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    Standard_Integer m = 0;
-    for (int i=1; i<= surf->NbUKnots(); i++)
-        m += surf->UMultiplicity(i);
-    TColStd_Array1OfReal k(1,m);
-    surf->UKnotSequence(k);
     Py::List list;
-    for (Standard_Integer i=k.Lower(); i<=k.Upper(); i++) {
-        list.append(Py::Float(k(i)));
+    for (int i=1; i<=surf->NbUKnots(); i++) {
+        for (int j=1; j<=surf->UMultiplicity(i); j++)
+            list.append(Py::Float(surf->UKnot(i)));
     }
     return list;
 }
@@ -1660,14 +1656,10 @@ Py::List BSplineSurfacePy::getVKnotSequence(void) const
 {
     Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
         (getGeometryPtr()->handle());
-    Standard_Integer m = 0;
-    for (int i=1; i<= surf->NbVKnots(); i++)
-        m += surf->VMultiplicity(i);
-    TColStd_Array1OfReal k(1,m);
-    surf->VKnotSequence(k);
     Py::List list;
-    for (Standard_Integer i=k.Lower(); i<=k.Upper(); i++) {
-        list.append(Py::Float(k(i)));
+    for (int i=1; i<=surf->NbVKnots(); i++) {
+        for (int j=1; j<=surf->VMultiplicity(i); j++)
+            list.append(Py::Float(surf->VKnot(i)));
     }
     return list;
 }
