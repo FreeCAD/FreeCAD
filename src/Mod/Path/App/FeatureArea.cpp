@@ -98,8 +98,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     myArea.setPlane(workPlane);
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        myArea.add(static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
-                PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
+        myArea.add(Part::Feature::getShape(*it), PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
     }
 
     myShapes.clear();
