@@ -1009,6 +1009,13 @@ class gridTracker(Tracker):
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet() # big squares
 
+        # human figure
+        mat_human = coin.SoMaterial()
+        mat_human.transparency.setValue(0.3*(1-gtrans))
+        mat_human.diffuseColor.setValue(col)
+        self.coords_human = coin.SoCoordinate3()
+        self.human = coin.SoLineSet()
+
         # axes
         mat3 = coin.SoMaterial()
         mat3.transparency.setValue(gtrans)
@@ -1030,6 +1037,9 @@ class gridTracker(Tracker):
         s.addChild(mat2)
         s.addChild(self.coords2)
         s.addChild(self.lines2)
+        s.addChild(mat_human)
+        s.addChild(self.coords_human)
+        s.addChild(self.human)
         s.addChild(mbind3)
         s.addChild(mat3)
         s.addChild(self.coords3)
@@ -1105,19 +1115,6 @@ class gridTracker(Tracker):
                 self.text2.string = txt
                 self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
                 self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
-                # human from BIM workbench
-                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-                if param.GetBool("gridShowHuman", True):
-                    try:
-                        import BimProject
-                        loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
-                        hpts = BimProject.getHuman(loc)
-                        mpts.extend([tuple(p) for p in hpts])
-                        midx.append(len(hpts))                
-                    except Exception:
-                        # BIM not installed
-                        pass
-
             else:
                 self.text1.string = " "
                 self.text2.string = " "
@@ -1132,7 +1129,35 @@ class gridTracker(Tracker):
             self.coords3.point.setValues(apts)
             #self.lines3.numVertices.setValues(aidx)
             self.pts = pts
+            self.displayHumanFigure()
             self.setAxesColor()
+
+    def displayHumanFigure(self):
+        """ Display the human figure at the grid corner.
+        The silhouette is displayed only if:
+        - BIM Workbench is available;
+        - preference BaseApp/Preferences/Mod/Draft/gridShowHuman is True;
+        - the working plane normal is vertical.
+        """
+        numlines = self.numlines // self.mainlines // 2 * 2 * self.mainlines
+        bound = (numlines // 2) * self.space
+        pts = []
+        pidx = []
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if param.GetBool("gridShowHuman", True) and \
+            FreeCAD.DraftWorkingPlane.axis.getAngle(FreeCAD.Vector(0,0,1)) < 0.001:
+            try:
+                import BimProject
+                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+                hpts = BimProject.getHuman(loc)
+                pts.extend([tuple(p) for p in hpts])
+                pidx.append(len(hpts))                
+            except Exception:
+                # BIM not installed
+                return
+        self.human.numVertices.deleteValues(0)
+        self.coords_human.point.setValues(pts)
+        self.human.numVertices.setValues(pidx)
 
     def setAxesColor(self):
         """set axes color"""
@@ -1182,6 +1207,7 @@ class gridTracker(Tracker):
         P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0], Q[1], Q[2], Q[3]])
         self.trans.translation.setValue([P.x, P.y, P.z])
+        self.displayHumanFigure()
         self.setAxesColor()
         self.on()
 
