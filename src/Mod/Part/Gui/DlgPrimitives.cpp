@@ -43,6 +43,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
+#include <App/Part.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -63,6 +64,20 @@
 using namespace PartGui;
 
 namespace PartGui {
+
+    QString getAutoGroupCommandStr(QString objectName)
+        // Helper function to get the python code to add the newly created object to the active Part object if present
+    {
+        App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
+        if (activePart) {
+            QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
+            return QString::fromLatin1("App.ActiveDocument.getObject('%1\')."
+                "addObject(App.ActiveDocument.getObject('%2\'))\n")
+                .arg(activeObjectName)
+                .arg(objectName);
+        }
+        return QString::fromLatin1("# Object %1 created at document root").arg(objectName);
+    }
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
 {
@@ -1107,6 +1122,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         QString prim = tr("Create %1").arg(ui->PrimitiveTypeCB->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
