@@ -58,6 +58,10 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
     return new BRepAlgoAPI_Fuse(base, tool);
 }
 
+const char *Fuse::opCode() const {
+    return TOPOP_FUSE;
+}
+
 // ----------------------------------------------------
 
 PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)

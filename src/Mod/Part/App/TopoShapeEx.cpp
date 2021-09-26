@@ -2997,8 +2997,19 @@ TopoShape &TopoShape::makEShape(const char *maker,
     }
 
 # if OCC_VERSION_HEX >= 0x060900
+    // Only run parallel 
     if (shapeArguments.Size() + shapeTools.Size() > 2)
         mk->SetRunParallel(true);
+    else {
+        int total = 0;
+        for (const auto &shape : inputs) {
+            total += shape.countSubShapes(TopAbs_FACE);
+            if (total > 1000) {
+                mk->SetRunParallel(true);
+                break;
+            }
+        }
+    }
 # endif
 
     mk->SetArguments(shapeArguments);
