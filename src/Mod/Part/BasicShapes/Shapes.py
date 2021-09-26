@@ -54,6 +54,7 @@ class TubeFeature:
         return False
 
 _ParamUnits = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units");
+_ParamDecimals = None
 _Decimals = None
 
 class _ParamUnitsObserver:
@@ -66,38 +67,41 @@ class _ParamUnitsObserver:
             self.update()
 
     def update(self):
-        global _Decimals
-        _Decimals = _ParamUnits.GetInt('Decimals', 2)
+        global _ParamDecimals
+        _ParamDecimals = _ParamUnits.GetInt('Decimals', 2)
 
 _Observer = _ParamUnitsObserver()
 
 def _ftostr(v):
-    return '%.*f' % (_Decimals, v[0])
+    if _Decimals:
+        res = '%.*f' % (_Decimals, v)
+    else:
+        res = '%g' % v
+    if len(res) > 128: # probably infinite shape
+        res = '?'
+    return res
 
 def _vec_tostr(v):
-    return '(%.*f, %.*f, %.*f)' % (_Decimals, v[0], _Decimals, v[1], _Decimals, v[2])
+    return '(%s, %s, %s)' % (_ftostr(v[0]), _ftostr(v[1]), _ftostr(v[2]))
 
 def _bbox_tostr(v):
-    return '(%.*f, %.*f, %.*f), (%.*f, %.*f, %.*f)' % \
-            (_Decimals, v.XMin, _Decimals, v.YMin, _Decimals, v.ZMin,
-             _Decimals, v.XMax, _Decimals, v.YMax, _Decimals, v.ZMax)
+    return '(%s, %s, %s), (%s, %s, %s)' % \
+            (_ftostr(v.XMin), _ftostr(v.YMin), _ftostr(v.ZMin),
+             _ftostr(v.XMax), _ftostr(v.YMax), _ftostr(v.ZMax))
 
 def _pla_tostr(pla):
     angles = pla.Rotation.toEuler()
-    return 'Pos%s, Yaw-Pitch-Roll(%.*f, %.*f, %.*f)' \
+    return 'Pos%s, Yaw-Pitch-Roll(%s, %s, %s)' \
             % (_vec_tostr(pla.Base),
-               _Decimals, angles[0],
-               _Decimals, angles[1],
-               _Decimals, angles[2])
+               _ftostr(angles[0]),
+               _ftostr(angles[1]),
+               _ftostr(angles[2]))
 
 _presel_maxlen = 75
 
 def _tostr(v):
     if isinstance(v, float):
-        res = '%.*f' % (_Decimals, v)
-        if len(res) > 128: # probably infinite shape
-            res = '?'
-        return res
+        return _ftostr(v)
     if isinstance(v, FreeCAD.Vector):
         return _vec_tostr(v)
     if isinstance(v, FreeCAD.Placement):
@@ -114,6 +118,17 @@ def _tostr(v):
         return '(' + res + ')'
     return str(v)
 
+def _setupDecimals():
+    global _Decimals
+    try:
+        from PySide import QtCore, QtGui
+        if QtGui.QApplication.queryKeyboardModifiers() == QtCore.Qt.AltModifier:
+            _Decimals = None
+            return
+    except Exception:
+        pass
+    _Decimals = _ParamDecimals
+
 def showPreselectInfo():
     sel = FreeCADGui.Selection.getPreselection()
     if not sel.Object or len(sel.SubElementNames) != 1:
@@ -121,6 +136,7 @@ def showPreselectInfo():
     shape, _, obj = Part.getShape(sel.Object, sel.SubElementNames[0], retType=1)
     if shape.isNull():
         return
+    _setupDecimals()
     txt = FreeCADGui.Selection.getPreselectionText()
     if txt:
         txt += '\n\n'
@@ -206,7 +222,7 @@ def showPreselectInfo():
                 u = geo.parameter(point)
                 txt += '\nParameter: %s' % _ftostr(u)
                 txt += '\nNormal: %s' % _vec_tostr(geo.normal(u))
-                txt += '\nTangent: %s' % _vec_tostr(geo.tangent(u))
+                txt += '\nTangent: %s' % _vec_tostr(geo.tangent(u)[0])
                 txt += '\nCurvature: %s' % _ftostr(geo.curvature(u))
             except Exception:
                 pass
@@ -219,7 +235,12 @@ def showPreselectInfo():
                     u = geo.parameter(point)
                     txt += '\nParameter: %s' % _tostr(u)
                     txt += '\nNormal: %s' % _vec_tostr(geo.normal(*u))
-                    txt += '\nTangent: %s' % _vec_tostr(geo.tangent(*u))
+                except Exception:
+                    pass
+                try:
+                    t = geo.tangent(*u)
+                    txt += '\nTangent: %s %s' % (_vec_tostr(t[0]), _vec_tostr(t[1]))
+                    txt += '\nCurvature: %s' % _ftostr(geo.curvature(u[0], u[1],'Mean'))
                 except Exception:
                     pass
     txt = _getGeoAttributes(txt, geo,
@@ -266,6 +287,7 @@ def showPreselectMeasure():
     shape = Part.getShape(presel.Object, presel.SubElementNames[0], needSubElement=True)
     if shape.isNull():
         return
+    _setupDecimals()
     txt = ''
     if shape.ShapeType == 'Vertex':
         txt = 'Position: %s' % _vec_tostr(shape.Point)
