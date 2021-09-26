@@ -1808,7 +1808,27 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     }
 
     if (badElementCounter > 0) {
-        Base::Console().Warning("Found bad elements while reading NASTRAN file.");
+        Base::Console().Warning("Found bad elements while reading NASTRAN file.\n");
+    }
+
+    // Check the triangles to make sure the vertices they refer to actually exist:
+    for (const auto& tri : mTria) {
+        for (int i = 0; i < 3; ++i) {
+            if (mNode.find(tri.second.iV[i]) == mNode.end()) {
+                Base::Console().Error("CTRIA3 element refers to a node that does not exist, or could not be read.\n");
+                return false;
+            }
+        }
+    }
+
+    // Check the quads to make sure the vertices they refer to actually exist:
+    for (const auto& quad : mQuad) {
+        for (int i = 0; i < 4; ++i) {
+            if (mNode.find(quad.second.iV[i]) == mNode.end()) {
+                Base::Console().Error("CQUAD4 element refers to a node that does not exist, or could not be read.\n");
+                return false;
+            }
+        }
     }
 
     float fLength[2];
