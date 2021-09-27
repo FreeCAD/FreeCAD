@@ -12,6 +12,7 @@ try:
 except Exception:
     import thread
 
+from os.path import join
 
 #---------------------------------------------------------------------------
 # define the functions to test the FreeCAD mesh module
@@ -167,7 +168,7 @@ class MeshGeoTestCases(unittest.TestCase):
         f1 = planarMeshObject.Facets[0]
         f2 = planarMeshObject.Facets[1]
         res=f1.intersect(f2)
-        self.failUnless(len(res) == 0)
+        self.assertTrue(len(res) == 0)
 
 
     def testIntersection2(self):
@@ -182,7 +183,7 @@ class MeshGeoTestCases(unittest.TestCase):
         f2 = planarMeshObject.Facets[1]
         # does definitely NOT intersect
         res=f1.intersect(f2)
-        self.failUnless(len(res) == 0)
+        self.assertTrue(len(res) == 0)
 
 class PivyTestCases(unittest.TestCase):
     def setUp(self):
@@ -208,11 +209,11 @@ class PivyTestCases(unittest.TestCase):
         rp.setRay(coin.SbVec3f(-16.05,16.0,16.0),coin.SbVec3f(0,-1,0))
         rp.apply(view.getSoRenderManager().getSceneGraph())
         pp=rp.getPickedPoint()
-        self.failUnless(pp != None)
+        self.assertTrue(pp != None)
         det=pp.getDetail()
-        self.failUnless(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
+        self.assertTrue(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
         det=coin.cast(det,str(det.getTypeId().getName()))
-        self.failUnless(det.getFaceIndex() == 1)
+        self.assertTrue(det.getFaceIndex() == 1)
 
     def testPrimitiveCount(self):
         if not FreeCAD.GuiUp:
@@ -231,8 +232,8 @@ class PivyTestCases(unittest.TestCase):
         view.setAxisCross(False)
         pc=coin.SoGetPrimitiveCountAction()
         pc.apply(view.getSceneGraph())
-        self.failUnless(pc.getTriangleCount() == 2)
-        #self.failUnless(pc.getPointCount() == 6)
+        self.assertTrue(pc.getTriangleCount() == 2)
+        #self.assertTrue(pc.getPointCount() == 6)
 
     def tearDown(self):
         #closing doc
@@ -243,15 +244,15 @@ class PivyTestCases(unittest.TestCase):
 def loadFile(name):
     #lock.acquire()
     mesh=Mesh.Mesh()
-    FreeCAD.Console.PrintMessage("Create mesh instance\n")
+    #FreeCAD.Console.PrintMessage("Create mesh instance\n")
     #lock.release()
     mesh.read(name)
-    FreeCAD.Console.PrintMessage("Mesh loaded successfully.\n")
+    #FreeCAD.Console.PrintMessage("Mesh loaded successfully.\n")
 
 def createMesh(r,s):
-    FreeCAD.Console.PrintMessage("Create sphere (%s,%s)...\n"%(r,s))
+    #FreeCAD.Console.PrintMessage("Create sphere (%s,%s)...\n"%(r,s))
     mesh=Mesh.createSphere(r,s)
-    FreeCAD.Console.PrintMessage("... destroy sphere\n")
+    #FreeCAD.Console.PrintMessage("... destroy sphere\n")
 
 class LoadMeshInThreadsCases(unittest.TestCase):
 
@@ -267,7 +268,7 @@ class LoadMeshInThreadsCases(unittest.TestCase):
         mesh=Mesh.createSphere(10.0,100) # a fine sphere
         name=tempfile.gettempdir() + os.sep + "mesh.stl"
         mesh.write(name)
-        FreeCAD.Console.PrintMessage("Write mesh to %s\n"%(name))
+        #FreeCAD.Console.PrintMessage("Write mesh to %s\n"%(name))
         #lock=thread.allocate_lock()
         for i in range(2):
             thread.start_new(loadFile,(name,))
@@ -295,9 +296,9 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,2,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+           self.assertTrue(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
 
     def testFitExact(self):
         # symmetric
@@ -310,9 +311,9 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,1,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+           self.assertTrue(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
 
     def testFitBad(self):
         # symmetric
@@ -328,9 +329,32 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,2,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failIf(math.fabs(i) < 0.0001, "Residual %f must be higher" % math.fabs(i))
+           self.assertFalse(math.fabs(i) < 0.0001, "Residual %f must be higher" % math.fabs(i))
+
+    def tearDown(self):
+        pass
+
+
+class NastranReader(unittest.TestCase):
+    def setUp(self):
+        self.test_dir = join(FreeCAD.getHomePath(), "Mod", "Mesh", "App", "TestData")
+
+    def testEightCharGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRID_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,10)
+        self.assertEqual(m.CountFacets,8) # Quads split into two triangles
+
+    def testDelimitedGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_Delimited_GRID_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,10)
+        self.assertEqual(m.CountFacets,8) # Quads split into two triangles
+
+    def testSixteenCharGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRIDSTAR_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,4)
+        self.assertEqual(m.CountFacets,2) # Quads split into two triangles
 
     def tearDown(self):
         pass

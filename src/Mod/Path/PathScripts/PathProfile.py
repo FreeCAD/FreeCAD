@@ -676,12 +676,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         pb = FreeCAD.Vector(Vb.X, Vb.Y, fdv)
         pe = FreeCAD.Vector(Ve.X, Ve.Y, fdv)
 
-        # Identify endpoints connecting circle center and diameter
-        # vectDist = pe.sub(pb)
-        # diam = vectDist.Length
-        # cntr = vectDist.multiply(0.5).add(pb)
-        # R = diam / 2
-
         # Obtain beginning point perpendicular points
         if blen > 0.1:
             bcp = begE.valueAt(
@@ -787,12 +781,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Identify closed wire in cross-section that corresponds to user-selected edge(s)
         workShp = comFC
-        fcShp = workShp
         wire = origWire
         WS = workShp.Wires
         lenWS = len(WS)
+        wi = 0
         if lenWS < 3:
-            wi = 0
+            # fcShp = workShp
+            pass
         else:
             wi = None
             for wvt in wire.Vertexes:
@@ -914,26 +909,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             osWrIdxs.append(w)
 
         # Identify two vertexes for dividing offset loop
-        NEAR0 = self._findNearestVertex(ofstShp, cent0)
-        min0i = 0
+        NEAR0 = self._findNearestVertex(ofstShp,  cent0)
+        # min0i = 0
         min0 = NEAR0[0][4]
         for n in range(0, len(NEAR0)):
             N = NEAR0[n]
             if N[4] < min0:
                 min0 = N[4]
-                min0i = n
+                # min0i = n
         (w0, vi0, pnt0, _, _) = NEAR0[0]  # min0i
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject("Near0", near0Shp)
 
-        NEAR1 = self._findNearestVertex(ofstShp, cent1)
-        min1i = 0
+        NEAR1 = self._findNearestVertex(ofstShp,  cent1)
+        # min1i = 0
         min1 = NEAR1[0][4]
         for n in range(0, len(NEAR1)):
             N = NEAR1[n]
             if N[4] < min1:
                 min1 = N[4]
-                min1i = n
+                # min1i = n
         (w1, vi1, pnt1, _, _) = NEAR1[0]  # min1i
         near1Shp = Part.makeLine(cent1, pnt1)
         self._addDebugObject("Near1", near1Shp)
@@ -945,13 +940,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 )
             )
 
-        if self.isDebug and False:
-            PathLog.debug("min0i is {}.".format(min0i))
-            PathLog.debug("min1i is {}.".format(min1i))
-            PathLog.debug("NEAR0[{}] is {}.".format(w0, NEAR0[w0]))
-            PathLog.debug("NEAR1[{}] is {}.".format(w1, NEAR1[w1]))
-            PathLog.debug("NEAR0 is {}.".format(NEAR0))
-            PathLog.debug("NEAR1 is {}.".format(NEAR1))
+        # Debugging
+        '''
+        if self.isDebug:
+            PathLog.debug('min0i is {}.'.format(min0i))
+            PathLog.debug('min1i is {}.'.format(min1i))
+            PathLog.debug('NEAR0[{}] is {}.'.format(w0, NEAR0[w0]))
+            PathLog.debug('NEAR1[{}] is {}.'.format(w1, NEAR1[w1]))
+            PathLog.debug('NEAR0 is {}.'.format(NEAR0))
+            PathLog.debug('NEAR1 is {}.'.format(NEAR1))
+        '''
 
         mainWire = ofstShp.Wires[w0]
 
@@ -1122,7 +1120,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if chk4 is True:
             # find beginning 1 edge
             begIdx = None
-            begFlg = False
             for e in range(0, lenFULL):
                 f = PRE[e]
                 i = IDXS[e]
@@ -1132,7 +1129,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     wireIdxs[0].append(i)
                     break
             # find first 3 edge
-            endIdx = None
             for e in range(begIdx + 1, lenE + begIdx):
                 f = PRE[e]
                 i = IDXS[e]
@@ -1177,15 +1173,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # Efor
         # Eif
 
-        # Remove `and False` when debugging open edges, as needed
-        if self.isDebug and False:
-            PathLog.debug("grps[0]: {}".format(grps[0]))
-            PathLog.debug("grps[1]: {}".format(grps[1]))
-            PathLog.debug("wireIdxs[0]: {}".format(wireIdxs[0]))
-            PathLog.debug("wireIdxs[1]: {}".format(wireIdxs[1]))
-            PathLog.debug("PRE: {}".format(PRE))
-            PathLog.debug("IDXS: {}".format(IDXS))
-
+        # Debugging
+        '''
+        if self.isDebug:
+            PathLog.debug('grps[0]: {}'.format(grps[0]))
+            PathLog.debug('grps[1]: {}'.format(grps[1]))
+            PathLog.debug('wireIdxs[0]: {}'.format(wireIdxs[0]))
+            PathLog.debug('wireIdxs[1]: {}'.format(wireIdxs[1]))
+            PathLog.debug('PRE: {}'.format(PRE))
+            PathLog.debug('IDXS: {}'.format(IDXS))
+        '''
         return (wireIdxs[0], wireIdxs[1])
 
     def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):

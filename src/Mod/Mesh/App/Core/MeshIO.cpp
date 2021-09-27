@@ -148,6 +148,8 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("stl");
     fmt.emplace_back("ast");
     fmt.emplace_back("obj");
+    fmt.emplace_back("nas");
+    fmt.emplace_back("bdf");
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     return fmt;
@@ -1636,10 +1638,6 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     if ((!rstrIn) || (rstrIn.bad() == true))
         return false;
 
-    boost::regex rx_p("\\s*GRID\\s+([0-9]+)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
     boost::regex rx_q("\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
@@ -1656,6 +1654,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     std::map <int, TRIA> mTria;
     std::map <int, QUAD> mQuad;
 
+    int badElementCounter = 0;
+
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
         if (line.empty()) {
@@ -1664,22 +1664,24 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         else if (line.rfind("GRID*", 0) == 0) {
             // This element is the 16-digit-precision GRID element, which occupies two lines of the card. Note that
             // FreeCAD discards the extra precision, downcasting to an four-byte float.
-	    //
-	    // The two lines are:
-	    // 1      8               24             40             56
-	    // GRID*  Index(16)       Blank(16)      x(16)          y(at least one)
-	    // *      z(at least one)
-	    //
-	    // The first character is typically the sign, and may be omitted for positive numbers,
-	    // so it is possible for a field to begin with a blank. Trailing zeros may be omitted, so
-	    // a field may also end with blanks. No space or other delimiter is required between
-	    // the numbers. The following is a valid NASTRAN GRID* element:
-	    //
-	    // GRID*  1                               0.1234567890120.
-	    // *      1.
-	    //
-            if (line.length() < 8 + 16 + 16 + 16 + 1) // Element type(8), index(16), empty(16), x(16), y(>=1)
+            //
+            // The two lines are:
+            // 1      8               24             40             56
+            // GRID*  Index(16)       Blank(16)      x(16)          y(at least one)
+            // *      z(at least one)
+            //
+            // The first character is typically the sign, and may be omitted for positive numbers,
+            // so it is possible for a field to begin with a blank. Trailing zeros may be omitted, so
+            // a field may also end with blanks. No space or other delimiter is required between
+            // the numbers. The following is a valid NASTRAN GRID* element:
+            //
+            // GRID*  1                               0.1234567890120.
+            // *      1.
+            //
+            if (line.length() < 8 + 16 + 16 + 16 + 1) { // Element type(8), index(16), empty(16), x(16), y(>=1)
+                badElementCounter++;
                 continue;
+            }
             auto indexView = std::string_view(&line[8], 16);
             auto blankView = std::string_view(&line[8+16], 16);
             auto xView = std::string_view(&line[8+16+16], 16);
@@ -1688,8 +1690,10 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
             std::string line2;
             std::getline(rstrIn, line2);
             if ((!line2.empty() && line2[0] != '*') ||
-                line2.length() < 9)
+                line2.length() < 9) {
+                badElementCounter++;
                 continue; // File format error: second line is not a continuation line
+            }
             auto zView = std::string_view(&line2[8]);
 
             // We have to strip off any whitespace (technically really just any *trailing* whitespace):
@@ -1700,19 +1704,23 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
 
             auto converter = boost::cnv::spirit();
             auto indexCheck = boost::convert<int>(indexString, converter);
-            if (!indexCheck.is_initialized())
+            if (!indexCheck.is_initialized()) {
                 // File format error: index couldn't be converted to an integer
+                badElementCounter++;
                 continue;
-            index = indexCheck.get();
+            }
+            index = indexCheck.get() - 1; // Minus one so we are zero-indexed to match existing code
 
             // Get the high-precision versions first
             auto x = boost::convert<double>(xString, converter);
             auto y = boost::convert<double>(yString, converter);
             auto z = boost::convert<double>(zString, converter);
 
-            if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized())
+            if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized()) {
                 // File format error: x, y or z could not be converted
+                badElementCounter++;
                 continue;
+            }
 
             // Now drop precision:
             mNode[index].x = (float)x.get();
@@ -1720,12 +1728,62 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
             mNode[index].z = (float)z.get();
         }
         else if (line.rfind("GRID", 0) == 0) {
-            if (boost::regex_match(line.c_str(), what, rx_p)) {
+
+            boost::regex rx_spaceDelimited("\\s*GRID\\s+([0-9]+)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
+
+            if (boost::regex_match(line.c_str(), what, rx_spaceDelimited)) {
                 // insert the read-in vertex into a map to preserve the order
                 index = std::atol(what[1].first)-1;
                 mNode[index].x = (float)std::atof(what[2].first);
                 mNode[index].y = (float)std::atof(what[5].first);
                 mNode[index].z = (float)std::atof(what[8].first);
+            }
+            else {
+                // Classic NASTRAN uses a fixed 8 character field width:
+                // 1       8       16      24      32      40
+                // $-------ID------CP------X1------X2------X3------CD------PS------9-------+-------
+                // GRID    1               1.2345671.2345671.234567
+                // GRID    112             6.0000000.5000000.00E+00
+
+                if (line.length() < 41) { // Element type(8), id(8), cp(8), x(8), y(8), z(at least 1)
+                    badElementCounter++;
+                    continue;
+                }
+                auto indexView = std::string_view(&line[8], 8);
+                auto xView = std::string_view(&line[24], 8);
+                auto yView = std::string_view(&line[32], 8);
+                auto zView = std::string_view(&line[40], 8);
+
+                auto indexString = boost::trim_copy(std::string(indexView));
+                auto xString = boost::trim_copy(std::string(xView));
+                auto yString = boost::trim_copy(std::string(yView));
+                auto zString = boost::trim_copy(std::string(zView));
+
+                auto converter = boost::cnv::spirit();
+                auto indexCheck = boost::convert<int>(indexString, converter);
+                if (!indexCheck.is_initialized()) {
+                    // File format error: index couldn't be converted to an integer
+                    badElementCounter++;
+                    continue;
+                }
+                index = indexCheck.get() - 1; // Minus one so we are zero-indexed to match existing code
+
+                auto x = boost::convert<float>(xString, converter);
+                auto y = boost::convert<float>(yString, converter);
+                auto z = boost::convert<float>(zString, converter);
+
+                if (!x.is_initialized() || !y.is_initialized() || !z.is_initialized()) {
+                    // File format error: x, y or z could not be converted
+                    badElementCounter++;
+                    continue;
+                }
+
+                mNode[index].x = x.get();
+                mNode[index].y = y.get();
+                mNode[index].z = z.get();
             }
         }
         else if (line.rfind("CTRIA3 ", 0) == 0) {
@@ -1747,6 +1805,10 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                 mQuad[index].iV[3] = std::atol(what[6].first)-1;
             }
         }
+    }
+
+    if (badElementCounter > 0) {
+        Base::Console().Warning("Found bad elements while reading NASTRAN file.");
     }
 
     float fLength[2];

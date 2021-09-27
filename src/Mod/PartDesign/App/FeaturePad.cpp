@@ -70,6 +70,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
     ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pad", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
@@ -79,10 +80,6 @@ Pad::Pad()
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
-
-    // for new pads UseCustomVector is false, thus disable Direction and AlongSketchNormal
-    AlongSketchNormal.setReadOnly(true);
-    Direction.setReadOnly(true);
 }
 
 short Pad::mustExecute() const
@@ -93,6 +90,7 @@ short Pad::mustExecute() const
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
+        ReferenceAxis.isTouched() ||
         AlongSketchNormal.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
@@ -121,7 +119,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     try {
         obj = getVerifiedObject();
         sketchshape = getVerifiedFace();
-    } catch (const Base::Exception& e) {
+    }
+    catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
@@ -129,7 +128,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
+    }
+    catch (const Base::Exception&) {
         base = TopoDS_Shape();
     }
 
@@ -147,28 +147,49 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         Base::Vector3d paddingDirection;
         
         if (!UseCustomVector.getValue()) {
-            // use sketch's normal vector for direction
-            paddingDirection = SketchVector;
+            if (ReferenceAxis.getValue() == nullptr) {
+                // use sketch's normal vector for direction
+                paddingDirection = SketchVector;
+                AlongSketchNormal.setReadOnly(true);
+            }
+            else {
+                // update Direction from ReferenceAxis
+                try {
+                    App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
+                    const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
+                    Base::Vector3d base;
+                    Base::Vector3d dir;
+                    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
+                    paddingDirection = dir;
+                }
+                catch (const Base::Exception& e) {
+                    return new App::DocumentObjectExecReturn(e.what());
+                }
+            }
         }
         else {
             // use the given vector
             // if null vector, use SketchVector
             if ( (fabs(Direction.getValue().x) < Precision::Confusion())
                 && (fabs(Direction.getValue().y) < Precision::Confusion())
-                && (fabs(Direction.getValue().z) < Precision::Confusion()) )
-            {
+                && (fabs(Direction.getValue().z) < Precision::Confusion()) ) {
                 Direction.setValue(SketchVector);
             }
-
             paddingDirection = Direction.getValue();
         }
 
         // disable options of UseCustomVector  
-        AlongSketchNormal.setReadOnly(!UseCustomVector.getValue());
         Direction.setReadOnly(!UseCustomVector.getValue());
+        ReferenceAxis.setReadOnly(UseCustomVector.getValue());
+        // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
+        if (UseCustomVector.getValue())
+            AlongSketchNormal.setReadOnly(false);
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
+
+        // store the finally used direction to display it in the dialog
+        Direction.setValue(dir.X(), dir.Y(), dir.Z());
 
         // The length of a gp_Dir is 1 so the resulting pad would have
         // the length L in the direction of dir. But we want to have its height in the
@@ -384,4 +405,3 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
-

@@ -89,12 +89,14 @@ public:
 
 protected:
     void customEvent(QEvent* e);
+    std::string getRequest(const std::string&) const;
 
 private Q_SLOTS:
     void readClient();
     void discardClient();
 
 private:
+    Py::Object module;
 };
 
 }

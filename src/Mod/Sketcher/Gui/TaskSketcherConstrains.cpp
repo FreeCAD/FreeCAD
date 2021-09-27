@@ -757,7 +757,7 @@ void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget ta
                     Gui::Command::abortCommand();
 
                     QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                                QString::fromLatin1("Impossible to update visibility tracking"), QMessageBox::Ok, QMessageBox::Ok);
+                                QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
 
                     return;
                 }
@@ -1005,7 +1005,7 @@ void TaskSketcherConstrains::change3DViewVisibilityToTrackFilter()
                 Gui::Command::abortCommand();
 
                 QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                              QString::fromLatin1("Impossible to update visibility tracking"), QMessageBox::Ok, QMessageBox::Ok);
+                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
 
                return;
             }
@@ -1023,7 +1023,7 @@ void TaskSketcherConstrains::change3DViewVisibilityToTrackFilter()
                 Gui::Command::abortCommand();
 
                 QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                              QString::fromLatin1("Impossible to update visibility tracking"), QMessageBox::Ok, QMessageBox::Ok);
+                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
 
                return;
             }
