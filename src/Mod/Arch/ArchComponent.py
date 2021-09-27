@@ -1060,7 +1060,6 @@ class Component(ArchIFC.IfcProduct):
         if obj.IfcType.endswith("Standard Case"):
             return True
         # Try to guess
-        import ArchIFC
         if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
             # this type has a standard case
             if obj.Additions or obj.Subtractions:

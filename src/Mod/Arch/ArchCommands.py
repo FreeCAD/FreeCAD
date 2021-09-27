@@ -416,7 +416,6 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         bb.add(sh.BoundBox)
     bb.enlarge(1)
     # building cutplane space
-    placement = None
     um = vm = wm = 0
     try:
         if hasattr(cutplane,"Shape"):
@@ -578,9 +577,8 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
-        faces = []
         mesh = obj.Mesh
-        plac = obj.Placement
+        #plac = obj.Placement
         solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
         if solid:
             if solid.isClosed() and solid.isValid():
@@ -635,7 +633,7 @@ def removeShape(objs,mark=True):
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
-                    wal = ArchWall.makeWall(line,width=width,height=dims[3],name=name)
+                    ArchWall.makeWall(line,width=width,height=dims[3],name=name)
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
@@ -1336,14 +1334,14 @@ def printMessage( message ):
     if FreeCAD.GuiUp :
         if sys.version_info.major < 3:
             message = message.decode("utf8")
-        reply = QtGui.QMessageBox.information( None , "" , message )
+        QtGui.QMessageBox.information( None , "" , message )
 
 def printWarning( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
         if sys.version_info.major < 3:
             message = message.decode("utf8")
-        reply = QtGui.QMessageBox.warning( None , "" , message )
+        QtGui.QMessageBox.warning( None , "" , message )
 
 
 # command definitions ###############################################

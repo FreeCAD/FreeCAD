@@ -60,7 +60,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
-    bases = []
     stairs = []
     additions = []
 

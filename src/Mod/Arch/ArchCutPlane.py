@@ -119,7 +119,7 @@ class _CutPlaneTaskPanel:
         self.linecut=linecut
         self.plan=None
         if linecut:
-            self.plan=plan=getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
+            self.plan = getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
         else :
             self.plan = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 
