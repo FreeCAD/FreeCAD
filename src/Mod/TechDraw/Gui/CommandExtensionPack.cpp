@@ -88,8 +88,8 @@ CmdTechDrawExtensionCircleCenterLines::CmdTechDrawExtensionCircleCenterLines()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Draw circle center lines");
-    sToolTipText    = QT_TR_NOOP("Draw circle center line cross at circles\n\
+    sMenuText       = QT_TR_NOOP("Draw circle centerlines");
+    sToolTipText    = QT_TR_NOOP("Draw circle centerline cross at circles\n\
     - select many circles or arcs\n\
     - click this button");
     sWhatsThis      = "TechDraw_ExtensionCircleCenterLines";
