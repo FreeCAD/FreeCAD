@@ -215,8 +215,6 @@ void SheetView::setCurrentCell(QString str)
     updateAliasLine();
 }
 
-
-
 void SheetView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Delete) {
