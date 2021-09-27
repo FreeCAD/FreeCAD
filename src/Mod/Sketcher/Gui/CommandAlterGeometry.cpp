@@ -70,7 +70,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Toggle construction geometry");
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
