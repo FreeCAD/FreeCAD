@@ -1256,6 +1256,9 @@ void CmdPartDesignPad::activated(int iMsg)
         Gui::Command::updateActive();
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
+
+        FCMD_OBJ_CMD(Feat, "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
+
         finishProfileBased(cmd, sketch, Feat);
         cmd->adjustCameraPosition();
     };

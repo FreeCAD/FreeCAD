@@ -2080,6 +2080,12 @@ void Application::runApplication(void)
         WheelEventFilter* filter = new WheelEventFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
+    
+    //filter keyboard events to substitute decimal separator
+    if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
+        KeyboardFilter* filter = new KeyboardFilter(&mainApp);
+        mainApp.installEventFilter(filter);
+    }
 
 #if defined(HAVE_QT5_OPENGL)
     {

@@ -55,9 +55,13 @@ public:
     virtual void saveHistory() override;
     virtual void apply() override;
 
+    void fillDirectionCombo();
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
+    void onDirectionCBChanged(int);
     void onAlongSketchNormalChanged(bool);
     void onDirectionToggled(bool);
     void onXDirectionEditChanged(double);
@@ -72,12 +76,15 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
+    App::PropertyLinkSub* propReferenceAxis;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
     double getLength(void) const;
     double getLength2(void) const;
     bool   getAlongSketchNormal(void) const;
     bool   getCustom(void) const;
+    std::string getReferenceAxis(void) const;
     double getXDirection(void) const;
     double getYDirection(void) const;
     double getZDirection(void) const;
@@ -93,6 +100,8 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPadParameters> ui;
+    bool selectionFace;
+    std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
 /// simulation dialog for the TaskView
