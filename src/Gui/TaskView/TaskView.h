@@ -192,6 +192,7 @@ public:
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher(void);
+    void takeTaskWatcher(TaskView *other);
 
     bool isEmpty(bool includeWatcher = true) const;
 

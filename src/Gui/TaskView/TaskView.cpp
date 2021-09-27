@@ -438,6 +438,7 @@ TaskView::TaskView(QWidget *parent)
     this->timer = new QTimer(this);
     this->timer->setSingleShot(true);
     connect(this->timer, SIGNAL(timeout()), this, SLOT(onUpdateWatcher()));
+    updateWatcher();
 }
 
 TaskView::~TaskView()
@@ -447,6 +448,13 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
+
+    if (ActiveWatcher.size()) {
+        auto panel = Gui::Control().taskPanel();
+        if (panel && panel != this)
+            panel->takeTaskWatcher(this);
+    }
+    clearTaskWatcher();
 }
 
 bool TaskView::isEmpty(bool includeWatcher) const
@@ -781,6 +789,13 @@ void TaskView::onUpdateWatcher(void)
     if (ActiveCtrl || ActiveDialog)
         return;
 
+    if (ActiveWatcher.empty()) {
+        auto panel = Gui::Control().taskPanel();
+        if (panel->ActiveWatcher.size())
+            takeTaskWatcher(panel);
+    }
+    this->timer->stop();
+
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure to set the focus on a widget that won't be hidden or
     // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
@@ -826,6 +841,15 @@ void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
 
     ActiveWatcher = Watcher;
     if (!ActiveCtrl && !ActiveDialog)
+        addTaskWatcher();
+}
+
+void TaskView::takeTaskWatcher(TaskView *other)
+{
+    clearTaskWatcher();
+    ActiveWatcher.swap(other->ActiveWatcher);
+    other->clearTaskWatcher();
+    if (isEmpty(false))
         addTaskWatcher();
 }
 

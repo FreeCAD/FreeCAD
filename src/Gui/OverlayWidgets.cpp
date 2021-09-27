@@ -2936,7 +2936,7 @@ public:
             case OverlayUnset:
             case OverlayToggle:
                 _overlayMap.erase(it);
-                o->removeWidget();
+                o->tabWidget->removeWidget(dock);
                 return false;
             default:
                 break;

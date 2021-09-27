@@ -540,6 +540,22 @@ this according to your screen size or personal taste</string>
           </property>
          </widget>
         </item>
+        <item row="11" column="0" colspan="3">
+         <widget class="Gui::PrefCheckBox" name="checkboxTaskList">
+          <property name="toolTip">
+           <string>Separate task list into its own dockable widget</string>
+          </property>
+          <property name="text">
+           <string>Separate task list from task view</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>DockWindows/TaskWatcher</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Enabled</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

@@ -167,6 +167,7 @@ void DlgGeneralImp::saveSettings()
     ui->StyleSheets->onSave();
     ui->OverlayStyleSheets->onSave();
     ui->MenuStyleSheets->onSave();
+    ui->checkboxTaskList->onSave();
     saveTreeMode(ui->treeMode->currentIndex());
 }
 
@@ -322,6 +323,8 @@ void DlgGeneralImp::loadSettings()
     ui->treeItemSpacing->setValue(TreeParams::defaultItemSpacing());
     ui->treeItemSpacing->onRestore();
 
+    ui->checkboxTaskList->onRestore();
+
     ui->appFontSize->onRestore();
     ui->RecentFiles->onRestore();
     ui->SplashScreen->onRestore();
@@ -437,6 +440,7 @@ struct ParamHandlers {
         handlers[ParamKey(hGrp->GetGroup("TreeView"), "Enabled")] = applyDockWidget;
         handlers[ParamKey(hGrp->GetGroup("PropertyView"), "Enabled")] = applyDockWidget;
         handlers[ParamKey(hGrp->GetGroup("DAGView"), "Enabled")] = applyDockWidget;
+        handlers[ParamKey(hGrp->GetGroup("TaskWatcher"), "Enabled")] = applyDockWidget;
 
         hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
         handlers[ParamKey(hGrp, "Language")] = applyLanguage;

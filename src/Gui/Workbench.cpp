@@ -424,14 +424,14 @@ PyObject* Workbench::getPyObject()
 
 void Workbench::addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &Watcher)
 {
-    Gui::TaskView::TaskView* taskView = Control().taskPanel();
+    Gui::TaskView::TaskView* taskView = Control().taskWatcherPanel();
     if (taskView)
         taskView->addTaskWatcher(Watcher);
 }
 
 void Workbench::removeTaskWatcher(void)
 {
-    Gui::TaskView::TaskView* taskView = Control().taskPanel();
+    Gui::TaskView::TaskView* taskView = Control().taskWatcherPanel();
     if (taskView)
         taskView->clearTaskWatcher();
 }

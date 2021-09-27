@@ -530,6 +530,7 @@ static inline void _checkDockWidget(const char *name,
         if(widget) {
             pDockMgr->removeDockWindow(widget);
             pDockMgr->unregisterDockWindow(name);
+            widget->deleteLater();
         }
         return;
     }
@@ -618,6 +619,23 @@ void MainWindow::initDockWindows(bool show)
                 pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
                 pcComboView->setMinimumWidth(150);
                 widget = pcComboView;
+                return widget;
+            });
+    }
+
+    //Task List (task watcher).
+    if (d->hiddenDockWindows.find("Std_TaskWatcher") == std::string::npos) {
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp/Preferences/DockWindows/TaskWatcher");
+        bool enabled = group->GetBool("Enabled", false);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        _checkDockWidget("Std_TaskWatcher", enabled, show, Qt::RightDockWidgetArea,
+            [](QWidget *widget) {
+                if(widget)
+                    return widget;
+                widget = new TaskView::TaskView();
+                widget->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
                 return widget;
             });
     }

@@ -130,7 +130,7 @@ Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
         watcher.push_back(w);
     }
 
-    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskWatcherPanel();
     if (taskView)
         taskView->addTaskWatcher(watcher);
     return Py::None();
@@ -140,7 +140,7 @@ Py::Object ControlPy::clearTaskWatcher(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskWatcherPanel();
     if (taskView)
         taskView->clearTaskWatcher();
     return Py::None();

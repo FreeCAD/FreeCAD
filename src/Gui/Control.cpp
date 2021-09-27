@@ -75,6 +75,15 @@ Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
         return 0;
 }
 
+Gui::TaskView::TaskView* ControlSingleton::taskWatcherPanel() const
+{
+    auto panel = qobject_cast<TaskView::TaskView*>(
+            Gui::DockWindowManager::instance()->getDockWindow("Task List"));
+    if (panel)
+        return panel;
+    return taskPanel();
+}
+
 void ControlSingleton::showTaskView()
 {
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>

@@ -75,6 +75,7 @@ public:
      */
     //@{
     Gui::TaskView::TaskView* taskPanel() const;
+    Gui::TaskView::TaskView* taskWatcherPanel() const;
     /// raising the model view
     void showModelView();
     /// get the tab panel
