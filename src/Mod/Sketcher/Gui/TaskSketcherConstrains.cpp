@@ -715,11 +715,9 @@ void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget ta
     assert(sketchView);
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
 
-    bool doCommit = false;
-
     auto selecteditems = ui->listWidgetConstraints->selectedItems();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+    std::vector<int> constrIds;
 
     for(int i = 0; i < ui->listWidgetConstraints->count(); ++i)
     {
@@ -745,28 +743,44 @@ void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget ta
             if((it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace() && !show) ||
                (it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace() && show)) {
 
-
-                try {
-                    Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
-                                it->ConstraintNbr,
-                                show?"False":"True");
-
-                    doCommit = true;
-                }
-                catch (const Base::Exception & e) {
-                    Gui::Command::abortCommand();
-
-                    QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                                QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
-
-                    return;
-                }
+                constrIds.push_back(it->ConstraintNbr);
             }
         }
     }
 
-    if(doCommit)
+    if(!constrIds.empty()) {
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+
+        std::stringstream stream;
+
+        stream << '[';
+
+        for(size_t i = 0; i < constrIds.size()-1; i++) {
+            stream << constrIds[i] << ",";
+        }
+        stream << constrIds[constrIds.size()-1] << ']';
+
+        std::string constrIdList = stream.str();
+
+        try {
+            Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%s, %s)",
+                        constrIdList,
+                        show?"False":"True");
+
+        }
+        catch (const Base::Exception & e) {
+            Gui::Command::abortCommand();
+
+            QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                        QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+
+            return;
+        }
+
         Gui::Command::commitCommand();
+    }
+
 }
 
 void TaskSketcherConstrains::on_showAllButton_clicked(bool)
@@ -982,9 +996,8 @@ void TaskSketcherConstrains::change3DViewVisibilityToTrackFilter()
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
     const std::vector< Sketcher::Constraint * > &vals = sketch->Constraints.getValues();
 
-    bool doCommit = false;
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+    std::vector<int> constrIdsToVirtualSpace;
+    std::vector<int> constrIdsToCurrentSpace;
 
     for(std::size_t i = 0; i < vals.size(); ++i) {
         ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
@@ -993,45 +1006,64 @@ void TaskSketcherConstrains::change3DViewVisibilityToTrackFilter()
 
         // If the constraint is filteredout and it was previously shown in 3D view
         if( !visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
-            try {
-                Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
-                              it->ConstraintNbr,
-                              "True");
-
-               doCommit = true;
-
-            }
-            catch (const Base::Exception & e) {
-                Gui::Command::abortCommand();
-
-                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
-
-               return;
-            }
+            constrIdsToVirtualSpace.push_back(it->ConstraintNbr);
         }
         else if( visible && it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace() ) {
-            try {
-                Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
-                              it->ConstraintNbr,
-                              "False");
-
-                doCommit = true;
-
-            }
-            catch (const Base::Exception & e) {
-                Gui::Command::abortCommand();
-
-                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
-                              QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
-
-               return;
-            }
+            constrIdsToCurrentSpace.push_back(it->ConstraintNbr);
         }
     }
 
-     if(doCommit)
-          Gui::Command::commitCommand();
+    if(!constrIdsToVirtualSpace.empty() || !constrIdsToCurrentSpace.empty()) {
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+
+        auto doSetVirtualSpace = [&sketch](const std::vector<int> & constrIds, bool isvirtualspace) {
+            std::stringstream stream;
+
+            stream << '[';
+
+            for(size_t i = 0; i < constrIds.size()-1; i++) {
+                stream << constrIds[i] << ",";
+            }
+            stream << constrIds[constrIds.size()-1] << ']';
+
+            std::string constrIdList = stream.str();
+
+            try {
+                Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%s, %s)",
+                            constrIdList,
+                            isvirtualspace?"True":"False");
+
+            }
+            catch (const Base::Exception & e) {
+                Gui::Command::abortCommand();
+
+                QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
+                            QString::fromLatin1("Impossible to update visibility tracking: ") + QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
+
+                return false;
+            }
+
+            return true;
+        };
+
+
+        if(!constrIdsToVirtualSpace.empty()) {
+            bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
+            if(!ret)
+                return;
+        }
+
+        if(!constrIdsToCurrentSpace.empty()) {
+            bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
+
+            if(!ret)
+                return;
+        }
+
+        Gui::Command::commitCommand();
+
+    }
 
 }
 
