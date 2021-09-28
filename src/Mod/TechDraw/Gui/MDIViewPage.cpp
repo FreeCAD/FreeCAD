@@ -473,9 +473,16 @@ void MDIViewPage::fixOrphans(bool force)
     }
 
     // if qView doesn't have a Feature on this Page, delete it
-    std::vector<QGIView*> qvs = m_view->getViews();
+    std::vector<QGIView*> qvss = m_view->getViews();
+    // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
+    std::vector<QPointer<QGIView>> qvs;
+    std::for_each(qvss.begin(), qvss.end(), [&qvs](QGIView* v) {
+        qvs.emplace_back(v);
+    });
     App::Document* doc = getAppDocument();
     for (auto& qv: qvs) {
+        if (!qv)
+            continue; // already deleted?
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
         if (obj == nullptr) {
             m_view->removeQView(qv);
