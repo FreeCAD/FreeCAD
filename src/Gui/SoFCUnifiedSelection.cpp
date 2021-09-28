@@ -908,8 +908,11 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
             {
                 detailPath->truncate(0);
                 SoDetail *det = 0;
-                if (useRenderer())
+                if (useRenderer()) {
+                    if (!pcViewer || !pcViewer->hasViewProvider(vp))
+                        return false;
                     detailPath->append(master);
+                }
                 if(vp->getDetailPath(hilaction->SelChange->pSubName,detailPath,true,det)) {
                     setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
                                  hilaction->SelChange->pSubName,
@@ -939,6 +942,8 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
                 if (useRenderer()) {
+                    if (!pcViewer || !pcViewer->hasViewProvider(vp))
+                        return false;
                     detailPath->append(master);
                     if (selaction->SelChange->Type != SelectionChanges::AddSelection) {
                         manager.removeSelection(selaction->SelChange->Object.getSubNameNoElement(true),
@@ -1208,7 +1213,8 @@ SoFCUnifiedSelection::Private::setSelection(const std::vector<PickedInfo> &infos
 
     const auto &info = infos[0];
     auto vpd = info.vpd;
-    if(!vpd) return false;
+    if(!vpd || !pcViewer || !pcViewer->hasViewProvider(vpd))
+        return false;
     const char *objname = vpd->getObject()->getNameInDocument();
     if(!objname) return false;
     const char *docname = vpd->getObject()->getDocument()->getName();
