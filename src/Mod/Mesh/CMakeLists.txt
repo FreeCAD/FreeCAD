@@ -14,6 +14,7 @@ set(MeshTestDataFiles
     App/TestData/NASTRAN_Test_GRID_CQUAD4.bdf
     App/TestData/NASTRAN_Test_Delimited_GRID_CQUAD4.bdf
     App/TestData/NASTRAN_Test_GRIDSTAR_CQUAD4.bdf
+    App/TestData/NASTRAN_Test_GRID_CTRIA3.bdf
 )
 
 if(BUILD_GUI)

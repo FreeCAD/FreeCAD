@@ -356,5 +356,10 @@ class NastranReader(unittest.TestCase):
         self.assertEqual(m.CountPoints,4)
         self.assertEqual(m.CountFacets,2) # Quads split into two triangles
 
+    def testCTRIA3Element(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRID_CTRIA3.bdf")
+        self.assertEqual(m.CountPoints,3)
+        self.assertEqual(m.CountFacets,1)
+
     def tearDown(self):
         pass
