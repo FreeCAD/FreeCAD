@@ -3168,7 +3168,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sToolTipText  = QT_TR_NOOP("Scene inspector");
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
-    eType         = Alter3DView;
+    eType         = 0;
     sAccel        = "T, I";
     sPixmap       = "Std_SceneInspector";
 }
@@ -3629,7 +3629,7 @@ TREEVIEW_CMD_DEF(SyncPlacement)
 TREEVIEW_CMD_DEF(PreSelection)
 {
     sGroup       = QT_TR_NOOP("TreeView");
-    sMenuText    = QT_TR_NOOP("Pre-selection");
+    sMenuText    = QT_TR_NOOP("Tree view pre-selection");
     sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when mouse over the tree item");
     sStatusTip   = sToolTipText;
     sWhatsThis   = "Std_TreePreSelection";
@@ -3886,6 +3886,20 @@ VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
   eType         = NoDefaultAction;
 }
 
+//======================================================================
+// Std_MapChildrenPlacement
+//======================================================================
+VIEW_CMD_DEF(3DViewPreselection, EnablePreselection)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("3D view pre-selection");
+  sToolTipText  = QT_TR_NOOP("Enable pre-selection in 3D view");
+  sWhatsThis    = "Std_3DViewPreselection";
+  sStatusTip    = sToolTipText;
+  sAccel        = "V, Q";
+  eType         = NoDefaultAction;
+}
+
 
 //////////////////////////////////////////////////////////
 
@@ -3914,6 +3928,7 @@ public:
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand("Std_TreePreSelection");
+        addCommand(new StdCmd3DViewPreselection());
         addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());
