@@ -30,13 +30,14 @@ from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
-TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
-math = LazyLoader('math', globals(), 'math')
-PathUtils = LazyLoader('PathScripts.PathUtils', globals(), 'PathScripts.PathUtils')
-FeatureExtensions = LazyLoader('PathScripts.PathFeatureExtensions',
-                                globals(),
-                                'PathScripts.PathFeatureExtensions')
+
+Part = LazyLoader("Part", globals(), "Part")
+TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
+math = LazyLoader("math", globals(), "math")
+PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
+FeatureExtensions = LazyLoader(
+    "PathScripts.PathFeatureExtensions", globals(), "PathScripts.PathFeatureExtensions"
+)
 
 
 __title__ = "Path Pocket Shape Operation"
@@ -55,34 +56,41 @@ def translate(context, text, disambig=None):
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
-    '''Proxy object for Pocket operation.'''
+    """Proxy object for Pocket operation."""
 
     def areaOpFeatures(self, obj):
         return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
     def initPocketOp(self, obj):
-        '''initPocketOp(obj) ... setup receiver'''
-        if not hasattr(obj, 'UseOutline'):
-            obj.addProperty('App::PropertyBool', 'UseOutline', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Uses the outline of the base geometry.'))
+        """initPocketOp(obj) ... setup receiver"""
+        if not hasattr(obj, "UseOutline"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseOutline",
+                "Pocket",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "PathPocketShape", "Uses the outline of the base geometry."
+                ),
+            )
 
         FeatureExtensions.initialize_properties(obj)
 
     def areaOpOnDocumentRestored(self, obj):
-        '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
+        """opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist."""
         self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
 
     def areaOpSetDefaultValues(self, obj, job):
-        '''areaOpSetDefaultValues(obj, job) ... set default values'''
+        """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.StepOver = 100
         obj.ZigZagAngle = 45
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
 
     def areaOpShapes(self, obj):
-        '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
+        """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
         PathLog.track()
         self.removalshapes = []
 
@@ -97,14 +105,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 avoidFeatures.append(e.feature)
 
         if obj.Base:
-            PathLog.debug('base items exist.  Processing...')
+            PathLog.debug("base items exist.  Processing...")
             self.horiz = []
             self.vert = []
             for (base, subList) in obj.Base:
                 for sub in subList:
-                    if 'Face' in sub:
+                    if "Face" in sub:
                         if sub not in avoidFeatures and not self.clasifySub(base, sub):
-                            PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (base.Label, sub))
+                            PathLog.error(
+                                translate(
+                                    "PathPocket", "Pocket does not support shape %s.%s"
+                                )
+                                % (base.Label, sub)
+                            )
 
             # Convert horizontal faces to use outline only if requested
             if obj.UseOutline and self.horiz:
@@ -114,18 +127,26 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
                 self.vertical = PathGeom.combineConnectedShapes(self.vert)
-                self.vWires = [TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1)) for shape in self.vertical]
+                self.vWires = [
+                    TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
+                    for shape in self.vertical
+                ]
                 for wire in self.vWires:
                     w = PathGeom.removeDuplicateEdges(wire)
                     face = Part.Face(w)
                     # face.tessellate(0.1)
                     if PathGeom.isRoughly(face.Area, 0):
-                        PathLog.error(translate('PathPocket', 'Vertical faces do not form a loop - ignoring'))
+                        PathLog.error(
+                            translate(
+                                "PathPocket",
+                                "Vertical faces do not form a loop - ignoring",
+                            )
+                        )
                     else:
                         self.horiz.append(face)
 
             # Add faces for extensions
-            self.exts = [] # pylint: disable=attribute-defined-outside-init
+            self.exts = []  # pylint: disable=attribute-defined-outside-init
             for ext in extensions:
                 if not ext.avoid:
                     wire = ext.getWire()
@@ -145,15 +166,29 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             else:
                 buffer = self.job.GeometryTolerance.Value / 10.0
             for h in self.horizontal:
-                h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer))
+                h.translate(
+                    FreeCAD.Vector(
+                        0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer
+                    )
+                )
 
             # extrude all faces up to StartDepth plus buffer and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer)
-            self.removalshapes = [(face.removeSplitter().extrude(extent), False) for face in self.horizontal]
+            extent = FreeCAD.Vector(
+                0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer
+            )
+            self.removalshapes = [
+                (face.removeSplitter().extrude(extent), False)
+                for face in self.horizontal
+            ]
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
-            self.outlines = [Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))) for base in self.model]
+            self.outlines = [
+                Part.Face(
+                    TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))
+                )
+                for base in self.model
+            ]
             stockBB = self.stock.Shape.BoundBox
 
             self.bodies = []
@@ -184,75 +219,87 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return False
 
     def clasifySub(self, bs, sub):
-        '''clasifySub(bs, sub)...
+        """clasifySub(bs, sub)...
         Given a base and a sub-feature name, returns True
         if the sub-feature is a horizontally oriented flat face.
-        '''
+        """
         face = bs.Shape.getElement(sub)
 
         if type(face.Surface) == Part.Plane:
-            PathLog.debug('type() == Part.Plane')
+            PathLog.debug("type() == Part.Plane")
             if PathGeom.isVertical(face.Surface.Axis):
-                PathLog.debug('  -isVertical()')
+                PathLog.debug("  -isVertical()")
                 # it's a flat horizontal face
                 self.horiz.append(face)
                 return True
 
             elif PathGeom.isHorizontal(face.Surface.Axis):
-                PathLog.debug('  -isHorizontal()')
+                PathLog.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
 
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
-            PathLog.debug('type() == Part.Cylinder')
+        elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(
+            face.Surface.Axis
+        ):
+            PathLog.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
-                PathLog.debug('  -e.isClosed()')
+                PathLog.debug("  -e.isClosed()")
                 # complete cylinder
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
-                disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
+                disk.translate(
+                    FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin)
+                )
                 self.horiz.append(disk)
                 return True
 
             else:
-                PathLog.debug('  -none isClosed()')
+                PathLog.debug("  -none isClosed()")
                 # partial cylinder wall
                 self.vert.append(face)
                 return True
 
         elif type(face.Surface) == Part.SurfaceOfExtrusion:
             # extrusion wall
-            PathLog.debug('type() == Part.SurfaceOfExtrusion')
+            PathLog.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
             if self.isVerticalExtrusionFace(face):
                 self.vert.append(face)
                 return True
             else:
-                PathLog.error(translate("Path", "Failed to identify vertical face from {}.".format(sub)))
+                PathLog.error(
+                    translate(
+                        "Path", "Failed to identify vertical face from {}.".format(sub)
+                    )
+                )
 
         else:
-            PathLog.debug('  -type(face.Surface): {}'.format(type(face.Surface)))
+            PathLog.debug("  -type(face.Surface): {}".format(type(face.Surface)))
             return False
+
+
 # Eclass
 
 
 def SetupProperties():
     setup = PathPocketBase.SetupProperties()  # Add properties from PocketBase module
-    setup.extend(FeatureExtensions.SetupProperties())  # Add properties from Extensions Feature
+    setup.extend(
+        FeatureExtensions.SetupProperties()
+    )  # Add properties from Extensions Feature
 
     # Add properties initialized here in PocketShape
-    setup.append('UseOutline')
+    setup.append("UseOutline")
     return setup
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Pocket operation.'''
+    """Create(name) ... Creates and returns a Pocket operation."""
     if obj is None:
-        obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectPocket(obj, name, parentJob)
     return obj
 
