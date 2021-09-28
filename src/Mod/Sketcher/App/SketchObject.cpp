@@ -622,6 +622,38 @@ int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
     return 0;
 }
 
+int SketchObject::setVirtualSpace(std::vector<int> constrIds, bool isinvirtualspace)
+{
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    if (constrIds.empty())
+        return 0;
+
+    std::sort(constrIds.begin(),constrIds.end());
+
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    if (constrIds.front() < 0 || constrIds.back() >= int(vals.size()))
+        return -1;
+
+    std::vector< Constraint * > newVals(vals);
+
+    for(auto cid : constrIds) {
+        // clone the changed Constraint
+        if(vals[cid]->isInVirtualSpace != isinvirtualspace) {
+            Constraint *constNew = vals[cid]->clone();
+            constNew->isInVirtualSpace = isinvirtualspace;
+            newVals[cid] = constNew;
+        }
+    }
+
+    this->Constraints.setValues(std::move(newVals));
+
+    return 0;
+}
+
+
+
 int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace) const
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();

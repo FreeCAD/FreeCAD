@@ -244,6 +244,8 @@ public:
 
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// set the driving status of a group of constraints at once
+    int setVirtualSpace(std::vector<int> constrIds, bool isinvirtualspace);
     /// get the driving status of this constraint
     int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
     /// toggle the driving status of this constraint
