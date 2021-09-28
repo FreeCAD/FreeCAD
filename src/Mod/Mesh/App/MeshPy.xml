@@ -291,6 +291,16 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="hasPointsOnEdge" Const="true">
+            <Documentation>
+                <UserDocu>Check if points lie on edges</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removePointsOnEdge">
+            <Documentation>
+                <UserDocu>Remove points that lie on edges</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="hasInvalidNeighbourhood" Const="true">
             <Documentation>
                 <UserDocu>Check if the mesh has invalid neighbourhood indices</UserDocu>

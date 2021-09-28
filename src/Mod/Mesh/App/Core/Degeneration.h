@@ -741,6 +741,62 @@ public:
   bool Fixup ();
 };
 
+/**
+ * The MeshEvalPointOnEdge class searches for points that lie on or close to an edge of a triangle.
+ * @see MeshFixPointOnEdge
+ * @author Werner Mayer
+ */
+class MeshExport MeshEvalPointOnEdge : public MeshEvaluation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshEvalPointOnEdge (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  /**
+   * Destruction.
+   */
+  ~MeshEvalPointOnEdge () { }
+  /**
+   * Searches for points that lie on edge of triangle.
+   */
+  bool Evaluate ();
+  /**
+   * Returns the indices of all corrupt facets.
+   */
+  std::vector<PointIndex> GetIndices() const;
+
+private:
+  std::vector<PointIndex> pointsIndices;
+};
+
+/**
+ * The MeshFixPointOnEdge class removes points that lie on or close to an edge of a triangle.
+ * @see MeshEvalPointOnEdge
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixPointOnEdge : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixPointOnEdge (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  MeshFixPointOnEdge (MeshKernel &rclM, const std::vector<PointIndex>& points)
+      : MeshValidation( rclM ), pointsIndices(points) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixPointOnEdge () { }
+  /**
+   * Removes points that lie on edges of triangles.
+   */
+  bool Fixup ();
+
+private:
+  std::vector<PointIndex> pointsIndices;
+};
+
 } // namespace MeshCore
 
 #endif // MESH_DEGENERATION_H

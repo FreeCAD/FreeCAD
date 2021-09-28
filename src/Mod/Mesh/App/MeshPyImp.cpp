@@ -1094,6 +1094,28 @@ PyObject*  MeshPy::removeInvalidPoints(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::hasPointsOnEdge(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getMeshObjectPtr()->hasPointsOnEdge();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::removePointsOnEdge(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    try {
+        getMeshObjectPtr()->removePointsOnEdge();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return nullptr;
+    }
+    Py_Return;
+}
+
 PyObject*  MeshPy::flipNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

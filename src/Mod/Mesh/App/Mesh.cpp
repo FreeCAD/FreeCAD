@@ -1495,6 +1495,18 @@ void MeshObject::removeInvalidPoints()
     deletePoints(nan.GetIndices());
 }
 
+bool MeshObject::hasPointsOnEdge() const
+{
+    MeshCore::MeshEvalPointOnEdge nan(_kernel);
+    return !nan.Evaluate();
+}
+
+void MeshObject::removePointsOnEdge()
+{
+    MeshCore::MeshFixPointOnEdge nan(_kernel);
+    nan.Fixup();
+}
+
 void MeshObject::mergeFacets()
 {
     unsigned long count = _kernel.CountFacets();

@@ -1163,3 +1163,59 @@ bool MeshFixCorruptedFacets::Fixup()
   return true;
 }
 
+// ----------------------------------------------------------------------
+
+bool MeshEvalPointOnEdge::Evaluate ()
+{
+    MeshFacetGrid facetGrid(_rclMesh);
+    const MeshPointArray& points = _rclMesh.GetPoints();
+    const MeshFacetArray& facets = _rclMesh.GetFacets();
+
+    auto IsPointOnEdge = [&points](PointIndex idx, const MeshFacet& facet) {
+        // point must not be a corner of the facet
+        if (!facet.HasPoint(idx)) {
+            for (int i = 0; i < 3; i++) {
+                MeshGeomEdge edge;
+                edge._aclPoints[0] = points[facet._aulPoints[i]];
+                edge._aclPoints[1] = points[facet._aulPoints[(i+1)%3]];
+
+                if (edge.GetBoundBox().IsInBox(points[idx])) {
+                    if (edge.IsPointOf(points[idx], 0.001f))
+                        return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    PointIndex maxPoints = _rclMesh.CountPoints();
+    for (PointIndex i = 0; i < maxPoints;  i++) {
+        std::vector<FacetIndex> elements;
+        facetGrid.GetElements(points[i], elements);
+
+        for (const auto& it : elements) {
+            const MeshFacet& face = facets[it];
+            if (IsPointOnEdge(i, face)) {
+                pointsIndices.push_back(i);
+            }
+        }
+    }
+    return pointsIndices.empty();
+}
+
+std::vector<PointIndex> MeshEvalPointOnEdge::GetIndices() const
+{
+    return pointsIndices;
+}
+
+bool MeshFixPointOnEdge::Fixup ()
+{
+    if (pointsIndices.empty()) {
+        MeshEvalPointOnEdge eval(_rclMesh);
+        eval.Evaluate();
+        pointsIndices = eval.GetIndices();
+    }
+
+    _rclMesh.DeletePoints(pointsIndices);
+    return true;
+}

@@ -184,6 +184,12 @@ public:
    */
   void ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
                            Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const;
+  /**
+   * Checks if the point is part of the facet. A point is regarded as part
+   * of a facet if the distance is lower \a fDistance and the projected point
+   * in the facet normal direction is inside the triangle.
+   */
+  bool IsPointOf (const Base::Vector3f &rclPoint, float fDistance) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */

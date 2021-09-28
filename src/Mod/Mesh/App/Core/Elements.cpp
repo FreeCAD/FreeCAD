@@ -350,6 +350,26 @@ void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f &linePt, const Base:
     }
 }
 
+bool MeshGeomEdge::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) const
+{
+    float len2 = Base::DistanceP2(_aclPoints[0], _aclPoints[1]);
+    if (len2 == 0.0f) {
+        return _aclPoints[0].IsEqual(rclPoint, 0.0f);
+    }
+
+    Base::Vector3f p2p1 = _aclPoints[1] - _aclPoints[0];
+    Base::Vector3f pXp1 = rclPoint - _aclPoints[0];
+
+    float dot = pXp1 * p2p1;
+    float t = dot / len2;
+    if (t < 0.0f || t > 1.0f)
+        return false;
+
+    // point on the edge
+    Base::Vector3f ptEdge = t * p2p1 + _aclPoints[0];
+    return Base::Distance(ptEdge, rclPoint) <= fDistance;
+}
+
 // -----------------------------------------------------------------
 
 MeshGeomFacet::MeshGeomFacet () 

@@ -298,6 +298,8 @@ public:
     bool hasInvalidPoints() const;
     void removeInvalidPoints();
     void mergeFacets();
+    bool hasPointsOnEdge() const;
+    void removePointsOnEdge();
     //@}
 
     /** @name Mesh segments */
