@@ -73,7 +73,12 @@ void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
 bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &prop, bool refresh);
 
 /// Import an external feature into the body of the host feature using SubShapeBinder
-App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report=true);
+App::SubObjectT importExternalObject(const App::SubObjectT &feature,
+                                     bool report = true,
+                                     bool wholeObject = true,
+                                     bool noSubElement = false);
+/// Import a feature with sub-element (Wire or Face) using SubShapeBinder
+App::SubObjectT importExternalElement(App::SubObjectT feature, bool report=true);
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true,

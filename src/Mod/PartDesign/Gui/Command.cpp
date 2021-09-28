@@ -930,7 +930,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             for (unsigned i=1; i<sels.size(); ++i) {
                 if (!objSet.insert(sels[i].getSubObject()).second)
                     continue;
-                auto objT = PartDesignGui::importExternalObject(sels[i], false);
+                auto objT = PartDesignGui::importExternalElement(sels[i], false);
                 if (objT.getObjectName().empty())
                     continue;
                 ss << objT.getObjectPython() << ", ";

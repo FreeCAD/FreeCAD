@@ -1197,7 +1197,11 @@ public:
         }
     }
 
-    App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report) {
+    App::SubObjectT importExternalObject(const App::SubObjectT &feature,
+                                         bool report,
+                                         bool wholeObject,
+                                         bool noSubElement)
+    {
         try {
             App::SubObjectT editObjT = this->editBodyT;
             PartDesign::Body *body = Base::freecad_dynamic_cast<PartDesign::Body>(
@@ -1218,7 +1222,7 @@ public:
                 }
                 editObjT = it->second.activeBodyT;
             }
-            return PartDesign::SubShapeBinder::import(feature, editObjT, true, false, true);
+            return PartDesign::SubShapeBinder::import(feature, editObjT, wholeObject, noSubElement, true);
         } catch (Base::Exception & e) {
             if (!report)
                 throw;
@@ -1392,10 +1396,24 @@ void unselectObjectOnTop(const App::SubObjectT &objT)
     _MonitorInstance->showObjectOnTop(objT,Monitor::OnTopRemoveSelect);
 }
 
-App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report)
+App::SubObjectT importExternalObject(const App::SubObjectT &feature,
+                                     bool report,
+                                     bool wholeObject,
+                                     bool noSubElement)
 {
     initMonitor();
-    return _MonitorInstance->importExternalObject(feature, report);
+    return _MonitorInstance->importExternalObject(feature, report, wholeObject, noSubElement);
+}
+
+App::SubObjectT importExternalElement(App::SubObjectT feature, bool report) {
+    initMonitor();
+    auto element = feature.getOldElementName();
+    if (element.size() && !boost::starts_with(element, "Face") && !boost::starts_with(element, "Wire"))  {
+        auto sobj = feature.getSubObject();
+        if (sobj && sobj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            feature.setSubName(feature.getSubNameNoElement());
+    }
+    return _MonitorInstance->importExternalObject(feature, report, false, true);
 }
 
 bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &prop, bool refresh)

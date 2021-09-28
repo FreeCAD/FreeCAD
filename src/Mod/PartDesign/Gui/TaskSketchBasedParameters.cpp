@@ -266,7 +266,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     if (PartDesign::Feature::isDatum(selObj))
         objT.setSubName(objT.getSubNameNoElement());
 
-    objT = PartDesignGui::importExternalObject(objT);
+    objT = PartDesignGui::importExternalElement(objT);
     if (auto sobj = objT.getSubObject()) {
         pcSketchBased->UpToFace.setValue(sobj, {objT.getOldElementName()});
         recomputeFeature();

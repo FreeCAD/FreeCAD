@@ -445,8 +445,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (obj == pipe->Profile.getValue())
             break;
         App::SubObjectT ref(msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object);
-        ref.setSubName(ref.getSubNameNoElement());
-        ref = PartDesignGui::importExternalObject(ref);
+        ref = PartDesignGui::importExternalElement(ref);
         auto refObj = ref.getSubObject();
         if (refObj) {
             ui->profileBaseEdit->setText(QString::fromUtf8(refObj->Label.getValue()));
@@ -467,8 +466,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             if (obj == pipe->Spine.getValue())
                 break;
             App::SubObjectT ref(msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object);
-            ref.setSubName(ref.getSubNameNoElement());
-            ref = PartDesignGui::importExternalObject(ref);
+            ref = PartDesignGui::importExternalElement(ref);
             auto refObj = ref.getSubObject();
             if (!refObj)
                 break;
@@ -903,8 +901,7 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
             if (obj == pipe->AuxillerySpine.getValue())
                 break;
             App::SubObjectT ref(msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object);
-            ref.setSubName(ref.getSubNameNoElement());
-            ref = PartDesignGui::importExternalObject(ref);
+            ref = PartDesignGui::importExternalElement(ref);
             auto refObj = ref.getSubObject();
             if (!refObj)
                 break;
@@ -1148,8 +1145,7 @@ void TaskPipeScaling::onSelectionChanged(const Gui::SelectionChanges& msg)
     switch(selectionMode) {
     case refAdd: {
         App::SubObjectT ref(msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object);
-        ref.setSubName(ref.getSubNameNoElement());
-        ref = PartDesignGui::importExternalObject(ref);
+        ref = PartDesignGui::importExternalElement(ref);
         auto refObj = ref.getSubObject();
         if (refObj) {
             auto sections = pipe->Sections.getValues();
