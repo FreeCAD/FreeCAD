@@ -122,6 +122,7 @@ public:
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const override {return true;}
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    virtual std::string getElement(const SoDetail *detail) const override;
     virtual SoDetail* getDetail(const char*) const override;
     virtual bool getDetailPath(const char *subname,
                                SoFullPath *pPath,

@@ -775,6 +775,33 @@ bool ViewProviderPartExt::getElementPicked(const SoPickedPoint *pp, std::string 
     return true;
 }
 
+std::string ViewProviderPartExt::getElement(const SoDetail *detail) const
+{
+    // This function is providered here for backward compatibility. It provides
+    // mostly the same function as getElementPick(), but cannot work with exotic
+    // viewproviders that also group other nodes here.
+    if (!detail)
+        return inherited::getElement(detail);
+
+    std::ostringstream ss;
+    if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
+        const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
+        int face = face_detail->getPartIndex() + 1;
+        ss << "Face" << face;
+    } else if (detail->isOfType(SoLineDetail::getClassTypeId())) {
+        const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
+        int edge = line_detail->getLineIndex() + 1;
+        ss << "Edge" << edge;
+    } else if (detail->isOfType(SoPointDetail::getClassTypeId())) {
+        const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+        int vertex = point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
+        ss << "Vertex" << vertex;
+    } else
+        return inherited::getElement(detail);
+
+    return ss.str();
+}
+
 bool ViewProviderPartExt::getDetailPath(const char *subname,
                                     SoFullPath *pPath,
                                     bool append,
@@ -855,7 +882,8 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
 {
     try {
         std::vector<Base::Vector3d> pts;
-        std::string element = this->getElement(pp->getDetail());
+        std::string element;
+        this->getElementPicked(pp, element);
         const auto &shape = getShape();
 
         TopoDS_Shape subShape = shape.getSubShape(element.c_str());
