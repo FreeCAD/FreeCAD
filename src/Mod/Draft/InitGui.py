@@ -92,25 +92,47 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
         # Set up command lists
         import draftutils.init_tools as it
-        self.drawing_commands = it.get_draft_drawing_commands()
+        if hasattr(it, "get_draft_drawing_commands_temp"):
+            self.drawing_commands = it.get_draft_drawing_commands_temp()
+        else:
+            self.drawing_commands = it.get_draft_drawing_commands()
         self.annotation_commands = it.get_draft_annotation_commands()
-        self.modification_commands = it.get_draft_modification_commands()
+        if hasattr(it, "get_draft_modification_commands_temp"):
+            self.modification_commands = it.get_draft_modification_commands_temp()
+        else:
+            self.modification_commands = it.get_draft_modification_commands()
+        self.utility_commands_menu = it.get_draft_utility_commands_menu()
+        self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
         self.context_commands = it.get_draft_context_commands()
         self.line_commands = it.get_draft_line_commands()
-        self.utility_commands = it.get_draft_utility_commands()
-        self.utility_small = it.get_draft_small_commands()
 
         # Set up toolbars
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.drawing_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.annotation_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.modification_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft utility tools"), self.utility_small)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Draft", "Draft creation tools"),
+                        self.drawing_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"),
+                        self.annotation_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Draft", "Draft modification tools"),
+                        self.modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Draft", "Draft utility tools"),
+                        self.utility_commands_toolbar)
 
         # Set up menus
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Drafting"), self.drawing_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Annotation"), self.annotation_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Modification"), self.modification_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"), self.utility_commands + self.context_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Draft", "&Drafting")],
+                     self.drawing_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Draft", "&Annotation")],
+                     self.annotation_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Draft", "&Modification")],
+                     self.modification_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Draft", "&Utilities")],
+                     self.utility_commands_menu)
 
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
