@@ -355,7 +355,6 @@ void TaskPadParameters::fillDirectionCombo()
 
     if (axesInList.empty()) {
         ui->directionCB->clear();
-        this->axesInList.clear();
         // add sketch normal
         PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
@@ -414,12 +413,6 @@ void TaskPadParameters::onDirectionCBChanged(int num)
     if (axesInList.empty() || !pcPad)
         return;
 
-    App::DocumentObject* oldRefAxis = propReferenceAxis->getValue();
-    std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
-    std::string oldRefName;
-    if (!oldSubRefAxis.empty())
-        oldRefName = oldSubRefAxis.front();
-
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
@@ -440,12 +433,6 @@ void TaskPadParameters::onDirectionCBChanged(int num)
     }
 
     try {
-        App::DocumentObject* newRefAxis = propReferenceAxis->getValue();
-        const std::vector<std::string>& newSubRefAxis = propReferenceAxis->getSubValues();
-        std::string newRefName;
-        if (!newSubRefAxis.empty())
-            newRefName = newSubRefAxis.front();
-
         recomputeFeature();
     }
     catch (const Base::Exception& e) {
