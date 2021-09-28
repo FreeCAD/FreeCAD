@@ -1094,7 +1094,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     :CmdSketcherConstraint("Sketcher_ConstrainHorizontal")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain horizontally");
     sToolTipText    = QT_TR_NOOP("Create a horizontal constraint on the selected item");
     sWhatsThis      = "Sketcher_ConstrainHorizontal";
@@ -1332,7 +1332,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
     :CmdSketcherConstraint("Sketcher_ConstrainVertical")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain vertically");
     sToolTipText    = QT_TR_NOOP("Create a vertical constraint on the selected item");
     sWhatsThis      = "Sketcher_ConstrainVertical";
@@ -1566,7 +1566,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     :CmdSketcherConstraint("Sketcher_ConstrainLock")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain lock");
     sToolTipText    = QT_TR_NOOP("Lock constraint: "
                                  "create both a horizontal "
@@ -1791,7 +1791,7 @@ CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
 :CmdSketcherConstraint("Sketcher_ConstrainBlock")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain block");
     sToolTipText    = QT_TR_NOOP("Block constraint: "
                                  "block the selected edge from moving");
@@ -2105,7 +2105,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     :CmdSketcherConstraint("Sketcher_ConstrainCoincident")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain coincident");
     sToolTipText    = QT_TR_NOOP("Create a coincident constraint on the selected item");
     sWhatsThis      = "Sketcher_ConstrainCoincident";
@@ -2311,7 +2311,7 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     :CmdSketcherConstraint("Sketcher_ConstrainDistance")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain distance");
     sToolTipText    = QT_TR_NOOP("Fix a length of a line or the distance between a line and a vertex");
     sWhatsThis      = "Sketcher_ConstrainDistance";
@@ -2660,7 +2660,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     :CmdSketcherConstraint("Sketcher_ConstrainPointOnObject")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain point onto object");
     sToolTipText    = QT_TR_NOOP("Fix a point onto an object");
     sWhatsThis      = "Sketcher_ConstrainPointOnObject";
@@ -2908,7 +2908,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     :CmdSketcherConstraint("Sketcher_ConstrainDistanceX")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain horizontal distance");
     sToolTipText    = QT_TR_NOOP("Fix the horizontal distance "
                                  "between two points or line ends");
@@ -3162,7 +3162,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     :CmdSketcherConstraint("Sketcher_ConstrainDistanceY")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain vertical distance");
     sToolTipText    = QT_TR_NOOP("Fix the vertical distance between two points or line ends");
     sWhatsThis      = "Sketcher_ConstrainDistanceY";
@@ -3408,7 +3408,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     :CmdSketcherConstraint("Sketcher_ConstrainParallel")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain parallel");
     sToolTipText    = QT_TR_NOOP("Create a parallel constraint between two lines");
     sWhatsThis      = "Sketcher_ConstrainParallel";
@@ -3558,7 +3558,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     :CmdSketcherConstraint("Sketcher_ConstrainPerpendicular")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain perpendicular");
     sToolTipText    = QT_TR_NOOP("Create a perpendicular constraint between two lines");
     sWhatsThis      = "Sketcher_ConstrainPerpendicular";
@@ -4196,7 +4196,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
     :CmdSketcherConstraint("Sketcher_ConstrainTangent")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain tangent");
     sToolTipText    = QT_TR_NOOP("Create a tangent constraint between two entities");
     sWhatsThis      = "Sketcher_ConstrainTangent";
@@ -4904,7 +4904,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     :CmdSketcherConstraint("Sketcher_ConstrainRadius")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain radius or weight");
     sToolTipText    = QT_TR_NOOP("Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline");
     sWhatsThis      = "Sketcher_ConstrainRadius";
@@ -5206,7 +5206,7 @@ CmdSketcherConstrainDiameter::CmdSketcherConstrainDiameter()
 :CmdSketcherConstraint("Sketcher_ConstrainDiameter")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain diameter");
     sToolTipText    = QT_TR_NOOP("Fix the diameter of a circle or an arc");
     sWhatsThis      = "Sketcher_ConstrainDiameter";
@@ -5482,7 +5482,7 @@ CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
 :CmdSketcherConstraint("Sketcher_ConstrainRadiam")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain auto radius/diameter");
     sToolTipText    = QT_TR_NOOP("Fix automatically diameter on circle and radius on arc/pole");
     sWhatsThis      = "Sketcher_ConstrainRadiam";
@@ -5786,7 +5786,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
 : Command("Sketcher_CompConstrainRadDia")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain arc or circle");
     sToolTipText    = QT_TR_NOOP("Constrain an arc or a circle");
     sWhatsThis      = "Sketcher_CompCreateCircle";
@@ -5930,7 +5930,7 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     :CmdSketcherConstraint("Sketcher_ConstrainAngle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain angle");
     sToolTipText    = QT_TR_NOOP("Fix the angle of a line or the angle between two lines");
     sWhatsThis      = "Sketcher_ConstrainAngle";
@@ -6457,7 +6457,7 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
     :CmdSketcherConstraint("Sketcher_ConstrainEqual")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain equal");
     sToolTipText    = QT_TR_NOOP("Create an equality constraint between two lines or between circles and arcs");
     sWhatsThis      = "Sketcher_ConstrainEqual";
@@ -6674,7 +6674,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
     :CmdSketcherConstraint("Sketcher_ConstrainSymmetric")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain symmetrical");
     sToolTipText    = QT_TR_NOOP("Create a symmetry constraint "
                                  "between two points\n"
@@ -6974,7 +6974,7 @@ CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
     :Command("Sketcher_ConstrainSnellsLaw")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain refraction (Snell's law')");
     sToolTipText    = QT_TR_NOOP("Create a refraction law (Snell's law) "
                                  "constraint between two endpoints of rays\n"
@@ -7138,7 +7138,7 @@ CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     :Command("Sketcher_ConstrainInternalAlignment")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain internal alignment");
     sToolTipText    = QT_TR_NOOP("Constrains an element to be aligned "
                                  "with the internal geometry of another element");
@@ -7599,7 +7599,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     :Command("Sketcher_ToggleDrivingConstraint")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Toggle driving/reference constraint");
     sToolTipText    = QT_TR_NOOP("Set the toolbar, "
                                  "or the selected constraints,\n"
@@ -7726,7 +7726,7 @@ CmdSketcherToggleActiveConstraint::CmdSketcherToggleActiveConstraint()
 :Command("Sketcher_ToggleActiveConstraint")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Activate/deactivate constraint");
     sToolTipText    = QT_TR_NOOP("Activates or deactivates "
                                  "the selected constraints");

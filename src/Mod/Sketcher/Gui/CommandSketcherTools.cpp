@@ -99,7 +99,7 @@ CmdSketcherCloseShape::CmdSketcherCloseShape()
     :Command("Sketcher_CloseShape")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Close shape");
     sToolTipText    = QT_TR_NOOP("Produce a closed shape by tying the end point "
                                  "of one element with the next element's starting point");
@@ -211,7 +211,7 @@ CmdSketcherConnect::CmdSketcherConnect()
     :Command("Sketcher_ConnectLines")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Connect edges");
     sToolTipText    = QT_TR_NOOP("Tie the end point of the element with next element's starting point");
     sWhatsThis      = "Sketcher_ConnectLines";
@@ -298,7 +298,7 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
     :Command("Sketcher_SelectConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select associated constraints");
     sToolTipText    = QT_TR_NOOP("Select the constraints associated with the selected geometrical elements");
     sWhatsThis      = "Sketcher_SelectConstraints";
@@ -372,7 +372,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
     :Command("Sketcher_SelectOrigin")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select origin");
     sToolTipText    = QT_TR_NOOP("Select the local origin point of the sketch");
     sWhatsThis      = "Sketcher_SelectOrigin";
@@ -418,7 +418,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
     :Command("Sketcher_SelectVerticalAxis")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select vertical axis");
     sToolTipText    = QT_TR_NOOP("Select the local vertical axis of the sketch");
     sWhatsThis      = "Sketcher_SelectVerticalAxis";
@@ -462,7 +462,7 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
     :Command("Sketcher_SelectHorizontalAxis")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select horizontal axis");
     sToolTipText    = QT_TR_NOOP("Select the local horizontal axis of the sketch");
     sWhatsThis      = "Sketcher_SelectHorizontalAxis";
@@ -505,7 +505,7 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
     :Command("Sketcher_SelectRedundantConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select redundant constraints");
     sToolTipText    = QT_TR_NOOP("Select redundant constraints");
     sWhatsThis      = "Sketcher_SelectRedundantConstraints";
@@ -559,7 +559,7 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
     :Command("Sketcher_SelectMalformedConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select malformed constraints");
     sToolTipText    = QT_TR_NOOP("Select malformed constraints");
     sWhatsThis      = "Sketcher_SelectMalformedConstraints";
@@ -613,7 +613,7 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
     :Command("Sketcher_SelectPartiallyRedundantConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select partially redundant constraints");
     sToolTipText    = QT_TR_NOOP("Select partially redundant constraints");
     sWhatsThis      = "Sketcher_SelectPartiallyRedundantConstraints";
@@ -667,7 +667,7 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
     :Command("Sketcher_SelectConflictingConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select conflicting constraints");
     sToolTipText    = QT_TR_NOOP("Select conflicting constraints");
     sWhatsThis      = "Sketcher_SelectConflictingConstraints";
@@ -719,7 +719,7 @@ CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAss
     :Command("Sketcher_SelectElementsAssociatedWithConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select associated geometry");
     sToolTipText    = QT_TR_NOOP("Select the geometrical elements associated with the selected constraints");
     sWhatsThis      = "Sketcher_SelectElementsAssociatedWithConstraints";
@@ -841,7 +841,7 @@ CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 :Command("Sketcher_SelectElementsWithDoFs")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Select unconstrained DoF");
     sToolTipText    = QT_TR_NOOP("Select geometrical elements where the solver still detects unconstrained degrees of freedom.");
     sWhatsThis      = "Sketcher_SelectElementsWithDoFs";
@@ -926,7 +926,7 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
     :Command("Sketcher_RestoreInternalAlignmentGeometry")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Show/hide internal geometry");
     sToolTipText    = QT_TR_NOOP("Show all internal geometry or hide unused internal geometry");
     sWhatsThis      = "Sketcher_RestoreInternalAlignmentGeometry";
@@ -1021,7 +1021,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
     :Command("Sketcher_Symmetry")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Symmetry");
     sToolTipText    = QT_TR_NOOP("Creates symmetric geometry with respect to the last selected line or point");
     sWhatsThis      = "Sketcher_Symmetry";
@@ -1536,7 +1536,7 @@ CmdSketcherCopy::CmdSketcherCopy()
     :SketcherCopy("Sketcher_Copy")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Copy");
     sToolTipText    = QT_TR_NOOP("Creates a simple copy of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_Copy";
@@ -1582,7 +1582,7 @@ CmdSketcherClone::CmdSketcherClone()
     :SketcherCopy("Sketcher_Clone")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Clone");
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_Clone";
@@ -1625,7 +1625,7 @@ CmdSketcherMove::CmdSketcherMove()
     :SketcherCopy("Sketcher_Move")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Move");
     sToolTipText    = QT_TR_NOOP("Moves the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_Move";
@@ -1659,7 +1659,7 @@ CmdSketcherCompCopy::CmdSketcherCompCopy()
     : Command("Sketcher_CompCopy")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Copy");
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_CompCopy";
@@ -1941,7 +1941,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
     :Command("Sketcher_RectangularArray")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Rectangular array");
     sToolTipText    = QT_TR_NOOP("Creates a rectangular array pattern of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_RectangularArray";
@@ -2081,7 +2081,7 @@ CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
     :Command("Sketcher_DeleteAllGeometry")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Delete all geometry");
     sToolTipText    = QT_TR_NOOP("Delete all geometry and constraints in the current sketch, "
                                  "with the exception of external geometry");
@@ -2144,7 +2144,7 @@ CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
     :Command("Sketcher_DeleteAllConstraints")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Delete all constraints");
     sToolTipText    = QT_TR_NOOP("Delete all constraints in the sketch");
     sWhatsThis      = "Sketcher_DeleteAllConstraints";
@@ -2208,7 +2208,7 @@ CmdSketcherRemoveAxesAlignment::CmdSketcherRemoveAxesAlignment()
     :Command("Sketcher_RemoveAxesAlignment")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
     sMenuText       = QT_TR_NOOP("Remove axes alignment");
     sToolTipText    = QT_TR_NOOP("Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection");
     sWhatsThis      = "Sketcher_RemoveAxesAlignment";
