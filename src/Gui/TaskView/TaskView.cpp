@@ -775,7 +775,7 @@ void TaskView::removeDialog(void)
     if (remove) {
         remove->closed();
         remove->emitDestructionSignal();
-        delete remove;
+        remove->deleteLater();
     }
 }
 
@@ -791,7 +791,7 @@ void TaskView::onUpdateWatcher(void)
 
     if (ActiveWatcher.empty()) {
         auto panel = Gui::Control().taskPanel();
-        if (panel->ActiveWatcher.size())
+        if (panel && panel->ActiveWatcher.size())
             takeTaskWatcher(panel);
     }
     this->timer->stop();
