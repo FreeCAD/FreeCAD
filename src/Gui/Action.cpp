@@ -445,25 +445,24 @@ void ActionGroup::addTo(QWidget *w)
             QAction* action = qobject_cast<QMenu*>(w)->addMenu(menu);
             action->setMenuRole(_action->menuRole());
             menu->setTitle(_action->text());
-            menu->addActions(_group->actions());
+            menu->addActions(actions());
         }
         else if (w->inherits("QToolBar")) {
             w->addAction(_action);
             QToolButton* tb = w->findChildren<QToolButton*>().last();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
             tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
-            QList<QAction*> acts = _group->actions();
             QMenu* menu = new QMenu(tb);
-            menu->addActions(acts);
+            menu->addActions(actions());
             tb->setMenu(menu);
             //tb->addActions(_group->actions());
         }
         else {
-            w->addActions(_group->actions()); // no drop-down
+            w->addActions(actions()); // no drop-down
         }
     }
     else {
-        w->addActions(_group->actions());
+        w->addActions(actions());
     }
 }
 
@@ -497,34 +496,50 @@ void ActionGroup::setVisible( bool b )
 
 QAction* ActionGroup::addAction(QAction* action)
 {
-    int index = _group->actions().size();
+    if (_actions.size() < _group->actions().size())
+        _actions = _group->actions();
+    int index = _actions.size();
     action = _group->addAction(action);
     action->setData(QVariant(index));
+    // The same action can be added to multiple group, so setData() above is not
+    // really reliable. Besides, it seems that Qt will auto remove duplicated
+    // action from other groups if added to the same menu. So we can't really
+    // rely on _group->actions() to find the action either.
+    _actions.append(action);
     return action;
 }
 
 QAction* ActionGroup::addAction(const QString& text)
 {
-    int index = _group->actions().size();
+    if (_actions.size() < _group->actions().size())
+        _actions = _group->actions();
+    int index = _actions.size();
     QAction* action = _group->addAction(text);
     action->setData(QVariant(index));
+    _actions.append(action);
     return action;
 }
 
 QList<QAction*> ActionGroup::actions() const
 {
-    return _group->actions();
+    auto acts = _group->actions();
+    if (_actions.size() < acts.size())
+        const_cast<ActionGroup*>(this)->_actions = acts;
+    return _actions;
 }
 
 int ActionGroup::checkedAction() const
 {
     QAction* checked = _group->checkedAction();
-    return checked ? checked->data().toInt() : -1;
+    return checked ? actions().indexOf(checked) : -1;
 }
 
 void ActionGroup::setCheckedAction(int i)
 {
-    QAction* a = _group->actions()[i];
+    auto actions = this->actions();
+    if (i < 0 || i >= actions.size())
+        return;
+    QAction* a = actions[i];
     a->setChecked(true);
     this->setIcon(a->icon());
     this->setToolTip(a->toolTip());
@@ -550,7 +565,7 @@ void ActionGroup::onToggled(bool checked)
  */
 void ActionGroup::onActivated (QAction* a)
 {
-    int index = _group->actions().indexOf(a);
+    int index = actions().indexOf(a);
 
     // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
     // We have to change the QAction icon instead

@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <deque>
+#include <map>
 
 #include <QAction>
 #include <QMenu>
@@ -168,6 +169,7 @@ protected:
     bool _dropDown;
     bool _external;
     bool _toggle;
+    QList<QAction*> _actions;
 };
 
 // --------------------------------------------------------------------
