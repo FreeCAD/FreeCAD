@@ -127,6 +127,46 @@ void Sheet::clearAll()
     observers.clear();
 }
 
+//validate import/export parameters
+bool Sheet::getCharsFromPrefs(char &delim, char &quote, char &escape, std::string &errMsg){
+    bool isValid = true;
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter","tab"));
+    QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter","\""));
+    QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter","\\"));
+
+    delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
+    if (delimiter.compare(QLatin1String("tab"), Qt::CaseInsensitive) == 0 || delimiter.compare(QLatin1String("\\t"),Qt::CaseInsensitive) == 0){
+        delim = '\t';
+    } else if (delimiter.compare(QLatin1String("comma"), Qt::CaseInsensitive) == 0){
+        delim = ',';
+    } else if (delimiter.compare(QLatin1String("semicolon"), Qt::CaseInsensitive) == 0){
+        delim = ';';
+    }
+    if(delim != '\0' && quoteChar.size() == 1 && escapeChar.size() == 1){
+        quote = quoteChar[0].toLatin1();
+        escape = escapeChar[0].toLatin1();
+    } else {
+        isValid = false;
+        std::string importExport = errMsg;
+        std::stringstream errStream;
+        errStream << "Invalid spreadsheet Import/Export parameter.\n";
+        if (delim == '\0') {
+            errStream << "Unrecognized delimiter: " << delimiter.toStdString() << " (recognized tokens: \\t, tab, semicolon, comma, or any single character)\n";
+        }
+        if (quoteChar.size() != 1){
+            errStream << "Invalid quote character: " << quoteChar.toStdString() << " (quote character must be one single character)\n";
+        }
+        if (escapeChar.size() != 1){
+            errStream << "Invalid escape character: " << escapeChar.toStdString() << " (escape character must be one single character)\n";
+        }
+        errStream << importExport << " not done.\n";
+        errMsg = errStream.str();
+    }
+    return isValid;
+}
+
+
 /**
   * Import a file into the spreadsheet object.
   *

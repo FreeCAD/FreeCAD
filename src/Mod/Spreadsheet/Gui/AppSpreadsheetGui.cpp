@@ -41,8 +41,10 @@
 #include <Gui/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include "DlgSettingsImp.h"
 #include "Workbench.h"
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
@@ -118,6 +120,9 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::ViewProviderSheet::init();
     SpreadsheetGui::Workbench::init();
     SpreadsheetGui::SheetView::init();
+
+    // register preference page
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

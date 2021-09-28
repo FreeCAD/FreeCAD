@@ -197,9 +197,19 @@ void CmdSpreadsheetImport::activated(int iMsg)
     if (!fileName.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Spreadsheet");
         Sheet * sheet = freecad_dynamic_cast<Sheet>(App::GetApplication().getActiveDocument()->addObject("Spreadsheet::Sheet", FeatName.c_str()));
+        if (sheet){
+            char delim, quote, escape;
+            std::string errMsg = "Import";
+            bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
 
-        sheet->importFromFile(Base::Tools::toStdString(fileName), '\t', '"', '\\');
-        sheet->execute();
+            if (isValid){
+                sheet->importFromFile(fileName.toStdString(), delim, quote, escape);
+                sheet->execute();
+            } else {
+                Base::Console().Error(errMsg.c_str());
+                return;
+            }
+        }
     }
 }
 
@@ -240,8 +250,20 @@ void CmdSpreadsheetExport::activated(int iMsg)
                                                                 QString(),
                                                                 formatList,
                                                                 &selectedFilter);
-            if (!fileName.isEmpty())
-                sheet->exportToFile(Base::Tools::toStdString(fileName), '\t', '"', '\\');
+            if (!fileName.isEmpty()){
+                if (sheet){
+                    char delim, quote, escape;
+                    std::string errMsg = "Export";
+                    bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
+
+                    if (isValid){
+                        sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
+                    } else {
+                        Base::Console().Error(errMsg.c_str());
+                        return;
+                    }
+                }
+            }
         }
     }
 }
