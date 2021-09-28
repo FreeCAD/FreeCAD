@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>icons/preferences-spreadsheet.svg</file>
         <file>icons/Spreadsheet.svg</file>
         <file>icons/SpreadsheetController.svg</file>
         <file>icons/SpreadsheetImport.svg</file>
