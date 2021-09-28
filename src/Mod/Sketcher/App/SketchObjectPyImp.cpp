@@ -867,19 +867,49 @@ PyObject* SketchObjectPy::toggleDriving(PyObject *args)
 PyObject* SketchObjectPy::setVirtualSpace(PyObject *args)
 {
     PyObject* invirtualspace;
-    int constrid;
+    PyObject* id_or_ids;
 
-    if (!PyArg_ParseTuple(args, "iO!", &constrid, &PyBool_Type, &invirtualspace))
-        return 0;
-
-    if (this->getSketchObjectPtr()->setVirtualSpace(constrid, PyObject_IsTrue(invirtualspace) ? true : false)) {
-        std::stringstream str;
-        str << "Not able set virtual space for constraint with the given index: " << constrid;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+    if (!PyArg_ParseTuple(args, "OO!", &id_or_ids, &PyBool_Type, &invirtualspace)) {
         return 0;
     }
 
-    Py_Return;
+    if (PyObject_TypeCheck(id_or_ids, &(PyList_Type)) ||
+             PyObject_TypeCheck(id_or_ids, &(PyTuple_Type))) {
+        std::vector<int> constrIds;
+        Py::Sequence list(id_or_ids);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr()))
+                constrIds.push_back(PyLong_AsLong((*it).ptr()));
+        }
+
+        try {
+            int ret = this->getSketchObjectPtr()->setVirtualSpace(constrIds, PyObject_IsTrue(invirtualspace) ? true : false);
+
+            if(ret == -1)
+                throw Py::TypeError("Impossible to set virtual space!");
+
+        }
+        catch(const Base::ValueError & e) {
+            throw Py::ValueError(e.getMessage());
+        }
+
+        Py_Return;
+    }
+    else if(PyLong_Check(id_or_ids)) {
+        if (this->getSketchObjectPtr()->setVirtualSpace(PyLong_AsLong(id_or_ids), PyObject_IsTrue(invirtualspace) ? true : false)) {
+            std::stringstream str;
+            str << "Not able set virtual space for constraint with the given index: " << PyLong_AsLong(id_or_ids);
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of Constraint Ids, not ");
+    error += id_or_ids->ob_type->tp_name;
+    throw Py::TypeError(error);
+
 }
 
 PyObject* SketchObjectPy::getVirtualSpace(PyObject *args)
