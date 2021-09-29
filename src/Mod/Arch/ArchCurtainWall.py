@@ -602,7 +602,7 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
         colors = []
         nmullions = obj.VerticalMullionNumber + obj.HorizontalMullionNumber + obj.DiagonalMullionNumber
         for i,solid in enumerate(obj.Shape.Solids):
-            for f in solid.Faces:
+            for _ in solid.Faces:
                 if i < nmullions:
                     colors.append(basecolor)
                 else:

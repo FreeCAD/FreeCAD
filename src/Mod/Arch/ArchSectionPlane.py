@@ -469,8 +469,8 @@ def getSVG(source,
             hshapes = source.Proxy.shapecache[1]
             sshapes = source.Proxy.shapecache[2]
             cutface = source.Proxy.shapecache[3]
-            cutvolume = source.Proxy.shapecache[4]
-            invcutvolume = source.Proxy.shapecache[5]
+            # cutvolume = source.Proxy.shapecache[4] # Unused
+            # invcutvolume = source.Proxy.shapecache[5] # Unused
             objectSshapes = source.Proxy.shapecache[6]
         else:
             if showFill:
@@ -638,10 +638,6 @@ def getDXF(obj):
         return result
     if not allOn:
             objs = Draft.removeHidden(objs)
-    # separate spaces and Draft objects
-    spaces = []
-    nonspaces = []
-    drafts = []
     objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:

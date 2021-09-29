@@ -183,14 +183,14 @@ class ArchReference:
             for edge in shape.Edges:
                 found = False
                 for solid in shape.Solids:
-                    if found:
-                        break
                     for soledge in solid.Edges:
-                        if found:
-                            break
                         if edge.hashCode() == soledge.hashCode():
                             found = True
                             break
+                    if found:
+                        break
+                if found:
+                    break
             else:
                 shapes.append(edge)
             print("solids:",len(shape.Solids),"mattable:",materials)

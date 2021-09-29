@@ -21,7 +21,8 @@
 
 import FreeCAD
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
+    import FreeCADGui, os
+    import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -537,7 +538,6 @@ class _ArchMaterialTaskPanel:
         except Exception:
             self.form.ButtonCode.hide()
         else:
-            import os
             self.form.ButtonCode.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
         if self.obj:
             if hasattr(self.obj,"Material"):

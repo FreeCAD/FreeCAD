@@ -232,7 +232,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
     numsep = coin.SoSeparator()
     pathsep = coin.SoSeparator()
     hoursep = coin.SoSeparator()
-    hournumsep = coin.SoSeparator()
+    #hournumsep = coin.SoSeparator()
     mastersep.addChild(circlesep)
     mastersep.addChild(numsep)
     mastersep.addChild(pathsep)

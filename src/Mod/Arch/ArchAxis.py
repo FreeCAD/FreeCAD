@@ -531,8 +531,8 @@ class _ViewProviderAxis:
                                         pts = re.findall("point \[(.*?)\]",buf)[0]
                                         pts = pts.split(",")
                                         pc = []
-                                        for p in pts:
-                                            v = p.strip().split()
+                                        for point in pts:
+                                            v = point.strip().split()
                                             pc.append([float(v[0]),float(v[1]),float(v[2])])
                                         coords = coin.SoCoordinate3()
                                         coords.point.setValues(0,len(pc),pc)
