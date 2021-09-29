@@ -65,6 +65,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(ui->expression, &ExpressionTextEdit::completerVisibilityChanged,
+            [this](bool visible) {if(!visible) textChanged();});
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
 
     setMouseTracking(true);
@@ -175,7 +177,7 @@ void DlgExpressionInput::onTimer()
 
     try {
         const QString &text = ui->expression->toPlainText();
-        if (text.isEmpty()) {
+        if (text.trimmed().isEmpty()) {
             ui->msg->setPlainText(QString());
             ui->msg->setStyleSheet(textColorStyle);
             return;
@@ -231,7 +233,8 @@ void DlgExpressionInput::onTimer()
         ui->okBtn->setDisabled(false);
     }
     catch (Base::ParserError & e) {
-        if (boost::starts_with(e.what(), "syntax error, unexpected end of input")) {
+        if (ui->expression->completerActive()
+                || boost::starts_with(e.what(), "syntax error, unexpected end of input")) {
             ui->msg->setPlainText(QString());
         } else {
             ui->msg->setStyleSheet(errorColorStyle);
@@ -240,9 +243,13 @@ void DlgExpressionInput::onTimer()
         ui->okBtn->setDisabled(true);
     }
     catch (Base::Exception & e) {
-        ui->msg->setStyleSheet(errorColorStyle);
-        ui->msg->setPlainText(QString::fromUtf8(e.what()));
-        ui->okBtn->setDisabled(true);
+        if (ui->expression->completerActive()) {
+            ui->msg->setPlainText(QString());
+        } else {
+            ui->msg->setStyleSheet(errorColorStyle);
+            ui->msg->setPlainText(QString::fromUtf8(e.what()));
+            ui->okBtn->setDisabled(true);
+        }
     }
 }
 

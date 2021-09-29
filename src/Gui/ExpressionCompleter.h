@@ -74,11 +74,16 @@ public:
 
     void setLeadChar(char lead) {leadChar = lead;}
 
+    void setupContextMenu(QMenu *menu);
+
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
 
 protected:
     bool eventFilter(QObject *o, QEvent *e);
+
+Q_SIGNALS:
+    void visibilityChanged(bool visible);
 
 private:
     void init();
@@ -111,10 +116,10 @@ public:
     void hideCompleter();
     void setNoProperty(bool enabled=true);
     void setSearchUnit(bool enabled=true);
-    void setExactMatch(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
     void sizeChanged();
+    void completerVisibilityChanged(bool visible);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
     void slotCompleteText(QString completionPrefix);
@@ -127,7 +132,6 @@ private:
     bool checkInList;
     char leadChar;
     bool searchUnit;
-    bool exactMatch;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
@@ -138,19 +142,18 @@ public:
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
-    void setExactMatch(bool enabled=true);
 protected:
     void keyPressEvent(QKeyEvent * event);
     void contextMenuEvent(QContextMenuEvent * event);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
+    void completerVisibilityChanged(bool visible);
 public Q_SLOTS:
     void slotTextChanged();
     void slotCompleteText(QString completionPrefix);
 private:
     ExpressionCompleter * completer;
     bool block;
-    bool exactMatch;
     char leadChar;
 };
 

@@ -2031,7 +2031,10 @@ ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocO
 {
     setCaseSensitivity(ExprParams::CompleterCaseSensitive()
             ? Qt::CaseSensitive : Qt::CaseInsensitive);
-    // setCompletionMode(UnfilteredPopupCompletion);
+    setCompletionMode(ExprParams::CompleterUnfiltered()
+            ? UnfilteredPopupCompletion : PopupCompletion);
+    setFilterMode(ExprParams::CompleterMatchExact()
+            ? Qt::MatchStartsWith : Qt::MatchContains);
 }
 
 void ExpressionCompleter::init() {
@@ -2484,7 +2487,11 @@ void ExpressionCompleter::getPrefixRange(QString &prefix, int &start, int &end, 
 }
 
 bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
-    if (e->type() == QEvent::KeyPress
+    if (e->type() == QEvent::Show || e->type() == QEvent::Hide) {
+        if (o == popup())
+            visibilityChanged(e->type() == QEvent::Show);
+    }
+    else if (e->type() == QEvent::KeyPress
             && (o == widget() || o == popup())
             && popup()->isVisible()) {
         QKeyEvent * ke = static_cast<QKeyEvent*>(e);
@@ -2520,6 +2527,36 @@ bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
     return QCompleter::eventFilter(o, e);
 }
 
+void ExpressionCompleter::setupContextMenu(QMenu *menu)
+{
+    QAction *action;
+    menu->addSeparator();
+#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
+    action = menu->addAction(tr("Exact match"), [this](bool checked) {
+        ExprParams::setCompleterMatchExact(checked);
+        setFilterMode(checked ? Qt::MatchStartsWith : Qt::MatchContains);
+    });
+    action->setCheckable(true);
+    action->setChecked(ExprParams::CompleterMatchExact());
+#endif
+
+    action = menu->addAction(tr("Case sensitive match"), [this](bool checked) {
+        ExprParams::setCompleterCaseSensitive(checked);
+        setCaseSensitivity(checked ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    });
+    action->setCheckable(true);
+    action->setChecked(ExprParams::CompleterCaseSensitive());
+
+    action = menu->addAction(tr("Unfiltered completion"), [this](bool checked) {
+        ExprParams::setCompleterUnfiltered(checked);
+        setCompletionMode(checked ? UnfilteredPopupCompletion : PopupCompletion);
+    });
+    action->setCheckable(true);
+    action->setChecked(ExprParams::CompleterUnfiltered());
+}
+
+///////////////////////////////////////////////////////////////////////
+
 ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char leadChar, bool checkInList)
     : QLineEdit(parent)
     , completer(nullptr)
@@ -2527,9 +2564,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char le
     , checkInList(checkInList)
     , leadChar(leadChar)
     , searchUnit(false)
-    , exactMatch(false)
 {
-    exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
     LineEditStyle::setup(this);
 }
@@ -2551,13 +2586,11 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList, leadChar);
         completer->setSearchUnit(searchUnit);
         completer->setWidget(this);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-        if (!exactMatch)
-            completer->setFilterMode(Qt::MatchContains);
-#endif
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
+        connect(completer, SIGNAL(visibilityChanged(bool)),
+                this, SIGNAL(completerVisibilityChanged(bool)));
     }
 }
 
@@ -2571,14 +2604,6 @@ void ExpressionLineEdit::setSearchUnit(bool enabled) {
     searchUnit = enabled;
     if(completer)
         completer->setSearchUnit(enabled);
-}
-
-void ExpressionLineEdit::setExactMatch(bool enabled) {
-    exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-    if (completer)
-        completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -2615,30 +2640,12 @@ void ExpressionLineEdit::slotCompleteText(QString completionPrefix)
 
 void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
-    menu->addSeparator();
-    QAction* match = menu->addAction(tr("Exact match"));
+    if (completer)
+        completer->setupContextMenu(menu);
 
-    if (completer) {
-        match->setCheckable(true);
-        match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
-    }
-    else {
-        match->setVisible(false);
-    }
-
-    QAction* action = menu->exec(event->globalPos());
-
-    if (completer) {
-        if (action == match)
-            setExactMatch(match->isChecked());
-    }
-
+    menu->exec(event->globalPos());
     delete menu;
-#else
-    QLineEdit::contextMenuEvent(event);
-#endif
 }
 
 void ExpressionLineEdit::resizeEvent(QResizeEvent *ev)
@@ -2653,20 +2660,10 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent, char lead)
     : QPlainTextEdit(parent)
     , completer(nullptr)
     , block(true)
-    , exactMatch(false)
     , leadChar(lead)
 {
-    exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
     LineEditStyle::setup(this);
-}
-
-void ExpressionTextEdit::setExactMatch(bool enabled) {
-    exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-    if (completer)
-        completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
 }
 
 void ExpressionTextEdit::setLeadChar(char lead)
@@ -2686,14 +2683,12 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
     if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
         completer->setLeadChar(leadChar);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-        if (!exactMatch)
-            completer->setFilterMode(Qt::MatchContains);
-#endif
         completer->setWidget(this);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
+        connect(completer, SIGNAL(visibilityChanged(bool)),
+                this, SIGNAL(completerVisibilityChanged(bool)));
     }
 }
 
@@ -2748,30 +2743,12 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
-    menu->addSeparator();
-    QAction* match = menu->addAction(tr("Exact match"));
+    if (completer)
+        completer->setupContextMenu(menu);
 
-    if (completer) {
-        match->setCheckable(true);
-        match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
-    }
-    else {
-        match->setVisible(false);
-    }
-
-    QAction* action = menu->exec(event->globalPos());
-
-    if (completer) {
-        if (action == match)
-            setExactMatch(match->isChecked());
-    }
-
+    menu->exec(event->globalPos());
     delete menu;
-#else
-    QPlainTextEdit::contextMenuEvent(event);
-#endif
 }
 
 #include "moc_ExpressionCompleter.cpp"

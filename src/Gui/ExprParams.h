@@ -67,6 +67,8 @@ public:
        QT_TRANSLATE_NOOP("ExprParams","Expression completer with case sensitive")) \
     FC_EXPR_PARAM(CompleterMatchExact,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Expression completer match exact")) \
+    FC_EXPR_PARAM(CompleterUnfiltered,bool,Bool,false,\
+       QT_TRANSLATE_NOOP("ExprParams","Expression completer unfiltered completion mode")) \
     FC_EXPR_PARAM(NoSystemBackground,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Enable in place expressiong editing")) \
     FC_EXPR_PARAM(EditorTrigger,std::string,ASCII,"=",\
