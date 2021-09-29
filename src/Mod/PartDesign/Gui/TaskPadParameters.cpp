@@ -104,16 +104,18 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->ZDirectionEdit->setDecimals(UserDecimals);
 
     // Fill data into dialog elements
+    // the direction combobox is later filled in updateUI()
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
-    // the direction combobox is filled later in updateUI()
+    ui->checkBoxAlongDirection->setChecked(alongNormal);
     ui->checkBoxDirection->setChecked(useCustom);
     onDirectionToggled(useCustom);
-    ui->checkBoxAlongDirection->setChecked(alongNormal);
-    // dis/enable length and direction
-    ui->directionCB->setEnabled(!useCustom);
-    if (useCustom)
-        ui->checkBoxAlongDirection->setEnabled(useCustom);
+    // disable to change the direction if not custom
+    if (!useCustom) {
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
     ui->XDirectionEdit->setValue(xs);
     ui->YDirectionEdit->setValue(ys);
     ui->ZDirectionEdit->setValue(zs);
@@ -360,8 +362,11 @@ void TaskPadParameters::fillDirectionCombo()
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch)
             addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Sketch normal"));
-        // add "Select reference"
+        // add the other entries
         addAxisToCombo(0, std::string(), tr("Select reference..."));
+        // we start with the sketch normal as proposal for the custom direction
+        if (pcSketch)
+            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Custom direction"));
     }
 
     // add current link, if not in list
@@ -375,6 +380,7 @@ void TaskPadParameters::fillDirectionCombo()
             break;
         }
     }
+    // if the axis is not yet listed in the combobox
     if (indexOfCurrent == -1 && ax) {
         assert(subList.size() <= 1);
         std::string sub;
@@ -382,17 +388,21 @@ void TaskPadParameters::fillDirectionCombo()
             sub = subList[0];
         addAxisToCombo(ax, sub, getRefStr(ax, subList));
         indexOfCurrent = axesInList.size() - 1;
+        // the axis is not the normal, thus enable along direction
+        ui->checkBoxAlongDirection->setEnabled(true);
+        // we don't have custom direction thus disable its settings
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
     }
 
-    // highlight current index
-    if (indexOfCurrent != -1)
+    // highlight either current index or set custom direction
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    bool hasCustom = pcPad->UseCustomVector.getValue();
+    if (indexOfCurrent != -1 && !hasCustom)
         ui->directionCB->setCurrentIndex(indexOfCurrent);
-
-    // disable AlongSketchNormal when the direction is already normal
-    if (ui->directionCB->currentIndex() == 0)
-        ui->checkBoxAlongDirection->setEnabled(false);
-    else
-        ui->checkBoxAlongDirection->setEnabled(true);
+    if (hasCustom)
+        ui->directionCB->setCurrentIndex(2);
 
     blockUpdate = oldVal_blockUpdate;
 }
@@ -444,7 +454,29 @@ void TaskPadParameters::onDirectionCBChanged(int num)
         ui->checkBoxAlongDirection->setEnabled(false);
     else
         ui->checkBoxAlongDirection->setEnabled(true);
-    // update the direction
+    // if custom direction is used, show it
+    if (num == 2) {
+        ui->checkBoxDirection->setChecked(true);
+        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+        pcPad->UseCustomVector.setValue(true);
+    }
+    else {
+        ui->checkBoxDirection->setChecked(false);
+        pcPad->UseCustomVector.setValue(false);
+    }
+    // if we dont use custom direction, only allow to show its direction
+    if (num != 2) {
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
+    else {
+        ui->XDirectionEdit->setEnabled(true);
+        ui->YDirectionEdit->setEnabled(true);
+        ui->ZDirectionEdit->setEnabled(true);
+    }
+    // recompute and update the direction
+    recomputeFeature();
     updateDirectionEdits();
 }
 
@@ -457,22 +489,10 @@ void TaskPadParameters::onAlongSketchNormalChanged(bool on)
 
 void TaskPadParameters::onDirectionToggled(bool on)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->UseCustomVector.setValue(on);
-    // dis/enable length direction
-    ui->checkBoxAlongDirection->setEnabled(on);
-    if (on) {
+    if (on)
         ui->groupBoxDirection->show();
-    }
-    else {
-        ui->checkBoxAlongDirection->setChecked(!on);
+    else
         ui->groupBoxDirection->hide();
-    }
-    recomputeFeature();
-    // the calculation of the sketch's normal vector is done in FeaturePad.cpp
-    // if this vector was used for the recomputation we must fill the direction
-    // vector edit fields. Therefore update
-    updateDirectionEdits();
 }
 
 void TaskPadParameters::onXDirectionEditChanged(double len)
@@ -695,9 +715,10 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->ZDirectionEdit->blockSignals(true);
         ui->directionCB->blockSignals(true);
         int index = ui->directionCB->currentIndex();
+        ui->directionCB->clear();
         ui->directionCB->addItem(tr("Sketch normal"));
         ui->directionCB->addItem(tr("Select reference..."));
-        ui->directionCB->clear();
+        ui->directionCB->addItem(tr("Custom direction"));
         ui->directionCB->setCurrentIndex(index);
         ui->offsetEdit->blockSignals(true);
         ui->lineFaceName->blockSignals(true);

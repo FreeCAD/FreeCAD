@@ -69,8 +69,8 @@
         <item row="0" column="1">
          <widget class="QComboBox" name="directionCB">
           <property name="toolTip">
-           <string>Either along the sketch normal
-or select an edge as reference</string>
+           <string>Set a direction or select an edge
+from the model as reference</string>
           </property>
           <item>
            <property name="text">
@@ -82,6 +82,11 @@ or select an edge as reference</string>
             <string>Select reference...</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Custom direction</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -89,7 +94,7 @@ or select an edge as reference</string>
       <item row="1" column="0">
        <widget class="QCheckBox" name="checkBoxDirection">
         <property name="text">
-         <string>Use custom direction</string>
+         <string>Show direction</string>
         </property>
        </widget>
       </item>
