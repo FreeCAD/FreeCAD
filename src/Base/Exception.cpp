@@ -254,7 +254,7 @@ FileException::FileException(const char * sMessage, const char * sFileName)
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    setFileName(File.fileName().c_str());
+    setFileName(File.filePath().c_str());
 }
 
 FileException::FileException()
