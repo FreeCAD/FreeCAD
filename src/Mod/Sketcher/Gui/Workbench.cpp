@@ -34,6 +34,7 @@
 using namespace SketcherGui;
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench", "Sketcher");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");

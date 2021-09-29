@@ -1710,7 +1710,7 @@ DEF_3DV_CMD(ViewIsometricCmd)
 ViewIsometricCmd::ViewIsometricCmd()
   : Command("ViewIsometricCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Isometric");
     sToolTipText  = QT_TR_NOOP("Set NaviCube to Isometric mode");
     sWhatsThis    = "";
@@ -1730,7 +1730,7 @@ DEF_3DV_CMD(ViewOrthographicCmd)
 ViewOrthographicCmd::ViewOrthographicCmd()
   : Command("ViewOrthographicCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Orthographic");
     sToolTipText  = QT_TR_NOOP("Set View to Orthographic mode");
     sWhatsThis    = "";
@@ -1751,7 +1751,7 @@ DEF_3DV_CMD(ViewPerspectiveCmd)
 ViewPerspectiveCmd::ViewPerspectiveCmd()
   : Command("ViewPerspectiveCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Perspective");
     sToolTipText  = QT_TR_NOOP("Set View to Perspective mode");
     sWhatsThis    = "";
@@ -1772,7 +1772,7 @@ DEF_3DV_CMD(ViewZoomToFitCmd)
 ViewZoomToFitCmd::ViewZoomToFitCmd()
   : Command("ViewZoomToFit")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Zoom to fit");
     sToolTipText  = QT_TR_NOOP("Zoom so that model fills the view");
     sWhatsThis    = "";

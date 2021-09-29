@@ -387,7 +387,7 @@ bool NetworkRetriever::testWget()
 StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
   : QObject(parent), Command("Std_DownloadOnlineHelp")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        ="Help";
     sMenuText     = QT_TR_NOOP("Download online help");
     sToolTipText  = QT_TR_NOOP("Download %1's online help");
     sWhatsThis    = "Std_DownloadOnlineHelp";

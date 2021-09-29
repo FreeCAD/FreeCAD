@@ -47,7 +47,7 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
   :Command("Std_Recompute")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Recompute");
     sToolTipText  = QT_TR_NOOP("Recompute feature or document");
     sWhatsThis    = "Std_Recompute";
@@ -70,7 +70,7 @@ DEF_STD_CMD_A(StdCmdRandomColor)
 StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Random color");
     sToolTipText  = QT_TR_NOOP("Random color");
     sWhatsThis    = "Std_RandomColor";
@@ -122,7 +122,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
   :Command("Std_SendToPythonConsole")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("Edit");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Send to Python Console");
     sToolTipText  = QT_TR_NOOP("Sends the selected object to the Python console");
     sWhatsThis    = "Std_SendToPythonConsole";

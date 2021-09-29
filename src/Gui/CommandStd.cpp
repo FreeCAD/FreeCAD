@@ -76,7 +76,7 @@ DEF_STD_CMD_AC(StdCmdWorkbench)
 StdCmdWorkbench::StdCmdWorkbench()
   : Command("Std_Workbench")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Workbench");
     sToolTipText  = QT_TR_NOOP("Switch between workbenches");
     sWhatsThis    = "Std_Workbench";
@@ -141,7 +141,7 @@ DEF_STD_CMD_C(StdCmdRecentFiles)
 StdCmdRecentFiles::StdCmdRecentFiles()
   :Command("Std_RecentFiles")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Recent files");
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
@@ -182,7 +182,7 @@ DEF_STD_CMD_C(StdCmdRecentMacros)
 StdCmdRecentMacros::StdCmdRecentMacros()
   :Command("Std_RecentMacros")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Recent macros");
     sToolTipText  = QT_TR_NOOP("Recent macro list");
     sWhatsThis    = "Std_RecentMacros";
@@ -222,7 +222,7 @@ DEF_STD_CMD_ACL(StdCmdAbout)
 StdCmdAbout::StdCmdAbout()
   :Command("Std_About")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&About %1");
     sToolTipText  = QT_TR_NOOP("About %1");
     sWhatsThis    = "Std_About";
@@ -288,7 +288,7 @@ DEF_STD_CMD(StdCmdAboutQt)
 StdCmdAboutQt::StdCmdAboutQt()
   :Command("Std_AboutQt")
 {
-  sGroup        = QT_TR_NOOP("Help");
+  sGroup        = "Help";
   sMenuText     = QT_TR_NOOP("About &Qt");
   sToolTipText  = QT_TR_NOOP("About Qt");
   sWhatsThis    = "Std_AboutQt";
@@ -310,7 +310,7 @@ DEF_STD_CMD(StdCmdWhatsThis)
 StdCmdWhatsThis::StdCmdWhatsThis()
   :Command("Std_WhatsThis")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&What's This?");
     sToolTipText  = QT_TR_NOOP("What's This");
     sWhatsThis    = "Std_WhatsThis";
@@ -334,7 +334,7 @@ DEF_STD_CMD(StdCmdDlgParameter)
 StdCmdDlgParameter::StdCmdDlgParameter()
   :Command("Std_DlgParameter")
 {
-  sGroup        = QT_TR_NOOP("Tools");
+  sGroup        = "Tools";
   sMenuText     = QT_TR_NOOP("E&dit parameters ...");
   sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
@@ -359,7 +359,7 @@ DEF_STD_CMD_C(StdCmdDlgPreferences)
 StdCmdDlgPreferences::StdCmdDlgPreferences()
   :Command("Std_DlgPreferences")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("&Preferences ...");
     sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the preferences");
     sWhatsThis    = "Std_DlgPreferences";
@@ -391,7 +391,7 @@ DEF_STD_CMD(StdCmdDlgCustomize)
 StdCmdDlgCustomize::StdCmdDlgCustomize()
   :Command("Std_DlgCustomize")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Cu&stomize...");
     sToolTipText  = QT_TR_NOOP("Customize toolbars and command bars");
     sWhatsThis    = "Std_DlgCustomize";
@@ -418,7 +418,7 @@ DEF_STD_CMD(StdCmdCommandLine)
 StdCmdCommandLine::StdCmdCommandLine()
   :Command("Std_CommandLine")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Start command &line...");
     sToolTipText  = QT_TR_NOOP("Opens the command line in the console");
     sWhatsThis    = "Std_CommandLine";
@@ -466,7 +466,7 @@ DEF_STD_CMD(StdCmdOnlineHelp)
 StdCmdOnlineHelp::StdCmdOnlineHelp()
   :Command("Std_OnlineHelp")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Help");
     sToolTipText  = QT_TR_NOOP("Show help to the application");
     sWhatsThis    = "Std_OnlineHelp";
@@ -491,7 +491,7 @@ DEF_STD_CMD(StdCmdOnlineHelpWebsite)
 StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
   :Command("Std_OnlineHelpWebsite")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Help Website");
     sToolTipText  = QT_TR_NOOP("The website where the help is maintained");
     sWhatsThis    = "Std_OnlineHelpWebsite";
@@ -518,7 +518,7 @@ DEF_STD_CMD(StdCmdFreeCADDonation)
 StdCmdFreeCADDonation::StdCmdFreeCADDonation()
   :Command("Std_FreeCADDonation")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Donate");
     sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
     sWhatsThis    = "Std_FreeCADDonation";
@@ -545,7 +545,7 @@ DEF_STD_CMD(StdCmdFreeCADWebsite)
 StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
   :Command("Std_FreeCADWebsite")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("FreeCAD Website");
     sToolTipText  = QT_TR_NOOP("The FreeCAD website");
     sWhatsThis    = "Std_FreeCADWebsite";
@@ -573,7 +573,7 @@ DEF_STD_CMD(StdCmdFreeCADUserHub)
 StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
   :Command("Std_FreeCADUserHub")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Users documentation");
     sToolTipText  = QT_TR_NOOP("Documentation for users on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADUserHub";
@@ -601,7 +601,7 @@ DEF_STD_CMD(StdCmdFreeCADPowerUserHub)
 StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
   :Command("Std_FreeCADPowerUserHub")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Python scripting documentation");
     sToolTipText  = QT_TR_NOOP("Python scripting documentation on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADPowerUserHub";
@@ -629,7 +629,7 @@ DEF_STD_CMD(StdCmdFreeCADForum)
 StdCmdFreeCADForum::StdCmdFreeCADForum()
   :Command("Std_FreeCADForum")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("FreeCAD Forum");
     sToolTipText  = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
     sWhatsThis    = "Std_FreeCADForum";
@@ -657,7 +657,7 @@ DEF_STD_CMD(StdCmdFreeCADFAQ)
 StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
   :Command("Std_FreeCADFAQ")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("FreeCAD FAQ");
     sToolTipText  = QT_TR_NOOP("Frequently Asked Questions on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADFAQ";
@@ -685,7 +685,7 @@ DEF_STD_CMD(StdCmdPythonWebsite)
 StdCmdPythonWebsite::StdCmdPythonWebsite()
   :Command("Std_PythonWebsite")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Python Website");
     sToolTipText  = QT_TR_NOOP("The official Python website");
     sWhatsThis    = "Std_PythonWebsite";
@@ -709,7 +709,7 @@ DEF_STD_CMD(StdCmdMeasurementSimple)
 StdCmdMeasurementSimple::StdCmdMeasurementSimple()
   :Command("Std_MeasurementSimple")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
     sWhatsThis    = "Std_MeasurementSimple";
@@ -766,7 +766,7 @@ DEF_STD_CMD_A(StdCmdTextDocument)
 StdCmdTextDocument::StdCmdTextDocument()
   :Command("Std_TextDocument")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Add text document");
     sToolTipText  = QT_TR_NOOP("Add text document to active document");
     sWhatsThis    = "Std_TextDocument";
@@ -799,7 +799,7 @@ DEF_STD_CMD(StdCmdUnitsCalculator)
 StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("&Units calculator...");
     sToolTipText  = QT_TR_NOOP("Start the units calculator");
     sWhatsThis    = "Std_UnitsCalculator";
@@ -835,7 +835,7 @@ protected:
 StdCmdUserEditMode::StdCmdUserEditMode()
   : Command("Std_UserEditMode")
 {
-    sGroup        = QT_TR_NOOP("Edit mode");
+    sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Edit mode");
     sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
     sStatusTip    = QT_TR_NOOP("Defines behavior when editing an object from tree");

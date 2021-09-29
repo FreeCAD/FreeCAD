@@ -217,7 +217,7 @@ Command::Command(const char* name)
     , sHelpUrl(0)
 {
     sAppModule  = "FreeCAD";
-    sGroup      = QT_TR_NOOP("Standard");
+    sGroup      = "Standard";
     eType       = AlterDoc | Alter3DView | AlterSelection;
     bEnabled    = true;
     bCanLog     = true;
@@ -583,7 +583,7 @@ QString Command::translatedGroupName() const
 {
     QString text = qApp->translate(className(), getGroupName());
     if (text == QString::fromLatin1(getGroupName()))
-        text = qApp->translate("Workbench", getGroupName());
+        text = qApp->translate("CommandGroup", getGroupName());
     return text;
 }
 
@@ -1093,7 +1093,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
   : Command(StringCache::New(name))
   , systemMacro(system)
 {
-    sGroup = QT_TR_NOOP("Macros");
+    sGroup = "Macros";
     eType  = 0;
     sScriptName = nullptr;
 }

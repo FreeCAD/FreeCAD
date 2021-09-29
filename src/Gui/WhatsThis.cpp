@@ -42,7 +42,7 @@ bool StdCmdDescription::_descrMode = false;
 StdCmdDescription::StdCmdDescription()
   : Command("Std_DescriptionMode")
 {
-  sGroup        = QT_TR_NOOP("Help");
+  sGroup        = "Help";
   sMenuText     = QT_TR_NOOP("Des&cription");
   sToolTipText  = QT_TR_NOOP("Long description of commands");
   sWhatsThis    = "Std_DescriptionMode";

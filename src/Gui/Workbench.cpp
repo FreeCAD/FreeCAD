@@ -481,6 +481,22 @@ std::list<std::string> Workbench::listCommandbars() const
 // --------------------------------------------------------------------
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "File");
+    qApp->translate("CommandGroup", "Edit");
+    qApp->translate("CommandGroup", "Help");
+    qApp->translate("CommandGroup", "Link");
+    qApp->translate("CommandGroup", "Tools");
+    qApp->translate("CommandGroup", "View");
+    qApp->translate("CommandGroup", "Window");
+    qApp->translate("CommandGroup", "Standard");
+    qApp->translate("CommandGroup", "Macros");
+    qApp->translate("CommandGroup", "Macro");
+    qApp->translate("CommandGroup", "Structure");
+    qApp->translate("CommandGroup", "Standard-Test");
+    qApp->translate("CommandGroup", "Standard-View");
+    qApp->translate("CommandGroup", "TreeView");
+    qApp->translate("CommandGroup", "Measure");
+
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
     qApp->translate("Workbench", "Standard views");
