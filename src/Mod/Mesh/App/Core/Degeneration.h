@@ -762,12 +762,17 @@ public:
    */
   bool Evaluate ();
   /**
-   * Returns the indices of all corrupt facets.
+   * Returns the indices of all points on edge.
    */
-  std::vector<PointIndex> GetIndices() const;
+  std::vector<PointIndex> GetPointIndices() const;
+  /**
+   * Returns the indices of all facets with an open edge on that a point lies.
+   */
+  std::vector<FacetIndex> GetFacetIndices() const;
 
 private:
   std::vector<PointIndex> pointsIndices;
+  std::vector<FacetIndex> facetsIndices;
 };
 
 /**
@@ -781,9 +786,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixPointOnEdge (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  MeshFixPointOnEdge (MeshKernel &rclM, const std::vector<PointIndex>& points)
-      : MeshValidation( rclM ), pointsIndices(points) { }
+  MeshFixPointOnEdge (MeshKernel &rclM, bool fill = false) : MeshValidation( rclM ), fillBoundary(fill) { }
   /**
    * Destruction.
    */
@@ -794,7 +797,12 @@ public:
   bool Fixup ();
 
 private:
-  std::vector<PointIndex> pointsIndices;
+  void MarkBoundaries(const std::vector<FacetIndex>& facetsIndices);
+  void FindBoundaries(std::list<std::vector<PointIndex> >& borderList);
+  void FillBoundaries(const std::list<std::vector<PointIndex> >& borderList);
+
+private:
+  bool fillBoundary;
 };
 
 } // namespace MeshCore

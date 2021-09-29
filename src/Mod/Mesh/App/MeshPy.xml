@@ -296,9 +296,12 @@ for c in mesh.getSeparatecomponents():
                 <UserDocu>Check if points lie on edges</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="removePointsOnEdge">
+        <Methode Name="removePointsOnEdge" Keyword="true">
             <Documentation>
-                <UserDocu>Remove points that lie on edges</UserDocu>
+                <UserDocu>removePointsOnEdge(FillBoundary=False)
+Remove points that lie on edges.
+If FillBoundary is True then the holes by removing the affected facets
+will be re-filled.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="hasInvalidNeighbourhood" Const="true">

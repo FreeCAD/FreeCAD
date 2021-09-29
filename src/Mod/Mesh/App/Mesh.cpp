@@ -1501,9 +1501,9 @@ bool MeshObject::hasPointsOnEdge() const
     return !nan.Evaluate();
 }
 
-void MeshObject::removePointsOnEdge()
+void MeshObject::removePointsOnEdge(bool fillBoundary)
 {
-    MeshCore::MeshFixPointOnEdge nan(_kernel);
+    MeshCore::MeshFixPointOnEdge nan(_kernel, fillBoundary);
     nan.Fixup();
 }
 

@@ -299,7 +299,7 @@ public:
     void removeInvalidPoints();
     void mergeFacets();
     bool hasPointsOnEdge() const;
-    void removePointsOnEdge();
+    void removePointsOnEdge(bool fillBoundary);
     //@}
 
     /** @name Mesh segments */

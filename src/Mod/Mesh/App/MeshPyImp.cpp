@@ -1102,12 +1102,14 @@ PyObject*  MeshPy::hasPointsOnEdge(PyObject *args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject*  MeshPy::removePointsOnEdge(PyObject *args)
+PyObject*  MeshPy::removePointsOnEdge(PyObject *args, PyObject *kwds)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject *fillBoundary = Py_False;
+    static char* keywords[] = {"FillBoundary", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!", keywords, &PyBool_Type, &fillBoundary))
         return nullptr;
     try {
-        getMeshObjectPtr()->removePointsOnEdge();
+        getMeshObjectPtr()->removePointsOnEdge(PyObject_IsTrue(fillBoundary) ? true : false);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());

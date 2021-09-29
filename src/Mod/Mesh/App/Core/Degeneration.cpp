@@ -38,6 +38,7 @@
 #include "Info.h"
 #include "Grid.h"
 #include "TopoAlgorithm.h"
+#include "Triangulation.h"
 
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Sequencer.h>
@@ -1197,25 +1198,77 @@ bool MeshEvalPointOnEdge::Evaluate ()
             const MeshFacet& face = facets[it];
             if (IsPointOnEdge(i, face)) {
                 pointsIndices.push_back(i);
+                if (face.HasOpenEdge())
+                    facetsIndices.push_back(it);
             }
         }
     }
     return pointsIndices.empty();
 }
 
-std::vector<PointIndex> MeshEvalPointOnEdge::GetIndices() const
+std::vector<PointIndex> MeshEvalPointOnEdge::GetPointIndices() const
 {
     return pointsIndices;
 }
 
+std::vector<FacetIndex> MeshEvalPointOnEdge::GetFacetIndices() const
+{
+    return facetsIndices;
+}
+
 bool MeshFixPointOnEdge::Fixup ()
 {
-    if (pointsIndices.empty()) {
-        MeshEvalPointOnEdge eval(_rclMesh);
-        eval.Evaluate();
-        pointsIndices = eval.GetIndices();
+    MeshEvalPointOnEdge eval(_rclMesh);
+    eval.Evaluate();
+    std::vector<PointIndex> pointsIndices = eval.GetPointIndices();
+    std::vector<FacetIndex> facetsIndices = eval.GetFacetIndices();
+
+    if (!pointsIndices.empty()) {
+        if (fillBoundary) {
+            MarkBoundaries(facetsIndices);
+        }
+
+        _rclMesh.DeletePoints(pointsIndices);
+
+        if (fillBoundary) {
+            std::list<std::vector<PointIndex> > borderList;
+            FindBoundaries(borderList);
+            if (!borderList.empty())
+                FillBoundaries(borderList);
+        }
     }
 
-    _rclMesh.DeletePoints(pointsIndices);
     return true;
+}
+
+void MeshFixPointOnEdge::MarkBoundaries(const std::vector<FacetIndex>& facetsIndices)
+{
+    MeshAlgorithm meshalg(_rclMesh);
+    meshalg.ResetFacetFlag(MeshFacet::TMP0);
+    meshalg.SetFacetsFlag(facetsIndices, MeshFacet::TMP0);
+}
+
+void MeshFixPointOnEdge::FindBoundaries(std::list<std::vector<PointIndex> >& borderList)
+{
+    std::vector<FacetIndex> tmp;
+    MeshAlgorithm meshalg(_rclMesh);
+    meshalg.GetFacetsFlag(tmp, MeshFacet::TMP0);
+
+    if (!tmp.empty()) {
+        //TODO: Implement a method to handle all facets in 'tmp'
+        std::list<PointIndex> border;
+        meshalg.GetMeshBorder(tmp.front(), border);
+        if (!border.empty()) {
+            borderList.emplace_back(border.begin(), border.end());
+        }
+    }
+}
+
+void MeshFixPointOnEdge::FillBoundaries(const std::list<std::vector<PointIndex> >& borderList)
+{
+    FlatTriangulator tria;
+    tria.SetVerifier(new MeshCore::TriangulationVerifierV2);
+    MeshTopoAlgorithm topalg(_rclMesh);
+    std::list<std::vector<PointIndex> > failed;
+    topalg.FillupHoles(1, tria, borderList, failed);
 }
