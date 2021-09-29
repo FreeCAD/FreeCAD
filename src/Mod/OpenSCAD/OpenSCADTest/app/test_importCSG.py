@@ -305,6 +305,13 @@ polyhedron(
 #        FreeCAD.closeDocument(doc.Name)
 
     def test_import_import_stl(self):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+        transfer_mechanism = preferences.GetInt('transfermechanism',0)
+        if transfer_mechanism == 2:
+            print ("Cannot test STL import, communication with OpenSCAD is via pipes")
+            print ("If either OpenSCAD or FreeCAD are installed as sandboxed packages,")
+            print ("use of import is not possible.")
+            return
         testfile = join(self.test_dir, "Cube.stl").replace('\\','/')
         doc = self.utility_create_scad("import(\"{}\");".format(testfile), "import_stl");
         object = doc.ActiveObject
