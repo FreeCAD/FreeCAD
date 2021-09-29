@@ -1167,7 +1167,7 @@ bool Document::save(void)
                             "or you do not have sufficient permissions, "
                             "or for other reasons. Error details:\n\n\"%1\"\n\n"
                             "Would you like to save the file with a different name?")
-                .arg(QString::fromLatin1(e.what())),
+                .arg(QString::fromUtf8(e.what())),
                 QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::No) {
                 // TODO: Understand what exactly is supposed to be returned here
@@ -1225,7 +1225,7 @@ bool Document::saveAs(void)
                             "or you do not have sufficient permissions, "
                             "or for other reasons. Error details:\n\n\"%1\"\n\n"
                             "Would you like to save the file with a different name?")
-                .arg(QString::fromLatin1(e.what())),
+                .arg(QString::fromUtf8(e.what())),
                 QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::No) {
                 // TODO: Understand what exactly is supposed to be returned here
