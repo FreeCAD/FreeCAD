@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
@@ -26,6 +26,7 @@
 #***************************************************************************
 
 # Changelog:
+# 0.4 Refactor to always try both C++ and Python translations
 # 0.3 User-friendly output
 #     Corrections
 #     Added Changelog
@@ -46,77 +47,38 @@ Authors:
   Licence: LGPL
 
 Version:
-  0.3
+  0.4
 """
 
 import os, re
 
-# folders that should not be treated by standard Qt tools
-DirFilter = ["^Attic$",
-             "^CVS$",
-             "^\\.svn$",
-             "^\\.deps$",
-             "^\\.libs$",
-             "src/Mod/Cam",
-             "src/Mod/Import",
-             "src/Mod/JtReader",
-             "src/Mod/Sandbox",
-             "src/Mod/TemplatePyMod"]
-
-# python folders that need a special pylupdate command
-PyCommands = [["src/Mod/Draft",
-               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Draft.ts'],
-              ["src/Mod/Arch",
-               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Arch.ts'],
-              ["src/Mod/OpenSCAD",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
-              ["src/Mod/Start",
-               "lupdate Gui/*.ui Gui/*.cpp -ts Gui/Resources/translations/StartPage.ts"],
-              ["src/Mod/Start",
-               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPagepy.ts"],
-              ["src/Mod/Start",
-               'lconvert -i Gui/Resources/translations/StartPagepy.ts Gui/Resources/translations/StartPage.ts -o Gui/Resources/translations/StartPage.ts'],
-              ["src/Mod/Start",
-               'rm Gui/Resources/translations/StartPagepy.ts'],
-              ["src/Mod/Path",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Pathpy.ts'],
-              ["src/Mod/Path",
-               'lconvert -i Gui/Resources/translations/Pathpy.ts Gui/Resources/translations/Path.ts -o Gui/Resources/translations/Path.ts'],
-              ["src/Mod/Path",
-               'rm Gui/Resources/translations/Pathpy.ts'],
-              ["src/Mod/Fem",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Fempy.ts'],
-              ["src/Mod/Fem",
-               'lconvert -i Gui/Resources/translations/Fempy.ts Gui/Resources/translations/Fem.ts -o Gui/Resources/translations/Fem.ts'],
-              ["src/Mod/Fem",
-               'rm Gui/Resources/translations/Fempy.ts'],
-              ["src/Mod/Tux",
-               'pylupdate `find ./ -name "*.py"` -ts Resources/translations/Tux.ts'],
-              ["src/Mod/Part",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Partpy.ts'],
-              ["src/Mod/Part",
-               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part.ts -o Gui/Resources/translations/Part.ts'],
-              ["src/Mod/Part",
-               'rm Gui/Resources/translations/Partpy.ts'],
-              ["src/Mod/PartDesign",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/PartDesignpy.ts'],
-              ["src/Mod/PartDesign",
-               'lconvert -i Gui/Resources/translations/PartDesignpy.ts Gui/Resources/translations/PartDesign.ts -o Gui/Resources/translations/PartDesign.ts'],
-              ["src/Mod/PartDesign",
-               'rm Gui/Resources/translations/PartDesignpy.ts'],
-              ["src/Mod/Image",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Imagepy.ts'],
-              ["src/Mod/Image",
-               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
-              ["src/Mod/Image",
-               'rm Gui/Resources/translations/Imagepy.ts'],
-              ["src/Mod/AddonManager",
-               "pylupdate *.py *.ui -ts Resources/translations/AddonManager.ts"],
-               ]
-
-# add python folders to exclude list
-for c in PyCommands:
-    DirFilter.append(c[0]+"$")
+directories = [
+        {"tsname":"FreeCAD", "workingdir":"./src/Gui", "tsdir":"Language"},
+        {"tsname":"AddonManager", "workingdir":"./src/Mod/AddonManager/", "tsdir":"Resources/translations"},
+        {"tsname":"Arch", "workingdir":"./src/Mod/Arch/", "tsdir":"Resources/translations"},
+        {"tsname":"Assembly", "workingdir":"./src/Mod/Assembly/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Draft", "workingdir":"./src/Mod/Draft/", "tsdir":"Resources/translations"},
+        {"tsname":"Drawing", "workingdir":"./src/Mod/Drawing/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Fem", "workingdir":"./src/Mod/Fem/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Image", "workingdir":"./src/Mod/Image/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Mesh", "workingdir":"./src/Mod/Mesh/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"MeshPart", "workingdir":"./src/Mod/MeshPart/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"OpenSCAD", "workingdir":"./src/Mod/OpenSCAD/", "tsdir":"Resources/translations"},
+        {"tsname":"PartDesign", "workingdir":"./src/Mod/PartDesign/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Part", "workingdir":"./src/Mod/Part/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Path", "workingdir":"./src/Mod/Path/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Points", "workingdir":"./src/Mod/Points/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Raytracing", "workingdir":"./src/Mod/Raytracing/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"ReverseEngineering", "workingdir":"./src/Mod/ReverseEngineering/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Robot", "workingdir":"./src/Mod/Robot/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Sketcher", "workingdir":"./src/Mod/Sketcher/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Spreadsheet", "workingdir":"./src/Mod/Spreadsheet/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Start", "workingdir":"./src/Mod/Start/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"TechDraw", "workingdir":"./src/Mod/TechDraw/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Test", "workingdir":"./src/Mod/Test/", "tsdir":"Gui/Resources/translations"},
+        {"tsname":"Tux", "workingdir":"./src/Mod/Tux/", "tsdir":"Resources/translations"},
+        {"tsname":"Web", "workingdir":"./src/Mod/Web/", "tsdir":"Gui/Resources/translations"}
+        ]
 
 QMAKE = ""
 LUPDATE = ""
@@ -177,49 +139,45 @@ def find_tools(noobsolete=True):
           "\t" + LCONVERT  + "\n")
     print("==============================================\n")
 
-def filter_dirs(item):
-
-    global DirFilter
-    if not os.path.isdir(item):
-        return False
-    for regexp in DirFilter:
-        a = re.compile(regexp)
-        if (re.match(a, item)):
-            return False
-    return True
-
-def update_translation(path):
+def update_translation(entry):
 
     global QMAKE, LUPDATE
+    print ("\n\n=============================================")
+    print (f"EXTRACTING STRINGS FOR {entry['tsname']}")
+    print ("=============================================")
     cur = os.getcwd()
-    os.chdir(path)
+    os.chdir(entry["workingdir"])
     existingjsons = [f for f in os.listdir(".") if f.endswith(".json")]
-    filename = os.path.basename(path) + ".pro"
-    os.system(QMAKE + " -project")
-    #os.system(LUPDATE + " " + filename)
+    filename = entry["tsname"] + ".pro"
+    print("Running qmake -project")
+    os.system(f"{QMAKE} -project -o {filename}")
     #only update the master ts file
-    tsname = ""
-    if "Mod" in path:
-        tsname = " -ts "+os.path.join("Gui","Resources","translations",os.path.basename(path) + ".ts")
-    elif "src/Gui" in path:
-        tsname = " -ts "+os.path.join("Language", "FreeCAD.ts")
-    os.system(LUPDATE + " " + filename + tsname)
+    tsBasename = os.path.join(entry["tsdir"],entry["tsname"])
+    mainTranslation = f"{LUPDATE} {filename} -ts {tsBasename}.ts"
+    print(mainTranslation)
+    os.system(mainTranslation)
     os.remove(filename)
     # lupdate creates json files since Qt5.something. Remove them here too
     for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
         if not jsonfile in existingjsons:
             os.remove(jsonfile)
-    os.chdir(cur)
 
-def update_python_translation(item):
-
-    global PYLUPDATE, LCONVERT
-    cur = os.getcwd()
-    os.chdir(item[0])
-    execline = item[1].replace("pylupdate",PYLUPDATE)
-    execline = execline.replace("lconvert",LCONVERT)
-    print("Executing special command in ",item[0],": ",execline)
-    os.system(execline)
+    # Also try to do a python lupdate
+    execline0 = f"touch {tsBasename}.ts" # In case it didn't get created above
+    execline1 = f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts"
+    execline2 = f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts"
+    execline3 = f"rm {tsBasename}py.ts"
+    print(f"Executing special commands in {entry['workingdir']}:")
+    print(execline0)
+    os.system(execline0)
+    print(execline1)
+    os.system(execline1)
+    print(execline2)
+    os.system(execline2)
+    print(execline3)
+    os.system(execline3)
+    print()
+    
     os.chdir(cur)
 
 def main():
@@ -230,17 +188,9 @@ def main():
     os.chdir(path)
     os.chdir("..")
     os.chdir("..")
-    dirs=os.listdir("src/Mod")
-    for i in range(len(dirs)):
-        dirs[i] = "src/Mod/" + dirs[i]
-    dirs.append("src/Base")
-    dirs.append("src/App")
-    dirs.append("src/Gui")
-    dirs = filter(filter_dirs, dirs)
-    for i in dirs:
+    print("\n\n\n BEGINNING TRANSLATION EXTRACTION \n\n")
+    for i in directories:
         update_translation(i)
-    for j in PyCommands:
-        update_python_translation(j)
     print("\nIf updatets.py was run successfully, the next step is to run ./src/Tools/updatecrowdin.py")
 
 if __name__ == "__main__":
