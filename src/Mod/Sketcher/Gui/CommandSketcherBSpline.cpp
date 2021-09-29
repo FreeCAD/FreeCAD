@@ -97,7 +97,7 @@ CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
     : Command("Sketcher_BSplineDegree")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Show/hide B-spline degree");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the degree for all B-splines");
     sWhatsThis      = "Sketcher_BSplineDegree";
@@ -128,7 +128,7 @@ CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
     : Command("Sketcher_BSplinePolygon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Show/hide B-spline control polygon");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-splines");
     sWhatsThis      = "Sketcher_BSplinePolygon";
@@ -159,7 +159,7 @@ CmdSketcherBSplineComb::CmdSketcherBSplineComb()
     : Command("Sketcher_BSplineComb")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Show/hide B-spline curvature comb");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-splines");
     sWhatsThis      = "Sketcher_BSplineComb";
@@ -190,7 +190,7 @@ CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
     : Command("Sketcher_BSplineKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Show/hide B-spline knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the knot multiplicity for all B-splines");
     sWhatsThis      = "Sketcher_BSplineKnotMultiplicity";
@@ -221,7 +221,7 @@ CmdSketcherBSplinePoleWeight::CmdSketcherBSplinePoleWeight()
     : Command("Sketcher_BSplinePoleWeight")
 {
     sAppModule = "Sketcher";
-    sGroup = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Show/hide B-spline control point weight");
     sToolTipText = QT_TR_NOOP("Switches between showing and hiding the control point weight for all B-splines");
     sWhatsThis = "Sketcher_BSplinePoleWeight";
@@ -252,7 +252,7 @@ CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHid
     : Command("Sketcher_CompBSplineShowHideGeometryInformation")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Show/hide B-spline information layer");
     sToolTipText    = sMenuText;
     sWhatsThis      = "Sketcher_CompBSplineShowHideGeometryInformation";
@@ -381,7 +381,7 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
     : Command("Sketcher_BSplineConvertToNURB")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Convert geometry to B-spline");
     sToolTipText    = QT_TR_NOOP("Converts the selected geometry to a B-spline");
     sWhatsThis      = "Sketcher_BSplineConvertToNURB";
@@ -449,7 +449,7 @@ CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
     : Command("Sketcher_BSplineIncreaseDegree")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Increase B-spline degree");
     sToolTipText    = QT_TR_NOOP("Increases the degree of the B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseDegree";
@@ -522,7 +522,7 @@ CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
     : Command("Sketcher_BSplineDecreaseDegree")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Decrease B-spline degree");
     sToolTipText    = QT_TR_NOOP("Decreases the degree of the B-spline");
     sWhatsThis      = "Sketcher_BSplineDecreaseDegree";
@@ -599,7 +599,7 @@ CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
     : Command("Sketcher_BSplineIncreaseKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Increase knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Increases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseKnotMultiplicity";
@@ -753,7 +753,7 @@ CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
     : Command("Sketcher_BSplineDecreaseKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Decrease knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineDecreaseKnotMultiplicity";
@@ -895,7 +895,7 @@ CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
     : Command("Sketcher_CompModifyKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TRANSLATE_NOOP("Workbench","Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Modify knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Modifies the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_CompModifyKnotMultiplicity";
