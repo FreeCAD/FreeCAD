@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
+    <width>319</width>
     <height>388</height>
    </rect>
   </property>
@@ -199,7 +199,7 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>125</width>
+         <width>135</width>
          <height>27</height>
         </rect>
        </property>
@@ -213,15 +213,15 @@
         <string>Shows all the constraints in the list</string>
        </property>
        <property name="text">
-        <string>Show All</string>
+        <string>Show Listed</string>
        </property>
       </widget>
       <widget class="QPushButton" name="hideAllButton">
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>150</x>
          <y>10</y>
-         <width>125</width>
+         <width>135</width>
          <height>27</height>
         </rect>
        </property>
@@ -235,7 +235,7 @@
         <string>Hides all the constraints in the list</string>
        </property>
        <property name="text">
-        <string>Hide All</string>
+        <string>Hide Listed</string>
        </property>
       </widget>
      </widget>
@@ -251,7 +251,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>189</width>
+         <width>271</width>
          <height>36</height>
         </rect>
        </property>
@@ -265,7 +265,7 @@
         <string>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</string>
        </property>
        <property name="text">
-        <string>Track filter selection</string>
+        <string>Show only filtered constraints</string>
        </property>
        <property name="checked">
         <bool>false</bool>
