@@ -86,7 +86,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 
     for (std::map<std::string,Command*>::iterator it = sCommands.begin(); it != sCommands.end(); ++it) {
         QLatin1String group(it->second->getGroupName());
-        QString text = qApp->translate(it->second->className(), it->second->getGroupName());
+        QString text = it->second->translatedGroupName();
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
         if (jt != groupMap.end()) {
@@ -484,7 +484,7 @@ void DlgCustomKeyboardImp::changeEvent(QEvent *e)
             QVariant data = ui->categoryBox->itemData(i, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
             if (!aCmds.empty()) {
-                QString text = qApp->translate(aCmds[0]->className(), aCmds[0]->getGroupName());
+                QString text = aCmds[0]->translatedGroupName();
                 ui->categoryBox->setItemText(i, text);
             }
         }

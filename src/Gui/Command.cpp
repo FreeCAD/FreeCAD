@@ -579,6 +579,16 @@ void Command::setGroupName(const char* s)
     this->sGroup = StringCache::New(s);
 }
 
+QString Command::translatedGroupName() const
+{
+    QString text = qApp->translate(className(), getGroupName());
+#if 0 // not yet activated
+    if (text == QString::fromLatin1(getGroupName()))
+        text = qApp->translate("Workbench", getGroupName());
+#endif
+    return text;
+}
+
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
 //--------------------------------------------------------------------------

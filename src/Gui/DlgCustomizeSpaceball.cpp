@@ -422,7 +422,7 @@ QVariant CommandModel::data(const QModelIndex &index, int role) const
             if (node->children.size() < 1)
                 return QVariant();
             CommandNode *childNode = node->children.at(0);
-            return QVariant(qApp->translate(childNode->aCommand->className(), childNode->aCommand->getGroupName()));
+            return QVariant(childNode->aCommand->translatedGroupName());
         }
         return QVariant();
     }

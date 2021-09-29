@@ -568,6 +568,7 @@ public:
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
     void setGroupName(const char*);
+    QString translatedGroupName() const;
     //@}
 
 
