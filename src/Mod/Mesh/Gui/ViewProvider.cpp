@@ -1787,7 +1787,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
     const MeshCore::MeshKernel& rKernel = fea->Mesh.getValue().getKernel();
     MeshCore::MeshRefPointToFacets cPt2Fac(rKernel);
     MeshCore::MeshAlgorithm meshAlg(rKernel);
-    meshAlg.GetMeshBorder(uFacet, aBorder);
+    meshAlg.GetFacetBorder(uFacet, aBorder);
     std::vector<Mesh::PointIndex> boundary(aBorder.begin(), aBorder.end());
     std::list<std::vector<Mesh::PointIndex> > boundaries;
     boundaries.push_back(boundary);

@@ -421,7 +421,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
     }
 }
 
-void MeshAlgorithm::GetMeshBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const
+void MeshAlgorithm::GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const
 {
     const MeshFacetArray &rFAry = _rclMesh._aclFacetArray;
     std::list<std::pair<PointIndex, PointIndex> >  openEdges;

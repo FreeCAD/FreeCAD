@@ -154,7 +154,7 @@ public:
    * Returns the boundary of the mesh to the facet \a uFacet. If this facet does not have an open edge the returned
    * boundary is empty.
    */
-  void GetMeshBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const;
+  void GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const;
   /**
    * Boundaries that consist of several loops must be split in several independent boundaries
    * to perform e.g. a polygon triangulation algorithm on them.

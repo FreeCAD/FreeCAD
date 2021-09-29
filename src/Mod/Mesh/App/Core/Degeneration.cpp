@@ -1257,7 +1257,7 @@ void MeshFixPointOnEdge::FindBoundaries(std::list<std::vector<PointIndex> >& bor
     if (!tmp.empty()) {
         //TODO: Implement a method to handle all facets in 'tmp'
         std::list<PointIndex> border;
-        meshalg.GetMeshBorder(tmp.front(), border);
+        meshalg.GetFacetBorder(tmp.front(), border);
         if (!border.empty()) {
             borderList.emplace_back(border.begin(), border.end());
         }
