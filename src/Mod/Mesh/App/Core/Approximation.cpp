@@ -220,10 +220,24 @@ float PlaneFit::Fit()
 
     // It may happen that the result have nan values
     for (int i=0; i<3; i++) {
-        if (boost::math::isnan(U[i]) || 
-            boost::math::isnan(V[i]) ||
-            boost::math::isnan(W[i]))
+        if (boost::math::isnan(W[i]))
             return FLOAT_MAX;
+    }
+
+    // In some cases when the points exactly lie on a plane it can happen that
+    // U or V have nan values but W is valid.
+    // In this case create an orthonormal basis
+    bool validUV = true;
+    for (int i = 0; i < 3; i++) {
+        if (boost::math::isnan(U[i]) ||
+            boost::math::isnan(V[i])) {
+            validUV = false;
+            break;
+        }
+    }
+
+    if (!validUV) {
+        Wm4::Vector3<double>::GenerateOrthonormalBasis(U, V, W);
     }
 
     _vDirU.Set(float(U.X()), float(U.Y()), float(U.Z()));
