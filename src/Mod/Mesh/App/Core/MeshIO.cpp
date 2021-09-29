@@ -1683,7 +1683,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                 continue;
             }
             auto indexView = std::string_view(&line[8], 16);
-            auto blankView = std::string_view(&line[8+16], 16);
+            //auto blankView = std::string_view(&line[8+16], 16); // No data is needed here
             auto xView = std::string_view(&line[8+16+16], 16);
             auto yView = std::string_view(&line[8+16+16+16]);
 
