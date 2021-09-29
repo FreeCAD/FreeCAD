@@ -404,8 +404,8 @@ class CommandPathSanity:
 
         # Save the report
 
-        reportraw = self.outputpath + job.PostProcessorOutputFile + '.asciidoc'
-        reporthtml = self.outputpath + job.PostProcessorOutputFile + '.html'
+        reportraw = self.outputpath + data['outputData']['outputfilename'] + '.asciidoc'
+        reporthtml = self.outputpath + data['outputData']['outputfilename'] + '.html'
         with open(reportraw, 'w') as fd:
             fd.write(report)
             fd.close()
@@ -717,7 +717,8 @@ class CommandPathSanity:
                 'postprocessor': '',
                 'postprocessorFlags': '',
                 'filesize': '',
-                'linecount': ''}
+                'linecount': '',
+                'outputfilename':'setupreport'}
         try:
             data['lastpostprocess'] = str(obj.LastPostProcessDate)
             data['lastgcodefile'] = str(obj.LastPostProcessOutput)
@@ -727,6 +728,9 @@ class CommandPathSanity:
             data['postprocessor'] = str(obj.PostProcessor)
             data['postprocessorFlags'] = str(obj.PostProcessorArgs)
 
+            if obj.PostProcessorOutputFile != '':
+                fname = obj.PostProcessorOutputFile
+                data['outputfilename'] = os.path.splitext(os.path.basename(fname))[0]
             for op in obj.Operations.Group:
                 if isinstance(op.Proxy, PathScripts.PathStop.Stop) and op.Stop is True:
                     data['optionalstops'] = "True"
