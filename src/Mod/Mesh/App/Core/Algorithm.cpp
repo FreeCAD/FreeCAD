@@ -449,32 +449,87 @@ void MeshAlgorithm::GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBo
         }
     }
 
+    SplitBoundaryFromOpenEdges(openEdges, rBorder);
+}
+
+void MeshAlgorithm::GetFacetsBorders(const std::vector<FacetIndex>& uFacets, std::list<std::vector<PointIndex> >& rBorders) const
+{
+    ResetFacetFlag(MeshFacet::TMP0);
+    SetFacetsFlag(uFacets, MeshFacet::TMP0);
+    ResetPointFlag(MeshPoint::TMP0);
+
+    const MeshFacetArray &rFAry = _rclMesh._aclFacetArray;
+    const MeshPointArray &rPAry = _rclMesh._aclPointArray;
+    std::list<std::pair<PointIndex, PointIndex> > openEdges;
+
+    // add the open edge to the beginning of the list
+    for (auto it : uFacets) {
+        const MeshFacet& face = rFAry[it];
+        for (int i = 0; i < 3; i++) {
+            if (face._aulNeighbours[i] == FACET_INDEX_MAX) {
+                std::pair<PointIndex, PointIndex> openEdge = face.GetEdge(i);
+                openEdges.push_back(openEdge);
+                // mark all points of open edges of the given facets
+                rPAry[openEdge.first].SetFlag(MeshPoint::TMP0);
+                rPAry[openEdge.second].SetFlag(MeshPoint::TMP0);
+            }
+        }
+    }
+
+    if (openEdges.empty())
+        return; // none of the facets are border facets
+
+    for (MeshFacetArray::_TConstIterator it = rFAry.begin(); it != rFAry.end(); ++it) {
+        if (it->IsFlag(MeshFacet::TMP0))
+            continue;
+        for (int i = 0; i < 3; i++) {
+            if (it->_aulNeighbours[i] == FACET_INDEX_MAX)
+                openEdges.push_back(it->GetEdge(i));
+        }
+    }
+
+    // if the first element is not an edge of "uFacets" then give up
+    while (!openEdges.empty()) {
+        PointIndex first = openEdges.begin()->first;
+        PointIndex second  = openEdges.begin()->second;
+        if (!rPAry[first].IsFlag(MeshPoint::TMP0))
+            break;
+        if (!rPAry[second].IsFlag(MeshPoint::TMP0))
+            break;
+
+        std::list<PointIndex> boundary;
+        SplitBoundaryFromOpenEdges(openEdges, boundary);
+        rBorders.emplace_back(boundary.begin(), boundary.end());
+    }
+}
+
+void MeshAlgorithm::SplitBoundaryFromOpenEdges(std::list<std::pair<PointIndex, PointIndex> >& openEdges, std::list<PointIndex>& boundary) const
+{
     // Start with the edge that is associated to uFacet
+    if (openEdges.empty())
+        return;
+
     PointIndex ulFirst = openEdges.begin()->first;
     PointIndex ulLast  = openEdges.begin()->second;
 
     openEdges.erase(openEdges.begin());
-    rBorder.push_back(ulFirst);
-    rBorder.push_back(ulLast);
+    boundary.push_back(ulFirst);
+    boundary.push_back(ulLast);
 
-    while (ulLast != ulFirst)
-    {
+    while (ulLast != ulFirst) {
         // find adjacent edge
         std::list<std::pair<PointIndex, PointIndex> >::iterator pEI;
-        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI)
-        {
-            if (pEI->first == ulLast)
-            {
+        for (pEI = openEdges.begin(); pEI != openEdges.end(); ++pEI) {
+            if (pEI->first == ulLast) {
                 ulLast = pEI->second;
-                rBorder.push_back(ulLast);
+                boundary.push_back(ulLast);
                 openEdges.erase(pEI);
                 pEI = openEdges.begin();
                 break;
             }
-            else if (pEI->second == ulFirst)
-            {
+            else if (pEI->second == ulFirst) {
                 ulFirst = pEI->first;
-                rBorder.push_front(ulFirst);
+                boundary.push_front(ulFirst);
                 openEdges.erase(pEI);
                 pEI = openEdges.begin();
                 break;

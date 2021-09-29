@@ -156,6 +156,11 @@ public:
    */
   void GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBorder) const;
   /**
+   * Returns the boundary of the mesh to the facets \a uFacest. If none of the facets have an open edge the returned
+   * boundary is empty.
+   */
+  void GetFacetsBorders(const std::vector<FacetIndex>& uFacets, std::list<std::vector<PointIndex> >& rBorders) const;
+  /**
    * Boundaries that consist of several loops must be split in several independent boundaries
    * to perform e.g. a polygon triangulation algorithm on them.
    */
@@ -316,7 +321,11 @@ protected:
   /** 
    * Splits the boundary \a rBound in several loops and append this loops to the list of borders.
    */
-  void SplitBoundaryLoops( const std::vector<PointIndex>& rBound, std::list<std::vector<PointIndex> >& aBorders );
+  void SplitBoundaryLoops(const std::vector<PointIndex>& rBound, std::list<std::vector<PointIndex> >& aBorders);
+  /**
+   * From the given \a openEdges a boundary is split and added to \a boundary.
+   */
+  void SplitBoundaryFromOpenEdges(std::list<std::pair<PointIndex, PointIndex> >& openEdges, std::list<PointIndex>& boundary) const;
 
 protected:
   const MeshKernel      &_rclMesh; /**< The mesh kernel. */
