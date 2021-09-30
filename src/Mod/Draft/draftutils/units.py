@@ -111,7 +111,12 @@ def display_external(internal_value,
                 conversion = q.getUserPreferred()[1]
                 uom = q.getUserPreferred()[2]
     elif dim == 'Angle':
-        return App.Units.Quantity(internal_value, App.Units.Angle).UserString
+        q = App.Units.Quantity(internal_value, App.Units.Angle)
+        if decimals is None:
+            return q.UserString
+
+        conversion = q.getUserPreferred()[1]
+        uom = q.getUserPreferred()[2]
     else:
         conversion = 1.0
         if not decimals:
