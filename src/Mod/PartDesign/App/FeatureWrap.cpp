@@ -267,6 +267,7 @@ bool FeatureWrap::isSolidFeature() const
 App::DocumentObject *FeatureWrap::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     auto wrapped = WrapFeature.getValue();
     if (wrapped && subname
                 && subname != Data::ComplexGeoData::findElementName(subname)) {

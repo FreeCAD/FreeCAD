@@ -195,6 +195,7 @@ void SubShapeBinder::clearCopiedObjects() {
 App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
         Base::Matrix4D *mat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     auto sobj = Part::Feature::getSubObject(subname,pyObj,mat,transform,depth);
     if(sobj)
         return sobj;

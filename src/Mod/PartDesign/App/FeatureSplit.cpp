@@ -332,6 +332,7 @@ void Split::onChanged(const App::Property* prop) {
 App::DocumentObject *Split::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     auto ret = PartDesign::Feature::getSubObject(subname,pyObj,mat,transform,depth);
     if(ret)
         return ret;

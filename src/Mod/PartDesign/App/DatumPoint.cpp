@@ -131,6 +131,7 @@ Base::Vector3d Point::getPoint()
 App::DocumentObject *Point::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     if (subname && subname[0] && !boost::equals(subname, "Point"))
         return nullptr;
 

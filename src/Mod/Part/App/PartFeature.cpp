@@ -139,6 +139,8 @@ PyObject *Feature::getPyObject(void)
 App::DocumentObject *Feature::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
+
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
     if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 

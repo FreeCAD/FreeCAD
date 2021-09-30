@@ -57,6 +57,7 @@ DocumentObject *Placement::getSubObject(const char *subname, PyObject **,
     if (transform && mat) {
         auto pla = this->GeoFeature::Placement.getValue();
         if (subname) {
+            while(*subname=='.') ++subname;
             Base::Placement offset;
             Base::Vector3d normal(0,0,1);
             if (boost::iequals("x", subname) || boost::iequals("x-axis", subname)

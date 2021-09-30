@@ -96,6 +96,7 @@ void Line::onChanged(const App::Property *prop)
 App::DocumentObject *Line::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     if (subname && subname[0] && !boost::equals(subname, "Line"))
         return nullptr;
 

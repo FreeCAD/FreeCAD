@@ -9100,6 +9100,7 @@ App::DocumentObject *SketchObject::getSubObject(
         const char *subname, PyObject **pyObj,
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while(subname && *subname=='.') ++subname; // skip leading .
     std::string sub;
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
     if(!subname || !subname[0])

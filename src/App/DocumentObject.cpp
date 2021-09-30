@@ -850,6 +850,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         return ret;
 
     const char *dot=0;
+    while(subname && *subname=='.') ++subname; // skip leading .
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {

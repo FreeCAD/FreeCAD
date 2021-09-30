@@ -93,6 +93,7 @@ App::DocumentObject *CoordinateSystem::getSubObject(const char *subname,
     TopoDS_Shape *shape = &_shape;
     gp_Dir dir(0,0,1);
     if(subname) {
+        while(*subname=='.') ++subname; // skip leading .
         if(strcmp(subname,"X")==0) {
             static TopoDS_Shape _shape;
             shape = &_shape;
