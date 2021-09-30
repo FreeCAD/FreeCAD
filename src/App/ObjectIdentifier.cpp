@@ -1321,7 +1321,9 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
         }
     }
 
-    bool addDot = l.size() || isLocalProperty();
+    bool addDot = l.size()
+        || isLocalProperty()
+        || (l.empty() && documentObjectName.getString().size() && result.resolvedDocumentObject == owner);
     std::ostringstream ss;
     for(auto &comp : components) {
         ss.str("");
@@ -1481,7 +1483,7 @@ void ObjectIdentifier::addComponent(ObjectIdentifier::Component &&c) {
 
     if(name[0]!='$' && name.find('.') == std::string::npos)
         os << '$';
-    if(name[0] == '.')
+    if(os.tellp() && name[0] == '.')
         os << (name.c_str()+1);
     else
         os << name;
@@ -2002,7 +2004,9 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
             pyobj = func.apply(tuple);
         else{
             Py::Dict dict;
-            dict.setItem("subname",Py::String(result.subObjectName.getString()));
+            const char *subname = result.subObjectName.getString().c_str();
+            while(*subname == '.') ++subname; // skip any leading dot
+            dict.setItem("subname",Py::String(subname));
             dict.setItem("needSubElement",Py::True());
             pyobj = func.apply(tuple,dict);
         }
@@ -2390,8 +2394,14 @@ void ObjectIdentifier::resolveAmbiguity(ResolveResults &result) {
     }
 
     std::string s = result.subObjectName;
-    if(s.size() && s[0] == '.')
-        s.erase(s.begin());
+    // We will support leading and (any consecutive) dots in the subname path.
+    // So no need to remove it. In fact, we delibrately add a leading dot (by
+    // ExpressionCompleter) to disambiguate element name from label reference
+    // in subname path.
+    //
+    // if(s.size() && s[0] == '.')
+    //     s.erase(s.begin());
+
     String subname(std::move(s), true);
     if(result.resolvedDocumentObject == owner) {
         setDocumentObjectName(owner,false,std::move(subname));
