@@ -150,14 +150,9 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
-
-        else if (PyFloat_Check(other)) {
+        else if (PyNumber_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
-        }
-    else if (PyLong_Check(other)) {
-        long b = PyLong_AsLong(other);
-            return new VectorPy(a * (double)b);
         }
         else {
             PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
@@ -166,13 +161,9 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
     else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
-        if (PyFloat_Check(self)) {
+        if (PyNumber_Check(self)) {
             double b = PyFloat_AsDouble(self);
             return new VectorPy(a * b);
-        }
-        else if (PyLong_Check(self)) {
-            long b = PyLong_AsLong(self);
-            return new VectorPy(a * (double)b);
         }
         else {
             PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
@@ -216,7 +207,7 @@ int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *valu
         return -1;
     }
 
-    if (PyFloat_Check(value)) {
+    if (PyNumber_Check(value)) {
         VectorPy::PointerType ptr = static_cast<VectorPy*>(self)->getVectorPtr();
         (*ptr)[index] = PyFloat_AsDouble(value);
     }
