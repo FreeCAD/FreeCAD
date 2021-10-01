@@ -11,11 +11,14 @@ reload(SearchTools)
 
 
 TODO for this project:
-* find a way to use the FreeCAD 3D viewer without segfaults or disappearing widgets
-* fix sync problem when moving too fast
+OK find a way to use the FreeCAD 3D viewer without segfaults or disappearing widgets
+OK fix sync problem when moving too fast
 * split the list of tools vs. document objects (possibly already done?)
 * save to disk the list of tools
-* always display including when switching workbenches
+OK always display including when switching workbenches
+* slightly larger popup widget to avoid scrollbar for the extra info for document objects
+* turn this into a standalone mod
+* speed up startup to show the box instantly and do the slow loading on first click.
 """
 
 ################################""
@@ -160,8 +163,9 @@ actionHandlers = {
 
 # For some reason, the viewer always works except when used for two consecutive items in the search results: it then disappears after a short zoom-in+zoom-out animation.
 # I'm giving up on getting this viewer to work in a clean way, and will try swapping two instances so that the same one is never used twice in a row.
-safeViewerInstanceA = None
-safeViewerInstanceB = None
+# Also, in order to avoid segfaults when the module is reloaded (which causes the previous viewer to be garbage collected at some point), we're using a global property that will survive module reloads.
+if not hasattr(App, '_SearchTools3DViewer'):
+  App._SearchTools3DViewer = None
 
 import pivy
 class DocumentObjectToolTipWidget(QtGui.QWidget):
@@ -173,16 +177,13 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
     description.setAlignment(QtCore.Qt.AlignTop)
     description.setText(html)
 
-    global safeViewerInstanceA, safeViewerInstanceB
-    if safeViewerInstanceA is None:
+    if App._SearchTools3DViewer is None:
       oldFocus = QtGui.QApplication.focusWidget()
-      safeViewerInstanceA = SafeViewer()
-      safeViewerInstanceB = SafeViewer()
+      App._SearchTools3DViewer = SafeViewer()
       oldFocus.setFocus()
       # Tried setting the preview to a fixed size to prevent it from disappearing when changing its contents, this sets it to a fixed size but doesn't actually pick the size, .resize does that but isn't enough to fix the bug.
       #safeViewerInstance.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed))
-    self.preview = safeViewerInstanceA
-    safeViewerInstanceA, safeViewerInstanceB = safeViewerInstanceB, safeViewerInstanceA
+    self.preview = App._SearchTools3DViewer
 
     obj = App.getDocument(str(nfo['toolTip']['docName'])).getObject(str(nfo['toolTip']['name']))
     ## dummy preview:
@@ -197,16 +198,23 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
     #myCustomNode.addChild(cub)
     #self.preview.viewer.getViewer().setSceneGraph(myCustomNode)
 
-    # Tried hiding/detaching the preview to prevent it from disappearing when changing its contents
-    self.preview.viewer.stopAnimating()
-    self.preview.viewer.getViewer().setSceneGraph(obj.ViewObject.RootNode)
-    self.preview.viewer.fitAll()
-
+    # This is really a bad way to do this… to prevent the setExtraInfo function from
+    # finalizing the object, we remove the parent ourselves.
+    oldParent = self.preview.parent()
     lay = QtGui.QVBoxLayout()
     self.setLayout(lay)
     lay.addWidget(description)
     lay.addWidget(self.preview)
+    if oldParent is not None:
+      oldParent.hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
+      oldParent.setParent(None)
   
+    # Tried hiding/detaching the preview to prevent it from disappearing when changing its contents
+    self.preview.viewer.stopAnimating()
+    self.preview.viewer.getViewer().setSceneGraph(obj.ViewObject.RootNode)
+    self.preview.viewer.setCameraOrientation(App.Rotation(1,1,0, 0.2))
+    self.preview.viewer.fitAll()
+
   def finalizer(self):
     #self.preview.finalizer()
     # Detach the widget so that it may be reused without getting deleted
@@ -279,6 +287,8 @@ class SearchBox(QtGui.QLineEdit):
     self.extraInfo.setWindowFlag(QtGui.Qt.FramelessWindowHint)
     self.extraInfo.setLayout(QtGui.QVBoxLayout())
     self.extraInfo.layout().setContentsMargins(0,0,0,0)
+    self.setExtraInfoIsActive = False
+    self.pendingExtraInfo = None
     # Connect signals and slots
     self.textChanged.connect(self.filterModel)
     self.listView.clicked.connect(lambda x: self.selectResult('select', x))
@@ -438,28 +448,51 @@ class SearchBox(QtGui.QLineEdit):
     elif len(deselected) > 0:
       self.hideExtraInfo()
   def setExtraInfo(self, index):
-    nfo = str(index.model().itemData(index.siblingAtColumn(3))[0])
-    # TODO: move this outside of this class, probably use a single metadata
-    metadata = str(index.model().itemData(index.siblingAtColumn(2))[0])
-    nfo = deserializeItemGroup(json.loads(nfo))
-    nfo['action'] = json.loads(nfo['action'])
-    toolTipWidget = toolTipHandlers[nfo['action']['handler']](nfo)
-    #while len(self.extraInfo.children()) > 0:
-    #  self.extraInfo.children()[0].setParent(None)
-    w = self.extraInfo.layout().takeAt(0)
-    while w:
-      if hasattr(w.widget(), 'finalizer'):
-        # The 3D viewer segfaults very easily if it is used after being destroyed, and some Python/C++ interop seems to overzealously destroys some widgets, including this one, too soon?
-        # Ensuring that we properly detacth the 3D viewer widget before discarding its parent seems to avoid these crashes.
-        w.widget().finalizer()
-      w.widget().setParent(None)
-      w = self.extraInfo.layout().takeAt(0)
-    self.extraInfo.layout().addWidget(toolTipWidget)
-    global toto
-    toto = self.extraInfo
-    #toolTipHTML = toolTipHandlers[nfo['action']['handler']](nfo)
-    #self.extraInfo.setText(toolTipHTML)
-    self.setFloatingWidgetsGeometry()
+    # TODO: use an atomic swap or mutex if possible
+    if self.setExtraInfoIsActive:
+      self.pendingExtraInfo = index
+      #print("boom")
+    else:
+      self.setExtraInfoIsActive = True
+      #print("lock")
+      # setExtraInfo can be called multiple times while this function is running,
+      # so just before existing we check for the latest pending call and execute it,
+      # if during that second execution some other calls are made the latest of those will
+      # be queued by the code a few lines above this one, and the loop will continue processing
+      # until an iteration during which no further call was made.
+      while True:
+        nfo = str(index.model().itemData(index.siblingAtColumn(3))[0])
+        # TODO: move this outside of this class, probably use a single metadata
+        metadata = str(index.model().itemData(index.siblingAtColumn(2))[0])
+        nfo = deserializeItemGroup(json.loads(nfo))
+        nfo['action'] = json.loads(nfo['action'])
+        #while len(self.extraInfo.children()) > 0:
+        #  self.extraInfo.children()[0].setParent(None)
+        w = self.extraInfo.layout().takeAt(0)
+        toolTipWidget = toolTipHandlers[nfo['action']['handler']](nfo)
+        while w:
+          if hasattr(w.widget(), 'finalizer'):
+            # The 3D viewer segfaults very easily if it is used after being destroyed, and some Python/C++ interop seems to overzealously destroys some widgets, including this one, too soon?
+            # Ensuring that we properly detacth the 3D viewer widget before discarding its parent seems to avoid these crashes.
+            print('FINALIZER')
+            w.widget().finalizer()
+          if w.widget() is not None:
+            w.widget().hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
+            w.widget().setParent(None)
+          w = self.extraInfo.layout().takeAt(0)
+        self.extraInfo.layout().addWidget(toolTipWidget)
+        global toto
+        toto = self.extraInfo
+        #toolTipHTML = toolTipHandlers[nfo['action']['handler']](nfo)
+        #self.extraInfo.setText(toolTipHTML)
+        self.setFloatingWidgetsGeometry()
+        if self.pendingExtraInfo is not None:
+          index = self.pendingExtraInfo
+          self.pendingExtraInfo = None
+        else:
+          break
+      #print("unlock")
+      self.setExtraInfoIsActive = False
   def clearExtraInfo(self):
     self.extraInfo.setText('')
   def showExtraInfo(self):
@@ -639,6 +672,7 @@ def refreshToolbars(loadAllWorkbenches = True):
       geo.setSize(lbl.sizeHint())
       lbl.setGeometry(geo)
       lbl.repaint()
+      FreeCADGui.updateGui() # Probably slower with this, because it redraws the entire GUI with all tool buttons changed etc. but allows the label to actually be updated, and it looks nice and gives a quick overview of all the workbenches…
       try:
         FreeCADGui.activateWorkbench(wb)
       except:
@@ -653,18 +687,20 @@ def refreshToolbars(loadAllWorkbenches = True):
 # Avoid garbage collection by storing the action in a global variable
 wax = None
 
-def addToolSearchBox():
-  global wax, itemGroups, serializedItemGroups
+def init():
+  global itemGroups, serializedItemGroups
   if itemGroups is None:
     if serializedItemGroups is None:
       refreshToolbars(False)
     else:
       itemGroups = deserialize(serializedItemGroups)
-  
+
+def addToolSearchBox():
+  global wax, sea
+  sea = SearchBox(itemGroups)
   mw = FreeCADGui.getMainWindow()
   mbr = mw.findChildren(QtGui.QToolBar, 'File')[0]
   # Create search box widget
-  sea = SearchBox(itemGroups)
   def onResultSelected(index, metadata):
     action = json.loads(metadata)
     actionHandlers[action['handler']](action)
@@ -672,7 +708,9 @@ def addToolSearchBox():
   wax = QtGui.QWidgetAction(None)
   wax.setDefaultWidget(sea)
   #mbr.addWidget(sea)
-  print("addAction" + repr(mbr) + ' add(' + repr(wax))
+  #print("addAction" + repr(mbr) + ' add(' + repr(wax))
   mbr.addAction(wax)
 
+init()
 addToolSearchBox()
+FreeCADGui.getMainWindow().workbenchActivated.connect(addToolSearchBox)
