@@ -1185,8 +1185,9 @@ PyObject*  TopoShapePy::generalFuse(PyObject *args)
 
 PyObject*  TopoShapePy::sewShape(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+    double tolerance = 1.0e-06;
+    if (!PyArg_ParseTuple(args, "|d", &tolerance))
+        return nullptr;
 
     try {
         getTopoShapePtr()->sewShape();
@@ -2132,9 +2133,10 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
 PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
 {
     PyObject *tup;
-    float tolerance;
-    if (!PyArg_ParseTuple(args, "O!f",&PyTuple_Type, &tup, &tolerance))
-        return 0;
+    double tolerance = 1.0e-06;
+    PyObject* sewShape = Py_True;
+    if (!PyArg_ParseTuple(args, "O!|dO!",&PyTuple_Type, &tup, &tolerance, &PyBool_Type, &sewShape))
+        return nullptr;
 
     try {
         Py::Tuple tuple(tup);
@@ -2156,7 +2158,9 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
             Facets.push_back(face);
         }
 
-        getTopoShapePtr()->setFaces(Points, Facets,tolerance);
+        getTopoShapePtr()->setFaces(Points, Facets, tolerance);
+        if (PyObject_IsTrue(sewShape))
+            getTopoShapePtr()->sewShape(tolerance);
         Py_Return;
     } PY_CATCH_OCC
 }

@@ -3277,9 +3277,9 @@ TopoDS_Shape TopoShape::removeShape(const std::vector<TopoDS_Shape>& s) const
     return reshape.Apply(this->_Shape, TopAbs_SHAPE);
 }
 
-void TopoShape::sewShape()
+void TopoShape::sewShape(double tolerance)
 {
-    BRepBuilderAPI_Sewing sew;
+    BRepBuilderAPI_Sewing sew(tolerance);
     sew.Load(this->_Shape);
     sew.Perform();
 
@@ -3615,19 +3615,16 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
 }
 
 void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
-                         const std::vector<Facet> &Topo, float Accuracy)
+                         const std::vector<Facet> &Topo, double tolerance)
 {
     gp_XYZ p1, p2, p3;
     std::vector<TopoDS_Vertex> Vertexes;
     std::map<std::pair<uint32_t, uint32_t>, TopoDS_Edge> Edges;
     TopoDS_Face newFace;
     TopoDS_Wire newWire;
-    BRepBuilderAPI_Sewing aSewingTool;
     Standard_Real x1, y1, z1;
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
-
-    aSewingTool.Init(Accuracy, Standard_True);
 
     TopoDS_Compound aComp;
     BRep_Builder BuildTool;
@@ -3707,6 +3704,15 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         }
     }
 
+    // If performSewing is true BRepBuilderAPI_Sewing creates a compound of
+    // shells. Since the resulting shape isn't very usable in most use cases
+    // it's fine to set it to false so the algorithm only performs some control
+    // checks and creates a compound of faces.
+    // However, the computing time can be reduced by 90%.
+    // If a shell is needed then the sewShape() function should be called explicitly.
+    BRepBuilderAPI_Sewing aSewingTool;
+    Standard_Boolean performSewing = Standard_False;
+    aSewingTool.Init(tolerance, performSewing);
     aSewingTool.Load(aComp);
 
 #if OCC_VERSION_HEX < 0x070500

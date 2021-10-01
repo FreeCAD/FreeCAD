@@ -285,7 +285,7 @@ public:
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
-    void sewShape();
+    void sewShape(double tolerance = 1.0e-06);
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
@@ -302,7 +302,7 @@ public:
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
-                  const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+                  const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
     //@}
 
