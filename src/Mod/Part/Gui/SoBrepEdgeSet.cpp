@@ -68,12 +68,15 @@
 
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
+#include "PartParams.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/ViewParams.h>
 
 using namespace Gui;
 using namespace PartGui;
+
+////////////////////////////////////////////////////////////////////////////
 
 SO_NODE_SOURCE(SoBrepEdgeSet)
 
@@ -107,6 +110,8 @@ void SoBrepEdgeSet::notify(SoNotList * list)
             if(cindices[i] < 0)
                 this->segments.push_back(i+1);
         }
+        bboxPicker.clear();
+        bboxMap.clear();
     }
     SoIndexedLineSet::notify(list);
 }
@@ -533,6 +538,8 @@ void SoBrepEdgeSet::_renderSelection(SoGLRenderAction *action,
             renderLines(static_cast<const SoGLCoordinateElement*>(coords), cindices + offset, num);
         }
     }
+    if (normalCacheUsed)
+        this->readUnlockNormalCache();
     if(push) state->pop();
 }
 
@@ -557,3 +564,179 @@ SoDetail * SoBrepEdgeSet::createLineSegmentDetail(SoRayPickAction * action,
     return detail;
 }
 
+void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay)
+{
+    bboxMap.clear();
+    bboxPicker.clear();
+
+    const int32_t* cindices = this->coordIndex.getValues(0);
+    int numcindices = this->coordIndex.getNum();
+
+    int threshold = PartParams::SelectionPickThreshold();
+    int threshold2 = PartParams::SelectionPickThreshold2();
+    int step = std::max(10, (numcindices / threshold));
+    std::vector<SbBox3f> boxes;
+    boxes.reserve(step * threshold + 1);
+    bboxMap.reserve(step * threshold + 1);
+    SbBox3f bbox;
+    SegmentInfo *info = nullptr;
+
+    auto pushInfo = [&](bool force) {
+        if (!info || bbox.isEmpty())
+            return;
+        if (!force && info->count < step)
+            return;
+        boxes.push_back(bbox);
+        if (threshold2 >= 0 && info->count >= threshold2) {
+            std::vector<SbBox3f> cboxes;
+            cboxes.reserve(info->count);
+            int prev = cindices[info->start];
+            for (int n = info->start+1, end = info->start+info->count; n < end; ++n) {
+                int vidx = cindices[n];
+                bbox.makeEmpty();
+                if (vidx >= 0 && vidx < numverts && prev >= 0 && prev < numverts) {
+                    bbox.extendBy(coords[prev]);
+                    bbox.extendBy(coords[vidx]);
+                }
+                // We must push the box even if it is empty, because
+                // BoundBoxRayPick returns the result as an index to the bound
+                // boxes. And we need to use this index to get back the vertex
+                // index.
+                cboxes.push_back(bbox);
+                prev = vidx;
+            }
+            info->picker.init(std::move(cboxes), delay);
+        }
+        bbox.makeEmpty();
+        info = nullptr;
+    };
+
+    for (int i = 0; i < numcindices; ++i) {
+        int vidx = cindices[i];
+        if (vidx < 0 || vidx >= numverts)
+            continue;
+        if (!info) {
+            bboxMap.emplace_back();
+            info = &bboxMap.back();
+            info->start = i;
+            info->count = 0;
+        }
+        bbox.extendBy(coords[vidx]);
+        info->count = i - info->start + 1;
+        pushInfo(false);
+    }
+    pushInfo(true);
+    if (bboxMap.size() > boxes.size())
+        bboxMap.pop_back();
+    bboxPicker.init(std::move(boxes), delay);
+}
+
+void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(ctx2 && !ctx2->isSelected())
+        return;
+
+    SoState *state = action->getState();
+
+    int threshold = PartParams::SelectionPickThreshold();
+    int threshold2 = PartParams::SelectionPickThreshold2();
+    const int32_t *cindices = this->coordIndex.getValues(0);
+    int numindices = this->coordIndex.getNum();
+    auto coords = SoCoordinateElement::getInstance(state);
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numverts = coords->getNum();
+
+    if(threshold<=0) {
+        inherited::rayPick(action);
+        return;
+    }
+
+    if (!shouldRayPick(action))
+        return;
+
+    computeObjectSpaceRay(action);
+
+    if (getBoundingBoxCache() && getBoundingBoxCache()->isValid(state)) {
+        SbBox3f box = getBoundingBoxCache()->getProjectedBox();
+        if(box.isEmpty() || !action->intersect(box,TRUE))
+            return;
+    }
+
+    static thread_local std::vector<int> results;
+    results.clear();
+
+    if (bboxPicker.empty())
+        initBoundingBoxes(coords3d, numverts, true);
+
+    auto pickSegment = [&](int idx) {
+        if (idx < 1 || idx >= numindices)
+            return false;
+        int vidx0 = cindices[idx-1];
+        if (vidx0 < 0 || vidx0 >= numverts)
+            return false;
+        int vidx1 = cindices[idx];
+        if (vidx1 < 0 || vidx1 >= numverts)
+            return false;
+        auto it = std::upper_bound(segments.begin(), segments.end(), idx);
+        assert(it != segments.end());
+        int id = it - segments.begin();
+        it = std::upper_bound(segments.begin(), segments.end(), idx-1);
+        assert(it != segments.end());
+        if (id != it - segments.begin()) // these two indices are from different line strip
+            return false;
+        if(ctx2 && !ctx2->isSelectAll() && !ctx2->selectionIndex.count(id))
+            return false;
+        const auto &p0 = coords3d[vidx0];
+        const auto &p1 = coords3d[vidx1];
+        SbVec3f intersection;
+        if (action->intersect(p0, p1, intersection)) {
+            if (action->isBetweenPlanes(intersection)) {
+                SoPickedPoint * pp = action->addIntersection(intersection);
+                if (pp) {
+                    auto ld = new SoLineDetail;
+                    SoPointDetail pd;
+                    pd.setCoordinateIndex(vidx0);
+                    ld->setPoint0(&pd);
+                    pd.setCoordinateIndex(vidx1);
+                    ld->setPoint1(&pd);
+                    ld->setLineIndex(id);
+                    ld->setPartIndex(id);
+                    pp->setDetail(ld, this);
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    auto pick = [&](int bboxId) {
+        auto &info = bboxMap[bboxId];
+        if (info.count < threshold2) {
+            for (int i = info.start+1, end = info.start + info.count; i < end; ++i)
+                pickSegment(i);
+        } else {
+            std::size_t offset = results.size();
+            info.picker.rayPick(action, results);
+            for(auto i=offset;i<results.size();++i)
+                pickSegment(results[i] + info.start + 1);
+            results.resize(offset);
+        }
+    };
+
+    const auto &boxes = bboxPicker.getBoundBoxes();
+    int numparts = (int)bboxMap.size();
+
+    if(numparts < threshold) {
+        for(int bboxId=0;bboxId<numparts;++bboxId) {
+            auto &box = boxes[bboxId];
+            if(box.isEmpty() || !action->intersect(box,TRUE))
+                continue;
+            pick(bboxId);
+        }
+    } else {
+        bboxPicker.rayPick(action, results);
+        for(std::size_t i=0;i<results.size();++i)
+            pick(results[i]);
+    }
+}

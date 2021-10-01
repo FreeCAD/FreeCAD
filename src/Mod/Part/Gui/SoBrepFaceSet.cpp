@@ -89,6 +89,7 @@
 #include <QApplication>
 
 #include "SoBrepFaceSet.h"
+#include "PartParams.h"
 #include <Base/Console.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
@@ -361,7 +362,8 @@ SoBrepFaceSet::~SoBrepFaceSet()
 }
 
 void SoBrepFaceSet::onPartIndexChange() {
-    partBBoxes.clear();
+    bboxPicker.clear();
+    facePicker.clear();
     indexOffset.clear();
     partIndexMap.clear();
 }
@@ -1258,6 +1260,7 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     buildPartBBoxes(state);
 
     int numparts = this->partIndex.getNum();
+    const auto &partBBoxes = bboxPicker.getBoundBoxes();
     for(auto &v : ctx2->selectionIndex) {
         int id = v.first;
         if (id<0 || id >= numparts)
@@ -1268,16 +1271,15 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 }
 
 void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
-    if(partIndex.getNum() == (int)partBBoxes.size())
+    if(partIndex.getNum() == (int)bboxPicker.getBoundBoxes().size())
         return;
 
-    partBBoxes.clear();
+    bboxPicker.clear();
+    facePicker.clear();
 
     int numparts = partIndex.getNum();
     if(!numparts)
         return;
-
-    partBBoxes.resize(numparts);
 
     const int32_t *pindices = this->partIndex.getValues(0);
     if(!pindices)
@@ -1290,13 +1292,17 @@ void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
     if(!coords)
         return;
 
+    std::vector<SbBox3f> partBBoxes;
+    partBBoxes.reserve(numparts);
+
     const SbVec3f *coords3d = coords->getArrayPtr3();
     int numverts = coords->getNum();
 
     buildPartIndexCache();
 
     for(int id=0;id<numparts;++id) {
-        auto &bbox = partBBoxes[id];
+        partBBoxes.emplace_back();
+        auto &bbox = partBBoxes.back();
 
         int length = (int)pindices[id]*4;
         int start = (int)indexOffset[id]*4;
@@ -1312,6 +1318,8 @@ void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
                 bbox.extendBy(coords3d[v]);
         }
     }
+
+    bboxPicker.init(std::move(partBBoxes));
 }
 
 void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx, SelContextPtr ctx2,
@@ -1325,6 +1333,7 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx, SelContextPtr c
     // refresh part bboxes if necessary
     buildPartBBoxes(state);
 
+    const auto &partBBoxes = bboxPicker.getBoundBoxes();
     SortedParts.reserve(partBBoxes.size());
     if(ctx2 && ctx2->isSelected() && !ctx2->isSelectAll()) {
         for(auto &v : ctx2->selectionIndex) {
@@ -2738,24 +2747,13 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
 
     FC_TIME_INIT(t);
 
-    auto pick = [&](int id) {
-        this->generatePrimitivesRange(action,id,
-                this->indexOffset[id], this->indexOffset[id]*4, this->indexOffset[id+1]*4);
-    };
-
-    int threshold = Gui::ViewParams::getSelectionPickThreshold();
+    int threshold = PartParams::SelectionPickThreshold();
     int numparts = partIndex.getNum();
-
-    if(threshold && numparts && indexOffset[numparts-1]/numparts > threshold) {
-        // If face per part exceeds the threshold, then force computes bbox per
-        // part. The computed bboxes will be cached until partIndex changes
-        buildPartBBoxes(state);
-    }
 
     Binding mbind = this->findMaterialBinding(state);
     Binding nbind = this->findNormalBinding(state);
 
-    if(!threshold || numparts!=(int)partBBoxes.size() 
+    if(threshold<=0 
             || mbind==PER_FACE || mbind==PER_FACE_INDEXED 
             || nbind==PER_FACE || nbind==PER_FACE_INDEXED ) 
     {
@@ -2764,6 +2762,66 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
         return;
     }
 
+    buildPartBBoxes(state);
+    const auto &partBBoxes = bboxPicker.getBoundBoxes();
+
+    int threshold2 = PartParams::SelectionPickThreshold2();
+    const int32_t *pindices = partIndex.getValues(0);
+
+    static thread_local std::vector<int> results;
+    results.clear();
+
+    auto pick = [&](int id) {
+        if(threshold2<=0 || pindices[id] <= threshold2) {
+            this->generatePrimitivesRange(action,id,
+                    this->indexOffset[id], this->indexOffset[id]*4, this->indexOffset[id+1]*4);
+        } else {
+            auto &bounds = facePicker[id];
+            if(bounds.empty()) {
+                const int32_t *cindices = this->coordIndex.getValues(0);
+                int numindices = this->coordIndex.getNum();
+
+                auto coords = static_cast<const SoGLCoordinateElement*>(SoCoordinateElement::getInstance(state));
+                const SbVec3f *coords3d = coords->getArrayPtr3();
+                int numverts = coords->getNum();
+
+                int length = (int)pindices[id]*4;
+                int start = (int)indexOffset[id]*4;
+                if(start+length > numindices)
+                    return;
+
+                auto viptr = &cindices[start];
+                auto viendptr = viptr + length;
+
+                std::vector<SbBox3f> boxes;
+                boxes.resize(length/4);
+                int i = 0;
+                while (viptr + 2 < viendptr) {
+                    int v1 = *viptr++;
+                    int v2 = *viptr++;
+                    int v3 = *viptr++;
+                    if (v1 < 0 || v2 < 0 || v3 < 0 ||
+                            v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+                        break;
+                    }
+                    auto &box = boxes[i];
+                    box.extendBy(coords3d[v1]);
+                    box.extendBy(coords3d[v2]);
+                    box.extendBy(coords3d[v3]);
+                    ++i;
+                    ++viptr;
+                }
+                bounds.init(std::move(boxes));
+            }
+            std::size_t offset = results.size();
+            bounds.rayPick(action, results);
+            for(auto i=offset;i<results.size();++i) {
+                int findex = results[i] + this->indexOffset[id];
+                this->generatePrimitivesRange(action,id,findex,findex*4,(findex+1)*4);
+            }
+            results.resize(offset);
+        }
+    };
     if(ctx2 && !ctx2->isSelectAll()) {
         for(auto &v : ctx2->selectionIndex) {
             int id = v.first;
@@ -2774,14 +2832,19 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
                 continue;
             pick(id);
         }
-    } else {
+    } else if(numparts <= threshold) {
         for(int id=0;id<numparts;++id) {
             auto &box = partBBoxes[id];
             if(box.isEmpty() || !action->intersect(box,TRUE))
                 continue;
             pick(id);
         }
-        FC_TIME_TRACE(t,"pick new");
+        FC_TIME_TRACE(t,"pick new1");
+    } else {
+        bboxPicker.rayPick(action, results);
+        for(std::size_t i=0;i<results.size();++i)
+            pick(results[i]);
+        FC_TIME_TRACE(t,"pick new2");
     }
 }
 

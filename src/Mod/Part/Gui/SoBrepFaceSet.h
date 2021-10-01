@@ -37,6 +37,7 @@
 #include <vector>
 #include <memory>
 #include <Gui/SoFCSelectionContext.h>
+#include "BoundBoxRayPick.h"
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
@@ -187,7 +188,11 @@ private:
     std::vector<SoNode*> siblings;
 
     SoFieldSensor partIndexSensor;
-    std::vector<SbBox3f> partBBoxes;
+
+    // For sorting and querying bounding boxes per part
+    BoundBoxRayPick bboxPicker;
+    // map from part index to picker for sorting and querying bounding box per face within a part
+    std::map<int, BoundBoxRayPick> facePicker;
 
     // Define some VBO pointer for the current mesh
     class VBO;

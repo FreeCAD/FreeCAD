@@ -36,6 +36,7 @@
 #include <vector>
 #include <memory>
 #include <Gui/SoFCSelectionContext.h>
+#include "BoundBoxRayPick.h"
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -64,6 +65,7 @@ protected:
     virtual void GLRenderInPath(SoGLRenderAction *action);
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void doAction(SoAction* action); 
+    virtual void rayPick(SoRayPickAction *action);
 
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
@@ -76,12 +78,17 @@ private:
     void _renderSelection(SoGLRenderAction *action, bool checkColor, SbColor color, bool push);
 
     bool isSelected(SelContextPtr ctx);
+    void initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay=true);
 
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     std::vector<SoNode*> siblings;
+
+    uint64_t coordNodeId = 0;
+    BoundBoxRayPick bboxPicker;
+    std::vector<int> bboxMap;
 };
 
 } // namespace PartGui

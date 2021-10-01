@@ -182,6 +182,8 @@ SET(PartGui_SRCS
     SoBrepFaceSet.h
     SoBrepPointSet.cpp
     SoBrepPointSet.h
+    BoundBoxRayPick.cpp
+    BoundBoxRayPick.h
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderAttachExtension.h

@@ -68,6 +68,7 @@
 
 #include "SoBrepPointSet.h"
 #include "SoBrepFaceSet.h"
+#include "PartParams.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/ViewParams.h>
@@ -438,4 +439,108 @@ void SoBrepPointSet::doAction(SoAction* action)
         return;
 
     inherited::doAction(action);
+}
+
+void SoBrepPointSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay)
+{
+    bboxMap.clear();
+    bboxPicker.clear();
+
+    int threshold = PartParams::SelectionPickThreshold();
+    int step = std::max(10, (numverts / threshold));
+    std::vector<SbBox3f> boxes;
+    boxes.reserve(step * threshold + 1);
+    bboxMap.reserve(step * threshold + 1);
+    SbBox3f bbox;
+
+    int count = 0;
+    for (int i = 0; i < numverts; ++i) {
+        bbox.extendBy(coords[i]);
+        if (++count >= step) {
+            bboxMap.push_back(i+1);
+            boxes.push_back(bbox);
+            bbox.makeEmpty();
+            count = 0;
+        }
+    }
+    if (count) {
+        bboxMap.push_back(numverts);
+        boxes.push_back(bbox);
+    }
+    bboxPicker.init(std::move(boxes), delay);
+}
+
+void SoBrepPointSet::rayPick(SoRayPickAction *action) {
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(ctx2 && !ctx2->isSelected())
+        return;
+
+    SoState *state = action->getState();
+
+    int threshold = PartParams::SelectionPickThreshold();
+    auto coords = SoCoordinateElement::getInstance(state);
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numverts = coords->getNum();
+
+    if(threshold<=0) {
+        inherited::rayPick(action);
+        return;
+    }
+
+    if (!shouldRayPick(action))
+        return;
+
+    computeObjectSpaceRay(action);
+
+    if (getBoundingBoxCache() && getBoundingBoxCache()->isValid(state)) {
+        SbBox3f box = getBoundingBoxCache()->getProjectedBox();
+        if(box.isEmpty() || !action->intersect(box,TRUE))
+            return;
+    }
+
+    if (coords->getNodeId() != coordNodeId) {
+        coordNodeId = coords->getNodeId();
+        initBoundingBoxes(coords3d, numverts, true);
+    }
+
+    static thread_local std::vector<int> results;
+    results.clear();
+
+    int offset = startIndex.getValue();
+
+    auto pick = [&](int bboxId) {
+        int start = bboxId == 0 ? 0 : bboxMap[bboxId-1];
+        int end = bboxMap[bboxId];
+        for (int i=std::max(offset, start); i<end; ++i) {
+            if(ctx2 && !ctx2->isSelectAll() && !ctx2->selectionIndex.count(i-offset))
+                continue;
+            SbVec3f intersection = coords3d[i];
+            if (action->intersect(intersection)) {
+                if (action->isBetweenPlanes(intersection)) {
+                    SoPickedPoint * pp = action->addIntersection(intersection);
+                    if (pp) {
+                        auto pd = new SoPointDetail;
+                        pd->setCoordinateIndex(i);
+                        pp->setDetail(pd, this);
+                    }
+                }
+            }
+        }
+    };
+
+    const auto &boxes = bboxPicker.getBoundBoxes();
+    int numparts = (int)bboxMap.size();
+    if(numparts < threshold) {
+        for(int bboxId=0;bboxId<numparts;++bboxId) {
+            auto &box = boxes[bboxId];
+            if(box.isEmpty() || !action->intersect(box,TRUE))
+                continue;
+            pick(bboxId);
+        }
+    } else {
+        bboxPicker.rayPick(action, results);
+        for(std::size_t i=0;i<results.size();++i)
+            pick(results[i]);
+    }
 }

@@ -83,6 +83,8 @@ public:
     FC_PART_PARAM(AdjustCameraForNewFeature,bool,Bool,true) \
     FC_PART_PARAM(DefaultDatumColor,unsigned long,Unsigned, 0xFFD70099) \
     FC_PART_PARAM2(RespectSystemDPI, bool, Bool, false) \
+    FC_PART_PARAM(SelectionPickThreshold,int,Int,1000) \
+    FC_PART_PARAM(SelectionPickThreshold2,int,Int,500) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \
