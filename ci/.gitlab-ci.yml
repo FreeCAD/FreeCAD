@@ -25,7 +25,7 @@ build-job:       # This job runs in the build stage, which runs first.
     - echo "Compiling the code..."
     - mkdir build
     - cd build
-    - ccache cmake ../
+    - ccache cmake -DBUILD_QT5=1 ../
     - ccache cmake --build ./ -j$(nproc)
     - echo "Compile complete."
 
