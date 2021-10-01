@@ -97,12 +97,12 @@ inCommandShortcuts = {
         None
         ],
     "Increase": [
-        Draft.getParam("inCommandShortcutIncrease", "["),
+        Draft.getParam("inCommandShortcutIncreaseRadius", "["),
         translate("draft","Increase snap radius"),
         None
         ],
     "Decrease": [
-        Draft.getParam("inCommandShortcutDecrease", "]"),
+        Draft.getParam("inCommandShortcutDecreaseRadius", "]"),
         translate("draft","Decrease snap radius"),
         None
         ],
@@ -2087,7 +2087,7 @@ class DraftToolBar:
     def toggleradius(self,val):
         if hasattr(FreeCADGui,"Snapper"):
             par = Draft.getParam("snapRange", 8)
-            Draft.setParam("snapRange",par+val)
+            Draft.setParam("snapRange", max(0, par+val))
             FreeCADGui.Snapper.showradius()
 
     def constrain(self,val):
