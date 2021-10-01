@@ -460,7 +460,8 @@ void Command::invoke(int i, TriggerSource trigger)
                     manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
-            getMainWindow()->updateActions();
+            if (! (eType & NoUpdateActions))
+                getMainWindow()->updateActions();
 
             // If this command starts an editing, let the transaction persist
             if(!editDoc && getGuiApplication()->editDocument())
@@ -1148,7 +1149,7 @@ MacroCommand::MacroCommand(const char* name, bool system, bool preselect)
     sScriptName = 0;
     if (preselect) {
         bCanLog = false;
-        eType |= NoHistory | NoTransaction;
+        eType |= NoHistory | NoTransaction | NoUpdateActions;
     }
 }
 

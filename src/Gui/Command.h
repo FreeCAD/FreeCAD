@@ -599,6 +599,7 @@ public:
         NoTransaction  = 16, /**< Do not setup auto transaction */
         NoDefaultAction  = 32, /**< Do not set as default action if included in a group command */
         NoHistory      = 64, /**< Do not record usage history of this command */
+        NoUpdateActions = 128, /**< Do not update actions status */
     };
 
 protected:
