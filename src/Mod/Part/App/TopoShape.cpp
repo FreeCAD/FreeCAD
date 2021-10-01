@@ -3618,7 +3618,8 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
                          const std::vector<Facet> &Topo, float Accuracy)
 {
     gp_XYZ p1, p2, p3;
-    TopoDS_Vertex Vertex1, Vertex2, Vertex3;
+    std::vector<TopoDS_Vertex> Vertexes;
+    std::map<std::pair<uint32_t, uint32_t>, TopoDS_Edge> Edges;
     TopoDS_Face newFace;
     TopoDS_Wire newWire;
     BRepBuilderAPI_Sewing aSewingTool;
@@ -3626,13 +3627,61 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
 
-    aSewingTool.Init(Accuracy,Standard_True);
+    aSewingTool.Init(Accuracy, Standard_True);
 
     TopoDS_Compound aComp;
     BRep_Builder BuildTool;
     BuildTool.MakeCompound(aComp);
 
-    unsigned int ctPoints = Points.size();
+    uint32_t ctPoints = Points.size();
+    Vertexes.resize(ctPoints);
+
+    // Create array of vertexes
+    auto CreateVertex = [](const Base::Vector3d& v) {
+        gp_XYZ p(v.x, v.y, v.z);
+        return BRepBuilderAPI_MakeVertex(p);
+    };
+    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
+        if (it->I1 < ctPoints) {
+            if (Vertexes[it->I1].IsNull())
+                Vertexes[it->I1] = CreateVertex(Points[it->I1]);
+        }
+        if (it->I2 < ctPoints) {
+            if (Vertexes[it->I2].IsNull())
+                Vertexes[it->I2] = CreateVertex(Points[it->I2]);
+        }
+        if (it->I3 < ctPoints) {
+            if (Vertexes[it->I3].IsNull())
+                Vertexes[it->I3] = CreateVertex(Points[it->I3]);
+        }
+    }
+
+    // Create map of edges
+    auto CreateEdge = [&Vertexes, &Edges](uint32_t p1, uint32_t p2) {
+        // First check if the edge of a neighbour facet already exists
+        // The point indices must be flipped.
+        auto key1 = std::make_pair(p2, p1);
+        auto key2 = std::make_pair(p1, p2);
+        auto it = Edges.find(key1);
+        if (it != Edges.end()) {
+            TopoDS_Edge edge = it->second;
+            edge.Reverse();
+            Edges[key2] = edge;
+        }
+        else {
+            Edges[key2] = BRepBuilderAPI_MakeEdge(Vertexes[p1], Vertexes[p2]);
+        }
+    };
+    auto GetEdge = [&Edges](uint32_t p1, uint32_t p2) {
+        auto key = std::make_pair(p1, p2);
+        return Edges[key];
+    };
+    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
+        CreateEdge(it->I1, it->I2);
+        CreateEdge(it->I2, it->I3);
+        CreateEdge(it->I3, it->I1);
+    }
+
     for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
         if (it->I1 >= ctPoints || it->I2 >= ctPoints || it->I3 >= ctPoints)
             continue;
@@ -3645,11 +3694,11 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         p3.SetCoord(x3,y3,z3);
 
         if ((!(p1.IsEqual(p2,0.0))) && (!(p1.IsEqual(p3,0.0)))) {
-            Vertex1 = BRepBuilderAPI_MakeVertex(p1);
-            Vertex2 = BRepBuilderAPI_MakeVertex(p2);
-            Vertex3 = BRepBuilderAPI_MakeVertex(p3);
+            const TopoDS_Edge& e1 = GetEdge(it->I1, it->I2);
+            const TopoDS_Edge& e2 = GetEdge(it->I2, it->I3);
+            const TopoDS_Edge& e3 = GetEdge(it->I3, it->I1);
 
-            newWire = BRepBuilderAPI_MakePolygon(Vertex1, Vertex2, Vertex3, Standard_True);
+            newWire = BRepBuilderAPI_MakeWire(e1, e2, e3);
             if (!newWire.IsNull()) {
                 newFace = BRepBuilderAPI_MakeFace(newWire);
                 if (!newFace.IsNull())
