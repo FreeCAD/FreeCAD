@@ -29,6 +29,8 @@
 #include <boost_signals2.hpp>
 #include <QListWidget>
 
+#include "ConstraintFilters.h"
+
 namespace App {
 class Property;
 }
@@ -73,33 +75,6 @@ class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::Select
 {
     Q_OBJECT
 
-    enum FilterValue {
-        All = 0,
-        Geometric = 1,
-        Datums = 2,
-        Named = 3,
-        NonDriving = 4,
-        Horizontal = 5,
-        Vertical = 6,
-        Coincident = 7,
-        PointOnObject = 8,
-        Parallel = 9,
-        Perpendicular = 10,
-        Tangent = 11,
-        Equality = 12,
-        Symmetric = 13,
-        Block = 14,
-        Distance = 15,
-        HorizontalDistance = 16,
-        VerticalDistance = 17,
-        Radius = 18,
-        Weight = 19,
-        Diameter = 20,
-        Angle = 21,
-        SnellsLaw = 22,
-        InternalAlignment = 23
-    };
-
     enum class ActionTarget {
         All,
         Selected
@@ -117,6 +92,8 @@ private:
     bool isConstraintFiltered(QListWidgetItem * item);
     void change3DViewVisibilityToTrackFilter();
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
+    void updateMultiFilter();
+    void updateList();
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -133,6 +110,7 @@ public Q_SLOTS:
     void on_hideAllButton_clicked(bool);
     void on_listWidgetConstraints_emitShowSelection3DVisibility();
     void on_listWidgetConstraints_emitHideSelection3DVisibility();
+    void on_multipleFilterButton_clicked(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -144,6 +122,7 @@ private:
     QWidget* proxy;
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
+    std::bitset<ConstraintFilter::FilterValue::NumFilterValue> multiFilterStatus;
 };
 
 } //namespace SketcherGui

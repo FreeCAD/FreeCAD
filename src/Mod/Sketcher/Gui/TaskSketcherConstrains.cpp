@@ -33,6 +33,7 @@
 # include <QStyledItemDelegate>
 # include <QPainter>
 # include <QPixmapCache>
+# include <QStringListModel>
 # include <boost_bind_bind.hpp>
 #endif
 
@@ -55,6 +56,8 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
+
+#include "ConstraintMultiFilterDialog.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -691,6 +694,10 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         ui->visualisationTrackingFilter, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_visualisationTrackingFilter_stateChanged(int))
         );
+    QObject::connect(
+        ui->multipleFilterButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_multipleFilterButton_clicked(bool))
+        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
@@ -700,6 +707,8 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
     this->ui->filterInternalAlignment->onRestore();
     this->ui->extendedInformation->onRestore();
 
+    multiFilterStatus.set(); // Match 'All' selection, all bits set.
+
     slotConstraintsChanged();
 }
 
@@ -708,6 +717,46 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
+}
+
+void TaskSketcherConstrains::updateMultiFilter()
+{
+    int filterindex = ui->comboBoxFilter->currentIndex();
+
+    multiFilterStatus.reset();
+
+    multiFilterStatus.set(filterindex);
+}
+
+void TaskSketcherConstrains::updateList()
+{
+    // enforce constraint visibility
+    bool visibilityTracksFilter = ui->visualisationTrackingFilter->isChecked();
+
+    if(visibilityTracksFilter)
+        change3DViewVisibilityToTrackFilter(); // it will call slotConstraintChanged via update mechanism
+    else
+        slotConstraintsChanged();
+}
+
+void TaskSketcherConstrains::on_multipleFilterButton_clicked(bool)
+{
+    ConstraintMultiFilterDialog mf;
+
+    int filterindex = ui->comboBoxFilter->currentIndex();
+
+    if(filterindex != ConstraintFilter::SpecialFilterValue::Multiple) {
+        ui->comboBoxFilter->setCurrentIndex(ConstraintFilter::SpecialFilterValue::Multiple); // Change filter to multi filter selection
+    }
+
+    mf.setMultiFilter(multiFilterStatus);
+
+    if (mf.exec() == QDialog::Accepted) {
+        multiFilterStatus = mf.getMultiFilter();
+
+        // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects not only visibility, but also filtered list content, if not tracking will still update the list to match the multi-filter.
+        updateList();
+    }
 }
 
 void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget target)
@@ -846,15 +895,10 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
     }
 }
 
+
 void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
 {
-    // enforce constraint visibility
-    bool visibilityTracksFilter = ui->visualisationTrackingFilter->isChecked();
-
-    if(visibilityTracksFilter)
-        change3DViewVisibilityToTrackFilter(); // it will call slotConstraintChanged via update mechanism
-    else
-        slotConstraintsChanged();
+    updateList();
 }
 
 void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
@@ -1087,61 +1131,80 @@ bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
 
     switch(constraint->Type) {
         case Sketcher::Horizontal:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Horizontal);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Horizontal) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Horizontal]);
             break;
         case Sketcher::Vertical:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Vertical);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Vertical) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Vertical]);
             break;
         case Sketcher::Coincident:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Coincident);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Coincident) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Coincident]);
             break;
         case Sketcher::PointOnObject:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::PointOnObject);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::PointOnObject) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::PointOnObject]);
             break;
         case Sketcher::Parallel:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Parallel);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Parallel) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Parallel]);
             break;
         case Sketcher::Perpendicular:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Perpendicular);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Perpendicular) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Perpendicular]);
             break;
         case Sketcher::Tangent:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Tangent);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Tangent) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Tangent]);
             break;
         case Sketcher::Equal:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Equality);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Equality) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Equality]);
             break;
         case Sketcher::Symmetric:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Symmetric);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Symmetric) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Symmetric]);
             break;
         case Sketcher::Block:
-            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Block);
+            visible = showAll || showGeometric || showNamed || (Filter == FilterValue::Block) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Block]);
             break;
         case Sketcher::Distance:
-            visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Distance);
+            visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Distance) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Distance]);
             break;
         case Sketcher::DistanceX:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::HorizontalDistance);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::HorizontalDistance) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::HorizontalDistance]);
             break;
         case Sketcher::DistanceY:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::VerticalDistance);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::VerticalDistance) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::VerticalDistance]);
             break;
         case Sketcher::Radius:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Radius);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Radius) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Radius]);
             break;
         case Sketcher::Weight:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Weight);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Weight) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Weight]);
             break;
         case Sketcher::Diameter:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Diameter);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Diameter) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Diameter]);
             break;
         case Sketcher::Angle:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Angle);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::Angle) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::Angle]);
             break;
         case Sketcher::SnellsLaw:
-           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::SnellsLaw);
+           visible = ( showAll || showDatums || showNamed || showNonDriving) || (Filter == FilterValue::SnellsLaw) ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::SnellsLaw]);
             break;
         case Sketcher::InternalAlignment:
-            visible = (( showAll || showGeometric || showNamed || Filter == FilterValue::InternalAlignment) &&
+            visible = (( showAll || showGeometric || showNamed || Filter == FilterValue::InternalAlignment ||
+                (Filter == SpecialFilterValue::Multiple && multiFilterStatus[FilterValue::InternalAlignment])) &&
                         (!hideInternalAlignment || (Filter == FilterValue::InternalAlignment)));
         default:
             break;
