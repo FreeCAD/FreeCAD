@@ -15,9 +15,11 @@ OK split the list of tools vs. document objects
 OK save to disk the list of tools
 OK always display including when switching workbenches
 * slightly larger popup widget to avoid scrollbar for the extra info for document objects
-* turn this into a standalone mod
+OK turn this into a standalone mod
 OK Optimize so that it's not so slow
 OK speed up startup to show the box instantly and do the slow loading on first click.
+* One small bug: when the 3D view is initialized, it causes a loss of focus on the drop-down. We restore it, but the currently-selected index is left unchanged, so the down or up arrow has to be pressed twice.
+* split into several files, try to keep the absolute minimum of code possible in the main file to speed up startup
 """
 
 ################################""
@@ -747,21 +749,25 @@ def getItemGroups():
   
   return igs
 
+def onResultSelected(index, nfo):
+  action = nfo['action']
+  actionHandlers[action['handler']](action)
+
 def addToolSearchBox():
   global wax, sea
-  sea = SearchBox(getItemGroups)
   mw = FreeCADGui.getMainWindow()
-  mbr = mw.findChildren(QtGui.QToolBar, 'File')[0]
-  # Create search box widget
-  def onResultSelected(index, nfo):
-    action = nfo['action']
-    actionHandlers[action['handler']](action)
-  sea.resultSelected.connect(onResultSelected)
-  wax = QtGui.QWidgetAction(None)
-  wax.setDefaultWidget(sea)
-  #mbr.addWidget(sea)
-  #print("addAction" + repr(mbr) + ' add(' + repr(wax))
-  mbr.addAction(wax)
+  mbr = mw.findChildren(QtGui.QToolBar, 'File')
+  if len(mbr) > 0:
+    # Get the first toolbar named 'File', and add 
+    mbr = mbr[0]
+    # Create search box widget
+    sea = SearchBox(getItemGroups)
+    sea.resultSelected.connect(onResultSelected)
+    wax = QtGui.QWidgetAction(None)
+    wax.setDefaultWidget(sea)
+    #mbr.addWidget(sea)
+    #print("addAction" + repr(mbr) + ' add(' + repr(wax))
+    mbr.addAction(wax)
 
 addToolSearchBox()
 FreeCADGui.getMainWindow().workbenchActivated.connect(addToolSearchBox)
