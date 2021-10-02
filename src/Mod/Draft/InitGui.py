@@ -92,15 +92,9 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
         # Set up command lists
         import draftutils.init_tools as it
-        if hasattr(it, "get_draft_drawing_commands_temp"):
-            self.drawing_commands = it.get_draft_drawing_commands_temp()
-        else:
-            self.drawing_commands = it.get_draft_drawing_commands()
+        self.drawing_commands = it.get_draft_drawing_commands()
         self.annotation_commands = it.get_draft_annotation_commands()
-        if hasattr(it, "get_draft_modification_commands_temp"):
-            self.modification_commands = it.get_draft_modification_commands_temp()
-        else:
-            self.modification_commands = it.get_draft_modification_commands()
+        self.modification_commands = it.get_draft_modification_commands()
         self.utility_commands_menu = it.get_draft_utility_commands_menu()
         self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
         self.context_commands = it.get_draft_context_commands()
