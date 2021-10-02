@@ -286,7 +286,6 @@ void SketchObject::buildShape() {
             continue;
         shapes.push_back(getEdge(geo, convertSubName(
                         Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
-        static_cast<Part::Feature*>(getDocument()->addObject("Part::Feature", "external"))->Shape.setValue(shapes.back());
     }
     if(shapes.empty())
         Shape.setValue(Part::TopoShape());
