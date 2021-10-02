@@ -15,12 +15,13 @@ OK fix sync problem when moving too fast
 OK split the list of tools vs. document objects
 OK save to disk the list of tools
 OK always display including when switching workbenches
-* slightly larger popup widget to avoid scrollbar for the extra info for document objects
+OK slightly larger popup widget to avoid scrollbar for the extra info for document objects
 OK turn this into a standalone mod
 OK Optimize so that it's not so slow
 OK speed up startup to show the box instantly and do the slow loading on first click.
-* One small bug: when the 3D view is initialized, it causes a loss of focus on the drop-down. We restore it, but the currently-selected index is left unchanged, so the down or up arrow has to be pressed twice.
+OK One small bug: when the 3D view is initialized, it causes a loss of focus on the drop-down. We restore it, but the currently-selected index is left unchanged, so the down or up arrow has to be pressed twice.
 * split into several files, try to keep the absolute minimum of code possible in the main file to speed up startup
+* segfault when reloading
 """
 
 ################################""
@@ -166,7 +167,11 @@ actionHandlers = {
 # I'm giving up on getting this viewer to work in a clean way, and will try swapping two instances so that the same one is never used twice in a row.
 # Also, in order to avoid segfaults when the module is reloaded (which causes the previous viewer to be garbage collected at some point), we're using a global property that will survive module reloads.
 if not hasattr(App, '_SearchTools3DViewer'):
+  # Toggle between 
   App._SearchTools3DViewer = None
+  App._SearchTools3DViewerB = None
+
+globalIgnoreFocusOut = False
 
 import pivy
 class DocumentObjectToolTipWidget(QtGui.QWidget):
@@ -180,11 +185,16 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
 
     if App._SearchTools3DViewer is None:
       oldFocus = QtGui.QApplication.focusWidget()
+      global globalIgnoreFocusOut
+      globalIgnoreFocusOut = True
       App._SearchTools3DViewer = SafeViewer()
+      App._SearchTools3DViewerB = SafeViewer()
       oldFocus.setFocus()
+      globalIgnoreFocusOut = False
       # Tried setting the preview to a fixed size to prevent it from disappearing when changing its contents, this sets it to a fixed size but doesn't actually pick the size, .resize does that but isn't enough to fix the bug.
       #safeViewerInstance.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed))
     self.preview = App._SearchTools3DViewer
+    App._SearchTools3DViewer, App._SearchTools3DViewerB = App._SearchTools3DViewerB, App._SearchTools3DViewer
 
     obj = App.getDocument(str(nfo['toolTip']['docName'])).getObject(str(nfo['toolTip']['name']))
     ## dummy preview:
@@ -208,9 +218,9 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
     self.setLayout(lay)
     lay.addWidget(description)
     lay.addWidget(self.preview)
-    if oldParent is not None:
-      oldParent.hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
-      oldParent.setParent(None)
+    #if oldParent is not None:
+    #  oldParent.hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
+    #  oldParent.setParent(None)
   
     # Tried hiding/detaching the preview to prevent it from disappearing when changing its contents
     #self.preview.viewer.stopAnimating()
@@ -317,12 +327,16 @@ class SearchBox(QtGui.QLineEdit):
     self.itemGroups = self.getItemGroups()
     self.filterModel(self.text())
   def focusInEvent(self, qFocusEvent):
-    self.refreshItemGroups()
+    global globalIgnoreFocusOut
+    if not globalIgnoreFocusOut:
+      self.refreshItemGroups()
     self.showList()
     super(SearchBox, self).focusInEvent(qFocusEvent)
   def focusOutEvent(self, qFocusEvent):
-    #self.hideList()
-    super(SearchBox, self).focusOutEvent(qFocusEvent)
+    global globalIgnoreFocusOut
+    if not globalIgnoreFocusOut:
+      self.hideList()
+      super(SearchBox, self).focusOutEvent(qFocusEvent)
   def keyPressEvent(self, qKeyEvent):
     key = qKeyEvent.key()
     listMovementKeys = {
