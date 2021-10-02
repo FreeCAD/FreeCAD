@@ -5,20 +5,19 @@ from PySide import QtGui
 from PySide import QtCore
 
 """
-from SearchTools import SearchTools
-from importlib import reload
-reload(SearchTools)
+from SearchTools import SearchTools; from importlib import reload; reload(SearchTools)
 
 
 TODO for this project:
 OK find a way to use the FreeCAD 3D viewer without segfaults or disappearing widgets
 OK fix sync problem when moving too fast
-* split the list of tools vs. document objects (possibly already done?)
-* save to disk the list of tools
+OK split the list of tools vs. document objects
+OK save to disk the list of tools
 OK always display including when switching workbenches
 * slightly larger popup widget to avoid scrollbar for the extra info for document objects
 * turn this into a standalone mod
-* speed up startup to show the box instantly and do the slow loading on first click.
+OK Optimize so that it's not so slow
+OK speed up startup to show the box instantly and do the slow loading on first click.
 """
 
 ################################""
@@ -28,7 +27,6 @@ class SafeViewer(QtGui.QWidget):
      FreeCAD's FreeCADGui.createViewer() puts the viewer widget inside an MDI window, and detaching it without causing segfaults on exit is tricky.
      This class contains some kludges to extract the viewer as a standalone widget and destroy it safely."""
   def __init__(self, parent = None):
-    print('init')
     super(SafeViewer, self).__init__()
     self.viewer = FreeCADGui.createViewer()
     self.graphicsView = self.viewer.graphicsView()
@@ -55,7 +53,6 @@ class SafeViewer(QtGui.QWidget):
     self.destroyed.connect(self.finalizer)
 
   def finalizer(self):
-    print('fin')
     # Cleanup in an order that doesn't cause a segfault:
     self.private_widget.setParent(self.oldGraphicsViewParentParent)
     self.oldGraphicsViewParentParentParent.close()
@@ -112,7 +109,7 @@ def subToolAction(act):
   if 'subTool' in act:
     toolPath = toolPath + '.' + act['subTool']
   def runTool():
-    mw = Gui.getMainWindow()
+    mw = FreeCADGui.getMainWindow()
     for the_toolbar in mw.findChildren(QtGui.QToolBar, act['toolbar']):
       for tbt in the_toolbar.findChildren(QtGui.QToolButton):
         if tbt.text() == act['tool']:
@@ -257,14 +254,16 @@ class IndentedItemDelegate(QtGui.QStyledItemDelegate):
     option.rect.adjust(indent, 0, 0, 0)
     super(IndentedItemDelegate, self).paint(painter, option, index)
 #
+globalGroups = []
 class SearchBox(QtGui.QLineEdit):
-  resultSelected = QtCore.Signal(int, str)
-  def __init__(self, itemGroups, itemDelegate = IndentedItemDelegate(), maxVisibleRows = 20, parent = None):
+  resultSelected = QtCore.Signal(int, dict)
+  def __init__(self, getItemGroups, itemDelegate = IndentedItemDelegate(), maxVisibleRows = 20, parent = None):
     # Call parent cosntructor
     super(SearchBox, self).__init__(parent)
     # Save arguments
     #self.model = model
-    self.itemGroups = itemGroups
+    self.getItemGroups = getItemGroups
+    self.itemGroups = None # Will be initialized by calling getItemGroups() the first time the search box gains focus, through focusInEvent and refreshItemGroups
     self.maxVisibleRows = maxVisibleRows # TODO: use this to compute the correct height
     # Create proxy model
     self.proxyModel = QtCore.QIdentityProxyModel()
@@ -301,8 +300,12 @@ class SearchBox(QtGui.QLineEdit):
     self.setPlaceholderText('Search tools, prefs & tree')
     self.setFixedWidth(200) # needed to avoid a change of width when the clear button appears/disappears
     # Initialize the model with the full list (assuming the text() is empty)
+    #self.filterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
+  def refreshItemGroups(self):
+    self.itemGroups = self.getItemGroups()
     self.filterModel(self.text())
   def focusInEvent(self, qFocusEvent):
+    self.refreshItemGroups()
     self.showList()
     super(SearchBox, self).focusInEvent(qFocusEvent)
   def focusOutEvent(self, qFocusEvent):
@@ -350,7 +353,8 @@ class SearchBox(QtGui.QLineEdit):
       super(SearchBox, self).keyPressEvent(qKeyEvent)
   def showList(self):
     self.setFloatingWidgetsGeometry()
-    self.listView.show()
+    if not self.listView.isVisible():
+      self.listView.show()
     self.showExtraInfo()
   def hideList(self):
     self.listView.hide()
@@ -358,14 +362,16 @@ class SearchBox(QtGui.QLineEdit):
   def hideExtraInfo(self):
     self.extraInfo.hide()
   def selectResult(self, mode, index):
-    action = str(index.model().itemData(index.siblingAtColumn(2))[0])
+    groupIdx = int(index.model().itemData(index.siblingAtColumn(2))[0])
+    nfo = globalGroups[groupIdx]
     self.hideList()
     # TODO: allow other options, e.g. some items could act as combinators / cumulative filters
     self.setText('')
     self.filterModel(self.text())
     # TODO: emit index relative to the base model
-    self.resultSelected.emit(index, action)
+    self.resultSelected.emit(index, nfo)
   def filterModel(self, userInput):
+    # TODO: this will cause a race condition if it is accessed while being modified
     def matches(s):
       return userInput.lower() in s.lower()
     def filterGroup(group):
@@ -375,7 +381,7 @@ class SearchBox(QtGui.QLineEdit):
       else:
         subitems = filterGroups(group['subitems'])
         if len(subitems) > 0 or matches(group['text']):
-          return { 'text': group['text'], 'icon': group['icon'], 'action': group['action'], 'toolTip':group['toolTip'], 'subitems': subitems }
+          return { 'id': group['id'], 'text': group['text'], 'icon': group['icon'], 'action': group['action'], 'toolTip':group['toolTip'], 'subitems': subitems }
         else:
           return None
     def filterGroups(groups):
@@ -385,10 +391,11 @@ class SearchBox(QtGui.QLineEdit):
     self.mdl.appendColumn([])
     def addGroups(filteredGroups, depth=0):
       for group in filteredGroups:
+        # TODO: this is not very clean, we should memorize the index from the original itemgroups
+        #globalGroups[groupIdx] = json.dumps(serializeItemGroup(group))
         self.mdl.appendRow([QtGui.QStandardItem(group['icon'] or genericToolIcon, group['text']),
                             QtGui.QStandardItem(str(depth)),
-                            QtGui.QStandardItem(group['action']),
-                            QtGui.QStandardItem(json.dumps(serializeItemGroup(group)))])
+                            QtGui.QStandardItem(str(group['id']))])
         addGroups(group['subitems'], depth+1)
     addGroups(filterGroups(self.itemGroups))
     self.proxyModel.setSourceModel(self.mdl)
@@ -448,6 +455,7 @@ class SearchBox(QtGui.QLineEdit):
     elif len(deselected) > 0:
       self.hideExtraInfo()
   def setExtraInfo(self, index):
+    global globalGroups
     # TODO: use an atomic swap or mutex if possible
     if self.setExtraInfoIsActive:
       self.pendingExtraInfo = index
@@ -461,11 +469,10 @@ class SearchBox(QtGui.QLineEdit):
       # be queued by the code a few lines above this one, and the loop will continue processing
       # until an iteration during which no further call was made.
       while True:
-        nfo = str(index.model().itemData(index.siblingAtColumn(3))[0])
+        nfo = str(index.model().itemData(index.siblingAtColumn(2))[0])
         # TODO: move this outside of this class, probably use a single metadata
-        metadata = str(index.model().itemData(index.siblingAtColumn(2))[0])
-        nfo = deserializeItemGroup(json.loads(nfo))
-        nfo['action'] = json.loads(nfo['action'])
+        nfo = globalGroups[int(nfo)]# TODO: used to be deserializeItemGroup(json.loads(nfo))
+        #TODO: used to be: nfo['action'] = json.loads(nfo['action'])
         #while len(self.extraInfo.children()) > 0:
         #  self.extraInfo.children()[0].setParent(None)
         w = self.extraInfo.layout().takeAt(0)
@@ -474,7 +481,7 @@ class SearchBox(QtGui.QLineEdit):
           if hasattr(w.widget(), 'finalizer'):
             # The 3D viewer segfaults very easily if it is used after being destroyed, and some Python/C++ interop seems to overzealously destroys some widgets, including this one, too soon?
             # Ensuring that we properly detacth the 3D viewer widget before discarding its parent seems to avoid these crashes.
-            print('FINALIZER')
+            #print('FINALIZER')
             w.widget().finalizer()
           if w.widget() is not None:
             w.widget().hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
@@ -494,7 +501,8 @@ class SearchBox(QtGui.QLineEdit):
       #print("unlock")
       self.setExtraInfoIsActive = False
   def clearExtraInfo(self):
-    self.extraInfo.setText('')
+    # TODO: just clear the contents but keep the widget visible.
+    self.extraInfo.hide()
   def showExtraInfo(self):
     self.extraInfo.show()
 
@@ -557,13 +565,13 @@ def deserializeTool(tool):
     'icon': deserializeIcon(tool['icon']),
   }
 
-def GatherTools():
+def gatherTools():
   itemGroups = []
   itemGroups.append({
     'icon': genericToolIcon,
     'text': 'Refresh list of tools',
     'toolTip': '',
-    'action': json.dumps({'handler': 'refreshTools'}),
+    'action': {'handler': 'refreshTools'},
     'subitems': []
   })
   all_tbs = getAllToolbars()
@@ -585,20 +593,23 @@ def GatherTools():
               for mac in men.actions():
                 if mac.text():
                   action = { 'handler': 'subTool', 'workbenches': toolbarIsInWorkbenches, 'toolbar': toolbarName, 'tool': text, 'subTool': mac.text() }
-                  subgroup.append({'icon':mac.icon(), 'text':mac.text(), 'toolTip': mac.toolTip(), 'action':json.dumps(action), 'subitems':[]})
+                  subgroup.append({'icon':mac.icon(), 'text':mac.text(), 'toolTip': mac.toolTip(), 'action':action, 'subitems':[]})
             # The default action of a menu changes dynamically, instead of triggering the last action, just show the menu.
             action = { 'handler': 'tool', 'workbenches': toolbarIsInWorkbenches, 'toolbar': toolbarName, 'tool': text, 'showMenu': bool(men) }
-            group.append({'icon':icon, 'text':text, 'toolTip': tbt.toolTip(), 'action': json.dumps(action), 'subitems': subgroup})
+            group.append({'icon':icon, 'text':text, 'toolTip': tbt.toolTip(), 'action': action, 'subitems': subgroup})
       # TODO: move the 'workbenches' field to the itemgroup
       action = { 'handler': 'toolbar', 'workbenches': toolbarIsInWorkbenches, 'toolbar': toolbarName }
       itemGroups.append({
         'icon': QtGui.QIcon(':/icons/Group.svg'),
         'text': toolbarName,
         'toolTip': '',
-        'action': json.dumps(action),
+        'action': action,
         'subitems': group
       })
-  #
+  return itemGroups
+
+def gatherDocumentObjects():
+  itemGroups = []
   def document(doc):
     group = []
     for o in doc.Objects:
@@ -609,7 +620,7 @@ def GatherTools():
         'text': o.Label + ' (' + o.Name + ')',
         # TODO: preview of the object
         'toolTip': { 'label': o.Label, 'name': o.Name, 'docName': o.Document.Name},
-        'action': json.dumps(action),
+        'action': action,
         'subitems': []
       }
       group.append(item)
@@ -620,7 +631,7 @@ def GatherTools():
       'text': doc.Label + ' (' + doc.Name + ')',
       # TODO: preview of the document
       'toolTip': { 'label': doc.Label, 'name': doc.Name},
-      'action':json.dumps(action),
+      'action':action,
       'subitems': group })
   if App.ActiveDocument:
     document(App.ActiveDocument)
@@ -657,52 +668,93 @@ def deserialize(serializeItemGroups):
 itemGroups = None
 serializedItemGroups = None
 
-def refreshToolbars(loadAllWorkbenches = True):
+def loadAllWorkbenches():
+  activeWorkbench = FreeCADGui.activeWorkbench().name()
+  lbl = QtGui.QLabel('Loading workbench … (…/…)')
+  lbl.show()
+  lst = FreeCADGui.listWorkbenches()
+  for i, wb in enumerate(lst):
+    msg = 'Loading workbench ' + wb + ' (' + str(i) + '/' + str(len(lst)) + ')'
+    print(msg)
+    lbl.setText(msg)
+    geo = lbl.geometry()
+    geo.setSize(lbl.sizeHint())
+    lbl.setGeometry(geo)
+    lbl.repaint()
+    FreeCADGui.updateGui() # Probably slower with this, because it redraws the entire GUI with all tool buttons changed etc. but allows the label to actually be updated, and it looks nice and gives a quick overview of all the workbenches…
+    try:
+      FreeCADGui.activateWorkbench(wb)
+    except:
+      pass
+  lbl.hide()
+  FreeCADGui.activateWorkbench(activeWorkbench)
+
+def cachePath():
+  return os.path.join(App.getUserAppDataDir(), 'Cache_SearchToolsMod')
+def writeCacheTools():
   global itemGroups, serializedItemGroups
-  if loadAllWorkbenches:
-    activeWorkbench = FreeCADGui.activeWorkbench().name()
-    lbl = QtGui.QLabel('Loading workbench … (…/…)')
-    lbl.show()
-    lst = FreeCADGui.listWorkbenches()
-    for i, wb in enumerate(lst):
-      msg = 'Loading workbench ' + wb + ' (' + str(i) + '/' + str(len(lst)) + ')'
-      print(msg)
-      lbl.setText(msg)
-      geo = lbl.geometry()
-      geo.setSize(lbl.sizeHint())
-      lbl.setGeometry(geo)
-      lbl.repaint()
-      FreeCADGui.updateGui() # Probably slower with this, because it redraws the entire GUI with all tool buttons changed etc. but allows the label to actually be updated, and it looks nice and gives a quick overview of all the workbenches…
-      try:
-        FreeCADGui.activateWorkbench(wb)
-      except:
-        pass
-    lbl.hide()
-    FreeCADGui.activateWorkbench(activeWorkbench)
-  serializedItemGroups = serialize(GatherTools())
-  # TODO: save serialized tools in App.getUserAppDataDir() ################################################################################################################
-  #       + never cache the document objects
+  serializedItemGroups = serialize(gatherTools())
+  # Todo: use wb and a specific encoding.
+  with open(cachePath(), 'w') as cache:
+    cache.write(serializedItemGroups)
+  # I prefer to systematically deserialize, instead of taking the original version,
+  # this avoids possible inconsistencies between the original and the cache and
+  # makes sure cache-related bugs are noticed quickly.
   itemGroups = deserialize(serializedItemGroups)
+  print('SearchBox: Cache has been written.')
+
+def readCacheTools():
+  global itemGroups, serializedItemGroups
+  # Todo: use rb and a specific encoding.
+  with open(cachePath(), 'r') as cache:
+    serializedItemGroups = cache.read()
+  itemGroups = deserialize(serializedItemGroups)
+  print('SearchBox: Tools were loaded from the cache.')
+
+
+def refreshToolbars(doLoadAllWorkbenches = True):
+  if doLoadAllWorkbenches:
+    loadAllWorkbenches()
+    writeCacheTools()
+  else:
+    try:
+      readCacheTools()
+    except:
+      writeCacheTools()
 
 # Avoid garbage collection by storing the action in a global variable
 wax = None
 
-def init():
-  global itemGroups, serializedItemGroups
+def getItemGroups():
+  global itemGroups, serializedItemGroups, globalGroups
+  # Load the list of tools, preferably from the cache, if it has not already been loaded:
   if itemGroups is None:
     if serializedItemGroups is None:
-      refreshToolbars(False)
+      refreshToolbars(doLoadAllWorkbenches = False)
     else:
       itemGroups = deserialize(serializedItemGroups)
 
+  # Aggregate the tools (cached) and document objects (not cached), and assign an index to each
+  igs = itemGroups + gatherDocumentObjects()
+  globalGroups = []
+  def addId(group):
+    globalGroups.append(group)
+    group['id'] = len(globalGroups) - 1
+    for subitem in group['subitems']:
+      addId(subitem)
+  for ig in igs:
+    addId(ig)
+  
+  return igs
+
 def addToolSearchBox():
   global wax, sea
-  sea = SearchBox(itemGroups)
+  sea = SearchBox(getItemGroups)
   mw = FreeCADGui.getMainWindow()
   mbr = mw.findChildren(QtGui.QToolBar, 'File')[0]
   # Create search box widget
-  def onResultSelected(index, metadata):
-    action = json.loads(metadata)
+  def onResultSelected(index, nfo):
+    action = nfo['action']
     actionHandlers[action['handler']](action)
   sea.resultSelected.connect(onResultSelected)
   wax = QtGui.QWidgetAction(None)
@@ -711,6 +763,5 @@ def addToolSearchBox():
   #print("addAction" + repr(mbr) + ' add(' + repr(wax))
   mbr.addAction(wax)
 
-init()
 addToolSearchBox()
 FreeCADGui.getMainWindow().workbenchActivated.connect(addToolSearchBox)
