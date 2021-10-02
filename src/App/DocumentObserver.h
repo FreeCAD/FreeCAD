@@ -92,6 +92,8 @@ public:
     /*! Constructor */
     DocumentObjectT(const DocumentObject*);
     /*! Constructor */
+    DocumentObjectT(const Document*, const std::string& objName);
+    /*! Constructor */
     DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
     DocumentObjectT(const Property*);

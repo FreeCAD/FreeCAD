@@ -123,6 +123,13 @@ DocumentObjectT::DocumentObjectT(const Property* prop)
     *this = prop;
 }
 
+DocumentObjectT::DocumentObjectT(const Document* doc, const std::string& objName)
+{
+    if (doc && doc->getName())
+        document = doc->getName();
+    object = objName;
+}
+
 DocumentObjectT::DocumentObjectT(const char *docName, const char *objName)
 {
     if(docName)
