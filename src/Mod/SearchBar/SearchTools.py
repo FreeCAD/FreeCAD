@@ -21,7 +21,7 @@ OK Optimize so that it's not so slow
 OK speed up startup to show the box instantly and do the slow loading on first click.
 OK One small bug: when the 3D view is initialized, it causes a loss of focus on the drop-down. We restore it, but the currently-selected index is left unchanged, so the down or up arrow has to be pressed twice.
 * split into several files, try to keep the absolute minimum of code possible in the main file to speed up startup
-* segfault when reloading
+OK segfault when reloading
 """
 
 ################################""
@@ -106,7 +106,14 @@ def iconToHTML(icon, sz = 12, mode = QtGui.QIcon.Mode.Normal, state = QtGui.QIco
   return '<img width="'+str(sz)+'" height="'+str(sz)+'" src="data:image/png;base64,' + iconToBase64(icon, QtCore.QSize(sz,sz), mode, state) + '" />'
 def refreshToolsAction(act):
   print('Refresh list of tools')
-  refreshToolbars()
+  fw = QtGui.QApplication.focusWidget()
+  if fw is not None:
+    fw.clearFocus()
+  reply = QtGui.QMessageBox.question(None, "Load all workbenches?", "Load all workbenches? This can cause FreeCAD to become unstable, and this \"reload tools\" feature contained a bug that crashed freecad systematically, so please make sure you save your work before. It's a good idea to restart FreeCAD after this operation.", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+  if reply == QtGui.QMessageBox.Yes:
+    refreshToolbars()
+  else:
+    print('cancelled')
 def toolbarAction(act):
   print('show toolbar ' + act['toolbar'] + ' from workbenches ' + repr(act['workbenches']))
 def subToolAction(act):
