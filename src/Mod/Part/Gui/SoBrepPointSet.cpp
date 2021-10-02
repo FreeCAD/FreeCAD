@@ -483,7 +483,7 @@ void SoBrepPointSet::rayPick(SoRayPickAction *action) {
     const SbVec3f *coords3d = coords->getArrayPtr3();
     int numverts = coords->getNum();
 
-    if(threshold<=0) {
+    if(threshold<=0 || numverts < threshold) {
         inherited::rayPick(action);
         return;
     }

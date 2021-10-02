@@ -584,8 +584,10 @@ void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts)
     auto pushInfo = [&](bool force) {
         if (!info || bbox.isEmpty())
             return;
-        if (!force && info->count < step)
-            return;
+        if (!force && info->count < step) {
+            if (info->count <= 1 || cindices[info->start + info->count - 2] == -1)
+                return;
+        }
         boxes.push_back(bbox);
         if (threshold2 >= 0 && info->count >= threshold2) {
             std::vector<SbBox3f> cboxes;
@@ -647,7 +649,7 @@ void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
     const SbVec3f *coords3d = coords->getArrayPtr3();
     int numverts = coords->getNum();
 
-    if(threshold<=0) {
+    if(threshold<=0 || numindices < threshold) {
         inherited::rayPick(action);
         return;
     }
@@ -678,20 +680,16 @@ void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
         int vidx1 = cindices[idx];
         if (vidx1 < 0 || vidx1 >= numverts)
             return false;
-        auto it = std::upper_bound(segments.begin(), segments.end(), idx);
-        assert(it != segments.end());
-        int id = it - segments.begin();
-        it = std::upper_bound(segments.begin(), segments.end(), idx-1);
-        assert(it != segments.end());
-        if (id != it - segments.begin()) // these two indices are from different line strip
-            return false;
-        if(ctx2 && !ctx2->isSelectAll() && !ctx2->selectionIndex.count(id))
-            return false;
         const auto &p0 = coords3d[vidx0];
         const auto &p1 = coords3d[vidx1];
         SbVec3f intersection;
         if (action->intersect(p0, p1, intersection)) {
             if (action->isBetweenPlanes(intersection)) {
+                auto it = std::upper_bound(segments.begin(), segments.end(), idx);
+                assert(it != segments.end());
+                int id = it - segments.begin();
+                if(ctx2 && !ctx2->isSelectAll() && !ctx2->selectionIndex.count(id))
+                    return false;
                 SoPickedPoint * pp = action->addIntersection(intersection);
                 if (pp) {
                     auto ld = new SoLineDetail;

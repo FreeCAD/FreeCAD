@@ -2749,8 +2749,13 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
 
     int threshold = PartParams::SelectionPickThreshold();
     int numparts = partIndex.getNum();
+    const int32_t *cindices = this->coordIndex.getValues(0);
+    int numindices = this->coordIndex.getNum();
+    auto coords = static_cast<const SoGLCoordinateElement*>(SoCoordinateElement::getInstance(state));
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numverts = coords->getNum();
 
-    if(threshold<=0) {
+    if(threshold<=0 || numindices < threshold) {
         generatePrimitives(action);
         FC_TIME_TRACE(t,"pick");
         return;
@@ -2772,13 +2777,6 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
         } else {
             auto &bounds = facePicker[id];
             if(bounds.empty()) {
-                const int32_t *cindices = this->coordIndex.getValues(0);
-                int numindices = this->coordIndex.getNum();
-
-                auto coords = static_cast<const SoGLCoordinateElement*>(SoCoordinateElement::getInstance(state));
-                const SbVec3f *coords3d = coords->getArrayPtr3();
-                int numverts = coords->getNum();
-
                 int length = (int)pindices[id]*4;
                 int start = (int)indexOffset[id]*4;
                 if(start+length > numindices)
