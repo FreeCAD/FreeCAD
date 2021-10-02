@@ -190,8 +190,10 @@ void BoundBoxRayPick::init(const std::vector<SbBox3f> &boxes, bool delay)
 
 void BoundBoxRayPick::clear()
 {
-    if (pimpl)
+    if (pimpl) {
+        pimpl->boxes.clear();
         pimpl->rtree.clear();
+    }
 }
 
 bool BoundBoxRayPick::empty() const
