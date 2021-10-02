@@ -9766,6 +9766,8 @@ void SketchExport::onDocumentRestored()
 {
     if (!BaseRefs.getValue() && Base.getValue())
         BaseRefs.setValue(Base.getValue(), Refs.getValues());
+    if (Shape.getShape().getPlacement() != Placement.getValue())
+        Placement.touch();
     Part::Part2DObject::onDocumentRestored();
 }
 
@@ -9796,10 +9798,13 @@ void SketchExport::onChanged(const App::Property* prop) {
         Base.setValue(BaseRefs.getValue());
         Refs.setValue(BaseRefs.getSubValues(true));
     } else if(prop == &Shape) {
-        // bypass Part::Feature logic, 'cause we don't want to transform the
-        // shape and mess up the element map.
-        DocumentObject::onChanged(prop);
-        return;
+        // We used to bypass Part::Feature handling of shape change, which sets
+        // the placement the same as the shape's. But this is causes bad thing
+        // to happen. We'll fix that in onDocumentRestored().
+        if (getDocument() && getDocument()->testStatus(App::Document::Restoring)) {
+            DocumentObject::onChanged(prop);
+            return;
+        }
     }
     Part2DObject::onChanged(prop);
 }
