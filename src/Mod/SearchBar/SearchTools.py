@@ -22,6 +22,8 @@ OK speed up startup to show the box instantly and do the slow loading on first c
 OK One small bug: when the 3D view is initialized, it causes a loss of focus on the drop-down. We restore it, but the currently-selected index is left unchanged, so the down or up arrow has to be pressed twice.
 * split into several files, try to keep the absolute minimum of code possible in the main file to speed up startup
 OK segfault when reloading
+* Disable the spacebar shortcut (can't type space in the search field…)
+* Possibly disable the home and end, and use ctrl+home and ctrl+end instead?
 """
 
 ################################""
