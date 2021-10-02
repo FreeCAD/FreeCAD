@@ -37,18 +37,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 def get_draft_drawing_commands():
     """Return the drawing commands list."""
-    return ["Draft_Line", "Draft_Wire", "Draft_Fillet",
-            "Draft_ArcTools",
-            "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle",
-            "Draft_Polygon", "Draft_BSpline", "Draft_BezierTools",
-            "Draft_Point", "Draft_Facebinder",
-            "Draft_ShapeString","Draft_Hatch"]
-
-
-# This function replaces get_draft_drawing_commands.
-# The "_temp" suffix should be removed when the BIM Workbench has been updated.
-def get_draft_drawing_commands_temp():
-    """Return the drawing commands list."""
     from draftguitools import gui_arcs
     from draftguitools import gui_beziers
     arc_group = gui_arcs.ArcGroup
@@ -76,53 +64,13 @@ def get_draft_drawing_commands_temp():
 
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
-    return ["Draft_Text", "Draft_Dimension",
-            "Draft_Label", "Draft_AnnotationStyleEditor"]
-
-
-def get_draft_array_commands():
-    """Return the array commands list."""
-    return ["Draft_ArrayTools"]
-
-
-# This function has been replaced by get_draft_utility_commands_toolbar.
-# It should be removed when the BIM Workbench has been updated.
-def get_draft_small_commands():
-    """Return a list with only some utilities."""
-    return ["Draft_Layer",
-            "Draft_WorkingPlaneProxy",
-            "Draft_ToggleDisplayMode",
-            "Draft_AddNamedGroup",
-            "Draft_AddToGroup",
-            "Draft_SelectGroup",
-            "Draft_AddConstruction"]
+    return ["Draft_Text",
+            "Draft_Dimension",
+            "Draft_Label",
+            "Draft_AnnotationStyleEditor"]
 
 
 def get_draft_modification_commands():
-    """Return the modification commands list."""
-    lst = ["Draft_Move", "Draft_Rotate",
-           "Draft_Scale", "Draft_Mirror",
-           "Draft_Offset", "Draft_Trimex",
-           "Draft_Stretch",
-           "Separator",
-           "Draft_Clone"]
-    lst += get_draft_array_commands()
-    lst += ["Separator",
-            "Draft_Edit", "Draft_SubelementHighlight",
-            "Separator",
-            "Draft_Join", "Draft_Split",
-            "Draft_Upgrade", "Draft_Downgrade",
-            "Separator",
-            "Draft_WireToBSpline", "Draft_Draft2Sketch",
-            "Draft_Slope", "Draft_FlipDimension",
-            "Separator",
-            "Draft_Shape2DView"]
-    return lst
-
-
-# This function replaces get_draft_modification_commands.
-# The "_temp" suffix should be removed when the BIM Workbench has been updated.
-def get_draft_modification_commands_temp():
     """Return the modification commands list."""
     from draftguitools import gui_arrays
     arr_group = gui_arrays.ArrayGroup
@@ -154,32 +102,6 @@ def get_draft_modification_commands_temp():
             "Draft_FlipDimension",
             "Separator",
             "Draft_Shape2DView"]
-
-
-def get_draft_context_commands():
-    """Return the context menu commands list."""
-    return ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
-            "Draft_AddNamedGroup", "Draft_AddToGroup", "Draft_SelectGroup",
-            "Draft_SelectPlane", "Draft_ShowSnapBar",
-            "Draft_ToggleGrid", "Draft_SetStyle"]
-
-
-def get_draft_line_commands():
-    """Return the line commands list."""
-    return ["Draft_UndoLine", "Draft_FinishLine",
-            "Draft_CloseLine"]
-
-
-# This function has been replaced by get_draft_utility_commands_menu.
-# It should be removed when the BIM Workbench has been updated.
-def get_draft_utility_commands():
-    """Return the utility commands list."""
-    return ["Draft_Layer",
-            "Draft_Heal",
-            "Draft_ToggleConstructionMode",
-            "Draft_ToggleContinueMode",
-            "Draft_WorkingPlaneProxy",
-            "Draft_AddConstruction"]
 
 
 def get_draft_utility_commands_menu():
@@ -218,15 +140,41 @@ def get_draft_utility_commands_toolbar():
 def get_draft_snap_commands():
     """Return the snapping commands list."""
     return ['Draft_Snap_Lock',
-            'Draft_Snap_Endpoint', 'Draft_Snap_Midpoint',
-            'Draft_Snap_Center', 'Draft_Snap_Angle',
-            'Draft_Snap_Intersection', 'Draft_Snap_Perpendicular',
-            'Draft_Snap_Extension', 'Draft_Snap_Parallel',
-            'Draft_Snap_Special', 'Draft_Snap_Near',
-            'Draft_Snap_Ortho', 'Draft_Snap_Grid',
-            'Draft_Snap_WorkingPlane', 'Draft_Snap_Dimensions',
-            'Separator', 'Draft_ToggleGrid'
-            ]
+            'Draft_Snap_Endpoint',
+            'Draft_Snap_Midpoint',
+            'Draft_Snap_Center',
+            'Draft_Snap_Angle',
+            'Draft_Snap_Intersection',
+            'Draft_Snap_Perpendicular',
+            'Draft_Snap_Extension',
+            'Draft_Snap_Parallel',
+            'Draft_Snap_Special',
+            'Draft_Snap_Near',
+            'Draft_Snap_Ortho',
+            'Draft_Snap_Grid',
+            'Draft_Snap_WorkingPlane',
+            'Draft_Snap_Dimensions',
+            'Separator', 'Draft_ToggleGrid']
+
+
+def get_draft_context_commands():
+    """Return the context menu commands list."""
+    return ["Draft_ApplyStyle",
+            "Draft_ToggleDisplayMode",
+            "Draft_AddNamedGroup",
+            "Draft_AddToGroup",
+            "Draft_SelectGroup",
+            "Draft_SelectPlane",
+            "Draft_ShowSnapBar",
+            "Draft_ToggleGrid",
+            "Draft_SetStyle"]
+
+
+def get_draft_line_commands():
+    """Return the line commands list."""
+    return ["Draft_UndoLine",
+            "Draft_FinishLine",
+            "Draft_CloseLine"]
 
 
 def init_toolbar(workbench, toolbar, cmd_list):
