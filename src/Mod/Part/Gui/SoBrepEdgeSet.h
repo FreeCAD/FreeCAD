@@ -62,7 +62,7 @@ public:
     SoBrepEdgeSet();
 
     void setSiblings(std::vector<SoNode*> &&);
-    void initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay=true);
+    void initBoundingBoxes(const SbVec3f *coords, int numverts);
 
 protected:
     virtual void GLRender(SoGLRenderAction *action);

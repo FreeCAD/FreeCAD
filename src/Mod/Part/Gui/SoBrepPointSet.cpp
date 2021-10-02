@@ -441,7 +441,7 @@ void SoBrepPointSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
-void SoBrepPointSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay)
+void SoBrepPointSet::initBoundingBoxes(const SbVec3f *coords, int numverts)
 {
     bboxMap.clear();
     bboxPicker.clear();
@@ -467,7 +467,7 @@ void SoBrepPointSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool
         bboxMap.push_back(numverts);
         boxes.push_back(bbox);
     }
-    bboxPicker.init(std::move(boxes), delay);
+    bboxPicker.init(std::move(boxes));
 }
 
 void SoBrepPointSet::rayPick(SoRayPickAction *action) {
@@ -501,7 +501,7 @@ void SoBrepPointSet::rayPick(SoRayPickAction *action) {
 
     if (coords->getNodeId() != coordNodeId) {
         coordNodeId = coords->getNodeId();
-        initBoundingBoxes(coords3d, numverts, true);
+        initBoundingBoxes(coords3d, numverts);
     }
 
     static thread_local std::vector<int> results;
@@ -531,7 +531,7 @@ void SoBrepPointSet::rayPick(SoRayPickAction *action) {
 
     const auto &boxes = bboxPicker.getBoundBoxes();
     int numparts = (int)bboxMap.size();
-    if(numparts < threshold) {
+    if(!PartParams::SelectionPickRTree() || numparts < threshold) {
         for(int bboxId=0;bboxId<numparts;++bboxId) {
             auto &box = boxes[bboxId];
             if(box.isEmpty() || !action->intersect(box,TRUE))

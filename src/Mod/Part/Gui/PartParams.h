@@ -85,6 +85,7 @@ public:
     FC_PART_PARAM2(RespectSystemDPI, bool, Bool, false) \
     FC_PART_PARAM(SelectionPickThreshold,int,Int,1000) \
     FC_PART_PARAM(SelectionPickThreshold2,int,Int,500) \
+    FC_PART_PARAM(SelectionPickRTree,bool,Bool,false) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \

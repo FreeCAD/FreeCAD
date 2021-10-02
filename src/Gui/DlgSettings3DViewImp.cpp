@@ -114,6 +114,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->spinPreselectionDelay->onSave();
     ui->renderCacheMergeCount->onSave();
     ui->renderCacheMergeCountMax->onSave();
+    ui->checkBoxEnhancedPick->onSave();
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -138,6 +139,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->comboAliasing->onRestore();
     ui->renderCache->onRestore();
     ui->comboTransparentRender->onRestore();
+    ui->checkBoxEnhancedPick->onRestore();
 
     ui->boxMarkerSize->addItem(tr("5px"), QVariant(5));
     ui->boxMarkerSize->addItem(tr("7px"), QVariant(7));

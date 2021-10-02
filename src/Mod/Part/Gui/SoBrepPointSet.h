@@ -78,7 +78,7 @@ private:
     void _renderSelection(SoGLRenderAction *action, bool checkColor, SbColor color, bool push);
 
     bool isSelected(SelContextPtr ctx);
-    void initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay=true);
+    void initBoundingBoxes(const SbVec3f *coords, int numverts);
 
 private:
     SelContextPtr selContext;

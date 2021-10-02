@@ -2750,13 +2750,7 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
     int threshold = PartParams::SelectionPickThreshold();
     int numparts = partIndex.getNum();
 
-    Binding mbind = this->findMaterialBinding(state);
-    Binding nbind = this->findNormalBinding(state);
-
-    if(threshold<=0 
-            || mbind==PER_FACE || mbind==PER_FACE_INDEXED 
-            || nbind==PER_FACE || nbind==PER_FACE_INDEXED ) 
-    {
+    if(threshold<=0) {
         generatePrimitives(action);
         FC_TIME_TRACE(t,"pick");
         return;
@@ -2772,7 +2766,7 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
     results.clear();
 
     auto pick = [&](int id) {
-        if(threshold2<=0 || pindices[id] <= threshold2) {
+        if(!PartParams::SelectionPickRTree() || threshold2<=0 || pindices[id] <= threshold2) {
             this->generatePrimitivesRange(action,id,
                     this->indexOffset[id], this->indexOffset[id]*4, this->indexOffset[id+1]*4);
         } else {
@@ -2832,7 +2826,7 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
                 continue;
             pick(id);
         }
-    } else if(numparts <= threshold) {
+    } else if(!PartParams::SelectionPickRTree() || numparts <= threshold) {
         for(int id=0;id<numparts;++id) {
             auto &box = partBBoxes[id];
             if(box.isEmpty() || !action->intersect(box,TRUE))

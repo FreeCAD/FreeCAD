@@ -564,7 +564,7 @@ SoDetail * SoBrepEdgeSet::createLineSegmentDetail(SoRayPickAction * action,
     return detail;
 }
 
-void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool delay)
+void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts)
 {
     bboxMap.clear();
     bboxPicker.clear();
@@ -605,7 +605,7 @@ void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool 
                 cboxes.push_back(bbox);
                 prev = vidx;
             }
-            info->picker.init(std::move(cboxes), delay);
+            info->picker.init(std::move(cboxes));
         }
         bbox.makeEmpty();
         info = nullptr;
@@ -628,7 +628,7 @@ void SoBrepEdgeSet::initBoundingBoxes(const SbVec3f *coords, int numverts, bool 
     pushInfo(true);
     if (bboxMap.size() > boxes.size())
         bboxMap.pop_back();
-    bboxPicker.init(std::move(boxes), delay);
+    bboxPicker.init(std::move(boxes));
 }
 
 void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
@@ -667,7 +667,7 @@ void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
     results.clear();
 
     if (bboxPicker.empty())
-        initBoundingBoxes(coords3d, numverts, true);
+        initBoundingBoxes(coords3d, numverts);
 
     auto pickSegment = [&](int idx) {
         if (idx < 1 || idx >= numindices)
@@ -712,7 +712,7 @@ void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
 
     auto pick = [&](int bboxId) {
         auto &info = bboxMap[bboxId];
-        if (info.count < threshold2) {
+        if (!PartParams::SelectionPickRTree() || threshold2 < 0 || info.count < threshold2) {
             for (int i = info.start+1, end = info.start + info.count; i < end; ++i)
                 pickSegment(i);
         } else {
@@ -727,7 +727,7 @@ void SoBrepEdgeSet::rayPick(SoRayPickAction *action) {
     const auto &boxes = bboxPicker.getBoundBoxes();
     int numparts = (int)bboxMap.size();
 
-    if(numparts < threshold) {
+    if(!PartParams::SelectionPickRTree() || numparts < threshold) {
         for(int bboxId=0;bboxId<numparts;++bboxId) {
             auto &box = boxes[bboxId];
             if(box.isEmpty() || !action->intersect(box,TRUE))
