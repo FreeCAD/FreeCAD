@@ -837,7 +837,7 @@ void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
 {
     // remove and delete the old set of TaskWatcher
     for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it)
-        delete *it;
+        (*it)->deleteLater();
 
     ActiveWatcher = Watcher;
     if (!ActiveCtrl && !ActiveDialog)
