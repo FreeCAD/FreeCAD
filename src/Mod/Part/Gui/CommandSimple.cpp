@@ -43,6 +43,7 @@
 #include "../App/PartFeature.h"
 #include "../App/TopoShape.h"
 #include "DlgPartCylinderImp.h"
+#include "ShapeFromMesh.h"
 
 
 //===========================================================================
@@ -115,51 +116,8 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    double STD_OCC_TOLERANCE = 1e-6;
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int decimals = hGrp->GetInt("Decimals");
-    double tolerance_from_decimals = pow(10., -decimals);
-
-    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
-
-    bool ok;
-    double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok)
-        return;
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    std::vector<App::DocumentObject*> meshes;
-    meshes = Gui::Selection().getObjectsOfType(meshid);
-    Gui::WaitCursor wc;
-    std::vector<App::DocumentObject*>::iterator it;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
-    for (it = meshes.begin(); it != meshes.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string mesh = (*it)->getNameInDocument();
-        std::string name = doc->getUniqueObjectName(mesh.c_str());
-        doCommand(Doc,"import Part");
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").addObject(\"Part::Feature\",\"%s\")"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"__shape__=Part.Shape()");
-        doCommand(Doc,"__shape__.makeShapeFromMesh("
-                      "FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Topology,%f"
-                      ")"
-                     ,doc->getName()
-                     ,mesh.c_str()
-                     ,tol);
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Shape=__shape__"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").purgeTouched()"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"del __shape__");
-    }
-
-    commitCommand();
+    PartGui::ShapeFromMesh dlg(Gui::getMainWindow());
+    dlg.exec();
 }
 
 bool CmdPartShapeFromMesh::isActive(void)

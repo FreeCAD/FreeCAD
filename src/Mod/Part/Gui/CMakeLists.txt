@@ -63,6 +63,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
+    ShapeFromMesh.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
@@ -207,6 +208,8 @@ SET(PartGui_SRCS
     ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    ShapeFromMesh.cpp
+    ShapeFromMesh.h
     TaskFaceColors.cpp
     TaskFaceColors.h
     TaskFaceColors.ui

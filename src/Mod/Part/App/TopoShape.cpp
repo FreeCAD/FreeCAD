@@ -3717,7 +3717,7 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
 
 #if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-    pi->NewScope(100, "Sewing Faces...");
+    pi->NewScope(100, "Create shape from mesh...");
     pi->Show();
 
     aSewingTool.Perform(pi);
