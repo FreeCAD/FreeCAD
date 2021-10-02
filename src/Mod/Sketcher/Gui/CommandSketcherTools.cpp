@@ -337,6 +337,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     getSelection().clearSelection();
 
+    std::vector<std::string> constraintSubNames;
     // go through the selected subelements
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle edges
@@ -349,13 +350,15 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
                  it != vals.end(); ++it,++i)
             {
                 if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
-                    Gui::Selection().addSelection(doc_name.c_str(),
-                                                  obj_name.c_str(),
-                                                  Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                    constraintSubNames.push_back(Sketcher::PropertyConstraintList::getConstraintName(i));
                 }
             }
         }
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
+
 }
 
 bool CmdSketcherSelectConstraints::isActive(void)
@@ -533,17 +536,20 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
     getSelection().clearSelection();
 
     // push the constraints
+    std::vector<std::string> constraintSubNames;
+
     int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for(std::vector< int >::const_iterator itc= solverredundant.begin();itc != solverredundant.end(); ++itc) {
             if ((*itc) - 1 == i) {
-                Gui::Selection().addSelection(doc_name.c_str(),
-                                              obj_name.c_str(),
-                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                constraintSubNames.push_back(Sketcher::PropertyConstraintList::getConstraintName(i));
                 break;
             }
         }
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
 bool CmdSketcherSelectRedundantConstraints::isActive(void)
@@ -587,17 +593,19 @@ void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
     getSelection().clearSelection();
 
     // push the constraints
+    std::vector<std::string> constraintSubNames;
     int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for(std::vector< int >::const_iterator itc= solvermalformed.begin();itc != solvermalformed.end(); ++itc) {
             if ((*itc) - 1 == i) {
-                Gui::Selection().addSelection(doc_name.c_str(),
-                                              obj_name.c_str(),
-                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                constraintSubNames.push_back(Sketcher::PropertyConstraintList::getConstraintName(i));
                 break;
             }
         }
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
 bool CmdSketcherSelectMalformedConstraints::isActive(void)
@@ -641,17 +649,19 @@ void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
     getSelection().clearSelection();
 
     // push the constraints
+    std::vector<std::string> constraintSubNames;
     int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for(std::vector< int >::const_iterator itc= solverpartiallyredundant.begin();itc != solverpartiallyredundant.end(); ++itc) {
             if ((*itc) - 1 == i) {
-                Gui::Selection().addSelection(doc_name.c_str(),
-                                              obj_name.c_str(),
-                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                constraintSubNames.push_back(Sketcher::PropertyConstraintList::getConstraintName(i));
                 break;
             }
         }
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
 bool CmdSketcherSelectPartiallyRedundantConstraints::isActive(void)
@@ -693,17 +703,19 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
     getSelection().clearSelection();
 
     // push the constraints
+    std::vector<std::string> constraintSubNames;
     int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for (std::vector< int >::const_iterator itc= solverconflicting.begin();itc != solverconflicting.end(); ++itc) {
             if ((*itc) - 1 == i) {
-                Gui::Selection().addSelection(doc_name.c_str(),
-                                              obj_name.c_str(),
-                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                constraintSubNames.push_back(Sketcher::PropertyConstraintList::getConstraintName(i));
                 break;
             }
         }
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
 bool CmdSketcherSelectConflictingConstraints::isActive(void)
@@ -747,8 +759,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
 
-    int selected = 0;
-
+    std::vector<std::string> elementSubNames;
     // go through the selected subelements
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle constraints
@@ -772,9 +783,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                                 ss << "Vertex" <<  vertex + 1;
                             break;
                     }
-
-                    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-                    selected++;
+                    elementSubNames.push_back(ss.str());
                 }
 
                 if(vals[ConstrId]->Second!=Constraint::GeoUndef){
@@ -794,8 +803,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                             break;
                     }
 
-                    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-                    selected++;
+                    elementSubNames.push_back(ss.str());
                 }
 
                 if(vals[ConstrId]->Third!=Constraint::GeoUndef){
@@ -815,17 +823,20 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                             break;
                     }
 
-                    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-                    selected++;
+                    elementSubNames.push_back(ss.str());
                 }
             }
         }
     }
 
-    if (selected == 0) {
+    if (elementSubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No constraint selected"),
                              QObject::tr("At least one constraint must be selected"));
     }
+    else {
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
+    }
+
 }
 
 bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
@@ -866,22 +877,24 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
     auto geos = Obj->getInternalGeometry();
 
-    auto testselectvertex = [&Obj, &ss, &doc_name, &obj_name](int geoId, PointPos pos) {
+    std::vector<std::string> elementSubNames;
+
+    auto testselectvertex = [&Obj, &ss, &doc_name, &obj_name, &elementSubNames](int geoId, PointPos pos) {
         ss.str(std::string());
 
         int vertex = Obj->getVertexIndexGeoPos(geoId, pos);
         if (vertex > -1) {
             ss << "Vertex" <<  vertex + 1;
 
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            elementSubNames.push_back(ss.str());
         }
     };
 
-    auto testselectedge = [&ss, &doc_name, &obj_name](int geoId) {
+    auto testselectedge = [&ss, &doc_name, &obj_name, &elementSubNames](int geoId) {
         ss.str(std::string());
 
         ss << "Edge" <<  geoId + 1;
-        Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+        elementSubNames.push_back(ss.str());
     };
 
     int geoid = 0;
@@ -909,6 +922,10 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
         }
 
         geoid++;
+    }
+
+    if (!elementSubNames.empty()) {
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
     }
 
 }
