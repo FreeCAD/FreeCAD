@@ -433,17 +433,22 @@ ViewProviderSketch::ViewProviderSketch()
     zHighLines=0.007f;  // Lines that are somehow selected to be in the high position (higher than other line categories)
     zHighLine=0.008f;   // highlighted line (of any group)
 
-    // lower constraint z height because it often blocks selection of line and
-    // point. Constraint normally has a bigger hit area unlike line and point.
-    zConstr=0.003f; // constraint not construction
-    zDatum = 0.012f; // datum label
+    // Make constraint z higher than lines but lower than points. The rationale
+    // being that user can always zoom in the lines to make it selectable, but
+    // point size (and most constraint sizes) stays the same. So give higher
+    // priority to points, then constraints, and finally edges. In case the
+    // user wants to select constraint but blocked by a point, use 'G, G'
+    // geometry pick command.
+    //
+    zConstr=0.009; // constraint not construction
+    zDatum = 0.010; // datum label
 
     //zPoints=0.010f;
-    zRootPoint = 0.009f;
-    zLowPoints = 0.010f;
-    zHighPoints = 0.011f;
-    zHighlight=0.013f;
-    zText=0.013f;
+    zRootPoint = 0.011;
+    zLowPoints = 0.012f;
+    zHighPoints = 0.013f;
+    zHighlight=0.014f;
+    zText=0.014f;
 
 
     xInit=0;
