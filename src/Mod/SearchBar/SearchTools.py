@@ -5,7 +5,8 @@ from PySide import QtGui
 from PySide import QtCore
 
 """
-from SearchTools import SearchTools; from importlib import reload; reload(SearchTools)
+# Reload with:
+import SearchTools; from importlib import reload; reload(SearchTools)
 
 
 TODO for this project:
@@ -45,6 +46,7 @@ class SafeViewer(QtGui.QWidget):
 
     self.setLayout(QtGui.QVBoxLayout())
     self.layout().addWidget(self.private_widget)
+    self.layout().setContentsMargins(0,0,0,0)
 
     def fin(slf):
       slf.finalizer()
@@ -168,7 +170,7 @@ if not hasattr(App, '_SearchTools3DViewer'):
 
 import pivy
 class DocumentObjectToolTipWidget(QtGui.QWidget):
-  def __init__(self, nfo):
+  def __init__(self, nfo, setParent):
     super(DocumentObjectToolTipWidget, self).__init__()
     html = '<p>' + nfo['toolTip']['label'] + '</p><p><code>App.getDocument(' + repr(str(nfo['toolTip']['docName'])) + ').getObject(' + repr(str(nfo['toolTip']['name'])) + ')</code></p>'
     description = QtGui.QTextEdit()
@@ -201,6 +203,8 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
     # finalizing the object, we remove the parent ourselves.
     oldParent = self.preview.parent()
     lay = QtGui.QVBoxLayout()
+    lay.setContentsMargins(0,0,0,0)
+    lay.setSpacing(0)
     self.setLayout(lay)
     lay.addWidget(description)
     lay.addWidget(self.preview)
@@ -209,10 +213,16 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
       oldParent.setParent(None)
   
     # Tried hiding/detaching the preview to prevent it from disappearing when changing its contents
-    self.preview.viewer.stopAnimating()
+    #self.preview.viewer.stopAnimating()
     self.preview.viewer.getViewer().setSceneGraph(obj.ViewObject.RootNode)
     self.preview.viewer.setCameraOrientation(App.Rotation(1,1,0, 0.2))
     self.preview.viewer.fitAll()
+
+    setParent(self)
+    # Let the GUI recompute the side of the description based on its horizontal size.
+    FreeCADGui.updateGui()
+    siz = description.document().size().toSize()
+    description.setFixedHeight(siz.height() + 5)
 
   def finalizer(self):
     #self.preview.finalizer()
@@ -226,15 +236,15 @@ def easyToolTipWidget(html):
   foo.setAlignment(QtCore.Qt.AlignTop)
   foo.setText(html)
   return foo
-def refreshToolsToolTip(nfo):
+def refreshToolsToolTip(nfo, setParent):
   return easyToolTipWidget(iconToHTML(genericToolIcon) + '<p>Load all workbenches to refresh this list of tools. This may take a minute, depending on the number of installed workbenches.</p>')
-def toolbarToolTip(nfo):
+def toolbarToolTip(nfo, setParent):
   return easyToolTipWidget('<p>Display toolbar ' + nfo['toolTip'] + '</p><p>This toolbar appears in the following workbenches: <ul>' + ''.join(['<li>' + iconToHTML(QtGui.QIcon(FreeCADGui.listWorkbenches()[wb].Icon)) + wb + '</li>' for wb in nfo['action']['workbenches']]) + '</ul></p>')
-def subToolToolTip(nfo):
+def subToolToolTip(nfo, setParent):
   return easyToolTipWidget(iconToHTML(nfo['icon'], 32) + '<p>' + nfo['toolTip'] + '</p>')
-def documentObjectToolTip(nfo):
-  return DocumentObjectToolTipWidget(nfo)
-def documentToolTip(nfo):
+def documentObjectToolTip(nfo, setParent):
+  return DocumentObjectToolTipWidget(nfo, setParent)
+def documentToolTip(nfo, setParent):
   return easyToolTipWidget('<p>' + nfo['toolTip']['label'] + '</p><p><code>App.getDocument(' + repr(str(nfo['toolTip']['name'])) + ')</code></p><p><img src="data:image/png;base64,.............."></p>')
 toolTipHandlers = {
   'refreshTools': refreshToolsToolTip,
@@ -311,7 +321,7 @@ class SearchBox(QtGui.QLineEdit):
     self.showList()
     super(SearchBox, self).focusInEvent(qFocusEvent)
   def focusOutEvent(self, qFocusEvent):
-    self.hideList()
+    #self.hideList()
     super(SearchBox, self).focusOutEvent(qFocusEvent)
   def keyPressEvent(self, qKeyEvent):
     key = qKeyEvent.key()
@@ -477,24 +487,30 @@ class SearchBox(QtGui.QLineEdit):
         #TODO: used to be: nfo['action'] = json.loads(nfo['action'])
         #while len(self.extraInfo.children()) > 0:
         #  self.extraInfo.children()[0].setParent(None)
-        w = self.extraInfo.layout().takeAt(0)
-        toolTipWidget = toolTipHandlers[nfo['action']['handler']](nfo)
-        while w:
-          if hasattr(w.widget(), 'finalizer'):
-            # The 3D viewer segfaults very easily if it is used after being destroyed, and some Python/C++ interop seems to overzealously destroys some widgets, including this one, too soon?
-            # Ensuring that we properly detacth the 3D viewer widget before discarding its parent seems to avoid these crashes.
-            #print('FINALIZER')
-            w.widget().finalizer()
-          if w.widget() is not None:
-            w.widget().hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
-            w.widget().setParent(None)
+        # This is a hack to allow some widgets to set the parent and recompute their size
+        # during their construction.
+        parentIsSet = False
+        def setParent(toolTipWidget):
+          nonlocal parentIsSet
+          parentIsSet = True
           w = self.extraInfo.layout().takeAt(0)
-        self.extraInfo.layout().addWidget(toolTipWidget)
-        global toto
-        toto = self.extraInfo
-        #toolTipHTML = toolTipHandlers[nfo['action']['handler']](nfo)
-        #self.extraInfo.setText(toolTipHTML)
-        self.setFloatingWidgetsGeometry()
+          while w:
+            if hasattr(w.widget(), 'finalizer'):
+              # The 3D viewer segfaults very easily if it is used after being destroyed, and some Python/C++ interop seems to overzealously destroys some widgets, including this one, too soon?
+              # Ensuring that we properly detacth the 3D viewer widget before discarding its parent seems to avoid these crashes.
+              #print('FINALIZER')
+              w.widget().finalizer()
+            if w.widget() is not None:
+              w.widget().hide() # hide before detaching, or we have widgets floating as their own window that appear for a split second in some cases.
+              w.widget().setParent(None)
+            w = self.extraInfo.layout().takeAt(0)
+          self.extraInfo.layout().addWidget(toolTipWidget)
+          #toolTipHTML = toolTipHandlers[nfo['action']['handler']](nfo)
+          #self.extraInfo.setText(toolTipHTML)
+          self.setFloatingWidgetsGeometry()
+        toolTipWidget = toolTipHandlers[nfo['action']['handler']](nfo, setParent)
+        if not parentIsSet:
+          setParent(toolTipWidget)
         if self.pendingExtraInfo is not None:
           index = self.pendingExtraInfo
           self.pendingExtraInfo = None
