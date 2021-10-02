@@ -278,6 +278,7 @@ void SketchObject::buildShape() {
         shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
     }
+
     for(i=2;i<ExternalGeo.getSize();++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
@@ -285,6 +286,7 @@ void SketchObject::buildShape() {
             continue;
         shapes.push_back(getEdge(geo, convertSubName(
                         Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
+        static_cast<Part::Feature*>(getDocument()->addObject("Part::Feature", "external"))->Shape.setValue(shapes.back());
     }
     if(shapes.empty())
         Shape.setValue(Part::TopoShape());
@@ -7292,12 +7294,12 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                     TopExp_Explorer xp;
                     for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
                         TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                        BRepAdaptor_Curve projCurve(projEdge);
                         gp_Pnt P1, P2;
                         double Param1, Param2;
-                        getParameterRange(projEdge, projCurve, P1, P2, Param1, Param2);
                         TopLoc_Location loc(mov);
                         projEdge.Location(loc);
+                        BRepAdaptor_Curve projCurve(projEdge);
+                        getParameterRange(projEdge, projCurve, P1, P2, Param1, Param2);
                         if (Part::GeomCurve::isLinear(projCurve.Curve().Curve())) {
                             Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
                             Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
