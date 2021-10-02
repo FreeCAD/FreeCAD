@@ -512,6 +512,8 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
     bool block = this->blockConnection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
+    std::vector<std::string> elementSubNames;
+
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
         ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
 
@@ -566,7 +568,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 
         if (ite->isLineSelected) {
             ss << "Edge" << ite->ElementNbr + 1;
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            elementSubNames.push_back(ss.str());
         }
 
         if (ite->isStartingPointSelected) {
@@ -574,7 +576,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->StartingVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                elementSubNames.push_back(ss.str());
             }
         }
 
@@ -583,7 +585,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->EndVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                elementSubNames.push_back(ss.str());
             }
         }
 
@@ -592,9 +594,13 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->MidVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                elementSubNames.push_back(ss.str());
             }
         }
+    }
+
+    if (!elementSubNames.empty()) {
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
     }
 
     this->blockConnection(block);
