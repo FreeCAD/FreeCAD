@@ -366,12 +366,14 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     if(_ElementRefs.insert(geo).second)
         _ElementRefMap[geo].insert(this);
 
-    if(!reverse && elementName.first.empty()) {
-        shadow.second.swap(elementName.second);
-        return false;
+    if (!reverse) {
+        if (elementName.first.empty()) {
+            shadow.second.swap(elementName.second);
+            return false;
+        }
+        if(shadow==elementName)
+            return false;
     }
-    if(shadow==elementName)
-        return false;
 
     bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
     if (feature == geo && (missing || reverse)) {

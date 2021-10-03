@@ -340,7 +340,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     reader.readElement("Part");
 
     auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    _Ver.clear();
+    _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
     if(has_ver)
         _Ver = reader.getAttribute("ElementMap");
@@ -376,9 +376,13 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     if(has_ver) {
         if(owner && owner->getDocument()->testStatus(App::Document::PartialDoc))
             _Shape.Restore(reader);
-        else if(_Ver.empty()) {
-            // empty string marks the need for recompute after import
-            if(owner) owner->getDocument()->addRecomputeObject(owner);
+        else if(_Ver == "?") {
+            // This indicate the shape is saved by legacy version without
+            // element map info.
+            if(owner) {
+                // This will ask user for recompute after import
+                owner->getDocument()->addRecomputeObject(owner);
+            }
         }else{
             _Shape.Restore(reader);
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())

@@ -133,6 +133,8 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
 {
+    elementName.first.clear();
+    elementName.second.clear();
     if(!obj || !obj->getNameInDocument())
         return 0;
     if(!subname)
