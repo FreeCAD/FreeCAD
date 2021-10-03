@@ -181,8 +181,11 @@
          <height>0</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Click to select multiple filters</string>
+       </property>
        <property name="text">
-        <string>...</string>
+        <string>Select Multiple</string>
        </property>
       </widget>
      </item>
@@ -397,14 +400,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ConstraintView</class>
-   <extends>QListWidget</extends>
-   <header location="global">QListWidget</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ConstraintView</class>
+   <extends>QListWidget</extends>
+   <header location="global">QListWidget</header>
   </customwidget>
  </customwidgets>
  <resources/>
