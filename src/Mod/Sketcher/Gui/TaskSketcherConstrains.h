@@ -92,8 +92,11 @@ private:
     bool isConstraintFiltered(QListWidgetItem * item);
     void change3DViewVisibilityToTrackFilter();
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
-    void updateMultiFilter();
+    void updateSelectionFilter();
     void updateList();
+
+    template <class T>
+    bool isFilter(T filterValue);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -123,6 +126,7 @@ private:
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
     std::bitset<ConstraintFilter::FilterValue::NumFilterValue> multiFilterStatus;
+    std::vector<unsigned int> selectionFilter;
 };
 
 } //namespace SketcherGui

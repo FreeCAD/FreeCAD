@@ -60,6 +60,7 @@ namespace ConstraintFilter {
 
     enum SpecialFilterValue {
         Multiple = 24,
+        Selection = 25,
         NumSpecialFilterValue
     };
 

@@ -453,13 +453,18 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     // Sync the FreeCAD selection with the selection in the ConstraintView widget
     if (didRelease) {
         Gui::Selection().clearSelection();
+        std::string doc_name = static_cast<ConstraintItem*>(item)->sketchView->getSketchObject()->getDocument()->getName();
+        std::string obj_name = static_cast<ConstraintItem*>(item)->sketchView->getSketchObject()->getNameInDocument();
+
+        std::vector<std::string> constraintSubNames;
         for (auto&& it : items) {
             auto ci = static_cast<ConstraintItem*>(it);
             std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
-            std::string doc_name = ci->sketchView->getSketchObject()->getDocument()->getName();
-            std::string obj_name = ci->sketchView->getSketchObject()->getNameInDocument();
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
+            constraintSubNames.push_back(constraint_name.c_str());
         }
+
+        if(!constraintSubNames.empty())
+            Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
     }
 
     bool isQuantity = false;
@@ -719,13 +724,15 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     connectionConstraintsChanged.disconnect();
 }
 
-void TaskSketcherConstrains::updateMultiFilter()
+void TaskSketcherConstrains::updateSelectionFilter()
 {
-    int filterindex = ui->comboBoxFilter->currentIndex();
+    // Snapshot current selection
+    auto items = ui->listWidgetConstraints->selectedItems();
 
-    multiFilterStatus.reset();
+    selectionFilter.clear();
 
-    multiFilterStatus.set(filterindex);
+    for(const auto & item : items)
+        selectionFilter.push_back(static_cast<ConstraintItem*>(item)->ConstraintNbr);
 }
 
 void TaskSketcherConstrains::updateList()
@@ -857,8 +864,16 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->listWidgetConstraints->blockSignals(true);
-        ui->listWidgetConstraints->clearSelection ();
+        ui->listWidgetConstraints->clearSelection();
         ui->listWidgetConstraints->blockSignals(false);
+
+        if(isFilter(ConstraintFilter::SpecialFilterValue::Selection)) {
+            updateSelectionFilter();
+
+            bool block = this->blockConnection(true); // avoid to be notified by itself
+            updateList();
+            this->blockConnection(block);
+        }
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection ||
              msg.Type == Gui::SelectionChanges::RmvSelection) {
@@ -885,6 +900,10 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                                 break;
                             }
                         }
+                        updateSelectionFilter();
+                        bool block = this->blockConnection(true); // avoid to be notified by itself
+                        updateList();
+                        this->blockConnection(block);
                     }
                 }
             }
@@ -896,8 +915,14 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
 }
 
 
-void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int)
+void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int filterindex)
 {
+    selectionFilter.clear(); // reset the stored selection filter
+
+    if(filterindex == ConstraintFilter::SpecialFilterValue::Selection) {
+        updateSelectionFilter();
+    }
+
     updateList();
 }
 
@@ -932,12 +957,17 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
 
     bool block = this->blockConnection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
+
+    std::vector<std::string> constraintSubNames;
     QList<QListWidgetItem *> items = ui->listWidgetConstraints->selectedItems();
     for (QList<QListWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         std::string constraint_name(Sketcher::PropertyConstraintList::getConstraintName(static_cast<ConstraintItem*>(*it)->ConstraintNbr));
-
-        Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
+        constraintSubNames.push_back(constraint_name);
     }
+
+    if(!constraintSubNames.empty())
+        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
+
     this->blockConnection(block);
 }
 
@@ -1210,6 +1240,10 @@ bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
             break;
     }
 
+    // Constraint Type independent, selection filter
+    visible = visible || (Filter == SpecialFilterValue::Selection &&
+                std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr) != selectionFilter.end());
+
     return !visible;
 }
 
@@ -1272,6 +1306,11 @@ void TaskSketcherConstrains::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
+}
+
+template <class T>
+bool TaskSketcherConstrains::isFilter(T filterValue) {
+    return (ui->comboBoxFilter->currentIndex() == filterValue);
 }
 
 
