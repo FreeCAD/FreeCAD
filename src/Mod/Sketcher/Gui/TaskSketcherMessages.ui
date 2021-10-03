@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="labelConstrainStatus">
+    <widget class="Gui::StatefulLabel" name="labelConstrainStatus">
      <property name="text">
       <string>Undefined degrees of freedom</string>
      </property>
@@ -25,7 +25,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelSolverStatus">
+    <widget class="Gui::StatefulLabel" name="labelSolverStatus">
      <property name="text">
       <string>Not solved yet</string>
      </property>
@@ -94,6 +94,11 @@
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+   <customwidget>
+     <class>Gui::StatefulLabel</class>
+     <extends>QLabel</extends>
+     <header>Gui/Widgets.h</header>
+   </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

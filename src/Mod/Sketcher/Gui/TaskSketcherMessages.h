@@ -47,8 +47,8 @@ public:
     TaskSketcherMessages(ViewProviderSketch *sketchView);
     ~TaskSketcherMessages();
 
-    void slotSetUp(QString msg);
-    void slotSolved(QString msg);
+    void slotSetUp(const QString &state, const QString &msg);
+    void slotSolved(const QString& state, const QString &msg);
 
 private Q_SLOTS:
     void on_labelConstrainStatus_linkActivated(const QString &);

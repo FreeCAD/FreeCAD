@@ -59,8 +59,8 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
     this->groupLayout()->addWidget(proxy);
 
-    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1));
-    connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this, bp::_1));
+    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2));
+    connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this, bp::_1, bp::_2));
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
 
@@ -71,6 +71,20 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
         sketchView->getSketchObject()->noRecomputes=false;
     else
         sketchView->getSketchObject()->noRecomputes=true;
+
+    // Set up the possible state values for the solver status label
+    const std::string paramGroup ("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), QColor("black"), paramGroup, "emptySketchMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), QColor("black"), paramGroup, "underconstrainedMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"), QColor("red"), paramGroup, "malformedConstraintMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"), QColor("orangered"), paramGroup, "conflictingConstraintMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"), QColor("red"), paramGroup, "redundantConstraintMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("partially_redundant_constraints"), QColor("royalblue"), paramGroup, "partiallyRedundantConstraintMessageColor");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("fully_constrained"), QColor("green"), paramGroup, "fullyConstrainedMessageColor");
+
+    ui->labelSolverStatus->registerState(QString::fromUtf8("good"), QColor("green"), QColor(255, 255, 255, 50), paramGroup, "solverGoodMessageColor");
+    ui->labelSolverStatus->registerState(QString::fromUtf8("bad"), QColor("red"), QColor(255, 255, 255, 50), paramGroup, "solverBadMessageColor");
+    ui->labelSolverStatus->registerState(QString::fromUtf8("neutral"), QColor("black"), paramGroup, "solverNeutralMessageColor");
 
     /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
@@ -92,13 +106,15 @@ TaskSketcherMessages::~TaskSketcherMessages()
     connectionSolved.disconnect();
 }
 
-void TaskSketcherMessages::slotSetUp(QString msg)
+void TaskSketcherMessages::slotSetUp(const QString &state, const QString &msg)
 {
+    ui->labelConstrainStatus->setState(state);
     ui->labelConstrainStatus->setText(msg);
 }
 
-void TaskSketcherMessages::slotSolved(QString msg)
+void TaskSketcherMessages::slotSolved(const QString& state, const QString& msg)
 {
+    ui->labelSolverStatus->setState(state);
     ui->labelSolverStatus->setText(msg);
 }
 
@@ -115,7 +131,7 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
     else
     if( str == QString::fromLatin1("#malformed"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
-        else
+    else
     if( str == QString::fromLatin1("#partiallyredundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
 

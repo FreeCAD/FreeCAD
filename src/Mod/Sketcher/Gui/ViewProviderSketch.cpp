@@ -402,6 +402,9 @@ ViewProviderSketch::ViewProviderSketch()
     //rubberband selection
     rubberband = new Gui::Rubberband();
 
+    // Status message states:
+    
+
     subscribeToParameters();
 }
 
@@ -1309,9 +1312,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                     if (getSketchObject()->moveTemporaryPoint(GeoId, PosId, vec, false) == 0) {
                         setPositionText(Base::Vector2d(x,y));
                         draw(true,false);
-                        signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
+                        signalSolved(QString::fromUtf8("neutral"), QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
                     } else {
-                        signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
+                        signalSolved(QString::fromUtf8("bad"), QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
                         //Base::Console().Log("Error solving:%d\n",ret);
                     }
                 }
@@ -1350,9 +1353,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 if (getSketchObject()->moveTemporaryPoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
                     draw(true,false);
-                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
+                    signalSolved(QString::fromUtf8("neutral"), QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
                 } else {
-                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
+                    signalSolved(QString::fromUtf8("bad"), QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
                 }
             }
             return true;
@@ -6591,35 +6594,39 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed    = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(tr("Empty sketch"));
-        signalSolved(QString());
+        signalSetUp(QString::fromUtf8("empty_sketch"), tr("Empty sketch"));
+        signalSolved(QString::fromUtf8("neutral"), QString());
     }
     else if (dofs < 0) { // over-constrained sketch
         std::string msg;
         SketchObject::appendConflictMsg(getSketchObject()->getLastConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>%1 <a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+        signalSetUp(QString::fromUtf8("conflicting_constraints"), 
+                    QString::fromLatin1("%1 <a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3<br/>")
                     .arg(tr("Over-constrained sketch"))
                     .arg(tr("(click to select)"))
                     .arg(QString::fromStdString(msg)));
-        signalSolved(QString());
+        signalSolved(QString::fromUtf8("neutral"), QString());
     }
     else if (hasMalformed) { // malformed constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1 <a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+        signalSetUp(QString::fromUtf8("malformed_constraints"), 
+                    QString::fromLatin1("%1 <a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3<br/>")
                     .arg(tr("Sketch contains malformed constraints"))
                     .arg(tr("(click to select)"))
                     .arg(appendMalformedMsg(getSketchObject()->getLastMalformedConstraints())));
-        signalSolved(QString());
+        signalSolved(QString::fromUtf8("neutral"), QString());
     }
     else if (hasConflicts) { // conflicting constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1 <a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+        signalSetUp(QString::fromUtf8("conflicting_constraints"), 
+                    QString::fromLatin1("%1 <a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3<br/>")
                     .arg(tr("Sketch contains conflicting constraints"))
                     .arg(tr("(click to select)"))
                     .arg(appendConflictMsg(getSketchObject()->getLastConflicting())));
-        signalSolved(QString());
+        signalSolved(QString::fromUtf8("neutral"), QString());
     }
     else {
         if (hasRedundancies) { // redundant constraints
-            signalSetUp(QString::fromLatin1("<font color='orangered'>%1 <a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+            signalSetUp(QString::fromUtf8("redundant_constraints"), 
+                        QString::fromLatin1("%1 <a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3<br/>")
                         .arg(tr("Sketch contains redundant constraints"))
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
@@ -6628,7 +6635,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         QString partiallyRedundantString;
 
         if(hasPartiallyRedundant) {
-            partiallyRedundantString = QString::fromLatin1("<br/><font color='royalblue'><span style=\"background-color: #ececec;\">%1 <a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span></font><br/>")
+            partiallyRedundantString = QString::fromLatin1("<br/><span style=\"background-color: rgba(255,255,255,50) ;\">%1 <a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span><br/>")
                                 .arg(tr("Sketch contains partially redundant constraints"))
                                 .arg(tr("(click to select)"))
                                 .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
@@ -6641,25 +6648,27 @@ void ViewProviderSketch::UpdateSolverInformation()
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span> %2").arg(tr("Fully constrained sketch")).arg(partiallyRedundantString));
+                    signalSetUp(QString::fromUtf8("fully_constrained"),
+                        partiallyRedundantString + tr("Fully constrained sketch"));
                 }
             }
             else if (!hasRedundancies) {
                 QString infoString;
-
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
+                    signalSetUp(QString::fromUtf8("under_constrained"), 
+                                tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
                         .arg(partiallyRedundantString));
                 else
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
+                    signalSetUp(QString::fromUtf8("under_constrained"), 
+                                tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
                         .arg(dofs)
                         .arg(partiallyRedundantString));
             }
 
-            signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
+            signalSolved(QString::fromUtf8("good"), tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime()));
         }
         else {
-            signalSolved(QString::fromLatin1("<font color='red'>%1</font>").arg(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime())));
+            signalSolved(QString::fromUtf8("bad"), tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime()));
         }
     }
 }

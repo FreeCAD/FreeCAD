@@ -273,9 +273,9 @@ public:
     /// signals if the constraints list has changed
     boost::signals2::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<void (QString msg)> signalSetUp;
+    boost::signals2::signal<void (const QString &state, const QString &msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signals2::signal<void (QString msg)> signalSolved;
+    boost::signals2::signal<void (const QString &state, const QString &msg)> signalSolved;
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
 
