@@ -673,7 +673,6 @@ QDockWidget QListView,
 QDockWidget QTableView {
     margin: 6px;
     border: 1px solid #333333; /* same as regular QTreeView, QListView and QTableView */
-    min-height: 40px; /* necessary in some areas of FreeCAD */
 }
 
 /* Buttons to scroll tabs if there is not space to show all of them: */
