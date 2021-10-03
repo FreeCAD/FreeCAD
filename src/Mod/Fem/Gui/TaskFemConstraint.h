@@ -59,12 +59,11 @@ protected Q_SLOTS:
 
 protected:
     virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
+    const QString makeRefText(const std::string& objName, const std::string& subName) const;
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
     virtual void keyPressEvent(QKeyEvent * ke);
     void createDeleteAction(QListWidget* parentList);
     bool KeyEvent(QEvent *e);
-
-private:
     virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
 
 protected:

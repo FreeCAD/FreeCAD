@@ -201,6 +201,11 @@ void TaskFemConstraint::onButtonWizCancel()
     onButtonWizOk();
 }
 
+const QString TaskFemConstraint::makeRefText(const std::string& objName, const std::string& subName) const
+{
+    return QString::fromUtf8((objName + ":" + subName).c_str());
+}
+
 const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, const std::string& subName) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
