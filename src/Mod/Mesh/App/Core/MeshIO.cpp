@@ -46,6 +46,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <string_view>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>

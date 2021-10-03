@@ -399,6 +399,8 @@ endif ()
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
+set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
 
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
