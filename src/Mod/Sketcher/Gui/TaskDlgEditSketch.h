@@ -27,7 +27,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "ViewProviderSketch.h"
-#include "TaskSketcherConstrains.h"
+#include "TaskSketcherConstraints.h"
 #include "TaskSketcherElements.h"
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
@@ -72,7 +72,7 @@ protected:
 
 protected:
     ViewProviderSketch      *sketchView;
-    TaskSketcherConstrains  *Constraints;
+    TaskSketcherConstraints *Constraints;
     TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;

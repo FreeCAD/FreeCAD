@@ -32,7 +32,7 @@ else()
 endif()
 
 set(SketcherGui_UIC_SRCS
-    TaskSketcherConstrains.ui
+    TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
@@ -78,10 +78,10 @@ SET(SketcherGui_SRCS
     SoDatumLabel.h
     PropertyConstraintListItem.h
     PropertyConstraintListItem.cpp
-    TaskSketcherConstrains.ui
-    TaskSketcherConstrains.cpp
+    TaskSketcherConstraints.ui
+    TaskSketcherConstraints.cpp
     ConstraintFilters.h
-    TaskSketcherConstrains.h
+    TaskSketcherConstraints.h
     TaskSketcherElements.ui
     TaskSketcherElements.cpp
     TaskSketcherElements.h
