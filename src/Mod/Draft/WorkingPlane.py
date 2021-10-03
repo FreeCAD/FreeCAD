@@ -547,7 +547,7 @@ class Plane:
         alignToPointAndAxis, DraftGeomUtils.getQuad
         """
         # Set face to the unique selected face, if found
-        if shape.ShapeType == 'Face':
+        if not shape.isNull() and shape.ShapeType == 'Face':
             self.alignToPointAndAxis(shape.Faces[0].CenterOfMass,
                                      shape.Faces[0].normalAt(0, 0),
                                      offset)
