@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SketcherGui::TaskSketcherConstrains</class>
- <widget class="QWidget" name="SketcherGui::TaskSketcherConstrains">
+ <class>SketcherGui::TaskSketcherConstraints</class>
+ <widget class="QWidget" name="SketcherGui::TaskSketcherConstraints">
   <property name="geometry">
    <rect>
     <x>0</x>
