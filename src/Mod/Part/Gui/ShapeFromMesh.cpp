@@ -81,7 +81,7 @@ void ShapeFromMesh::perform()
         std::string mesh = (*it)->getNameInDocument();
         std::string name = doc->getUniqueObjectName(mesh.c_str());
 
-        Gui::cmdAppDocument(doc, std::ostringstream() << "addObject(\"Part::Feature\", \"" << name << "\")");
+        Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Part::Feature",  name);
         std::string partObj = App::DocumentObjectT(doc, name).getObjectPython();
         std::string meshObj = App::DocumentObjectT(doc, mesh).getObjectPython();
 
