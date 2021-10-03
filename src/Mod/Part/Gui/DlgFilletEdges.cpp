@@ -813,6 +813,14 @@ void DlgFilletEdges::on_shapeObject_activated(int itemPos)
                 model->setData(model->index(index, 0), Qt::Unchecked, Qt::CheckStateRole);
             index++;
         }
+        QTimer::singleShot(10, this, [this]() {
+            // Resize the tree view to show all items. We use a timer because
+            // QTreeView seems to also update its geometry asyncrhonously.
+            QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+            auto rect = ui->treeView->visualRect(model->index(model->rowCount()-1,0));
+            ui->treeView->setMinimumHeight(rect.bottom()
+                    + ui->treeView->viewport()->pos().y() + 10);
+        });
     }
 }
 
