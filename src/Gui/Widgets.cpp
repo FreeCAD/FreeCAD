@@ -874,6 +874,107 @@ void UrlLabel::setUrl(const QString& u)
 
 // --------------------------------------------------------------------
 
+StatefulLabel::StatefulLabel(QWidget* parent)
+    : QLabel(parent)
+{
+}
+
+StatefulLabel::~StatefulLabel()
+{
+}
+
+QString StatefulLabel::state() const
+{
+    return _state;
+}
+
+void StatefulLabel::setDefaultStyle(const QString& defaultStyle)
+{
+    _defaultStyle = defaultStyle;
+}
+
+void StatefulLabel::registerState(const QString& state, const QString& styleCSS,
+    const std::string& preferenceLocation,
+    const std::string& preferenceName)
+{
+    _availableStates[state] = { QColor(), QColor(), styleCSS, preferenceLocation, preferenceName };
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& color,
+    const std::string& preferenceLocation,
+    const std::string& preferenceName)
+{
+    _availableStates[state] = {color, QColor(), QString(), preferenceLocation, preferenceName};
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& foreground, const QColor& background,
+    const std::string& preferenceLocation,
+    const std::string& preferenceName)
+{
+    _availableStates[state] = { foreground, background, QString(), preferenceLocation, preferenceName };
+}
+
+void StatefulLabel::setState(const QString& state)
+{
+    _state = state;
+    if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
+        // Order of precedence: first, check if the user has set this in their preferences:
+        if (!entry->second.preferenceLocation.empty() && !entry->second.preferenceString.empty()) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(entry->second.preferenceLocation.c_str());
+            
+            // First, try to see if it's just stored a color (as an unsigned int):
+            auto availableColorPrefs = hGrp->GetUnsignedMap();
+            for (const auto &unsignedEntry : availableColorPrefs) {
+                if (unsignedEntry.first == entry->second.preferenceString) {
+                    // Convert the stored Uint into usable color data:
+                    unsigned int col = unsignedEntry.second;
+                    QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+                    this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    return;
+                }
+            }
+
+            // If not, try to see if there's an entire style string set as ASCII:
+            auto availableStringPrefs = hGrp->GetASCIIMap();
+            for (const auto& stringEntry : availableStringPrefs) {
+                if (stringEntry.first == entry->second.preferenceString) {
+                    this->setStyleSheet(QString::fromStdString(stringEntry.second));
+                    return;
+                }
+            }
+        }
+
+        // If there is no preferences entry for this label, allow the stylesheet to set it, and only set to the default
+        // formatting if there is no stylesheet entry
+        if (styleSheet().isEmpty()) {
+            if (!entry->second.defaultCSS.isEmpty()) {
+                this->setStyleSheet(entry->second.defaultCSS);
+                return;
+            }
+            else {
+                auto fg = entry->second.foregroundColor;
+                auto bg = entry->second.backgroundColor;
+                QString colorEntries;
+                if (fg.isValid())
+                    colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+                if (bg.isValid())
+                    colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+                std::string tempForTesting = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries).toStdString();
+                this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries));
+                return;
+            }
+        }
+        // else the stylesheet has already set our appearance, no need to do anything
+    }
+    else {
+        if (styleSheet().isEmpty()) {
+            this->setStyleSheet(_defaultStyle);
+        }
+    }
+}
+
+// --------------------------------------------------------------------
+
 /* TRANSLATOR Gui::LabelButton */
 
 /**

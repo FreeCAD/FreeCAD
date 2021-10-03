@@ -273,6 +273,65 @@ private:
   QString _url;
 };
 
+
+/**
+ * A text label whose appearance can change based on a specified state. 
+ *
+ * The state is an arbitrary string exposed as a Qt Property (and thus available for selection via 
+ * a stylesheet). This is intended for things like messages to the user, where a message that is an 
+ * "error" might be colored differently than one that is a "warning" or a "message".
+ * 
+ * In order of style precedence for a given state: User preference > Stylesheet > Default
+ * 
+ * @author Chris Hennes
+ */
+class GuiExport StatefulLabel : public QLabel
+{
+    Q_OBJECT
+        Q_PROPERTY( QString state READ state WRITE setState)
+
+public:
+    StatefulLabel(QWidget* parent = nullptr);
+    virtual ~StatefulLabel();
+
+    QString state() const;
+
+    /** If an unrecognized state is set, use this style */
+    void setDefaultStyle(const QString &defaultStyle);
+
+    /** Register a state and its corresponding style (optionally attached to a user preference) */
+    void registerState(const QString &state, const QString &styleCSS, 
+        const std::string& preferenceLocation = std::string(), 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& color, 
+        const std::string& preferenceLocation = std::string(), 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& foreground, const QColor &background,
+        const std::string& preferenceLocation = std::string(),
+        const std::string& preferenceName = std::string());
+
+public Q_SLOTS:
+    void setState(const QString &state);
+
+private:
+    QString _state;
+
+    struct StateData {
+        QColor foregroundColor;
+        QColor backgroundColor;
+        QString defaultCSS;
+        std::string preferenceLocation;
+        std::string preferenceString;
+    };
+
+    std::map<QString, StateData> _availableStates;
+    QString _defaultStyle;
+};
+
 // ----------------------------------------------------------------------
 
 /**
