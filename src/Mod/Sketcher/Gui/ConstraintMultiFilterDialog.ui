@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>274</width>
-    <height>512</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -69,17 +69,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Non-Driving</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Horizontal</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Vertical</string>
+       <string>Reference</string>
       </property>
      </item>
      <item>
@@ -90,6 +80,16 @@
      <item>
       <property name="text">
        <string>Point on Object</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Vertical</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Horizontal</string>
       </property>
      </item>
      <item>
@@ -124,17 +124,17 @@
      </item>
      <item>
       <property name="text">
-       <string>Distance</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>Horizontal Distance</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Vertical Distance</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Distance</string>
       </property>
      </item>
      <item>

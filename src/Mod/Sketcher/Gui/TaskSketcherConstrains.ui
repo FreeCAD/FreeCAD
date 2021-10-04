@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
+    <width>357</width>
     <height>388</height>
    </rect>
   </property>
@@ -67,7 +67,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Horizontal</string>
+         <string>Coincident</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Point on Object</string>
         </property>
        </item>
        <item>
@@ -77,12 +82,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Coincident</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Point on Object</string>
+         <string>Horizontal</string>
         </property>
        </item>
        <item>
@@ -117,17 +117,17 @@
        </item>
        <item>
         <property name="text">
-         <string>Distance</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Horizontal Distance</string>
         </property>
        </item>
        <item>
         <property name="text">
          <string>Vertical Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Distance</string>
         </property>
        </item>
        <item>
