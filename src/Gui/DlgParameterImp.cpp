@@ -1473,6 +1473,10 @@ void DlgParameterImp::doImportOrMerge(ParameterGrp *hGrp, bool merge)
     QSignalBlocker block(paramValue);
     QSignalBlocker block2(paramGroup);
 
+    // save name and tooltip of the current configuration
+    std::string name = curParamManager->GetASCII("Name");
+    std::string tooltip = curParamManager->GetASCII("ToolTip");
+
     auto iter = monitors.find(curParamManager);
     if (paramValue->currentGroup() == hGrp)
         paramValue->clear();
@@ -1510,6 +1514,16 @@ void DlgParameterImp::doImportOrMerge(ParameterGrp *hGrp, bool merge)
         e.ReportException();
         QMessageBox::critical(this, tr("Import Failed"),tr("Reading from '%1' failed.").arg( file ));
     }
+
+    // restore name and tooltip
+    if (name.empty())
+        curParamManager->RemoveASCII("Name");
+    else
+        curParamManager->SetASCII("Name", name);
+    if (tooltip.empty())
+        curParamManager->RemoveASCII("ToolTip");
+    else
+        curParamManager->SetASCII("ToolTip", tooltip);
 
     if (item) {
         for (auto &grp : hGrp->GetGroups())
