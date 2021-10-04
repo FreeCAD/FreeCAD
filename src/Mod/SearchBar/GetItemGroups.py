@@ -1,3 +1,4 @@
+print("Loaded file GetItemGroups.py")
 globalGroups = []
 
 itemGroups = None

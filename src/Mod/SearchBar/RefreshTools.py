@@ -1,3 +1,4 @@
+print("Loaded file RefreshTools.py")
 import os
 import FreeCAD as App
 

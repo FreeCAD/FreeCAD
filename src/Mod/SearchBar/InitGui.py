@@ -1,10 +1,11 @@
+print("Loaded file InitGui.py")
 # Avoid garbage collection by storing the action in a global variable
 wax = None
 
 def addToolSearchBox():
   import FreeCADGui
   from PySide import QtGui
-  import SearchBox
+  import SearchBoxLight
   global wax, sea
   mw = FreeCADGui.getMainWindow()
   mbr = mw.findChildren(QtGui.QToolBar, 'File')
@@ -13,7 +14,7 @@ def addToolSearchBox():
     # Get the first toolbar named 'File', and add 
     mbr = mbr[0]
     # Create search box widget
-    sea = SearchBox.SearchBox(getItemGroups   = lambda: __import__('GetItemGroups').getItemGroups(),
+    sea = SearchBoxLight.SearchBoxLight(getItemGroups   = lambda: __import__('GetItemGroups').getItemGroups(),
                               getToolTip      = lambda groupId, setParent: __import__('GetItemGroups').getToolTip(groupId, setParent),
                               getItemDelegate = lambda: __import__('IndentedItemDelegate').IndentedItemDelegate())
     sea.resultSelected.connect(lambda index, groupId: __import__('GetItemGroups').onResultSelected(index, groupId))

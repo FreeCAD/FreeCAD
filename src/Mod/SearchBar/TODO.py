@@ -1,3 +1,4 @@
+print("Loaded file TODO.py")
 import os
 import FreeCAD as App
 from PySide import QtGui

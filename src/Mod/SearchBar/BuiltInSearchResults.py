@@ -1,3 +1,4 @@
+print("Loaded file BuiltInSearchResults.py")
 # You can add your own result proviers and action/tooltip handlers, by importing this module and calling the registration functions as follows.
 # We use wrapper functions which import the actual implementation and call it, in order to avoid loading too much code during startup.
 
@@ -22,7 +23,7 @@ SearchResults.registerResultHandler('toolbar',
 SearchResults.registerResultHandler('tool',
                                     action  = lambda nfo           : __import__('ResultsToolbar').subToolAction(nfo),
                                     toolTip = lambda nfo, setParent: __import__('ResultsToolbar').subToolToolTip(nfo, setParent))
-SearchResults.registerResultHandler('subtool',
+SearchResults.registerResultHandler('subTool',
                                     action  = lambda nfo           : __import__('ResultsToolbar').subToolAction(nfo),
                                     toolTip = lambda nfo, setParent: __import__('ResultsToolbar').subToolToolTip(nfo, setParent))
 SearchResults.registerResultHandler('document',

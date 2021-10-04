@@ -1,3 +1,4 @@
+print("Loaded file ResultsToolbar.py")
 from PySide import QtGui
 import FreeCADGui
 import Serialize

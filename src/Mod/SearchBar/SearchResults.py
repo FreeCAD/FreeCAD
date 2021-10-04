@@ -1,3 +1,4 @@
+print("Loaded file SearchResults.py")
 actionHandlers = { }
 toolTipHandlers = { }
 resultProvidersCached = { }

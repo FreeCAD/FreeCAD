@@ -1,3 +1,4 @@
+print("Loaded file ResultsDocument.py")
 from PySide import QtGui
 from PySide import QtCore
 import FreeCAD as App

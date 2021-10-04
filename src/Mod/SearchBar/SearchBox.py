@@ -1,6 +1,8 @@
+print("Loaded file SearchBox.py")
 import os
 from PySide import QtGui
 from PySide import QtCore
+from SearchBoxLight import SearchBoxLight
 
 globalIgnoreFocusOut = False
 
@@ -14,10 +16,33 @@ def easyToolTipWidget(html):
   return foo
 
 class SearchBox(QtGui.QLineEdit):
+  # The following block of code is present in the lightweight proxy SearchBoxLight
+  '''
   resultSelected = QtCore.Signal(int, int)
-  def __init__(self, getItemGroups, getToolTip, getItemDelegate, maxVisibleRows = 20, parent = None):
+  '''
+  @staticmethod
+  def lazyInit(self):
+    if self.isInitialized:
+      return self
+    getItemGroups = self.getItemGroups
+    getToolTip = self.getToolTip
+    getItemDelegate = self.getItemDelegate
+    maxVisibleRows = self.maxVisibleRows
+    # The following block of code is executed by the lightweight proxy SearchBoxLight
+    '''
     # Call parent cosntructor
-    super(SearchBox, self).__init__(parent)
+    super(SearchBoxLight, self).__init__(parent)
+    # Connect signals and slots
+    self.textChanged.connect(self.filterModel)
+    # Thanks to https://saurabhg.com/programming/search-box-using-qlineedit/ for indicating a few useful options
+    ico = QtGui.QIcon(':/icons/help-browser.svg')
+    #ico = QtGui.QIcon(':/icons/WhatsThis.svg')
+    self.addAction(ico, QtGui.QLineEdit.LeadingPosition)
+    self.setClearButtonEnabled(True)
+    self.setPlaceholderText('Search tools, prefs & tree')
+    self.setFixedWidth(200) # needed to avoid a change of width when the clear button appears/disappears
+    '''
+
     # Save arguments
     #self.model = model
     self.getItemGroups = getItemGroups
@@ -48,33 +73,35 @@ class SearchBox(QtGui.QLineEdit):
     self.setExtraInfoIsActive = False
     self.pendingExtraInfo = None
     # Connect signals and slots
-    self.textChanged.connect(self.filterModel)
     self.listView.clicked.connect(lambda x: self.selectResult('select', x))
     self.listView.selectionModel().selectionChanged.connect(self.onSelectionChanged)
-    # Thanks to https://saurabhg.com/programming/search-box-using-qlineedit/ for indicating a few useful options
-    ico = QtGui.QIcon(':/icons/help-browser.svg')
-    #ico = QtGui.QIcon(':/icons/WhatsThis.svg')
-    self.addAction(ico, QtGui.QLineEdit.LeadingPosition)
-    self.setClearButtonEnabled(True)
-    self.setPlaceholderText('Search tools, prefs & tree')
-    self.setFixedWidth(200) # needed to avoid a change of width when the clear button appears/disappears
     # Initialize the model with the full list (assuming the text() is empty)
-    #self.filterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
+    #self.proxyFilterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
+    self.isInitialized = True
+    return self
+
+  @staticmethod
   def refreshItemGroups(self):
     self.itemGroups = self.getItemGroups()
-    self.filterModel(self.text())
-  def focusInEvent(self, qFocusEvent):
+    self.proxyFilterModel(self.text())
+
+  @staticmethod
+  def proxyFocusInEvent(self, qFocusEvent):
     global globalIgnoreFocusOut
     if not globalIgnoreFocusOut:
       self.refreshItemGroups()
     self.showList()
-    super(SearchBox, self).focusInEvent(qFocusEvent)
-  def focusOutEvent(self, qFocusEvent):
+    super(SearchBoxLight, self).focusInEvent(qFocusEvent)
+
+  @staticmethod
+  def proxyFocusOutEvent(self, qFocusEvent):
     global globalIgnoreFocusOut
     if not globalIgnoreFocusOut:
       self.hideList()
-      super(SearchBox, self).focusOutEvent(qFocusEvent)
-  def keyPressEvent(self, qKeyEvent):
+      super(SearchBoxLight, self).focusOutEvent(qFocusEvent)
+
+  @staticmethod
+  def proxyKeyPressEvent(self, qKeyEvent):
     key = qKeyEvent.key()
     listMovementKeys = {
       QtCore.Qt.Key_Down:     lambda current, nbRows: (current + 1) % nbRows,
@@ -113,26 +140,36 @@ class SearchBox(QtGui.QLineEdit):
       self.clearFocus()
     else:
       self.showList()
-      super(SearchBox, self).keyPressEvent(qKeyEvent)
+      super(SearchBoxLight, self).keyPressEvent(qKeyEvent)
+
+  @staticmethod
   def showList(self):
     self.setFloatingWidgetsGeometry()
     if not self.listView.isVisible():
       self.listView.show()
     self.showExtraInfo()
+
+  @staticmethod
   def hideList(self):
     self.listView.hide()
     self.hideExtraInfo()
+
+  @staticmethod
   def hideExtraInfo(self):
     self.extraInfo.hide()
+
+  @staticmethod
   def selectResult(self, mode, index):
-    groupIdx = int(index.model().itemData(index.siblingAtColumn(2))[0])
+    groupId = int(index.model().itemData(index.siblingAtColumn(2))[0])
     self.hideList()
     # TODO: allow other options, e.g. some items could act as combinators / cumulative filters
     self.setText('')
-    self.filterModel(self.text())
+    self.proxyFilterModel(self.text())
     # TODO: emit index relative to the base model
-    self.resultSelected.emit(index, groupIdx)
-  def filterModel(self, userInput):
+    self.resultSelected.emit(index, groupId)
+
+  @staticmethod
+  def proxyFilterModel(self, userInput):
     # TODO: this will cause a race condition if it is accessed while being modified
     def matches(s):
       return userInput.lower() in s.lower()
@@ -169,6 +206,8 @@ class SearchBox(QtGui.QLineEdit):
     else:
       self.clearExtraInfo()
     #self.showList()
+
+  @staticmethod
   def setFloatingWidgetsGeometry(self):
     def getScreenPosition(widget):
       geo = widget.geometry()
@@ -201,7 +240,9 @@ class SearchBox(QtGui.QLineEdit):
         extraw = min(extraleftw, extraw)
     self.listView.setGeometry(x, y, w, h)
     self.extraInfo.setGeometry(extrax, y, extraw, h)
-  def onSelectionChanged(self, selected, deselected):
+
+  @staticmethod
+  def proxyOnSelectionChanged(self, selected, deselected):
     # The list has .setSelectionMode(QtGui.QAbstractItemView.SingleSelection),
     # so there is always at most one index in selected.indexes() and at most one
     # index in deselected.indexes()
@@ -215,6 +256,8 @@ class SearchBox(QtGui.QLineEdit):
         self.showExtraInfo()
     elif len(deselected) > 0:
       self.hideExtraInfo()
+
+  @staticmethod
   def setExtraInfo(self, index):
     # TODO: use an atomic swap or mutex if possible
     if self.setExtraInfoIsActive:
@@ -262,8 +305,12 @@ class SearchBox(QtGui.QLineEdit):
           break
       #print("unlock")
       self.setExtraInfoIsActive = False
+
+  @staticmethod
   def clearExtraInfo(self):
     # TODO: just clear the contents but keep the widget visible.
     self.extraInfo.hide()
+
+  @staticmethod
   def showExtraInfo(self):
     self.extraInfo.show()
