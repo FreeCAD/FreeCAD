@@ -73,7 +73,7 @@ namespace ConstraintFilter {
         1 << FilterValue::Geometric | 1 << FilterValue::Horizontal | 1 << FilterValue::Vertical | 1 << FilterValue::Coincident |
         1 << FilterValue::PointOnObject | 1 << FilterValue::Parallel | 1 << FilterValue::Perpendicular | 1 << FilterValue::Tangent |
         1 << FilterValue::Equality | 1 << FilterValue::Symmetric | 1 << FilterValue::Block | 1 << FilterValue::InternalAlignment, // Geometric = All others not being datums (1)
-        1 << FilterValue::Datums | 1 << FilterValue::NonDriving | 1 << FilterValue::Distance | 1 << FilterValue::HorizontalDistance | 1 << FilterValue::VerticalDistance | 1 << FilterValue::Radius | 1 << FilterValue::Weight | 1 << FilterValue::Diameter | 1 << FilterValue::Angle | 1 << FilterValue::SnellsLaw, // Datum = all others not being geometric (2)
+        1 << FilterValue::Datums | 1 << FilterValue::Distance | 1 << FilterValue::HorizontalDistance | 1 << FilterValue::VerticalDistance | 1 << FilterValue::Radius | 1 << FilterValue::Weight | 1 << FilterValue::Diameter | 1 << FilterValue::Angle | 1 << FilterValue::SnellsLaw, // Datum = all others not being geometric (2)
         1 << FilterValue::Named, // Named = Just this (3)
         1 << FilterValue::NonDriving, // NonDriving = Just this (4)
         1 << FilterValue::Coincident, // Coincident = Just this (5)

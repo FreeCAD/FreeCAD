@@ -1125,7 +1125,7 @@ bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
     bool visible = true;
     bool showAll = (Filter == FilterValue::All);
     bool showGeometric = (Filter == FilterValue::Geometric);
-    bool showDatums = (Filter == FilterValue::Datums);
+    bool showDatums = (Filter == FilterValue::Datums && constraint->isDriving);
     bool showNamed = (Filter == FilterValue::Named && !(constraint->Name.empty()));
     bool showNonDriving = (Filter == FilterValue::NonDriving && !constraint->isDriving);
 
