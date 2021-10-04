@@ -55,19 +55,29 @@ class FemInputWriter():
         self.analysis_type = self.solver_obj.AnalysisType
         self.document = self.analysis.Document
         # working dir
-        self.dir_name = dir_name
         # if dir_name was not given or if it exists but is not empty: create a temporary dir
         # Purpose: makes sure the analysis can be run even on wired situation
-        if not dir_name:
+        make_tmp_dir = False
+        if dir_name is None:
             FreeCAD.Console.PrintWarning(
-                "Error: FemInputWriter has no working_dir --> "
-                "we are going to make a temporary one!\n"
+                "Error: The working_dir in base input file writer class was not set. "
+                "A temporary directory is used.\n"
             )
-            self.dir_name = self.document.TransientDir.replace(
+            make_tmp_dir = True
+        elif not os.path.isdir(dir_name):
+            FreeCAD.Console.PrintWarning(
+                "Error: The working_dir: '{}' given to "
+                "base input file writer class does not exist. "
+                "A temporary directory is used.\n".format(dir_name)
+            )
+            make_tmp_dir = True
+        if make_tmp_dir is True:
+            dir_name = self.document.TransientDir.replace(
                 "\\", "/"
             ) + "/FemAnl_" + analysis_obj.Uid[-4:]
-        if not os.path.isdir(self.dir_name):
-            os.mkdir(self.dir_name)
+
+            os.mkdir(dir_name)
+        self.dir_name = dir_name
 
         # new class attributes
         self.fc_ver = FreeCAD.Version()
