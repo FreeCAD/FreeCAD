@@ -72,11 +72,12 @@ class FemInputWriter():
             )
             make_tmp_dir = True
         if make_tmp_dir is True:
-            dir_name = self.document.TransientDir.replace(
-                "\\", "/"
-            ) + "/FemAnl_" + analysis_obj.Uid[-4:]
-
-            os.mkdir(dir_name)
+            from tempfile import mkdtemp
+            dir_name = mkdtemp(prefix="fcfem_")
+            FreeCAD.Console.PrintWarning(
+                "The working directory '{}' was created and will be used."
+                .format(dir_name)
+            )
         self.dir_name = dir_name
 
         # new class attributes
