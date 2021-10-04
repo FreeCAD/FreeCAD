@@ -227,7 +227,7 @@ private:
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
                                           "Oet|dp",
-                                          kwList, &objects, "utf-8", &fileNamePy,
+                                          kwList, &objects, &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();
         }
