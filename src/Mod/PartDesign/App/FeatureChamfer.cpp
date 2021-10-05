@@ -151,18 +151,23 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
+        bool failed = false;
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
             aSFT.LimitTolerance(shape.getShape(), Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
             Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape.getShape());
             aSfs->Perform();
             shape.setShape(aSfs->Shape(),false);
-            if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-            }
+            if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False))
+                failed = true;
         }
-        shape = refineShapeIfActive(shape);
-        this->Shape.setValue(getSolid(shape));
+        if (!failed) {
+            shape = refineShapeIfActive(shape);
+            shape = getSolid(shape);
+        }
+        this->Shape.setValue(shape);
+        if (failed)
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
