@@ -3008,14 +3008,10 @@ TopoShape &TopoShape::makEShape(const char *maker,
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
-    if (tol > 0.0) {
+    if (tol > 0.0)
         mk->SetFuzzyValue(tol);
-        mk->Build();
-        makEShape(*mk,_shapes,op);
-    } else {
-        mk->Build();
-        makEShape(*mk,shapes,op);
-    }
+    mk->Build();
+    makEShape(*mk,inputs,op);
 
     if(buildShell)
         makEShell();
