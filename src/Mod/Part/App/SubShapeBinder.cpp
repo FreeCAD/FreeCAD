@@ -57,6 +57,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <App/Link.h>
 #include <App/MappedElement.h>
 #include <App/Part.h>
+#include <App/Origin.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
@@ -1190,6 +1191,14 @@ SubShapeBinder::import(const App::SubObjectT &feature,
                     "Failed to resolve relative link: "
                     << editObjT.getSubObjectFullName() << " -> "
                     << feature.getSubObjectFullName());
+
+        if (link->isDerivedFrom(App::Origin::getClassTypeId())) {
+            auto feat = link->getSubObject(linkSub.c_str());
+            if (feat) {
+                link = feat;
+                linkSub.clear();
+            }
+        }
 
         resolved = App::SubObjectT(link, linkSub.c_str());
         if (link == container
