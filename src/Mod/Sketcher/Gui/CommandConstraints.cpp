@@ -994,7 +994,7 @@ public:
         SelType newSelType = SelUnknown;
         auto sketch = sketchgui->getSketchObject();
         if (sketch->geoIdFromShapeType(element.c_str(), selIdPair.GeoId, selIdPair.PosId)) {
-            if (selIdPair.GeoId == Sketcher::GeoEnum::RtPnt)
+            if (selIdPair.GeoId == Sketcher::GeoEnum::RtPnt && selIdPair.PosId == Sketcher::start)
                 newSelType = (allowedSelTypes & SelRoot) ? SelRoot : SelVertexOrRoot;
             else if (selIdPair.GeoId == Sketcher::GeoEnum::HAxis)
                 newSelType = (allowedSelTypes & SelHAxis) ? SelHAxis : SelEdgeOrAxis;
