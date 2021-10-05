@@ -44,35 +44,3 @@ class SearchBoxLight(QtGui.QLineEdit):
     self.proxyOnSelectionChanged(*args, **kwargs)
   def filterModel(self, *args, **kwargs):
     self.proxyFilterModel(*args, **kwargs)
-
-#    .focusInEvent(self, qFocusEvent)
-#    
-#  def focusInEvent(self, qFocusEvent):
-#  def focusOutEvent(self, qFocusEvent):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.focusOutEvent(self, qFocusEvent)
-#  def keyPressEvent(self, qKeyEvent):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.keyPressEvent(self, qKeyEvent)
-#  def showList(self):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.showList(self)
-#  def hideList(self):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.hideList(self)
-#  def hideExtraInfo(self):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.hideExtraInfo(self)
-#  def showExtraInfo(self):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.showExtraInfo(self)
-#  def filterModel(self, userInput):
-#    import SearchBox
-#    SearchBox.SearchBox.lazyInit(self)
-#    SearchBox.SearchBox.filterModel(self, userInput)

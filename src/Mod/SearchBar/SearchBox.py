@@ -2,6 +2,7 @@ print("Loaded file SearchBox.py")
 import os
 from PySide import QtGui
 from PySide import QtCore
+import FreeCADGui # just used for FreeCADGui.updateGui()
 from SearchBoxLight import SearchBoxLight
 
 globalIgnoreFocusOut = False
@@ -77,6 +78,7 @@ class SearchBox(QtGui.QLineEdit):
     self.listView.selectionModel().selectionChanged.connect(self.onSelectionChanged)
     # Initialize the model with the full list (assuming the text() is empty)
     #self.proxyFilterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
+    self.firstShowList = True
     self.isInitialized = True
     return self
 
@@ -87,6 +89,15 @@ class SearchBox(QtGui.QLineEdit):
 
   @staticmethod
   def proxyFocusInEvent(self, qFocusEvent):
+    if self.firstShowList:
+      mdl = QtGui.QStandardItemModel()
+      mdl.appendRow([QtGui.QStandardItem(genericToolIcon, 'Please wait, loading results from cache…'),
+                     QtGui.QStandardItem('0'),
+                     QtGui.QStandardItem('-1')])
+      self.proxyModel.setSourceModel(mdl)
+      self.showList()
+      self.firstShowList = False
+      FreeCADGui.updateGui()
     global globalIgnoreFocusOut
     if not globalIgnoreFocusOut:
       self.refreshItemGroups()
