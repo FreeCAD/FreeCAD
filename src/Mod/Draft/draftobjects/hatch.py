@@ -30,7 +30,7 @@ from draftutils.translate import translate, QT_TRANSLATE_NOOP
 
 
 
-class Draft_Hatch_Object:
+class Hatch:
 
 
     def __init__(self,obj):
@@ -41,12 +41,6 @@ class Draft_Hatch_Object:
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
-        if not "Placement" in pl:
-            obj.addProperty("App::PropertyPlacement","Placement","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        if not "Shape" in pl:
-            obj.addProperty("Part::PropertyPartShape","Shape","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Hatch",
                             QT_TRANSLATE_NOOP("App::Property","The base object used by this object"))
@@ -103,23 +97,30 @@ class Draft_Hatch_Object:
         pla = obj.Placement
         shapes = []
         for face in obj.Base.Shape.Faces:
-            face = face.copy()
-            if obj.Translate:
-                bpoint = face.CenterOfMass
-                norm = face.normalAt(0,0)
-                fpla = FreeCAD.Placement(bpoint,FreeCAD.Rotation(FreeCAD.Vector(0,0,1),norm))
-                face.Placement = face.Placement.multiply(fpla.inverse())
-            if obj.Rotation:
-                face.rotate(FreeCAD.Vector(),FreeCAD.Vector(0,0,1),obj.Rotation)
-            shape = TechDraw.makeGeomHatch(face,obj.Scale,obj.Pattern,obj.File)
-            if obj.Rotation:
-                shape.rotate(FreeCAD.Vector(),FreeCAD.Vector(0,0,1),-obj.Rotation)
-            if obj.Translate:
-                shape.Placement = shape.Placement.multiply(fpla)
-            shapes.append(shape)
+            if face.findPlane(): # Only planar faces.
+                face = face.copy()
+                if obj.Translate:
+                    e = face.Edges[0] # Todo: check for almost zero-length edge.
+                    sta = e.firstVertex().Point
+                    end = e.lastVertex().Point
+                    u = end.sub(sta).normalize()
+                    w = face.normalAt(0, 0)
+                    v = w.cross(u)
+                    m = FreeCAD.Matrix(u.x, v.x, w.x, sta.x,
+                                       u.y, v.y, w.y, sta.y,
+                                       u.z, v.z, w.z, sta.z,
+                                       0.0, 0.0, 0.0, 1.0)
+                    face = face.transformGeometry(m.inverse()).Faces[0]
+                if obj.Rotation.Value:
+                    face.rotate(FreeCAD.Vector(), FreeCAD.Vector(0,0,1), -obj.Rotation)
+                shape = TechDraw.makeGeomHatch(face, obj.Scale, obj.Pattern, obj.File)
+                if obj.Rotation.Value:
+                    shape.rotate(FreeCAD.Vector(), FreeCAD.Vector(0,0,1), obj.Rotation)
+                if obj.Translate:
+                    shape = shape.transformGeometry(m)
+                shapes.append(shape)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
-            obj.Placement = pla
 
     def getPatterns(self,filename):
 
