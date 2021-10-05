@@ -183,6 +183,7 @@ def showPreselectInfo():
         return
 
     txt += '\nPlacement: %s' % _pla_tostr(shape.Placement)
+    txt += '\nTolerance: %g' % shape.Tolerance
     if shape.ShapeType == 'Vertex':
         FreeCADGui.Selection.setPreselectionText(txt)
         return
