@@ -2578,6 +2578,8 @@ TopoShape &TopoShape::makEFace(const TopoShape &shape,
                                const gp_Pln *pln)
 {
     std::vector<TopoShape> shapes;
+    if (shape.isNull())
+        HANDLE_NULL_SHAPE;
     if(shape.getShape().ShapeType() == TopAbs_COMPOUND)
         shapes = shape.getSubTopoShapes();
     else
