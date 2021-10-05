@@ -1062,6 +1062,21 @@ const std::vector<const char *>& Feature::getElementTypes(bool all) const
     return res;
 }
 
+Feature *Feature::create(const TopoShape &s, const char *name, App::Document *doc)
+{
+    if (!name || !name[0])
+        name = "Shape";
+    if (!doc) {
+        doc = App::GetApplication().getActiveDocument();
+        if (!doc)
+            doc = App::GetApplication().newDocument();
+    }
+    auto res = static_cast<Part::Feature*>(doc->addObject("Part::Feature", name));
+    res->Shape.setValue(s);
+    res->purgeTouched();
+    return res;
+}
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(Part::FilletBase, Part::Feature)

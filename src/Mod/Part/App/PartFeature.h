@@ -150,6 +150,10 @@ public:
 
     boost::signals2::signal<void (App::Document *)> signalMapShapeColors;
 
+    static Feature *create(const TopoShape &s,
+                           const char *name = nullptr,
+                           App::Document *doc = nullptr);
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;

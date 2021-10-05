@@ -222,22 +222,6 @@ namespace bio = boost::iostreams;
 #define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
 #define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
-static inline void showShape(const TopoDS_Shape &s, const char *name = nullptr) {
-#ifdef FC_DEBUG
-    if (!name) name = "shape";
-    static_cast<Part::Feature*>(App::GetApplication().getActiveDocument()->addObject(
-                "Part::Feature", name))->Shape.setValue(s);
-#endif
-}
-
-static inline void showShape(const TopoShape &s, const char *name = nullptr) {
-#ifdef FC_DEBUG
-    if (!name) name = "shape";
-    static_cast<Part::Feature*>(App::GetApplication().getActiveDocument()->addObject(
-                "Part::Feature", name))->Shape.setValue(s);
-#endif
-}
-
 static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) {
     if(shape.isNull())
         HANDLE_NULL_INPUT;
