@@ -189,7 +189,7 @@ def init_toolbar(workbench, toolbar, cmd_list):
         The name of the toolbar.
 
     cmd_list: list of strings or list of strings and tuples
-        See f.e. the return value of get_draft_drawing_commands_temp.
+        See f.e. the return value of get_draft_drawing_commands.
     """
     for cmd in cmd_list:
         if isinstance(cmd, tuple):
@@ -212,7 +212,7 @@ def init_menu(workbench, menu_list, cmd_list):
         submenus (if any), are added to the last (sub)menu in the list.
 
     cmd_list: list of strings or list of strings and tuples
-        See f.e. the return value of get_draft_drawing_commands_temp.
+        See f.e. the return value of get_draft_drawing_commands.
     """
     for cmd in cmd_list:
         if isinstance(cmd, tuple):
