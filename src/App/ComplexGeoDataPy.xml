@@ -82,12 +82,6 @@
       </Documentation>
       <Parameter Name="Placement" Type="Object" />
     </Attribute>
-    <Attribute Name="Matrix" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Get the current transformation of the object as matrix</UserDocu>
-      </Documentation>
-      <Parameter Name="Matrix" Type="Object" />
-    </Attribute>
     <Attribute Name="Tag">
       <Documentation>
         <UserDocu>Geometry Tag</UserDocu>

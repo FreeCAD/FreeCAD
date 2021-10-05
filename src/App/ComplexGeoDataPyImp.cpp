@@ -41,7 +41,7 @@ using namespace Data;
 using namespace Base;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ComplexGeoDataPy::representation(void) const
+std::string ComplexGeoDataPy::representation() const
 {
     return std::string("<ComplexGeoData object>");
 }
@@ -78,8 +78,8 @@ PyObject* ComplexGeoDataPy::countSubElements(PyObject *args)
 PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
 {
     char *type;
-    int index;
-    if (!PyArg_ParseTuple(args, "si", &type, &index))
+    unsigned long index;
+    if (!PyArg_ParseTuple(args, "sk", &type, &index))
         return nullptr;
 
     std::vector<Base::Vector3d> points;
@@ -104,9 +104,9 @@ PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
         it = facets.begin(); it != facets.end(); ++it) {
         Py::Tuple f(3);
-        f.setItem(0,Py::Int((int)it->I1));
-        f.setItem(1,Py::Int((int)it->I2));
-        f.setItem(2,Py::Int((int)it->I3));
+        f.setItem(0,Py::Int(int(it->I1)));
+        f.setItem(1,Py::Int(int(it->I2)));
+        f.setItem(2,Py::Int(int(it->I3)));
         facet.append(f);
     }
     tuple.setItem(1, facet);
@@ -315,7 +315,7 @@ Py::Object ComplexGeoDataPy::getCenterOfGravity() const
     throw Py::RuntimeError("Cannot get center of gravity");
 }
 
-Py::Object ComplexGeoDataPy::getPlacement(void) const
+Py::Object ComplexGeoDataPy::getPlacement() const
 {
     return Py::Placement(getComplexGeoDataPtr()->getPlacement());
 }
@@ -334,40 +334,40 @@ void ComplexGeoDataPy::setPlacement(Py::Object arg)
     }
 }
 
-Py::Object ComplexGeoDataPy::getMatrix(void) const
+Py::Int ComplexGeoDataPy::getTag() const
 {
-    return Py::Matrix(getComplexGeoDataPtr()->getTransform());
-}
-
-// FIXME would be better to call it setTransform() as in all other interfaces...
-void ComplexGeoDataPy::setMatrix(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::MatrixPy::Type))) {
-        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(p)->value();
-        getComplexGeoDataPtr()->setTransform(mat);
-    }
-    else {
-        std::string error = std::string("type must be 'Matrix', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Int ComplexGeoDataPy::getTag() const {
     return Py::Int(getComplexGeoDataPtr()->Tag);
 }
 
-void ComplexGeoDataPy::setTag(Py::Int tag) {
+void ComplexGeoDataPy::setTag(Py::Int tag)
+{
     getComplexGeoDataPtr()->Tag = tag;
 }
 
-PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ComplexGeoDataPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    // Support for backward compatibility
+    if (strcmp(attr, "Matrix") == 0) {
+        Py::Matrix mat(getComplexGeoDataPtr()->getTransform());
+        return Py::new_reference_to(mat);
+    }
+    return nullptr;
 }
 
-int ComplexGeoDataPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int ComplexGeoDataPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
+    // Support for backward compatibility
+    if (strcmp(attr, "Matrix") == 0) {
+        if (PyObject_TypeCheck(obj, &(Base::MatrixPy::Type))) {
+            Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
+            getComplexGeoDataPtr()->setTransform(mat);
+            return 1;
+        }
+        else {
+            std::string error = std::string("type must be 'Matrix', not ");
+            error += obj->ob_type->tp_name;
+            throw Py::TypeError(error);
+        }
+    }
     return 0;
 }
