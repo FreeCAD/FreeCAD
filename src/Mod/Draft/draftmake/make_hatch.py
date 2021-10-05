@@ -23,12 +23,12 @@
 """This module contains FreeCAD commands for the Draft workbench"""
 
 import FreeCAD
-from draftobjects.hatch import Draft_Hatch_Object
+from draftobjects.hatch import Hatch
 from draftviewproviders.view_hatch import Draft_Hatch_ViewProvider
 
-def makeHatch(baseobject, filename, pattern, scale, rotation):
+def make_hatch(baseobject, filename, pattern, scale, rotation):
 
-    """makeHatch(baseobject, filename, pattern, scale, rotation): Creates and returns a
+    """make_hatch(baseobject, filename, pattern, scale, rotation): Creates and returns a
     hatch object made by applying the given pattern of the given PAT file to the faces of
     the given base object. Given scale and rotation factors are applied to the hatch object.
     The result is a Part-based object created in the active document."""
@@ -36,7 +36,7 @@ def makeHatch(baseobject, filename, pattern, scale, rotation):
     if not FreeCAD.ActiveDocument:
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Hatch")
-    Draft_Hatch_Object(obj)
+    Hatch(obj)
     obj.Base = baseobject
     obj.File = filename
     obj.Pattern = pattern
@@ -44,5 +44,3 @@ def makeHatch(baseobject, filename, pattern, scale, rotation):
     obj.Rotation = rotation
     if FreeCAD.GuiUp:
         Draft_Hatch_ViewProvider(obj.ViewObject)
-
-make_hatch = makeHatch
