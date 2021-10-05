@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <memory>
+#endif
 
 #include "ComplexGeoData.h"
 
@@ -43,24 +46,52 @@ std::string ComplexGeoDataPy::representation(void) const
     return std::string("<ComplexGeoData object>");
 }
 
-PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
+PyObject* ComplexGeoDataPy::getElementTypes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    std::vector<const char*> types = getComplexGeoDataPtr()->getElementTypes();
+    Py::List list;
+    for (auto it : types) {
+        list.append(Py::String(it));
+    }
+    return Py::new_reference_to(list);
+}
+
+PyObject* ComplexGeoDataPy::countSubElements(PyObject *args)
+{
+    char *type;
+    if (!PyArg_ParseTuple(args, "s", &type))
+        return nullptr;
+
+    try {
+        unsigned long count = getComplexGeoDataPtr()->countSubElements(type);
+        return Py::new_reference_to(Py::Long(count));
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to count sub-elements from object");
+        return nullptr;
+    }
+}
+
+PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
 {
     char *type;
     int index;
     if (!PyArg_ParseTuple(args, "si", &type, &index))
-        return 0;
+        return nullptr;
 
     std::vector<Base::Vector3d> points;
     std::vector<Base::Vector3d> normals;
     std::vector<Data::ComplexGeoData::Facet> facets;
     try {
-        Data::Segment* segm = getComplexGeoDataPtr()->getSubElement(type, index);
-        getComplexGeoDataPtr()->getFacesFromSubelement(segm, points, normals, facets);
-        delete segm;
+        std::unique_ptr<Data::Segment> segm(getComplexGeoDataPtr()->getSubElement(type, index));
+        getComplexGeoDataPtr()->getFacesFromSubelement(segm.get(), points, normals, facets);
     }
     catch (...) {
         PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
-        return 0;
+        return nullptr;
     }
 
     Py::Tuple tuple(2);
@@ -82,9 +113,206 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-Py::Object ComplexGeoDataPy::getBoundBox(void) const
+PyObject* ComplexGeoDataPy::getLinesFromSubelement(PyObject *args)
+{
+    char *type;
+    int index;
+    if (!PyArg_ParseTuple(args, "si", &type, &index))
+        return nullptr;
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Line> lines;
+    try {
+        std::unique_ptr<Data::Segment> segm(getComplexGeoDataPtr()->getSubElement(type, index));
+        getComplexGeoDataPtr()->getLinesFromSubelement(segm.get(), points, lines);
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
+        return nullptr;
+    }
+
+    Py::Tuple tuple(2);
+    Py::List vertex;
+    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
+        it != points.end(); ++it)
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    tuple.setItem(0, vertex);
+    Py::List line;
+    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
+        it = lines.begin(); it != lines.end(); ++it) {
+        Py::Tuple l(2);
+        l.setItem(0,Py::Int((int)it->I1));
+        l.setItem(1,Py::Int((int)it->I2));
+        line.append(l);
+    }
+    tuple.setItem(1, line);
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* ComplexGeoDataPy::getPoints(PyObject *args)
+{
+    double accuracy = 0.05;
+    if (!PyArg_ParseTuple(args, "d", &accuracy))
+        return nullptr;
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Base::Vector3d> normals;
+    try {
+        getComplexGeoDataPtr()->getPoints(points, normals, accuracy);
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
+        return nullptr;
+    }
+
+    Py::Tuple tuple(2);
+    Py::List vertex;
+    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
+         it != points.end(); ++it) {
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    }
+    tuple.setItem(0, vertex);
+
+    Py::List normal;
+    for (std::vector<Base::Vector3d>::const_iterator it = normals.begin();
+         it != normals.end(); ++it) {
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    }
+    tuple.setItem(1, normal);
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* ComplexGeoDataPy::getLines(PyObject *args)
+{
+    double accuracy = 0.05;
+    if (!PyArg_ParseTuple(args, "d", &accuracy))
+        return nullptr;
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Line> lines;
+    try {
+        getComplexGeoDataPtr()->getLines(points, lines, accuracy);
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
+        return nullptr;
+    }
+
+    Py::Tuple tuple(2);
+    Py::List vertex;
+    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
+        it != points.end(); ++it)
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    tuple.setItem(0, vertex);
+    Py::List line;
+    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
+        it = lines.begin(); it != lines.end(); ++it) {
+        Py::Tuple l(2);
+        l.setItem(0,Py::Int((int)it->I1));
+        l.setItem(1,Py::Int((int)it->I2));
+        line.append(l);
+    }
+    tuple.setItem(1, line);
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* ComplexGeoDataPy::getFaces(PyObject *args)
+{
+    double accuracy = 0.05;
+    if (!PyArg_ParseTuple(args, "d", &accuracy))
+        return nullptr;
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Facet> facets;
+    try {
+        getComplexGeoDataPtr()->getFaces(points, facets, accuracy);
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
+        return nullptr;
+    }
+
+    Py::Tuple tuple(2);
+    Py::List vertex;
+    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
+        it != points.end(); ++it)
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    tuple.setItem(0, vertex);
+    Py::List facet;
+    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
+        it = facets.begin(); it != facets.end(); ++it) {
+        Py::Tuple f(3);
+        f.setItem(0,Py::Int((int)it->I1));
+        f.setItem(1,Py::Int((int)it->I2));
+        f.setItem(2,Py::Int((int)it->I3));
+        facet.append(f);
+    }
+    tuple.setItem(1, facet);
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* ComplexGeoDataPy::applyTranslation(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type),&obj))
+        return nullptr;
+
+    try {
+        Base::Vector3d move = static_cast<Base::VectorPy*>(obj)->value();
+        getComplexGeoDataPtr()->applyTranslation(move);
+        Py_Return;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to apply rotation");
+        return nullptr;
+    }
+}
+
+PyObject* ComplexGeoDataPy::applyRotation(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &(Base::RotationPy::Type),&obj))
+        return nullptr;
+
+    try {
+        Base::Rotation rot = static_cast<Base::RotationPy*>(obj)->value();
+        getComplexGeoDataPtr()->applyRotation(rot);
+        Py_Return;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to apply rotation");
+        return nullptr;
+    }
+}
+
+PyObject* ComplexGeoDataPy::transformGeometry(PyObject *args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&obj))
+        return nullptr;
+
+    try {
+        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
+        getComplexGeoDataPtr()->transformGeometry(mat);
+        Py_Return;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to transform geometry");
+        return nullptr;
+    }
+}
+
+Py::Object ComplexGeoDataPy::getBoundBox() const
 {
     return Py::BoundingBox(getComplexGeoDataPtr()->getBoundBox());
+}
+
+Py::Object ComplexGeoDataPy::getCenterOfGravity() const
+{
+    Base::Vector3d center;
+    if (getComplexGeoDataPtr()->getCenterOfGravity(center))
+        return Py::Vector(center);
+    throw Py::RuntimeError("Cannot get center of gravity");
 }
 
 Py::Object ComplexGeoDataPy::getPlacement(void) const
@@ -92,7 +320,7 @@ Py::Object ComplexGeoDataPy::getPlacement(void) const
     return Py::Placement(getComplexGeoDataPtr()->getPlacement());
 }
 
-void  ComplexGeoDataPy::setPlacement(Py::Object arg)
+void ComplexGeoDataPy::setPlacement(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::PlacementPy::Type))) {
@@ -112,7 +340,7 @@ Py::Object ComplexGeoDataPy::getMatrix(void) const
 }
 
 // FIXME would be better to call it setTransform() as in all other interfaces...
-void  ComplexGeoDataPy::setMatrix(Py::Object arg)
+void ComplexGeoDataPy::setMatrix(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::MatrixPy::Type))) {
