@@ -115,7 +115,7 @@ locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mo
              ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
              ]
              
-TRESHOLD = 25 # how many % must be translated for the translation to be included in FreeCAD
+THRESHOLD = 25 # how many % must be translated for the translation to be included in FreeCAD
 
 class CrowdinUpdater:
 
@@ -406,7 +406,7 @@ if __name__ == "__main__":
     if command == "status":
         status = updater.status()
         status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        print(len([item for item in status if item['translationProgress'] > TRESHOLD])," languages with status > "+str(TRESHOLD)+"%:")
+        print(len([item for item in status if item['translationProgress'] > THRESHOLD])," languages with status > "+str(THRESHOLD)+"%:")
         print("    ")
         sep = False
         prefix = ""
@@ -416,7 +416,7 @@ if __name__ == "__main__":
             suffix = "\033[0m"
         for item in status:
             if item['translationProgress'] > 0:
-                if (item['translationProgress'] < TRESHOLD) and (not sep):
+                if (item['translationProgress'] < THRESHOLD) and (not sep):
                     print("    ")
                     print("Other languages:")
                     print("    ")
@@ -464,7 +464,7 @@ if __name__ == "__main__":
         print("retrieving list of languages...")
         status = updater.status()
         status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        languages = [item['languageId'] for item in status if item['translationProgress'] > TRESHOLD]
+        languages = [item['languageId'] for item in status if item['translationProgress'] > THRESHOLD]
         applyTranslations(languages)
         print("Updating Translator.cpp...")
         for ln in languages:
@@ -474,7 +474,7 @@ if __name__ == "__main__":
         print("retrieving list of languages...")
         status = updater.status()
         status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
-        languages = [item['languageId'] for item in status if item['translationProgress'] > TRESHOLD]
+        languages = [item['languageId'] for item in status if item['translationProgress'] > THRESHOLD]
         print("Updating Translator.cpp...")
         for ln in languages:
             updateTranslatorCpp(ln)   
