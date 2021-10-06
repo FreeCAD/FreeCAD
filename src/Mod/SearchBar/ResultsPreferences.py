@@ -8,6 +8,7 @@ genericToolIcon = QtGui.QIcon(QtGui.QIcon(os.path.dirname(__file__) + '/Tango-To
 
 def getParam(grpPath, type_, name):
   return {
+    # TODO: use letter icon based on the type, as the preferences editor does
     'icon': genericToolIcon,
     'text': name,
     'toolTip': '',
