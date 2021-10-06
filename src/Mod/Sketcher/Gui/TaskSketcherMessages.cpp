@@ -59,8 +59,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 
     this->groupLayout()->addWidget(proxy);
 
-    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2));
-    connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this, bp::_1, bp::_2));
+    connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2, bp::_3, bp::_4));
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
 
@@ -72,19 +71,22 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
     else
         sketchView->getSketchObject()->noRecomputes=true;
 
-    // Set up the possible state values for the solver status label
-    const std::string paramGroup ("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), QColor("black"), paramGroup, "emptySketchMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), QColor("black"), paramGroup, "underconstrainedMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"), QColor("red"), paramGroup, "malformedConstraintMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"), QColor("orangered"), paramGroup, "conflictingConstraintMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"), QColor("red"), paramGroup, "redundantConstraintMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("partially_redundant_constraints"), QColor("royalblue"), paramGroup, "partiallyRedundantConstraintMessageColor");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("fully_constrained"), QColor("green"), paramGroup, "fullyConstrainedMessageColor");
+    // Set up the possible state values for the status label
+    ui->labelConstrainStatus->setParameterGroup("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"), QColor("black"), std::string("EmptySketchMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"), QColor("black"), std::string("UnderconstrainedMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"), QColor("red"), std::string("MalformedConstraintMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"), QColor("orangered"), std::string("ConflictingConstraintMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"), QColor("red"), std::string("RedundantConstraintMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("partially_redundant_constraints"), QColor("royalblue"), std::string("PartiallyRedundantConstraintMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("solver_failed"), QColor("red"), std::string("SolverFailedMessageColor"));
+    ui->labelConstrainStatus->registerState(QString::fromUtf8("fully_constrained"), QColor("green"), std::string("FullyConstrainedMessageColor"));
 
-    ui->labelSolverStatus->registerState(QString::fromUtf8("good"), QColor("green"), QColor(255, 255, 255, 50), paramGroup, "solverGoodMessageColor");
-    ui->labelSolverStatus->registerState(QString::fromUtf8("bad"), QColor("red"), QColor(255, 255, 255, 50), paramGroup, "solverBadMessageColor");
-    ui->labelSolverStatus->registerState(QString::fromUtf8("neutral"), QColor("black"), paramGroup, "solverNeutralMessageColor");
+    ui->labelConstrainStatusLink->setLaunchExternal(false);
+
+    // Manually connect the link since it uses "clicked()", which labels don't have natively
+    connect(ui->labelConstrainStatusLink, &Gui::UrlLabel::linkClicked,
+            this, &TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked);
 
     /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
@@ -103,22 +105,17 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
 TaskSketcherMessages::~TaskSketcherMessages()
 {
     connectionSetUp.disconnect();
-    connectionSolved.disconnect();
 }
 
-void TaskSketcherMessages::slotSetUp(const QString &state, const QString &msg)
+void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText)
 {
     ui->labelConstrainStatus->setState(state);
     ui->labelConstrainStatus->setText(msg);
+    ui->labelConstrainStatusLink->setUrl(link);
+    ui->labelConstrainStatusLink->setText(linkText);
 }
 
-void TaskSketcherMessages::slotSolved(const QString& state, const QString& msg)
-{
-    ui->labelSolverStatus->setState(state);
-    ui->labelSolverStatus->setText(msg);
-}
-
-void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &str)
+void TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked(const QString &str)
 {
     if( str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
