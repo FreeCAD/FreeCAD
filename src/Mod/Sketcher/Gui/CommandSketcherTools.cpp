@@ -879,7 +879,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
     std::vector<std::string> elementSubNames;
 
-    auto testselectvertex = [&Obj, &ss, &doc_name, &obj_name, &elementSubNames](int geoId, PointPos pos) {
+    auto testselectvertex = [&Obj, &ss, &elementSubNames](int geoId, PointPos pos) {
         ss.str(std::string());
 
         int vertex = Obj->getVertexIndexGeoPos(geoId, pos);
@@ -890,7 +890,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
         }
     };
 
-    auto testselectedge = [&ss, &doc_name, &obj_name, &elementSubNames](int geoId) {
+    auto testselectedge = [&ss, &elementSubNames](int geoId) {
         ss.str(std::string());
 
         ss << "Edge" <<  geoId + 1;
