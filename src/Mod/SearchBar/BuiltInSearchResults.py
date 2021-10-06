@@ -38,3 +38,6 @@ SearchResults.registerResultHandler('documentObject',
 SearchResults.registerResultHandler('param',
                                     action  = lambda nfo           : __import__('ResultsPreferences').paramAction(nfo),
                                     toolTip = lambda nfo, setParent: __import__('ResultsPreferences').paramToolTip(nfo, setParent))
+SearchResults.registerResultHandler('paramGroup',
+                                    action  = lambda nfo           : __import__('ResultsPreferences').paramGroupAction(nfo),
+                                    toolTip = lambda nfo, setParent: __import__('ResultsPreferences').paramGroupToolTip(nfo, setParent))
