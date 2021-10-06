@@ -76,6 +76,24 @@ class SearchBox(QtGui.QLineEdit):
     # Connect signals and slots
     self.listView.clicked.connect(lambda x: self.selectResult('select', x))
     self.listView.selectionModel().selectionChanged.connect(self.onSelectionChanged)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Down), self).activated.connect(self.listDown)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Up), self).activated.connect(self.listUp)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageDown), self).activated.connect(self.listPageDown)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_PageUp), self).activated.connect(self.listPageUp)
+
+    # Home and End do not work, for some reason.
+    #QtGui.QShortcut(QtGui.QKeySequence.MoveToEndOfDocument, self).activated.connect(self.listEnd)
+    #QtGui.QShortcut(QtGui.QKeySequence.MoveToStartOfDocument, self).activated.connect(self.listStart)
+    #QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_End), self).activated.connect(self.listEnd)
+    #QtGui.QShortcut(QtGui.QKeySequence('Home'), self).activated.connect(self.listStart)
+    
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Enter), self).activated.connect(self.listAccept)
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Return), self).activated.connect(self.listAccept)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Return'), self).activated.connect(self.listAcceptToggle)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Enter'), self).activated.connect(self.listAcceptToggle)
+    QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Space'), self).activated.connect(self.listAcceptToggle)
+
+    QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self).activated.connect(self.listCancel)
     # Initialize the model with the full list (assuming the text() is empty)
     #self.proxyFilterModel(self.text()) # This is done by refreshItemGroups on focusInEvent, because the initial loading from cache can take time
     self.firstShowList = True
@@ -112,45 +130,61 @@ class SearchBox(QtGui.QLineEdit):
       super(SearchBoxLight, self).focusOutEvent(qFocusEvent)
 
   @staticmethod
+  def movementKey(self, rowUpdate):
+    currentIndex = self.listView.currentIndex()
+    self.showList()
+    if self.listView.isEnabled():
+        currentRow = currentIndex.row()
+        nbRows = self.listView.model().rowCount()
+        if nbRows > 0:
+          newRow = rowUpdate(currentRow, nbRows)
+          index = self.listView.model().index(newRow, 0)
+          self.listView.setCurrentIndex(index)
+
+  @staticmethod
+  def proxyListDown(self): self.movementKey(lambda current, nbRows: (current + 1) % nbRows)
+  @staticmethod
+  def proxyListUp(self): self.movementKey(lambda current, nbRows: (current - 1) % nbRows)
+  @staticmethod
+  def proxyListPageDown(self): self.movementKey(lambda current, nbRows: min(current + max(1, self.maxVisibleRows / 2), nbRows - 1))
+  @staticmethod
+  def proxyListPageUp(self): self.movementKey(lambda current, nbRows: max(current - max(1, self.maxVisibleRows / 2), 0))
+  @staticmethod
+  def proxyListEnd(self): self.movementKey(lambda current, nbRows: nbRows - 1)
+  @staticmethod
+  def proxyListStart(self): self.movementKey(lambda current, nbRows: 0)
+
+  @staticmethod
+  def acceptKey(self, mode):
+    currentIndex = self.listView.currentIndex()
+    self.showList()
+    if currentIndex.isValid():
+      self.selectResult(mode, currentIndex)
+
+  @staticmethod
+  def proxyListAccept(self): self.acceptKey('select')
+  @staticmethod
+  def proxyListAcceptToggle(self): self.acceptKey('toggle')
+
+  @staticmethod
+  def cancelKey(self):
+    self.hideList()
+    self.clearFocus()
+
+  # QKeySequence::Cancel
+  @staticmethod
+  def proxyListCancel(self): self.cancelKey()
+
+  @staticmethod
   def proxyKeyPressEvent(self, qKeyEvent):
     key = qKeyEvent.key()
-    listMovementKeys = {
-      QtCore.Qt.Key_Down:     lambda current, nbRows: (current + 1) % nbRows,
-      QtCore.Qt.Key_Up:       lambda current, nbRows: (current - 1) % nbRows,
-      QtCore.Qt.Key_PageDown: lambda current, nbRows: min(current + max(1, self.maxVisibleRows / 2), nbRows - 1),
-      QtCore.Qt.Key_PageUp:   lambda current, nbRows: max(current - max(1, self.maxVisibleRows / 2), 0),
-      QtCore.Qt.Key_Home:     lambda current, nbRows: 0,
-      QtCore.Qt.Key_End:      lambda current, nbRows: nbRows - 1,
-    }
-    acceptKeys = {
-      QtCore.Qt.Key_Enter:  'select',
-      QtCore.Qt.Key_Return: 'select',
-      # space on a toolbar/category should toggle the entire category in the search results
-      QtCore.Qt.Key_Space:  'toggle',
-    }
-    cancelKeys = {
-      QtCore.Qt.Key_Escape: True,
-    }
-    
-    currentIndex = self.listView.currentIndex()
-    if key in listMovementKeys:
-      self.showList()
-      if self.listView.isEnabled():
-          currentRow = currentIndex.row()
-          nbRows = self.listView.model().rowCount()
-          if nbRows > 0:
-            newRow = listMovementKeys[key](currentRow, nbRows)
-            index = self.listView.model().index(newRow, 0)
-            self.listView.setCurrentIndex(index)
-    elif key in acceptKeys:
-      self.showList()
-      if currentIndex.isValid():
-          self.selectResult(acceptKeys[key], currentIndex)
-    elif key in cancelKeys:
-      self.hideList()
-      self.clearFocus()
+    modifiers = qKeyEvent.modifiers()
+    self.showList()
+    if key == QtCore.Qt.Key_Home and modifiers & QtCore.Qt.CTRL != 0:
+      self.listStart()
+    elif key == QtCore.Qt.Key_End and modifiers & QtCore.Qt.CTRL != 0:
+      self.listEnd()
     else:
-      self.showList()
       super(SearchBoxLight, self).keyPressEvent(qKeyEvent)
 
   @staticmethod

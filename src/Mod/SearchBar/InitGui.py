@@ -15,10 +15,11 @@ def addToolSearchBox():
     mbr = mbr[0]
     # Create search box widget
     sea = SearchBoxLight.SearchBoxLight(getItemGroups   = lambda: __import__('GetItemGroups').getItemGroups(),
-                              getToolTip      = lambda groupId, setParent: __import__('GetItemGroups').getToolTip(groupId, setParent),
-                              getItemDelegate = lambda: __import__('IndentedItemDelegate').IndentedItemDelegate())
+                                        getToolTip      = lambda groupId, setParent: __import__('GetItemGroups').getToolTip(groupId, setParent),
+                                        getItemDelegate = lambda: __import__('IndentedItemDelegate').IndentedItemDelegate())
     sea.resultSelected.connect(lambda index, groupId: __import__('GetItemGroups').onResultSelected(index, groupId))
     wax = QtGui.QWidgetAction(None)
+    wax.setWhatsThis('Use this search bar to find tools, document objects, preferences and more')
     wax.setDefaultWidget(sea)
     #mbr.addWidget(sea)
     mbr.addAction(wax)

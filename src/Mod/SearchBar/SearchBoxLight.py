@@ -34,13 +34,17 @@ class SearchBoxLight(QtGui.QLineEdit):
       SearchBox.SearchBox.lazyInit(self)
       return getattr(SearchBox.SearchBox, name)(*args, **kwargs)
     return types.MethodType(f, self)
-  def focusInEvent(self, *args, **kwargs):
-    self.proxyFocusInEvent(*args, **kwargs)
-  def focusOutEvent(self, *args, **kwargs):
-    self.proxyFocusOutEvent(*args, **kwargs)
-  def keyPressEvent(self, *args, **kwargs):
-    self.proxyKeyPressEvent(*args, **kwargs)
-  def onSelectionChanged(self, *args, **kwargs):
-    self.proxyOnSelectionChanged(*args, **kwargs)
-  def filterModel(self, *args, **kwargs):
-    self.proxyFilterModel(*args, **kwargs)
+  def focusInEvent(self, *args, **kwargs): return self.proxyFocusInEvent(*args, **kwargs)
+  def focusOutEvent(self, *args, **kwargs): return self.proxyFocusOutEvent(*args, **kwargs)
+  def keyPressEvent(self, *args, **kwargs): return self.proxyKeyPressEvent(*args, **kwargs)
+  def onSelectionChanged(self, *args, **kwargs): return self.proxyOnSelectionChanged(*args, **kwargs)
+  def filterModel(self, *args, **kwargs): return self.proxyFilterModel(*args, **kwargs)
+  def listDown(self, *args, **kwargs): return self.proxyListDown(*args, **kwargs)
+  def listUp(self, *args, **kwargs): return self.proxyListUp(*args, **kwargs)
+  def listPageDown(self, *args, **kwargs): return self.proxyListPageDown(*args, **kwargs)
+  def listPageUp(self, *args, **kwargs): return self.proxyListPageUp(*args, **kwargs)
+  def listEnd(self, *args, **kwargs): return self.proxyListEnd(*args, **kwargs)
+  def listStart(self, *args, **kwargs): return self.proxyListStart(*args, **kwargs)
+  def listAccept(self, *args, **kwargs): return self.proxyListAccept(*args, **kwargs)
+  def listAcceptToggle(self, *args, **kwargs): return self.proxyListAcceptToggle(*args, **kwargs)
+  def listCancel(self, *args, **kwargs): return self.proxyListCancel(*args, **kwargs)
