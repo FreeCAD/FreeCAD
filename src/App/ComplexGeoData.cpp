@@ -97,7 +97,7 @@ Base::Placement ComplexGeoData::getPlacement() const
                            Base::Rotation(mat));
 }
 
-void ComplexGeoData::getLinesFromSubelement(const Segment*,
+void ComplexGeoData::getLinesFromSubElement(const Segment*,
                                             std::vector<Base::Vector3d> &Points,
                                             std::vector<Line> &lines) const
 {
@@ -105,7 +105,7 @@ void ComplexGeoData::getLinesFromSubelement(const Segment*,
     (void)lines;
 }
 
-void ComplexGeoData::getFacesFromSubelement(const Segment*,
+void ComplexGeoData::getFacesFromSubElement(const Segment*,
                                             std::vector<Base::Vector3d> &Points,
                                             std::vector<Base::Vector3d> &PointNormals,
                                             std::vector<Facet> &faces) const

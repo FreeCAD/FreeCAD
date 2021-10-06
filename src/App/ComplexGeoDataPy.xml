@@ -24,12 +24,12 @@
         <UserDocu>Return the number of elements of a type</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getFacesFromSubelement" Const="true">
+    <Methode Name="getFacesFromSubElement" Const="true">
       <Documentation>
         <UserDocu>Return vertexes and faces from a sub-element</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getLinesFromSubelement" Const="true">
+    <Methode Name="getLinesFromSubElement" Const="true">
       <Documentation>
         <UserDocu>Return vertexes and lines from a sub-element</UserDocu>
       </Documentation>

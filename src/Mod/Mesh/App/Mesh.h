@@ -112,7 +112,7 @@ public:
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,

@@ -383,7 +383,7 @@ class MeshSubElement(unittest.TestCase):
         self.assertEqual(self.mesh.countSubElements("Segment"), 0)
 
     def testFacesFromSubElement(self):
-        element = self.mesh.getFacesFromSubelement("Mesh", 0)
+        element = self.mesh.getFacesFromSubElement("Mesh", 0)
         self.assertIsInstance(element, tuple)
         self.assertEqual(len(element), 2)
         self.assertEqual(len(element[0]), 8)
@@ -393,7 +393,7 @@ class MeshSubElement(unittest.TestCase):
         self.mesh.addSegment([0, 2, 4, 6, 8])
         self.assertEqual(self.mesh.countSegments(), 1)
         self.assertEqual(self.mesh.countSubElements("Segment"), 1)
-        element = self.mesh.getFacesFromSubelement("Segment", 0)
+        element = self.mesh.getFacesFromSubElement("Segment", 0)
         self.assertIsInstance(element, tuple)
         self.assertEqual(len(element), 2)
         self.assertEqual(len(element[0]), 7)

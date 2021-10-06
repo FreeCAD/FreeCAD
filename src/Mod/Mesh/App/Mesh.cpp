@@ -129,7 +129,7 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
     return nullptr;
 }
 
-void MeshObject::getFacesFromSubelement(const Data::Segment* element,
+void MeshObject::getFacesFromSubElement(const Data::Segment* element,
                                         std::vector<Base::Vector3d> &points,
                                         std::vector<Base::Vector3d> &/*pointNormals*/,
                                         std::vector<Facet> &faces) const

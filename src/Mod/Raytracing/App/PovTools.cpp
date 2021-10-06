@@ -158,7 +158,7 @@ void PovTools::writeData(const char *FileName, const char *PartName,
         std::vector<Base::Vector3d> normals;
         std::vector<Data::ComplexGeoData::Facet> facets;
         Data::Segment* segm = data->getSubElement("Face", i);
-        data->getFacesFromSubelement(segm, points, normals, facets);
+        data->getFacesFromSubElement(segm, points, normals, facets);
         delete segm;
 
         // writing per face header

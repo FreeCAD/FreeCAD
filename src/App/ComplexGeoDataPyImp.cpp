@@ -75,7 +75,7 @@ PyObject* ComplexGeoDataPy::countSubElements(PyObject *args)
     }
 }
 
-PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
+PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject *args)
 {
     char *type;
     unsigned long index;
@@ -87,7 +87,7 @@ PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     std::vector<Data::ComplexGeoData::Facet> facets;
     try {
         std::unique_ptr<Data::Segment> segm(getComplexGeoDataPtr()->getSubElement(type, index));
-        getComplexGeoDataPtr()->getFacesFromSubelement(segm.get(), points, normals, facets);
+        getComplexGeoDataPtr()->getFacesFromSubElement(segm.get(), points, normals, facets);
     }
     catch (...) {
         PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
@@ -113,7 +113,7 @@ PyObject* ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getLinesFromSubelement(PyObject *args)
+PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
 {
     char *type;
     int index;
@@ -124,7 +124,7 @@ PyObject* ComplexGeoDataPy::getLinesFromSubelement(PyObject *args)
     std::vector<Data::ComplexGeoData::Line> lines;
     try {
         std::unique_ptr<Data::Segment> segm(getComplexGeoDataPtr()->getSubElement(type, index));
-        getComplexGeoDataPtr()->getLinesFromSubelement(segm.get(), points, lines);
+        getComplexGeoDataPtr()->getLinesFromSubElement(segm.get(), points, lines);
     }
     catch (...) {
         PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");

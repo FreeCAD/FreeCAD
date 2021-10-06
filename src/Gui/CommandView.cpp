@@ -2824,7 +2824,7 @@ static std::vector<std::string> getBoxSelection(
                     continue;
                 std::vector<Base::Vector3d> points;
                 std::vector<Data::ComplexGeoData::Line> lines;
-                data->getLinesFromSubelement(segment.get(),points,lines);
+                data->getLinesFromSubElement(segment.get(),points,lines);
                 if(lines.empty()) {
                     if(points.empty())
                         continue;

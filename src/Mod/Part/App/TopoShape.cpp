@@ -3845,7 +3845,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         Normals.clear();
 }
 
-void TopoShape::getLinesFromSubelement(const Data::Segment* element,
+void TopoShape::getLinesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &vertices,
                                        std::vector<Line> &lines) const
 {
@@ -3940,7 +3940,7 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
     }
 }
 
-void TopoShape::getFacesFromSubelement(const Data::Segment* element,
+void TopoShape::getFacesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &points,
                                        std::vector<Base::Vector3d> &pointNormals,
                                        std::vector<Facet> &faces) const
