@@ -13,6 +13,9 @@ SearchResults.registerResultProvider('document',
 SearchResults.registerResultProvider('toolbar',
                                      getItemGroupsCached   = lambda: __import__('ResultsToolbar').toolbarResultsProvider(),
                                      getItemGroupsUncached = lambda: [])
+SearchResults.registerResultProvider('toolbar',
+                                     getItemGroupsCached   = lambda: [],
+                                     getItemGroupsUncached = lambda: __import__('ResultsPreferences').paramResultsProvider())
 
 SearchResults.registerResultHandler('refreshTools',
                                     action  = lambda nfo:            __import__('ResultsRefreshTools').refreshToolsAction(nfo),
@@ -32,3 +35,6 @@ SearchResults.registerResultHandler('document',
 SearchResults.registerResultHandler('documentObject',
                                     action  = lambda nfo           : __import__('ResultsDocument').documentObjectAction(nfo),
                                     toolTip = lambda nfo, setParent: __import__('ResultsDocument').documentObjectToolTip(nfo, setParent))
+SearchResults.registerResultHandler('param',
+                                    action  = lambda nfo           : __import__('ResultsPreferences').paramAction(nfo),
+                                    toolTip = lambda nfo, setParent: __import__('ResultsPreferences').paramToolTip(nfo, setParent))
