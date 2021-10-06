@@ -85,6 +85,9 @@ class Text(gui_base_original.Creator):
 
     def createObject(self):
         """Create the actual object in the current document."""
+        rot, sup, pts, fil = self.getStrings()
+        base = pts[1:-1]
+
         text_list = self.text
         text_list = [text.replace("\"","\\\"") for text in text_list]
 
@@ -108,9 +111,12 @@ class Text(gui_base_original.Creator):
         _cmd = 'Draft.make_text'
         _cmd += '('
         _cmd += string + ', '
-        _cmd += 'placement=' + DraftVecUtils.toString(self.node[0])
+        _cmd += 'placement=pl'
         _cmd += ')'
-        _cmd_list = ['_text_ = ' + _cmd,
+        _cmd_list = ['pl = FreeCAD.Placement()',
+                     'pl.Rotation.Q = ' + rot,
+                     'pl.Base = ' + base,
+                     '_text_ = ' + _cmd,
                      'Draft.autogroup(_text_)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(translate("draft", "Create Text"),
