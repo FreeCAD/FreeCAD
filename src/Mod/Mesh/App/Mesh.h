@@ -60,6 +60,21 @@ class AbstractPolygonTriangulator;
 
 namespace Mesh
 {
+
+class MeshObject;
+class MeshExport MeshSegment : public Data::Segment
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    virtual std::string getName() const {
+        return "MeshSegment";
+    }
+
+    Base::Reference<MeshObject> mesh;
+    std::unique_ptr<Mesh::Segment> segment;
+};
+
 /**
  * The MeshObject class provides an interface for the underlying MeshKernel class and
  * most of its algorithm on it.
@@ -142,7 +157,8 @@ public:
     const MeshCore::MeshKernel& getKernel() const
     { return _kernel; }
 
-    virtual Base::BoundBox3d getBoundBox()const;
+    virtual Base::BoundBox3d getBoundBox() const;
+    virtual bool getCenterOfGravity(Base::Vector3d& center) const;
 
     /** @name I/O */
     //@{
