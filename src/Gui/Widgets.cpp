@@ -893,6 +893,7 @@ void UrlLabel::setUrl(const QString& u)
 
 StatefulLabel::StatefulLabel(QWidget* parent)
     : QLabel(parent)
+    , _overridePreference(false)
 {
     // Always attach to the parameter group that stores the main FreeCAD stylesheet
     _stylesheetGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
@@ -957,10 +958,20 @@ void StatefulLabel::OnChange(Base::Subject<const char*>& rCaller, const char* rc
     }
 }
 
+void StatefulLabel::setOverridePreference(bool overridePreference)
+{
+    _overridePreference = overridePreference;
+}
+
 void StatefulLabel::setState(QString state)
 {
     _state = state;
-    std::string stateIn = state.toStdString();
+    this->ensurePolished();
+
+    // If the stylesheet insists, ignore all other logic and let it do its thing. This
+    // property is *only* set by the stylesheet.
+    if (_overridePreference)
+        return;
 
     // Check the cache first:
     if (auto style = _styleCache.find(_state); style != _styleCache.end()) {

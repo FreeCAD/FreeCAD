@@ -290,12 +290,27 @@ private:
  * "error" might be colored differently than one that is a "warning" or a "message".
  * 
  * In order of style precedence for a given state: User preference > Stylesheet > Default
+ * unless the stylesheet sets the overridePreference, in which case the stylesheet will
+ * take precedence. If a stylesheet sets styles for this widgets states, it should also
+ * set the "handledByStyle" property to ensure the style values are used, rather than the
+ * defaults.
+ * 
+ * For example, the .qss might contain:
+ * Gui--StatefulLabel {
+ *   qproperty-overridePreference: true;
+ * }
+ * Gui--StatefulLabel[state="special_state"] {
+ *   color: red;
+ * }
+ * In this case, StatefulLabels with state "special_state" will be colored red, regardless of any
+ * entry in preferences. Use the "overridePreference" stylesheet option with care!
  * 
  * @author Chris Hennes
  */
 class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*>
 {
     Q_OBJECT
+        Q_PROPERTY( bool overridePreference MEMBER _overridePreference WRITE setOverridePreference)
         Q_PROPERTY( QString state MEMBER _state WRITE setState )
 
 public:
@@ -328,9 +343,11 @@ public:
 
 public Q_SLOTS:
     void setState(QString state);
+    void setOverridePreference(bool overridePreference);
 
 private:
     QString _state;
+    bool _overridePreference;
     ParameterGrp::handle _parameterGroup;
     ParameterGrp::handle _stylesheetGroup;
 
