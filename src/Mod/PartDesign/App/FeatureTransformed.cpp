@@ -214,16 +214,21 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<std::string> subs;
         subs.emplace_back("");
         originals.emplace_back(BaseFeature.getValue(),subs);
-    } else if (body && originals.size() > 1) {
+    }
+
+    if (body) {
         originalIndices.reserve(originals.size());
         int i=0;
-        for (auto &v : originals) {
+        for (auto it=originals.begin(); it!=originals.end(); ) {
+            auto &v = *it;
             int idx;
-            if (!body->Group.find(v.first->getNameInDocument(), &idx))
+            if (!body->Group.find(v.first->getNameInDocument(), &idx)) {
+                it = originals.erase(it);
                 continue;
+            }
             originalIndices.emplace_back(idx, i++);
+            ++it;
         }
-
         // sort the original objects in history order
         std::sort(originalIndices.begin(), originalIndices.end(),
             [&](const std::pair<int,int> &a,
@@ -252,11 +257,15 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if (support.isNull())
             return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
+        // This old behavior of the first instance of pattern. It's kept for
+        // backward compatibility.
         if (_Version.getValue() > 1
+                && _Version.getValue() <= 2
                 && hasOffset
                 && SubTransform.getValue()
                 && !Base::freecad_dynamic_cast<Transformed>(baseObj)
-                && Base::freecad_dynamic_cast<FeatureAddSub>(baseObj)) {
+                && Base::freecad_dynamic_cast<FeatureAddSub>(baseObj))
+        {
             for (auto &v : originals) {
                 if (baseObj != v.first)
                     continue;
@@ -270,6 +279,75 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 break;
             }
         } 
+        else if (_Version.getValue() > 2
+                && !forceSkipFirst
+                && hasOffset
+                && SubTransform.getValue())
+        {
+            // New behavior of first instance of pattern.
+            //
+            // By right, the first instance of the pattern has no transformtion
+            // (i.e. identity transformation). But here the user has specified
+            // some transformation offset. We'll check if it is possible to
+            // apply this to the first instance of the pattern. It essentially
+            // require us to 're-write' the history, which is not always possible.
+            // Currently, we only allow it if all patterning features of the same
+            // sibling group (of this PartDesign::Transformed feature) are
+            // consecutive immediate history features. And we'll use the base
+            // of the first patterning feature as our support to start re-write
+            // the history.
+            //
+            // Note that there may be complication if one of the patterning
+            // feature is also an PartDesign::Transformed feature that has its
+            // own transform offset. It will then be not so obvious as to which
+            // base feature to choose as our support. We'll ignore this
+            // potential problem for now.
+            //
+            // Patterning features from other sibling group can always be
+            // transformed without restriction, because it does not belong to
+            // the same history group of this PartDesign::Transformed.
+            // 
+            int next = 0;
+            App::DocumentObject *obj = nullptr, *firstObj = nullptr;
+            auto siblings = body->getSiblings(this);
+            auto itSiblings = siblings.begin();
+            for (auto &v : originalIndices) {
+                obj = originals[v.second].first;
+                itSiblings = std::find(itSiblings, siblings.end(), obj);
+                if (itSiblings == siblings.end())
+                    break;
+                int idx = itSiblings - siblings.begin();
+                if (next == 0) {
+                    firstObj = obj;
+                    next = idx;
+                } else if (next != idx) {
+                    next = -1;
+                    break;
+                }
+
+                if(!obj->isDerivedFrom(FeatureAddSub::getClassTypeId())) {
+                    next = -2;
+                    break;
+                }
+
+                ++next;
+            }
+            if (next >= 0 && obj && obj != baseObj)
+                next = -2;
+            if (next < 0) {
+                FC_WARN(getFullName() << " cannot apply transformation offset to the first "
+                        << "instance of patterning feature " << obj->getFullName()
+                        << (next == -1 ? "because it skips some feature in the history"
+                                       : "because of its type"));
+            } else {
+                if (auto feature = Base::freecad_dynamic_cast<FeatureAddSub>(firstObj)) {
+                    support = feature->getBaseShape(true, false, false);
+                    if (baseObj)
+                        this->Placement.setValue(baseObj->Placement.getValue());
+                }
+                canSkipFirst = forceSkipFirst;
+            }
+        }
     }
 
     auto trsfInv = TopoShape::convert(this->Placement.getValue().toMatrix()).Inverted();
@@ -848,7 +926,7 @@ void Transformed::onChanged(const App::Property *prop) {
 void Transformed::setupObject () {
     FeatureAddSub::setupObject();
     CopyShape.setValue(false);
-    _Version.setValue(2);
+    _Version.setValue(3);
 }
 
 bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
