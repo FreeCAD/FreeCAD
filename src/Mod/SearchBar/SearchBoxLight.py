@@ -1,4 +1,3 @@
-print("Loaded file SearchBoxLight.py")
 from PySide import QtGui
 from PySide import QtCore
 

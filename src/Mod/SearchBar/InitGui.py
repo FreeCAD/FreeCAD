@@ -1,4 +1,3 @@
-print("Loaded file InitGui.py")
 # Avoid garbage collection by storing the action in a global variable
 wax = None
 

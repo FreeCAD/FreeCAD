@@ -1,4 +1,3 @@
-print("Loaded file SafeViewer.py")
 from PySide import QtGui
 
 class SafeViewer(QtGui.QWidget):

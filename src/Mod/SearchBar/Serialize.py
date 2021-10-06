@@ -1,4 +1,3 @@
-print("Loaded file Serialize.py")
 from PySide import QtCore
 from PySide import QtGui
 import json

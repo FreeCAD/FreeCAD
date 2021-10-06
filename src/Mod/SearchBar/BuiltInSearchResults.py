@@ -1,4 +1,3 @@
-print("Loaded file BuiltInSearchResults.py")
 # You can add your own result proviers and action/tooltip handlers, by importing this module and calling the registration functions as follows.
 # We use wrapper functions which import the actual implementation and call it, in order to avoid loading too much code during startup.
 

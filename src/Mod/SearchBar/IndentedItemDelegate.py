@@ -1,4 +1,3 @@
-print("Loaded file IndentedItemDelegate.py")
 from PySide import QtGui
 
 # Inspired by https://stackoverflow.com/a/5443220/324969
