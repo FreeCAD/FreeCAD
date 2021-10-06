@@ -208,7 +208,7 @@ def init_menu(workbench, menu_list, cmd_list):
         The workbench. The commands from cmd_list must be available.
 
     menu_list: list of strings
-        The main and optional submenu(s). The commands, and additonal
+        The main and optional submenu(s). The commands, and additional
         submenus (if any), are added to the last (sub)menu in the list.
 
     cmd_list: list of strings or list of strings and tuples
