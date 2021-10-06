@@ -20,6 +20,7 @@ def addToolSearchBox():
     sea.resultSelected.connect(lambda index, groupId: __import__('GetItemGroups').onResultSelected(index, groupId))
     wax = QtGui.QWidgetAction(None)
     wax.setWhatsThis('Use this search bar to find tools, document objects, preferences and more')
+    sea.setWhatsThis('Use this search bar to find tools, document objects, preferences and more')
     wax.setDefaultWidget(sea)
     #mbr.addWidget(sea)
     mbr.addAction(wax)
