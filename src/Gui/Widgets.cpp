@@ -814,6 +814,7 @@ void ColorButton::onRejected()
 
 UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
   : QLabel(parent, f)
+    , _launchExternal(true)
 {
     _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
@@ -825,6 +826,11 @@ UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
 
 UrlLabel::~UrlLabel()
 {
+}
+
+void Gui::UrlLabel::setLaunchExternal(bool l)
+{
+    _launchExternal = l;
 }
 
 void UrlLabel::enterEvent ( QEvent * )
@@ -839,31 +845,42 @@ void UrlLabel::leaveEvent ( QEvent * )
 
 void UrlLabel::mouseReleaseEvent (QMouseEvent *)
 {
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
-    Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("webbrowser");
-    if (module) {
-        // get the methods dictionary and search for the 'open' method
-        PyObject* dict = PyModule_GetDict(module);
-        PyObject* func = PyDict_GetItemString(dict, "open");
-        if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
+    if (_launchExternal) {
+        // The webbrowser Python module allows to start the system browser in an OS-independent way
+        Base::PyGILStateLocker lock;
+        PyObject* module = PyImport_ImportModule("webbrowser");
+        if (module) {
+            // get the methods dictionary and search for the 'open' method
+            PyObject* dict = PyModule_GetDict(module);
+            PyObject* func = PyDict_GetItemString(dict, "open");
+            if (func) {
+                PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
 #if PY_VERSION_HEX < 0x03090000
-            PyObject* result = PyEval_CallObject(func,args);
+                PyObject* result = PyEval_CallObject(func, args);
 #else
-            PyObject* result = PyObject_CallObject(func,args);
+                PyObject* result = PyObject_CallObject(func, args);
 #endif
-            // decrement the args and module reference
-            Py_XDECREF(result);
-            Py_DECREF(args);
-            Py_DECREF(module);
+                // decrement the args and module reference
+                Py_XDECREF(result);
+                Py_DECREF(args);
+                Py_DECREF(module);
+            }
         }
+    }
+    else {
+        // Someone else will deal with it...
+        Q_EMIT linkClicked(_url);
     }
 }
 
 QString UrlLabel::url() const
 {
     return this->_url;
+}
+
+bool Gui::UrlLabel::launchExternal() const
+{
+    return _launchExternal;
 }
 
 void UrlLabel::setUrl(const QString& u)
@@ -877,15 +894,16 @@ void UrlLabel::setUrl(const QString& u)
 StatefulLabel::StatefulLabel(QWidget* parent)
     : QLabel(parent)
 {
+    // Always attach to the parameter group that stores the main FreeCAD stylesheet
+    _stylesheetGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    _stylesheetGroup->Attach(this);
 }
 
 StatefulLabel::~StatefulLabel()
 {
-}
-
-QString StatefulLabel::state() const
-{
-    return _state;
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+    _stylesheetGroup->Detach(this);
 }
 
 void StatefulLabel::setDefaultStyle(const QString& defaultStyle)
@@ -893,52 +911,88 @@ void StatefulLabel::setDefaultStyle(const QString& defaultStyle)
     _defaultStyle = defaultStyle;
 }
 
+void StatefulLabel::setParameterGroup(const std::string& groupName)
+{
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+        
+    // Attach to the Parametergroup so we know when it changes
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());    
+    if (_parameterGroup.isValid())
+        _parameterGroup->Attach(this);
+}
+
 void StatefulLabel::registerState(const QString& state, const QString& styleCSS,
-    const std::string& preferenceLocation,
     const std::string& preferenceName)
 {
-    _availableStates[state] = { QColor(), QColor(), styleCSS, preferenceLocation, preferenceName };
+    _availableStates[state] = { QColor(), QColor(), styleCSS, preferenceName };
 }
 
 void StatefulLabel::registerState(const QString& state, const QColor& color,
-    const std::string& preferenceLocation,
     const std::string& preferenceName)
 {
-    _availableStates[state] = {color, QColor(), QString(), preferenceLocation, preferenceName};
+    _availableStates[state] = {color, QColor(), QString(), preferenceName};
 }
 
 void StatefulLabel::registerState(const QString& state, const QColor& foreground, const QColor& background,
     const std::string& preferenceLocation,
     const std::string& preferenceName)
 {
-    _availableStates[state] = { foreground, background, QString(), preferenceLocation, preferenceName };
+    _availableStates[state] = { foreground, background, QString(), preferenceName };
 }
 
-void StatefulLabel::setState(const QString& state)
+/** Observes the parameter group and clears the cache if it changes */
+void StatefulLabel::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
+{
+    auto changedItem = std::string(rcReason);
+    if (changedItem == "StyleSheet") {
+        _styleCache.clear();
+    }
+    else {
+        for (const auto& state : _availableStates) {
+            if (state.second.preferenceString == changedItem) {
+                _styleCache.erase(_styleCache.find(state.first));
+            }
+        }
+    }
+}
+
+void StatefulLabel::setState(QString state)
 {
     _state = state;
+    std::string stateIn = state.toStdString();
+
+    // Check the cache first:
+    if (auto style = _styleCache.find(_state); style != _styleCache.end()) {
+        auto test = style->second.toStdString();
+        this->setStyleSheet(style->second);
+        return;
+    }
+
     if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
         // Order of precedence: first, check if the user has set this in their preferences:
-        if (!entry->second.preferenceLocation.empty() && !entry->second.preferenceString.empty()) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(entry->second.preferenceLocation.c_str());
-            
+        if (!entry->second.preferenceString.empty()) {            
             // First, try to see if it's just stored a color (as an unsigned int):
-            auto availableColorPrefs = hGrp->GetUnsignedMap();
+            auto availableColorPrefs = _parameterGroup->GetUnsignedMap();
+            std::string lookingForGroup = entry->second.preferenceString;
             for (const auto &unsignedEntry : availableColorPrefs) {
+                std::string foundGroup = unsignedEntry.first;
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
                     QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
                     this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    _styleCache[state] = this->styleSheet();
                     return;
                 }
             }
 
             // If not, try to see if there's an entire style string set as ASCII:
-            auto availableStringPrefs = hGrp->GetASCIIMap();
+            auto availableStringPrefs = _parameterGroup->GetASCIIMap();
             for (const auto& stringEntry : availableStringPrefs) {
                 if (stringEntry.first == entry->second.preferenceString) {
                     this->setStyleSheet(QString::fromStdString(stringEntry.second));
+                    _styleCache[state] = this->styleSheet();
                     return;
                 }
             }
@@ -946,9 +1000,10 @@ void StatefulLabel::setState(const QString& state)
 
         // If there is no preferences entry for this label, allow the stylesheet to set it, and only set to the default
         // formatting if there is no stylesheet entry
-        if (styleSheet().isEmpty()) {
+        if (qApp->styleSheet().isEmpty()) {
             if (!entry->second.defaultCSS.isEmpty()) {
                 this->setStyleSheet(entry->second.defaultCSS);
+                _styleCache[state] = this->styleSheet();
                 return;
             }
             else {
@@ -959,16 +1014,21 @@ void StatefulLabel::setState(const QString& state)
                     colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
                 if (bg.isValid())
                     colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
-                std::string tempForTesting = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries).toStdString();
                 this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries));
+                _styleCache[state] = this->styleSheet();
                 return;
             }
         }
-        // else the stylesheet has already set our appearance, no need to do anything
+        // else the stylesheet sets our appearance: make sure it recalculates the appearance:
+        this->setStyleSheet(QString());
+        this->setStyle(qApp->style());
+        this->style()->unpolish(this);
+        this->style()->polish(this);
     }
     else {
         if (styleSheet().isEmpty()) {
             this->setStyleSheet(_defaultStyle);
+            _styleCache[state] = this->styleSheet();
         }
     }
 }

@@ -36,6 +36,7 @@
 #include <QToolButton>
 #include <QModelIndex>
 #include "ExpressionBinding.h"
+#include "Base/Parameter.h"
 
 namespace Gui {
 class PrefCheckBox;
@@ -254,15 +255,21 @@ class GuiExport UrlLabel : public QLabel
 {
   Q_OBJECT
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
+  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal)
 
 public:
   UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
   virtual ~UrlLabel();
 
   QString url() const;
+  bool launchExternal() const;
+  
+Q_SIGNALS:
+  void linkClicked(QString url);
 
 public Q_SLOTS:
   void setUrl( const QString &u );
+  void setLaunchExternal(bool l);
 
 protected:
   void enterEvent ( QEvent * );
@@ -271,6 +278,7 @@ protected:
 
 private:
   QString _url;
+  bool _launchExternal;
 };
 
 
@@ -285,50 +293,56 @@ private:
  * 
  * @author Chris Hennes
  */
-class GuiExport StatefulLabel : public QLabel
+class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*>
 {
     Q_OBJECT
-        Q_PROPERTY( QString state READ state WRITE setState)
+        Q_PROPERTY( QString state MEMBER _state WRITE setState )
 
 public:
     StatefulLabel(QWidget* parent = nullptr);
     virtual ~StatefulLabel();
 
-    QString state() const;
-
     /** If an unrecognized state is set, use this style */
     void setDefaultStyle(const QString &defaultStyle);
 
+    /** If any of the states have user preferences associated with them, this sets the parameter
+        group that stores those preferences. All states must be in the same parameter group, but
+        the group does not have to have entries for all of them. */
+    void setParameterGroup(const std::string& groupName);
+
     /** Register a state and its corresponding style (optionally attached to a user preference) */
     void registerState(const QString &state, const QString &styleCSS, 
-        const std::string& preferenceLocation = std::string(), 
         const std::string& preferenceName = std::string());
 
     /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
     void registerState(const QString& state, const QColor& color, 
-        const std::string& preferenceLocation = std::string(), 
         const std::string& preferenceName = std::string());
 
     /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
     void registerState(const QString& state, const QColor& foreground, const QColor &background,
-        const std::string& preferenceLocation = std::string(),
-        const std::string& preferenceName = std::string());
+        const std::string& foregroundPreference = std::string(),
+        const std::string& backgroundPreference = std::string());
+
+    /** Observes the parameter group and clears the cache if it changes */
+    void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason);
 
 public Q_SLOTS:
-    void setState(const QString &state);
+    void setState(QString state);
 
 private:
     QString _state;
+    ParameterGrp::handle _parameterGroup;
+    ParameterGrp::handle _stylesheetGroup;
 
     struct StateData {
         QColor foregroundColor;
         QColor backgroundColor;
         QString defaultCSS;
-        std::string preferenceLocation;
         std::string preferenceString;
     };
-
+    
     std::map<QString, StateData> _availableStates;
+    std::map<QString, QString> _styleCache;
     QString _defaultStyle;
 };
 
