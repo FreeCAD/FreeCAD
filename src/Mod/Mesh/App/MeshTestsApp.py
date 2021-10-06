@@ -47,6 +47,43 @@ class MeshTopoTestCases(unittest.TestCase):
         planarMeshObject = Mesh.Mesh(self.planarMesh)
         planarMeshObject.collapseFacets(range(18))
 
+    def testCorruptedFacet(self):
+        v = FreeCAD.Vector
+        mesh = Mesh.Mesh()
+        mesh.addFacet(
+        v(1.0e1, -1.0e1, 1.0e1),
+        v(1.0e1, +1.0e1, 1.0e1),
+        v(0.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, 00.0e1, 1.0e1),
+        v(+1.0e1, -1.0e1, 1.0e1))
+
+        self.assertEqual(mesh.CountFacets, 6)
+        mesh.fixIndices()
+        self.assertEqual(mesh.CountFacets, 5)
+
 
 class MeshSplitTestCases(unittest.TestCase):
     def setUp(self):
