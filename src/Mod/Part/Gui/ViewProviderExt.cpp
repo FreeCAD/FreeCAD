@@ -443,7 +443,9 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &ShapeMaterial || prop == &ShapeColor) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
-        DiffuseColor.setValue(ShapeColor.getValue());
+        App::Color c = ShapeColor.getValue();
+        c.a = Transparency.getValue()/100.0f;
+        DiffuseColor.setValue(c);
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeMaterial.getValue();
@@ -795,6 +797,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             }
             if(size && singleColor) {
                 color = DiffuseColor[0];
+                color.a = Transparency.getValue()/100.0f;
                 ret.clear();
             }
             ret["Face"] = color;
