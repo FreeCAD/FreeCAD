@@ -64,7 +64,7 @@
 
 #include <GEOMUtils.hxx>
 
-#undef _Precision_HeaderFile
+//#undef _Precision_HeaderFile
 #include <BRepBndLib.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <Bnd_Box.hxx>
