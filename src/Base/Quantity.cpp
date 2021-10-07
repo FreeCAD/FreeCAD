@@ -635,6 +635,8 @@ const std::vector<UnitInfo> &Quantity::unitInfo() {
         {"kV", 0, "KiloVolt", Quantity::KiloVolt, "kilo Volt"},
         {"mV", 0, "MilliVolt", Quantity::MilliVolt, "Milli Volt"},
 
+        {"MS", 0, "MegaSiemens", Quantity::MegaSiemens, "Mega Siemens"},
+        {"kS", 0, "KiloSiemens", Quantity::KiloSiemens, "Kilo Siemens"},
         {"S", 0, "Siemens", Quantity::Siemens, "Siemens"},
         {"mS", 0, "MilliSiemens", Quantity::MilliSiemens, "Milli Siemens"},
         {"uS", 0, "MicroSiemens", Quantity::MicroSiemens, "Micro Siemens"},
