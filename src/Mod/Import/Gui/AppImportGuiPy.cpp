@@ -321,9 +321,10 @@ private:
             return;
         }
         vp->MapFaceColor.setValue(false);
-        if(colors.size() == 1)
+        if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
-        else 
+            vp->Transparency.setValue(100 * colors.front().a);
+        } else 
             vp->DiffuseColor.setValues(colors);
     }
     virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {

@@ -40,7 +40,7 @@
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
+# include <Quantity_ColorRGBA.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <Interface_Static.hxx>
 # include <TDF_AttributeSequence.hxx>
@@ -83,16 +83,19 @@ using namespace Import;
 
 /////////////////////////////////////////////////////////////////////
 
-static inline App::Color convertColor(const Quantity_Color &c)
+static inline App::Color convertColor(const Quantity_ColorRGBA &c)
 {
     Standard_Real r, g, b;
-    c.Values(r, g, b, OCC_COLOR_SPACE);
-    return App::Color(static_cast<float>(r), static_cast<float>(g), static_cast<float>(b));
+    c.GetRGB().Values(r, g, b, OCC_COLOR_SPACE);
+    return App::Color(static_cast<float>(r),
+                      static_cast<float>(g),
+                      static_cast<float>(b),
+                      static_cast<float>(c.Alpha()));
 }
 
-static inline Quantity_Color convertColor(const App::Color &c)
+static inline Quantity_ColorRGBA convertColor(const App::Color &c)
 {
-    return Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE);
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), c.a);
 }
 
 static std::string labelName(TDF_Label label) {
@@ -134,13 +137,13 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
             ss << ", " << Part::TopoShape::shapeName(shape.ShapeType(),true);
     }
     if(aShapeTool->IsShape(label)) {
-        Quantity_Color c;
+        Quantity_ColorRGBA c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorGen,c))
-            ss << ", gc: " << c.StringName(c.Name());
+            ss << ", gc: " << c.ColorToHex(c);
         if(aColorTool->GetColor(label,XCAFDoc_ColorSurf,c))
-            ss << ", sc: " << c.StringName(c.Name());
+            ss << ", sc: " << c.ColorToHex(c);
         if(aColorTool->GetColor(label,XCAFDoc_ColorCurv,c))
-            ss << ", cc: " << c.StringName(c.Name());
+            ss << ", cc: " << c.ColorToHex(c);
     }
 
     ss << std::endl;
@@ -248,7 +251,7 @@ void ImportOCAF2::setObjectName(Info &info, TDF_Label label, bool checkExistingN
 
 bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bool noDefault) {
     bool ret = false;
-    Quantity_Color aColor;
+    Quantity_ColorRGBA aColor;
     if(aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
         App::Color c = convertColor(aColor);
         if(!check || info.faceColor!=c) {
@@ -452,7 +455,7 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 bool checkSubFaceColor = false;
                 bool checkSubEdgeColor = false;
                 App::Color faceColor,edgeColor;
-                Quantity_Color aColor;
+                Quantity_ColorRGBA aColor;
                 if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
                    aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
                 {
@@ -784,7 +787,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
             subname += App::DocumentObject::hiddenMarker();
             colors.emplace(subname,App::Color());
         } else {
-            Quantity_Color aColor;
+            Quantity_ColorRGBA aColor;
             if(aColorTool->GetColor(slabel, XCAFDoc_ColorSurf, aColor) ||
                aColorTool->GetColor(slabel, XCAFDoc_ColorGen, aColor))
             {
@@ -918,7 +921,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         childInfo.vis.push_back(vis);
         childInfo.labels.push_back(childLabel);
         childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
-        Quantity_Color aColor;
+        Quantity_ColorRGBA aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
             childInfo.colors[childInfo.plas.size()-1] = convertColor(aColor); 
         }
@@ -1169,7 +1172,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 continue;
             }
             const App::Color& c = vv.second;
-            Quantity_Color color = convertColor(c);
+            Quantity_ColorRGBA color = convertColor(c);
             auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
             if(vv.first=="Face" || vv.first=="Edge") {
                 aColorTool->SetColor(nodeLabel, color, colorType);
@@ -1424,7 +1427,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             //     setDefaultInstanceColor( override, PSA);
             //
             auto childShape = aShapeTool->GetShape(childLabel);
-            Quantity_Color col;
+            Quantity_ColorRGBA col;
             if(!aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorGen,col) &&
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorSurf,col) &&
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorCurv,col)) 
