@@ -50,6 +50,7 @@
 
 #include <XCAFDoc_ShapeMapTool.hxx>
 
+#include <boost/format.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <Base/Parameter.h>
@@ -99,6 +100,12 @@ static inline Quantity_ColorRGBA convertColor(const App::Color &c)
     return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), c.a);
 }
 
+static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGBA &c) {
+    App::Color color = convertColor(c);
+    auto toHex = [](float v) {return boost::format("%02X") % static_cast<int>(v*255);};
+    return os << "#" << toHex(color.r) << toHex(color.g) << toHex(color.b) << toHex(color.a);
+}
+
 static std::string labelName(TDF_Label label) {
     std::string txt;
     Handle(TDataStd_Name) name;
@@ -140,11 +147,11 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
     if(aShapeTool->IsShape(label)) {
         Quantity_ColorRGBA c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorGen,c))
-            ss << ", gc: " << c.ColorToHex(c);
+            ss << ", gc: " << c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorSurf,c))
-            ss << ", sc: " << c.ColorToHex(c);
+            ss << ", sc: " << c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorCurv,c))
-            ss << ", cc: " << c.ColorToHex(c);
+            ss << ", cc: " << c;
     }
 
     ss << std::endl;
