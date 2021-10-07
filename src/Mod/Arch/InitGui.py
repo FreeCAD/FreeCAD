@@ -154,7 +154,6 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.draft_modification_commands = it.get_draft_modification_commands()
         self.draft_utility_commands = it.get_draft_utility_commands_menu()
         self.draft_context_commands = it.get_draft_context_commands()
-        self.draft_line_commands = it.get_draft_line_commands()
 
         # Set up toolbars
         it.init_toolbar(self,
