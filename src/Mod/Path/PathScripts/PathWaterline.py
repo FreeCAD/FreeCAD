@@ -1290,8 +1290,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 self.showDebugObject(activeArea, 'ActiveArea_{}'.format(caCnt))
                 ofstArea = PathUtils.getOffsetArea(activeArea,
                                                    ofst,
-                                                   self.wpc,
-                                                   makeComp=False)
+                                                   self.wpc)
                 if not ofstArea:
                     data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
                     PathLog.debug('No offset area returned for cut area depth at {}.'.format(data))
@@ -1467,8 +1466,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         while cont:
             ofstArea = PathUtils.getOffsetArea(shape,
                                                ofst,
-                                               self.wpc,
-                                               makeComp=True)
+                                               self.wpc)
             if not ofstArea:
                 break
             for F in ofstArea.Faces:
