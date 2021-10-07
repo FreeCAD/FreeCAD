@@ -1063,6 +1063,11 @@ bool Sheet::isMergedCell(CellAddress address) const
     return cells.isMergedCell(address);
 }
 
+App::CellAddress Spreadsheet::Sheet::getAnchor(App::CellAddress address) const
+{
+    return cells.getAnchor(address);
+}
+
 /**
  * @brief Set column with of column \a col to \a width-
  * @param col   Index of column.

@@ -98,9 +98,12 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
             this, SLOT(rowResized(int, int, int)));
 
-    connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
-    connect(ui->cellAlias, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
-    connect(ui->cellAlias, SIGNAL(textEdited(QString)), this, SLOT(aliasChanged(QString)));
+    connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
+    connect(ui->cellContent, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellContent, &LineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellAlias, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
@@ -215,20 +218,6 @@ void SheetView::setCurrentCell(QString str)
     updateAliasLine();
 }
 
-void SheetView::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Delete) {
-        if (event->modifiers() == 0) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-        else if (event->modifiers() == Qt::ControlModifier) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-    }
-    else
-        Gui::MDIView::keyPressEvent(event);
-}
-
 void SheetView::updateContentLine()
 {
     QModelIndex i = ui->cells->currentIndex();
@@ -238,7 +227,6 @@ void SheetView::updateContentLine()
         if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
-        ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
@@ -255,7 +243,6 @@ void SheetView::updateAliasLine()
         if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
-        ui->cellAlias->setIndex(i);
         ui->cellAlias->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
@@ -322,49 +309,51 @@ void SheetView::resizeRow(int col, int newSize)
         ui->cells->setRowHeight(col, newSize);
 }
 
-void SheetView::editingFinished()
+void SheetView::editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
 {
-    if (ui->cellContent->completerActive()) {
-        ui->cellContent->hideCompleter();
-        return;
-    }
-
-    if (ui->cellAlias->completerActive()) {
-        ui->cellAlias->hideCompleter();
-        return;
-    }
-
     QModelIndex i = ui->cells->currentIndex();
 
     if (i.isValid()) {
-        QString str = ui->cellAlias->text();
-        bool aliasOkay = true;
-
-        if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
-            aliasOkay = false;
-        }
-
-        ui->cellAlias->setDocumentObject(sheet);
         ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+        ui->cells->finishEditWithMove(key, modifiers);
+    }
+}
 
-        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column()))){
-            if (!aliasOkay){
-                //do not show error message if failure to set new alias is because it is already the same string
-                std::string current_alias;
-                (void)cell->getAlias(current_alias);
-                if (str != QString::fromUtf8(current_alias.c_str())){
-                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
-                }
-            } else {
-                std::string address = CellAddress(i.row(), i.column()).toString();
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
-                                      address, str.toStdString());
-                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+void SheetView::confirmAliasChanged(const QString& text)
+{
+    bool aliasOkay = true;
+
+    ui->cellAlias->setDocumentObject(sheet);
+    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+        aliasOkay = false;
+    }
+
+    QModelIndex i = ui->cells->currentIndex();
+    if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+        if (!aliasOkay) {
+            //do not show error message if failure to set new alias is because it is already the same string
+            std::string current_alias;
+            (void)cell->getAlias(current_alias);
+            if (text != QString::fromUtf8(current_alias.c_str())) {
+                Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(text).c_str());
             }
         }
-        ui->cells->setCurrentIndex(ui->cellContent->next());
-        ui->cells->setFocus();
+        else {
+            std::string address = CellAddress(i.row(), i.column()).toString();
+            Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                address, text.toStdString());
+            Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+            ui->cells->setFocus();
+        }
     }
+}
+
+
+void SheetView::confirmContentChanged(const QString& text)
+{
+    QModelIndex i = ui->cells->currentIndex();
+    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+    ui->cells->setFocus();
 }
 
 void SheetView::aliasChanged(const QString& text)
