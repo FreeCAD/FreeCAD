@@ -71,11 +71,30 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
+
 FC_LOG_LEVEL_INIT("Import",true,true)
 
 using namespace Import;
 
 /////////////////////////////////////////////////////////////////////
+
+static inline App::Color convertColor(const Quantity_Color &c)
+{
+    Standard_Real r, g, b;
+    c.Values(r, g, b, OCC_COLOR_SPACE);
+    return App::Color(static_cast<float>(r), static_cast<float>(g), static_cast<float>(b));
+}
+
+static inline Quantity_Color convertColor(const App::Color &c)
+{
+    return Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE);
+}
 
 static std::string labelName(TDF_Label label) {
     std::string txt;
@@ -229,12 +248,11 @@ void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
     }
 }
 
-
 bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bool noDefault) {
     bool ret = false;
     Quantity_Color aColor;
     if(aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         if(!check || info.faceColor!=c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -242,7 +260,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
         }
     }
     if(!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         if(!check || info.faceColor!=c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -250,7 +268,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
         }
     }
     if(aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         // Some STEP include a curve color with the same value of the face
         // color. And this will look weird in FC. So for shape with face
         // we'll ignore the curve color, if it is the same as the face color.
@@ -369,11 +387,11 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
                    aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
                 {
-                    faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    faceColor = convertColor(aColor);
                     foundFaceColor = true;
                 }
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
-                    edgeColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    edgeColor = convertColor(aColor);
                     foundEdgeColor = true;
                     if(j==0 && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
@@ -652,7 +670,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
             if(aColorTool->GetColor(slabel, XCAFDoc_ColorSurf, aColor) ||
                aColorTool->GetColor(slabel, XCAFDoc_ColorGen, aColor))
             {
-                colors.emplace(subname,App::Color(aColor.Red(),aColor.Green(),aColor.Blue()));
+                colors.emplace(subname,convertColor(aColor));
             }
         }
     }
@@ -784,10 +802,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
         Quantity_Color aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
-            auto &color = childInfo.colors[childInfo.plas.size()-1];
-            color.r = (float)aColor.Red();
-            color.g = (float)aColor.Green();
-            color.b = (float)aColor.Blue();
+            childInfo.colors[childInfo.plas.size()-1] = convertColor(aColor); 
         }
     }
     assert(visibilities.size() == children.size());
@@ -1036,7 +1051,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 continue;
             }
             const App::Color& c = vv.second;
-            Quantity_Color color(c.r,c.g,c.b,Quantity_TOC_RGB);
+            Quantity_Color color = convertColor(c);
             auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
             if(vv.first=="Face" || vv.first=="Edge") {
                 aColorTool->SetColor(nodeLabel, color, colorType);
@@ -1277,7 +1292,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // Work around OCCT bug. If no color setting here, it will crash.
             // The culprit is at STEPCAFControl_Writer::1093 as shown below
             //
-            // surfColor = Styles.EncodeColor(Quantity_Color(1,1,1,Quantity_TOC_RGB),DPDCs,ColRGBs);
+            // surfColor = Styles.EncodeColor(Quantity_Color(1,1,1,OCC_COLOR_SPACE),DPDCs,ColRGBs);
             // PSA = Styles.MakeColorPSA ( item, surfColor, curvColor, isComponent );
             // if ( isComponent )
             //     setDefaultInstanceColor( override, PSA);
@@ -1293,7 +1308,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorCurv,col)) 
             {
                 auto &c = defaultColor;
-                aColorTool->SetColor(childLabel, Quantity_Color(c.r,c.g,c.b,Quantity_TOC_RGB), XCAFDoc_ColorGen);
+                aColorTool->SetColor(childLabel, convertColor(c), XCAFDoc_ColorGen);
                 FC_WARN(labelName(childLabel) << " set default color");
             }
             aColorTool->SetVisibility(childLabel,Standard_False);

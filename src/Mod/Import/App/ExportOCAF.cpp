@@ -95,6 +95,12 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
 
 using namespace Import;
 
@@ -321,7 +327,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
                     mat[0] = color.r;
                     mat[1] = color.g;
                     mat[2] = color.b;
-                    col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                    col.SetValues(mat[0],mat[1],mat[2],OCC_COLOR_SPACE);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
             }
@@ -334,7 +340,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
         mat[0] = color.r;
         mat[1] = color.g;
         mat[2] = color.b;
-        col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+        col.SetValues(mat[0],mat[1],mat[2],OCC_COLOR_SPACE);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 
@@ -437,7 +443,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
                             mat[0] = color.r;
                             mat[1] = color.g;
                             mat[2] = color.b;
-                            col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                            col.SetValues(mat[0],mat[1],mat[2],OCC_COLOR_SPACE);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
                     }
@@ -451,7 +457,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
                 mat[0] = color.r;
                 mat[1] = color.g;
                 mat[2] = color.b;
-                col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                col.SetValues(mat[0],mat[1],mat[2],OCC_COLOR_SPACE);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
         }
