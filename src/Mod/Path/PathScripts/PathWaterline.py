@@ -37,7 +37,9 @@ from PySide import QtCore
 try:
     import ocl
 except ImportError:
-    msg = QtCore.QCoreApplication.translate("PathWaterline", "This operation requires OpenCamLib to be installed.")
+    msg = QtCore.QCoreApplication.translate(
+        "PathWaterline", "This operation requires OpenCamLib to be installed."
+    )
     FreeCAD.Console.PrintError(msg + "\n")
     raise ImportError
     # import sys
@@ -53,7 +55,8 @@ import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -68,30 +71,35 @@ def translate(context, text, disambig=None):
 
 
 class ObjectWaterline(PathOp.ObjectOp):
-    '''Proxy object for Surfacing operation.'''
+    """Proxy object for Surfacing operation."""
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths \
-            | PathOp.FeatureHeights | PathOp.FeatureStepDown \
-            | PathOp.FeatureCoolant | PathOp.FeatureBaseFaces
+        """opFeatures(obj) ... return all standard features"""
+        return (
+            PathOp.FeatureTool
+            | PathOp.FeatureDepths
+            | PathOp.FeatureHeights
+            | PathOp.FeatureStepDown
+            | PathOp.FeatureCoolant
+            | PathOp.FeatureBaseFaces
+        )
 
     def initOperation(self, obj):
-        '''initOperation(obj) ... Initialize the operation by
-        managing property creation and property editor status.'''
+        """initOperation(obj) ... Initialize the operation by
+        managing property creation and property editor status."""
         self.propertiesReady = False
 
         self.initOpProperties(obj)  # Initialize operation-specific properties
 
         # For debugging
         if PathLog.getLevel(PathLog.thisModule()) != 4:
-            obj.setEditorMode('ShowTempObjects', 2)  # hide
+            obj.setEditorMode("ShowTempObjects", 2)  # hide
 
-        if not hasattr(obj, 'DoNotSetDefaultValues'):
+        if not hasattr(obj, "DoNotSetDefaultValues"):
             self.setEditorProperties(obj)
 
     def initOpProperties(self, obj, warn=False):
-        '''initOpProperties(obj) ... create operation specific properties'''
+        """initOpProperties(obj) ... create operation specific properties"""
         self.addNewProps = list()
 
         for (prtyp, nm, grp, tt) in self.opPropertyDefinitions():
@@ -107,143 +115,365 @@ class ObjectWaterline(PathOp.ObjectOp):
                     setattr(obj, n, ENUMS[n])
 
             if warn:
-                newPropMsg = translate('PathWaterline', 'New property added to')
-                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + '. '
-                newPropMsg += translate('PathWaterline', 'Check default value(s).')
-                FreeCAD.Console.PrintWarning(newPropMsg + '\n')
+                newPropMsg = translate("PathWaterline", "New property added to")
+                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
+                newPropMsg += translate("PathWaterline", "Check default value(s).")
+                FreeCAD.Console.PrintWarning(newPropMsg + "\n")
 
         self.propertiesReady = True
 
     def opPropertyDefinitions(self):
-        '''opPropertyDefinitions() ... return list of tuples containing operation specific properties'''
+        """opPropertyDefinitions() ... return list of tuples containing operation specific properties"""
         return [
-            ("App::PropertyBool", "ShowTempObjects", "Debug",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Show the temporary path construction objects when module is in DEBUG mode.")),
-
-            ("App::PropertyDistance", "AngularDeflection", "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.")),
-            ("App::PropertyDistance", "LinearDeflection", "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.")),
-
-            ("App::PropertyInteger", "AvoidLastX_Faces", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.")),
-            ("App::PropertyBool", "AvoidLastX_InternalFeatures", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Do not cut internal features on avoided faces.")),
-            ("App::PropertyDistance", "BoundaryAdjustment", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.")),
-            ("App::PropertyBool", "BoundaryEnforcement", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "If true, the cutter will remain inside the boundaries of the model or selected face(s).")),
-            ("App::PropertyEnumeration", "HandleMultipleFeatures", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose how to process multiple Base Geometry features.")),
-            ("App::PropertyDistance", "InternalFeaturesAdjustment", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.")),
-            ("App::PropertyBool", "InternalFeaturesCut", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Cut internal feature areas within a larger selected face.")),
-
-            ("App::PropertyEnumeration", "Algorithm", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).")),
-            ("App::PropertyEnumeration", "BoundBox", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation.")),
-            ("App::PropertyEnumeration", "ClearLastLayer", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to clear last layer in a `Multi-pass` operation.")),
-            ("App::PropertyEnumeration", "CutMode", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)")),
-            ("App::PropertyEnumeration", "CutPattern", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the geometric clearing pattern to use for the operation.")),
-            ("App::PropertyFloat", "CutPatternAngle", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The yaw angle used for certain clearing patterns")),
-            ("App::PropertyBool", "CutPatternReversed", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.")),
-            ("App::PropertyDistance", "DepthOffset", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the Z-axis depth offset from the target surface.")),
-            ("App::PropertyDistance", "IgnoreOuterAbove", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore outer waterlines above this height.")),
-            ("App::PropertyEnumeration", "LayerMode", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or mulitiple passes to final depth.")),
-            ("App::PropertyVectorDistance", "PatternCenterCustom", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for the cut pattern.")),
-            ("App::PropertyEnumeration", "PatternCenterAt", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the cut pattern.")),
-            ("App::PropertyDistance", "SampleInterval", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the sampling resolution. Smaller values quickly increase processing time.")),
-            ("App::PropertyFloat", "StepOver", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the stepover percentage, based on the tool's diameter.")),
-
-            ("App::PropertyBool", "OptimizeLinearPaths", "Optimization",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.")),
-            ("App::PropertyBool", "OptimizeStepOverTransitions", "Optimization",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable separate optimization of transitions between, and breaks within, each step over path.")),
-            ("App::PropertyDistance", "GapThreshold", "Optimization",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.")),
-            ("App::PropertyString", "GapSizes", "Optimization",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Feedback: three smallest gaps identified in the path geometry.")),
-
-            ("App::PropertyVectorDistance", "StartPoint", "Start Point",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The custom start point for the path of this operation")),
-            ("App::PropertyBool", "UseStartPoint", "Start Point",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"))
+            (
+                "App::PropertyBool",
+                "ShowTempObjects",
+                "Debug",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Show the temporary path construction objects when module is in DEBUG mode.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "AngularDeflection",
+                "Mesh Conversion",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "LinearDeflection",
+                "Mesh Conversion",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.",
+                ),
+            ),
+            (
+                "App::PropertyInteger",
+                "AvoidLastX_Faces",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "AvoidLastX_InternalFeatures",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Do not cut internal features on avoided faces."
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "BoundaryAdjustment",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "BoundaryEnforcement",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If true, the cutter will remain inside the boundaries of the model or selected face(s).",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "HandleMultipleFeatures",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose how to process multiple Base Geometry features.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "InternalFeaturesAdjustment",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "InternalFeaturesCut",
+                "Selected Geometry Settings",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Cut internal feature areas within a larger selected face.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "Algorithm",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "BoundBox",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Select the overall boundary for the operation."
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "ClearLastLayer",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set to clear last layer in a `Multi-pass` operation.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "CutMode",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "CutPattern",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the geometric clearing pattern to use for the operation.",
+                ),
+            ),
+            (
+                "App::PropertyFloat",
+                "CutPatternAngle",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "The yaw angle used for certain clearing patterns"
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "CutPatternReversed",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "DepthOffset",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the Z-axis depth offset from the target surface.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "IgnoreOuterAbove",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Ignore outer waterlines above this height."
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "LayerMode",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Complete the operation in a single pass at depth, or mulitiple passes to final depth.",
+                ),
+            ),
+            (
+                "App::PropertyVectorDistance",
+                "PatternCenterCustom",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Set the start point for the cut pattern."
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "PatternCenterAt",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose location of the center point for starting the cut pattern.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "SampleInterval",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the sampling resolution. Smaller values quickly increase processing time.",
+                ),
+            ),
+            (
+                "App::PropertyFloat",
+                "StepOver",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the stepover percentage, based on the tool's diameter.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "OptimizeLinearPaths",
+                "Optimization",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "OptimizeStepOverTransitions",
+                "Optimization",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable separate optimization of transitions between, and breaks within, each step over path.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "GapThreshold",
+                "Optimization",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.",
+                ),
+            ),
+            (
+                "App::PropertyString",
+                "GapSizes",
+                "Optimization",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Feedback: three smallest gaps identified in the path geometry.",
+                ),
+            ),
+            (
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Start Point",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The custom start point for the path of this operation",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "UseStartPoint",
+                "Start Point",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Make True, if specifying a Start Point"
+                ),
+            ),
         ]
 
     def opPropertyEnumerations(self):
         # Enumeration lists for App::PropertyEnumeration properties
         return {
-            'Algorithm': ['OCL Dropcutter', 'Experimental'],
-            'BoundBox': ['BaseBoundBox', 'Stock'],
-            'PatternCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
-            'ClearLastLayer': ['Off', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],
-            'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['None', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
-            'HandleMultipleFeatures': ['Collectively', 'Individually'],
-            'LayerMode': ['Single-pass', 'Multi-pass'],
+            "Algorithm": ["OCL Dropcutter", "Experimental"],
+            "BoundBox": ["BaseBoundBox", "Stock"],
+            "PatternCenterAt": [
+                "CenterOfMass",
+                "CenterOfBoundBox",
+                "XminYmin",
+                "Custom",
+            ],
+            "ClearLastLayer": [
+                "Off",
+                "Circular",
+                "CircularZigZag",
+                "Line",
+                "Offset",
+                "Spiral",
+                "ZigZag",
+            ],
+            "CutMode": ["Conventional", "Climb"],
+            "CutPattern": [
+                "None",
+                "Circular",
+                "CircularZigZag",
+                "Line",
+                "Offset",
+                "Spiral",
+                "ZigZag",
+            ],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
+            "HandleMultipleFeatures": ["Collectively", "Individually"],
+            "LayerMode": ["Single-pass", "Multi-pass"],
         }
 
     def opPropertyDefaults(self, obj, job):
-        '''opPropertyDefaults(obj, job) ... returns a dictionary
-        of default values for the operation's properties.'''
+        """opPropertyDefaults(obj, job) ... returns a dictionary
+        of default values for the operation's properties."""
         defaults = {
-            'OptimizeLinearPaths': True,
-            'InternalFeaturesCut': True,
-            'OptimizeStepOverTransitions': False,
-            'BoundaryEnforcement': True,
-            'UseStartPoint': False,
-            'AvoidLastX_InternalFeatures': True,
-            'CutPatternReversed': False,
-            'IgnoreOuterAbove': obj.StartDepth.Value + 0.00001,
-            'StartPoint': FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
-            'Algorithm': 'OCL Dropcutter',
-            'LayerMode': 'Single-pass',
-            'CutMode': 'Conventional',
-            'CutPattern': 'None',
-            'HandleMultipleFeatures': 'Collectively',
-            'PatternCenterAt': 'CenterOfMass',
-            'GapSizes': 'No gaps identified.',
-            'ClearLastLayer': 'Off',
-            'StepOver': 100.0,
-            'CutPatternAngle': 0.0,
-            'DepthOffset': 0.0,
-            'SampleInterval': 1.0,
-            'BoundaryAdjustment': 0.0,
-            'InternalFeaturesAdjustment': 0.0,
-            'AvoidLastX_Faces': 0,
-            'PatternCenterCustom': FreeCAD.Vector(0.0, 0.0, 0.0),
-            'GapThreshold': 0.005,
-            'AngularDeflection': 0.25,
-            'LinearDeflection': 0.0001,
+            "OptimizeLinearPaths": True,
+            "InternalFeaturesCut": True,
+            "OptimizeStepOverTransitions": False,
+            "BoundaryEnforcement": True,
+            "UseStartPoint": False,
+            "AvoidLastX_InternalFeatures": True,
+            "CutPatternReversed": False,
+            "IgnoreOuterAbove": obj.StartDepth.Value + 0.00001,
+            "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
+            "Algorithm": "OCL Dropcutter",
+            "LayerMode": "Single-pass",
+            "CutMode": "Conventional",
+            "CutPattern": "None",
+            "HandleMultipleFeatures": "Collectively",
+            "PatternCenterAt": "CenterOfMass",
+            "GapSizes": "No gaps identified.",
+            "ClearLastLayer": "Off",
+            "StepOver": 100.0,
+            "CutPatternAngle": 0.0,
+            "DepthOffset": 0.0,
+            "SampleInterval": 1.0,
+            "BoundaryAdjustment": 0.0,
+            "InternalFeaturesAdjustment": 0.0,
+            "AvoidLastX_Faces": 0,
+            "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
+            "GapThreshold": 0.005,
+            "AngularDeflection": 0.25,
+            "LinearDeflection": 0.0001,
             # For debugging
-            'ShowTempObjects': False
+            "ShowTempObjects": False,
         }
 
         warn = True
-        if hasattr(job, 'GeometryTolerance'):
+        if hasattr(job, "GeometryTolerance"):
             if job.GeometryTolerance.Value != 0.0:
                 warn = False
-                defaults['LinearDeflection'] = job.GeometryTolerance.Value
+                defaults["LinearDeflection"] = job.GeometryTolerance.Value
         if warn:
-            msg = translate('PathWaterline',
-                            'The GeometryTolerance for this Job is 0.0.')
-            msg += translate('PathWaterline',
-                             'Initializing LinearDeflection to 0.0001 mm.')
-            FreeCAD.Console.PrintWarning(msg + '\n')
+            msg = translate(
+                "PathWaterline", "The GeometryTolerance for this Job is 0.0."
+            )
+            msg += translate(
+                "PathWaterline", "Initializing LinearDeflection to 0.0001 mm."
+            )
+            FreeCAD.Console.PrintWarning(msg + "\n")
 
         return defaults
 
@@ -252,55 +482,55 @@ class ObjectWaterline(PathOp.ObjectOp):
         expMode = G = 0
         show = hide = A = B = C = 2
 
-        obj.setEditorMode('BoundaryEnforcement', hide)
-        obj.setEditorMode('InternalFeaturesAdjustment', hide)
-        obj.setEditorMode('InternalFeaturesCut', hide)
-        obj.setEditorMode('AvoidLastX_Faces', hide)
-        obj.setEditorMode('AvoidLastX_InternalFeatures', hide)
-        obj.setEditorMode('BoundaryAdjustment', hide)
-        obj.setEditorMode('HandleMultipleFeatures', hide)
-        obj.setEditorMode('OptimizeLinearPaths', hide)
-        obj.setEditorMode('OptimizeStepOverTransitions', hide)
-        obj.setEditorMode('GapThreshold', hide)
-        obj.setEditorMode('GapSizes', hide)
+        obj.setEditorMode("BoundaryEnforcement", hide)
+        obj.setEditorMode("InternalFeaturesAdjustment", hide)
+        obj.setEditorMode("InternalFeaturesCut", hide)
+        obj.setEditorMode("AvoidLastX_Faces", hide)
+        obj.setEditorMode("AvoidLastX_InternalFeatures", hide)
+        obj.setEditorMode("BoundaryAdjustment", hide)
+        obj.setEditorMode("HandleMultipleFeatures", hide)
+        obj.setEditorMode("OptimizeLinearPaths", hide)
+        obj.setEditorMode("OptimizeStepOverTransitions", hide)
+        obj.setEditorMode("GapThreshold", hide)
+        obj.setEditorMode("GapSizes", hide)
 
-        if obj.Algorithm == 'OCL Dropcutter':
+        if obj.Algorithm == "OCL Dropcutter":
             pass
-        elif obj.Algorithm == 'Experimental':
+        elif obj.Algorithm == "Experimental":
             A = B = C = 0
             expMode = G = show = hide = 2
 
             cutPattern = obj.CutPattern
-            if obj.ClearLastLayer != 'Off':
+            if obj.ClearLastLayer != "Off":
                 cutPattern = obj.ClearLastLayer
 
-            if cutPattern == 'None':
+            if cutPattern == "None":
                 show = hide = A = 2
-            elif cutPattern in ['Line', 'ZigZag']:
+            elif cutPattern in ["Line", "ZigZag"]:
                 show = 0
-            elif cutPattern in ['Circular', 'CircularZigZag']:
+            elif cutPattern in ["Circular", "CircularZigZag"]:
                 show = 2  # hide
                 hide = 0  # show
-            elif cutPattern == 'Spiral':
+            elif cutPattern == "Spiral":
                 G = hide = 0
 
-        obj.setEditorMode('CutPatternAngle', show)
-        obj.setEditorMode('PatternCenterAt', hide)
-        obj.setEditorMode('PatternCenterCustom', hide)
-        obj.setEditorMode('CutPatternReversed', A)
+        obj.setEditorMode("CutPatternAngle", show)
+        obj.setEditorMode("PatternCenterAt", hide)
+        obj.setEditorMode("PatternCenterCustom", hide)
+        obj.setEditorMode("CutPatternReversed", A)
 
-        obj.setEditorMode('ClearLastLayer', C)
-        obj.setEditorMode('StepOver', B)
-        obj.setEditorMode('IgnoreOuterAbove', B)
-        obj.setEditorMode('CutPattern', C)
-        obj.setEditorMode('SampleInterval', G)
-        obj.setEditorMode('LinearDeflection', expMode)
-        obj.setEditorMode('AngularDeflection', expMode)
+        obj.setEditorMode("ClearLastLayer", C)
+        obj.setEditorMode("StepOver", B)
+        obj.setEditorMode("IgnoreOuterAbove", B)
+        obj.setEditorMode("CutPattern", C)
+        obj.setEditorMode("SampleInterval", G)
+        obj.setEditorMode("LinearDeflection", expMode)
+        obj.setEditorMode("AngularDeflection", expMode)
 
     def onChanged(self, obj, prop):
-        if hasattr(self, 'propertiesReady'):
+        if hasattr(self, "propertiesReady"):
             if self.propertiesReady:
-                if prop in ['Algorithm', 'CutPattern']:
+                if prop in ["Algorithm", "CutPattern"]:
                     self.setEditorProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -311,7 +541,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.opApplyPropertyDefaults(obj, job, self.addNewProps)
 
         mode = 2 if PathLog.getLevel(PathLog.thisModule()) != 4 else 0
-        obj.setEditorMode('ShowTempObjects', mode)
+        obj.setEditorMode("ShowTempObjects", mode)
 
         # Repopulate enumerations in case of changes
         ENUMS = self.opPropertyEnumerations()
@@ -334,16 +564,16 @@ class ObjectWaterline(PathOp.ObjectOp):
                 prop = getattr(obj, n)
                 val = PROP_DFLTS[n]
                 setVal = False
-                if hasattr(prop, 'Value'):
+                if hasattr(prop, "Value"):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    setattr(prop, 'Value', val)
+                    setattr(prop, "Value", val)
                 else:
                     setattr(obj, n, val)
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj, job) ... initialize defaults'''
+        """opSetDefaultValues(obj, job) ... initialize defaults"""
         job = PathUtils.findParentJob(obj)
 
         self.opApplyPropertyDefaults(obj, job, self.addNewProps)
@@ -367,26 +597,44 @@ class ObjectWaterline(PathOp.ObjectOp):
             obj.OpFinalDepth.Value = -10
             obj.OpStartDepth.Value = 10
 
-        PathLog.debug('Default OpFinalDepth: {}'.format(obj.OpFinalDepth.Value))
-        PathLog.debug('Defualt OpStartDepth: {}'.format(obj.OpStartDepth.Value))
+        PathLog.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
+        PathLog.debug("Defualt OpStartDepth: {}".format(obj.OpStartDepth.Value))
 
     def opApplyPropertyLimits(self, obj):
-        '''opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values before performing main operation.'''
+        """opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values before performing main operation."""
         # Limit sample interval
         if obj.SampleInterval.Value < 0.0001:
             obj.SampleInterval.Value = 0.0001
-            PathLog.error(translate('PathWaterline', 'Sample interval limits are 0.0001 to 25.4 millimeters.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline",
+                    "Sample interval limits are 0.0001 to 25.4 millimeters.",
+                )
+            )
         if obj.SampleInterval.Value > 25.4:
             obj.SampleInterval.Value = 25.4
-            PathLog.error(translate('PathWaterline', 'Sample interval limits are 0.0001 to 25.4 millimeters.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline",
+                    "Sample interval limits are 0.0001 to 25.4 millimeters.",
+                )
+            )
 
         # Limit cut pattern angle
         if obj.CutPatternAngle < -360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error(translate('PathWaterline', 'Cut pattern angle limits are +-360 degrees.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline", "Cut pattern angle limits are +-360 degrees."
+                )
+            )
         if obj.CutPatternAngle >= 360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error(translate('PathWaterline', 'Cut pattern angle limits are +- 360 degrees.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline", "Cut pattern angle limits are +- 360 degrees."
+                )
+            )
 
         # Limit StepOver to natural number percentage
         if obj.StepOver > 100.0:
@@ -397,13 +645,23 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Limit AvoidLastX_Faces to zero and positive values
         if obj.AvoidLastX_Faces < 0:
             obj.AvoidLastX_Faces = 0
-            PathLog.error(translate('PathWaterline', 'AvoidLastX_Faces: Only zero or positive values permitted.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline",
+                    "AvoidLastX_Faces: Only zero or positive values permitted.",
+                )
+            )
         if obj.AvoidLastX_Faces > 100:
             obj.AvoidLastX_Faces = 100
-            PathLog.error(translate('PathWaterline', 'AvoidLastX_Faces: Avoid last X faces count limited to 100.'))
+            PathLog.error(
+                translate(
+                    "PathWaterline",
+                    "AvoidLastX_Faces: Avoid last X faces count limited to 100.",
+                )
+            )
 
     def opUpdateDepths(self, obj):
-        if hasattr(obj, 'Base') and obj.Base:
+        if hasattr(obj, "Base") and obj.Base:
             base, sublist = obj.Base[0]
             fbb = base.Shape.getElement(sublist[0]).BoundBox
             zmin = fbb.ZMax
@@ -416,19 +674,19 @@ class ObjectWaterline(PathOp.ObjectOp):
                         PathLog.error(e)
             obj.OpFinalDepth = zmin
         elif self.job:
-            if hasattr(obj, 'BoundBox'):
-                if obj.BoundBox == 'BaseBoundBox':
+            if hasattr(obj, "BoundBox"):
+                if obj.BoundBox == "BaseBoundBox":
                     models = self.job.Model.Group
                     zmin = models[0].Shape.BoundBox.ZMin
                     for M in models:
                         zmin = min(zmin, M.Shape.BoundBox.ZMin)
                     obj.OpFinalDepth = zmin
-                if obj.BoundBox == 'Stock':
+                if obj.BoundBox == "Stock":
                     models = self.job.Stock
                     obj.OpFinalDepth = self.job.Stock.Shape.BoundBox.ZMin
 
     def opExecute(self, obj):
-        '''opExecute(obj) ... process surface operation'''
+        """opExecute(obj) ... process surface operation"""
         PathLog.track()
 
         self.modelSTLs = list()
@@ -450,7 +708,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         FCAD = FreeCAD.ActiveDocument
 
         try:
-            dotIdx = __name__.index('.') + 1
+            dotIdx = __name__.index(".") + 1
         except Exception:
             dotIdx = 0
         self.module = __name__[dotIdx:]
@@ -468,18 +726,18 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.showDebugObjects = False
 
         # mark beginning of operation and identify parent Job
-        PathLog.info('\nBegin Waterline operation...')
+        PathLog.info("\nBegin Waterline operation...")
         startTime = time.time()
 
         # Identify parent Job
         JOB = PathUtils.findParentJob(obj)
         if JOB is None:
-            PathLog.error(translate('PathWaterline', "No JOB"))
+            PathLog.error(translate("PathWaterline", "No JOB"))
             return
         self.stockZMin = JOB.Stock.Shape.BoundBox.ZMin
 
         # set cut mode; reverse as needed
-        if obj.CutMode == 'Climb':
+        if obj.CutMode == "Climb":
             self.CutClimb = True
         if obj.CutPatternReversed is True:
             if self.CutClimb is True:
@@ -494,42 +752,72 @@ class ObjectWaterline(PathOp.ObjectOp):
         oclTool = PathSurfaceSupport.OCL_Tool(ocl, obj)
         self.cutter = oclTool.getOclTool()
         if not self.cutter:
-            PathLog.error(translate('PathWaterline', "Canceling Waterline operation. Error creating OCL cutter."))
+            PathLog.error(
+                translate(
+                    "PathWaterline",
+                    "Canceling Waterline operation. Error creating OCL cutter.",
+                )
+            )
             return
         self.toolDiam = self.cutter.getDiameter()
         self.radius = self.toolDiam / 2.0
-        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
+        self.cutOut = self.toolDiam * (float(obj.StepOver) / 100.0)
         self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
 
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
-        output = ''
-        if obj.Comment != '':
-            self.commandlist.append(Path.Command('N ({})'.format(str(obj.Comment)), {}))
-        self.commandlist.append(Path.Command('N ({})'.format(obj.Label), {}))
-        self.commandlist.append(Path.Command('N (Tool type: {})'.format(oclTool.toolType), {}))
-        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(oclTool.diameter), {}))
-        self.commandlist.append(Path.Command('N (Sample interval: {})'.format(str(obj.SampleInterval.Value)), {}))
-        self.commandlist.append(Path.Command('N (Step over %: {})'.format(str(obj.StepOver)), {}))
-        self.commandlist.append(Path.Command('N ({})'.format(output), {}))
-        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+        output = ""
+        if obj.Comment != "":
+            self.commandlist.append(Path.Command("N ({})".format(str(obj.Comment)), {}))
+        self.commandlist.append(Path.Command("N ({})".format(obj.Label), {}))
+        self.commandlist.append(
+            Path.Command("N (Tool type: {})".format(oclTool.toolType), {})
+        )
+        self.commandlist.append(
+            Path.Command(
+                "N (Compensated Tool Path. Diameter: {})".format(oclTool.diameter), {}
+            )
+        )
+        self.commandlist.append(
+            Path.Command(
+                "N (Sample interval: {})".format(str(obj.SampleInterval.Value)), {}
+            )
+        )
+        self.commandlist.append(
+            Path.Command("N (Step over %: {})".format(str(obj.StepOver)), {})
+        )
+        self.commandlist.append(Path.Command("N ({})".format(output), {}))
+        self.commandlist.append(
+            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        )
         if obj.UseStartPoint:
-            self.commandlist.append(Path.Command('G0', {'X': obj.StartPoint.x, 'Y': obj.StartPoint.y, 'F': self.horizRapid}))
+            self.commandlist.append(
+                Path.Command(
+                    "G0",
+                    {
+                        "X": obj.StartPoint.x,
+                        "Y": obj.StartPoint.y,
+                        "F": self.horizRapid,
+                    },
+                )
+            )
 
         # Impose property limits
         self.opApplyPropertyLimits(obj)
 
         # Create temporary group for temporary objects, removing existing
-        tempGroupName = 'tempPathWaterlineGroup'
+        tempGroupName = "tempPathWaterlineGroup"
         if FCAD.getObject(tempGroupName):
             for to in FCAD.getObject(tempGroupName).Group:
                 FCAD.removeObject(to.Name)
             FCAD.removeObject(tempGroupName)  # remove temp directory if already exists
-        if FCAD.getObject(tempGroupName + '001'):
-            for to in FCAD.getObject(tempGroupName + '001').Group:
+        if FCAD.getObject(tempGroupName + "001"):
+            for to in FCAD.getObject(tempGroupName + "001").Group:
                 FCAD.removeObject(to.Name)
-            FCAD.removeObject(tempGroupName + '001')  # remove temp directory if already exists
-        tempGroup = FCAD.addObject('App::DocumentObjectGroup', tempGroupName)
+            FCAD.removeObject(
+                tempGroupName + "001"
+            )  # remove temp directory if already exists
+        tempGroup = FCAD.addObject("App::DocumentObjectGroup", tempGroupName)
         tempGroupName = tempGroup.Name
         self.tempGroup = tempGroup
         tempGroup.purgeTouched()
@@ -547,21 +835,35 @@ class ObjectWaterline(PathOp.ObjectOp):
             if self.geoTlrnc == 0.0:
                 useDGT = True
         except AttributeError as ee:
-            PathLog.warning('{}\nPlease set Job.GeometryTolerance to an acceptable value. Using PathPreferences.defaultGeometryTolerance().'.format(ee))
+            PathLog.warning(
+                "{}\nPlease set Job.GeometryTolerance to an acceptable value. Using PathPreferences.defaultGeometryTolerance().".format(
+                    ee
+                )
+            )
             useDGT = True
         if useDGT:
             import PathScripts.PathPreferences as PathPreferences
+
             self.geoTlrnc = PathPreferences.defaultGeometryTolerance()
 
         # Calculate default depthparams for operation
-        self.depthParams = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0, obj.FinalDepth.Value)
+        self.depthParams = PathUtils.depth_params(
+            obj.ClearanceHeight.Value,
+            obj.SafeHeight.Value,
+            obj.StartDepth.Value,
+            obj.StepDown.Value,
+            0.0,
+            obj.FinalDepth.Value,
+        )
         self.midDep = (obj.StartDepth.Value + obj.FinalDepth.Value) / 2.0
 
         # Save model visibilities for restoration
         if FreeCAD.GuiUp:
             for m in range(0, len(JOB.Model.Group)):
                 mNm = JOB.Model.Group[m].Name
-                modelVisibility.append(FreeCADGui.ActiveDocument.getObject(mNm).Visibility)
+                modelVisibility.append(
+                    FreeCADGui.ActiveDocument.getObject(mNm).Visibility
+                )
 
         # Setup STL, model type, and bound box containers for each model in Job
         for m in range(0, len(JOB.Model.Group)):
@@ -570,15 +872,15 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.safeSTLs.append(False)
             self.profileShapes.append(False)
             # Set bound box
-            if obj.BoundBox == 'BaseBoundBox':
-                if M.TypeId.startswith('Mesh'):
-                    self.modelTypes.append('M')  # Mesh
+            if obj.BoundBox == "BaseBoundBox":
+                if M.TypeId.startswith("Mesh"):
+                    self.modelTypes.append("M")  # Mesh
                     self.boundBoxes.append(M.Mesh.BoundBox)
                 else:
-                    self.modelTypes.append('S')  # Solid
+                    self.modelTypes.append("S")  # Solid
                     self.boundBoxes.append(M.Shape.BoundBox)
-            elif obj.BoundBox == 'Stock':
-                self.modelTypes.append('S')  # Solid
+            elif obj.BoundBox == "Stock":
+                self.modelTypes.append("S")  # Solid
                 self.boundBoxes.append(JOB.Stock.Shape.BoundBox)
 
         # ######  MAIN COMMANDS FOR OPERATION ######
@@ -591,7 +893,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         pPM = PSF.preProcessModel(self.module)
         # Process selected faces, if available
         if pPM is False:
-            PathLog.error('Unable to pre-process obj.Base.')
+            PathLog.error("Unable to pre-process obj.Base.")
         else:
             (FACES, VOIDS) = pPM
             self.modelSTLs = PSF.modelSTLs
@@ -599,23 +901,40 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             for m in range(0, len(JOB.Model.Group)):
                 # Create OCL.stl model objects
-                if obj.Algorithm == 'OCL Dropcutter':
+                if obj.Algorithm == "OCL Dropcutter":
                     PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, m, ocl)
 
                 Mdl = JOB.Model.Group[m]
                 if FACES[m] is False:
-                    PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
+                    PathLog.error(
+                        "No data for model base: {}".format(JOB.Model.Group[m].Label)
+                    )
                 else:
                     if m > 0:
                         # Raise to clearance between models
-                        CMDS.append(Path.Command('N (Transition to base: {}.)'.format(Mdl.Label)))
-                        CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-                        PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
+                        CMDS.append(
+                            Path.Command(
+                                "N (Transition to base: {}.)".format(Mdl.Label)
+                            )
+                        )
+                        CMDS.append(
+                            Path.Command(
+                                "G0",
+                                {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
+                            )
+                        )
+                        PathLog.info(
+                            "Working on Model.Group[{}]: {}".format(m, Mdl.Label)
+                        )
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
-                    if obj.Algorithm == 'OCL Dropcutter':
-                        PathSurfaceSupport._makeSafeSTL(self, JOB, obj, m, FACES[m], VOIDS[m], ocl)
+                    if obj.Algorithm == "OCL Dropcutter":
+                        PathSurfaceSupport._makeSafeSTL(
+                            self, JOB, obj, m, FACES[m], VOIDS[m], ocl
+                        )
                     # Process model/faces - OCL objects must be ready
-                    CMDS.extend(self._processWaterlineAreas(JOB, obj, m, FACES[m], VOIDS[m]))
+                    CMDS.extend(
+                        self._processWaterlineAreas(JOB, obj, m, FACES[m], VOIDS[m])
+                    )
 
             # Save gcode produced
             self.commandlist.extend(CMDS)
@@ -632,7 +951,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         if deleteTempsFlag is True:
             for to in tempGroup.Group:
-                if hasattr(to, 'Group'):
+                if hasattr(to, "Group"):
                     for go in to.Group:
                         FCAD.removeObject(go.Name)
                 FCAD.removeObject(to.Name)
@@ -649,12 +968,12 @@ class ObjectWaterline(PathOp.ObjectOp):
             if g != self.toolDiam:
                 gaps.append(g)
         if len(gaps) > 0:
-            obj.GapSizes = '{} mm'.format(gaps)
+            obj.GapSizes = "{} mm".format(gaps)
         else:
             if self.closedGap is True:
-                obj.GapSizes = 'Closed gaps < Gap Threshold.'
+                obj.GapSizes = "Closed gaps < Gap Threshold."
             else:
-                obj.GapSizes = 'No gaps identified.'
+                obj.GapSizes = "No gaps identified."
 
         # clean up class variables
         self.resetOpVariables()
@@ -682,22 +1001,22 @@ class ObjectWaterline(PathOp.ObjectOp):
         del self.midDep
 
         execTime = time.time() - startTime
-        msg = translate('PathWaterline', 'operation time is')
-        PathLog.info('Waterline ' + msg + ' {} sec.'.format(execTime))
+        msg = translate("PathWaterline", "operation time is")
+        PathLog.info("Waterline " + msg + " {} sec.".format(execTime))
 
         return True
 
     # Methods for constructing the cut area and creating path geometry
     def _processWaterlineAreas(self, JOB, obj, mdlIdx, FCS, VDS):
-        '''_processWaterlineAreas(JOB, obj, mdlIdx, FCS, VDS)...
+        """_processWaterlineAreas(JOB, obj, mdlIdx, FCS, VDS)...
         This method applies any avoided faces or regions to the selected faces.
-        It then calls the correct method.'''
-        PathLog.debug('_processWaterlineAreas()')
+        It then calls the correct method."""
+        PathLog.debug("_processWaterlineAreas()")
 
         final = list()
 
         # Process faces Collectively or Individually
-        if obj.HandleMultipleFeatures == 'Collectively':
+        if obj.HandleMultipleFeatures == "Collectively":
             if FCS is True:
                 COMP = False
             else:
@@ -708,13 +1027,19 @@ class ObjectWaterline(PathOp.ObjectOp):
                 else:
                     COMP = ADD
 
-            final.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            if obj.Algorithm == 'OCL Dropcutter':
-                final.extend(self._oclWaterlineOp(JOB, obj, mdlIdx, COMP))  # independent method set for Waterline
+            final.append(
+                Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+            )
+            if obj.Algorithm == "OCL Dropcutter":
+                final.extend(
+                    self._oclWaterlineOp(JOB, obj, mdlIdx, COMP)
+                )  # independent method set for Waterline
             else:
-                final.extend(self._experimentalWaterlineOp(JOB, obj, mdlIdx, COMP))  # independent method set for Waterline
+                final.extend(
+                    self._experimentalWaterlineOp(JOB, obj, mdlIdx, COMP)
+                )  # independent method set for Waterline
 
-        elif obj.HandleMultipleFeatures == 'Individually':
+        elif obj.HandleMultipleFeatures == "Individually":
             for fsi in range(0, len(FCS)):
                 fShp = FCS[fsi]
                 # self.deleteOpVariables(all=False)
@@ -730,29 +1055,35 @@ class ObjectWaterline(PathOp.ObjectOp):
                     else:
                         COMP = ADD
 
-                final.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                if obj.Algorithm == 'OCL Dropcutter':
-                    final.extend(self._oclWaterlineOp(JOB, obj, mdlIdx, COMP))  # independent method set for Waterline
+                final.append(
+                    Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+                )
+                if obj.Algorithm == "OCL Dropcutter":
+                    final.extend(
+                        self._oclWaterlineOp(JOB, obj, mdlIdx, COMP)
+                    )  # independent method set for Waterline
                 else:
-                    final.extend(self._experimentalWaterlineOp(JOB, obj, mdlIdx, COMP))  # independent method set for Waterline
+                    final.extend(
+                        self._experimentalWaterlineOp(JOB, obj, mdlIdx, COMP)
+                    )  # independent method set for Waterline
                 COMP = None
         # Eif
 
         return final
 
     def _getExperimentalWaterlinePaths(self, PNTSET, csHght, cutPattern):
-        '''_getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
+        """_getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
         Switching function for calling the appropriate path-geometry to OCL points conversion function
-        for the various cut patterns.'''
-        PathLog.debug('_getExperimentalWaterlinePaths()')
+        for the various cut patterns."""
+        PathLog.debug("_getExperimentalWaterlinePaths()")
         SCANS = list()
 
         # PNTSET is list, by stepover.
-        if cutPattern in ['Line', 'Spiral', 'ZigZag']:
+        if cutPattern in ["Line", "Spiral", "ZigZag"]:
             stpOvr = list()
             for STEP in PNTSET:
                 for SEG in STEP:
-                    if SEG == 'BRK':
+                    if SEG == "BRK":
                         stpOvr.append(SEG)
                     else:
                         (A, B) = SEG  # format is ((p1, p2), (p3, p4))
@@ -761,7 +1092,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         stpOvr.append((P1, P2))
                 SCANS.append(stpOvr)
                 stpOvr = list()
-        elif cutPattern in ['Circular', 'CircularZigZag']:
+        elif cutPattern in ["Circular", "CircularZigZag"]:
             # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
             for so in range(0, len(PNTSET)):
                 stpOvr = list()
@@ -775,8 +1106,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                 for a in range(0, len(ARCS)):
                     Arc = ARCS[a]
-                    if Arc == 'BRK':
-                        stpOvr.append('BRK')
+                    if Arc == "BRK":
+                        stpOvr.append("BRK")
                     else:
                         (sp, ep, cp) = Arc
                         S = FreeCAD.Vector(sp[0], sp[1], csHght)
@@ -796,45 +1127,47 @@ class ObjectWaterline(PathOp.ObjectOp):
     def _stepTransitionCmds(self, obj, cutPattern, lstPnt, first, minSTH, tolrnc):
         cmds = list()
         rtpd = False
-        horizGC = 'G0'
+        horizGC = "G0"
         hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
 
-        if cutPattern in ['Line', 'Circular', 'Spiral']:
+        if cutPattern in ["Line", "Circular", "Spiral"]:
             if obj.OptimizeStepOverTransitions is True:
                 height = minSTH + 2.0
-        elif cutPattern in ['ZigZag', 'CircularZigZag']:
+        elif cutPattern in ["ZigZag", "CircularZigZag"]:
             if obj.OptimizeStepOverTransitions is True:
                 zChng = first.z - lstPnt.z
                 if abs(zChng) < tolrnc:  # transitions to same Z height
                     if (minSTH - first.z) > tolrnc:
                         height = minSTH + 2.0
                     else:
-                        horizGC = 'G1'
+                        horizGC = "G1"
                         height = first.z
                 elif (minSTH + (2.0 * tolrnc)) >= max(first.z, lstPnt.z):
                     height = False  # allow end of Zig to cut to beginning of Zag
 
         # Create raise, shift, and optional lower commands
         if height is not False:
-            cmds.append(Path.Command('G0', {'Z': height, 'F': self.vertRapid}))
-            cmds.append(Path.Command(horizGC, {'X': first.x, 'Y': first.y, 'F': hSpeed}))
+            cmds.append(Path.Command("G0", {"Z": height, "F": self.vertRapid}))
+            cmds.append(
+                Path.Command(horizGC, {"X": first.x, "Y": first.y, "F": hSpeed})
+            )
         if rtpd is not False:  # ReturnToPreviousDepth
-            cmds.append(Path.Command('G0', {'Z': rtpd, 'F': self.vertRapid}))
+            cmds.append(Path.Command("G0", {"Z": rtpd, "F": self.vertRapid}))
 
         return cmds
 
     def _breakCmds(self, obj, cutPattern, lstPnt, first, minSTH, tolrnc):
         cmds = list()
         rtpd = False
-        horizGC = 'G0'
+        horizGC = "G0"
         hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
 
-        if cutPattern in ['Line', 'Circular', 'Spiral']:
+        if cutPattern in ["Line", "Circular", "Spiral"]:
             if obj.OptimizeStepOverTransitions is True:
                 height = minSTH + 2.0
-        elif cutPattern in ['ZigZag', 'CircularZigZag']:
+        elif cutPattern in ["ZigZag", "CircularZigZag"]:
             if obj.OptimizeStepOverTransitions is True:
                 zChng = first.z - lstPnt.z
                 if abs(zChng) < tolrnc:  # transitions to same Z height
@@ -843,15 +1176,15 @@ class ObjectWaterline(PathOp.ObjectOp):
                     else:
                         height = first.z + 2.0  # first.z
 
-        cmds.append(Path.Command('G0', {'Z': height, 'F': self.vertRapid}))
-        cmds.append(Path.Command(horizGC, {'X': first.x, 'Y': first.y, 'F': hSpeed}))
+        cmds.append(Path.Command("G0", {"Z": height, "F": self.vertRapid}))
+        cmds.append(Path.Command(horizGC, {"X": first.x, "Y": first.y, "F": hSpeed}))
         if rtpd is not False:  # ReturnToPreviousDepth
-            cmds.append(Path.Command('G0', {'Z': rtpd, 'F': self.vertRapid}))
+            cmds.append(Path.Command("G0", {"Z": rtpd, "F": self.vertRapid}))
 
         return cmds
 
     def _planarGetPDC(self, stl, finalDep, SampleInterval, cutter):
-        pdc = ocl.PathDropCutter()   # create a pdc [PathDropCutter] object
+        pdc = ocl.PathDropCutter()  # create a pdc [PathDropCutter] object
         pdc.setSTL(stl)  # add stl model
         pdc.setCutter(cutter)  # add cutter
         pdc.setZ(finalDep)  # set minimumZ (final / target depth value)
@@ -860,7 +1193,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     # OCL Dropcutter waterline functions
     def _oclWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):
-        '''_oclWaterlineOp(obj, base) ... Main waterline function to perform waterline extraction from model.'''
+        """_oclWaterlineOp(obj, base) ... Main waterline function to perform waterline extraction from model."""
         commands = []
 
         base = JOB.Model.Group[mdlIdx]
@@ -878,10 +1211,10 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         if subShp is None:
             # Get correct boundbox
-            if obj.BoundBox == 'Stock':
+            if obj.BoundBox == "Stock":
                 BS = JOB.Stock
                 bb = BS.Shape.BoundBox
-            elif obj.BoundBox == 'BaseBoundBox':
+            elif obj.BoundBox == "BaseBoundBox":
                 BS = base
                 bb = base.Shape.BoundBox
 
@@ -905,7 +1238,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         numScanLines = int(math.ceil(bbLength / smplInt) + 1)  # Number of lines
 
         # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == 'Single-pass':
+        if obj.LayerMode == "Single-pass":
             depthparams = [obj.FinalDepth.Value]
         else:
             depthparams = [dp for dp in self.depthParams]
@@ -913,7 +1246,9 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Scan the piece to depth at smplInt
         oclScan = []
-        oclScan = self._waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, depthparams[lenDP - 1], numScanLines)
+        oclScan = self._waterlineDropCutScan(
+            stl, smplInt, xmin, xmax, ymin, depthparams[lenDP - 1], numScanLines
+        )
         oclScan = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in oclScan]
         lenOS = len(oclScan)
         ptPrLn = int(lenOS / numScanLines)
@@ -940,24 +1275,26 @@ class ObjectWaterline(PathOp.ObjectOp):
             cmds = self._getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine)
             commands.extend(cmds)
             lyr += 1
-        PathLog.debug("--All layer scans combined took " + str(time.time() - layTime) + " s")
+        PathLog.debug(
+            "--All layer scans combined took " + str(time.time() - layTime) + " s"
+        )
         return commands
 
     def _waterlineDropCutScan(self, stl, smplInt, xmin, xmax, ymin, fd, numScanLines):
-        '''_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ...
-        Perform OCL scan for waterline purpose.'''
-        pdc = ocl.PathDropCutter()   # create a pdc
+        """_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ...
+        Perform OCL scan for waterline purpose."""
+        pdc = ocl.PathDropCutter()  # create a pdc
         pdc.setSTL(stl)
         pdc.setCutter(self.cutter)
         pdc.setZ(fd)  # set minimumZ (final / target depth value)
         pdc.setSampling(smplInt)
 
         # Create line object as path
-        path = ocl.Path()                   # create an empty path object
+        path = ocl.Path()  # create an empty path object
         for nSL in range(0, numScanLines):
             yVal = ymin + (nSL * smplInt)
-            p1 = ocl.Point(xmin, yVal, fd)   # start-point of line
-            p2 = ocl.Point(xmax, yVal, fd)   # end-point of line
+            p1 = ocl.Point(xmin, yVal, fd)  # start-point of line
+            p2 = ocl.Point(xmax, yVal, fd)  # end-point of line
             path.append(ocl.Line(p1, p2))
             # path.append(l)        # add the line to the path
         pdc.setPath(path)
@@ -967,7 +1304,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return pdc.getCLPoints()
 
     def _getWaterline(self, obj, scanLines, layDep, lyr, lenSL, pntsPerLine):
-        '''_getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine) ... Get waterline.'''
+        """_getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine) ... Get waterline."""
         commands = []
         cmds = []
         loopList = []
@@ -987,7 +1324,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return commands
 
     def _createTopoMap(self, scanLines, layDep, lenSL, pntsPerLine):
-        '''_createTopoMap(scanLines, layDep, lenSL, pntsPerLine) ... Create topo map version of OCL scan data.'''
+        """_createTopoMap(scanLines, layDep, lenSL, pntsPerLine) ... Create topo map version of OCL scan data."""
         topoMap = []
         for L in range(0, lenSL):
             topoMap.append([])
@@ -999,7 +1336,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return topoMap
 
     def _bufferTopoMap(self, lenSL, pntsPerLine):
-        '''_bufferTopoMap(lenSL, pntsPerLine) ... Add buffer boarder of zeros to all sides to topoMap data.'''
+        """_bufferTopoMap(lenSL, pntsPerLine) ... Add buffer boarder of zeros to all sides to topoMap data."""
         pre = [0, 0]
         post = [0, 0]
         for p in range(0, pntsPerLine):
@@ -1013,7 +1350,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return True
 
     def _highlightWaterline(self, extraMaterial, insCorn):
-        '''_highlightWaterline(extraMaterial, insCorn) ... Highlight the waterline data, separating from extra material.'''
+        """_highlightWaterline(extraMaterial, insCorn) ... Highlight the waterline data, separating from extra material."""
         TM = self.topoMap
         lastPnt = len(TM[1]) - 1
         lastLn = len(TM) - 1
@@ -1049,33 +1386,35 @@ class ObjectWaterline(PathOp.ObjectOp):
         # ("--Square corners")
         for pt in range(1, lastPnt):
             for lin in range(1, lastLn):
-                if TM[lin][pt] == 1:                    # point == 1
+                if TM[lin][pt] == 1:  # point == 1
                     cont = True
-                    if TM[lin + 1][pt] == 0:            # forward == 0
-                        if TM[lin + 1][pt - 1] == 1:    # forward left == 1
-                            if TM[lin][pt - 1] == 2:    # left == 2
-                                TM[lin + 1][pt] = 1     # square the corner
+                    if TM[lin + 1][pt] == 0:  # forward == 0
+                        if TM[lin + 1][pt - 1] == 1:  # forward left == 1
+                            if TM[lin][pt - 1] == 2:  # left == 2
+                                TM[lin + 1][pt] = 1  # square the corner
                                 cont = False
 
-                        if cont is True and TM[lin + 1][pt + 1] == 1:  # forward right == 1
-                            if TM[lin][pt + 1] == 2:    # right == 2
-                                TM[lin + 1][pt] = 1     # square the corner
+                        if (
+                            cont is True and TM[lin + 1][pt + 1] == 1
+                        ):  # forward right == 1
+                            if TM[lin][pt + 1] == 2:  # right == 2
+                                TM[lin + 1][pt] = 1  # square the corner
                         cont = True
 
-                    if TM[lin - 1][pt] == 0:          # back == 0
-                        if TM[lin - 1][pt - 1] == 1:    # back left == 1
-                            if TM[lin][pt - 1] == 2:    # left == 2
-                                TM[lin - 1][pt] = 1     # square the corner
+                    if TM[lin - 1][pt] == 0:  # back == 0
+                        if TM[lin - 1][pt - 1] == 1:  # back left == 1
+                            if TM[lin][pt - 1] == 2:  # left == 2
+                                TM[lin - 1][pt] = 1  # square the corner
                                 cont = False
 
                         if cont is True and TM[lin - 1][pt + 1] == 1:  # back right == 1
-                            if TM[lin][pt + 1] == 2:    # right == 2
-                                TM[lin - 1][pt] = 1     # square the corner
+                            if TM[lin][pt + 1] == 2:  # right == 2
+                                TM[lin - 1][pt] = 1  # square the corner
 
         # remove inside corners
         for pt in range(1, lastPnt):
             for lin in range(1, lastLn):
-                if TM[lin][pt] == 1:                    # point == 1
+                if TM[lin][pt] == 1:  # point == 1
                     if TM[lin][pt + 1] == 1:
                         if TM[lin - 1][pt + 1] == 1 or TM[lin + 1][pt + 1] == 1:
                             TM[lin][pt + 1] = insCorn
@@ -1086,7 +1425,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return True
 
     def _extractWaterlines(self, obj, oclScan, lyr, layDep):
-        '''_extractWaterlines(obj, oclScan, lyr, layDep) ... Extract water lines from OCL scan data.'''
+        """_extractWaterlines(obj, oclScan, lyr, layDep) ... Extract water lines from OCL scan data."""
         srch = True
         lastPnt = len(self.topoMap[0]) - 1
         lastLn = len(self.topoMap) - 1
@@ -1097,16 +1436,120 @@ class ObjectWaterline(PathOp.ObjectOp):
         loopNum = 0
 
         if self.CutClimb is True:
-            lC = [-1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0]
-            pC = [-1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1]
+            lC = [
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+            ]
+            pC = [
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+            ]
         else:
-            lC = [1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0]
-            pC = [-1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, -1]
+            lC = [
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+            ]
+            pC = [
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                -1,
+                -1,
+            ]
 
         while srch is True:
             srch = False
             if srchCnt > maxSrchs:
-                PathLog.debug("Max search scans, " + str(maxSrchs) + " reached\nPossible incomplete waterline result!")
+                PathLog.debug(
+                    "Max search scans, "
+                    + str(maxSrchs)
+                    + " reached\nPossible incomplete waterline result!"
+                )
                 break
             for L in range(1, lastLn):
                 for P in range(1, lastPnt):
@@ -1118,11 +1561,19 @@ class ObjectWaterline(PathOp.ObjectOp):
                         self.topoMap[L][P] = 0  # Mute the starting point
                         loopList.append(loop)
             srchCnt += 1
-        PathLog.debug("Search count for layer " + str(lyr) + " is " + str(srchCnt) + ", with " + str(loopNum) + " loops.")
+        PathLog.debug(
+            "Search count for layer "
+            + str(lyr)
+            + " is "
+            + str(srchCnt)
+            + ", with "
+            + str(loopNum)
+            + " loops."
+        )
         return loopList
 
     def _trackLoop(self, oclScan, lC, pC, L, P, loopNum):
-        '''_trackLoop(oclScan, lC, pC, L, P, loopNum) ... Track the loop direction.'''
+        """_trackLoop(oclScan, lC, pC, L, P, loopNum) ... Track the loop direction."""
         loop = [oclScan[L - 1][P - 1]]  # Start loop point list
         cur = [L, P, 1]
         prv = [L, P - 1, 1]
@@ -1133,22 +1584,36 @@ class ObjectWaterline(PathOp.ObjectOp):
         while follow is True:
             ptc += 1
             if ptc > ptLmt:
-                PathLog.debug("Loop number " + str(loopNum) + " at [" + str(nxt[0]) + ", " + str(nxt[1]) + "] pnt count exceeds, " + str(ptLmt) + ".  Stopped following loop.")
+                PathLog.debug(
+                    "Loop number "
+                    + str(loopNum)
+                    + " at ["
+                    + str(nxt[0])
+                    + ", "
+                    + str(nxt[1])
+                    + "] pnt count exceeds, "
+                    + str(ptLmt)
+                    + ".  Stopped following loop."
+                )
                 break
-            nxt = self._findNextWlPoint(lC, pC, cur[0], cur[1], prv[0], prv[1])  # get next point
+            nxt = self._findNextWlPoint(
+                lC, pC, cur[0], cur[1], prv[0], prv[1]
+            )  # get next point
             loop.append(oclScan[nxt[0] - 1][nxt[1] - 1])  # add it to loop point list
             self.topoMap[nxt[0]][nxt[1]] = nxt[2]  # Mute the point, if not Y stem
             if nxt[0] == L and nxt[1] == P:  # check if loop complete
                 follow = False
-            elif nxt[0] == cur[0] and nxt[1] == cur[1]:  # check if line cannot be detected
+            elif (
+                nxt[0] == cur[0] and nxt[1] == cur[1]
+            ):  # check if line cannot be detected
                 follow = False
             prv = cur
             cur = nxt
         return loop
 
     def _findNextWlPoint(self, lC, pC, cl, cp, pl, pp):
-        '''_findNextWlPoint(lC, pC, cl, cp, pl, pp) ...
-        Find the next waterline point in the point cloud layer provided.'''
+        """_findNextWlPoint(lC, pC, cl, cp, pl, pp) ...
+        Find the next waterline point in the point cloud layer provided."""
         dl = cl - pl
         dp = cp - pp
         num = 0
@@ -1184,7 +1649,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return [cl, cp, num]
 
     def _loopToGcode(self, obj, layDep, loop):
-        '''_loopToGcode(obj, layDep, loop) ... Convert set of loop points to Gcode.'''
+        """_loopToGcode(obj, layDep, loop) ... Convert set of loop points to Gcode."""
         # generate the path commands
         output = []
 
@@ -1195,9 +1660,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         pnt = FreeCAD.Vector(loop[0].x, loop[0].y, layDep)
 
         # Position cutter to begin loop
-        output.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        output.append(Path.Command('G0', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizRapid}))
-        output.append(Path.Command('G1', {'Z': pnt.z, 'F': self.vertFeed}))
+        output.append(
+            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        )
+        output.append(
+            Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid})
+        )
+        output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
 
         lenCLP = len(loop)
         lastIdx = lenCLP - 1
@@ -1208,7 +1677,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 nxt.y = loop[i + 1].y
                 nxt.z = layDep
 
-            output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
+            output.append(
+                Path.Command("G1", {"X": pnt.x, "Y": pnt.y, "F": self.horizFeed})
+            )
 
             # Rotate point data
             pnt = nxt
@@ -1220,9 +1691,9 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     # Experimental waterline functions
     def _experimentalWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):
-        '''_waterlineOp(JOB, obj, mdlIdx, subShp=None) ...
-        Main waterline function to perform waterline extraction from model.'''
-        PathLog.debug('_experimentalWaterlineOp()')
+        """_waterlineOp(JOB, obj, mdlIdx, subShp=None) ...
+        Main waterline function to perform waterline extraction from model."""
+        PathLog.debug("_experimentalWaterlineOp()")
 
         commands = []
         base = JOB.Model.Group[mdlIdx]
@@ -1230,36 +1701,47 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.endVector = None
 
         finDep = obj.FinalDepth.Value + (self.geoTlrnc / 10.0)
-        depthParams = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0, finDep)
+        depthParams = PathUtils.depth_params(
+            obj.ClearanceHeight.Value,
+            obj.SafeHeight.Value,
+            obj.StartDepth.Value,
+            obj.StepDown.Value,
+            0.0,
+            finDep,
+        )
 
         # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == 'Single-pass':
+        if obj.LayerMode == "Single-pass":
             depthparams = [finDep]
         else:
             depthparams = [dp for dp in depthParams]
-        PathLog.debug('Experimental Waterline depthparams:\n{}'.format(depthparams))
+        PathLog.debug("Experimental Waterline depthparams:\n{}".format(depthparams))
 
         # Prepare PathDropCutter objects with STL data
         # safePDC = self._planarGetPDC(safeSTL, depthparams[lenDP - 1], obj.SampleInterval.Value, self.cutter)
 
         buffer = self.cutter.getDiameter() * 10.0
-        borderFace = Part.Face(self._makeExtendedBoundBox(JOB.Stock.Shape.BoundBox, buffer, 0.0))
+        borderFace = Part.Face(
+            self._makeExtendedBoundBox(JOB.Stock.Shape.BoundBox, buffer, 0.0)
+        )
 
         # Get correct boundbox
-        if obj.BoundBox == 'Stock':
+        if obj.BoundBox == "Stock":
             stockEnv = PathSurfaceSupport.getShapeEnvelope(JOB.Stock.Shape)
             bbFace = PathSurfaceSupport.getCrossSection(stockEnv)  # returned at Z=0.0
-        elif obj.BoundBox == 'BaseBoundBox':
+        elif obj.BoundBox == "BaseBoundBox":
             baseEnv = PathSurfaceSupport.getShapeEnvelope(base.Shape)
             bbFace = PathSurfaceSupport.getCrossSection(baseEnv)  # returned at Z=0.0
 
         trimFace = borderFace.cut(bbFace)
-        self.showDebugObject(trimFace, 'TrimFace')
+        self.showDebugObject(trimFace, "TrimFace")
 
         # Cycle through layer depths
-        CUTAREAS = self._getCutAreas(base.Shape, depthparams, bbFace, trimFace, borderFace)
+        CUTAREAS = self._getCutAreas(
+            base.Shape, depthparams, bbFace, trimFace, borderFace
+        )
         if not CUTAREAS:
-            PathLog.error('No cross-section cut areas identified.')
+            PathLog.error("No cross-section cut areas identified.")
             return commands
 
         caCnt = 0
@@ -1278,74 +1760,96 @@ class ObjectWaterline(PathOp.ObjectOp):
             caCnt += 1
             if area.Area > 0.0:
                 cont = True
-                self.showDebugObject(area, 'CutArea_{}'.format(caCnt))
+                self.showDebugObject(area, "CutArea_{}".format(caCnt))
             else:
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                PathLog.debug('Cut area at {} is zero.'.format(data))
+                PathLog.debug("Cut area at {} is zero.".format(data))
 
             # get offset wire(s) based upon cross-section cut area
             if cont:
                 area.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - area.BoundBox.ZMin))
                 activeArea = area.cut(trimFace)
-                self.showDebugObject(activeArea, 'ActiveArea_{}'.format(caCnt))
-                ofstArea = PathUtils.getOffsetArea(activeArea,
-                                                   ofst,
-                                                   self.wpc)
+                self.showDebugObject(activeArea, "ActiveArea_{}".format(caCnt))
+                ofstArea = PathUtils.getOffsetArea(activeArea, ofst, self.wpc)
                 if not ofstArea:
-                    data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                    PathLog.debug('No offset area returned for cut area depth at {}.'.format(data))
+                    data = FreeCAD.Units.Quantity(
+                        csHght, FreeCAD.Units.Length
+                    ).UserString
+                    PathLog.debug(
+                        "No offset area returned for cut area depth at {}.".format(data)
+                    )
                     cont = False
 
             if cont:
                 # Identify solid areas in the offset data
-                if obj.CutPattern == 'Offset' or obj.CutPattern == 'None':
+                if obj.CutPattern == "Offset" or obj.CutPattern == "None":
                     ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
                     if ofstSolidFacesList:
                         clearArea = Part.makeCompound(ofstSolidFacesList)
-                        self.showDebugObject(clearArea, 'ClearArea_{}'.format(caCnt))
+                        self.showDebugObject(clearArea, "ClearArea_{}".format(caCnt))
                     else:
                         cont = False
-                        data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                        PathLog.error('Could not determine solid faces at {}.'.format(data))
+                        data = FreeCAD.Units.Quantity(
+                            csHght, FreeCAD.Units.Length
+                        ).UserString
+                        PathLog.error(
+                            "Could not determine solid faces at {}.".format(data)
+                        )
                 else:
                     clearArea = activeArea
 
             if cont:
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                PathLog.debug('... Clearning area at {}.'.format(data))
+                PathLog.debug("... Clearning area at {}.".format(data))
                 # Make waterline path for current CUTAREA depth (csHght)
                 commands.extend(self._wiresToWaterlinePath(obj, clearArea, csHght))
-                clearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clearArea.BoundBox.ZMin))
+                clearArea.translate(
+                    FreeCAD.Vector(0.0, 0.0, 0.0 - clearArea.BoundBox.ZMin)
+                )
                 lastClearArea = clearArea
                 lastCsHght = csHght
 
                 # Clear layer as needed
-                (clrLyr, clearLastLayer) = self._clearLayer(obj, ca, lastCA, clearLastLayer)
-                if clrLyr == 'Offset':
+                (clrLyr, clearLastLayer) = self._clearLayer(
+                    obj, ca, lastCA, clearLastLayer
+                )
+                if clrLyr == "Offset":
                     commands.extend(self._makeOffsetLayerPaths(obj, clearArea, csHght))
                 elif clrLyr:
                     cutPattern = obj.CutPattern
                     if clearLastLayer is False:
                         cutPattern = obj.ClearLastLayer
-                    commands.extend(self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, cutPattern))
+                    commands.extend(
+                        self._makeCutPatternLayerPaths(
+                            JOB, obj, clearArea, csHght, cutPattern
+                        )
+                    )
         # Efor
 
-        if clearLastLayer and obj.ClearLastLayer != 'Off':
-            PathLog.debug('... Clearning last layer')
+        if clearLastLayer and obj.ClearLastLayer != "Off":
+            PathLog.debug("... Clearning last layer")
             (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
-            lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
-            if clrLyr == 'Offset':
-                commands.extend(self._makeOffsetLayerPaths(obj, lastClearArea, lastCsHght))
+            lastClearArea.translate(
+                FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin)
+            )
+            if clrLyr == "Offset":
+                commands.extend(
+                    self._makeOffsetLayerPaths(obj, lastClearArea, lastCsHght)
+                )
             elif clrLyr:
-                commands.extend(self._makeCutPatternLayerPaths(JOB, obj, lastClearArea, lastCsHght, obj.ClearLastLayer))
+                commands.extend(
+                    self._makeCutPatternLayerPaths(
+                        JOB, obj, lastClearArea, lastCsHght, obj.ClearLastLayer
+                    )
+                )
 
         return commands
 
     def _getCutAreas(self, shape, depthparams, bbFace, trimFace, borderFace):
-        '''_getCutAreas(JOB, shape, depthparams, bbFace, borderFace) ...
+        """_getCutAreas(JOB, shape, depthparams, bbFace, borderFace) ...
         Takes shape, depthparams and base-envelope-cross-section, and
-        returns a list of cut areas - one for each depth.'''
-        PathLog.debug('_getCutAreas()')
+        returns a list of cut areas - one for each depth."""
+        PathLog.debug("_getCutAreas()")
 
         CUTAREAS = list()
         isFirst = True
@@ -1366,19 +1870,23 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                 if useFaces:
                     compAdjFaces = Part.makeCompound(useFaces)
-                    self.showDebugObject(compAdjFaces, 'Solids_{}'.format(dp + 1))
+                    self.showDebugObject(compAdjFaces, "Solids_{}".format(dp + 1))
                     if isFirst:
                         allPrevComp = compAdjFaces
                         cutArea = borderFace.cut(compAdjFaces)
                     else:
                         preCutArea = borderFace.cut(compAdjFaces)
-                        cutArea = preCutArea.cut(allPrevComp)  # cut out higher layers to avoid cutting recessed areas
+                        cutArea = preCutArea.cut(
+                            allPrevComp
+                        )  # cut out higher layers to avoid cutting recessed areas
                         allPrevComp = allPrevComp.fuse(compAdjFaces)
-                    cutArea.translate(FreeCAD.Vector(0.0, 0.0, csHght - cutArea.BoundBox.ZMin))
+                    cutArea.translate(
+                        FreeCAD.Vector(0.0, 0.0, csHght - cutArea.BoundBox.ZMin)
+                    )
                     CUTAREAS.append(cutArea)
                     isFirst = False
                 else:
-                    PathLog.error('No waterline at depth: {} mm.'.format(csHght))
+                    PathLog.error("No waterline at depth: {} mm.".format(csHght))
         # Efor
 
         if len(CUTAREAS) > 0:
@@ -1387,41 +1895,47 @@ class ObjectWaterline(PathOp.ObjectOp):
         return False
 
     def _wiresToWaterlinePath(self, obj, ofstPlnrShp, csHght):
-        PathLog.debug('_wiresToWaterlinePath()')
+        PathLog.debug("_wiresToWaterlinePath()")
         commands = list()
 
         # Translate path geometry to layer height
-        ofstPlnrShp.translate(FreeCAD.Vector(0.0, 0.0, csHght - ofstPlnrShp.BoundBox.ZMin))
-        self.showDebugObject(ofstPlnrShp, 'WaterlinePathArea_{}'.format(round(csHght, 2)))
+        ofstPlnrShp.translate(
+            FreeCAD.Vector(0.0, 0.0, csHght - ofstPlnrShp.BoundBox.ZMin)
+        )
+        self.showDebugObject(
+            ofstPlnrShp, "WaterlinePathArea_{}".format(round(csHght, 2))
+        )
 
-        commands.append(Path.Command('N (Cut Area {}.)'.format(round(csHght, 2))))
+        commands.append(Path.Command("N (Cut Area {}.)".format(round(csHght, 2))))
         start = 1
         if csHght < obj.IgnoreOuterAbove:
             start = 0
         for w in range(start, len(ofstPlnrShp.Wires)):
             wire = ofstPlnrShp.Wires[w]
             V = wire.Vertexes
-            if obj.CutMode == 'Climb':
+            if obj.CutMode == "Climb":
                 lv = len(V) - 1
                 startVect = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
             else:
                 startVect = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
 
-            commands.append(Path.Command('N (Wire {}.)'.format(w)))
+            commands.append(Path.Command("N (Wire {}.)".format(w)))
             (cmds, endVect) = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
-            commands.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+            commands.append(
+                Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+            )
 
         return commands
 
     def _makeCutPatternLayerPaths(self, JOB, obj, clrAreaShp, csHght, cutPattern):
-        PathLog.debug('_makeCutPatternLayerPaths()')
+        PathLog.debug("_makeCutPatternLayerPaths()")
         commands = []
 
         clrAreaShp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clrAreaShp.BoundBox.ZMin))
 
         # Convert pathGeom to gcode more efficiently
-        if cutPattern == 'Offset':
+        if cutPattern == "Offset":
             commands.extend(self._makeOffsetLayerPaths(obj, clrAreaShp, csHght))
         else:
             # Request path geometry from external support class
@@ -1431,22 +1945,28 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.tmpCOM = PGG.getCenterOfPattern()
             pathGeom = PGG.generatePathGeometry()
             if not pathGeom:
-                PathLog.warning('No path geometry generated.')
+                PathLog.warning("No path geometry generated.")
                 return commands
-            pathGeom.translate(FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin))
+            pathGeom.translate(
+                FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin)
+            )
 
-            self.showDebugObject(pathGeom, 'PathGeom_{}'.format(round(csHght, 2)))
+            self.showDebugObject(pathGeom, "PathGeom_{}".format(round(csHght, 2)))
 
-            if cutPattern == 'Line':
+            if cutPattern == "Line":
                 # pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
                 pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(self, obj, pathGeom)
-            elif cutPattern == 'ZigZag':
+            elif cutPattern == "ZigZag":
                 # pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
-                pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(self, obj, pathGeom)
-            elif cutPattern in ['Circular', 'CircularZigZag']:
+                pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(
+                    self, obj, pathGeom
+                )
+            elif cutPattern in ["Circular", "CircularZigZag"]:
                 # pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps, self.tmpCOM)
-                pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(self, obj, pathGeom)
-            elif cutPattern == 'Spiral':
+                pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(
+                    self, obj, pathGeom
+                )
+            elif cutPattern == "Spiral":
                 pntSet = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)
 
             stpOVRS = self._getExperimentalWaterlinePaths(pntSet, csHght, cutPattern)
@@ -1457,16 +1977,14 @@ class ObjectWaterline(PathOp.ObjectOp):
         return commands
 
     def _makeOffsetLayerPaths(self, obj, clrAreaShp, csHght):
-        PathLog.debug('_makeOffsetLayerPaths()')
+        PathLog.debug("_makeOffsetLayerPaths()")
         cmds = list()
         ofst = 0.0 - self.cutOut
         shape = clrAreaShp
         cont = True
         cnt = 0
         while cont:
-            ofstArea = PathUtils.getOffsetArea(shape,
-                                               ofst,
-                                               self.wpc)
+            ofstArea = PathUtils.getOffsetArea(shape, ofst, self.wpc)
             if not ofstArea:
                 break
             for F in ofstArea.Faces:
@@ -1475,26 +1993,30 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cnt == 0:
                 ofst = 0.0 - self.cutOut
             cnt += 1
-        PathLog.debug(' -Offset path count: {} at height: {}'.format(cnt, round(csHght, 2)))
+        PathLog.debug(
+            " -Offset path count: {} at height: {}".format(cnt, round(csHght, 2))
+        )
 
         return cmds
 
     def _clearGeomToPaths(self, JOB, obj, safePDC, stpOVRS, cutPattern):
-        PathLog.debug('_clearGeomToPaths()')
+        PathLog.debug("_clearGeomToPaths()")
 
-        GCODE = [Path.Command('N (Beginning of Single-pass layer.)', {})]
+        GCODE = [Path.Command("N (Beginning of Single-pass layer.)", {})]
         tolrnc = JOB.GeometryTolerance.Value
         lenstpOVRS = len(stpOVRS)
         # lstSO = lenstpOVRS - 1
         # lstStpOvr = False
-        gDIR = ['G3', 'G2']
+        gDIR = ["G3", "G2"]
 
         if self.CutClimb is True:
-            gDIR = ['G2', 'G3']
+            gDIR = ["G2", "G3"]
 
         # Send cutter to x,y position of first point on first line
         first = stpOVRS[0][0][0]  # [step][item][point]
-        GCODE.append(Path.Command('G0', {'X': first.x, 'Y': first.y, 'F': self.horizRapid}))
+        GCODE.append(
+            Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid})
+        )
 
         # Cycle through step-over sections (line segments or arcs)
         odd = True
@@ -1505,10 +2027,10 @@ class ObjectWaterline(PathOp.ObjectOp):
             lenPRTS = len(PRTS)
             first = PRTS[0][0]  # first point of arc/line stepover group
             last = None
-            cmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
+            cmds.append(Path.Command("N (Begin step {}.)".format(so), {}))
 
             if so > 0:
-                if cutPattern == 'CircularZigZag':
+                if cutPattern == "CircularZigZag":
                     if odd:
                         odd = False
                     else:
@@ -1516,46 +2038,72 @@ class ObjectWaterline(PathOp.ObjectOp):
                 # minTrnsHght = self._getMinSafeTravelHeight(safePDC, lstStpEnd, first)  # Check safe travel height against fullSTL
                 minTrnsHght = obj.SafeHeight.Value
                 # cmds.append(Path.Command('N (Transition: last, first: {}, {}:  minSTH: {})'.format(lstStpEnd, first, minTrnsHght), {}))
-                cmds.extend(self._stepTransitionCmds(obj, cutPattern, lstStpEnd, first, minTrnsHght, tolrnc))
+                cmds.extend(
+                    self._stepTransitionCmds(
+                        obj, cutPattern, lstStpEnd, first, minTrnsHght, tolrnc
+                    )
+                )
 
             # Cycle through current step-over parts
             for i in range(0, lenPRTS):
                 prt = PRTS[i]
                 # PathLog.debug('prt: {}'.format(prt))
-                if prt == 'BRK':
+                if prt == "BRK":
                     nxtStart = PRTS[i + 1][0]
                     # minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart)  # Check safe travel height against fullSTL
                     minSTH = obj.SafeHeight.Value
-                    cmds.append(Path.Command('N (Break)', {}))
-                    cmds.extend(self._breakCmds(obj, cutPattern, last, nxtStart, minSTH, tolrnc))
+                    cmds.append(Path.Command("N (Break)", {}))
+                    cmds.extend(
+                        self._breakCmds(obj, cutPattern, last, nxtStart, minSTH, tolrnc)
+                    )
                 else:
-                    cmds.append(Path.Command('N (part {}.)'.format(i + 1), {}))
-                    if cutPattern in ['Line', 'ZigZag', 'Spiral']:
+                    cmds.append(Path.Command("N (part {}.)".format(i + 1), {}))
+                    if cutPattern in ["Line", "ZigZag", "Spiral"]:
                         start, last = prt
-                        cmds.append(Path.Command('G1', {'X': start.x, 'Y': start.y, 'Z': start.z, 'F': self.horizFeed}))
-                        cmds.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'F': self.horizFeed}))
-                    elif cutPattern in ['Circular', 'CircularZigZag']:
+                        cmds.append(
+                            Path.Command(
+                                "G1",
+                                {
+                                    "X": start.x,
+                                    "Y": start.y,
+                                    "Z": start.z,
+                                    "F": self.horizFeed,
+                                },
+                            )
+                        )
+                        cmds.append(
+                            Path.Command(
+                                "G1", {"X": last.x, "Y": last.y, "F": self.horizFeed}
+                            )
+                        )
+                    elif cutPattern in ["Circular", "CircularZigZag"]:
                         # isCircle = True if lenPRTS == 1 else False
-                        isZigZag = True if cutPattern == 'CircularZigZag' else False
-                        PathLog.debug('so, isZigZag, odd, cMode: {}, {}, {}, {}'.format(so, isZigZag, odd, prt[3]))
+                        isZigZag = True if cutPattern == "CircularZigZag" else False
+                        PathLog.debug(
+                            "so, isZigZag, odd, cMode: {}, {}, {}, {}".format(
+                                so, isZigZag, odd, prt[3]
+                            )
+                        )
                         gcode = self._makeGcodeArc(prt, gDIR, odd, isZigZag)
                         cmds.extend(gcode)
-            cmds.append(Path.Command('N (End of step {}.)'.format(so), {}))
+            cmds.append(Path.Command("N (End of step {}.)".format(so), {}))
             GCODE.extend(cmds)  # save line commands
             lstStpEnd = last
         # Efor
 
         # Raise to safe height after clearing
-        GCODE.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+        GCODE.append(
+            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+        )
 
         return GCODE
 
     def _getSolidAreasFromPlanarFaces(self, csFaces):
-        PathLog.debug('_getSolidAreasFromPlanarFaces()')
+        PathLog.debug("_getSolidAreasFromPlanarFaces()")
         holds = list()
         useFaces = list()
         lenCsF = len(csFaces)
-        PathLog.debug('lenCsF: {}'.format(lenCsF))
+        PathLog.debug("lenCsF: {}".format(lenCsF))
 
         if lenCsF == 1:
             useFaces = csFaces
@@ -1620,7 +2168,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return False
 
     def _getModelCrossSection(self, shape, csHght):
-        PathLog.debug('_getModelCrossSection()')
+        PathLog.debug("_getModelCrossSection()")
         wires = list()
 
         def byArea(fc):
@@ -1640,7 +2188,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             FCS.sort(key=byArea, reverse=True)
             return FCS
         else:
-            PathLog.debug(' -No wires from .slice() method')
+            PathLog.debug(" -No wires from .slice() method")
 
         return False
 
@@ -1671,22 +2219,22 @@ class ObjectWaterline(PathOp.ObjectOp):
         return pIds
 
     def _wireToPath(self, obj, wire, startVect):
-        '''_wireToPath(obj, wire, startVect) ... wire to path.'''
+        """_wireToPath(obj, wire, startVect) ... wire to path."""
         PathLog.track()
 
         paths = []
         pathParams = {}  # pylint: disable=assignment-from-no-return
 
-        pathParams['shapes'] = [wire]
-        pathParams['feedrate'] = self.horizFeed
-        pathParams['feedrate_v'] = self.vertFeed
-        pathParams['verbose'] = True
-        pathParams['resume_height'] = obj.SafeHeight.Value
-        pathParams['retraction'] = obj.ClearanceHeight.Value
-        pathParams['return_end'] = True
+        pathParams["shapes"] = [wire]
+        pathParams["feedrate"] = self.horizFeed
+        pathParams["feedrate_v"] = self.vertFeed
+        pathParams["verbose"] = True
+        pathParams["resume_height"] = obj.SafeHeight.Value
+        pathParams["retraction"] = obj.ClearanceHeight.Value
+        pathParams["return_end"] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-        pathParams['preamble'] = False
-        pathParams['start'] = startVect
+        pathParams["preamble"] = False
+        pathParams["start"] = startVect
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
@@ -1723,25 +2271,45 @@ class ObjectWaterline(PathOp.ObjectOp):
         # ijk = self.tmpCOM.sub(strtPnt)  # vector from start to center
         ijk = cntrPnt.sub(strtPnt)  # vector from start to center
         xyz = endPnt
-        cmds.append(Path.Command('G1', {'X': strtPnt.x, 'Y': strtPnt.y, 'Z': strtPnt.z, 'F': self.horizFeed}))
-        cmds.append(Path.Command(gCmd, {'X': xyz.x, 'Y': xyz.y, 'Z': xyz.z,
-                                        'I': ijk.x, 'J': ijk.y, 'K': ijk.z,  # leave same xyz.z height
-                                        'F': self.horizFeed}))
-        cmds.append(Path.Command('G1', {'X': endPnt.x, 'Y': endPnt.y, 'Z': endPnt.z, 'F': self.horizFeed}))
+        cmds.append(
+            Path.Command(
+                "G1",
+                {"X": strtPnt.x, "Y": strtPnt.y, "Z": strtPnt.z, "F": self.horizFeed},
+            )
+        )
+        cmds.append(
+            Path.Command(
+                gCmd,
+                {
+                    "X": xyz.x,
+                    "Y": xyz.y,
+                    "Z": xyz.z,
+                    "I": ijk.x,
+                    "J": ijk.y,
+                    "K": ijk.z,  # leave same xyz.z height
+                    "F": self.horizFeed,
+                },
+            )
+        )
+        cmds.append(
+            Path.Command(
+                "G1", {"X": endPnt.x, "Y": endPnt.y, "Z": endPnt.z, "F": self.horizFeed}
+            )
+        )
 
         return cmds
 
     def _clearLayer(self, obj, ca, lastCA, clearLastLayer):
-        PathLog.debug('_clearLayer()')
+        PathLog.debug("_clearLayer()")
         clrLyr = False
 
-        if obj.ClearLastLayer == 'Off':
-            if obj.CutPattern != 'None':
+        if obj.ClearLastLayer == "Off":
+            if obj.CutPattern != "None":
                 clrLyr = obj.CutPattern
         else:
-            obj.CutPattern = 'None'
+            obj.CutPattern = "None"
             if ca == lastCA:  # if current iteration is last layer
-                PathLog.debug('... Clearing bottom layer.')
+                PathLog.debug("... Clearing bottom layer.")
                 clrLyr = obj.ClearLastLayer
                 clearLastLayer = False
 
@@ -1749,7 +2317,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     # Support methods
     def resetOpVariables(self, all=True):
-        '''resetOpVariables() ... Reset class variables used for instance of operation.'''
+        """resetOpVariables() ... Reset class variables used for instance of operation."""
         self.holdPoint = None
         self.layerEndPnt = None
         self.onHold = False
@@ -1774,7 +2342,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return True
 
     def deleteOpVariables(self, all=True):
-        '''deleteOpVariables() ... Reset class variables used for instance of operation.'''
+        """deleteOpVariables() ... Reset class variables used for instance of operation."""
         del self.holdPoint
         del self.layerEndPnt
         del self.onHold
@@ -1801,19 +2369,19 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def showDebugObject(self, objShape, objName):
         if self.showDebugObjects:
-            do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
+            do = FreeCAD.ActiveDocument.addObject("Part::Feature", "tmp_" + objName)
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
 
 
 def SetupProperties():
-    ''' SetupProperties() ... Return list of properties required for operation.'''
+    """SetupProperties() ... Return list of properties required for operation."""
     return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Waterline operation.'''
+    """Create(name) ... Creates and returns a Waterline operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectWaterline(obj, name, parentJob)
