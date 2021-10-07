@@ -425,6 +425,6 @@ if App.GuiUp:
 from draftobjects.hatch import (Hatch)
 from draftmake.make_hatch import (make_hatch)
 if App.GuiUp:
-    from draftviewproviders.view_hatch import (Draft_Hatch_ViewProvider)
+    from draftviewproviders.view_hatch import (ViewProviderDraftHatch)
 
 ## @}
