@@ -125,7 +125,7 @@ class Rectangle(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Plane"),
                             _cmd_list)
             else:
-                _cmd = 'Draft.makeRectangle'
+                _cmd = 'Draft.make_rectangle'
                 _cmd += '('
                 _cmd += 'length=' + str(length) + ', '
                 _cmd += 'height=' + str(height) + ', '
