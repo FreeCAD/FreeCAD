@@ -537,7 +537,9 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
                     App::Property::User3, &ShapeColor);
             ViewProviderGeometryObject::onChanged(prop);
-            DiffuseColor.setValue(ShapeColor.getValue());
+            App::Color c = ShapeColor.getValue();
+            c.a = Transparency.getValue()/100.0f;
+            DiffuseColor.setValue(c);
             updateColors();
         }
         return;
@@ -1078,6 +1080,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             }
             if(size && singleColor) {
                 color = DiffuseColor[0];
+                color.a = Transparency.getValue()/100.0f;
                 ret.clear();
             }
             ret["Face"] = color;
