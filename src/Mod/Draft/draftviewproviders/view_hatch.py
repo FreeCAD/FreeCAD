@@ -27,7 +27,7 @@ import os
 import FreeCAD
 from draftguitools.gui_hatch import Draft_Hatch_TaskPanel
 
-class Draft_Hatch_ViewProvider:
+class ViewProviderDraftHatch:
 
 
     def __init__(self,vobj):
