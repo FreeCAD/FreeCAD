@@ -3360,46 +3360,40 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
     for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
         TopoDS_Face face = TopoDS::Face(xp.Current());
 
-        TopLoc_Location loc;
-        Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
-        if (theTriangulation.IsNull()) {
+        std::vector<gp_Pnt> points;
+        std::vector<Poly_Triangle> facets;
+        if (!Tools::getTriangulation(face, points, facets)) {
             // For a face that cannot be meshed append an empty domain.
             // It's important for some algorithms (e.g. color mapping) that the numbers of
             // faces and domains match
             Domain domain;
             domains.push_back(domain);
-            continue;
         }
+        else {
+            Domain domain;
+            // copy the points
+            domain.points.reserve(points.size());
+            for (const auto& it : points) {
+                Standard_Real X, Y, Z;
+                it.Coord (X, Y, Z);
+                domain.points.emplace_back(X, Y, Z);
+            }
 
-        Domain domain;
-        // copy the points
-        const TColgp_Array1OfPnt& points = theTriangulation->Nodes();
-        domain.points.reserve(points.Length());
-        for (int i = 1; i <= points.Length(); i++) {
-            gp_Pnt p = points(i);
-            p.Transform(loc.Transformation());
-            Standard_Real X, Y, Z;
-            p.Coord (X, Y, Z);
-            domain.points.emplace_back(X, Y, Z);
+            // copy the triangles
+            domain.facets.reserve(facets.size());
+            for (const auto& it : facets) {
+                Standard_Integer N1, N2, N3;
+                it.Get(N1, N2, N3);
+
+                Facet tria;
+                tria.I1 = N1;
+                tria.I2 = N2;
+                tria.I3 = N3;
+                domain.facets.push_back(tria);
+            }
+
+            domains.push_back(domain);
         }
-
-        // copy the triangles
-        const TopAbs_Orientation anOrientation = face.Orientation();
-        bool flip = (anOrientation == TopAbs_REVERSED);
-        const Poly_Array1OfTriangle& faces = theTriangulation->Triangles();
-        domain.facets.reserve(faces.Length());
-        for (int i = 1; i <= faces.Length(); i++) {
-            Standard_Integer N1, N2, N3;
-            faces(i).Get(N1, N2, N3);
-
-            Facet tria;
-            tria.I1 = N1-1; tria.I2 = N2-1; tria.I3 = N3-1;
-            if (flip)
-                std::swap(tria.I1, tria.I2);
-            domain.facets.push_back(tria);
-        }
-
-        domains.push_back(domain);
     }
 }
 
