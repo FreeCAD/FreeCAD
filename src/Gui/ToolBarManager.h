@@ -80,6 +80,8 @@ public:
     void restoreState() const;
     void retranslate() const;
 
+    void setMovable(bool movable) const;
+
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
     /** Returns a list of all currently existing toolbars. */
