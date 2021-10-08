@@ -30,7 +30,11 @@
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
+#include <Poly_Triangle.hxx>
 #include <TColStd_ListOfTransient.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <vector>
 
 class gp_Lin;
 class gp_Pln;
@@ -104,7 +108,32 @@ public:
                                      const Standard_Integer theNbPnts,
                                      const Standard_Integer theNbIter,
                                      const Standard_Integer theMaxDeg);
-
+    /*!
+     * @brief getTriangulation
+     * The indexes of the triangles are adjusted to the points vector.
+     * @param face
+     * @param points
+     * @param facets
+     * @return true if a triangulation exists or false otherwise
+     */
+    static bool getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>& points, std::vector<Poly_Triangle>& facets);
+    /*!
+     * \brief getPolygonOnTriangulation
+     * Get the polygon of edge.
+     * \note \a edge must belong to face.
+     * \param edge
+     * \param face
+     * \param points
+     * \return true if a triangulation exists or false otherwise
+     */
+    static bool getPolygonOnTriangulation(const TopoDS_Edge& edge, const TopoDS_Face& face, std::vector<gp_Pnt>& points);
+    /*!
+     * \brief getPolygon3D
+     * \param edge
+     * \param points
+     * \return true if a polygon exists or false otherwise
+     */
+    static bool getPolygon3D(const TopoDS_Edge& edge, std::vector<gp_Pnt>& points);
 };
 
 } //namespace Part
