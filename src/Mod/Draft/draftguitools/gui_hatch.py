@@ -25,10 +25,11 @@
 
 import os
 import FreeCAD
+import draftguitools.gui_base as gui_base
+
 from draftutils.translate import translate, QT_TRANSLATE_NOOP
 
-
-class Draft_Hatch:
+class Draft_Hatch(gui_base.GuiCommandSimplest):
 
 
     def GetResources(self):
@@ -36,7 +37,7 @@ class Draft_Hatch:
         return {'Pixmap'  : "Draft_Hatch",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Hatch", "Hatch"),
                 'Accel': "H, A",
-                'ToolTip' : QT_TRANSLATE_NOOP("Draft_Hatch", "Create hatches on selected faces")}
+                'ToolTip' : QT_TRANSLATE_NOOP("Draft_Hatch", "Creates hatches on the faces of a selected object")}
 
     def Activated(self):
 
@@ -89,7 +90,7 @@ class Draft_Hatch_TaskPanel:
             # create new hatch object
             FreeCAD.ActiveDocument.openTransaction("Create Hatch")
             FreeCADGui.addModule("Draft")
-            cmd = "Draft.makeHatch("
+            cmd = "Draft.make_hatch("
             cmd += "baseobject=FreeCAD.ActiveDocument.getObject(\""+self.baseobj.Name
             cmd += "\"),filename=\""+self.form.File.property("fileName")
             cmd += "\",pattern=\""+self.form.Pattern.currentText()
