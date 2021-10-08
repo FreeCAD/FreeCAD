@@ -29,6 +29,7 @@
 # include <Geom_BSplineSurface.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_IntSS.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Point.hxx>
 # include <GeomAdaptor_Curve.hxx>
@@ -355,4 +356,61 @@ bool Part::Tools::getPolygon3D(const TopoDS_Edge& edge, std::vector<gp_Pnt>& poi
     }
 
     return true;
+}
+
+void Part::Tools::getPointNormals(const std::vector<gp_Pnt>& points, const std::vector<Poly_Triangle>& facets, std::vector<gp_Vec>& vertexnormals)
+{
+    vertexnormals.resize(points.size());
+
+    for (const auto& it : facets) {
+        // Get the triangle
+        Standard_Integer n1,n2,n3;
+        it.Get(n1,n2,n3);
+
+        // Calculate triangle normal
+        gp_Vec v1(points[n1].XYZ());
+        gp_Vec v2(points[n2].XYZ());
+        gp_Vec v3(points[n3].XYZ());
+        gp_Vec n = (v2 - v1) ^ (v3 - v1);
+
+        // add the triangle normal to the vertex normal for all points of this triangle
+        vertexnormals[n1] += n;
+        vertexnormals[n2] += n;
+        vertexnormals[n3] += n;
+    }
+
+    for (auto& it : vertexnormals)
+        it.Normalize();
+}
+
+void Part::Tools::getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals)
+{
+    if (points.size() != vertexnormals.size())
+        return;
+
+    Handle(Geom_Surface) hSurface = BRep_Tool::Surface(face);
+    if (hSurface.IsNull())
+        return;
+
+    // normalize all vertex normals
+    for (std::size_t i = 0; i < points.size(); i++) {
+        try {
+            GeomAPI_ProjectPointOnSurf ProPntSrf(points[i], hSurface);
+            Standard_Real u, v;
+            ProPntSrf.Parameters(1, u, v);
+
+            GeomLProp_SLProps propOfFace(hSurface, u, v, 2, gp::Resolution());
+
+            gp_Dir normal = propOfFace.Normal();
+            gp_Vec temp = normal;
+            if (temp * vertexnormals[i] < 0.0)
+                temp = -temp;
+            vertexnormals[i] = temp;
+
+        }
+        catch (...) {
+        }
+
+        vertexnormals[i].Normalize();
+    }
 }

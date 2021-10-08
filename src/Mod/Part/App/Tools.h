@@ -134,6 +134,23 @@ public:
      * \return true if a polygon exists or false otherwise
      */
     static bool getPolygon3D(const TopoDS_Edge& edge, std::vector<gp_Pnt>& points);
+    /*!
+     * \brief getPointNormals
+     * Calculate the point normals of the given triangulation.
+     * \param points
+     * \param facets
+     * \param normals
+     */
+    static void getPointNormals(const std::vector<gp_Pnt>& points, const std::vector<Poly_Triangle>& facets, std::vector<gp_Vec>& vertexnormals);
+    /*!
+     * \brief getPointNormals
+     * Computes the more accurate surface normals for the points. If the calculation for a point fails then the precomputed
+     * point normal of the triangulation is used.
+     * \param points
+     * \param face
+     * \param vertexnormals
+     */
+    static void getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals);
 };
 
 } //namespace Part
