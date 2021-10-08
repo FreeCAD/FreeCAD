@@ -31,7 +31,9 @@
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
 #include <Poly_Triangle.hxx>
+#include <Poly_Triangulation.hxx>
 #include <TColStd_ListOfTransient.hxx>
+#include <TColgp_Array1OfDir.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
@@ -151,6 +153,7 @@ public:
      * \param vertexnormals
      */
     static void getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals);
+    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, TColgp_Array1OfDir& normals);
 };
 
 } //namespace Part

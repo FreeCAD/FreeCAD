@@ -33,11 +33,13 @@
 # include <Geom_Line.hxx>
 # include <Geom_Point.hxx>
 # include <GeomAdaptor_Curve.hxx>
+# include <GeomLib.hxx>
 # include <GeomPlate_BuildPlateSurface.hxx>
 # include <GeomPlate_CurveConstraint.hxx>
 # include <GeomPlate_MakeApprox.hxx>
 # include <GeomPlate_PlateG0Criterion.hxx>
 # include <GeomPlate_PointConstraint.hxx>
+# include <Poly_Connect.hxx>
 # include <Poly_Triangulation.hxx>
 # include <Precision.hxx>
 # include <Standard_Mutex.hxx>
@@ -47,6 +49,7 @@
 # include <TColStd_ListIteratorOfListOfTransient.hxx>
 # include <TColgp_SequenceOfXY.hxx>
 # include <TColgp_SequenceOfXYZ.hxx>
+# include <TopoDS.hxx>
 # if OCC_VERSION_HEX < 0x070600
 # include <Adaptor3d_HCurveOnSurface.hxx>
 # include <GeomAdaptor_HCurve.hxx>
@@ -412,5 +415,89 @@ void Part::Tools::getPointNormals(const std::vector<gp_Pnt>& points, const TopoD
         }
 
         vertexnormals[i].Normalize();
+    }
+}
+
+void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triangulation) aPolyTri, TColgp_Array1OfDir& theNormals)
+{
+    const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
+
+    if(aPolyTri->HasNormals())
+    {
+        // normals pre-computed in triangulation structure
+        const TShort_Array1OfShortReal& aNormals = aPolyTri->Normals();
+        const Standard_ShortReal*       aNormArr = &(aNormals.Value(aNormals.Lower()));
+
+        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+        {
+            const Standard_Integer anId = 3 * (aNodeIter - aNodes.Lower());
+            const gp_Dir aNorm(aNormArr[anId + 0],
+                               aNormArr[anId + 1],
+                               aNormArr[anId + 2]);
+            theNormals(aNodeIter) = aNorm;
+        }
+
+        if(theFace.Orientation() == TopAbs_REVERSED)
+        {
+            for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+            {
+                theNormals.ChangeValue(aNodeIter).Reverse();
+            }
+        }
+    }
+    else {
+        // take in face the surface location
+        Poly_Connect thePolyConnect(aPolyTri);
+        const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
+        Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
+        const Standard_Real    aTol      = Precision::Confusion();
+        Handle(TShort_HArray1OfShortReal) aNormals = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
+        const Poly_Array1OfTriangle& aTriangles = aPolyTri->Triangles();
+        const TColgp_Array1OfPnt2d*  aNodesUV   = aPolyTri->HasUVNodes() && !aSurf.IsNull()
+                ? &aPolyTri->UVNodes()
+                : nullptr;
+        Standard_Integer aTri[3];
+
+        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+        {
+            // try to retrieve normal from real surface first, when UV coordinates are available
+            if (!aNodesUV || GeomLib::NormEstim(aSurf, aNodesUV->Value(aNodeIter), aTol, theNormals(aNodeIter)) > 1)
+            {
+                // compute flat normals
+                gp_XYZ eqPlan(0.0, 0.0, 0.0);
+
+                for(thePolyConnect.Initialize(aNodeIter); thePolyConnect.More(); thePolyConnect.Next())
+                {
+                    aTriangles(thePolyConnect.Value()).Get(aTri[0], aTri[1], aTri[2]);
+                    const gp_XYZ v1(aNodes(aTri[1]).Coord() - aNodes(aTri[0]).Coord());
+                    const gp_XYZ v2(aNodes(aTri[2]).Coord() - aNodes(aTri[1]).Coord());
+                    const gp_XYZ vv = v1 ^ v2;
+                    const Standard_Real aMod = vv.Modulus();
+
+                    if(aMod >= aTol)
+                    {
+                        eqPlan += vv / aMod;
+                    }
+                }
+
+                const Standard_Real aModMax = eqPlan.Modulus();
+                theNormals(aNodeIter) = (aModMax > aTol) ? gp_Dir(eqPlan) : gp::DZ();
+            }
+
+            const Standard_Integer anId = (aNodeIter - aNodes.Lower()) * 3;
+            aNormals->SetValue(anId + 1, (Standard_ShortReal)theNormals(aNodeIter).X());
+            aNormals->SetValue(anId + 2, (Standard_ShortReal)theNormals(aNodeIter).Y());
+            aNormals->SetValue(anId + 3, (Standard_ShortReal)theNormals(aNodeIter).Z());
+        }
+
+        aPolyTri->SetNormals(aNormals);
+
+        if(theFace.Orientation() == TopAbs_REVERSED)
+        {
+            for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+            {
+                theNormals.ChangeValue(aNodeIter).Reverse();
+            }
+        }
     }
 }
