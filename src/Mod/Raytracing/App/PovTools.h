@@ -110,9 +110,6 @@ public:
                               const TopoDS_Shape& Shape,
                               float fMeshDeviation,
                               float fLength);
-
-
-    static void transferToArray(const TopoDS_Face& aFace,gp_Vec** vertices,gp_Vec** vertexnormals, long** cons,int &nbNodesInFace,int &nbTriInFace );
 };
 
 
