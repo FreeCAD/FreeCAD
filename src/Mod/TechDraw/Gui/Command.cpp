@@ -87,16 +87,17 @@
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
+#include "PreferencesGui.h"
+#include "QGIViewPart.h"
+#include "Rez.h"
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
 #include "TaskActiveView.h"
 #include "TaskDetail.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
-#include "QGIViewPart.h"
-#include "Rez.h"
+
 
 class Vertex;
 using namespace TechDrawGui;
@@ -807,7 +808,15 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
 
 bool _checkDirectPlacement(const QGIViewPart *viewPart, const std::vector<std::string> &subNames, QPointF &placement)
 {
+    // Let's see, if we can help speed up the placement of the balloon:
+    // As of now we support:
+    //     Single selected vertex: place the ballon tip end here
+    //     Single selected edge:   place the ballon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+    //
+    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
+
     if (subNames.size() != 1) {
+        // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
         return false;
     }
 

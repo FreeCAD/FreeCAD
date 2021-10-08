@@ -490,13 +490,10 @@ void QGVPage::createBalloon(QPointF origin, DrawViewPart *parent)
     std::string pageName = getDrawPage()->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-    TechDraw::DrawViewBalloon *balloon = 0;
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')", featName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", pageName.c_str(), featName.c_str());
 
-    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(featName.c_str()));
+    TechDraw::DrawViewBalloon *balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(featName.c_str()));
     if (!balloon) {
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
     }
@@ -506,8 +503,8 @@ void QGVPage::createBalloon(QPointF origin, DrawViewPart *parent)
 
     Gui::Command::commitCommand();
 
-    balloon->recomputeFeature();
     parent->touch(true);
+    Gui::Command::updateActive();
 }
 
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
@@ -1264,21 +1261,24 @@ double QGVPage::getDevicePixelRatio() const {
 }
 
 QPixmap QGVPage::prepareCursorPixmap(const char *iconName, QPoint &hotspot) {
-    double cursorSize = 64.0;
+
     double pixelRatio = getDevicePixelRatio();
 
-    if (pixelRatio != 1.0) {
-        cursorSize = 32.0*pixelRatio;
-    }
- 
+    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
+    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support#Custom_cursor_size
+    double cursorSize = 32.0*pixelRatio;
+
     QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
-    if (pixelRatio == 1.0) {
-        pixmap = pixmap.scaled(32, 32);
-        hotspot /= 2;
-    }
     pixmap.setDevicePixelRatio(pixelRatio);
 
+    // The default (and here expected) SVG cursor graphics size is 64x64 pixels, thus we must adjust
+    // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
+    hotspot /= 2;
+
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+    // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
+    // therefore we must take care of the transformation ourselves...
+    // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         hotspot *= pixelRatio;
     }
