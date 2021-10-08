@@ -40,7 +40,8 @@
 #endif
 
 #include "ViewProviderAddSub.h"
-#include "Mod/Part/Gui/SoBrepFaceSet.h"
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>
@@ -196,7 +197,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-            getNormals(actFace, mesh, Normals);
+            Part::Tools::getPointNormals(actFace, mesh, Normals);
 
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
