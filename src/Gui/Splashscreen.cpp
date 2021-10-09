@@ -571,14 +571,14 @@ void AboutDialog::showLicenseInformation()
     // Coin3D
     li.name = QLatin1String("Coin3D");
     li.href = baseurl + QLatin1String("#_TocCoin3D");
-    li.url = QLatin1String("https://bitbucket.org/Coin3D/coin/");
+    li.url = QLatin1String("https://coin3d.github.io");
     li.version = QLatin1String(COIN_VERSION);
     libInfo << li;
 
     // Eigen3
     li.name = QLatin1String("Eigen3");
     li.href = baseurl + QLatin1String("#_TocEigen3");
-    li.url = QLatin1String("http://eigen.tuxfamily.org/");
+    li.url = QLatin1String("http://eigen.tuxfamily.org");
     li.version.clear();
     libInfo << li;
 
