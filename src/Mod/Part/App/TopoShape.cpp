@@ -38,8 +38,6 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
@@ -186,6 +184,12 @@
 #if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
 #endif
+
+#if OCC_VERSION_HEX < 0x070600
+# include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCompCurve.hxx>
+#endif
+
 #endif // _PreComp_
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -2133,12 +2137,20 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot sweep along empty spine");
 
+#if OCC_VERSION_HEX >= 0x070600
+    Handle(Adaptor3d_Curve) myPath;
+    if (this->_Shape.ShapeType() == TopAbs_EDGE) {
+        const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
+        myPath = new BRepAdaptor_Curve(path_edge);
+    }
+#else
     Handle(Adaptor3d_HCurve) myPath;
     if (this->_Shape.ShapeType() == TopAbs_EDGE) {
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         BRepAdaptor_Curve path_adapt(path_edge);
         myPath = new BRepAdaptor_HCurve(path_adapt);
     }
+#endif
     //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
     //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
     //    BRepAdaptor_CompCurve path_adapt(path_wire);
@@ -3777,72 +3789,32 @@ void TopoShape::getLinesFromSubElement(const Data::Segment* element,
         for(TopExp_Explorer exp(shape,TopAbs_EDGE);exp.More();exp.Next()) {
 
             TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
-            TopLoc_Location aLoc;
-            Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+            std::vector<gp_Pnt> points;
 
-            gp_Trsf myTransf;
-            Standard_Integer nbNodesInFace;
-
-            auto line_start = vertices.size();
-
-            // triangulation succeeded?
-            if (!aPoly.IsNull()) {
-                if (!aLoc.IsIdentity()) {
-                    myTransf = aLoc.Transformation();
-                }
-                nbNodesInFace = aPoly->NbNodes();
-
-                const TColgp_Array1OfPnt& Nodes = aPoly->Nodes();
-
-                gp_Pnt V;
-                for (Standard_Integer i=0;i < nbNodesInFace;i++) {
-                    V = Nodes(i+1);
-                    V.Transform(myTransf);
-                    vertices.emplace_back(V.X(),V.Y(),V.Z());
-                }
-            }
-            else {
+            if (!Tools::getPolygon3D(aEdge, points)) {
                 // the edge has not its own triangulation, but then a face the edge is attached to
                 // must provide this triangulation
 
                 // Look for one face in our map (it doesn't care which one we take)
                 int index = edge2Face.FindIndex(aEdge);
-                if(!index)
+                if (index < 1)
                     continue;
                 const auto &faces = edge2Face.FindFromIndex(index);
-                if(!faces.Extent())
+                if (faces.Extent() == 0)
                     continue;
                 const TopoDS_Face& aFace = TopoDS::Face(faces.First());
 
-                // take the face's triangulation instead
-                Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(aFace,aLoc);
-                if (!aLoc.IsIdentity()) {
-                    myTransf = aLoc.Transformation();
-                }
-
-                if (aPolyTria.IsNull()) break;
-
-                // this holds the indices of the edge's triangulation to the actual points
-                Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(aEdge, aPolyTria, aLoc);
-                if (aPoly.IsNull())
-                    continue; // polygon does not exist
-
-                // getting size and create the array
-                nbNodesInFace = aPoly->NbNodes();
-
-                const TColStd_Array1OfInteger& indices = aPoly->Nodes();
-                const TColgp_Array1OfPnt& Nodes = aPolyTria->Nodes();
-
-                gp_Pnt V;
-                // go through the index array
-                for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
-                    V = Nodes(indices(i));
-                    V.Transform(myTransf);
-                    vertices.emplace_back(V.X(),V.Y(),V.Z());
-                }
+                if (!Part::Tools::getPolygonOnTriangulation(aEdge, aFace, points))
+                    continue;
             }
 
-            if(line_start+1 < vertices.size()) {
+            auto line_start = vertices.size();
+            vertices.reserve(vertices.size() + points.size());
+            std::for_each(points.begin(), points.end(), [&vertices](const gp_Pnt& p) {
+                vertices.push_back(Base::convertTo<Base::Vector3d>(p));
+            });
+
+            if (line_start+1 < vertices.size()) {
                 lines.emplace_back();
                 lines.back().I1 = line_start;
                 lines.back().I2 = vertices.size()-1;

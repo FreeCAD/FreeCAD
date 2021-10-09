@@ -64,10 +64,7 @@
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
-#include <BRepAdaptor_HCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -75,10 +72,18 @@
 #include <Geom2d_BSplineCurve.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
 
 using namespace Drawing;
 using namespace std;

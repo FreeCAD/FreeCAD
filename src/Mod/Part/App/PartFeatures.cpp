@@ -25,9 +25,7 @@
 #ifndef _PreComp_
 # include <BRepFill.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <TopoDS.hxx>
@@ -43,7 +41,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-# include <Adaptor3d_HCurve.hxx>
+# include <memory>
 #endif
 
 
@@ -170,22 +168,18 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
         if (Orientation.getValue() == 0) {
             // Automatic
-            Handle(Adaptor3d_HCurve) a1;
-            Handle(Adaptor3d_HCurve) a2;
+            std::unique_ptr<Adaptor3d_Curve> a1;
+            std::unique_ptr<Adaptor3d_Curve> a2;
             if (!isWire) {
-                BRepAdaptor_Curve adapt1(TopoDS::Edge(S1));
-                BRepAdaptor_Curve adapt2(TopoDS::Edge(S2));
-                a1 = new BRepAdaptor_HCurve(adapt1);
-                a2 = new BRepAdaptor_HCurve(adapt2);
+                a1 = std::make_unique<BRepAdaptor_Curve>(TopoDS::Edge(S1));
+                a2 = std::make_unique<BRepAdaptor_Curve>(TopoDS::Edge(S2));
             }
             else {
-                BRepAdaptor_CompCurve adapt1(TopoDS::Wire(S1));
-                BRepAdaptor_CompCurve adapt2(TopoDS::Wire(S2));
-                a1 = new BRepAdaptor_HCompCurve(adapt1);
-                a2 = new BRepAdaptor_HCompCurve(adapt2);
+                a1 = std::make_unique<BRepAdaptor_CompCurve>(TopoDS::Wire(S1));
+                a2 = std::make_unique<BRepAdaptor_CompCurve>(TopoDS::Wire(S2));
             }
 
-            if (!a1.IsNull() && !a2.IsNull()) {
+            if (a1 && a2) {
                 // get end points of 1st curve
                 Standard_Real first, last;
                 first = a1->FirstParameter();
