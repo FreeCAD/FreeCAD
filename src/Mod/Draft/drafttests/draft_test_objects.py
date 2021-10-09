@@ -41,7 +41,6 @@ Or load it as a module and use the defined function.
 ## \addtogroup drafttests
 # @{
 import datetime
-import os
 
 import FreeCAD as App
 import Part
