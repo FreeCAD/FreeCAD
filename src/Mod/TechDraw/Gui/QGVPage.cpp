@@ -57,6 +57,12 @@
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -126,6 +132,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
       m_renderer(Native),
       drawBkg(true),
       m_vpPage(0),
+      balloonPlacing(false),
       panningActive(false)
 {
     assert(vp);
@@ -166,13 +173,13 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setAlignment(Qt::AlignCenter);
 
     setDragMode(ScrollHandDrag);
-    setCursor(QCursor(Qt::ArrowCursor));
+    resetCursor();
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
-    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")));
+    balloonCursor->setPixmap(prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
     balloonCursor->hide();
 
     resetCachedContent();
@@ -184,11 +191,17 @@ QGVPage::~QGVPage()
 
 }
 
+void QGVPage::startBalloonPlacing(void)
+{
+    balloonPlacing = true;
+    activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
+}
+
 void QGVPage::cancelBalloonPlacing(void)
 {
-        getDrawPage()->balloonPlacing = false;
-        balloonCursor->hide();
-        QApplication::restoreOverrideCursor();
+    balloonPlacing = false;
+    balloonCursor->hide();
+    resetCursor();
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -448,12 +461,13 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     QGIView *parent = 0;
     parent = findParent(vBalloon);
 
-    if(parent)
+    if (parent) {
         addBalloonToParent(vBalloon,parent);
+    }
 
-    if (getDrawPage()->balloonPlacing) {
-            vBalloon->placeBalloon(balloon->origin);
-            cancelBalloonPlacing();
+    if (balloonPlacing) {
+        vBalloon->placeBalloon(balloon->origin);
+        cancelBalloonPlacing();
     }
 
     return vBalloon;
@@ -468,6 +482,29 @@ void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
     balloon->moveBy(-mapPos.x(), -mapPos.y());
     parent->addToGroup(balloon);
     balloon->setZValue(ZVALUE::DIMENSION);
+}
+
+void QGVPage::createBalloon(QPointF origin, DrawViewPart *parent)
+{
+    std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+    std::string pageName = getDrawPage()->getNameInDocument();
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')", featName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", pageName.c_str(), featName.c_str());
+
+    TechDraw::DrawViewBalloon *balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(featName.c_str()));
+    if (!balloon) {
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
+
+    balloon->SourceView.setValue(parent);
+    balloon->origin = origin;
+
+    Gui::Command::commitCommand();
+
+    parent->touch(true);
+    Gui::Command::updateActive();
 }
 
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
@@ -1119,21 +1156,14 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
-    if(getDrawPage()->balloonPlacing) {
+    if (balloonPlacing) {
         balloonCursor->hide();
-        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")),0,32));
-      } else {
-        QApplication::restoreOverrideCursor();
-        viewport()->setCursor(Qt::ArrowCursor);
     }
 }
 
 void QGVPage::leaveEvent(QEvent * event)
 {
-    QApplication::restoreOverrideCursor();
-    if(getDrawPage()->balloonPlacing) {
-
-
+    if (balloonPlacing) {
         int left_x;
         if (balloonCursorPos.x() < 32)
             left_x = 0;
@@ -1192,33 +1222,9 @@ void QGVPage::mouseMoveEvent(QMouseEvent *event)
 
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(getDrawPage()->balloonPlacing) {
-        QApplication::restoreOverrideCursor();
+    if (balloonPlacing) {
         balloonCursor->hide();
-
-        std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string PageName = getDrawPage()->getNameInDocument();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-        TechDraw::DrawViewBalloon *balloon = 0;
-
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-
-        balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(FeatName.c_str()));
-        if (!balloon) {
-            throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
-        }
-
-        balloon->SourceView.setValue(getDrawPage()->balloonParent);
-        balloon->origin = mapToScene(event->pos());
-
-        Gui::Command::commitCommand();
-        balloon->recomputeFeature();
-
-        //Horrible hack to force Tree update
-        double x = getDrawPage()->balloonParent->X.getValue();
-        getDrawPage()->balloonParent->X.setValue(x);
+        createBalloon(mapToScene(event->pos()), getDrawPage()->balloonParent);
     }
 
     if (event->button()&Qt::MiddleButton) {
@@ -1227,7 +1233,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QGraphicsView::mouseReleaseEvent(event);
-    viewport()->setCursor(Qt::ArrowCursor);
+    resetCursor();
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()
@@ -1243,5 +1249,55 @@ QColor QGVPage::getBackgroundColor()
     fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }
+
+double QGVPage::getDevicePixelRatio() const {
+    for (Gui::MDIView *view : m_vpPage->getDocument()->getMDIViews()) {
+        if (view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            return static_cast<Gui::View3DInventor *>(view)->getViewer()->devicePixelRatio();
+        }
+    }
+
+    return 1.0;
+}
+
+QPixmap QGVPage::prepareCursorPixmap(const char *iconName, QPoint &hotspot) {
+
+    QPointF floatHotspot(hotspot);
+    double pixelRatio = getDevicePixelRatio();
+
+    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
+    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support#Custom_cursor_size
+    double cursorSize = 32.0*pixelRatio;
+
+    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
+    pixmap.setDevicePixelRatio(pixelRatio);
+
+    // The default (and here expected) SVG cursor graphics size is 64x64 pixels, thus we must adjust
+    // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
+    floatHotspot *= 0.5;
+
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+    // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
+    // therefore we must take care of the transformation ourselves...
+    // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
+    if (qGuiApp->platformName() == QLatin1String("xcb")) {
+        floatHotspot *= pixelRatio;
+    }
+#endif
+
+    hotspot = floatHotspot.toPoint();
+    return pixmap;
+}
+
+void QGVPage::activateCursor(QCursor cursor) {
+    this->setCursor(cursor);
+    viewport()->setCursor(cursor);
+}
+
+void QGVPage::resetCursor() {
+    this->setCursor(Qt::ArrowCursor);
+    viewport()->setCursor(Qt::ArrowCursor);
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

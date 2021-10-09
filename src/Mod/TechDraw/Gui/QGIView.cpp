@@ -118,8 +118,6 @@ QGIView::QGIView()
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
     m_lock->hide();
-
-    setCursor(Qt::ArrowCursor);
 }
 
 QGIView::~QGIView()
