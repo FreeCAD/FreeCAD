@@ -34,6 +34,7 @@
 #include <Poly_Triangulation.hxx>
 #include <TColStd_ListOfTransient.hxx>
 #include <TColgp_Array1OfDir.hxx>
+#include <TopLoc_Location.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
@@ -153,7 +154,29 @@ public:
      * \param vertexnormals
      */
     static void getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals);
+    /*!
+     * \brief getPointNormals
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * \param face
+     * \param aPoly
+     * \param vertexnormals
+     */
     static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, TColgp_Array1OfDir& normals);
+    /*!
+     * \brief getPointNormals
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * \param face
+     * \param aPoly
+     * \param vertexnormals
+     */
+    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, std::vector<gp_Vec>& normals);
+    /*!
+     * \brief applyTransformationOnNormals
+     * Apply the transformation to the vectors
+     * \param loc
+     * \param normals
+     */
+    static void applyTransformationOnNormals(const TopLoc_Location& loc, std::vector<gp_Vec>& normals);
 };
 
 } //namespace Part

@@ -420,6 +420,7 @@ void Part::Tools::getPointNormals(const std::vector<gp_Pnt>& points, const TopoD
 
 void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triangulation) aPolyTri, TColgp_Array1OfDir& theNormals)
 {
+#if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
@@ -498,6 +499,93 @@ void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triang
             {
                 theNormals.ChangeValue(aNodeIter).Reverse();
             }
+        }
+    }
+#else
+    Standard_Integer numNodes = aPolyTri->NbNodes();
+
+    if(aPolyTri->HasNormals())
+    {
+        for(Standard_Integer aNodeIter = 1; aNodeIter <= numNodes; ++aNodeIter)
+        {
+            theNormals(aNodeIter) = aPolyTri->Normal(aNodeIter);
+        }
+
+        if(theFace.Orientation() == TopAbs_REVERSED)
+        {
+            for(Standard_Integer aNodeIter = 1; aNodeIter <= numNodes; ++aNodeIter)
+            {
+                theNormals.ChangeValue(aNodeIter).Reverse();
+            }
+        }
+    }
+    else {
+        // take in face the surface location
+        Poly_Connect thePolyConnect(aPolyTri);
+        const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
+        Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
+        const Standard_Real    aTol      = Precision::Confusion();
+        Standard_Boolean hasNodesUV      = aPolyTri->HasUVNodes() && !aSurf.IsNull();
+        Standard_Integer aTri[3];
+
+        for(Standard_Integer aNodeIter = 1; aNodeIter <= numNodes; ++aNodeIter)
+        {
+            // try to retrieve normal from real surface first, when UV coordinates are available
+            if (!hasNodesUV || GeomLib::NormEstim(aSurf, aPolyTri->UVNode(aNodeIter), aTol, theNormals(aNodeIter)) > 1)
+            {
+                // compute flat normals
+                gp_XYZ eqPlan(0.0, 0.0, 0.0);
+
+                for(thePolyConnect.Initialize(aNodeIter); thePolyConnect.More(); thePolyConnect.Next())
+                {
+                    aPolyTri->Triangle(thePolyConnect.Value()).Get(aTri[0], aTri[1], aTri[2]);
+                    const gp_XYZ v1(aPolyTri->Node(aTri[1]).Coord() - aPolyTri->Node(aTri[0]).Coord());
+                    const gp_XYZ v2(aPolyTri->Node(aTri[2]).Coord() - aPolyTri->Node(aTri[1]).Coord());
+                    const gp_XYZ vv = v1 ^ v2;
+                    const Standard_Real aMod = vv.Modulus();
+
+                    if(aMod >= aTol)
+                    {
+                        eqPlan += vv / aMod;
+                    }
+                }
+
+                const Standard_Real aModMax = eqPlan.Modulus();
+                theNormals(aNodeIter) = (aModMax > aTol) ? gp_Dir(eqPlan) : gp::DZ();
+            }
+
+            aPolyTri->SetNormal(aNodeIter, theNormals(aNodeIter));
+        }
+
+        if(theFace.Orientation() == TopAbs_REVERSED)
+        {
+            for(Standard_Integer aNodeIter = 1; aNodeIter <= numNodes; ++aNodeIter)
+            {
+                theNormals.ChangeValue(aNodeIter).Reverse();
+            }
+        }
+    }
+#endif
+}
+
+void Part::Tools::getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, std::vector<gp_Vec>& normals)
+{
+    TColgp_Array1OfDir dirs (1, aPoly->NbNodes());
+    getPointNormals(face, aPoly, dirs);
+    normals.reserve(aPoly->NbNodes());
+
+    for (int i = dirs.Lower(); i <= dirs.Upper(); ++i) {
+        normals.emplace_back(dirs(i).XYZ());
+    }
+}
+
+void Part::Tools::applyTransformationOnNormals(const TopLoc_Location& loc, std::vector<gp_Vec>& normals)
+{
+    if (!loc.IsIdentity()) {
+        gp_Trsf myTransf = loc.Transformation();
+
+        for (auto& it : normals) {
+            it.Transform(myTransf);
         }
     }
 }
