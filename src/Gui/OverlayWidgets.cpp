@@ -2157,6 +2157,16 @@ void OverlayDragFrame::paintEvent(QPaintEvent *)
     painter.drawRect(0, 0, this->width()-1, this->height()-1);
 }
 
+QSize OverlayDragFrame::sizeHint() const
+{
+    return size();
+}
+
+QSize OverlayDragFrame::minimumSizeHint() const
+{
+    return minimumSize();
+}
+
 // -----------------------------------------------------------
 
 OverlaySizeGrip::OverlaySizeGrip(QWidget * parent, bool vertical)

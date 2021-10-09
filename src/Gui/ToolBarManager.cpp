@@ -29,6 +29,12 @@
 # include <QToolButton>
 # include <QMenu>
 # include <QPointer>
+# include <QPointer>
+# include <QHBoxLayout>
+# include <QStatusBar>
+# include <QMouseEvent>
+# include <QCheckBox>
+# include <QWidgetAction>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -39,6 +45,8 @@
 #include "MainWindow.h"
 #include "Application.h"
 #include "Command.h"
+#include "Action.h"
+#include "OverlayWidgets.h"
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -184,8 +192,76 @@ void ToolBarManager::destruct()
     _instance = 0;
 }
 
+class StatusBarArea : public QWidget
+{
+public:
+    StatusBarArea(QWidget *parent)
+        :QWidget(parent)
+    {
+        _layout = new QHBoxLayout(this);
+        // _layout->addSpacing(2);
+        // _layout->setSpacing(6);
+        _layout->setMargin(0);
+        // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    }
+
+    void addWidget(QWidget *w) {
+        if (_layout->indexOf(w) < 0) {
+            _layout->addWidget(w);
+        }
+    }
+
+    void insertWidget(int idx, QWidget *w) {
+        int index = _layout->indexOf(w);
+        if (index == idx)
+            return;
+        if (index > 0)
+            _layout->removeWidget(w);
+        _layout->insertWidget(idx, w);
+    }
+
+    void removeWidget(QWidget *w) {
+        _layout->removeWidget(w);
+    }
+
+    QWidget *widgetAt(int index) const {
+        auto item = _layout->itemAt(index);
+        return item ? item->widget() : nullptr;
+    }
+
+    int count() const {
+        return _layout->count();
+    }
+
+    int indexOf(QWidget *w) const {
+        return _layout->indexOf(w);
+    }
+
+    template<class F>
+    void foreachToolbar(F &&f) {
+        for (int i = 0, c = _layout->count(); i < c; ++i) {
+            auto toolbar = qobject_cast<QToolBar*>(widgetAt(i));
+            if (!toolbar || toolbar->objectName().isEmpty()
+                         || toolbar->objectName().startsWith(QStringLiteral("*")))
+                continue;
+            f(toolbar, i);
+        }
+    }
+
+private:
+    QHBoxLayout *_layout;
+};
+
 ToolBarManager::ToolBarManager()
 {
+    if (auto sb = getMainWindow()->statusBar()) {
+        sb->installEventFilter(this);
+        statusBarArea = new StatusBarArea(sb);
+        statusBarArea->setObjectName(QStringLiteral("StatusBarArea"));
+        sb->insertPermanentWidget(2, statusBarArea);
+        statusBarArea->show();
+    }
+
     globalArea = defaultArea = Qt::TopToolBarArea;
     hMainWindow = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/MainWindow");
     std::string defarea = hMainWindow->GetASCII("DefaultToolBarArea");
@@ -207,12 +283,15 @@ ToolBarManager::ToolBarManager()
             "BaseApp/Workbench/Global/Toolbar");
     getGlobalToolbarNames();
 
+    hStatusBar = App::GetApplication().GetUserParameter().GetGroup(
+            "BaseApp/MainWindow/StatusBar");
+
     hPref = App::GetApplication().GetUserParameter().GetGroup(
             "BaseApp/MainWindow/Toolbars");
     hMovable = hPref->GetGroup("Movable");
     connParam = App::GetApplication().GetUserParameter().signalParamChanged.connect(
         [this](ParameterGrp *Param, ParameterGrp::ParamType, const char *Name, const char *) {
-            if (Param == hPref || Param == hMovable
+            if (Param == hPref || Param == hMovable || Param == hStatusBar
                     || (Param == hMainWindow
                         && Name
                         && boost::equals(Name, "DefaultToolBarArea")))
@@ -344,6 +423,7 @@ void ToolBarManager::onTimer()
     auto mw = getMainWindow();
     bool movable = isDefaultMovable();
 
+    std::map<int, QToolBar*> sbToolbars;
     std::multimap<ToolBarKey, QToolBar*> lines;
     for (auto &v : toolBars()) {
         if (!v.second)
@@ -352,9 +432,17 @@ void ToolBarManager::onTimer()
         bool isGlobal = globalToolBarNames.count(v.first);
         auto defArea = isGlobal ? globalArea : defaultArea;
         auto curArea = isGlobal ? gArea : area;
+        QByteArray name = v.first.toUtf8();
+        int idx = hStatusBar->GetInt(name, -1);
+
+        if (idx >= 0) {
+            sbToolbars[idx] = tb;
+            continue;
+        } else if (tb->parentWidget() != getMainWindow())
+            getMainWindow()->addToolBar(tb);
+
         if (defArea != curArea && mw->toolBarArea(tb) == defArea)
             lines.emplace(ToolBarKey(tb),tb);
-        QByteArray name = v.first.toUtf8();
         if (tb->toggleViewAction()->isVisible())
             setToolBarVisible(tb, hPref->GetBool(name, tb->isVisible()));
         tb->setMovable(hMovable->GetBool(name, movable));
@@ -380,6 +468,21 @@ void ToolBarManager::onTimer()
         globalArea = gArea;
         mw->saveWindowSettings(true);
     }
+
+    for (auto &v : sbToolbars) {
+        bool vis = v.second->isVisible();
+        getMainWindow()->removeToolBar(v.second);
+        v.second->setOrientation(Qt::Horizontal);
+        statusBarArea->insertWidget(v.first, v.second);
+        setToolBarVisible(v.second, vis);
+    }
+
+    for (auto &v : hStatusBar->GetBoolMap()) {
+        auto w = getMainWindow()->statusBar()->findChild<QWidget*>(
+                QString::fromLatin1(v.first.c_str()));
+        if (w)
+            w->setVisible(v.second);
+    }
 }
 
 QToolBar *ToolBarManager::createToolBar(const QString &name)
@@ -398,6 +501,7 @@ void ToolBarManager::connectToolBar(QToolBar *toolbar)
     if (p == toolbar)
         return;
     p = toolbar;
+    toolbar->installEventFilter(this);
     connect(toolbar, SIGNAL(visibilityChanged(bool)), this, SLOT(onToggleToolBar(bool)));
     connect(toolbar, SIGNAL(movableChanged(bool)), this, SLOT(onMovableChanged(bool)));
     connect(toolbar, &QToolBar::topLevelChanged, [this](){
@@ -570,28 +674,79 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
 
 void ToolBarManager::saveState() const
 {
+    Base::ConnectionBlocker block(const_cast<ToolBarManager*>(this)->connParam);
+    QHBoxLayout *layout = nullptr;
+    for (auto l : getMainWindow()->statusBar()->findChildren<QHBoxLayout*>()) {
+        if (l->indexOf(statusBarArea) >= 0) {
+            layout = l;
+            break;
+        }
+    }
+    if (!layout)
+        return;
+    for (int i = 0, c = layout->count(); i < c; ++i) {
+        auto w = layout->itemAt(i)->widget();
+        if (!w)
+            continue;
+        if (w != statusBarArea) {
+            if (w->windowTitle().isEmpty()
+                    || w->objectName().isEmpty()
+                    || w->objectName().startsWith(QStringLiteral("*")))
+                continue;
+            hStatusBar->SetBool(w->objectName().toUtf8().constData(), w->isVisible());
+            continue;
+        }
+        for (auto &v : hStatusBar->GetIntMap())
+            hStatusBar->RemoveInt(v.first.c_str());
+
+        statusBarArea->foreachToolbar([this](QToolBar *toolbar, int idx) {
+            hStatusBar->SetInt(toolbar->objectName().toUtf8().constData(), idx);
+        });
+    }
+
     // Toolbar visibility is now synced using Qt signals
 }
 
 void ToolBarManager::restoreState()
 {
     bool movable = isDefaultMovable();
+    std::map<int, QToolBar*> sbToolbars;
     for (auto &v : toolBars()) {
         QToolBar *toolbar = v.second;
         if (!toolbar)
             continue;
+        QByteArray toolbarName = toolbar->objectName().toUtf8();
         if (toolbar->windowTitle().isEmpty()) {
             toolbar->toggleViewAction()->setVisible(false);
             setToolBarVisible(toolbar, false);
         }
         else if (this->toolbarNames.indexOf(toolbar->objectName()) >= 0) {
-            QByteArray toolbarName = toolbar->objectName().toUtf8();
             QSignalBlocker block(toolbar);
             setToolBarVisible(toolbar, hPref->GetBool(toolbarName, toolbar->isVisible()));
             toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
         }
         else
             setToolBarVisible(toolbar, false);
+        int idx = hStatusBar->GetInt(toolbarName, -1);
+        if (idx >= 0)
+            sbToolbars[idx] = toolbar;
+        else if (toolbar->parentWidget() != getMainWindow())
+            getMainWindow()->addToolBar(toolbar);
+    }
+
+    for (auto &v : sbToolbars) {
+        bool vis = v.second->isVisible();
+        getMainWindow()->removeToolBar(v.second);
+        v.second->setOrientation(Qt::Horizontal);
+        statusBarArea->insertWidget(v.first, v.second);
+        setToolBarVisible(v.second, vis);
+    }
+
+    for (auto &v : hStatusBar->GetBoolMap()) {
+        auto w = getMainWindow()->statusBar()->findChild<QWidget*>(
+                QString::fromLatin1(v.first.c_str()));
+        if (w)
+            w->setVisible(v.second);
     }
     restored = true;
 }
@@ -622,9 +777,11 @@ QAction* ToolBarManager::findAction(const QList<QAction*>& acts, const QString& 
 std::map<QString, QPointer<QToolBar>> ToolBarManager::toolBars()
 {
     std::map<QString, QPointer<QToolBar>> res;
-    for (auto tb : getMainWindow()->findChildren<QToolBar*>(
-                QString(), Qt::FindDirectChildrenOnly))
-    {
+    auto mw = getMainWindow();
+    for (auto tb : mw->findChildren<QToolBar*>()) {
+        auto parent = tb->parentWidget();
+        if (parent != mw && parent != mw->statusBar() && parent != statusBarArea)
+            continue;
         QString name = tb->objectName();
         if (name.isEmpty() || name.startsWith(QStringLiteral("*")))
             continue;
@@ -693,6 +850,184 @@ void ToolBarManager::onMovableChanged(bool movable)
         Base::ConnectionBlocker block(connParam);
         hMovable->SetBool(toolbar->objectName().toUtf8(), movable);
     }
+}
+
+bool ToolBarManager::addToolbarToStatusBar(QObject *o, QMouseEvent *ev)
+{
+    auto statusBar = getMainWindow()->statusBar();
+    if (!statusBar || !statusBar->isVisible())
+        return false;
+
+    auto tb = qobject_cast<QToolBar*>(o);
+    if (!tb || !tb->isFloating())
+        return false;
+
+    static OverlayDragFrame *tbPlaceholder;
+    static int tbIndex = -1;
+    if (ev->type() == QEvent::MouseMove && ev->buttons() != Qt::LeftButton) {
+        if (tbIndex >= 0) {
+            statusBarArea->removeWidget(tbPlaceholder);
+            tbPlaceholder->hide();
+            tbIndex = -1;
+        }
+        return false;
+    }
+
+    if (ev->type() == QEvent::MouseButtonRelease && ev->button() != Qt::LeftButton)
+        return false;
+
+    QPoint pos = QCursor::pos();
+    QRect rect(statusBar->mapToGlobal(QPoint(0,0)), statusBar->size());
+    if (!rect.contains(pos)) {
+        if (tbPlaceholder) {
+            statusBarArea->removeWidget(tbPlaceholder);
+            tbPlaceholder->hide();
+            tbIndex = -1;
+        }
+        return false;
+    }
+
+    int idx = 0;
+    for (int c = statusBarArea->count(); idx < c ;++idx) {
+        auto w = statusBarArea->widgetAt(idx);
+        if (!w || w->isHidden())
+            continue;
+        int p = w->mapToGlobal(w->rect().center()).x();
+        if (pos.x() < p)
+            break;
+    }
+    if (tbIndex >= 0 && tbIndex == idx-1)
+        idx = tbIndex;
+    if (ev->type() == QEvent::MouseMove) {
+        if (!tbPlaceholder) {
+            tbPlaceholder = new OverlayDragFrame(getMainWindow());
+            tbPlaceholder->hide();
+            tbIndex = -1;
+        }
+        if (tbIndex != idx) {
+            tbIndex = idx;
+            tbPlaceholder->setSizePolicy(tb->sizePolicy());
+            tbPlaceholder->setMinimumWidth(tb->minimumWidth());
+            tbPlaceholder->resize(tb->size());
+            statusBarArea->insertWidget(idx, tbPlaceholder);
+            tbPlaceholder->adjustSize();
+            tbPlaceholder->show();
+        }
+    } else {
+        tbIndex = idx;
+        QTimer::singleShot(10, tb, [tb,this]() {
+            tbPlaceholder->hide();
+            {
+                QSignalBlocker block(tb);
+                statusBarArea->removeWidget(tbPlaceholder);
+                getMainWindow()->removeToolBar(tb);
+                tb->setOrientation(Qt::Horizontal);
+                statusBarArea->insertWidget(tbIndex, tb);
+                ToolBarManager::getInstance()->setToolBarVisible(tb, true);
+            }
+            tb->topLevelChanged(false);
+            tbIndex = -1;
+        });
+    }
+    return false;
+}
+
+void ToolBarManager::showStatusBarContextMenu()
+{
+    QMenu menu;
+    QMenu menuUndock(tr("Undock toolbars"));
+    QHBoxLayout *layout = nullptr;
+    for (auto l : getMainWindow()->statusBar()->findChildren<QHBoxLayout*>()) {
+        if (l->indexOf(statusBarArea) >= 0) {
+            layout = l;
+            break;
+        }
+    }
+    if (!layout)
+        return;
+    auto tooltip = QObject::tr("Toggles visibility");
+    auto ltooltip = QObject::tr("Undock from status bar");
+    QCheckBox *checkbox;
+    for (int i = 0, c = layout->count(); i < c; ++i) {
+        auto w = layout->itemAt(i)->widget();
+        if (!w)
+            continue;
+        if (w != statusBarArea) {
+            if (w->windowTitle().isEmpty()
+                    || w->objectName().isEmpty()
+                    || w->objectName().startsWith(QStringLiteral("*")))
+                continue;
+            auto wa = Action::addCheckBox(&menu, w->windowTitle(),
+                    tooltip, QIcon(), w->isVisible(), &checkbox);
+            QObject::connect(checkbox, SIGNAL(toggled(bool)), w, SLOT(setVisible(bool)));
+            QObject::connect(wa, SIGNAL(triggered(bool)), w, SLOT(setVisible(bool)));
+            continue;
+        }
+
+        statusBarArea->foreachToolbar([&](QToolBar *toolbar, int) {
+            auto action = toolbar->toggleViewAction();
+            if ((action->isVisible() || toolbar->isVisible()) && action->text().size()) {
+                action->setVisible(true);
+                auto wa = Action::addCheckBox(&menu, action->text(),
+                        tooltip, action->icon(), action->isChecked(), &checkbox);
+                QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(triggered(bool)));
+                QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
+
+                wa = Action::addCheckBox(&menuUndock, action->text(),
+                        ltooltip, action->icon(), true, &checkbox);
+                QObject::connect(wa, &QAction::toggled, [checkbox](bool checked){
+                    QSignalBlocker block(checkbox);
+                    checkbox->setChecked(checked);
+                });
+                QObject::connect(wa, &QWidgetAction::toggled, [toolbar, this](bool checked) {
+                    if (checked) {
+                        QSignalBlocker blocker(toolbar);
+                        statusBarArea->addWidget(toolbar);
+                    } else if (toolbar->parentWidget() == getMainWindow())
+                        return;
+                    else {
+                        auto pos = toolbar->mapToGlobal(QPoint(0, 0));
+                        QSignalBlocker blocker(toolbar);
+                        statusBarArea->removeWidget(toolbar);
+                        getMainWindow()->addToolBar(toolbar);
+                        toolbar->setWindowFlags(Qt::Tool
+                                | Qt::FramelessWindowHint
+                                | Qt::X11BypassWindowManagerHint);
+                        toolbar->move(pos.x(), pos.y()-toolbar->height()-10);
+                        toolbar->adjustSize();
+                        setToolBarVisible(toolbar, true);
+                    }
+                    toolbar->topLevelChanged(!checked);
+                });
+            }
+        });
+    }
+    if (menuUndock.actions().size()) {
+        menu.addSeparator();
+        menu.addMenu(&menuUndock);
+    }
+    menu.exec(QCursor::pos());
+}
+
+bool ToolBarManager::eventFilter(QObject *o, QEvent *e)
+{
+    bool res = false;
+    switch(e->type()) {
+    case QEvent::MouseButtonRelease: {
+        auto mev = static_cast<QMouseEvent*>(e);
+        if (o == getMainWindow()->statusBar() && mev->button() == Qt::RightButton) {
+            showStatusBarContextMenu();
+            return true;
+        }
+    }
+    // fall through
+    case QEvent::MouseMove:
+        res = addToolbarToStatusBar(o, static_cast<QMouseEvent*>(e));
+        break;
+    default:
+        break;
+    }
+    return res;
 }
 
 #include "moc_ToolBarManager.cpp"

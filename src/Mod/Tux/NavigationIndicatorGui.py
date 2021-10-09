@@ -295,6 +295,7 @@ def retranslateUi():
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
+    indicator.setWindowTitle(translate("NavigationIndicator", "Navigation style"));
 
 
 indicator = IndicatorButton(statusBar)

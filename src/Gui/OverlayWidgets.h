@@ -321,6 +321,8 @@ class OverlayDragFrame: public QWidget
     Q_OBJECT
 public:
     OverlayDragFrame(QWidget * parent);
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
 protected:
     void paintEvent(QPaintEvent*);

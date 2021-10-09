@@ -376,11 +376,17 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
+    d->actionLabel->setObjectName(QStringLiteral("SB_ActionLabel"));
+    d->actionLabel->setWindowTitle(tr("Message label"));
     // d->actionLabel->setMinimumWidth(120);
     d->sizeLabel = new QLabel(tr("Dimension"), statusBar());
+    d->sizeLabel->setWindowTitle(tr("Dimension label"));
+    d->sizeLabel->setObjectName(QStringLiteral("SB_DimensionLabel"));
     d->sizeLabel->setMinimumWidth(120);
-    statusBar()->addWidget(d->actionLabel, 1);
+    statusBar()->addWidget(d->actionLabel);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
+    progressBar->setWindowTitle(tr("Progress bar"));
+    progressBar->setObjectName(QStringLiteral("SB_ProgressBar"));
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
@@ -508,6 +514,11 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
     showMessage(tr("Ready"), 2001);
+
+    QObject::connect(statusBar(), &QStatusBar::messageChanged,
+        [this](const QString &msg) {
+            if (msg.size()) d->actionLabel->clear();
+        });
 }
 
 MainWindow::~MainWindow()
@@ -720,7 +731,8 @@ void populateMenu(QMenu *menu, MenuType type, bool popup)
 
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
             auto action = toolbar->toggleViewAction();
-            if (toolbar->parentWidget() == mw) {
+            auto parent = toolbar->parentWidget();
+            if (parent == mw || parent == mw->statusBar()) {
                 // Some misbehaved code may force the toolbar to be visible
                 // while hiding its action, which causes the user to be unable
                 // to switch it off. We'll just include those actions anyway.

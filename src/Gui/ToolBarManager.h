@@ -27,11 +27,14 @@
 #include <boost_signals2.hpp>
 #include <string>
 #include <QStringList>
+#include <QPointer>
 #include <QTimer>
 #include <Base/Parameter.h>
 
 class QAction;
 class QToolBar;
+class QMouseEvent;
+class StatusBarArea;
 
 namespace Gui {
 
@@ -106,6 +109,10 @@ protected:
     void connectToolBar(QToolBar *);
     void setToolBarVisible(QToolBar *toolbar, bool show);
     void getGlobalToolbarNames();
+    bool eventFilter(QObject *, QEvent *);
+
+    bool addToolbarToStatusBar(QObject *, QMouseEvent*);
+    void showStatusBarContextMenu();
 
     ToolBarManager();
     ~ToolBarManager();
@@ -118,6 +125,7 @@ private:
     ParameterGrp::handle hMovable;
     ParameterGrp::handle hMainWindow;
     ParameterGrp::handle hGlobal;
+    ParameterGrp::handle hStatusBar;
     boost::signals2::scoped_connection connParam;
     bool restored = false;
     bool migrating = false;
@@ -125,6 +133,7 @@ private:
     Qt::ToolBarArea globalArea;
     std::set<QString> globalToolBarNames;
     std::map<QToolBar*, QPointer<QToolBar>> connectedToolBars;
+    StatusBarArea *statusBarArea = nullptr;
 };
 
 } // namespace Gui
