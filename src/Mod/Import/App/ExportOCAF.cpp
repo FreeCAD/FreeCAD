@@ -104,7 +104,7 @@
 
 static inline Quantity_ColorRGBA convertColor(const App::Color &c)
 {
-    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), c.a);
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0 - c.a);
 }
 
 using namespace Import;
