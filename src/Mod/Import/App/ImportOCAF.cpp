@@ -122,7 +122,7 @@ static inline App::Color convertColor(const Quantity_ColorRGBA &c)
     return App::Color(static_cast<float>(r),
                       static_cast<float>(g),
                       static_cast<float>(b),
-                      static_cast<float>(c.Alpha()));
+                      1.0f - static_cast<float>(c.Alpha()));
 }
 
 #define OCAF_KEEP_PLACEMENT

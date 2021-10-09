@@ -92,12 +92,12 @@ static inline App::Color convertColor(const Quantity_ColorRGBA &c)
     return App::Color(static_cast<float>(r),
                       static_cast<float>(g),
                       static_cast<float>(b),
-                      static_cast<float>(c.Alpha()));
+                      1.0f - static_cast<float>(c.Alpha()));
 }
 
 static inline Quantity_ColorRGBA convertColor(const App::Color &c)
 {
-    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), c.a);
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0f - c.a);
 }
 
 static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGBA &c) {
