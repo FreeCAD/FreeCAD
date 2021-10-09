@@ -1244,8 +1244,17 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // not call setupObject() on a non-located baseshape like above,
             // because OCCT does not respect shape style sharing when not
             // exporting assembly
-            if(!keepPlacement) 
+            if(!keepPlacement || shape.getPlacement() == Base::Placement())
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
+            else {
+                Base::Matrix4D mat = shape.getTransform();
+                shape.setShape(shape.getShape().Located(TopLoc_Location()));
+                // Transform with copy to conceal the transformation
+                shape.transformShape(mat, true);
+                // Even if the shape has no transformation, TopoShape still sets
+                // a TopLoc_Location, so we need to clear it again.
+                shape.setShape(shape.getShape().Located(TopLoc_Location()));
+            }
             label = aShapeTool->AddShape(shape.getShape(),Standard_False, Standard_False);
             auto o = name?parentObj:obj;
             if(o!=linked)
