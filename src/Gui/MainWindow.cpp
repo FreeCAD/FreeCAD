@@ -661,6 +661,7 @@ bool MainWindow::closeAllDocuments (bool close)
                 return false;
             case ConfirmSaveResult::SaveAll:
                 saveAll = true;
+                /* FALLTHRU */
             case ConfirmSaveResult::Save:
                 save = true;
                 break;
