@@ -528,6 +528,7 @@ void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triang
         Standard_Boolean hasNodesUV      = aPolyTri->HasUVNodes() && !aSurf.IsNull();
         Standard_Integer aTri[3];
 
+        aPolyTri->AddNormals();
         for(Standard_Integer aNodeIter = 1; aNodeIter <= numNodes; ++aNodeIter)
         {
             // try to retrieve normal from real surface first, when UV coordinates are available
