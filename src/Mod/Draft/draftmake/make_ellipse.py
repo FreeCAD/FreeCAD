@@ -36,7 +36,7 @@ if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
 
-def make_ellipse(majradius, minradius, placement=None, face=True, support=None):
+def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
     """make_ellipse(majradius, minradius, [placement], [face], [support])
     
     Makes an ellipse with the given major and minor radius, and optionally
