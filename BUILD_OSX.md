@@ -7,7 +7,7 @@
   - [Install Xcode Command line tools](#install-xcode-cli-tools)
   - [Install Conda](#install-conda)
   - [Run the shell script](#run-the-shell-script)
-- [Building FreeCAD on macOS using homebrew packages with & without formual file](#homebrew-build-fc-on-macos)
+- [Building FreeCAD on macOS using homebrew packages with & without formula file](#homebrew-build-fc-on-macos)
 - [Requirements](#homebrew-requirements)
   - [Install required FreeCAD dependencies](#homebrew-install-required-deps)
 - [Limitations of using freecad formula file](#homebrew-limits-of-formula-file)
