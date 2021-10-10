@@ -27,7 +27,7 @@
 #include <TDocStd_Document.hxx>
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#include <Quantity_Color.hxx>
+#include <Quantity_ColorRGBA.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TDF_LabelMapHasher.hxx>
 #include <climits>
@@ -117,7 +117,7 @@ private:
     std::map<Standard_Integer, TopoDS_Shape> myShells;
     std::map<Standard_Integer, TopoDS_Shape> myCompds;
     std::map<Standard_Integer, TopoDS_Shape> myShapes;
-    std::map<Standard_Integer, Quantity_Color> myColorMap;
+    std::map<Standard_Integer, Quantity_ColorRGBA> myColorMap;
     std::map<Standard_Integer, std::string> myNameMap;
 };
 
