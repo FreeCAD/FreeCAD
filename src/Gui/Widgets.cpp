@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QColorDialog>
 # include <QDesktopWidget>
+# include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
 # include <QEventLoop>
@@ -812,53 +813,23 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
-  : QLabel(parent, f)
+UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
+    : QLabel(parent, f)
+    , _url (QStringLiteral("http://localhost"))
 {
-    _url = QString::fromLatin1("http://localhost");
-    setToolTip(this->_url);
-
-    if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
-    }
+    setToolTip(this->_url);    
+    setCursor(Qt::PointingHandCursor);
+    if (qApp->styleSheet().isEmpty())
+        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel()
 {
 }
 
-void UrlLabel::enterEvent ( QEvent * )
+void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    setCursor(Qt::PointingHandCursor);
-}
-
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
-}
-
-void UrlLabel::mouseReleaseEvent (QMouseEvent *)
-{
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
-    Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("webbrowser");
-    if (module) {
-        // get the methods dictionary and search for the 'open' method
-        PyObject* dict = PyModule_GetDict(module);
-        PyObject* func = PyDict_GetItemString(dict, "open");
-        if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
-#if PY_VERSION_HEX < 0x03090000
-            PyObject* result = PyEval_CallObject(func,args);
-#else
-            PyObject* result = PyObject_CallObject(func,args);
-#endif
-            // decrement the args and module reference
-            Py_XDECREF(result);
-            Py_DECREF(args);
-            Py_DECREF(module);
-        }
-    }
+    QDesktopServices::openUrl(this->_url);
 }
 
 QString UrlLabel::url() const

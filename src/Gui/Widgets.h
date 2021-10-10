@@ -265,8 +265,6 @@ public Q_SLOTS:
   void setUrl( const QString &u );
 
 protected:
-  void enterEvent ( QEvent * );
-  void leaveEvent ( QEvent * );
   void mouseReleaseEvent ( QMouseEvent * );
 
 private:
