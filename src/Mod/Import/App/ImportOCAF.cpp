@@ -60,7 +60,7 @@
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
+# include <Quantity_ColorRGBA.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPControl_Writer.hxx>
 # include <IGESCAFControl_Reader.hxx>
@@ -107,6 +107,23 @@
 #endif
 
 using namespace Import;
+
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
+
+static inline App::Color convertColor(const Quantity_ColorRGBA &c)
+{
+    Standard_Real r, g, b;
+    c.GetRGB().Values(r, g, b, OCC_COLOR_SPACE);
+    return App::Color(static_cast<float>(r),
+                      static_cast<float>(g),
+                      static_cast<float>(b),
+                      1.0f - static_cast<float>(c.Alpha()));
+}
 
 #define OCAF_KEEP_PLACEMENT
 
@@ -439,14 +456,12 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
 {
-    Quantity_Color aColor;
+    Quantity_ColorRGBA aColor;
     App::Color color(0.8f,0.8f,0.8f);
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor) ||
         aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor) ||
         aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
-        color.r = (float)aColor.Red();
-        color.g = (float)aColor.Green();
-        color.b = (float)aColor.Blue();
+        color = convertColor(aColor);
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
@@ -468,9 +483,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
             aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor) ||
             aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
             int index = faces.FindIndex(xp.Current());
-            color.r = (float)aColor.Red();
-            color.g = (float)aColor.Green();
-            color.b = (float)aColor.Blue();
+            color = convertColor(aColor);
             faceColors[index-1] = color;
             found_face_color = true;
         }
@@ -551,7 +564,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", default_name.c_str()));
     part->Label.setValue(default_name);
     part->Shape.setValue(shape);
-    std::map<Standard_Integer, Quantity_Color>::const_iterator jt;
+    std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
     jt = myColorMap.find(shape.HashCode(INT_MAX));
 
     App::Color partColor(0.8f,0.8f,0.8f);
@@ -596,11 +609,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             jt = myColorMap.find(xp.Current().HashCode(INT_MAX));
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
-                App::Color color;
-                color.r = (float)jt->second.Red();
-                color.g = (float)jt->second.Green();
-                color.b = (float)jt->second.Blue();
-                faceColors[index-1] = color;
+                faceColors[index-1] = convertColor(jt->second);
                 found_face_color = true;
             }
             xp.Next();
@@ -653,7 +662,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
         }
 
         // getting color
-        Quantity_Color col;
+        Quantity_ColorRGBA col;
         if (hColors->GetColor(label, XCAFDoc_ColorGen, col) ||
             hColors->GetColor(label, XCAFDoc_ColorSurf, col) ||
             hColors->GetColor(label, XCAFDoc_ColorCurv, col)) {

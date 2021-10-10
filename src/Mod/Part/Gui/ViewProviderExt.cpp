@@ -356,24 +356,19 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &ShapeMaterial || prop == &ShapeColor) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
-        DiffuseColor.setValue(ShapeColor.getValue());
+        App::Color c = ShapeColor.getValue();
+        c.a = Transparency.getValue()/100.0f;
+        DiffuseColor.setValue(c);
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeMaterial.getValue();
         long value = (long)(100*Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = Transparency.getValue()/100.0f;
-            if (pcFaceBind->value.getValue() == SoMaterialBinding::PER_PART) {
-                int cnt = pcShapeMaterial->diffuseColor.getNum();
-                pcShapeMaterial->transparency.setNum(cnt);
-                float *t = pcShapeMaterial->transparency.startEditing();
-                for (int i=0; i<cnt; i++)
-                    t[i] = trans;
-                pcShapeMaterial->transparency.finishEditing();
-            }
-            else {
-                pcShapeMaterial->transparency = trans;
-            }
+            auto colors = DiffuseColor.getValues();
+            for (auto &c : colors)
+                c.a = trans;
+            DiffuseColor.setValues(colors);
 
             App::PropertyContainer* parent = ShapeMaterial.getContainer();
             ShapeMaterial.setContainer(0);
@@ -642,7 +637,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
     else if (colors.size() == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
-        //pcShapeMaterial->transparency = colors[0].a; do not get transparency from DiffuseColor in this case
+        pcShapeMaterial->transparency = Transparency.getValue()/100.f;
     }
 }
 
@@ -708,6 +703,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             }
             if(size && singleColor) {
                 color = DiffuseColor[0];
+                color.a = Transparency.getValue()/100.0f;
                 ret.clear();
             }
             ret["Face"] = color;

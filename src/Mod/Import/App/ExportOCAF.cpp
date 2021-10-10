@@ -58,7 +58,7 @@
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
+# include <Quantity_ColorRGBA.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPControl_Writer.hxx>
 # include <IGESCAFControl_Reader.hxx>
@@ -95,6 +95,17 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
+
+static inline Quantity_ColorRGBA convertColor(const App::Color &c)
+{
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0 - c.a);
+}
 
 using namespace Import;
 
@@ -284,7 +295,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 */
 
     // Add color information
-    Quantity_Color col;
+    Quantity_ColorRGBA col;
 
     std::set<int> face_index;
     TopTools_IndexedMapOfShape faces;
@@ -317,11 +328,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
 
                 if (!faceLabel.IsNull()) {
                     const App::Color& color = colors[index-1];
-                    Standard_Real mat[3];
-                    mat[0] = color.r;
-                    mat[1] = color.g;
-                    mat[2] = color.b;
-                    col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                    col = convertColor(color);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
             }
@@ -330,11 +337,7 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
     }
     else if (!colors.empty()) {
         App::Color color = colors.front();
-        Standard_Real mat[3];
-        mat[0] = color.r;
-        mat[1] = color.g;
-        mat[2] = color.b;
-        col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+        col = convertColor(color);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 
@@ -400,7 +403,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
             TopoDS_Shape baseShape = part->Shape.getValue();
 
             // Add color information
-            Quantity_Color col;
+            Quantity_ColorRGBA col;
 
             std::set<int> face_index;
             TopTools_IndexedMapOfShape faces;
@@ -433,11 +436,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
 
                         if (!faceLabel.IsNull()) {
                             const App::Color& color = colors[index-1];
-                            Standard_Real mat[3];
-                            mat[0] = color.r;
-                            mat[1] = color.g;
-                            mat[2] = color.b;
-                            col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                            col = convertColor(color);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
                     }
@@ -447,11 +446,7 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
             }
             else if (!colors.empty()) {
                 App::Color color = colors.front();
-                Standard_Real mat[3];
-                mat[0] = color.r;
-                mat[1] = color.g;
-                mat[2] = color.b;
-                col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                col = convertColor(color);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
         }
