@@ -27,12 +27,15 @@ import re
 import shutil
 import sys
 import ctypes
+import tempfile
+import ssl
 
-import urllib.request as urllib2
+import urllib
+from urllib.request import Request
 from urllib.error import URLError
 from urllib.parse import urlparse
 
-from PySide import QtGui, QtCore
+from PySide2 import QtGui, QtCore, QtWidgets
 
 import FreeCAD
 import FreeCADGui
@@ -46,7 +49,9 @@ except ImportError:
     pass
 else:
     try:
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        #ssl_ctx = ssl.create_default_context(cafile=certifi.where())
+        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        #ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     except AttributeError:
         pass
 
@@ -61,18 +66,17 @@ def translate(context, text, disambig=None):
     "Main translation function"
 
     try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
+        _encoding = QtWidgets.QApplication.UnicodeUTF8
     except AttributeError:
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
     else:
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 
 
 def symlink(source, link_name):
     "creates a symlink of a file, if possible"
 
     if os.path.exists(link_name) or os.path.lexists(link_name):
-        # print("macro already exists")
         pass
     else:
         os_symlink = getattr(os, "symlink", None)
@@ -90,8 +94,8 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def urlopen(url):
-    """Opens an url with urllib2"""
+def urlopen(url:str):
+    """Opens an url with urllib and streams it to a temp file"""
 
     timeout = 5
 
@@ -101,25 +105,29 @@ def urlopen(url):
         proxies = {}
     else:
         if pref.GetBool("SystemProxyCheck", False):
-            proxy = urllib2.getproxies()
+            proxy = urllib.request.getproxies()
             proxies = {"http": proxy.get('http'), "https": proxy.get('http')}
         elif pref.GetBool("UserProxyCheck", False):
             proxy = pref.GetString("ProxyUrl", "")
             proxies = {"http": proxy, "https": proxy}
 
     if ssl_ctx:
-        handler = urllib2.HTTPSHandler(context=ssl_ctx)
+        handler = urllib.request.HTTPSHandler(context=ssl_ctx)
     else:
         handler = {}
-    proxy_support = urllib2.ProxyHandler(proxies)
-    opener = urllib2.build_opener(proxy_support, handler)
-    urllib2.install_opener(opener)
+    proxy_support = urllib.request.ProxyHandler(proxies)
+    opener = urllib.request.build_opener(proxy_support, handler)
+    urllib.request.install_opener(opener)
 
     # Url opening
-    req = urllib2.Request(url,
+    req = urllib.request.Request(url,
                           headers={'User-Agent': "Magic Browser"})
     try:
-        u = urllib2.urlopen(req, timeout=timeout)
+        u = urllib.request.urlopen(req, timeout=timeout)
+
+    except URLError as e:
+        FreeCAD.Console.PrintError(f"Error loading {url}:\n {e.reason}\n")
+        return None
     except Exception:
         return None
     else:
@@ -151,76 +159,7 @@ def update_macro_details(old_macro, new_macro):
             setattr(old_macro, attr, getattr(new_macro, attr))
 
 
-def install_macro(macro, macro_repo_dir):
-    """Install a macro and all its related files
 
-    Returns True if the macro was installed correctly.
-
-    Parameters
-    ----------
-    - macro: an addonmanager_macro.Macro instance
-    """
-
-    if not macro.code:
-        return False
-    macro_dir = FreeCAD.getUserMacroDir(True)
-    if not os.path.isdir(macro_dir):
-        try:
-            os.makedirs(macro_dir)
-        except OSError:
-            return False
-    macro_path = os.path.join(macro_dir, macro.filename)
-    try:
-        with codecs.open(macro_path, 'w', 'utf-8') as macrofile:
-            macrofile.write(macro.code)
-    except IOError:
-        return False
-    # Copy related files, which are supposed to be given relative to
-    # macro.src_filename.
-    base_dir = os.path.dirname(macro.src_filename)
-    for other_file in macro.other_files:
-        dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
-        if not os.path.isdir(dst_dir):
-            try:
-                os.makedirs(dst_dir)
-            except OSError:
-                return False
-        src_file = os.path.join(base_dir, other_file)
-        dst_file = os.path.join(macro_dir, other_file)
-        try:
-            shutil.copy(src_file, dst_file)
-        except IOError:
-            return False
-    return True
-
-
-def remove_macro(macro):
-    """Remove a macro and all its related files
-
-    Returns True if the macro was removed correctly.
-
-    Parameters
-    ----------
-    - macro: an addonmanager_macro.Macro instance
-    """
-
-    if not macro.is_installed():
-        # Macro not installed, nothing to do.
-        return True
-    macro_dir = FreeCAD.getUserMacroDir(True)
-    macro_path = os.path.join(macro_dir, macro.filename)
-    macro_path_with_macro_prefix = os.path.join(macro_dir, 'Macro_' + macro.filename)
-    if os.path.exists(macro_path):
-        os.remove(macro_path)
-    elif os.path.exists(macro_path_with_macro_prefix):
-        os.remove(macro_path_with_macro_prefix)
-    # Remove related files, which are supposed to be given relative to
-    # macro.src_filename.
-    for other_file in macro.other_files:
-        dst_file = os.path.join(macro_dir, other_file)
-        remove_directory_if_empty(os.path.dirname(dst_file))
-        os.remove(dst_file)
-    return True
 
 
 def remove_directory_if_empty(dir):
@@ -238,72 +177,81 @@ def remove_directory_if_empty(dir):
 def restart_freecad():
     "Shuts down and restarts FreeCAD"
 
-    args = QtGui.QApplication.arguments()[1:]
+    args = QtWidgets.QApplication.arguments()[1:]
     if FreeCADGui.getMainWindow().close():
-        QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(), args)
+        QtCore.QProcess.startDetached(QtWidgets.QApplication.applicationFilePath(), args)
 
 
-def get_zip_url(baseurl):
+def get_zip_url(repo):
     "Returns the location of a zip file from a repo, if available"
 
-    parsedUrl = urlparse(baseurl)
+    parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
-        return baseurl+"/archive/master.zip"
+        return f"{repo.url}/archive/{repo.branch}.zip"
     elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
-        return baseurl+"/-/archive/master/"+reponame+"-master.zip"
+        return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
-        print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", parsedUrl.netloc)
+        FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", parsedUrl.netloc)
         return None
 
+def construct_git_url(repo, filename):
+    "Returns a direct download link to a file in an online Git repo: works with github, gitlab, and framagit"
 
-def get_readme_url(url):
-    "Returns the location of a readme file"
-
-    parsedUrl = urlparse(url)
-    if parsedUrl.netloc == "github.com" or parsedUrl.netloc == "framagit.com":
-        return url+"/raw/master/README.md"
-    elif parsedUrl.netloc == "gitlab.com":
-        return url+"/-/raw/master/README.md"
+    parsed_url = urlparse(repo.url)
+    if parsed_url.netloc == "github.com" or parsed_url.netloc == "framagit.com":
+        return f"{repo.url}/raw/{repo.branch}/{filename}"
+    elif parsed_url.netloc == "gitlab.com":
+        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
     else:
-        print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
+        FreeCAD.Console.PrintLog("Debug: addonmanager_utilities.construct_git_url: Unknown git host:", parsed_url.netloc)
     return None
 
+def get_readme_url(repo):
+    "Returns the location of a readme file"
 
-def get_desc_regex(url):
+    return construct_git_url(repo, "README.md")
+
+def get_metadata_url(url):
+    "Returns the location of a package.xml metadata file"
+
+    return construct_git_url(repo, "package.xml")
+
+
+def get_desc_regex(repo):
     """Returns a regex string that extracts a WB description to be displayed in the description
     panel of the Addon manager, if the README could not be found"""
 
-    parsedUrl = urlparse(url)
+    parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
     elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    print("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", url)
+    FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", repo.url)
     return None
 
 
-def get_readme_html_url(url):
+def get_readme_html_url(repo):
     """Returns the location of a html file containing readme"""
 
-    parsedUrl = urlparse(url)
+    parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
-        return url + "/blob/master/README.md"
+        return f"{repo.url}/blob/{repo.branch}/README.md"
     else:
-        print("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", url)
+        FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", repo.url)
         return None
 
 
-def get_readme_regex(url):
+def get_readme_regex(repo):
     """Return a regex string that extracts the contents to be displayed in the description
     panel of the Addon manager, from raw HTML data (the readme's html rendering usually)"""
 
-    parsedUrl = urlparse(url)
+    parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return "<article.*?>(.*?)</article>"
     else:
-        print("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", url)
+        FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", repo.url)
         return None
 
 
@@ -319,7 +267,7 @@ def fix_relative_links(text, base_url):
             if len(parts) < 2 or not re.match(r"^http|^www|^.+\.|^/", parts[0]):
                 newlink = os.path.join(base_url, link.lstrip('./'))
                 line = line.replace(link, newlink)
-                print("Debug: replaced " + link + " with " + newlink)
+                FreeCAD.Console.PrintLog("Debug: replaced " + link + " with " + newlink)
         new_text = new_text + '\n' + line
     return new_text
 
