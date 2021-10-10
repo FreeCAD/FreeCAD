@@ -454,7 +454,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             float trans = Transparency.getValue()/100.0f;
             auto colors = DiffuseColor.getValues();
             for (auto &c : colors)
-                c.a = Transparency.getValue()/100.0f;
+                c.a = trans;
             DiffuseColor.setValues(colors);
 
             App::PropertyContainer* parent = ShapeMaterial.getContainer();
