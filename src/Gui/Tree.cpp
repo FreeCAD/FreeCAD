@@ -3134,6 +3134,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 FC_WARN("Cannot drop objects");
                 return; // no group like object
             }
+            event->setDropAction(Qt::LinkAction);
+            da = Qt::LinkAction;
         }
 
         std::ostringstream targetSubname;
