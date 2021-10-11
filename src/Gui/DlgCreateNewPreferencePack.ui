@@ -36,6 +36,9 @@
    </item>
    <item>
     <widget class="QTreeWidget" name="treeWidget">
+     <property name="columnCount">
+      <number>1</number>
+     </property>
      <attribute name="headerMinimumSectionSize">
       <number>50</number>
      </attribute>
@@ -48,11 +51,6 @@
      <column>
       <property name="text">
        <string>Property group templates</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Template Type</string>
       </property>
      </column>
     </widget>

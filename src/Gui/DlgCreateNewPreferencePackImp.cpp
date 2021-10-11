@@ -81,11 +81,6 @@ void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector
 
         QStringList itemColumns;
         itemColumns.push_back(QString::fromStdString(t.name));
-        switch (t.type) {
-        case Gui::PreferencePack::Type::Appearance: itemColumns.push_back(tr("Appearance")); break;
-        case Gui::PreferencePack::Type::Behavior: itemColumns.push_back(tr("Behavior")); break;
-        case Gui::PreferencePack::Type::Combination: itemColumns.push_back(tr("Combination")); break;
-        }
         auto newItem = new QTreeWidgetItem(group, itemColumns);
         newItem->setCheckState(0, Qt::Checked);
         if (group->checkState(0) != newItem->checkState(0))

@@ -12,7 +12,8 @@
       <name>FreeCAD Classic Colors</name>
       <description>FreeCAD default colors for core app and included Mods.</description>
       <version>1.0.0</version>
-      <type>appearance</type>
+      <tag>built-in</tag>
+      <tag>colors</tag>
     </preferencepack>
   </content>
 

@@ -113,19 +113,10 @@ bool PreferencePack::apply() const
     return true;
 }
 
-PreferencePack::Type PreferencePack::type() const
-{
-    auto typeList = _metadata["type"];
-    if (typeList.empty())
-        return Type::Combination;
 
-    auto typeString = typeList.front().contents;
-    if (typeString == "appearance")
-        return Type::Appearance;
-    else if (typeString == "behavior" || typeString == "behaviour")
-        return Type::Behavior;
-    else
-        return Type::Combination;
+App::Metadata Gui::PreferencePack::metadata() const
+{
+    return _metadata;
 }
 
 void PreferencePack::applyConfigChanges() const
@@ -191,14 +182,18 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mo
     }
 }
 
-std::vector<std::string> PreferencePackManager::preferencePackNames(PreferencePack::Type type) const
+std::vector<std::string> PreferencePackManager::preferencePackNames() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
     std::vector<std::string> names;
     for (const auto& preferencePack : _preferencePacks)
-        if (preferencePack.second.type() == type)
-            names.push_back(preferencePack.first);
+        names.push_back(preferencePack.first);
     return names;
+}
+
+std::map<std::string, PreferencePack> Gui::PreferencePackManager::preferencePacks() const
+{
+    return _preferencePacks;
 }
 
 bool PreferencePackManager::apply(const std::string& preferencePackName) const
@@ -320,21 +315,6 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
     newPreferencePackMetadata.setName(name);
     newPreferencePackMetadata.setVersion(1);
 
-    auto templateType = templates.front().type;
-    for (const auto& t : templates) {
-        if (t.type != templateType) {
-            templateType = PreferencePack::Type::Combination;
-            break;
-        }
-    }
-    std::string typeString;
-    switch (templateType) {
-    case PreferencePack::Type::Appearance: typeString = "appearance"; break;
-    case PreferencePack::Type::Behavior: typeString = "behavior"; break;
-    case PreferencePack::Type::Combination: typeString = "combination"; break;
-    }
-    newPreferencePackMetadata.addGenericMetadata("type", App::Meta::GenericMetadata(typeString));
-
     metadata->addContentItem("preferencepack", newPreferencePackMetadata);
     metadata->write(savedPreferencePacksDirectory / "package.xml");
 
@@ -383,28 +363,19 @@ std::vector<PreferencePackManager::TemplateFile> scanForTemplateFiles(const std:
     auto templateFolders = scanForTemplateFolders(groupName, entry);
 
     std::vector<PreferencePackManager::TemplateFile> templateFiles;
-    for (const auto& dir : templateFolders) {
-        auto templateDirs = std::vector<std::pair<fs::path, PreferencePack::Type>>({
-            std::make_pair(dir / "Appearance", PreferencePack::Type::Appearance),
-            std::make_pair(dir / "appearance", PreferencePack::Type::Appearance),
-            std::make_pair(dir / "Behavior", PreferencePack::Type::Behavior), 
-            std::make_pair(dir / "behavior", PreferencePack::Type::Behavior),
-            std::make_pair(dir / "Behaviour", PreferencePack::Type::Behavior),
-            std::make_pair(dir / "behaviour", PreferencePack::Type::Behavior) });
-        for (const auto& templateDir : templateDirs) {
-            if (!fs::exists(templateDir.first) || !fs::is_directory(templateDir.first))
-                continue;
-            for (const auto& entry : fs::directory_iterator(templateDir.first)) {
-                if (entry.path().extension() == ".cfg") {
-                    auto name = entry.path().filename().stem().string();
-                    std::replace(name.begin(), name.end(), '_', ' ');
-                    // Make sure we don't insert the same thing twice...
-                    if (std::find_if(templateFiles.begin(), templateFiles.end(), [groupName, name](const auto &rhs)->bool {
-                        return groupName == rhs.group && name == rhs.name;
-                        } ) != templateFiles.end())
-                        continue;
-                    templateFiles.push_back({ groupName, name, entry, templateDir.second });
-                }
+    for (const auto& templateDir : templateFolders) {
+        if (!fs::exists(templateDir) || !fs::is_directory(templateDir))
+            continue;
+        for (const auto& entry : fs::directory_iterator(templateDir)) {
+            if (entry.path().extension() == ".cfg") {
+                auto name = entry.path().filename().stem().string();
+                std::replace(name.begin(), name.end(), '_', ' ');
+                // Make sure we don't insert the same thing twice...
+                if (std::find_if(templateFiles.begin(), templateFiles.end(), [groupName, name](const auto &rhs)->bool {
+                    return groupName == rhs.group && name == rhs.name;
+                    } ) != templateFiles.end())
+                    continue;
+                templateFiles.push_back({ groupName, name, entry });
             }
         }
     }

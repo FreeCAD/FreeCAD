@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_THEMEMANAGER_H 
-#define BASE_THEMEMANAGER_H 
+#ifndef BASE_PREFERENCEPACKMANAGER_H 
+#define BASE_PREFERENCEPACKMANAGER_H 
 
 #include <vector>
 #include <string>
@@ -59,16 +59,10 @@ namespace Gui {
          */
         bool apply() const;
 
-        enum class Type {
-            Appearance,
-            Behavior,
-            Combination
-        };
-
         /**
-         * Get the type of PreferencePack (appearance, behavior, or a combination of the two)
+         * Get the complete metadata object for this preference pack
          */
-        Type type() const;
+        App::Metadata metadata() const;
 
     private:
 
@@ -100,9 +94,14 @@ namespace Gui {
         void rescan();
 
         /**
-         * Get an alphabetical list of names of all installed PreferencePacks of a given type
+         * Get an alphabetical list of names of all installed PreferencePacks
          */
-        std::vector<std::string> preferencePackNames(PreferencePack::Type type) const;
+        std::vector<std::string> preferencePackNames() const;
+
+        /**
+         * Get a map of all installed PreferencePack names and their associated packs
+         */
+        std::map<std::string, PreferencePack> preferencePacks() const;
 
         /**
          * Apply the named preferencePack
@@ -142,7 +141,7 @@ namespace Gui {
          * templates that only affect appearance, and those that affect behavior.
          * 
          * The base FreeCAD installation includes default templates in:
-         *    $INSTALL_DIR/data/Gui/PreferencePackTemplates/(Appearance|Behavior)/
+         *    $INSTALL_DIR/data/Gui/PreferencePackTemplates/
          * 
          * External add-ons are also searched for any directory called PreferencePackTemplates or
          * preference_pack_templates -- either of which is expected to contain appearance and/or
@@ -154,7 +153,6 @@ namespace Gui {
             std::string group; // Generally the Add-On/Mod/Package name
             std::string name;
             boost::filesystem::path path;
-            PreferencePack::Type type;
         };
 
         /**

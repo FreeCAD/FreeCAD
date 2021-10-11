@@ -102,10 +102,13 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
 
     // If that directory hasn't been created yet, just send the user to the preferences directory
-    if (!(fs::exists(savedPreferencePacksDirectory) && fs::is_directory(savedPreferencePacksDirectory)))
+    if (!(fs::exists(savedPreferencePacksDirectory) && fs::is_directory(savedPreferencePacksDirectory))) {
         savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir());
+        ui->ManagePreferencePacks->hide();
+    }
     
     QString pathToSavedPacks(QString::fromStdString(savedPreferencePacksDirectory.string()));
+    ui->ManagePreferencePacks->setToolTip(tr("Open the directory of saved user preference packs"));
     connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, [pathToSavedPacks]() { QDesktopServices::openUrl(QUrl::fromLocalFile(pathToSavedPacks)); });
 }
 
@@ -336,56 +339,46 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
     columnHeaders << tr("Preference Pack Name") 
-                  << tr("Type", "Whether a preference pack sets appearance, behavior, or both")
+                  << tr("Tags")
                   << QString(); // for the "Load" buttons
     ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
 
     // Populate the Preference Packs list
-    std::map<PreferencePack::Type, std::vector<std::string>> packNames;
-    packNames[PreferencePack::Type::Appearance] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
-    packNames[PreferencePack::Type::Behavior] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
-    packNames[PreferencePack::Type::Combination] = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
+    auto packs = Application::Instance->prefPackManager()->preferencePacks();
 
-    ui->PreferencePacks->setRowCount(
-        packNames[PreferencePack::Type::Appearance].size() + 
-        packNames[PreferencePack::Type::Behavior].size() + 
-        packNames[PreferencePack::Type::Combination].size());
+    ui->PreferencePacks->setRowCount(packs.size());
 
     int row = 0;
     QIcon icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
-    for (const auto& packGroup : packNames) {
-        for (const auto& pack : packGroup.second) {
-            auto name = new QTableWidgetItem(QString::fromStdString(pack));
-            ui->PreferencePacks->setItem(row, 0, name);
-            QTableWidgetItem* kind;
-            switch (packGroup.first) {
-            case PreferencePack::Type::Appearance: kind = new QTableWidgetItem(tr("Appearance")); break;
-            case PreferencePack::Type::Behavior: kind = new QTableWidgetItem(tr("Behavior")); break;
-            case PreferencePack::Type::Combination: kind = new QTableWidgetItem(tr("Combination")); break;
-            default: kind = new QTableWidgetItem(QString::fromUtf8("[ERR: UNKNOWN TYPE]")); break;
-            }
-            ui->PreferencePacks->setItem(row, 1, kind);
-            auto button = new QPushButton(icon, tr("Apply"));
-            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack)));
-            connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack); });
-            ui->PreferencePacks->setCellWidget(row, 2, button);
-            ++row;
+    for (const auto& pack : packs) {
+        auto name = new QTableWidgetItem(QString::fromStdString(pack.first));
+        name->setToolTip(QString::fromStdString(pack.second.metadata().description()));
+        ui->PreferencePacks->setItem(row, 0, name);
+        auto tags = pack.second.metadata().tag();
+        QString tagString;
+        for (const auto& tag : tags) {
+            if (tagString.isEmpty())
+                tagString.append(QString::fromStdString(tag));
+            else
+                tagString.append(QStringLiteral(", ") + QString::fromStdString(tag));
         }
+        QTableWidgetItem* kind = new QTableWidgetItem(tagString);
+        ui->PreferencePacks->setItem(row, 1, kind);
+        auto button = new QPushButton(icon, tr("Apply"));
+        button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
+        connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
+        ui->PreferencePacks->setCellWidget(row, 2, button);
+        ++row;
     }
 }
 
 void DlgGeneralImp::saveAsNewPreferencePack()
 {
     // Create and run a modal New PreferencePack dialog box
-    auto appearancePacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
-    auto behaviorPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
-    auto combinationPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
-    auto allPacks = appearancePacks;
-    allPacks.insert(allPacks.end(), behaviorPacks.begin(), behaviorPacks.end());
-    allPacks.insert(allPacks.end(), combinationPacks.begin(), combinationPacks.end());
+    auto packs = Application::Instance->prefPackManager()->preferencePackNames();
     newPreferencePackDialog = std::make_unique<DlgCreateNewPreferencePackImp>(this);
     newPreferencePackDialog->setPreferencePackTemplates(Application::Instance->prefPackManager()->templateFiles());
-    newPreferencePackDialog->setPreferencePackNames(allPacks);
+    newPreferencePackDialog->setPreferencePackNames(packs);
     connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgGeneralImp::newPreferencePackDialogAccepted);
     newPreferencePackDialog->open();
 }
