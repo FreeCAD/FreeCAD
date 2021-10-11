@@ -508,7 +508,8 @@ public:
     void toggleItemVisibility(DocumentObjectItem *oitem);
     void toggleItemShowOnTop(DocumentObjectItem *oitem);
 
-    DocumentObjectItem *itemHitTest(QPoint pos, QByteArray *tag);
+    DocumentObjectItem *itemHitTest(
+            QPoint pos, QByteArray *tag, DocumentItem **docItem = nullptr);
 
     void checkItemEntered(QTreeWidgetItem *item, const QByteArray &tag);
 
@@ -2521,11 +2522,15 @@ void TreeWidget::onToolTipTimer()
     }
 }
 
-DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag)
+DocumentObjectItem *TreeWidget::Private::itemHitTest(
+        QPoint pos, QByteArray *tag, DocumentItem **docItem)
 {
     auto item = master->itemAt(pos);
-    if (!item || item->type() != ObjectType)
+    if (!item || item->type() != ObjectType) {
+        if (docItem && item && item->type() == DocumentType)
+            *docItem = static_cast<DocumentItem*>(item);
         return nullptr;
+    }
     auto objitem = static_cast<DocumentObjectItem*>(item);
     if (!tag)
         return objitem;
@@ -2892,7 +2897,10 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
     if (targetItem)
         tag = treeNoIconTag();
     else {
-        targetItem = pimpl->itemHitTest(event->pos(), &tag);
+        DocumentItem *docItem = nullptr;
+        targetItem = pimpl->itemHitTest(event->pos(), &tag, &docItem);
+        if (docItem)
+            targetItem = docItem;
         if (targetItem)
             setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
     }
@@ -2907,12 +2915,32 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
         leaveEvent(0);
         if(modifier== Qt::ControlModifier)
             event->setDropAction(Qt::CopyAction);
-        else if(modifier & Qt::AltModifier) {
-            event->setDropAction(Qt::LinkAction);
-            if (replace)
-                *replace = false;
-        } else
-            event->setDropAction(Qt::MoveAction);
+        else {
+            bool alt = (modifier & Qt::AltModifier) ? true : false;
+            for (auto titem : selectedItems()) {
+                if (titem->type() != ObjectType)
+                    continue;
+                auto item = static_cast<DocumentObjectItem*>(titem);
+                if (item->myOwner != targetItem) {
+                    // When drag object to an external document, reverse the Alt
+                    // modifier function, i.e. defaults to LinkAction, and
+                    // change to MoveAction if Alt pressed. The rational being
+                    // that, MoveAction will modify the current document, which
+                    // is not what user wants in most cases if the intention is
+                    // to drop on to a different document. So, we demands the
+                    // user to hold an extra key (Alt) to indicates he really
+                    // want the MoveAction.
+                    alt = !alt;
+                    break;
+                }
+            }
+            if(alt) {
+                event->setDropAction(Qt::LinkAction);
+                if (replace)
+                    *replace = false;
+            } else
+                event->setDropAction(Qt::MoveAction);
+        }
     }
     else if (targetItem->type() == TreeWidget::ObjectType) {
         if (!action)
@@ -2952,7 +2980,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
 
                 auto obj = item->object()->getObject();
 
-                if(!dropOnly && !vp->canDragAndDropObject(obj)) {
+                if(!dropOnly && item->getParentItem() && !vp->canDragAndDropObject(obj)) {
                     if(!(event->possibleActions() & Qt::CopyAction)) {
                         TREE_TRACE("Cannot drag object");
                         event->ignore();
@@ -3109,11 +3137,30 @@ void TreeWidget::dropEvent(QDropEvent *event)
         & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     if(modifier == Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
-    else if((modifier & Qt::AltModifier)
-            && (itemInfo.size()==1||targetItem->type()==TreeWidget::DocumentType))
-        event->setDropAction(Qt::LinkAction);
-    else
-        event->setDropAction(Qt::MoveAction);
+    else {
+        bool alt = (modifier & Qt::AltModifier) ? true : false;
+        if (targetItem->type() == DocumentType) {
+            for (auto titem : sels) {
+                if (titem->type() != ObjectType)
+                    continue;
+                auto item = static_cast<DocumentObjectItem*>(titem);
+                if (item->myOwner != targetItem) {
+                    // When drag object to an external document, reverse the Alt
+                    // modifier function, i.e. defaults to LinkAction, and
+                    // change to MoveAction if Alt pressed. The rational being
+                    // that, MoveAction will modify the current document, which
+                    // is not what user wants in most cases if the intention is
+                    // to drop on to a different document. So, we demands the
+                    // user to hold an extra key (Alt) to indicates he really
+                    // want the MoveAction.
+                    alt = !alt;
+                    break;
+                }
+            }
+        }
+        event->setDropAction(alt ? Qt::LinkAction : Qt::MoveAction);
+    }
+
     auto da = event->dropAction();
     bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
     bool replace = true;
@@ -3561,10 +3608,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if(!parentItem) {
                 if(da==Qt::MoveAction && obj->getDocument()==thisDoc)
                     continue;
-            }else if(dropOnly || item->myOwner!=targetItem) {
-                // We will not drag item out of parent if either, 1) the CTRL
-                // key is held, or 2) the dragging item is not inside the
-                // dropping document tree.
+            }else if(dropOnly) {
                 parentItem = 0;
             }else if(!parentItem->object()->canDragObjects()
                     || !parentItem->object()->canDragObject(obj))
