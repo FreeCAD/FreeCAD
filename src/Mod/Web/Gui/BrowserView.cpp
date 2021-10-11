@@ -693,6 +693,8 @@ void BrowserView::onLoadProgress(int step)
 
 void BrowserView::onLoadFinished(bool ok)
 {
+    Q_UNUSED(ok)
+
     QProgressBar* bar = SequencerBar::instance()->getProgressBar();
     bar->setValue(100);
     bar->hide();
