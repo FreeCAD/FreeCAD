@@ -775,7 +775,10 @@ void TaskPadParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<
     int num = ui->directionCB->currentIndex();
     const App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
-        throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
+        // Note: Is is possible that a face of an object is directly padded without defining a profile shape
+        obj = nullptr;
+        sub.clear();
+        //throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
     }
     else {
         PartDesign::ProfileBased* pcDirection = static_cast<PartDesign::ProfileBased*>(vp->getObject());

@@ -51,7 +51,6 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
-# include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
@@ -101,6 +100,9 @@
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
+# if OCC_VERSION_HEX < 0x070600
+# include <GeomAdaptor_HCurve.hxx>
+# endif
 
 # include <ctime>
 # include <cmath>
@@ -144,6 +146,9 @@
 
 #include "Geometry.h"
 
+#if OCC_VERSION_HEX >= 0x070600
+using GeomAdaptor_HCurve = GeomAdaptor_Curve;
+#endif
 
 using namespace Part;
 

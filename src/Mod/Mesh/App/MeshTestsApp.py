@@ -5,6 +5,7 @@
 #  LGPL
 
 import FreeCAD, os, sys, unittest, Mesh
+from FreeCAD import Base
 import time, tempfile, math
 # http://python-kurs.eu/threads.php
 try:
@@ -45,6 +46,43 @@ class MeshTopoTestCases(unittest.TestCase):
     def testCollapseFacetsAll(self):
         planarMeshObject = Mesh.Mesh(self.planarMesh)
         planarMeshObject.collapseFacets(range(18))
+
+    def testCorruptedFacet(self):
+        v = FreeCAD.Vector
+        mesh = Mesh.Mesh()
+        mesh.addFacet(
+        v(1.0e1, -1.0e1, 1.0e1),
+        v(1.0e1, +1.0e1, 1.0e1),
+        v(0.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, 00.0e1, 1.0e1),
+        v(+1.0e1, -1.0e1, 1.0e1))
+
+        self.assertEqual(mesh.CountFacets, 6)
+        mesh.fixIndices()
+        self.assertEqual(mesh.CountFacets, 5)
 
 
 class MeshSplitTestCases(unittest.TestCase):
@@ -360,6 +398,46 @@ class NastranReader(unittest.TestCase):
         m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRID_CTRIA3.bdf")
         self.assertEqual(m.CountPoints,3)
         self.assertEqual(m.CountFacets,1)
+
+    def tearDown(self):
+        pass
+
+class MeshSubElement(unittest.TestCase):
+    def setUp(self):
+        self.mesh = Mesh.createBox(1.0, 1.0, 1.0)
+
+    def testCenterOfGravity(self):
+        c = self.mesh.CenterOfGravity
+        self.assertEqual(c, Base.Vector(0.0, 0.0, 0.0))
+
+    def testSubElements(self):
+        types = self.mesh.getElementTypes()
+        self.assertIn("Mesh", types)
+        self.assertIn("Segment", types)
+
+    def testCountSubElements(self):
+        self.assertEqual(self.mesh.countSubElements("Mesh"), 1)
+        self.assertEqual(self.mesh.countSubElements("Segment"), 0)
+
+    def testFacesFromSubElement(self):
+        element = self.mesh.getFacesFromSubElement("Mesh", 0)
+        self.assertIsInstance(element, tuple)
+        self.assertEqual(len(element), 2)
+        self.assertEqual(len(element[0]), 8)
+        self.assertEqual(len(element[1]), 12)
+
+    def testSegmentSubElement(self):
+        self.mesh.addSegment([0, 2, 4, 6, 8])
+        self.assertEqual(self.mesh.countSegments(), 1)
+        self.assertEqual(self.mesh.countSubElements("Segment"), 1)
+        element = self.mesh.getFacesFromSubElement("Segment", 0)
+        self.assertIsInstance(element, tuple)
+        self.assertEqual(len(element), 2)
+        self.assertEqual(len(element[0]), 7)
+        self.assertEqual(len(element[1]), 5)
+        segment = self.mesh.meshFromSegment(self.mesh.getSegment(0))
+        self.assertEqual(segment.CountPoints, 7)
+        self.assertEqual(segment.CountFacets, 5)
 
     def tearDown(self):
         pass

@@ -43,6 +43,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
@@ -1257,7 +1258,10 @@ void CmdPartDesignPad::activated(int iMsg)
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
 
-        FCMD_OBJ_CMD(Feat, "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
+        if (sketch) {
+            std::ostringstream str;
+            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
+        }
 
         finishProfileBased(cmd, sketch, Feat);
         cmd->adjustCameraPosition();

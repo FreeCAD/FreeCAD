@@ -9,21 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
+    <width>274</width>
     <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>700</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Multiple filter selection</string>
@@ -39,16 +33,13 @@
    <item>
     <widget class="QListWidget" name="listMultiFilter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>500</height>
-      </size>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::NoSelection</enum>
@@ -78,17 +69,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Non-Driving</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Horizontal</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Vertical</string>
+       <string>Reference</string>
       </property>
      </item>
      <item>
@@ -99,6 +80,16 @@
      <item>
       <property name="text">
        <string>Point on Object</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Vertical</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Horizontal</string>
       </property>
      </item>
      <item>
@@ -133,17 +124,17 @@
      </item>
      <item>
       <property name="text">
-       <string>Distance</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>Horizontal Distance</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Vertical Distance</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Distance</string>
       </property>
      </item>
      <item>
@@ -216,19 +207,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item alignment="Qt::AlignHCenter">
     <widget class="QDialogButtonBox" name="buttonBox">

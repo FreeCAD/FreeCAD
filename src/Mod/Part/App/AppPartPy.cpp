@@ -134,6 +134,7 @@
 #include "PartFeature.h"
 #include "PartPyCXX.h"
 #include "modelRefine.h"
+#include "Tools.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -804,33 +805,24 @@ private:
         auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
             TopoDS_Face currentFace = TopoDS::Face(ex.Current());
-            TopLoc_Location loc;
-            Handle(Poly_Triangulation) facets = BRep_Tool::Triangulation(currentFace, loc);
-            const TopAbs_Orientation anOrientation = currentFace.Orientation();
-            bool flip = (anOrientation == TopAbs_REVERSED);
-            if (!facets.IsNull()) {
-                const TColgp_Array1OfPnt& nodes = facets->Nodes();
-                const Poly_Array1OfTriangle& triangles = facets->Triangles();
-                for (int i = 1; i <= triangles.Length(); i++) {
+
+            std::vector<gp_Pnt> points;
+            std::vector<Poly_Triangle> facets;
+            if (Tools::getTriangulation(currentFace, points, facets)) {
+                for (const auto& it : facets) {
                     Standard_Integer n1,n2,n3;
-                    triangles(i).Get(n1, n2, n3);
-                    gp_Pnt p1 = nodes(n1);
-                    gp_Pnt p2 = nodes(n2);
-                    gp_Pnt p3 = nodes(n3);
-                    p1.Transform(loc.Transformation());
-                    p2.Transform(loc.Transformation());
-                    p3.Transform(loc.Transformation());
+                    it.Get(n1, n2, n3);
+
+                    gp_Pnt p1 = points[n1];
+                    gp_Pnt p2 = points[n2];
+                    gp_Pnt p3 = points[n3];
+
                     // TODO: verify if tolerance should be hard coded
                     if (!p1.IsEqual(p2, 0.01) && !p2.IsEqual(p3, 0.01) && !p3.IsEqual(p1, 0.01)) {
                         PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
                         PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
                         PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
-                        if (flip) {
-                            list.append(Py::asObject(PyTuple_Pack(3, t2, t1, t3)));
-                        }
-                        else {
-                            list.append(Py::asObject(PyTuple_Pack(3, t1, t2, t3)));
-                        }
+                        list.append(Py::asObject(PyTuple_Pack(3, t1, t2, t3)));
                     }
                 }
             }

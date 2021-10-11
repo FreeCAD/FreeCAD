@@ -344,9 +344,9 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
         return 0;
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
-        Handle(Adaptor3d_HCurve) hcurve = adapt.Trim(adapt.FirstParameter(),
-                                                    adapt.LastParameter(),
-                                                    tol2d);
+        auto hcurve = adapt.Trim(adapt.FirstParameter(),
+                                 adapt.LastParameter(),
+                                 tol2d);
         Approx_Curve3d approx(hcurve, tol3d, GeomAbs_C0, maxseg, maxdeg);
         if (approx.IsDone()) {
             return new BSplineCurvePy(new GeomBSplineCurve(approx.Curve()));

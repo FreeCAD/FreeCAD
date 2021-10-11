@@ -676,6 +676,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
 
     float scale = balloon->ShapeScale.getValue();
     double offsetLR     = 0;
+    double offsetUD     = 0;
     QPainterPath balloonPath;
 
     if (strcmp(balloonType, "Circular") == 0) {
@@ -747,16 +748,26 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)), lblCenter.y + (radius * sin(startAngle)));
         balloonPath.addPolygon(triangle);
     }
+    else if (strcmp(balloonType, "Line") == 0) {
+        textHeight = textHeight*scale + Rez::guiX(0.5);
+        textWidth = textWidth*scale + Rez::guiX(1.0);
+
+        offsetLR = textWidth/2.0;
+        offsetUD = textHeight/2.0;
+
+        balloonPath.moveTo(lblCenter.x - textWidth/2.0, lblCenter.y + offsetUD);
+        balloonPath.lineTo(lblCenter.x + textWidth/2.0, lblCenter.y + offsetUD);
+    }
 
     balloonShape->setPath(balloonPath);
 
     offsetLR     = (lblCenter.x < arrowTipX) ? offsetLR     : -offsetLR    ;
 
-    if (DrawUtil::fpCompare(kinkLength, 0.0)) {   //if no kink, then dLine start sb on line from center to arrow
+    if (DrawUtil::fpCompare(kinkLength, 0.0) && strcmp(balloonType, "Line")) {   //if no kink, then dLine start sb on line from center to arrow
         dLineStart = lblCenter;
         kinkPoint = dLineStart;
     } else {
-        dLineStart.y = lblCenter.y;
+        dLineStart.y = lblCenter.y + offsetUD;
         dLineStart.x = lblCenter.x + offsetLR    ;
         kinkLength = (lblCenter.x < arrowTipX) ? kinkLength : -kinkLength;
         kinkPoint.y = dLineStart.y;

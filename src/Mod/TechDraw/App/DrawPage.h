@@ -94,7 +94,6 @@ public:
     bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
     std::vector<App::DocumentObject*> getAllViews(void) ;
-    bool balloonPlacing;
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
     int getNextBalloonIndex(void);

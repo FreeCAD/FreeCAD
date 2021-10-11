@@ -87,6 +87,7 @@ const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "Hexagon",
                                                   "Square",
                                                   "Rectangle",
+                                                  "Line",
                                                   NULL};
 
 DrawViewBalloon::DrawViewBalloon(void)

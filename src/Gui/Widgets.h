@@ -203,6 +203,7 @@ class GuiExport ColorButton : public QPushButton
     Q_PROPERTY( QColor color READ color WRITE setColor )
     Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
     Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency)
 
 public:
     ColorButton(QWidget* parent = 0);
@@ -216,6 +217,9 @@ public:
 
     void setDrawFrame(bool);
     bool drawFrame() const;
+
+    void setAllowTransparency(bool);
+    bool allowTransparency() const;
 
     void setModal(bool);
     bool isModal() const;
@@ -272,8 +276,6 @@ public Q_SLOTS:
   void setLaunchExternal(bool l);
 
 protected:
-  void enterEvent ( QEvent * );
-  void leaveEvent ( QEvent * );
   void mouseReleaseEvent ( QMouseEvent * );
 
 private:

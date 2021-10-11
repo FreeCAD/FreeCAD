@@ -44,6 +44,7 @@
 
 #include "PovTools.h"
 #include "LuxTools.h"
+#include <Mod/Part/App/Tools.h>
 
 using Base::Console;
 
@@ -95,35 +96,34 @@ void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
 
-        // this block mesh the face and transfers it in a C array of vertices and face indexes
-        Standard_Integer nbNodesInFace,nbTriInFace;
-        gp_Vec* vertices=0;
-        gp_Vec* vertexnormals=0;
-        long* cons=0;
+        std::vector<gp_Pnt> points;
+        std::vector<gp_Vec> vertexnormals;
+        std::vector<Poly_Triangle> facets;
+        if (!Part::Tools::getTriangulation(aFace, points, facets)) {
+            break;
+        }
 
-        PovTools::transferToArray(aFace,&vertices,&vertexnormals,&cons,nbNodesInFace,nbTriInFace);
+        Part::Tools::getPointNormals(points, facets, vertexnormals);
+        Part::Tools::getPointNormals(points, aFace, vertexnormals);
 
-        if (!vertices) break;
         // writing vertices
-        for (int i=0; i < nbNodesInFace; i++) {
-            P << vertices[i].X() << " " << vertices[i].Y() << " " << vertices[i].Z() << " ";
+        for (std::size_t i=0; i < points.size(); i++) {
+            P << points[i].X() << " " << points[i].Y() << " " << points[i].Z() << " ";
         }
 
         // writing per vertex normals
-        for (int j=0; j < nbNodesInFace; j++) {
+        for (std::size_t j=0; j < vertexnormals.size(); j++) {
             N << vertexnormals[j].X() << " "  << vertexnormals[j].Y() << " " << vertexnormals[j].Z() << " ";
         }
 
         // writing triangle indices
-        for (int k=0; k < nbTriInFace; k++) {
-            triindices << cons[3*k]+vi << " " << cons[3*k+2]+vi << " " << cons[3*k+1]+vi << " ";
+        for (std::size_t k=0; k < facets.size(); k++) {
+            Standard_Integer n1, n2, n3;
+            facets[k].Get(n1, n2, n3);
+            triindices << n1 + vi << " " << n3 + vi << " " << n2 + vi << " ";
         }
         
-        vi = vi + nbNodesInFace;
-        
-        delete [] vertexnormals;
-        delete [] vertices;
-        delete [] cons;
+        vi = vi + points.size();
 
         seq.next();
 

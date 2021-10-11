@@ -62,6 +62,7 @@ using namespace Mesh;
 float MeshObject::Epsilon = 1.0e-5f;
 
 TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
+TYPESYSTEM_SOURCE(Mesh::MeshSegment, Data::Segment)
 
 MeshObject::MeshObject()
 {
@@ -93,7 +94,7 @@ MeshObject::~MeshObject()
 std::vector<const char*> MeshObject::getElementTypes() const
 {
     std::vector<const char*> temp;
-    temp.push_back("Face"); // that's the mesh itself
+    temp.push_back("Mesh");
     temp.push_back("Segment");
 
     return temp;
@@ -102,31 +103,47 @@ std::vector<const char*> MeshObject::getElementTypes() const
 unsigned long MeshObject::countSubElements(const char* Type) const
 {
     std::string element(Type);
-    if (element == "Face")
+    if (element == "Mesh")
         return 1;
     else if (element == "Segment")
         return countSegments();
     return 0;
 }
 
-Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long /*n*/) const
+Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) const
 {
-    //TODO
     std::string element(Type);
-    if (element == "Face")
-        return nullptr;
-    else if (element == "Segment")
-        return nullptr;
+    if (element == "Mesh" && n == 0) {
+        MeshSegment* segm = new MeshSegment();
+        segm->mesh = new MeshObject(*this);
+        return segm;
+    }
+    else if (element == "Segment" && n < countSegments()) {
+        MeshSegment* segm = new MeshSegment();
+        segm->mesh = new MeshObject(*this);
+        const Segment& faces = getSegment(n);
+        segm->segment.reset(new Segment(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false));
+        return segm;
+    }
+
     return nullptr;
 }
 
-void MeshObject::getFacesFromSubelement(const Data::Segment* /*segm*/,
-                                        std::vector<Base::Vector3d> &Points,
-                                        std::vector<Base::Vector3d> &/*PointNormals*/,
+void MeshObject::getFacesFromSubElement(const Data::Segment* element,
+                                        std::vector<Base::Vector3d> &points,
+                                        std::vector<Base::Vector3d> &/*pointNormals*/,
                                         std::vector<Facet> &faces) const
 {
-    //TODO
-    this->getFaces(Points, faces, 0.0f);
+    if (element && element->getTypeId() == MeshSegment::getClassTypeId()) {
+        const MeshSegment* segm = static_cast<const MeshSegment*>(element);
+        if (segm->segment) {
+            Base::Reference<MeshObject> submesh(segm->mesh->meshFromSegment(segm->segment->getIndices()));
+            submesh->getFaces(points, faces, 0.0f);
+        }
+        else {
+            segm->mesh->getFaces(points, faces, 0.0f);
+        }
+    }
 }
 
 void MeshObject::transformGeometry(const Base::Matrix4D &rclMat)
@@ -159,6 +176,14 @@ Base::BoundBox3d MeshObject::getBoundBox()const
     }
 
     return Bnd2;
+}
+
+bool MeshObject::getCenterOfGravity(Base::Vector3d& center) const
+{
+    MeshCore::MeshAlgorithm alg(_kernel);
+    Base::Vector3f pnt = alg.GetGravityPoint();
+    center = transformToOutside(pnt);
+    return true;
 }
 
 void MeshObject::copySegments(const MeshObject& mesh)

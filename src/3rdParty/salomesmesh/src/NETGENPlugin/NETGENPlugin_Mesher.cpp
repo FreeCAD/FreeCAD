@@ -56,6 +56,7 @@
 #include <NCollection_Map.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_ProgramError.hxx>
+#include <Standard_Version.hxx>
 #include <TColStd_MapOfInteger.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -700,7 +701,13 @@ double NETGENPlugin_Mesher::GetDefaultMinSize(const TopoDS_Shape& geom,
       BRep_Tool::Triangulation ( TopoDS::Face( fExp.Current() ), loc);
     if ( triangulation.IsNull() ) continue;
     const double fTol = BRep_Tool::Tolerance( TopoDS::Face( fExp.Current() ));
+#if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt&   points = triangulation->Nodes();
+#else
+    auto points = [&triangulation](Standard_Integer index) {
+        return triangulation->Node(index);
+    };
+#endif
     const Poly_Array1OfTriangle& trias = triangulation->Triangles();
     for ( int iT = trias.Lower(); iT <= trias.Upper(); ++iT )
     {

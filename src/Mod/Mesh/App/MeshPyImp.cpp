@@ -845,6 +845,27 @@ PyObject*  MeshPy::getPointNormals(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject* MeshPy::addSegment(PyObject *args)
+{
+    PyObject* pylist;
+    if (!PyArg_ParseTuple(args, "O", &pylist))
+        return nullptr;
+
+    Py::Sequence list(pylist);
+    std::vector<Mesh::FacetIndex> segment;
+    unsigned long numFacets = getMeshObjectPtr()->countFacets();
+    segment.reserve(list.size());
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Long value(*it);
+        Mesh::FacetIndex index = static_cast<unsigned long>(value);
+        if (index < numFacets)
+            segment.push_back(index);
+    }
+
+    getMeshObjectPtr()->addSegment(segment);
+    Py_Return;
+}
+
 PyObject* MeshPy::countSegments(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

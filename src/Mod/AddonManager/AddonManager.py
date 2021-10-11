@@ -200,11 +200,14 @@ class CommandAddonManager:
                 m.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
                 m.setText(translate("AddonsInstaller",
                                     "You must restart FreeCAD for changes to take "
-                                    "effect. Press Ok to restart FreeCAD now, or "
-                                    "Cancel to restart later."))
+                                    "effect."))
                 m.setIcon(m.Warning)
                 m.setStandardButtons(m.Ok | m.Cancel)
                 m.setDefaultButton(m.Cancel)
+                okBtn = m.button(QtGui.QMessageBox.StandardButton.Ok)
+                cancelBtn = m.button(QtGui.QMessageBox.StandardButton.Cancel)
+                okBtn.setText(translate("AddonsInstaller","Restart now"))
+                cancelBtn.setText(translate("AddonsInstaller","Restart later"))
                 ret = m.exec_()
                 if ret == m.Ok:
                     shutil.rmtree(self.macro_repo_dir, onerror=self.remove_readonly)

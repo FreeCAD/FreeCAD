@@ -36,8 +36,6 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <Adaptor3d_IsoCurve.hxx>
-# include <Adaptor3d_HSurface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
@@ -51,6 +49,11 @@
 # include <Geom_Plane.hxx>
 # include <Geom_Line.hxx>
 # include <Precision.hxx>
+# include <Standard_Version.hxx>
+# if OCC_VERSION_HEX < 0x070600
+# include <Adaptor3d_HSurface.hxx>
+# include <BRepAdaptor_HSurface.hxx>
+# endif
 #endif
 
 #include "FemConstraint.h"
@@ -72,6 +75,11 @@ using namespace Fem;
 double round(double r) {
     return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
 }
+#endif
+
+#if OCC_VERSION_HEX >= 0x070600
+using Adaptor3d_HSurface = Adaptor3d_Surface;
+using BRepAdaptor_HSurface = BRepAdaptor_Surface;
 #endif
 
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)

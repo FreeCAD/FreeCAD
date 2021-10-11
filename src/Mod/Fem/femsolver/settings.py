@@ -195,7 +195,7 @@ class _SolverDlg(object):
 
         # set the binary path to the FreeCAD defaults
         # ATM pure unix shell commands without path names are used as standard
-        # TODO the binaries provieded with the FreeCAD distribution should be found
+        # TODO the binaries provided with the FreeCAD distribution should be found
         # without any additional user input
         # see ccxttols, it works for Windows and Linux there
         binary = self.default

@@ -711,8 +711,10 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #if OCC_VERSION_HEX >= 0x060900
 #if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#else
+#elif OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
+#else
+  Q_UNUSED(theScope)
 #endif // 0x070500
 #else
   Q_UNUSED(theProgress);
@@ -740,7 +742,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   Base::TimeInfo start_time;
 #endif
 
-BOPCheck.Perform();
+  BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());

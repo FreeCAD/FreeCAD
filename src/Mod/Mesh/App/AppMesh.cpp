@@ -76,6 +76,7 @@ PyMOD_INIT_FUNC(Mesh)
     Mesh::PropertyMeshKernel    ::init();
 
     Mesh::MeshObject            ::init();
+    Mesh::MeshSegment           ::init();
 
     Mesh::Feature               ::init();
     Mesh::FeatureCustom         ::init();

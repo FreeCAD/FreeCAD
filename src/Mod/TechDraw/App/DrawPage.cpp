@@ -100,7 +100,6 @@ DrawPage::DrawPage(void)
                      "Auto-numbering for Balloons");
 
     Scale.setConstraints(&scaleRange);
-    balloonPlacing = false;
     balloonParent = nullptr;
 }
 

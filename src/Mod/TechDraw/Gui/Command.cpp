@@ -87,14 +87,19 @@
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
+#include "PreferencesGui.h"
+#include "QGIViewPart.h"
+#include "Rez.h"
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
 #include "TaskActiveView.h"
 #include "TaskDetail.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderViewPart.h"
 
+
+class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
@@ -801,6 +806,42 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
     return true;
 }
 
+bool _checkDirectPlacement(const QGIViewPart *viewPart, const std::vector<std::string> &subNames, QPointF &placement)
+{
+    // Let's see, if we can help speed up the placement of the balloon:
+    // As of now we support:
+    //     Single selected vertex: place the ballon tip end here
+    //     Single selected edge:   place the ballon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+    //
+    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
+
+    if (subNames.size() != 1) {
+        // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
+        return false;
+    }
+
+    std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
+    if (geoType == "Vertex") {
+        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
+        TechDraw::Vertex *vertex = static_cast<DrawViewPart *>(viewPart->getViewObject())->getProjVertexByIndex(index);
+        if (vertex) {
+            placement = viewPart->mapToScene(Rez::guiX(vertex->x()), Rez::guiX(vertex->y()));
+            return true;
+        }
+    }
+    else if (geoType == "Edge") {
+        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
+        TechDraw::BaseGeom *geo = static_cast<DrawViewPart *>(viewPart->getViewObject())->getGeomByIndex(index);
+        if (geo) {
+            Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
+            placement = viewPart->mapToScene(midPoint.x, midPoint.y);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 DEF_STD_CMD_A(CmdTechDrawBalloon)
 
 CmdTechDrawBalloon::CmdTechDrawBalloon()
@@ -826,6 +867,7 @@ void CmdTechDrawBalloon::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
     if( objFeat == nullptr ) {
         return;
@@ -833,10 +875,25 @@ void CmdTechDrawBalloon::activated(int iMsg)
 
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
-    
-    page->balloonParent = objFeat;
-    page->balloonPlacing = true;
 
+    page->balloonParent = objFeat;
+
+    Gui::Document *guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+    ViewProviderPage *pageVP = dynamic_cast<ViewProviderPage *>(guiDoc->getViewProvider(page));
+    ViewProviderViewPart *partVP = dynamic_cast<ViewProviderViewPart *>(guiDoc->getViewProvider(objFeat));
+
+    if (pageVP && partVP) {
+        QGVPage *viewPage = pageVP->getGraphicsView();
+        if (viewPage) {
+            viewPage->startBalloonPlacing();
+
+            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(partVP->getQView());
+            QPointF placement;
+            if (viewPart && _checkDirectPlacement(viewPart, selection[0].getSubNames(), placement)) {
+                viewPage->createBalloon(placement, objFeat);
+            }
+        }
+    }
 }
 
 bool CmdTechDrawBalloon::isActive(void)

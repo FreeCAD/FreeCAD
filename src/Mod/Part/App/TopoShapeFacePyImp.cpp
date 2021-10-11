@@ -493,6 +493,15 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
         return Py::new_reference_to(list);
     }
 
+#if OCC_VERSION_HEX >= 0x070600
+    for (int i=1; i<=mesh->NbNodes(); i++) {
+        gp_Pnt2d pt2d = mesh->UVNode(i);
+        Py::Tuple uv(2);
+        uv.setItem(0, Py::Float(pt2d.X()));
+        uv.setItem(1, Py::Float(pt2d.Y()));
+        list.append(uv);
+    }
+#else
     const TColgp_Array1OfPnt2d& aNodesUV = mesh->UVNodes();
     for (int i=aNodesUV.Lower(); i<=aNodesUV.Upper(); i++) {
         gp_Pnt2d pt2d = aNodesUV(i);
@@ -501,6 +510,7 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
         uv.setItem(1, Py::Float(pt2d.Y()));
         list.append(uv);
     }
+#endif
 
     return Py::new_reference_to(list);
 }

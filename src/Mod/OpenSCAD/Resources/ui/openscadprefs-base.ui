@@ -237,7 +237,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>The path to the directory for transfering files to and from OpenSCAD</string>
+           <string>The path to the directory for transferring files to and from OpenSCAD</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>transferdirectory</cstring>

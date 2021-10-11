@@ -693,12 +693,12 @@ void BrowserView::onLoadProgress(int step)
 
 void BrowserView::onLoadFinished(bool ok)
 {
-    if (ok) {
-        QProgressBar* bar = SequencerBar::instance()->getProgressBar();
-        bar->setValue(100);
-        bar->hide();
-        getMainWindow()->showMessage(QString());
-    }
+    Q_UNUSED(ok)
+
+    QProgressBar* bar = SequencerBar::instance()->getProgressBar();
+    bar->setValue(100);
+    bar->hide();
+    getMainWindow()->showMessage(QString());
     isLoading = false;
 }
 

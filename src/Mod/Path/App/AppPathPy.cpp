@@ -49,10 +49,7 @@
 #include <TopExp_Explorer.hxx>
 #include <gp_Lin.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_Curve.hxx>
 
 #include "CommandPy.h"
 #include "PathPy.h"

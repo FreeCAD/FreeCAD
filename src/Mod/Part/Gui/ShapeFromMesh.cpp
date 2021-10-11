@@ -28,7 +28,7 @@
 
 #include "ShapeFromMesh.h"
 #include "ui_ShapeFromMesh.h"
-#include <App/Application.h>
+#include <Base/UnitsApi.h>
 #include <App/DocumentObserver.h>
 #include <Gui/CommandT.h>
 #include <Gui/Selection.h>
@@ -46,8 +46,7 @@ ShapeFromMesh::ShapeFromMesh(QWidget* parent, Qt::WindowFlags fl)
 
     double STD_OCC_TOLERANCE = 1e-6;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int decimals = hGrp->GetInt("Decimals");
+    int decimals = Base::UnitsApi::getDecimals();
     double tolerance_from_decimals = pow(10., -decimals);
 
     double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
@@ -81,7 +80,7 @@ void ShapeFromMesh::perform()
         std::string mesh = (*it)->getNameInDocument();
         std::string name = doc->getUniqueObjectName(mesh.c_str());
 
-        Gui::cmdAppDocument(doc, std::ostringstream() << "addObject(\"Part::Feature\", \"" << name << "\")");
+        Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Part::Feature",  name);
         std::string partObj = App::DocumentObjectT(doc, name).getObjectPython();
         std::string meshObj = App::DocumentObjectT(doc, mesh).getObjectPython();
 

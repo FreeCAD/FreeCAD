@@ -146,37 +146,32 @@ def update_translation(entry):
     print (f"EXTRACTING STRINGS FOR {entry['tsname']}")
     print ("=============================================")
     cur = os.getcwd()
+    log_redirect = f" 2>> {cur}/tsupdate_stderr.log 1>> {cur}/tsupdate_stdout.log"
     os.chdir(entry["workingdir"])
     existingjsons = [f for f in os.listdir(".") if f.endswith(".json")]
-    filename = entry["tsname"] + ".pro"
-    print("Running qmake -project")
-    os.system(f"{QMAKE} -project -o {filename}")
-    #only update the master ts file
+    project_filename = entry["tsname"] + ".pro"
     tsBasename = os.path.join(entry["tsdir"],entry["tsname"])
-    mainTranslation = f"{LUPDATE} {filename} -ts {tsBasename}.ts"
-    print(mainTranslation)
-    os.system(mainTranslation)
-    os.remove(filename)
+
+    execline = []
+    execline.append (f"{QMAKE} -project -o {project_filename}")
+    execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
+    execline.append (f"touch {tsBasename}.ts") # In case it didn't get created above
+    execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
+    execline.append (f"mv {tsBasename}.ts.temp {tsBasename}.ts")
+    execline.append (f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts {log_redirect}")
+    execline.append (f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}")
+    execline.append (f"rm {tsBasename}py.ts")
+    print(f"Executing special commands in {entry['workingdir']}:")
+    for line in execline:
+        print (line)
+        os.system(line)
+    print()
+
+    os.remove(project_filename)
     # lupdate creates json files since Qt5.something. Remove them here too
     for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
         if not jsonfile in existingjsons:
             os.remove(jsonfile)
-
-    # Also try to do a python lupdate
-    execline0 = f"touch {tsBasename}.ts" # In case it didn't get created above
-    execline1 = f"{PYLUPDATE} `find ./ -name \"*.py\"` -ts {tsBasename}py.ts"
-    execline2 = f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts"
-    execline3 = f"rm {tsBasename}py.ts"
-    print(f"Executing special commands in {entry['workingdir']}:")
-    print(execline0)
-    os.system(execline0)
-    print(execline1)
-    os.system(execline1)
-    print(execline2)
-    os.system(execline2)
-    print(execline3)
-    os.system(execline3)
-    print()
     
     os.chdir(cur)
 
@@ -192,6 +187,8 @@ def main():
     for i in directories:
         update_translation(i)
     print("\nIf updatets.py was run successfully, the next step is to run ./src/Tools/updatecrowdin.py")
+    print("stderr output from lupdate can be found in tsupdate_stderr.log")
+    print("stdout output from lupdate can be found in tsupdate_stdout.log")
 
 if __name__ == "__main__":
     main()

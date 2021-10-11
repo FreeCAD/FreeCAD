@@ -192,6 +192,12 @@ void UnitTestDialog::on_startButton_clicked()
     catch (const Base::Exception& e) {
         showErrorDialog("Exception", e.what());
     }
+    catch (const std::exception& e) {
+        showErrorDialog("C++ standard exception", e.what());
+    }
+    catch (...) {
+        showErrorDialog("Unknown exception", "Unknown exception raised");
+    }
     ui->startButton->setEnabled(true);
 }
 

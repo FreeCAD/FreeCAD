@@ -93,15 +93,43 @@ void ConstraintMultiFilterDialog::on_listMultiFilter_itemChanged(QListWidgetItem
 {
     int filterindex = ui->listMultiFilter->row(item);
 
-    auto aggregate = filterAggregates[filterindex];
+    auto itemAggregate = filterAggregates[filterindex];
 
     ui->listMultiFilter->blockSignals(true);
-    if(item->checkState() == Qt::Checked) {
-        for(int i = 0; i < ui->listMultiFilter->count(); i++) {
-            if(aggregate[i])
-                ui->listMultiFilter->item(i)->setCheckState(Qt::Checked);
+
+    for(int i = 0; i < ui->listMultiFilter->count(); i++) {
+        // any filter comprised on the filter of the activated item, gets the same check state
+        if(itemAggregate[i])
+            ui->listMultiFilter->item(i)->setCheckState(item->checkState());
+
+        // if unchecking, in addition uncheck any group comprising the unchecked item
+        if(item->checkState() == Qt::Unchecked) {
+            if(filterAggregates[i][filterindex])
+                 ui->listMultiFilter->item(i)->setCheckState(Qt::Unchecked);
         }
     }
+
+    // Now that all filters are correctly updated to match dependencies,
+    // if checking, in addition check any group comprising all items that are checked, and check it if all checked.
+    if(item->checkState() == Qt::Checked) {
+        for(int i = 0; i < ui->listMultiFilter->count(); i++) {
+            if(filterAggregates[i][filterindex]) { // only for groups comprising the changed filter
+                bool mustBeChecked = true;
+
+                for(int j = 0; j < FilterValue::NumFilterValue; j++) {
+                    if (i == j)
+                        continue;
+
+                    if (filterAggregates[i][j]) // if it is in group
+                        mustBeChecked = mustBeChecked && ui->listMultiFilter->item(j)->checkState() == Qt::Checked;
+                }
+
+                if(mustBeChecked)
+                    ui->listMultiFilter->item(i)->setCheckState(Qt::Checked);
+            }
+        }
+    }
+
     ui->listMultiFilter->blockSignals(false);
 }
 

@@ -28,13 +28,13 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
-#include <BRepAdaptor_HCurve.hxx>
 #include <BRepLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepLProp_CLProps.hxx>
 #include <Precision.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gce_MakeCirc.hxx>
@@ -58,14 +58,16 @@
 #include <GeomLProp_CLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <Poly_Polygon3D.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TColgp_Array1OfPnt.hxx>
-#include <BRepLProp_CLProps.hxx>
-
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 #include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -85,6 +87,10 @@
 
 using namespace TechDraw;
 using namespace std;
+
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1

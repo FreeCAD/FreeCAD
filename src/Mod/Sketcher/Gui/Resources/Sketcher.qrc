@@ -239,6 +239,9 @@
         <file>icons/tools/Sketcher_Symmetry.svg</file>
     </qresource>
     <qresource>
+        <file>icons/dialogs/Sketcher_Settings.svg</file>
+    </qresource>
+    <qresource>
         <file>translations/Sketcher_af.qm</file>
         <file>translations/Sketcher_ar.qm</file>
         <file>translations/Sketcher_ca.qm</file>

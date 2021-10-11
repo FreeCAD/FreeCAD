@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QColorDialog>
 # include <QDesktopWidget>
+# include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
 # include <QEventLoop>
@@ -594,6 +595,7 @@ struct ColorButtonP
     bool allowChange;
     bool autoChange;
     bool drawFrame;
+    bool allowTransparency;
     bool modal;
     bool dirty;
 
@@ -602,6 +604,7 @@ struct ColorButtonP
         , allowChange(true)
         , autoChange(false)
         , drawFrame(true)
+        , allowTransparency(false)
         , modal(true)
         , dirty(true)
     {
@@ -669,6 +672,21 @@ void ColorButton::setDrawFrame(bool ok)
 bool ColorButton::drawFrame() const
 {
     return d->drawFrame;
+}
+
+void Gui::ColorButton::setAllowTransparency(bool allow)
+{
+    d->allowTransparency = allow;
+    if (d->cd)
+        d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, allow);
+}
+
+bool Gui::ColorButton::allowTransparency() const
+{
+    if (d->cd)
+        return d->cd->testOption(QColorDialog::ColorDialogOption::ShowAlphaChannel);
+    else
+        return d->allowTransparency;
 }
 
 void ColorButton::setModal(bool b)
@@ -763,6 +781,7 @@ void ColorButton::onChooseColor()
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
         cd.setOptions(QColorDialog::DontUseNativeDialog);
+        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -788,6 +807,7 @@ void ColorButton::onChooseColor()
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -812,16 +832,15 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
-  : QLabel(parent, f)
+UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
+    : QLabel(parent, f)
+    , _url (QStringLiteral("http://localhost"))
     , _launchExternal(true)
 {
-    _url = QString::fromLatin1("http://localhost");
-    setToolTip(this->_url);
-
-    if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
-    }
+    setToolTip(this->_url);    
+    setCursor(Qt::PointingHandCursor);
+    if (qApp->styleSheet().isEmpty())
+        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel()
@@ -833,40 +852,10 @@ void Gui::UrlLabel::setLaunchExternal(bool l)
     _launchExternal = l;
 }
 
-void UrlLabel::enterEvent ( QEvent * )
-{
-    setCursor(Qt::PointingHandCursor);
-}
-
-void UrlLabel::leaveEvent ( QEvent * )
-{
-    setCursor(Qt::ArrowCursor);
-}
-
-void UrlLabel::mouseReleaseEvent (QMouseEvent *)
+void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
     if (_launchExternal) {
-        // The webbrowser Python module allows to start the system browser in an OS-independent way
-        Base::PyGILStateLocker lock;
-        PyObject* module = PyImport_ImportModule("webbrowser");
-        if (module) {
-            // get the methods dictionary and search for the 'open' method
-            PyObject* dict = PyModule_GetDict(module);
-            PyObject* func = PyDict_GetItemString(dict, "open");
-            if (func) {
-                PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
-#if PY_VERSION_HEX < 0x03090000
-                PyObject* result = PyEval_CallObject(func, args);
-#else
-                PyObject* result = PyObject_CallObject(func, args);
-#endif
-                // decrement the args and module reference
-                Py_XDECREF(result);
-                Py_DECREF(args);
-                Py_DECREF(module);
-            }
-        }
-    }
+        QDesktopServices::openUrl(this->_url);
     else {
         // Someone else will deal with it...
         Q_EMIT linkClicked(_url);

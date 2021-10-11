@@ -4425,7 +4425,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -4478,7 +4478,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -4608,7 +4608,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -4702,7 +4702,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
-                // no caching for fluctuand data structures
+                // no caching for frequently-changing data structures
                 sep->renderCaching = SoSeparator::OFF;
 
                 // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -4771,7 +4771,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoSeparator* sep = new SoSeparator();
                 sep->ref();
-                // no caching for fluctuand data structures
+                // no caching for frequently-changing data structures
                 sep->renderCaching = SoSeparator::OFF;
 
                 // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -5966,7 +5966,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
         sep->ref();
-        // no caching for fluctuand data structures
+        // no caching for frequently-changing data structures
         sep->renderCaching = SoSeparator::OFF;
 
         // every constrained visual node gets its own material for preselection and selection
@@ -6799,7 +6799,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     ps->style.setValue(SoPickStyle::UNPICKABLE);
     Coordsep->addChild(ps);
     Coordsep->setName("CoordSeparator");
-    // no caching for fluctuand data structures
+    // no caching for frequently-changing data structures
     Coordsep->renderCaching = SoSeparator::OFF;
 
     SoMaterial *CoordTextMaterials = new SoMaterial;

@@ -43,6 +43,7 @@ SOFTWARE.
 #include <memory> // unique_ptr
 #include <numeric> // accumulate
 #include <string> // string, stoi, to_string
+#include <string_view> // string_view
 #include <utility> // declval, forward, move, pair, swap
 #include <vector> // vector
 

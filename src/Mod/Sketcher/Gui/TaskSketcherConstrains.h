@@ -29,6 +29,8 @@
 #include <boost_signals2.hpp>
 #include <QListWidget>
 
+#include <Mod/Sketcher/App/Constraint.h>
+
 #include "ConstraintFilters.h"
 
 namespace App {
@@ -92,8 +94,15 @@ private:
     bool isConstraintFiltered(QListWidgetItem * item);
     void change3DViewVisibilityToTrackFilter();
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
-    void updateMultiFilter();
+    void updateSelectionFilter();
+    void updateAssociatedConstraintsFilter();
     void updateList();
+    void createVisibilityButtonActions();
+
+    template <class T>
+    bool isFilter(T filterValue);
+
+    void getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pos);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -106,11 +115,14 @@ public Q_SLOTS:
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
     void on_visualisationTrackingFilter_stateChanged(int state);
+    void on_visibilityButton_trackingaction_changed();
+    void on_visibilityButton_clicked(bool);
     void on_showAllButton_clicked(bool);
     void on_hideAllButton_clicked(bool);
     void on_listWidgetConstraints_emitShowSelection3DVisibility();
     void on_listWidgetConstraints_emitHideSelection3DVisibility();
     void on_multipleFilterButton_clicked(bool);
+    void on_settingsDialogButton_clicked(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -123,6 +135,8 @@ private:
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
     std::bitset<ConstraintFilter::FilterValue::NumFilterValue> multiFilterStatus;
+    std::vector<unsigned int> selectionFilter;
+    std::vector<unsigned int> associatedConstraintsFilter;
 };
 
 } //namespace SketcherGui
