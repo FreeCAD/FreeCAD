@@ -662,14 +662,15 @@ void TaskView::showDialog(TaskDialog *dlg)
         // field may cause accidental change of value while scrolling.
         for (auto widget : this->contents) {
             for(auto child : widget->findChildren<QWidget*>()) {
+                
                 if (child->focusPolicy() == Qt::WheelFocus
                         && !qobject_cast<QAbstractItemView*>(child))
+                {
                     child->setFocusPolicy(Qt::StrongFocus);
-                // It's not enough for some widget. We must use a eventFilter
-                // to actively filter out wheel event if not in focus.
-                if (qobject_cast<QComboBox*>(child)
-                        || qobject_cast<QAbstractSpinBox*>(child))
+                    // It's not enough for some widget. We must use a eventFilter
+                    // to actively filter out wheel event if not in focus.
                     child->installEventFilter(this);
+                }
             }
         }
     }
