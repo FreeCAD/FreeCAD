@@ -383,7 +383,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->sizeLabel->setWindowTitle(tr("Dimension label"));
     d->sizeLabel->setObjectName(QStringLiteral("SB_DimensionLabel"));
     d->sizeLabel->setMinimumWidth(120);
-    statusBar()->addWidget(d->actionLabel);
+    statusBar()->addWidget(d->actionLabel, 1);
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     progressBar->setWindowTitle(tr("Progress bar"));
     progressBar->setObjectName(QStringLiteral("SB_ProgressBar"));
