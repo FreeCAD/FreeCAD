@@ -376,7 +376,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     if(has_ver) {
         if(owner && owner->getDocument()->testStatus(App::Document::PartialDoc))
             _Shape.Restore(reader);
-        else if(_Ver == "?") {
+        else if(_Ver == "?" || _Ver.empty()) {
             // This indicate the shape is saved by legacy version without
             // element map info.
             if(owner) {
