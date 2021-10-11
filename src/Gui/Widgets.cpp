@@ -595,6 +595,7 @@ struct ColorButtonP
     bool allowChange;
     bool autoChange;
     bool drawFrame;
+    bool allowTransparency;
     bool modal;
     bool dirty;
 
@@ -603,6 +604,7 @@ struct ColorButtonP
         , allowChange(true)
         , autoChange(false)
         , drawFrame(true)
+        , allowTransparency(false)
         , modal(true)
         , dirty(true)
     {
@@ -670,6 +672,21 @@ void ColorButton::setDrawFrame(bool ok)
 bool ColorButton::drawFrame() const
 {
     return d->drawFrame;
+}
+
+void Gui::ColorButton::setAllowTransparency(bool allow)
+{
+    d->allowTransparency = allow;
+    if (d->cd)
+        d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, allow);
+}
+
+bool Gui::ColorButton::allowTransparency() const
+{
+    if (d->cd)
+        return d->cd->testOption(QColorDialog::ColorDialogOption::ShowAlphaChannel);
+    else
+        return d->allowTransparency;
 }
 
 void ColorButton::setModal(bool b)
@@ -764,6 +781,7 @@ void ColorButton::onChooseColor()
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
         cd.setOptions(QColorDialog::DontUseNativeDialog);
+        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -789,6 +807,7 @@ void ColorButton::onChooseColor()
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
