@@ -34,8 +34,9 @@
 # include <QStatusBar>
 # include <QMouseEvent>
 # include <QCheckBox>
-# include <QWidgetAction>
 #endif
+
+#include <QWidgetAction>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string.hpp>
