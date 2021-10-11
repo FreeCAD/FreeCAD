@@ -44,6 +44,7 @@ public:
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
+    bool canReplaceObject(App::DocumentObject*, App::DocumentObject*);
 };
 
 /// ViewProvider for the MultiFuse feature

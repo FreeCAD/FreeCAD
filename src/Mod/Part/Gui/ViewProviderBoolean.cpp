@@ -77,6 +77,11 @@ QIcon ViewProviderBoolean::getIcon(void) const
     return ViewProviderPart::getIcon();
 }
 
+bool ViewProviderBoolean::canReplaceObject(App::DocumentObject*, App::DocumentObject*)
+{
+    return true;
+}
+
 void ViewProviderBoolean::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
