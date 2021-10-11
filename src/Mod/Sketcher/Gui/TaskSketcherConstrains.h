@@ -29,6 +29,8 @@
 #include <boost_signals2.hpp>
 #include <QListWidget>
 
+#include <Mod/Sketcher/App/Constraint.h>
+
 #include "ConstraintFilters.h"
 
 namespace App {
@@ -93,11 +95,14 @@ private:
     void change3DViewVisibilityToTrackFilter();
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
     void updateSelectionFilter();
+    void updateAssociatedConstraintsFilter();
     void updateList();
     void createVisibilityButtonActions();
 
     template <class T>
     bool isFilter(T filterValue);
+
+    void getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pos);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
@@ -131,6 +136,7 @@ private:
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
     std::bitset<ConstraintFilter::FilterValue::NumFilterValue> multiFilterStatus;
     std::vector<unsigned int> selectionFilter;
+    std::vector<unsigned int> associatedConstraintsFilter;
 };
 
 } //namespace SketcherGui

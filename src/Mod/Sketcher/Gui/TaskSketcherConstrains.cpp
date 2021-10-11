@@ -752,6 +752,47 @@ void TaskSketcherConstrains::updateSelectionFilter()
         selectionFilter.push_back(static_cast<ConstraintItem*>(item)->ConstraintNbr);
 }
 
+void TaskSketcherConstrains::updateAssociatedConstraintsFilter()
+{
+    associatedConstraintsFilter.clear();
+
+    assert(sketchView);
+
+    std::vector<Gui::SelectionObject> selection;
+    selection = Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const Sketcher::SketchObject * Obj = sketchView->getSketchObject();
+    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+
+    std::vector<std::string> constraintSubNames;
+    // go through the selected subelements
+    for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
+        // only handle edges
+        if (it->size() > 4 && it->substr(0,4) == "Edge") {
+            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+
+            // push all the constraints
+            int i = 0;
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                 it != vals.end(); ++it,++i)
+            {
+                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+                    associatedConstraintsFilter.push_back(i);
+                }
+            }
+        }
+    }
+
+    updateList();
+}
+
 void TaskSketcherConstrains::updateList()
 {
     // enforce constraint visibility
@@ -899,6 +940,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_emitShowSelection3DVisibil
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    assert(sketchView);
+
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->listWidgetConstraints->blockSignals(true);
@@ -912,6 +955,10 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
             updateList();
             this->blockConnection(block);
         }
+        else if (isFilter(ConstraintFilter::SpecialFilterValue::AssociatedConstraints)) {
+            associatedConstraintsFilter.clear();
+            updateList();
+        }
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection ||
              msg.Type == Gui::SelectionChanges::RmvSelection) {
@@ -923,7 +970,7 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                 QRegExp rx(QString::fromLatin1("^Constraint(\\d+)$"));
                 QString expr = QString::fromLatin1(msg.pSubName);
                 int pos = expr.indexOf(rx);
-                if (pos > -1) {
+                if (pos > -1) { // is a constraint
                     bool ok;
                     int ConstrId = rx.cap(1).toInt(&ok) - 1;
                     if (ok) {
@@ -938,10 +985,25 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                                 break;
                             }
                         }
-                        updateSelectionFilter();
-                        bool block = this->blockConnection(true); // avoid to be notified by itself
-                        updateList();
-                        this->blockConnection(block);
+
+                        if(isFilter(ConstraintFilter::SpecialFilterValue::Selection)) {
+                            updateSelectionFilter();
+                            bool block = this->blockConnection(true); // avoid to be notified by itself
+                            updateList();
+                            this->blockConnection(block);
+                        }
+                    }
+                }
+                else if(isFilter(ConstraintFilter::SpecialFilterValue::AssociatedConstraints)) { // is NOT a constraint
+                    int geoid = Sketcher::Constraint::GeoUndef;
+                    Sketcher::PointPos pointpos = Sketcher::none;
+                    getSelectionGeoId(expr, geoid, pointpos);
+
+                    if(geoid != Sketcher::Constraint::GeoUndef && pointpos == Sketcher::none){
+                        // It is not possible to update on single addition/removal of a geometric element,
+                        // as one removal may imply removing a constraint that should be added by a different element
+                        // that is still selected. The necessary checks outweight a full rebuild of the filter.
+                        updateAssociatedConstraintsFilter();
                     }
                 }
             }
@@ -952,13 +1014,45 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
     }
 }
 
+void TaskSketcherConstrains::getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pointpos)
+{
+    QRegExp rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    int pos = expr.indexOf(rxEdge);
+    geoid = Sketcher::Constraint::GeoUndef;
+    pointpos = Sketcher::none;
+
+    if (pos > -1) {
+        bool ok;
+        int edgeId = rxEdge.cap(1).toInt(&ok) - 1;
+        if (ok) {
+            geoid = edgeId;
+        }
+    }
+    else {
+        QRegExp rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        pos = expr.indexOf(rxVertex);
+
+        if (pos > -1) {
+            bool ok;
+            int vertexId = rxVertex.cap(1).toInt(&ok) - 1;
+            if (ok) {
+                const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
+                sketch->getGeoVertexIndex(vertexId, geoid, pointpos);
+            }
+        }
+    }
+}
 
 void TaskSketcherConstrains::on_comboBoxFilter_currentIndexChanged(int filterindex)
 {
     selectionFilter.clear(); // reset the stored selection filter
+    associatedConstraintsFilter.clear();
 
     if(filterindex == ConstraintFilter::SpecialFilterValue::Selection) {
         updateSelectionFilter();
+    }
+    else if(filterindex == ConstraintFilter::SpecialFilterValue::AssociatedConstraints) {
+        updateAssociatedConstraintsFilter();
     }
 
     updateList();
@@ -1312,6 +1406,10 @@ bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
     // Constraint Type independent, selection filter
     visible = visible || (Filter == SpecialFilterValue::Selection &&
                 std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr) != selectionFilter.end());
+
+    // Constraint Type independent, associated Constraints Filter
+    visible = visible || (Filter == SpecialFilterValue::AssociatedConstraints &&
+                std::find(associatedConstraintsFilter.begin(), associatedConstraintsFilter.end(), it->ConstraintNbr) != associatedConstraintsFilter.end());
 
     return !visible;
 }
