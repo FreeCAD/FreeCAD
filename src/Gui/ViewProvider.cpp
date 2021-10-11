@@ -726,7 +726,15 @@ bool ViewProvider::canDropObjects() const {
 }
 
 bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
-    return queryExtension(&ViewProviderExtension::extensionCanDragAndDropObject,obj);
+    int res = true;
+    foreachExtension<ViewProviderExtension>([&res,obj](ViewProviderExtension *ext) {
+        if (!ext->extensionCanDragAndDropObject(obj)) {
+            res = false;
+            return true;
+        }
+        return false;
+    });
+    return res;
 }
 
 void ViewProvider::dropObject(App::DocumentObject* obj) {
