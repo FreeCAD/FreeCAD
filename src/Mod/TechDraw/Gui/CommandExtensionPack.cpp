@@ -134,9 +134,9 @@ void CmdTechDrawExtensionCircleCenterLines::activated(int iMsg)
                 std::string line1tag = objFeat->addCosmeticEdge(right/scale, left/scale);
                 std::string line2tag = objFeat->addCosmeticEdge(top/scale, bottom/scale);
                 TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
-                _setStyleAndWeight(horiz,4,0.35);
+                _setStyleAndWeight(horiz,4,0.35f);
                 TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);
-                _setStyleAndWeight(vert,4,0.35);
+                _setStyleAndWeight(vert,4,0.35f);
             }
         }
     }
@@ -191,7 +191,7 @@ void CmdTechDrawExtensionThreadHoleSide::activated(int iMsg)
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, 1.176);
+        _createThreadLines(SubNames, objFeat, 1.176f);
     }
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -244,7 +244,7 @@ void CmdTechDrawExtensionThreadBoltSide::activated(int iMsg)
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, 0.85);
+        _createThreadLines(SubNames, objFeat, 0.85f);
     }
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -297,7 +297,7 @@ void CmdTechDrawExtensionThreadHoleBottom::activated(int iMsg)
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
-        _createThreadCircle(Name, objFeat, 1.177);
+        _createThreadCircle(Name, objFeat, 1.177f);
     }
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -350,7 +350,7 @@ void CmdTechDrawExtensionThreadBoltBottom::activated(int iMsg)
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
-        _createThreadCircle(Name, objFeat, 0.85);
+        _createThreadCircle(Name, objFeat, 0.85f);
     }
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -390,7 +390,7 @@ void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, floa
             TechDraw::BaseGeom* threadArc = new TechDraw::AOC(center/scale, radius*factor/scale, 255.0, 165.0);
             std::string arcTag = objFeat->addCosmeticEdge(threadArc);
             TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
-            _setStyleAndWeight(arc,1,0.35);
+            _setStyleAndWeight(arc,1,0.35f);
         }
     }
 }
@@ -429,8 +429,8 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
             std::string line1Tag = objFeat->addCosmeticEdge((start1+delta)/scale, (end1+delta)/scale);
             TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
             TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
-            _setStyleAndWeight(cosTag0,1,0.35);
-            _setStyleAndWeight(cosTag1,1,0.35);
+            _setStyleAndWeight(cosTag0,1,0.35f);
+            _setStyleAndWeight(cosTag1,1,0.35f);
         } else {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("TechDraw Thread Hole Side"),
