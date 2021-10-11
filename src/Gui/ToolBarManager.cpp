@@ -953,11 +953,16 @@ void ToolBarManager::showStatusBarContextMenu()
         if (!w)
             continue;
         if (w != statusBarArea) {
-            if (w->windowTitle().isEmpty()
-                    || w->objectName().isEmpty()
+            if (w->objectName().isEmpty()
                     || w->objectName().startsWith(QStringLiteral("*")))
                 continue;
-            auto wa = Action::addCheckBox(&menu, w->windowTitle(),
+            QString name = w->windowTitle();
+            if (name.isEmpty()) {
+                name = w->objectName();
+                name.replace(QLatin1Char('_'), QLatin1Char(' '));
+                name = name.simplified();
+            }
+            auto wa = Action::addCheckBox(&menu, name,
                     tooltip, QIcon(), w->isVisible(), &checkbox);
             QObject::connect(checkbox, SIGNAL(toggled(bool)), w, SLOT(setVisible(bool)));
             QObject::connect(wa, SIGNAL(triggered(bool)), w, SLOT(setVisible(bool)));
