@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>357</width>
+    <width>405</width>
     <height>388</height>
    </rect>
   </property>
@@ -30,6 +30,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Filter:</string>
        </property>
@@ -37,6 +43,12 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBoxFilter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -194,49 +206,34 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="settingsDialogButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Settings</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="Resources/Sketcher.qrc">
+         <normaloff>:/icons/dialogs/Sketcher_Settings.svg</normaloff>:/icons/dialogs/Sketcher_Settings.svg</iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>95</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="visualisationTab">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <attribute name="title">
-       <string>View</string>
-      </attribute>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
       <widget class="QPushButton" name="showAllButton">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>135</width>
-         <height>27</height>
-        </rect>
-       </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -248,17 +245,11 @@
         <string>Show Listed</string>
        </property>
       </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="hideAllButton">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>10</y>
-         <width>135</width>
-         <height>27</height>
-        </rect>
-       </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -270,132 +261,39 @@
         <string>Hide Listed</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QWidget" name="automationTab">
-      <property name="toolTip">
-       <string>Controls visualisation in the 3D view</string>
-      </property>
-      <attribute name="title">
-       <string>Automation</string>
-      </attribute>
-      <widget class="Gui::PrefCheckBox" name="visualisationTrackingFilter">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>271</width>
-         <height>36</height>
-        </rect>
-       </property>
+     </item>
+     <item>
+      <widget class="QToolButton" name="visibilityButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</string>
+        <string>Restricts 3D visibility to the listed elements</string>
        </property>
        <property name="text">
-        <string>Show only filtered constraints</string>
+        <string>Restrict Visibility</string>
        </property>
-       <property name="checked">
-        <bool>false</bool>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
        </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>VisualisationTrackingFilter</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher</cstring>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextOnly</enum>
        </property>
       </widget>
-     </widget>
-     <widget class="QWidget" name="controlTab">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>Controls widget list behaviour</string>
-      </property>
-      <attribute name="title">
-       <string>List</string>
-      </attribute>
-      <widget class="Gui::PrefCheckBox" name="extendedInformation">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>30</y>
-         <width>189</width>
-         <height>36</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Extended information will be added to the list</string>
-       </property>
-       <property name="text">
-        <string>Extended information</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>ExtendedConstraintInformation</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher</cstring>
-       </property>
-      </widget>
-      <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>189</width>
-         <height>36</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Internal alignments will be hidden</string>
-       </property>
-       <property name="text">
-        <string>Hide internal alignment</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>HideInternalAlignment</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher</cstring>
-       </property>
-      </widget>
-     </widget>
-    </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="ConstraintView" name="listWidgetConstraints">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="modelColumn">
       <number>0</number>
      </property>
@@ -405,16 +303,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>ConstraintView</class>
    <extends>QListWidget</extends>
    <header location="global">QListWidget</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="Resources/Sketcher.qrc"/>
+ </resources>
  <connections/>
 </ui>

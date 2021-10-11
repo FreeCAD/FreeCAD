@@ -94,6 +94,7 @@ private:
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
     void updateSelectionFilter();
     void updateList();
+    void createVisibilityButtonActions();
 
     template <class T>
     bool isFilter(T filterValue);
@@ -109,11 +110,14 @@ public Q_SLOTS:
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
     void on_visualisationTrackingFilter_stateChanged(int state);
+    void on_visibilityButton_trackingaction_changed();
+    void on_visibilityButton_clicked(bool);
     void on_showAllButton_clicked(bool);
     void on_hideAllButton_clicked(bool);
     void on_listWidgetConstraints_emitShowSelection3DVisibility();
     void on_listWidgetConstraints_emitHideSelection3DVisibility();
     void on_multipleFilterButton_clicked(bool);
+    void on_settingsDialogButton_clicked(bool);
 
 protected:
     void changeEvent(QEvent *e);

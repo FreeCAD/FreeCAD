@@ -58,6 +58,7 @@
 #include <Gui/PrefWidgets.h>
 
 #include "ConstraintMultiFilterDialog.h"
+#include "ConstraintSettingsDialog.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -642,6 +643,8 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
     //QMetaObject::connectSlotsByName(this);
 
+    createVisibilityButtonActions();
+
     // connecting the needed signals
     QObject::connect(
         ui->comboBoxFilter, SIGNAL(currentIndexChanged(int)),
@@ -672,14 +675,6 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         this                     , SLOT  (on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *, bool))
     );
     QObject::connect(
-        ui->filterInternalAlignment, SIGNAL(stateChanged(int)),
-        this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
-        );
-    QObject::connect(
-        ui->extendedInformation, SIGNAL(stateChanged(int)),
-                     this                     , SLOT  (on_extendedInformation_stateChanged(int))
-        );
-    QObject::connect(
         ui->showAllButton, SIGNAL(clicked(bool)),
                      this                     , SLOT  (on_showAllButton_clicked(bool))
         );
@@ -696,21 +691,27 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
         this                     , SLOT  (on_listWidgetConstraints_emitShowSelection3DVisibility())
         );
     QObject::connect(
-        ui->visualisationTrackingFilter, SIGNAL(stateChanged(int)),
-        this                     , SLOT  (on_visualisationTrackingFilter_stateChanged(int))
-        );
-    QObject::connect(
         ui->multipleFilterButton, SIGNAL(clicked(bool)),
                      this                     , SLOT  (on_multipleFilterButton_clicked(bool))
+        );
+    QObject::connect(
+        ui->settingsDialogButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_settingsDialogButton_clicked(bool))
+        );
+    QObject::connect(
+        ui->visibilityButton, SIGNAL(clicked(bool)),
+                     this                     , SLOT  (on_visibilityButton_clicked(bool))
+        );
+
+    QObject::connect(
+        ui->visibilityButton->actions()[0], SIGNAL(changed()),
+        this                     , SLOT  (on_visibilityButton_trackingaction_changed())
         );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherConstrains::slotConstraintsChanged, this));
 
     this->groupLayout()->addWidget(proxy);
-
-    this->ui->filterInternalAlignment->onRestore();
-    this->ui->extendedInformation->onRestore();
 
     multiFilterStatus.set(); // Match 'All' selection, all bits set.
 
@@ -719,9 +720,25 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
 
 TaskSketcherConstrains::~TaskSketcherConstrains()
 {
-    this->ui->filterInternalAlignment->onSave();
-    this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
+}
+
+
+void TaskSketcherConstrains::createVisibilityButtonActions()
+{
+    QAction* action = new QAction(QString::fromLatin1("Show only filtered Constraints"),this);
+
+    action->setCheckable(true);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
+
+    {
+        QSignalBlocker block(this);
+        action->setChecked(visibilityTracksFilter);
+    }
+
+    ui->visibilityButton->addAction(action);
 }
 
 void TaskSketcherConstrains::updateSelectionFilter()
@@ -738,7 +755,8 @@ void TaskSketcherConstrains::updateSelectionFilter()
 void TaskSketcherConstrains::updateList()
 {
     // enforce constraint visibility
-    bool visibilityTracksFilter = ui->visualisationTrackingFilter->isChecked();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
 
     if(visibilityTracksFilter)
         change3DViewVisibilityToTrackFilter(); // it will call slotConstraintChanged via update mechanism
@@ -764,6 +782,26 @@ void TaskSketcherConstrains::on_multipleFilterButton_clicked(bool)
         // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects not only visibility, but also filtered list content, if not tracking will still update the list to match the multi-filter.
         updateList();
     }
+}
+
+void TaskSketcherConstrains::on_settingsDialogButton_clicked(bool)
+{
+    ConstraintSettingsDialog cs;
+
+    QObject::connect(
+        &cs, SIGNAL(emit_filterInternalAlignment_stateChanged(int)),
+        this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
+        );
+    QObject::connect(
+        &cs, SIGNAL(emit_extendedInformation_stateChanged(int)),
+                     this                     , SLOT  (on_extendedInformation_stateChanged(int))
+        );
+    QObject::connect(
+        &cs, SIGNAL(emit_visualisationTrackingFilter_stateChanged(int)),
+        this                     , SLOT  (on_visualisationTrackingFilter_stateChanged(int))
+        );
+
+    cs.exec(); // The dialog reacted on any change, so the result of running the dialog is already reflected on return.
 }
 
 void TaskSketcherConstrains::changeFilteredVisibility(bool show, ActionTarget target)
@@ -934,14 +972,43 @@ void TaskSketcherConstrains::on_filterInternalAlignment_stateChanged(int state)
 
 void TaskSketcherConstrains::on_visualisationTrackingFilter_stateChanged(int state)
 {
-    if(state)
+    // Synchronise button drop state
+    {
+        QSignalBlocker block(this);
+
+        if(ui->visibilityButton->actions()[0]->isChecked() != (state == Qt::Checked))
+            ui->visibilityButton->actions()[0]->setChecked(state);
+    }
+
+    if(state == Qt::Checked)
         change3DViewVisibilityToTrackFilter();
+}
+
+void TaskSketcherConstrains::on_visibilityButton_trackingaction_changed()
+{
+    // synchronise VisualisationTrackingFilter parameter
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
+
+    bool bstate = ui->visibilityButton->actions()[0]->isChecked();
+
+    if(visibilityTracksFilter != bstate) {
+        hGrp->SetBool("VisualisationTrackingFilter", bstate);
+    }
+
+    // Act
+    if(bstate)
+        change3DViewVisibilityToTrackFilter();
+}
+
+void TaskSketcherConstrains::on_visibilityButton_clicked(bool)
+{
+    change3DViewVisibilityToTrackFilter();
 }
 
 void TaskSketcherConstrains::on_extendedInformation_stateChanged(int state)
 {
     Q_UNUSED(state);
-    this->ui->extendedInformation->onSave();
     slotConstraintsChanged();
 }
 
@@ -1150,7 +1217,9 @@ bool TaskSketcherConstrains::isConstraintFiltered(QListWidgetItem * item)
     const Sketcher::Constraint * constraint = vals[it->ConstraintNbr];
 
     int Filter = ui->comboBoxFilter->currentIndex();
-    bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool hideInternalAlignment = hGrp->GetBool("HideInternalAlignment",false);
 
     bool visible = true;
     bool showAll = (Filter == FilterValue::All);
