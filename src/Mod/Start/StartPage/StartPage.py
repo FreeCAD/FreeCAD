@@ -147,7 +147,11 @@ def getInfo(filename):
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                doc = str(zfile.read(files[0]))
+                try:
+                    doc = str(zfile.read(files[0]))
+                except OSError as e:
+                    print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
+                    return None
                 doc = doc.replace("\n"," ")
                 r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"/>",doc)
                 if r:
