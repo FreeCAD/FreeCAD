@@ -276,6 +276,8 @@ public:
                       const SoFCVertexArrayIndexer *indexer,
                       int part) const;
 
+  void getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const;
+
 
   template<class FacesT, class FindT> void
   addTriangles(const FacesT & faces, FindT && find)
@@ -499,7 +501,7 @@ public:
 
   COWVector<int> highlightindices;
 
-  SbBox3f boundbox;
+  mutable SbBox3f boundbox;
 };
 
 // *************************************************************************
@@ -2214,26 +2216,36 @@ const SbBox3f &
 SoFCVertexCache::getBoundingBox() const
 {
   if (PRIVATE(this)->boundbox.isEmpty())
-    getBoundingBox(nullptr, PRIVATE(this)->boundbox);
+    PRIVATE(this)->getBoundingBox(nullptr, PRIVATE(this)->boundbox);
   return PRIVATE(this)->boundbox;
 }
 
 void
 SoFCVertexCache::getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const
 {
-  const SbVec3f *vptr = getVertexArray();
-  if (PRIVATE(this)->prevattached) {
+  if (PRIVATE(this)->boundbox.isEmpty())
+    PRIVATE(this)->getBoundingBox(nullptr, PRIVATE(this)->boundbox);
+  bbox = PRIVATE(this)->boundbox;
+  if (matrix)
+    bbox.transform(*matrix);
+}
+
+void
+SoFCVertexCacheP::getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const
+{
+  const SbVec3f *vptr = PUBLIC(this)->getVertexArray();
+  if (this->prevattached) {
     // means partial indexing, we need to explicitly iterate over indices
-    if (PRIVATE(this)->triangleindexer)
-      PRIVATE(this)->triangleindexer->getBoundingBox(matrix, bbox, vptr);
-    if (PRIVATE(this)->lineindexer)
-      PRIVATE(this)->lineindexer->getBoundingBox(matrix, bbox, vptr);
-    if (PRIVATE(this)->pointindexer)
-      PRIVATE(this)->pointindexer->getBoundingBox(matrix, bbox, vptr);
+    if (this->triangleindexer)
+      this->triangleindexer->getBoundingBox(matrix, bbox, vptr);
+    if (this->lineindexer)
+      this->lineindexer->getBoundingBox(matrix, bbox, vptr);
+    if (this->pointindexer)
+      this->pointindexer->getBoundingBox(matrix, bbox, vptr);
     return;
   }
 
-  int num = getNumVertices();
+  int num = PUBLIC(this)->getNumVertices();
   if (matrix) {
     for (int i=0; i<num; ++i) {
       SbVec3f v;
