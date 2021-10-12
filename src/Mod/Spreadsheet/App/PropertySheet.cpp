@@ -982,6 +982,14 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     }
 }
 
+App::CellAddress Spreadsheet::PropertySheet::getAnchor(App::CellAddress address) const
+{
+    if (auto anchor = mergedCells.find(address); anchor != mergedCells.end())
+        return anchor->second;
+    else
+        return address;
+}
+
 bool PropertySheet::isMergedCell(CellAddress address) const
 {
     return mergedCells.find(address) != mergedCells.end();

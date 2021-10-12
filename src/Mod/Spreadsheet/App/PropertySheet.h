@@ -148,6 +148,8 @@ public:
 
     void getSpans(App::CellAddress address, int &rows, int &cols) const;
 
+    App::CellAddress getAnchor(App::CellAddress address) const;
+
     bool isMergedCell(App::CellAddress address) const;
 
     bool isHidden(App::CellAddress address) const;
