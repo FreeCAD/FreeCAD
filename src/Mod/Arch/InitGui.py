@@ -128,7 +128,6 @@ class ArchWorkbench(FreeCADGui.Workbench):
             import RebarTools
         except Exception:
             del self.archtools[3] # remove "Arch_Rebar_Submenu"
-            pass
         else:
             class RebarGroupCommand:
                 def GetCommands(self):
