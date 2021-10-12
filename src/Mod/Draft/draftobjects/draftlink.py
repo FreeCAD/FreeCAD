@@ -141,6 +141,14 @@ class DraftLink(DraftObject):
         if not getattr(obj, 'Fuse', False):
             obj.setPropertyStatus('Shape', 'Transient')
 
+        if not hasattr(obj, 'BuildShape'):
+            _tip = QT_TRANSLATE_NOOP("App::Property", 'Whether to build shape for the array')
+            obj.addProperty("App::PropertyBool",
+                            "BuildShape",
+                            "Objects",
+                            _tip)
+            obj.BuildShape = True
+
     def getViewProviderName(self, _obj):
         """Override the view provider name."""
         if self.use_link:
@@ -190,6 +198,8 @@ class DraftLink(DraftObject):
                     and getattr(obj, 'AlwaysSyncPlacement', False):
                 for pla,child in zip(pls,obj.ElementList):
                     child.Placement = pla
+            if not getattr(obj, 'BuildShape', True) and not getattr(obj, 'Fuse', False):
+                return False  # return False to call LinkExtension::execute()
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)
