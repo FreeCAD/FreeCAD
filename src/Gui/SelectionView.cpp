@@ -55,8 +55,9 @@ using namespace Gui::DockWnd;
 
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
-  , SelectionObserver(false,0)
+  , SelectionObserver(true,0)
   , x(0.0f), y(0.0f), z(0.0f)
+  , openedAutomatically(false)
 {
     setWindowTitle(tr("Selection View"));
 
@@ -124,6 +125,22 @@ void SelectionView::leaveEvent(QEvent *)
 /// @cond DOXERR
 void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("Selection");
+    bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
+    hGrp->SetBool("AutoShowSelectionView", autoShow); // Remove this line once the preferences window item is implemented
+
+    if (autoShow) {
+        if (!parentWidget()->isVisible() && Selection().hasSelection()) {
+            parentWidget()->show();
+            openedAutomatically = true;
+        }
+        else if (openedAutomatically && !Selection().hasSelection()) {
+            parentWidget()->hide();
+            openedAutomatically = false;
+        }
+    }
+
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -604,14 +621,10 @@ bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 }
 
 void SelectionView::hideEvent(QHideEvent *ev) {
-    FC_TRACE(this << " detaching selection observer");
-    this->detachSelection();
     DockWindow::hideEvent(ev);
 }
 
 void SelectionView::showEvent(QShowEvent *ev) {
-    FC_TRACE(this << " attaching selection observer");
-    this->attachSelection();
     enablePickList->setChecked(Selection().needPickedList());
     Gui::DockWindow::showEvent(ev);
 }
