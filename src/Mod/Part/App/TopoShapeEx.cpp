@@ -1814,7 +1814,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
     TopoShape base(_base);
     if (base.isNull())
         base = sketchshape;
-    else if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
+    if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
         // It seems that OCC insists the 'up to face' must be somehow related
         // to the base shape. So if this is not the case, we make our own base
         // using the 'up to face' by extrusion, and set prism mode as None so
@@ -1893,7 +1893,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
                 PrismMaker.Perform(uptoface.getShape());
 
                 if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
-                    FC_THROWM(Base::CADKernelError,"BRepFeat_MakePrism: Could not extrude the sketch!");
+                    FC_THROWM(Base::CADKernelError,"BRepFeat_MakePrism: extrusion failed");
 
                 this->makEShape(PrismMaker, srcShapes, uptoface, op);
 

@@ -590,10 +590,6 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
                               gp_Dir& dir)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
-        // Check for valid support object
-        if (support.isNull())
-            throw Base::ValueError("SketchBased: Up to face: No support in Sketch and no base feature!");
-
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
         if (cfaces.empty())
             throw Base::ValueError("SketchBased: Up to face: No faces found in this direction");
