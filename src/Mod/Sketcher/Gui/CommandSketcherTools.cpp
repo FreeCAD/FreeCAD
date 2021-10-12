@@ -1292,6 +1292,7 @@ public:
                           Sketcher::PointPos originpos, int nelements,
                           SketcherCopy::Op op)
     : Mode(STATUS_SEEK_First)
+    , snapMode(SnapMode::Free)
     , geoIdList(geoidlist)
     , Origin()
     , OriginGeoId(origingeoid)
@@ -1309,6 +1310,11 @@ public:
         STATUS_End
     };
 
+    enum class SnapMode {
+        Free,
+        Snap5Degree
+    };
+
     virtual void activated(ViewProviderSketch *sketchgui)
     {
         setCursor(QPixmap(cursor_createcopy), 7, 7);
@@ -1319,15 +1325,29 @@ public:
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
+
+             if(QApplication::keyboardModifiers() == Qt::ControlModifier)
+                    snapMode = SnapMode::Snap5Degree;
+                else
+                    snapMode = SnapMode::Free;
+
             float length = (onSketchPos - EditCurve[0]).Length();
-            float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
+            float angle = (onSketchPos - EditCurve[0]).Angle();
+
+            Base::Vector2d endpoint = onSketchPos;
+
+            if (snapMode == SnapMode::Snap5Degree) {
+                angle = round(angle / (M_PI/36)) * M_PI/36;
+                endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle),sin(angle));
+            }
+
             SbString text;
             text.sprintf(" (%.1f, %.1fdeg)", length, angle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            setPositionText(endpoint, text);
 
-            EditCurve[1] = onSketchPos;
+            EditCurve[1] = endpoint;
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.0, 0.0), AutoConstraint::VERTEX)) {
+            if (seekAutoConstraint(sugConstr1, endpoint, Base::Vector2d(0.0, 0.0), AutoConstraint::VERTEX)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -1335,10 +1355,9 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d)
     {
         if (Mode == STATUS_SEEK_First) {
-            EditCurve[1] = onSketchPos;
             sketchgui->drawEdit(EditCurve);
             Mode = STATUS_End;
         }
@@ -1401,6 +1420,7 @@ public:
     }
 protected:
     SelectMode Mode;
+    SnapMode snapMode;
     string geoIdList;
     Base::Vector3d Origin;
     int OriginGeoId;
@@ -1841,7 +1861,7 @@ public:
 
     enum class SnapMode {
         Free,
-        Snap10Degree
+        Snap5Degree
     };
 
     virtual void activated(ViewProviderSketch *sketchgui)
@@ -1856,17 +1876,17 @@ public:
         if (Mode==STATUS_SEEK_First) {
 
             if(QApplication::keyboardModifiers() == Qt::ControlModifier)
-                    snapMode = SnapMode::Snap10Degree;
+                    snapMode = SnapMode::Snap5Degree;
                 else
                     snapMode = SnapMode::Free;
 
             float length = (onSketchPos - EditCurve[0]).Length();
-            float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f, 0.f));
+            float angle = (onSketchPos - EditCurve[0]).Angle();
 
             Base::Vector2d endpoint = onSketchPos;
 
-            if (snapMode == SnapMode::Snap10Degree) {
-                angle = round(angle / (M_PI/18)) * M_PI/18;
+            if (snapMode == SnapMode::Snap5Degree) {
+                angle = round(angle / (M_PI/36)) * M_PI/36;
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle),sin(angle));
             }
 
