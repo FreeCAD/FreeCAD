@@ -46,6 +46,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
+    Q_UNUSED(index)
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
     editor->setDocumentObject(sheet);
     connect(editor, &SpreadsheetGui::LineEdit::finishedWithKey, this, &SpreadsheetDelegate::on_editorFinishedWithKey);

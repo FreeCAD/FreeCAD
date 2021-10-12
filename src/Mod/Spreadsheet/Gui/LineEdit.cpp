@@ -35,13 +35,13 @@ using namespace SpreadsheetGui;
 LineEdit::LineEdit(QWidget *parent)
     : Gui::ExpressionLineEdit(parent, false, true)
     , lastKeyPressed(0)
-    , lastModifiers(0)
 {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 }
 
 bool LineEdit::eventFilter(QObject* object, QEvent* event)
 {
+    Q_UNUSED(object);
     if (event && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Tab) {

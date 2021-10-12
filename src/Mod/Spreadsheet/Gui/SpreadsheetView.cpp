@@ -352,7 +352,7 @@ void SheetView::confirmAliasChanged(const QString& text)
 void SheetView::confirmContentChanged(const QString& text)
 {
     QModelIndex i = ui->cells->currentIndex();
-    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+    ui->cells->model()->setData(i, QVariant(text), Qt::EditRole);
     ui->cells->setFocus();
 }
 

@@ -83,8 +83,8 @@ protected:
     void mousePressEvent(QMouseEvent* event);
 
     QModelIndex currentEditIndex;
-    int tabCounter;
     Spreadsheet::Sheet * sheet;
+    int tabCounter;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };
