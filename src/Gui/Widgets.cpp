@@ -854,12 +854,11 @@ void Gui::UrlLabel::setLaunchExternal(bool l)
 
 void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    if (_launchExternal) {
+    if (_launchExternal)
         QDesktopServices::openUrl(this->_url);
-    else {
+    else
         // Someone else will deal with it...
         Q_EMIT linkClicked(_url);
-    }
 }
 
 QString UrlLabel::url() const
@@ -915,25 +914,34 @@ void StatefulLabel::setParameterGroup(const std::string& groupName)
 void StatefulLabel::registerState(const QString& state, const QString& styleCSS,
     const std::string& preferenceName)
 {
-    _availableStates[state] = { QColor(), QColor(), styleCSS, preferenceName };
+    _availableStates[state] = { styleCSS, preferenceName };
 }
 
 void StatefulLabel::registerState(const QString& state, const QColor& color,
     const std::string& preferenceName)
 {
-    _availableStates[state] = {color, QColor(), QString(), preferenceName};
+    QString css;
+    if (color.isValid())
+        css = QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    _availableStates[state] = { css, preferenceName };
 }
 
-void StatefulLabel::registerState(const QString& state, const QColor& foreground, const QColor& background,
-    const std::string& preferenceLocation,
+void StatefulLabel::registerState(const QString& state, const QColor& fg, const QColor& bg,
     const std::string& preferenceName)
 {
-    _availableStates[state] = { foreground, background, QString(), preferenceName };
+    QString colorEntries;
+    if (fg.isValid())
+        colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+    if (bg.isValid())
+        colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries);
+    _availableStates[state] = { css, preferenceName };
 }
 
 /** Observes the parameter group and clears the cache if it changes */
 void StatefulLabel::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
 {
+    Q_UNUSED(rCaller);
     auto changedItem = std::string(rcReason);
     if (changedItem == "StyleSheet") {
         _styleCache.clear();
@@ -991,7 +999,8 @@ void StatefulLabel::setState(QString state)
             auto availableStringPrefs = _parameterGroup->GetASCIIMap();
             for (const auto& stringEntry : availableStringPrefs) {
                 if (stringEntry.first == entry->second.preferenceString) {
-                    this->setStyleSheet(QString::fromStdString(stringEntry.second));
+                    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
+                    this->setStyleSheet(css);
                     _styleCache[state] = this->styleSheet();
                     return;
                 }
@@ -1001,23 +1010,9 @@ void StatefulLabel::setState(QString state)
         // If there is no preferences entry for this label, allow the stylesheet to set it, and only set to the default
         // formatting if there is no stylesheet entry
         if (qApp->styleSheet().isEmpty()) {
-            if (!entry->second.defaultCSS.isEmpty()) {
-                this->setStyleSheet(entry->second.defaultCSS);
-                _styleCache[state] = this->styleSheet();
-                return;
-            }
-            else {
-                auto fg = entry->second.foregroundColor;
-                auto bg = entry->second.backgroundColor;
-                QString colorEntries;
-                if (fg.isValid())
-                    colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
-                if (bg.isValid())
-                    colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
-                this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries));
-                _styleCache[state] = this->styleSheet();
-                return;
-            }
+            this->setStyleSheet(entry->second.defaultCSS);
+            _styleCache[state] = this->styleSheet();
+            return;
         }
         // else the stylesheet sets our appearance: make sure it recalculates the appearance:
         this->setStyleSheet(QString());

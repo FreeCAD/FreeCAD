@@ -336,9 +336,8 @@ public:
         const std::string& preferenceName = std::string());
 
     /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
-    void registerState(const QString& state, const QColor& foreground, const QColor &background,
-        const std::string& foregroundPreference = std::string(),
-        const std::string& backgroundPreference = std::string());
+    void registerState(const QString& state, const QColor& foregroundColor, const QColor& backgroundColor, 
+        const std::string& preferenceName = std::string());
 
     /** Observes the parameter group and clears the cache if it changes */
     void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason);
@@ -354,8 +353,6 @@ private:
     ParameterGrp::handle _stylesheetGroup;
 
     struct StateData {
-        QColor foregroundColor;
-        QColor backgroundColor;
         QString defaultCSS;
         std::string preferenceString;
     };
