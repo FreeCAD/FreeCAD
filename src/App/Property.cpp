@@ -77,6 +77,12 @@ const char* Property::getName(void) const
     return myName;
 }
 
+void Property::SetRestoreError(const char * msg)
+{
+    if (auto doc = father->getOwnerDocument())
+        doc->setErrorDescription(this, msg);
+}
+
 std::string Property::getFullName(bool python) const {
     if(!myName || (python && !father)) 
         return std::string(python?"None":"?");

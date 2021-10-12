@@ -377,6 +377,10 @@ public:
     bool recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
+    /// set the text of the error of a specified object
+    void setErrorDescription(App::DocumentObject *, const char *);
+    /// set the text of the error of a specified object
+    void setErrorDescription(App::Property *, const char *);
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits

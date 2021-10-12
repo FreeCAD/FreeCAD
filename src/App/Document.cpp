@@ -3208,7 +3208,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         if(checkPartial && d->touchedObjs.size()) {
             // partial document touched, signal full reload
             return false;
-        } else if(!d->touchedObjs.count(obj))
+        } else if(!obj->isError() && !d->touchedObjs.count(obj))
             obj->purgeTouched();
 
         signalFinishRestoreObject(*obj);
@@ -4149,6 +4149,21 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 {
     return d->findRecomputeLog(Obj);
+}
+
+void Document::setErrorDescription(App::DocumentObject *Obj, const char *msg)
+{
+    if (msg && msg[0] && Obj)
+        d->addRecomputeLog(msg, Obj);
+}
+
+void Document::setErrorDescription(App::Property *Prop, const char *msg)
+{
+    if (msg && msg[0] && Prop) {
+        auto obj = Base::freecad_dynamic_cast<DocumentObject>(Prop->getContainer());
+        if (obj)
+            d->addRecomputeLog(msg, obj);
+    }
 }
 
 // call the recompute of the Feature and handle the exceptions and errors.

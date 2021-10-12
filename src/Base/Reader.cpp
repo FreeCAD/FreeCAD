@@ -795,9 +795,12 @@ void Base::FileReader::readFiles(Base::XMLReader &xmlReader) {
         Base::FileInfo fi(_dir+'/'+entry.FileName);
         try {
             Base::FileReader freader(fi, dirname+'/'+entry.FileName, &xmlReader);
-            if(!freader._stream.is_open())
-                FC_ERR("Failed to open: " << fi.filePath());
-            else
+            if(!freader._stream.is_open()) {
+                std::string msg("Failed to open ");
+                msg += fi.filePath();
+                FC_ERR(msg);
+                entry.Object->SetRestoreError(msg.c_str());
+            } else
                 entry.Object->RestoreDocFile(freader);
         } catch(Base::AbortException &e) {
             e.ReportException();
