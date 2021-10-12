@@ -272,6 +272,7 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->setupUi(this);
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->colorButton->setDisabled(true);
+    d->ui->colorButton->setAllowTransparency(true);
 
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
@@ -354,10 +355,9 @@ void FaceColors::on_defaultButton_clicked()
 void FaceColors::on_colorButton_changed()
 {
     if (!d->index.isEmpty()) {
-        float alpha = static_cast<float>(d->vp->Transparency.getValue())/100;
         QColor c = d->ui->colorButton->color();
         for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-            d->perface[*it].set(c.redF(), c.greenF(), c.blueF(), alpha);
+            d->perface[*it].set(c.redF(), c.greenF(), c.blueF(), c.alphaF());
         }
         d->vp->DiffuseColor.setValues(d->perface);
     }
@@ -380,7 +380,7 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
             d->index.insert(index);
             const App::Color& c = d->perface[index];
             QColor color;
-            color.setRgbF(c.r,c.g,c.b);
+            color.setRgbF(c.r,c.g,c.b,c.a);
             d->ui->colorButton->setColor(color);
             selection_changed = true;
         }
