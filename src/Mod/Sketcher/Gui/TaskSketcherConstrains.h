@@ -134,9 +134,9 @@ private:
     QWidget* proxy;
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstrains> ui;
-    std::bitset<ConstraintFilter::FilterValue::NumFilterValue> multiFilterStatus;
-    std::vector<unsigned int> selectionFilter;
-    std::vector<unsigned int> associatedConstraintsFilter;
+    ConstraintFilter::FilterValueBitset multiFilterStatus; // Stores the filters to be aggregated to form the multifilter.
+    std::vector<unsigned int> selectionFilter; // holds the constraint ids of the selected constraints
+    std::vector<unsigned int> associatedConstraintsFilter; // holds the constraint ids of the constraints associated with the selected geometry
 };
 
 } //namespace SketcherGui

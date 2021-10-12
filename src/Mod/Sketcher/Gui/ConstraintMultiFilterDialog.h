@@ -40,8 +40,8 @@ public:
     ConstraintMultiFilterDialog(void);
     ~ConstraintMultiFilterDialog();
 
-    void setMultiFilter(const std::bitset<FilterValue::NumFilterValue> & bitset);
-    std::bitset<FilterValue::NumFilterValue> getMultiFilter();
+    void setMultiFilter(const FilterValueBitset & bitset);
+    FilterValueBitset getMultiFilter();
 
 public Q_SLOTS:
     void on_listMultiFilter_itemChanged(QListWidgetItem * item);

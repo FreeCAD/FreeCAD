@@ -60,7 +60,7 @@ ConstraintMultiFilterDialog::~ConstraintMultiFilterDialog()
 {
 }
 
-void ConstraintMultiFilterDialog::setMultiFilter(const std::bitset<FilterValue::NumFilterValue> & bitset)
+void ConstraintMultiFilterDialog::setMultiFilter(const FilterValueBitset & bitset)
 {
     ui->listMultiFilter->blockSignals(true);
     for(int i = 0; i < ui->listMultiFilter->count(); i++) {
@@ -74,9 +74,9 @@ void ConstraintMultiFilterDialog::setMultiFilter(const std::bitset<FilterValue::
     ui->listMultiFilter->blockSignals(false);
 }
 
-std::bitset<FilterValue::NumFilterValue> ConstraintMultiFilterDialog::getMultiFilter()
+FilterValueBitset ConstraintMultiFilterDialog::getMultiFilter()
 {
-    std::bitset<FilterValue::NumFilterValue> tmpBitset;
+    FilterValueBitset tmpBitset;
 
     for(int i = 0; i < ui->listMultiFilter->count(); i++) {
         QListWidgetItem* item = ui->listMultiFilter->item(i);
@@ -116,7 +116,7 @@ void ConstraintMultiFilterDialog::on_listMultiFilter_itemChanged(QListWidgetItem
             if(filterAggregates[i][filterindex]) { // only for groups comprising the changed filter
                 bool mustBeChecked = true;
 
-                for(int j = 0; j < FilterValue::NumFilterValue; j++) {
+                for(int j = 0; j < FilterValueLength; j++) {
                     if (i == j)
                         continue;
 

@@ -30,7 +30,13 @@ namespace SketcherGui {
 
 namespace ConstraintFilter {
 
-    enum FilterValue {
+    // FilterValue and SpecialFilterValue are the filters used for Constraint Filtering in the Constraint's Widget.
+    // FilterValue includes the filters used for the Multi-Filter dialog (SpecialFilterValue is not part of the multi-filter).
+    //
+    // The values are hardcoded to be the same as the indices in the combobox and viewlist. Addition of an element here requires
+    // the addition of the corresponding entry there and vice versa.
+
+    enum class FilterValue {
         All = 0,
         Geometric = 1,
         Datums = 2,
@@ -55,48 +61,87 @@ namespace ConstraintFilter {
         Angle = 21,
         SnellsLaw = 22,
         InternalAlignment = 23,
-        NumFilterValue
+        NumFilterValue // SpecialFilterValue shall start at the same index as this
     };
 
-    enum SpecialFilterValue {
-        Multiple = 24,
-        Selection = 25,
-        AssociatedConstraints = 26,
+    constexpr auto FilterValueLength = static_cast<std::underlying_type_t<FilterValue>>(FilterValue::NumFilterValue);
+
+    enum class SpecialFilterValue {
+        Multiple = FilterValueLength, // = 24
+        Selection, // = 25
+        AssociatedConstraints, // = 26
         NumSpecialFilterValue
     };
 
-    constexpr std::array< std::bitset<FilterValue::NumFilterValue>, FilterValue::NumFilterValue> filterAggregates {
-        1 << FilterValue::All | 1 << FilterValue::Geometric | 1 << FilterValue::Datums | 1 << FilterValue::Named | 1 << FilterValue::NonDriving |
-        1 << FilterValue::Horizontal | 1 << FilterValue::Vertical | 1 << FilterValue::Coincident | 1 << FilterValue::PointOnObject |
-        1 << FilterValue::Parallel | 1 << FilterValue::Perpendicular | 1 << FilterValue::Tangent | 1 << FilterValue::Equality |
-        1 << FilterValue::Symmetric | 1 << FilterValue::Block | 1 << FilterValue::Distance | 1 << FilterValue::HorizontalDistance |
-        1 << FilterValue::VerticalDistance | 1 << FilterValue::Radius | 1 << FilterValue::Weight | 1 << FilterValue::Diameter |
-        1 << FilterValue::Angle | 1 << FilterValue::SnellsLaw | 1 << FilterValue::InternalAlignment, // All = All other groups are covered (0)
-        1 << FilterValue::Geometric | 1 << FilterValue::Horizontal | 1 << FilterValue::Vertical | 1 << FilterValue::Coincident |
-        1 << FilterValue::PointOnObject | 1 << FilterValue::Parallel | 1 << FilterValue::Perpendicular | 1 << FilterValue::Tangent |
-        1 << FilterValue::Equality | 1 << FilterValue::Symmetric | 1 << FilterValue::Block | 1 << FilterValue::InternalAlignment, // Geometric = All others not being datums (1)
-        1 << FilterValue::Datums | 1 << FilterValue::Distance | 1 << FilterValue::HorizontalDistance | 1 << FilterValue::VerticalDistance | 1 << FilterValue::Radius | 1 << FilterValue::Weight | 1 << FilterValue::Diameter | 1 << FilterValue::Angle | 1 << FilterValue::SnellsLaw, // Datum = all others not being geometric (2)
-        1 << FilterValue::Named, // Named = Just this (3)
-        1 << FilterValue::NonDriving, // NonDriving = Just this (4)
-        1 << FilterValue::Coincident, // Coincident = Just this (5)
-        1 << FilterValue::PointOnObject, // PointOnObject = Just this (6)
-        1 << FilterValue::Vertical, // Vertical = Just this (7)
-        1 << FilterValue::Horizontal, // Horizontal = Just this (8)
-        1 << FilterValue::Parallel, // Parallel = Just this (9)
-        1 << FilterValue::Perpendicular, // Perpendicular = Just this (10)
-        1 << FilterValue::Tangent, // Tangent = Just this (11)
-        1 << FilterValue::Equality, // Equality = Just this (12)
-        1 << FilterValue::Symmetric, // Symmetric = Just this (13)
-        1 << FilterValue::Block, // Block = Just this (14)
-        1 << FilterValue::HorizontalDistance, // HorizontalDistance = Just this (15)
-        1 << FilterValue::VerticalDistance, // VerticalDistance = Just this (16)
-        1 << FilterValue::Distance, // Distance = Just this (17)
-        1 << FilterValue::Radius, // Radius = Just this (18)
-        1 << FilterValue::Weight, // Weight = Just this (19)
-        1 << FilterValue::Diameter, // Diameter = Just this (20)
-        1 << FilterValue::Angle, // Angle = Just this (21)
-        1 << FilterValue::SnellsLaw, // SnellsLaw = Just this (22)
-        1 << FilterValue::InternalAlignment, // InternalAlignment = Just this (23)
+    constexpr auto SpecialFilterValue = static_cast<std::underlying_type_t<FilterValue>>(SpecialFilterValue::NumSpecialFilterValue);
+
+    /// A std::bitset sized to provide one bit per FilterValue value
+    using FilterValueBitset = std::bitset<FilterValueLength>;
+
+    /// Helper function to retrieve the underlying integral type of a filter value
+    template <typename T>
+    inline auto getFilterIntegral(T filterValue) {
+        return static_cast<std::underlying_type_t<T>>(filterValue);
+    }
+
+    /// Helper function to test whether a provided integral value corresponds to the provided filter value
+    template <typename T>
+    inline bool isFilterMatch(T filterValue, std::underlying_type_t<T> integralTypeValue) {
+
+        auto underlyingFilterValue = static_cast<std::underlying_type_t<T>>(filterValue);
+
+        return (underlyingFilterValue == integralTypeValue);
+    }
+
+    /// Helper function to test whether a FilterValue value is set in a FilterValueBitset
+    inline bool checkFilterBitset(FilterValueBitset set, FilterValue filter)
+    {
+        auto underlyingFilterValue = static_cast<std::underlying_type_t<FilterValue>>(filter);
+
+        return set[underlyingFilterValue];
+    }
+
+    /// Helper function expanding a parameter pack value of enum classes to create a integral underlying type having
+    /// the bits corresponding to the parameter pack set
+    template<typename... Args>
+    constexpr decltype(auto) buildBitset(Args... args) {
+            return (... | (1 << static_cast<std::underlying_type_t<Args>>(args)));
+    }
+
+    /// Array of FilterValue bit sets of size the the number of FilterValues indicating for each FilterValue, which other
+    /// FilterValues are comprised therein. It defines the dependencies between filters.
+    constexpr std::array< FilterValueBitset, FilterValueLength> filterAggregates {
+        buildBitset(FilterValue::All, FilterValue::Geometric, FilterValue::Datums, FilterValue::Named, FilterValue::NonDriving, FilterValue::Horizontal,
+                    FilterValue::Vertical, FilterValue::Coincident, FilterValue::PointOnObject, FilterValue::Parallel, FilterValue::Perpendicular,
+                    FilterValue::Tangent, FilterValue::Equality, FilterValue::Symmetric, FilterValue::Block, FilterValue::Distance,
+                    FilterValue::HorizontalDistance, FilterValue::VerticalDistance, FilterValue::Radius, FilterValue::Weight, FilterValue::Diameter,
+                    FilterValue::Angle, FilterValue::SnellsLaw, FilterValue::InternalAlignment), // All = All other groups are covered (0)
+        buildBitset(FilterValue::Geometric, FilterValue::Horizontal, FilterValue::Vertical, FilterValue::Coincident, FilterValue::PointOnObject,
+                    FilterValue::Parallel, FilterValue::Perpendicular, FilterValue::Tangent, FilterValue::Equality, FilterValue::Symmetric,
+                    FilterValue::Block, FilterValue::InternalAlignment), // Geometric = All others not being datums (1)
+        buildBitset(FilterValue::Datums, FilterValue::Distance, FilterValue::HorizontalDistance, FilterValue::VerticalDistance, FilterValue::Radius,
+                    FilterValue::Weight, FilterValue::Diameter, FilterValue::Angle, FilterValue::SnellsLaw), // Datum = all others not being geometric (2)
+        buildBitset(FilterValue::Named), // Named = Just this (3)
+        buildBitset(FilterValue::NonDriving), // NonDriving = Just this (4)
+        buildBitset(FilterValue::Coincident), // Coincident = Just this (5)
+        buildBitset(FilterValue::PointOnObject), // PointOnObject = Just this (6)
+        buildBitset(FilterValue::Vertical), // Vertical = Just this (7)
+        buildBitset(FilterValue::Horizontal), // Horizontal = Just this (8)
+        buildBitset(FilterValue::Parallel), // Parallel = Just this (9)
+        buildBitset(FilterValue::Perpendicular), // Perpendicular = Just this (10)
+        buildBitset(FilterValue::Tangent), // Tangent = Just this (11)
+        buildBitset(FilterValue::Equality), // Equality = Just this (12)
+        buildBitset(FilterValue::Symmetric), // Symmetric = Just this (13)
+        buildBitset(FilterValue::Block), // Block = Just this (14)
+        buildBitset(FilterValue::HorizontalDistance), // HorizontalDistance = Just this (15)
+        buildBitset(FilterValue::VerticalDistance), // VerticalDistance = Just this (16)
+        buildBitset(FilterValue::Distance), // Distance = Just this (17)
+        buildBitset(FilterValue::Radius), // Radius = Just this (18)
+        buildBitset(FilterValue::Weight), // Weight = Just this (19)
+        buildBitset(FilterValue::Diameter), // Diameter = Just this (20)
+        buildBitset(FilterValue::Angle), // Angle = Just this (21)
+        buildBitset(FilterValue::SnellsLaw), // SnellsLaw = Just this (22)
+        buildBitset(FilterValue::InternalAlignment) // InternalAlignment = Just this (23)
     };
 
 }
