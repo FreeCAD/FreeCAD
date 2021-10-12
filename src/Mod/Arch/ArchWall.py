@@ -878,8 +878,7 @@ class _Wall(ArchComponent.Component):
                                                 else:
                                                     cuts2.append(sh)
                                             offset += (obj.BlockLength.Value + obj.Joint.Value)
-                                        else:
-                                            offset -= (edge.Length - obj.Joint.Value)
+                                        offset -= (edge.Length - obj.Joint.Value)
 
                             if isinstance(bplates,list):
                                 bplates = bplates[0]
