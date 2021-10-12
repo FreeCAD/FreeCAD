@@ -2665,6 +2665,7 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
         return *this;
     }
     if(!op) op = TOPOP_REFINE;
+    bool closed = shape.isClosed();
     try {
 #if 1
         MyRefineMaker mkRefine(shape.getShape());
@@ -2674,7 +2675,8 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
         makESHAPE(mkRefine.Shape(), mapper, {shape}, op);
         // For some reason, refine operation may reverse the solid
         fixSolidOrientation();
-        return *this;
+        if (isClosed() == closed)
+            return *this;
 #else
         BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
         return makEShape(mkRefine,shape,op);
@@ -2683,7 +2685,6 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
         if(!no_fail) throw;
     }
     *this = shape;
-    fixSolidOrientation();
     return *this;
 }
 

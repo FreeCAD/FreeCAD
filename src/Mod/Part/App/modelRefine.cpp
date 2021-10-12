@@ -74,7 +74,9 @@
 #include <Base/Tools.h>
 
 #include "modelRefine.h"
+#include "PartFeature.h"
 
+FC_LOG_LEVEL_INIT("Part", true, true);
 
 using namespace ModelRefine;
 
@@ -1061,10 +1063,35 @@ bool FaceUniter::process()
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
                 if (!newFace.IsNull())
                 {
+                    Bnd_Box newBounds;
+                    BRepBndLib::Add(newFace, newBounds);
+                    newBounds.SetGap(0.0);
+                    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+                    newBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+                    Bnd_Box oldBounds;
+                    const FaceVectorType &temp = adjacencySplitter.getGroup(adjacentIndex);
+                    for (auto &s : temp)
+                        BRepBndLib::Add(s, oldBounds);
+
+                    oldBounds.SetGap(0.0);
+                    Standard_Real xMin1, yMin1, zMin1, xMax1, yMax1, zMax1;
+                    oldBounds.Get(xMin1, yMin1, zMin1, xMax1, yMax1, zMax1);
+                    if (std::fabs(xMin-xMin1) > Precision::Confusion()
+                        || std::fabs(yMin-yMin1) > Precision::Confusion()
+                        || std::fabs(zMin-zMin1) > Precision::Confusion()
+                        || std::fabs(xMax-xMax1) > Precision::Confusion()
+                        || std::fabs(yMax-yMax1) > Precision::Confusion()
+                        || std::fabs(zMax-zMax1) > Precision::Confusion())
+                    {
+                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                            FC_WARN("united face bounding box mismatch");
+                        continue;
+                    }
+
                     facesToSew.push_back(newFace);
                     if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
-                    FaceVectorType temp = adjacencySplitter.getGroup(adjacentIndex);
                     facesToRemove.insert(facesToRemove.end(), temp.begin(), temp.end());
                     // the first shape will be marked as modified, i.e. replaced by newFace, all others are marked as deleted
                     // jrheinlaender: IMHO this is not correct because references to the deleted faces will be broken, whereas they should
@@ -1073,7 +1100,7 @@ bool FaceUniter::process()
                     // by a boolean cut, where one old shape is marked as modified, producing multiple new shapes
                     if (!temp.empty())
                     {
-                        for (FaceVectorType::iterator f = temp.begin(); f != temp.end(); ++f)
+                        for (auto f = temp.begin(); f != temp.end(); ++f)
                               modifiedShapes.emplace_back(*f, newFace);
                     }
                 }
