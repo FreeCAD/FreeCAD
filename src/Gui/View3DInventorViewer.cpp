@@ -987,7 +987,8 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
 
         _pimpl->connDocChange = pcDocument->getDocument()->signalChanged.connect(boost::bind(
                     &View3DInventorViewer::slotChangeDocument, this, bp::_1, bp::_2));
-    }
+    } else
+        _pimpl->connDocChange.disconnect();
 }
 
 void View3DInventorViewer::slotChangeDocument(const App::Document &, const App::Property &prop)
