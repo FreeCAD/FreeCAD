@@ -210,7 +210,7 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
         double length = GCPnts_AbscissaPoint::Length(adapt,t);
 
-        if (u < -length || u > length) {
+        if (u + Precision::Confusion() < -length || u - Precision::Confusion() > length) {
             PyErr_SetString(PyExc_ValueError, "value out of range");
             return 0;
         }
