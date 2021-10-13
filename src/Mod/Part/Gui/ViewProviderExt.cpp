@@ -549,17 +549,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         long value = (long)(100*Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = Transparency.getValue()/100.0f;
-            if (pcFaceBind->value.getValue() == SoMaterialBinding::PER_PART) {
-                int cnt = pcShapeMaterial->diffuseColor.getNum();
-                pcShapeMaterial->transparency.setNum(cnt);
-                float *t = pcShapeMaterial->transparency.startEditing();
-                for (int i=0; i<cnt; i++)
-                    t[i] = trans;
-                pcShapeMaterial->transparency.finishEditing();
-            }
-            else {
-                pcShapeMaterial->transparency = trans;
-            }
 
             App::PropertyContainer* parent = ShapeMaterial.getContainer();
             ShapeMaterial.setContainer(0);
@@ -570,8 +559,10 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
                 if(MapTransparency.getValue() || MappedColors.getSize()) {
                     updateColors();
                 } else{
-                    Gui::SoUpdateVBOAction action;
-                    action.apply(this->faceset);
+                    auto colors = DiffuseColor.getValues();
+                    for (auto &c : colors)
+                        c.a = trans;
+                    DiffuseColor.setValues(colors);
                 }
             }
         }
