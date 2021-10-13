@@ -24,9 +24,9 @@
 """This module contains FreeCAD commands for the Draft workbench"""
 
 import os
-import FreeCAD
+import FreeCAD as App
 from draftutils.translate import translate, QT_TRANSLATE_NOOP
-
+from draftgeoutils.general import geomType
 
 
 
@@ -94,30 +94,41 @@ class Hatch:
         if not obj.Base.Shape.Faces:
             return
 
-        pla = obj.Placement
         shapes = []
         for face in obj.Base.Shape.Faces:
             if face.findPlane(): # Only planar faces.
                 face = face.copy()
                 if obj.Translate:
-                    e = face.Edges[0] # Todo: check for almost zero-length edge.
-                    sta = e.firstVertex().Point
-                    end = e.lastVertex().Point
-                    u = end.sub(sta).normalize()
+                    mtx = None
                     w = face.normalAt(0, 0)
-                    v = w.cross(u)
-                    m = FreeCAD.Matrix(u.x, v.x, w.x, sta.x,
-                                       u.y, v.y, w.y, sta.y,
-                                       u.z, v.z, w.z, sta.z,
-                                       0.0, 0.0, 0.0, 1.0)
-                    face = face.transformGeometry(m.inverse()).Faces[0]
+                    # Try to base a matrix on the first straight edge with
+                    # a reasonable length (> 0.001):
+                    for e in face.Edges:
+                        if geomType(e) == "Line":
+                            sta = e.firstVertex().Point
+                            end = e.lastVertex().Point
+                            u = end.sub(sta)
+                            if u.Length > 0.001:
+                                u = u.normalize()
+                                v = w.cross(u)
+                                mtx = App.Matrix(u.x, v.x, w.x, sta.x,
+                                                 u.y, v.y, w.y, sta.y,
+                                                 u.z, v.z, w.z, sta.z,
+                                                 0.0, 0.0, 0.0, 1.0)
+                                break
+                    # If no suitable straight edge was found use a default matrix:
+                    if not mtx:
+                        cen = face.CenterOfMass
+                        rot = App.Rotation(App.Vector(0,0,1), w)
+                        mtx = App.Placement(cen, rot).Matrix
+                    face = face.transformGeometry(mtx.inverse()).Faces[0]
                 if obj.Rotation.Value:
-                    face.rotate(FreeCAD.Vector(), FreeCAD.Vector(0,0,1), -obj.Rotation)
+                    face.rotate(App.Vector(), App.Vector(0,0,1), -obj.Rotation)
                 shape = TechDraw.makeGeomHatch(face, obj.Scale, obj.Pattern, obj.File)
                 if obj.Rotation.Value:
-                    shape.rotate(FreeCAD.Vector(), FreeCAD.Vector(0,0,1), obj.Rotation)
+                    shape.rotate(App.Vector(), App.Vector(0,0,1), obj.Rotation)
                 if obj.Translate:
-                    shape = shape.transformGeometry(m)
+                    shape = shape.transformGeometry(mtx)
                 shapes.append(shape)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
