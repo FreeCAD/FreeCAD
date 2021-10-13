@@ -93,7 +93,10 @@ bool FeaturePythonImp::execute()
             PyErr_Clear();
             return false;
         }
-        Base::PyException::ThrowException(); // extract the Python error text
+        Base::PyException e;
+        e.ReportException();
+        throw e;
+        // Base::PyException::ThrowException(); // extract the Python error text
     }
 
     return false;

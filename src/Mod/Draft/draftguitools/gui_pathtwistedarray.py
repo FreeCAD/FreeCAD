@@ -39,6 +39,7 @@ import draftguitools.gui_base_original as gui_base_original
 
 from draftutils.messages import _err
 from draftutils.translate import translate
+import draftutils.utils as utils
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -85,6 +86,8 @@ class PathTwistedArray(gui_base_original.Modifier):
             rot_factor = 0.25
             use_link = self.use_link
 
+            build_shape = utils.get_param("Draft_array_build_shape", True)
+
             Gui.addModule("Draft")
             _cmd = "Draft.make_path_twisted_array"
             _cmd += "("
@@ -92,7 +95,8 @@ class PathTwistedArray(gui_base_original.Modifier):
             _cmd += "App.ActiveDocument." + path_object.Name + ", "
             _cmd += "count=" + str(count) + ", "
             _cmd += "rot_factor=" + str(rot_factor) + ", "
-            _cmd += "use_link=" + str(use_link)
+            _cmd += "use_link=" + str(use_link) + ", "
+            _cmd += "build_shape=" + str(build_shape)
             _cmd += ")"
 
             _cmd_list = ["_obj_ = " + _cmd,

@@ -46,7 +46,8 @@ if App.GuiUp:
 def make_array(base_object,
                arg1, arg2, arg3,
                arg4=None, arg5=None, arg6=None,
-               use_link=True):
+               use_link=True,
+               build_shape=True):
     """Create a Draft Array of the given object.
 
     Rectangular array
@@ -90,6 +91,7 @@ def make_array(base_object,
         # to make it a LinkArray
         new_obj = doc.addObject("Part::FeaturePython", "Array",
                                 Array(None), None, True)
+        new_obj.BuildShape = build_shape
     else:
         new_obj = doc.addObject("Part::FeaturePython", "Array")
         Array(new_obj)
@@ -144,7 +146,7 @@ def make_array(base_object,
 def makeArray(baseobject,
               arg1, arg2, arg3,
               arg4=None, arg5=None, arg6=None,
-              name="Array", use_link=False):
+              name="Array", use_link=False, build_shape=True):
     """Create an Array. DEPRECATED. Use 'make_array'."""
     _wrn("Do not use this function directly; instead, use "
          "'make_ortho_array', 'make_polar_array', "
@@ -152,6 +154,6 @@ def makeArray(baseobject,
 
     return make_array(baseobject,
                       arg1, arg2, arg3,
-                      arg4, arg5, arg6, use_link)
+                      arg4, arg5, arg6, use_link, build_shape)
 
 ## @}

@@ -199,6 +199,7 @@ class DraftLink(DraftObject):
                 for pla,child in zip(pls,obj.ElementList):
                     child.Placement = pla
             if not getattr(obj, 'BuildShape', True) and not getattr(obj, 'Fuse', False):
+                obj.Shape = Part.Shape()
                 return False  # return False to call LinkExtension::execute()
 
         if obj.Base:

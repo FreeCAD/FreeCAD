@@ -165,6 +165,22 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="checkbox_build_shape">
+          <property name="toolTip">
+           <string>Enable this option to build compound shape if 'Fuse' is disabled.
+It is recommended to disable this option if you are using the array
+for assembly purpose and not for futher modeling, to make the
+recomputation faster with complex shapes.</string>
+          </property>
+          <property name="text">
+           <string>Build shape</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="1" column="0">
@@ -181,7 +197,7 @@ It cannot be zero.</string>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance" native="true">
           <property name="toolTip">
            <string>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</string>
@@ -189,7 +205,7 @@ It cannot be zero.</string>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>100.000000000000000</double>
           </property>
          </widget>
@@ -205,14 +221,14 @@ It cannot be zero.</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance" native="true">
           <property name="toolTip">
            <string>Distance from one layer of objects to the next layer of objects.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>200.000000000000000</double>
           </property>
          </widget>

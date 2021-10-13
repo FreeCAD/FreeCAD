@@ -156,6 +156,22 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="checkbox_build_shape">
+          <property name="toolTip">
+           <string>Enable this option to build compound shape if 'Fuse' is disabled.
+It is recommended to disable this option if you are using the array
+for assembly purpose and not for futher modeling, to make the
+recomputation faster with complex shapes.</string>
+          </property>
+          <property name="text">
+           <string>Build shape</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="11" column="0">

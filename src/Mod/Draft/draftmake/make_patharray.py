@@ -56,7 +56,8 @@ def make_path_array(base_object, path_object, count=4,
                     tan_vector=App.Vector(1, 0, 0),
                     force_vertical=False,
                     vertical_vector=App.Vector(0, 0, 1),
-                    use_link=True):
+                    use_link=True,
+                    build_shape=True):
     """Make a Draft PathArray object.
 
     Distribute copies of a `base_object` along `path_object`
@@ -143,6 +144,18 @@ def make_path_array(base_object, path_object, count=4,
         It defaults to `True`, in which case the copies are `App::Link`
         elements. Otherwise, the copies are shape copies which makes
         the resulting array heavier.
+
+    build_shape: bool, optional
+        It defaults to `True`.
+        It is only effective when `use_link` is `True`. If it is `True`, a
+        compound shape is built consists all the visible array elements. If
+        `False` and `Fuse` property is also `False`, then the array shape is
+        not built and will be set to `null`.
+
+        It is recommended to disable is option to save recomputation time and
+        memory resources for complex array element shapes, if the user only
+        intend to use the array for visualization or assembly purpose instead of
+        further modeling.
 
     Returns
     -------
@@ -268,11 +281,15 @@ def make_path_array(base_object, path_object, count=4,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     if use_link:
         # The PathArray class must be called in this special way
         # to make it a PathLinkArray
         new_obj = doc.addObject("Part::FeaturePython", "PathArray",
                                 PathArray(None), None, True)
+        new_obj.BuildShape = build_shape
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PathArray")
         PathArray(new_obj)
@@ -307,20 +324,23 @@ def make_path_array(base_object, path_object, count=4,
 
 def makePathArray(baseobject, pathobject, count,
                   xlate=None, align=False,
-                  pathobjsubs=[],
-                  use_link=False):
+                  pathobjsubs=None,
+                  use_link=False,
+                  build_shape=True):
     """Create PathArray. DEPRECATED. Use 'make_path_array'."""
     utils.use_instead('make_path_array')
 
     return make_path_array(baseobject, pathobject, count,
                            xlate, pathobjsubs,
                            align,
-                           use_link)
+                           use_link,
+                           build_shape)
 
 
 def make_path_twisted_array(base_object, path_object,
                             count=15, rot_factor=0.25,
-                            use_link=True):
+                            use_link=True,
+                            build_shape=True):
     """Create a Path twisted array."""
     _name = "make_path_twisted_array"
     utils.print_header(_name, "Path twisted array")
@@ -364,11 +384,15 @@ def make_path_twisted_array(base_object, path_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     if use_link:
         # The PathTwistedArray class must be called in this special way
         # to make it a PathTwistLinkArray
         new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray",
                                 PathTwistedArray(None), None, True)
+        new_obj.BuildShape = build_shape
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray")
         PathTwistedArray(new_obj)

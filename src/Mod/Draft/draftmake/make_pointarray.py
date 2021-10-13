@@ -48,7 +48,7 @@ if App.GuiUp:
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_point_array(base_object, point_object, extra=None, use_link=True):
+def make_point_array(base_object, point_object, extra=None, use_link=True, build_shape=True):
     """Make a Draft PointArray object.
 
     Distribute copies of a `base_object` in the points
@@ -158,6 +158,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         # to make it a LinkArray
         new_obj = doc.addObject("Part::FeaturePython", "PointArray",
                                 PointArray(None), None, True)
+        new_obj.BuildShape = build_shape
     else:
         new_obj = doc.addObject("Part::FeaturePython", "PointArray")
         PointArray(new_obj)

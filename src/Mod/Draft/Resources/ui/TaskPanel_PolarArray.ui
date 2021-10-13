@@ -165,6 +165,22 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="checkbox_build_shape">
+          <property name="toolTip">
+           <string>Enable this option to build compound shape if 'Fuse' is disabled.
+It is recommended to disable this option if you are using the array
+for assembly purpose and not for futher modeling, to make the
+recomputation faster with complex shapes.</string>
+          </property>
+          <property name="text">
+           <string>Build shape</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="1" column="0">
@@ -182,7 +198,7 @@ The maximum absolute value is 360 degrees.</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_angle">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_angle" native="true">
           <property name="toolTip">
            <string>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
@@ -191,13 +207,13 @@ The maximum absolute value is 360 degrees.</string>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="minimum">
+          <property name="minimum" stdset="0">
            <double>-360.000000000000000</double>
           </property>
-          <property name="maximum">
+          <property name="maximum" stdset="0">
            <double>360.000000000000000</double>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>360.000000000000000</double>
           </property>
          </widget>

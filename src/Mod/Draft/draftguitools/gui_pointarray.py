@@ -50,6 +50,7 @@ import draftguitools.gui_base_original as gui_base_original
 
 from draftutils.messages import _err
 from draftutils.translate import translate
+import draftutils.utils as utils
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -108,13 +109,16 @@ class PointArray(gui_base_original.Modifier):
             point_object = sel[1].Object
             extra = None
 
+            build_shape = utils.get_param("Draft_array_build_shape", True)
+
             Gui.addModule('Draft')
             _cmd = "Draft.make_point_array"
             _cmd += "("
             _cmd += "App.ActiveDocument." + base_object.Name + ", "
             _cmd += "App.ActiveDocument." + point_object.Name + ", "
             _cmd += "extra=" + str(extra) + ", "
-            _cmd += 'use_link=' + str(self.use_link)
+            _cmd += 'use_link=' + str(self.use_link) + ", "
+            _cmd += 'build_shape=' + str(build_shape)
             _cmd += ")"
 
             _cmd_list = ["_obj_ = " + _cmd,

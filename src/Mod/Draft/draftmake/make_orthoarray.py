@@ -42,7 +42,8 @@ def _make_ortho_array(base_object,
                       n_x=2,
                       n_y=2,
                       n_z=1,
-                      use_link=True):
+                      use_link=True,
+                      build_shape=True):
     """Create an orthogonal array from the given object.
 
     This is a simple wrapper of the `draftmake.make_array.make_array`
@@ -62,7 +63,8 @@ def _make_ortho_array(base_object,
     new_obj = make_array.make_array(base_object,
                                     arg1=v_x, arg2=v_y, arg3=v_z,
                                     arg4=n_x, arg5=n_y, arg6=n_z,
-                                    use_link=use_link)
+                                    use_link=use_link,
+                                    build_shape=build_shape)
     return new_obj
 
 
@@ -179,7 +181,8 @@ def make_ortho_array(base_object,
                      n_x=2,
                      n_y=2,
                      n_z=1,
-                     use_link=True):
+                     use_link=True,
+                     build_shape=True):
     """Create an orthogonal array from the given object.
 
     Parameters
@@ -248,14 +251,17 @@ def make_ortho_array(base_object,
         The Links repeat the shape of the original `base_object` exactly,
         and therefore the resulting array is more memory efficient.
 
-        Also, when `use_link` is `True`, the `Fuse` property
-        of the resulting array does not work; the array doesn't
-        contain separate shapes, it only has the original shape repeated
-        many times, so there is nothing to fuse together.
+    build_shape: bool, optional
+        It defaults to `True`.
+        It is only effective when `use_link` is `True`. If it is `True`, a
+        compound shape is built consists all the visible array elements. If
+        `False` and `Fuse` property is also `False`, then the array shape is
+        not built and will be set to `null`.
 
-        If `use_link` is `False` the original shape is copied many times.
-        In this case the `Fuse` property is able to fuse
-        all copies into a single object, if they touch each other.
+        It is recommended to disable is option to save recomputation time and
+        memory resources for complex array element shapes, if the user only
+        intend to use the array for visualization or assembly purpose instead of
+        further modeling.
 
     Returns
     -------
@@ -290,10 +296,14 @@ def make_ortho_array(base_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     new_obj = _make_ortho_array(base_object,
                                 v_x=v_x, v_y=v_y, v_z=v_z,
                                 n_x=n_x, n_y=n_y, n_z=n_z,
-                                use_link=use_link)
+                                use_link=use_link,
+                                build_shape=build_shape)
     return new_obj
 
 
@@ -302,7 +312,8 @@ def make_ortho_array2d(base_object,
                        v_y=App.Vector(0, 10, 0),
                        n_x=2,
                        n_y=2,
-                       use_link=True):
+                       use_link=True,
+                       build_shape=True):
     """Create a 2D orthogonal array from the given object.
 
     This works the same as `make_ortho_array`.
@@ -330,6 +341,10 @@ def make_ortho_array2d(base_object,
 
     use_link: bool, optional
         If it is `True`, create `App::Link` array.
+        See `make_ortho_array`.
+
+    build_shape: bool, optional
+        If it is `True`, build compound shape for the array.
         See `make_ortho_array`.
 
     Returns
@@ -365,10 +380,14 @@ def make_ortho_array2d(base_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     new_obj = _make_ortho_array(base_object,
                                 v_x=v_x, v_y=v_y,
                                 n_x=n_x, n_y=n_y,
-                                use_link=use_link)
+                                use_link=use_link,
+                                build_shape=build_shape)
     return new_obj
 
 
@@ -379,7 +398,8 @@ def make_rect_array(base_object,
                     n_x=2,
                     n_y=2,
                     n_z=1,
-                    use_link=True):
+                    use_link=True,
+                    build_shape=True):
     """Create a rectangular array from the given object.
 
     This function wraps around `make_ortho_array`
@@ -404,6 +424,10 @@ def make_rect_array(base_object,
 
     use_link: bool, optional
         If it is `True`, create `App::Link` array.
+        See `make_ortho_array`.
+
+    build_shape: bool, optional
+        If it is `True`, build compound shape for the array.
         See `make_ortho_array`.
 
     Returns
@@ -439,6 +463,9 @@ def make_rect_array(base_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     new_obj = _make_ortho_array(base_object,
                                 v_x=App.Vector(d_x, 0, 0),
                                 v_y=App.Vector(0, d_y, 0),
@@ -446,7 +473,8 @@ def make_rect_array(base_object,
                                 n_x=n_x,
                                 n_y=n_y,
                                 n_z=n_z,
-                                use_link=use_link)
+                                use_link=use_link,
+                                build_shape=build_shape)
     return new_obj
 
 
@@ -455,7 +483,8 @@ def make_rect_array2d(base_object,
                       d_y=10,
                       n_x=2,
                       n_y=2,
-                      use_link=True):
+                      use_link=True,
+                      build_shape=True):
     """Create a 2D rectangular array from the given object.
 
     This function wraps around `make_ortho_array`,
@@ -481,6 +510,10 @@ def make_rect_array2d(base_object,
 
     use_link: bool, optional
         If it is `True`, create `App::Link` array.
+        See `make_ortho_array`.
+
+    build_shape: bool, optional
+        If it is `True`, build compound shape for the array.
         See `make_ortho_array`.
 
     Returns
@@ -516,12 +549,16 @@ def make_rect_array2d(base_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     new_obj = _make_ortho_array(base_object,
                                 v_x=App.Vector(d_x, 0, 0),
                                 v_y=App.Vector(0, d_y, 0),
                                 n_x=n_x,
                                 n_y=n_y,
-                                use_link=use_link)
+                                use_link=use_link,
+                                build_shape=build_shape)
     return new_obj
 
 ## @}

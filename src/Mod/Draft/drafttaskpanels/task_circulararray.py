@@ -138,9 +138,11 @@ class TaskPanelCircularArray:
 
         self.fuse = utils.get_param("Draft_array_fuse", False)
         self.use_link = utils.get_param("Draft_array_Link", True)
+        self.build_shape = utils.get_param("Draft_array_build_shape", True)
 
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
+        self.form.checkbox_link.setChecked(self.build_shape)
         # -------------------------------------------------------------------
 
         # Some objects need to be selected before we can execute the function.
@@ -167,6 +169,7 @@ class TaskPanelCircularArray:
         # When the checkbox changes, change the internal value
         self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
         self.form.checkbox_link.stateChanged.connect(self.set_link)
+        self.form.checkbox_build_shape.stateChanged.connect(self.set_build_shape)
 
         # Old style for Qt4, avoid!
         # QtCore.QObject.connect(self.form.button_reset,
@@ -249,6 +252,7 @@ class TaskPanelCircularArray:
 
         self.fuse = self.form.checkbox_fuse.isChecked()
         self.use_link = self.form.checkbox_link.isChecked()
+        self.build_shape = self.form.checkbox_build_shape.isChecked()
         return True
 
     def create_object(self):
@@ -286,7 +290,8 @@ class TaskPanelCircularArray:
         _cmd += "symmetry=" + str(self.symmetry) + ", "
         _cmd += "axis=" + DraftVecUtils.toString(self.axis) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
-        _cmd += "use_link=" + str(self.use_link)
+        _cmd += "use_link=" + str(self.use_link) + ", "
+        _cmd += "build_shape=" + str(self.build_shape)
         _cmd += ")"
 
         Gui.addModule('Draft')
@@ -370,6 +375,20 @@ class TaskPanelCircularArray:
         self.print_link_state(self.use_link)
         utils.set_param("Draft_array_Link", self.use_link)
 
+    def print_build_shape_state(self, build_shape):
+        """Print the build_shape state translated."""
+        if build_shape:
+            state = self.tr_true
+        else:
+            state = self.tr_false
+        _msg(translate("draft","Build shape in Link array:") + " {}".format(state))
+
+    def set_build_shape(self):
+        """Execute as a callback when the build_shape checkbox changes."""
+        self.build_shape = self.form.checkbox_build_shape.isChecked()
+        self.print_build_shape_state(self.build_shape)
+        utils.set_param("Draft_array_build_shape", self.build_shape)
+
     def print_messages(self):
         """Print messages about the operation."""
         if len(self.selection) == 1:
@@ -390,6 +409,7 @@ class TaskPanelCircularArray:
                                          self.center.z))
         self.print_fuse_state(self.fuse)
         self.print_link_state(self.use_link)
+        self.print_build_shape_state(self.build_shape)
 
     def display_point(self, point=None, plane=None, mask=None):
         """Display the coordinates in the x, y, and z widgets.

@@ -27,6 +27,10 @@
 
 ## \addtogroup draftviewproviders
 # @{
+import FreeCAD
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -35,6 +39,19 @@ class ViewProviderDraftArray(ViewProviderDraft):
 
     def __init__(self,vobj):
         super(ViewProviderDraftArray, self).__init__(vobj)
+
+    def setupContextMenu(self,vobj,menu):
+        action = QtGui.QAction(QT_TRANSLATE_NOOP('Draft', 'Toggle fuse'), menu)
+        QtCore.QObject.connect(action,
+                                QtCore.SIGNAL("triggered()"),
+                                self.toggleFuse)
+        menu.addAction(action)
+        super(ViewProviderDraftArray, self).setupContextMenu(vobj, menu)
+
+    def toggleFuse(self):
+        FreeCAD.setActiveTransaction(QT_TRANSLATE_NOOP('Draft', 'Toggle fuse array'))
+        self.Object.Fuse = not self.Object.Fuse
+        FreeCAD.ActiveDocument.recompute()
 
     def getIcon(self):
         if hasattr(self.Object, "ArrayType"):

@@ -37,7 +37,8 @@ from draftutils.translate import translate
 
 def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
-                     use_link=True):
+                     use_link=True,
+                     build_shape=True):
     """Create a polar array from the given object.
 
     Parameters
@@ -65,17 +66,20 @@ def make_polar_array(base_object,
         It defaults to `True`.
         If it is `True` the produced copies are not `Part::TopoShape` copies,
         but rather `App::Link` objects.
-        The Links repeat the shape of the original `obj` exactly,
+        The Links repeat the shape of the original `base_object` exactly,
         and therefore the resulting array is more memory efficient.
 
-        Also, when `use_link` is `True`, the `Fuse` property
-        of the resulting array does not work; the array doesn't
-        contain separate shapes, it only has the original shape repeated
-        many times, so there is nothing to fuse together.
+    build_shape: bool, optional
+        It defaults to `True`.
+        It is only effective when `use_link` is `True`. If it is `True`, a
+        compound shape is built consists all the visible array elements. If
+        `False` and `Fuse` property is also `False`, then the array shape is
+        not built and will be set to `null`.
 
-        If `use_link` is `False` the original shape is copied many times.
-        In this case the `Fuse` property is able to fuse
-        all copies into a single object, if they touch each other.
+        It is recommended to disable is option to save recomputation time and
+        memory resources for complex array element shapes, if the user only
+        intend to use the array for visualization or assembly purpose instead of
+        further modeling.
 
     Returns
     -------
@@ -129,9 +133,13 @@ def make_polar_array(base_object,
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
+    build_shape = bool(build_shape)
+    _msg("build_shape: {}".format(build_shape))
+
     new_obj = make_array.make_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
-                                    use_link=use_link)
+                                    use_link=use_link,
+                                    build_shape=build_shape)
     return new_obj
 
 ## @}
