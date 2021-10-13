@@ -4,7 +4,10 @@
 #  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
 #  LGPL
 
-import FreeCAD, os, sys, unittest, Mesh
+import os
+import sys
+import io
+import FreeCAD, unittest, Mesh
 from FreeCAD import Base
 import time, tempfile, math
 # http://python-kurs.eu/threads.php
@@ -222,6 +225,51 @@ class MeshGeoTestCases(unittest.TestCase):
         # does definitely NOT intersect
         res=f1.intersect(f2)
         self.assertTrue(len(res) == 0)
+
+
+    def testSelfIntersection(self):
+        s = b"""solid Simple
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+        vertex 1.0e1 1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex -1.0e1 1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+        vertex +1.0e1 -1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.6e1 0.8e1 1.0e1
+        vertex +1.6e1 0.8e1 1.0e1
+        vertex +0.6e1 1.8e1 1.0e1
+    endloop
+endfacet
+endsolid Simple"""
+        mesh = Mesh.Mesh()
+        data = io.BytesIO(s)
+        mesh.read(Stream=data, Format="AST")
+        self.assertTrue(mesh.hasSelfIntersections())
+
 
 class PivyTestCases(unittest.TestCase):
     def setUp(self):
