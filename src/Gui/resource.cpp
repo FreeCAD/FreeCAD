@@ -111,6 +111,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::ActionSelector>;
     new WidgetProducer<Gui::ColorButton>;
     new WidgetProducer<Gui::UrlLabel>;
+    new WidgetProducer<Gui::StatefulLabel>;
     new WidgetProducer<Gui::FileChooser>;
     new WidgetProducer<Gui::UIntSpinBox>;
     new WidgetProducer<Gui::IntSpinBox>;

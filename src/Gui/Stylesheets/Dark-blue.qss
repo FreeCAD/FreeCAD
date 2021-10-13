@@ -2243,3 +2243,39 @@ QPushButton#NavigationIndicator::menu-indicator {
     image: none;
     width: 0px;
 }
+
+
+/*==================================================================================================
+SKETCHER
+==================================================================================================*/
+
+Gui--StatefulLabel[state="empty_sketch"] {
+    color : rgba(255,255,255,127); /* 50% opacity white */
+}
+Gui--StatefulLabel[state="under_constrained"] {
+    color : rgba(255,255,255,255); /* White */
+}
+Gui--StatefulLabel[state="conflicting_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="malformed_constraints"] {
+    color : rgba(255,0,0,255); /* Red */
+}
+Gui--StatefulLabel[state="redundant_constraints"] {
+    color : rgba(255,69,0,255); /* Orange red */
+}
+Gui--StatefulLabel[state="partially_redundant_constraints"] {
+    color : rgba(65,105,225,255); /* Royal blue */
+}
+Gui--StatefulLabel[state="solver_failed"] {
+    color : rgba(255,0,0,255); /* Red */
+    font-weight: bold;
+}
+Gui--StatefulLabel[state="fully_constrained"] {
+    color : rgba(0,255,0,255); /* Green */
+    font-weight: bold;
+}
+Gui--UrlLabel {
+    color : rgba(0,91,255,255); /* Deep sky blue */
+    text-decoration : underline;
+}
