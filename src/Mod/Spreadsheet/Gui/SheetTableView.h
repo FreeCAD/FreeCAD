@@ -62,6 +62,9 @@ public:
     void copySelection();
     void cutSelection();
     void pasteClipboard();
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
+
+    void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
     void commitData(QWidget *editor);
@@ -77,9 +80,11 @@ protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+    void mousePressEvent(QMouseEvent* event);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+    int tabCounter;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

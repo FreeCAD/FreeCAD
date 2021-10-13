@@ -110,6 +110,8 @@ public:
 
     bool isMergedCell(App::CellAddress address) const;
 
+    App::CellAddress getAnchor(App::CellAddress address) const;
+
     void setColumnWidth(int col, int width);
 
     int getColumnWidth(int col) const;

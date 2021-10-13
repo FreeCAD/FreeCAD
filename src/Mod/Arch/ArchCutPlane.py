@@ -64,7 +64,8 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
         obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
         obj.ViewObject.Transparency = 75
         if "Additions" in archObject.Object.PropertiesList:
-            return ArchCommands.removeComponents(obj,archObject.Object)
+            ArchCommands.removeComponents(obj,archObject.Object)
+            return None
         else:
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
             cutObj.Base = archObject.Object

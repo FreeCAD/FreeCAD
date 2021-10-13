@@ -99,7 +99,6 @@ class CommandEditAttachment:
         return False
 
 if App.GuiUp:
-    global command_instance
     import FreeCADGui as Gui
     command_instance = CommandEditAttachment()
     Gui.addCommand('Part_EditAttachment', command_instance)

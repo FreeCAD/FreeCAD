@@ -46,27 +46,11 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
+    Q_UNUSED(index)
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
-    editor->setIndex(index);
-
     editor->setDocumentObject(sheet);
-    connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+    connect(editor, &SpreadsheetGui::LineEdit::finishedWithKey, this, &SpreadsheetDelegate::on_editorFinishedWithKey);
     return editor;
-}
-
-void SpreadsheetDelegate::commitAndCloseEditor()
-{
-    Gui::ExpressionLineEdit *editor = qobject_cast<Gui::ExpressionLineEdit *>(sender());
-    if (editor->completerActive()) {
-        editor->hideCompleter();
-        return;
-    }
-
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=41694
-    // It looks like the slot commitAndCloseEditor() is not needed any more and even
-    // causes a crash when doing so because the LineEdit is still accessed after its destruction.
-    //Q_EMIT commitData(editor);
-    //Q_EMIT closeEditor(editor);
 }
 
 void SpreadsheetDelegate::setEditorData(QWidget *editor,
@@ -87,6 +71,11 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
         model->setData(index, edit->text());
         return;
     }
+}
+
+void SpreadsheetDelegate::on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
+{
+    Q_EMIT finishedWithKey(key, modifiers);
 }
 
 QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
