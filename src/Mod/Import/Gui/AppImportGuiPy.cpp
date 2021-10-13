@@ -325,8 +325,10 @@ private:
         if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
             vp->Transparency.setValue(100 * colors.front().a);
-        } else 
+        }
+        else {
             vp->DiffuseColor.setValues(colors);
+        }
     }
     virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
