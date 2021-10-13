@@ -64,8 +64,12 @@ def get_init_values(path, count=6):
     edge = path.Shape.Edges[0]
     edge_length = edge.Length
 
-    step = edge_length / count
-    inc = 360/count
+    if count:
+        step = edge_length / (count-1)
+        inc = 360/ (count-1)
+    else:
+        step = 0
+        inc = 0
 
     return norm, edge, step, inc
 
@@ -84,6 +88,8 @@ def get_n_params(edge, number, step, norm):
 
 def get_twisted_placements(path, count=15, rot_factor=0.25):
     """Get the placements of the twisted array elements."""
+
+    edges = path
     (norm, edge,
      step, inc) = get_init_values(path, count)
 
@@ -91,7 +97,7 @@ def get_twisted_placements(path, count=15, rot_factor=0.25):
     places = []
     params = []
 
-    for number in range(count + 1):
+    for number in range(count):
         v0, tan, rot = get_n_params(edge, number, step, norm)
 
         increment += inc
