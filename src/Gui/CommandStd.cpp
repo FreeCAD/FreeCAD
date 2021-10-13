@@ -840,7 +840,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
     sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
     sStatusTip    = QT_TR_NOOP("Defines behavior when editing an object from tree");
     sWhatsThis    = "Std_UserEditMode";
-    sPixmap       = "EditModeDefault";
+    sPixmap       = "Std_UserEditModeDefault";
     eType         = ForEdit;
 
     this->getGuiApplication()->signalUserEditModeChanged.connect(boost::bind(&StdCmdUserEditMode::updateIcon, this, bp::_1));
@@ -857,8 +857,8 @@ Gui::Action * StdCmdUserEditMode::createAction(void)
         QAction* act = pcAction->addAction(QString());
         auto modeName = QString::fromStdString(uem.second);
         act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("EditMode")+modeName)));
-        act->setObjectName(QString::fromLatin1("Std_EditMode")+modeName);
+        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
+        act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
         
         if (uem.first == 0) {
@@ -868,6 +868,11 @@ Gui::Action * StdCmdUserEditMode::createAction(void)
     }
 
     _pcAction = pcAction;
+
+    int lastMode = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetInt("UserEditMode", 0);
+    Gui::Application::Instance->setUserEditMode(lastMode);
+
     languageChange();
     return pcAction;
 }
@@ -901,6 +906,8 @@ void StdCmdUserEditMode::updateIcon(int mode)
 
 void StdCmdUserEditMode::activated(int iMsg)
 {
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            SetInt("UserEditMode", iMsg);
     Gui::Application::Instance->setUserEditMode(iMsg);
 }
 
