@@ -544,6 +544,10 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 break;
         }
 
+        if(path.IsNull()) {
+            return new App::DocumentObjectExecReturn("Spine path missing, sweep operation stopped.");
+        }
+
         if (path.ShapeType() == TopAbs_EDGE) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(path));
             path = mkWire.Wire();
