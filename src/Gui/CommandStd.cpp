@@ -868,6 +868,11 @@ Gui::Action * StdCmdUserEditMode::createAction(void)
     }
 
     _pcAction = pcAction;
+
+    int lastMode = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetInt("UserEditMode", 0);
+    Gui::Application::Instance->setUserEditMode(lastMode);
+
     languageChange();
     return pcAction;
 }
@@ -901,6 +906,8 @@ void StdCmdUserEditMode::updateIcon(int mode)
 
 void StdCmdUserEditMode::activated(int iMsg)
 {
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            SetInt("UserEditMode", iMsg);
     Gui::Application::Instance->setUserEditMode(iMsg);
 }
 
