@@ -159,22 +159,20 @@ def get_draft_snap_commands():
 
 def get_draft_context_commands():
     """Return the context menu commands list."""
-    return ["Draft_ApplyStyle",
-            "Draft_ToggleDisplayMode",
+    return ["Draft_SetStyle",
+            "Draft_ApplyStyle",
+            "Separator",
+            "Draft_Layer",
             "Draft_AddNamedGroup",
             "Draft_AddToGroup",
             "Draft_SelectGroup",
-            "Draft_SelectPlane",
-            "Draft_ShowSnapBar",
+            "Draft_ToggleConstructionMode",
+            "Draft_AddConstruction",
+            "Separator",
+            "Draft_ToggleDisplayMode",
             "Draft_ToggleGrid",
-            "Draft_SetStyle"]
-
-
-def get_draft_line_commands():
-    """Return the line commands list."""
-    return ["Draft_UndoLine",
-            "Draft_FinishLine",
-            "Draft_CloseLine"]
+            "Draft_SelectPlane",
+            "Draft_WorkingPlaneProxy"]
 
 
 def init_toolbar(workbench, toolbar, cmd_list):
