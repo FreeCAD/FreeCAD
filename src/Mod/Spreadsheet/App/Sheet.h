@@ -179,6 +179,8 @@ public:
 
     void touchCells(App::Range range);
 
+    void recomputeCells(App::Range range);
+
     // Signals
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;

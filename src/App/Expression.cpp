@@ -129,7 +129,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
-        os << std::endl;
+        os << "\nin expression: ";
         expr->toString(os);
     }
     return os;
@@ -1715,6 +1715,62 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     , fname(std::move(name))
     , args(_args)
 {
+    switch (f) {
+    case ACOS:
+    case ASIN:
+    case ATAN:
+    case ABS:
+    case EXP:
+    case LOG:
+    case LOG10:
+    case SIN:
+    case SINH:
+    case TAN:
+    case TANH:
+    case SQRT:
+    case COS:
+    case COSH:
+    case ROUND:
+    case TRUNC:
+    case CEIL:
+    case FLOOR:
+    case MINVERT:
+    case STR:
+        if (args.size() != 1)
+            EXPR_THROW("Invalid number of arguments: exactly one required.");
+        break;
+    case MOD:
+    case ATAN2:
+    case POW:
+        if (args.size() != 2)
+            EXPR_THROW("Invalid number of arguments: exactly two required.");
+        break;
+    case HYPOT:
+    case CATH:
+        if (args.size() < 2 || args.size() > 3)
+            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
+        break;
+    case STDDEV:
+    case SUM:
+    case AVERAGE:
+    case COUNT:
+    case MIN:
+    case MAX:
+    case CREATE:
+    case MSCALE:
+        if (args.size() == 0)
+            EXPR_THROW("Invalid number of arguments: at least one required.");
+        break;
+    case LIST:
+    case TUPLE:
+        break;
+    case NONE:
+    case AGGREGATES:
+    case LAST:
+    default:
+        PARSER_THROW("Unknown function");
+        break;
+    }
 }
 
 FunctionExpression::~FunctionExpression()
@@ -2029,6 +2085,8 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
         }
         return res;
+    } else if (f == STR) {
+        return Py::String(args[0]->getPyValue().as_string());
     }
 
     Py::Object e1 = args[0]->getPyValue();
@@ -2361,6 +2419,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "minvert("; break;;
     case CREATE:
         ss << "create("; break;;
+    case STR:
+        ss << "str("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -3182,6 +3242,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["mscale"] = FunctionExpression::MSCALE;
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["create"] = FunctionExpression::CREATE;
+        registered_functions["str"] = FunctionExpression::STR;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;

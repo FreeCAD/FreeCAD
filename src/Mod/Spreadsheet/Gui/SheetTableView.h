@@ -58,12 +58,15 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+
+public Q_SLOTS:
+    void mergeCells();
+    void splitCell();
     void deleteSelection();
     void copySelection();
     void cutSelection();
     void pasteClipboard();
     void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
-
     void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
@@ -76,15 +79,28 @@ protected Q_SLOTS:
     void insertColumnsAfter();
     void removeColumns();
     void cellProperties();
+    void onRecompute();
+
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
     void mousePressEvent(QMouseEvent* event);
 
+    void contextMenuEvent (QContextMenuEvent * e);
+
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
     int tabCounter;
+
+    QMenu *contextMenu;
+
+    QAction *actionMerge;
+    QAction *actionSplit;
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionCut;
+    QAction *actionDel;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

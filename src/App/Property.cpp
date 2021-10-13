@@ -32,6 +32,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include "Application.h"
 #include "DocumentObject.h"
 
@@ -212,8 +213,13 @@ void Property::setReadOnly(bool readOnly)
 void Property::hasSetValue(void)
 {
     PropertyCleaner guard(this);
-    if (father)
+    if (father) {
         father->onChanged(this);
+        if(!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            signalChanged(*this);
+        }
+    }
     StatusBits.set(Touched);
 }
 
