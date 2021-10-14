@@ -95,7 +95,7 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
     sWhatsThis      = "Sketcher_SwitchVirtualSpace";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SwitchVirtualSpace";
-    sAccel          = "";
+    sAccel          = "Z, Z";
     eType           = ForEdit;
 }
 

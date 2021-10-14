@@ -1575,6 +1575,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     sWhatsThis      = "Sketcher_ConstrainLock";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Lock";
+    sAccel          = "K, L";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex}};
@@ -1798,6 +1799,7 @@ CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
     sWhatsThis      = "Sketcher_ConstrainBlock";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Block";
+    sAccel          = "K, B";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}};
@@ -2317,7 +2319,7 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     sWhatsThis      = "Sketcher_ConstrainDistance";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Length";
-    sAccel          = "SHIFT+D";
+    sAccel          = "K, D";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
@@ -2666,7 +2668,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     sWhatsThis      = "Sketcher_ConstrainPointOnObject";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_PointOnObject";
-    sAccel          = "SHIFT+O";
+    sAccel          = "O";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelEdgeOrAxis}, {SelRoot, SelEdge},
@@ -2915,7 +2917,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     sWhatsThis      = "Sketcher_ConstrainDistanceX";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_HorizontalDistance";
-    sAccel          = "SHIFT+H";
+    sAccel          = "L";
     eType           = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
@@ -3168,7 +3170,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     sWhatsThis      = "Sketcher_ConstrainDistanceY";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_VerticalDistance";
-    sAccel          = "SHIFT+V";
+    sAccel          = "I";
     eType           = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
@@ -3414,7 +3416,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     sWhatsThis      = "Sketcher_ConstrainParallel";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Parallel";
-    sAccel          = "SHIFT+P";
+    sAccel          = "P";
     eType           = ForEdit;
 
     // TODO: Also needed: ExternalEdges
@@ -4910,7 +4912,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     sWhatsThis      = "Sketcher_ConstrainRadius";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radius";
-    sAccel          = "";
+    sAccel          = "K, R";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
@@ -5212,7 +5214,7 @@ CmdSketcherConstrainDiameter::CmdSketcherConstrainDiameter()
     sWhatsThis      = "Sketcher_ConstrainDiameter";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Diameter";
-    sAccel          = "";
+    sAccel          = "K, O";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
@@ -5488,7 +5490,7 @@ CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
     sWhatsThis      = "Sketcher_ConstrainRadiam";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radiam";
-    sAccel          = "";
+    sAccel          = "K, S";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
@@ -5791,7 +5793,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
     sToolTipText    = QT_TR_NOOP("Constrain an arc or a circle");
     sWhatsThis      = "Sketcher_CompCreateCircle";
     sStatusTip      = sToolTipText;
-    sAccel          = "SHIFT+R";
+    sAccel          = "R";
     eType           = ForEdit;
 }
 
@@ -5936,7 +5938,7 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     sWhatsThis      = "Sketcher_ConstrainAngle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_InternalAngle";
-    sAccel          = "A";
+    sAccel          = "K, A";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
@@ -6982,7 +6984,7 @@ CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
     sWhatsThis      = "Sketcher_ConstrainSnellsLaw";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_SnellsLaw";
-    sAccel          = "";
+    sAccel          = "K, W";
     eType           = ForEdit;
 }
 
@@ -7134,6 +7136,8 @@ bool CmdSketcherConstrainSnellsLaw::isActive(void)
 
 DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment)
 
+// NOTE: This command is deprecated. Nobody seriously uses today manual creation of an internal alignment constraint
+// The only reason this code remains is the extremelly unlikely scenario that some user macro may rely on it.
 CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     :Command("Sketcher_ConstrainInternalAlignment")
 {
@@ -7145,7 +7149,6 @@ CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     sWhatsThis      = "Sketcher_ConstrainInternalAlignment";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_InternalAlignment";
-    sAccel          = "Ctrl+A";
     eType           = ForEdit;
 }
 
@@ -7607,7 +7610,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     sWhatsThis      = "Sketcher_ToggleDrivingConstraint";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ToggleConstraint";
-    sAccel          = "";
+    sAccel          = "K, X";
     eType           = ForEdit;
 
     // list of toggle driving constraint commands
@@ -7733,7 +7736,7 @@ CmdSketcherToggleActiveConstraint::CmdSketcherToggleActiveConstraint()
     sWhatsThis      = "Sketcher_ToggleActiveConstraint";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ToggleActiveConstraint";
-    sAccel          = "";
+    sAccel          = "K, Z";
     eType           = ForEdit;
 }
 

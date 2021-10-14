@@ -387,7 +387,7 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
     sWhatsThis      = "Sketcher_CreateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateLine";
-    sAccel          = "L";
+    sAccel          = "G, L";
     eType           = ForEdit;
 }
 
@@ -690,7 +690,7 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
     sWhatsThis      = "Sketcher_CreateRectangle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRectangle";
-    sAccel          = "R";
+    sAccel          = "G, R";
     eType           = ForEdit;
 }
 
@@ -731,7 +731,7 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
     sWhatsThis      = "Sketcher_CreateRectangle_Center";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRectangle_Center";
-    sAccel          = "";
+    sAccel          = "G, V";
     eType           = ForEdit;
 }
 
@@ -1055,7 +1055,7 @@ CmdSketcherCreateOblong::CmdSketcherCreateOblong()
     sWhatsThis = "Sketcher_CreateOblong";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateOblong";
-    sAccel = "";
+    sAccel = "G, O";
     eType = ForEdit;
 }
 
@@ -1853,6 +1853,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sWhatsThis      = "Sketcher_CreatePolyline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";
+    sAccel          = "G, M";
     eType           = ForEdit;
 }
 
@@ -2096,6 +2097,7 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
     sWhatsThis      = "Sketcher_CreateArc";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateArc";
+    sAccel          = "G, A";
     eType           = ForEdit;
 }
 
@@ -2365,6 +2367,7 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
     sWhatsThis      = "Sketcher_Create3PointArc";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create3PointArc";
+    sAccel          = "G, 3, A";
     eType           = ForEdit;
 }
 
@@ -2626,6 +2629,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
     sWhatsThis      = "Sketcher_CreateCircle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateCircle";
+    sAccel          = "G, C";
     eType           = ForEdit;
 }
 
@@ -3421,6 +3425,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Conics_Ellipse_Center";
+    sAccel          = "G, E, E";
     eType           = ForEdit;
 }
 
@@ -3451,6 +3456,7 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
     sWhatsThis      = "Sketcher_CreateEllipseBy3Points";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateEllipse_3points";
+    sAccel          = "G, 3, E";
     eType           = ForEdit;
 }
 
@@ -3778,6 +3784,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateElliptical_Arc";
+    sAccel          = "G, E, A";
     eType           = ForEdit;
 }
 
@@ -4121,6 +4128,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHyperbolic_Arc";
+    sAccel          = "G, H";
     eType           = ForEdit;
 }
 
@@ -4419,6 +4427,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateParabolic_Arc";
+    sAccel          = "G, J";
     eType           = ForEdit;
 }
 
@@ -4953,6 +4962,7 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
     sWhatsThis      = "Sketcher_CreateBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSpline";
+    sAccel          = "G, B, B";
     eType           = ForEdit;
 }
 
@@ -4997,6 +5007,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sWhatsThis      = "Sketcher_CreatePeriodicBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
+    sAccel          = "G, B, P";
     eType           = ForEdit;
 }
 
@@ -5311,6 +5322,7 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
     sWhatsThis      = "Sketcher_Create3PointCircle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create3PointCircle";
+    sAccel          = "G, 3, C";
     eType           = ForEdit;
 }
 
@@ -5518,6 +5530,7 @@ CmdSketcherCreatePoint::CmdSketcherCreatePoint()
     sWhatsThis      = "Sketcher_CreatePoint";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePoint";
+    sAccel          = "G, Y";
     eType           = ForEdit;
 }
 
@@ -5855,7 +5868,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
     sWhatsThis      = "Sketcher_CreateFillet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateFillet";
-    sAccel          = "F";
+    sAccel          = "G, F, F";
     eType           = ForEdit;
 }
 
@@ -5884,7 +5897,7 @@ CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
     sWhatsThis      = "Sketcher_CreatePointFillet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateFillet";
-    sAccel          = "";
+    sAccel          = "G, F, P";
     eType           = ForEdit;
 }
 
@@ -6145,7 +6158,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
     sWhatsThis      = "Sketcher_Trimming";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Trimming";
-    sAccel          = "T,R";
+    sAccel          = "G, T";
     eType           = ForEdit;
 }
 
@@ -6459,7 +6472,7 @@ CmdSketcherExtend::CmdSketcherExtend()
     sWhatsThis      = "Sketcher_Extend";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Extend";
-    sAccel          = "T,E";
+    sAccel          = "G, Q";
     eType           = ForEdit;
 }
 
@@ -6578,7 +6591,7 @@ CmdSketcherSplit::CmdSketcherSplit()
     sWhatsThis      = "Sketcher_Split";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Split";
-    sAccel          = "T,S";
+    sAccel          = "G, Z";
     eType           = ForEdit;
 }
 
@@ -6762,7 +6775,7 @@ CmdSketcherExternal::CmdSketcherExternal()
     sWhatsThis      = "Sketcher_External";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_External";
-    sAccel          = "X";
+    sAccel          = "G, X";
     eType           = ForEdit;
 }
 
@@ -6938,7 +6951,7 @@ namespace SketcherGui {
         sWhatsThis      = "Sketcher_CarbonCopy";
         sStatusTip      = sToolTipText;
         sPixmap         = "Sketcher_CarbonCopy";
-        sAccel          = "C,C";
+        sAccel          = "G, W";
         eType           = ForEdit;
     }
 
@@ -7194,7 +7207,7 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
     sWhatsThis = "Sketcher_CreateSlot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateSlot";
-    sAccel = "";
+    sAccel  = "G, S";
     eType = ForEdit;
 }
 
@@ -7387,7 +7400,7 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
     sWhatsThis      = "Sketcher_CreateTriangle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateTriangle";
-    sAccel          = "";
+    sAccel          = "G, P, 3";
     eType           = ForEdit;
 }
 
@@ -7414,7 +7427,7 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
     sWhatsThis      = "Sketcher_CreateSquare";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateSquare";
-    sAccel          = "";
+    sAccel          = "G, P, 4";
     eType           = ForEdit;
 }
 
@@ -7441,7 +7454,7 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
     sWhatsThis      = "Sketcher_CreatePentagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePentagon";
-    sAccel          = "";
+    sAccel          = "G, P, 5";
     eType           = ForEdit;
 }
 
@@ -7469,7 +7482,7 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
     sWhatsThis      = "Sketcher_CreateHexagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHexagon";
-    sAccel          = "";
+    sAccel          = "G, P, 6";
     eType           = ForEdit;
 }
 
@@ -7496,7 +7509,7 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
     sWhatsThis      = "Sketcher_CreateHeptagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHeptagon";
-    sAccel          = "";
+    sAccel          = "G, P, 7";
     eType           = ForEdit;
 }
 
@@ -7523,7 +7536,7 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
     sWhatsThis      = "Sketcher_CreateOctagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateOctagon";
-    sAccel          = "";
+    sAccel          = "G, P, 8";
     eType           = ForEdit;
 }
 
@@ -7550,7 +7563,7 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
     sWhatsThis      = "Sketcher_CreateRegularPolygon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRegularPolygon";
-    sAccel          = "";
+    sAccel          = "G, P, R";
     eType           = ForEdit;
 }
 
@@ -7580,6 +7593,7 @@ CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
     sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketcher");
     sWhatsThis      = "Sketcher_CompCreateRegularPolygon";
     sStatusTip      = sToolTipText;
+    sAccel          = "G, P, P";
     eType           = ForEdit;
 }
 

@@ -621,7 +621,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                                      items,
                                      bCurIncompatible ? iSugg : iCurr,
                                      false,
-                                     &ok, 
+                                     &ok,
                                      Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
         if (!ok)
@@ -683,6 +683,7 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
+    sAccel          = "Q, P";
     eType           = 0;
 }
 
@@ -951,6 +952,7 @@ CmdSketcherViewSection::CmdSketcherViewSection()
     sWhatsThis      = "Sketcher_ViewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSection";
+    sAccel          = "Q, S";
     eType           = 0;
 }
 

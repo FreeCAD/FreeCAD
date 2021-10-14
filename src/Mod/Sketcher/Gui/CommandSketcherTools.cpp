@@ -106,7 +106,7 @@ CmdSketcherCloseShape::CmdSketcherCloseShape()
     sWhatsThis      = "Sketcher_CloseShape";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CloseShape";
-    sAccel          = "CTRL+SHIFT+S";
+    sAccel          = "Z, W";
     eType           = ForEdit;
 }
 
@@ -217,7 +217,7 @@ CmdSketcherConnect::CmdSketcherConnect()
     sWhatsThis      = "Sketcher_ConnectLines";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ConnectLines";
-    sAccel          = "CTRL+SHIFT+K";
+    sAccel          = "Z, J";
     eType           = ForEdit;
 }
 
@@ -304,7 +304,7 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
     sWhatsThis      = "Sketcher_SelectConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConstraints";
-    sAccel          = "CTRL+SHIFT+C";
+    sAccel          = "Z, K";
     eType           = ForEdit;
 }
 
@@ -381,7 +381,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
     sWhatsThis      = "Sketcher_SelectOrigin";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectOrigin";
-    sAccel          = "CTRL+SHIFT+O";
+    sAccel          = "Z, O";
     eType           = ForEdit;
 }
 
@@ -427,7 +427,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
     sWhatsThis      = "Sketcher_SelectVerticalAxis";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectVerticalAxis";
-    sAccel          = "CTRL+SHIFT+V";
+    sAccel          = "Z, V";
     eType           = ForEdit;
 }
 
@@ -471,7 +471,7 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
     sWhatsThis      = "Sketcher_SelectHorizontalAxis";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectHorizontalAxis";
-    sAccel          = "CTRL+SHIFT+H";
+    sAccel          = "Z, H";
     eType           = ForEdit;
 }
 
@@ -514,7 +514,7 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
     sWhatsThis      = "Sketcher_SelectRedundantConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectRedundantConstraints";
-    sAccel          = "CTRL+SHIFT+R";
+    sAccel          = "Z, P, R";
     eType           = ForEdit;
 }
 
@@ -571,7 +571,7 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
     sWhatsThis      = "Sketcher_SelectMalformedConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectMalformedConstraints";
-    sAccel          = "CTRL+SHIFT+R";
+    sAccel          = "Z, P, M";
     eType           = ForEdit;
 }
 
@@ -627,7 +627,7 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
     sWhatsThis      = "Sketcher_SelectPartiallyRedundantConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectPartiallyRedundantConstraints";
-    sAccel          = "CTRL+SHIFT+R";
+    sAccel          = "Z, P, P";
     eType           = ForEdit;
 }
 
@@ -683,6 +683,7 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
     sWhatsThis      = "Sketcher_SelectConflictingConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConflictingConstraints";
+    sAccel          = "Z, P, C";
     eType           = ForEdit;
 }
 
@@ -737,7 +738,7 @@ CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAss
     sWhatsThis      = "Sketcher_SelectElementsAssociatedWithConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectElementsAssociatedWithConstraints";
-    sAccel          = "CTRL+SHIFT+E";
+    sAccel          = "Z, E";
     eType           = ForEdit;
 }
 
@@ -858,7 +859,7 @@ CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
     sWhatsThis      = "Sketcher_SelectElementsWithDoFs";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectElementsWithDoFs";
-    sAccel          = "";
+    sAccel          = "Z, F";
     eType           = ForEdit;
 }
 
@@ -949,6 +950,7 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
     sWhatsThis      = "Sketcher_RestoreInternalAlignmentGeometry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Element_Ellipse_All";
+    sAccel          = "Z, I";
     eType           = ForEdit;
 }
 
@@ -1044,7 +1046,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
     sWhatsThis      = "Sketcher_Symmetry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Symmetry";
-    sAccel          = "";
+    sAccel          = "Z, S";
     eType           = ForEdit;
 }
 
@@ -1579,7 +1581,7 @@ CmdSketcherCopy::CmdSketcherCopy()
     sWhatsThis      = "Sketcher_Copy";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Copy";
-    sAccel          = "";
+    sAccel          = "Z, C";
     eType           = ForEdit;
 }
 
@@ -1625,7 +1627,7 @@ CmdSketcherClone::CmdSketcherClone()
     sWhatsThis      = "Sketcher_Clone";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Clone";
-    sAccel          = "";
+    sAccel          = "Z, L";
     eType           = ForEdit;
 }
 
@@ -1668,7 +1670,7 @@ CmdSketcherMove::CmdSketcherMove()
     sWhatsThis      = "Sketcher_Move";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Move";
-    sAccel          = "CTRL+M";
+    sAccel          = "Z, M";
     eType           = ForEdit;
 }
 
@@ -1701,7 +1703,7 @@ CmdSketcherCompCopy::CmdSketcherCompCopy()
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_CompCopy";
     sStatusTip      = sToolTipText;
-    sAccel          = "CTRL+C";
+    sAccel          = "";
     eType           = ForEdit;
 }
 
@@ -1984,7 +1986,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
     sWhatsThis      = "Sketcher_RectangularArray";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_RectangularArray";
-    sAccel          = "";
+    sAccel          = "Z, A";
     eType           = ForEdit;
 }
 
@@ -2251,7 +2253,7 @@ CmdSketcherRemoveAxesAlignment::CmdSketcherRemoveAxesAlignment()
     sWhatsThis      = "Sketcher_RemoveAxesAlignment";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_RemoveAxesAlignment";
-    sAccel          = "";
+    sAccel          = "Z, R";
     eType           = ForEdit;
 }
 

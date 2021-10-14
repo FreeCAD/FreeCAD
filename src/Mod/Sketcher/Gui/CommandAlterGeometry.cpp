@@ -76,7 +76,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ToggleConstruction";
-    sAccel          = "C,M";
+    sAccel          = "G, N";
     eType           = ForEdit;
 
     // list of toggle construction commands
