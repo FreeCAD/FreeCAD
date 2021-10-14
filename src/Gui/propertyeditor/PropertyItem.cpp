@@ -2561,7 +2561,6 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
     }
 
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
-    text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
     return QVariant(text);
 }
@@ -2569,11 +2568,10 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
 QVariant PropertyStringListItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyStringList::getClassTypeId()));
-
     QStringList list;
-    const std::vector<std::string>& value = ((App::PropertyStringList*)prop)->getValues();
+    const std::vector<std::string>& value = (static_cast<const App::PropertyStringList*>(prop))->getValues();
     for ( std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(*jt).c_str());
+        list << QString::fromUtf8((*jt).c_str());
     }
 
     return QVariant(list);
@@ -2586,16 +2584,16 @@ void PropertyStringListItem::setValue(const QVariant& value)
     QStringList values = value.toStringList();
     QString data;
     QTextStream str(&data);
+    str.setCodec("UTF-8");
+
     str << "[";
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
         QString text(*it);
-        text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
-
-        std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
-        pystr = Base::Interpreter().strToPython(pystr.c_str());
-        str << "u\"" << pystr.c_str() << "\", ";
+        std::string pystr = Base::Interpreter().strToPython(text.toUtf8().constData());
+        str << "\"" << QString::fromUtf8(pystr.c_str()) << "\", ";
     }
     str << "]";
+
     setPropertyValue(data);
 }
 

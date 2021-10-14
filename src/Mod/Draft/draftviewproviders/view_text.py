@@ -245,9 +245,13 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def createObject(self):
 
+        import FreeCAD
         import FreeCADGui
         if hasattr(self,"Object"):
-            txt = [t.replace("\"","\\\"") for t in self.text]
+            txt = self.text
+            if not txt:
+                self.finish()
+                return None
             # If the last element is an empty string "" we remove it
             if not txt[-1]:
                 txt.pop()
