@@ -830,7 +830,7 @@ private:
         App::Document *pcSrcDoc = nullptr;
         TopoShape shape;
         if (PyObject_TypeCheck(pcObj, &TopoShapePy::Type))
-            shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+            shape = *static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         else if (PyObject_TypeCheck(pcObj, &GeometryPy::Type))
             shape = static_cast<GeometryPy*>(pcObj)->getGeometryPtr()->toShape();
         else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
