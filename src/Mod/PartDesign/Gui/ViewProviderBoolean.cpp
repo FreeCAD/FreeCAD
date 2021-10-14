@@ -94,13 +94,26 @@ void ViewProviderBoolean::onChanged(const App::Property* prop) {
     if(prop == &Display) {
 
         if(Display.getValue() == 0) {
-            auto vp = getBodyViewProvider();
-            if(vp)
-                setDisplayMode(vp->DisplayMode.getValueAsString());
-            else
+            const char *mode = DisplayMode.getValueAsString();
+            if (mode && strcmp(mode, "Group") == 0)
                 setDisplayMode("Flat Lines");
         } else {
             setDisplayMode("Group");
         }
+    } else if (prop == &DisplayMode) {
+        const char *mode = DisplayMode.getValueAsString();
+        if (isRestoring()) {
+            if (Display.getValue() == 0) {
+                // Because an old bug where DisplayMode is not synced by
+                // setDisplayMode(), we shall respect Display value over
+                // DisplayMode.
+                if (mode && strcmp(mode, "Group") == 0)
+                    setDisplayMode("Flat Lines");
+            } else if (mode && strcmp(mode, "Group") != 0)
+                setDisplayMode("Group");
+        } else if (mode && strcmp(mode, "Group") == 0) {
+            Display.setValue((long)1);
+        } else
+            Display.setValue((long)0);
     }
 }
