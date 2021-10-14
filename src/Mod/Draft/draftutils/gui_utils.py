@@ -115,6 +115,13 @@ def autogroup(obj):
     if Gui.draftToolBar.isConstructionMode():
         return
 
+    # check first for objects that do autogroup themselves
+    # at the moment only Arch_BuildingPart, which is an App::GeometryPython
+    for par in App.ActiveDocument.findObjects(Type="App::GeometryPython"):
+        if hasattr(par.Proxy,"autogroup"):
+            if par.Proxy.autogroup(par,obj):
+                return
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
