@@ -129,19 +129,12 @@ private:
             throw Py::OverflowError("port number is lower than 0");
         }
 
-        QTcpServer server;
+        AppServer server(true);
         if (server.listen(QHostAddress(QString::fromLatin1(addr)), port)) {
             bool ok = server.waitForNewConnection(timeout);
             QTcpSocket* socket = server.nextPendingConnection();
             if (socket) {
                 socket->waitForReadyRead();
-                if (socket->bytesAvailable()) {
-                    QByteArray request = socket->readAll();
-                    std::string str = AppServer::runPython(request);
-                    socket->write(str.c_str());
-                    socket->waitForBytesWritten();
-                    socket->close();
-                }
             }
 
             server.close();

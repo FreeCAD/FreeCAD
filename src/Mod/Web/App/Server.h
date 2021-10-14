@@ -82,13 +82,15 @@ class AppServer : public QTcpServer
     Q_OBJECT
 
 public:
-    AppServer(QObject* parent = 0);
-    static std::string runPython(const QByteArray&);
-
-    void incomingConnection(qintptr socket);
+    AppServer(bool direct = false, QObject* parent = nullptr);
 
 protected:
+    void incomingConnection(qintptr socket);
     void customEvent(QEvent* e);
+
+private:
+    std::string handleRequest(QByteArray);
+    static std::string runPython(const QByteArray&);
     std::string getRequest(const std::string&) const;
 
 private Q_SLOTS:
@@ -96,6 +98,7 @@ private Q_SLOTS:
     void discardClient();
 
 private:
+    bool direct;
     Py::Object module;
 };
 
