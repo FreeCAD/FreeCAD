@@ -222,6 +222,8 @@ public Q_SLOTS:
      * Closes all document window.
      */
     bool closeAllDocuments (bool close=true);
+    /// Report if the main window is trying to close all sub window
+    bool isClosingAll() const;
     /** Pop up a message box asking for saving document
      */
     int confirmSave(const char *docName, QWidget *parent=0, bool addCheckBox=false);

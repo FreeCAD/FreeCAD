@@ -776,7 +776,10 @@ void TaskView::removeDialog(void)
     if (remove) {
         remove->closed();
         remove->emitDestructionSignal();
-        remove->deleteLater();
+        if (getMainWindow()->isClosingAll())
+            delete remove;
+        else
+            remove->deleteLater();
     }
 }
 

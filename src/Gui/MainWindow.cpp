@@ -204,6 +204,7 @@ struct MainWindowP
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
+    bool _closingAll = false;
     QTime _showNormal;
 
     void restoreWindowState(const QByteArray &);
@@ -910,8 +911,14 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     return res;
 }
 
+bool MainWindow::isClosingAll() const
+{
+    return d->_closingAll;
+}
+
 bool MainWindow::closeAllDocuments (bool close)
 {
+    Base::StateLocker guard(d->_closingAll);
     auto docs = App::GetApplication().getDocuments();
     try {
         docs = App::Document::getDependentDocuments(docs,true);
