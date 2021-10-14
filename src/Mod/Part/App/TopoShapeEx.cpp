@@ -1801,7 +1801,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
                                 const TopoShape& supportface,
                                 const TopoShape& _uptoface,
                                 const gp_Dir& direction,
-                                PrismMode Mode,
+                                PrismMode _Mode,
                                 Standard_Boolean checkLimits,
                                 Standard_Boolean Modify,
                                 const char *op)
@@ -1812,15 +1812,10 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
 
     TopoShape uptoface(_uptoface);
     TopoShape base(_base);
-    if (base.isNull())
+
+    if (base.isNull()) {
+        _Mode = PrismMode::None;
         base = sketchshape;
-    if (!uptoface.isNull() && !base.findShape(uptoface.getShape())) {
-        // It seems that OCC insists the 'up to face' must be somehow related
-        // to the base shape. So if this is not the case, we make our own base
-        // using the 'up to face' by extrusion, and set prism mode as None so
-        // that the base is not included in the result shape.
-        Mode = PrismMode::None;
-        base.makEPrism(uptoface, direction);
     }
 
     // Check whether the face has limits or not. Unlimited faces have no wire
@@ -1873,6 +1868,36 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
         }
     }
 
+    TopoShape uptofaceCopy = uptoface;
+    auto Mode = _Mode;
+    bool checkBase = false;
+    auto retry = [&]() {
+        if (!uptoface.isSame(_uptoface)) {
+            // retry using the original up to face in case unnecessary failure
+            // due to removing the limits
+            Mode = checkBase ? PrismMode::None : _Mode;
+            uptoface = _uptoface;
+            return true;
+        }
+        if ((!_base.isNull() && base.isSame(_base))
+                || (_base.isNull() && base.isSame(sketchshape))) {
+            // It is unclear under exactly what condition extrude up to face
+            // can fail. Either the support face or the up to face must be part
+            // of the base, or maybe some thing else.
+            // 
+            // To deal with it, we retry again by disregard the supplied base,
+            // and use up to face to extrude our own base. Later on, use the
+            // supplied base (i.e. _base) to calculate the final shape if the
+            // mode is FuseWithBase or CutWithBase, 
+            checkBase = true;
+            Mode = PrismMode::None;
+            uptoface = uptofaceCopy;
+            base.makEPrism(_uptoface, direction);
+            return true;
+        }
+        return false;
+    };
+
     std::vector<TopoShape> srcShapes;
     for (;;) {
         try {
@@ -1902,13 +1927,17 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
             }
             break;
         } catch (Base::Exception &) {
-            if (_uptoface.isSame(uptoface)) throw;
+            if (!retry()) throw;
         } catch (Standard_Failure &) {
-            if (_uptoface.isSame(uptoface)) throw;
+            if (!retry()) throw;
         }
-        // retry using the original up to face in case unnecessary failure due
-        // to removing the limits
-        uptoface = _uptoface;
+    }
+
+    if (checkBase && !_base.isNull() && _Mode != PrismMode::None) {
+        if (_Mode == PrismMode::FuseWithBase)
+            this->makEFuse({_base, *this});
+        else
+            this->makECut({_base, *this});
     }
 
     return *this;
