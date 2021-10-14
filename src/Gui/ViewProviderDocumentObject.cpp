@@ -534,6 +534,16 @@ void ViewProviderDocumentObject::setActiveMode()
         ViewProvider::hide();
 }
 
+void ViewProviderDocumentObject::setDisplayMode(const char* ModeName)
+{
+    if (!DisplayMode.testStatus(App::Property::User1)) {
+        Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                App::Property::User1, &DisplayMode);
+        DisplayMode.setValue(ModeName);
+    }
+    ViewProvider::setDisplayMode(ModeName);
+}
+
 bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 {
     Q_UNUSED(obj)

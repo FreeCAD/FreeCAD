@@ -95,6 +95,8 @@ public:
 
     virtual bool showInTree() const override;
 
+    virtual void setDisplayMode(const char* ModeName) override;
+
     /// Get a list of TaskBoxes associated with this object
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
