@@ -114,11 +114,13 @@ class GuiExport DlgPreferencesImp : public QDialog
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
+    static void reloadSettings();
 
     DlgPreferencesImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp();
 
     void accept();
+    void reload();
     void activateGroupPage(const QString& group, int id);
 
 protected:
@@ -136,11 +138,11 @@ private:
     /** @name for internal use only */
     //@{
     void setupPages();
+    void reloadPages();
     QTabWidget* createTabForGroup(const std::string& groupName);
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
     void restoreDefaults();
-    void reloadPages();
     //@}
 
 private:

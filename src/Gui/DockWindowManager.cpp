@@ -381,6 +381,21 @@ void DockWindowManager::saveState()
     }
 }
 
+void DockWindowManager::loadState()
+{
+    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("MainWindow")->GetGroup("DockWindows");
+    const QList<DockWindowItem>& dockItems = d->_dockWindowItems.dockWidgets();
+    for (QList<DockWindowItem>::ConstIterator it = dockItems.begin(); it != dockItems.end(); ++it) {
+        QDockWidget* dw = findDockWidget(d->_dockedWindows, it->name);
+        if (dw) {
+            QByteArray dockName = it->name.toLatin1();
+            bool visible = hPref->GetBool(dockName.constData(), it->visibility);
+            dw->setVisible(visible);
+        }
+    }
+}
+
 QDockWidget* DockWindowManager::findDockWidget(const QList<QDockWidget*>& dw, const QString& name) const
 {
     for (QList<QDockWidget*>::ConstIterator it = dw.begin(); it != dw.end(); ++it) {

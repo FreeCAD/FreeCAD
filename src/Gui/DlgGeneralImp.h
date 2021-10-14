@@ -32,6 +32,7 @@ class QTabWidget;
 namespace Gui {
 namespace Dialog {
 class Ui_DlgGeneral;
+class DlgCreateNewPreferencePackImp;
 
 /** This class implements the settings for the application.
  *  You can change window style, size of pixmaps, size of recent file list and so on
@@ -51,11 +52,18 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+protected Q_SLOTS:
+    void onLoadPreferencePackClicked(const std::string &packName);
+    void recreatePreferencePackMenu();
+    void newPreferencePackDialogAccepted();
+
 private:
     void setRecentFileSize();
+    void saveAsNewPreferencePack();
 
 private:
     std::unique_ptr<Ui_DlgGeneral> ui;
+    std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
 };
 
 } // namespace Dialog
