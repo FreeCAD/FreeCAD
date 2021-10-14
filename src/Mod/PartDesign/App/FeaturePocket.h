@@ -48,6 +48,7 @@ public:
     App::PropertyBool           UsePipeForDraft;
     App::PropertyBool           Linearize;
     App::PropertyBool           CheckUpToFaceLimits;
+    App::PropertyInteger        _Version;
 
     /** @name methods override feature */
     //@{

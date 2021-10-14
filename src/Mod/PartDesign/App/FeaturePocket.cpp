@@ -93,6 +93,8 @@ Pocket::Pocket()
             "When using 'UpToXXXX' method, check whether the sketch shape is within\n"
             "the up-to-face. And remove the up-to-face limitation to make the pocket\n"
             "work. Note that you may want to disable this if the up-to-face is concave.");
+
+    ADD_PROPERTY_TYPE(_Version,(0),"Part Design",(App::PropertyType)(App::Prop_Hidden), 0);
 }
 
 short Pocket::mustExecute() const
@@ -161,6 +163,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
         profileshape.move(invObjLoc);
 
+        TopoShape prism(0,getDocument()->getStringHasher());
+
         if (method == "UpToFirst" || method == "UpToFace") {
             if (base.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
@@ -190,56 +194,48 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // Check supportface for limits, otherwise Perform() throws an exception
             if (!supportface.hasSubShape(TopAbs_WIRE))
                 supportface = TopoShape();
-#if 0
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base.getShape(), profileshape.getShape(), supportface, dir, 0, 1);
-            PrismMaker.Perform(upToFace);
-
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-
-            TopoShape prism(0,getDocument()->getStringHasher());
-            prism.makEShape(PrismMaker,{base,profileshape});
-#else
-            TopoShape prism(0,getDocument()->getStringHasher());
             profileshape.reTagElementMap(-getID(), getDocument()->getStringHasher());
-            auto mode = TopoShape::PrismMode::CutFromBase;
-            prism = base.makEPrism(profileshape, supportface, upToFace,
-                    dir, mode, CheckUpToFaceLimits.getValue());
-#endif
-            // DO NOT assign id to the generated prism, because this prism is
-            // actually the final result. We obtain the subtracted shape by cut
-            // this prism with the original base. Assigning a minus self id here
-            // will mess up with preselection highlight. It is enough to re-tag
-            // the profile shape above.
-            //
-            // prism.Tag = -this->getID();
 
-            // And the really expensive way to get the SubShape...
-            try {
-                TopoShape result(0,getDocument()->getStringHasher());
-                result.makECut({base,prism});
-                // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
-                result = refineShapeIfActive(result);
-                this->AddSubShape.setValue(result);
-            }catch(Standard_Failure &) {
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
+            if (_Version.getValue() < 1) {
+                auto mode = TopoShape::PrismMode::CutFromBase;
+                prism = base.makEPrism(profileshape, supportface, upToFace,
+                        dir, mode, CheckUpToFaceLimits.getValue());
+                // DO NOT assign id to the generated prism, because this prism is
+                // actually the final result. We obtain the subtracted shape by cut
+                // this prism with the original base. Assigning a minus self id here
+                // will mess up with preselection highlight. It is enough to re-tag
+                // the profile shape above.
+                //
+                // prism.Tag = -this->getID();
+
+                // And the really expensive way to get the SubShape...
+                try {
+                    TopoShape result(0,getDocument()->getStringHasher());
+                    result.makECut({base,prism});
+                    // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
+                    result = refineShapeIfActive(result);
+                    this->AddSubShape.setValue(result);
+                }catch(Standard_Failure &) {
+                    return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
+                }
+
+                if (NewSolid.getValue())
+                    prism = this->AddSubShape.getShape();
+                else if (getAddSubType() == Intersecting)
+                    prism.makEShape(TOPOP_COMMON, {base, this->AddSubShape.getShape()});
+                else if (getAddSubType() == Additive)
+                    prism = base.makEFuse(this->AddSubShape.getShape());
+                else
+                    prism = refineShapeIfActive(prism);
+
+                this->Shape.setValue(getSolid(prism));
+                return App::DocumentObject::StdReturn;
             }
 
-            if (NewSolid.getValue())
-                prism = this->AddSubShape.getShape();
-            else if (getAddSubType() == Intersecting)
-                prism.makEShape(TOPOP_COMMON, {base, this->AddSubShape.getShape()});
-            else if (getAddSubType() == Additive)
-                prism = base.makEFuse(this->AddSubShape.getShape());
-            else
-                prism = refineShapeIfActive(prism);
-
-            this->Shape.setValue(getSolid(prism));
+            prism = base.makEPrism(profileshape, supportface, upToFace,
+                    dir, TopoShape::PrismMode::None, CheckUpToFaceLimits.getValue());
 
         } else {
-            TopoShape prism(0,getDocument()->getStringHasher());
-
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;
             params.solid = true;
@@ -283,45 +279,45 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             if (prism.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
-
-            // set the subtractive shape property for later usage in e.g. pattern
-            prism = refineShapeIfActive(prism);
-            this->AddSubShape.setValue(prism);
-            if (isRecomputePaused())
-                return App::DocumentObject::StdReturn;
-
-            // Cut the SubShape out of the base feature
-            TopoShape result(0,getDocument()->getStringHasher());
-            try {
-                if (NewSolid.getValue())
-                    result = prism;
-                else {
-                    prism.Tag = -this->getID();
-                    const char *maker;
-                    switch (getAddSubType()) {
-                    case Additive:
-                        maker = TOPOP_FUSE;
-                        break;
-                    case Intersecting:
-                        maker = TOPOP_COMMON;
-                        break;
-                    default:
-                        maker = TOPOP_CUT;
-                    }
-                    result.makEShape(maker, {base,prism});
-                }
-            }catch(Standard_Failure &){
-                return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            auto solRes = this->getSolid(result);
-            if (solRes.isNull())
-                return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
-
-            solRes = refineShapeIfActive(solRes);
-            remapSupportShape(solRes.getShape());
-            this->Shape.setValue(getSolid(solRes));
         }
+
+        // set the subtractive shape property for later usage in e.g. pattern
+        // prism = refineShapeIfActive(prism);
+        this->AddSubShape.setValue(prism);
+        if (isRecomputePaused())
+            return App::DocumentObject::StdReturn;
+
+        // Cut the SubShape out of the base feature
+        TopoShape result(0,getDocument()->getStringHasher());
+        try {
+            if (NewSolid.getValue())
+                result = prism;
+            else {
+                prism.Tag = -this->getID();
+                const char *maker;
+                switch (getAddSubType()) {
+                case Additive:
+                    maker = TOPOP_FUSE;
+                    break;
+                case Intersecting:
+                    maker = TOPOP_COMMON;
+                    break;
+                default:
+                    maker = TOPOP_CUT;
+                }
+                result.makEShape(maker, {base,prism});
+            }
+        }catch(Standard_Failure &){
+            return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
+        }
+        // we have to get the solids (fuse sometimes creates compounds)
+        auto solRes = this->getSolid(result);
+        if (solRes.isNull())
+            return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+
+        solRes = refineShapeIfActive(solRes);
+        remapSupportShape(solRes.getShape());
+        this->Shape.setValue(getSolid(solRes));
 
         return App::DocumentObject::StdReturn;
     }
@@ -345,6 +341,7 @@ void Pocket::setupObject()
     ProfileBased::setupObject();
     UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
     Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
+    _Version.setValue(1);
 }
 
 void Pocket::setPauseRecompute(bool enable)
