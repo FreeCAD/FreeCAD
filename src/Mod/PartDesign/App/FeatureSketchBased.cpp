@@ -635,21 +635,16 @@ void ProfileBased::addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, doubl
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
-        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace.getShape()));
-        if (adapt2.GetType() == GeomAbs_Plane) {
-            gp_Trsf mov;
-            mov.SetTranslation(offset * gp_Vec(dir));
-            TopLoc_Location loc(mov);
-            upToFace.move(loc);
+        gp_Trsf mov;
+        mov.SetTranslation(offset * gp_Vec(dir));
+        TopLoc_Location loc(mov);
+        upToFace.move(loc);
 
-            // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
-            // then the algorithm expects that the 'NaturalRestriction' flag is set in order
-            // to work as expected (see generatePrism())
-            BRep_Builder builder;
-            builder.NaturalRestriction(TopoDS::Face(upToFace.getShape()), Standard_True);
-        } else {
-            throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
-        }
+        // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
+        // then the algorithm expects that the 'NaturalRestriction' flag is set in order
+        // to work as expected (see generatePrism())
+        BRep_Builder builder;
+        builder.NaturalRestriction(TopoDS::Face(upToFace.getShape()), Standard_True);
     }
 }
 
