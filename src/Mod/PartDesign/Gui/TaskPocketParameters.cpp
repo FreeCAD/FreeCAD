@@ -202,15 +202,6 @@ void TaskPocketParameters::refresh()
     bool midplane = pcPocket->Midplane.getValue();
     bool reversed = pcPocket->Reversed.getValue();
     int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
-    App::DocumentObject* obj =  pcPocket->UpToFace.getValue();
-    std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues();
-    std::string upToFace;
-    int faceId = -1;
-    if ((obj != NULL) && !subStrings.empty()) {
-        upToFace = subStrings.front();
-        if (upToFace.substr(0,4) == "Face")
-            faceId = std::atoi(&upToFace[4]);
-    }
     double angle = pcPocket->TaperAngle.getValue();
     double angle2 = pcPocket->TaperAngleRev.getValue();
     double innerAngle = pcPocket->InnerTaperAngle.getValue();
@@ -233,23 +224,26 @@ void TaskPocketParameters::refresh()
     ui->innerTaperAngleEdit2->setValue(innerAngle2);
 
     // Set object labels
-    if (obj && PartDesign::Feature::isDatum(obj)) {
+    App::DocumentObject* obj = pcPocket->UpToFace.getValue();
+    std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues(false);
+    if (obj && (subStrings.empty() || subStrings.front().empty())) {
         ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FaceName", QVariant());
     }
-    else if (obj && faceId >= 0) {
-        ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+    else if (obj) {
+        ui->lineFaceName->setText(QString::fromLatin1("%1:%2")
                                   .arg(QString::fromUtf8(obj->Label.getValue()))
-                                  .arg(tr("Face"))
-                                  .arg(faceId));
+                                  .arg(QString::fromLatin1(subStrings.front().c_str())));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(subStrings.front().c_str()));
+
     }
     else {
         ui->lineFaceName->clear();
         ui->lineFaceName->setProperty("FeatureName", QVariant());
+        ui->lineFaceName->setProperty("FaceName", QVariant());
     }
-
-    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
 
     ui->changeMode->setCurrentIndex(index);
 
@@ -616,27 +610,6 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
         addBlinkEditor(ui->lineFaceName);
 #endif
-        QVariant featureName = ui->lineFaceName->property("FeatureName");
-        if (featureName.isValid()) {
-            QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
-            QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-            int faceId = -1;
-            bool ok = false;
-            if (upToFace.indexOf("Face") == 0) {
-                faceId = upToFace.remove(0,4).toInt(&ok);
-            }
-
-            if (ok) {
-                ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                          .arg(parts[0])
-                                          .arg(tr("Face"))
-                                          .arg(faceId));
-            }
-            else {
-                ui->lineFaceName->setText(parts[0]);
-            }
-        }
-
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
         ui->offsetEdit->blockSignals(false);

@@ -257,9 +257,10 @@ void TaskPadParameters::refresh()
     // Set object labels
     App::DocumentObject* obj = pcPad->UpToFace.getValue();
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues(false);
-    if (obj && subStrings.empty()) {
+    if (obj && (subStrings.empty() || subStrings.front().empty())) {
         ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FaceName", QVariant());
     }
     else if (obj) {
         ui->lineFaceName->setText(QString::fromLatin1("%1:%2")
@@ -272,6 +273,7 @@ void TaskPadParameters::refresh()
     else {
         ui->lineFaceName->clear();
         ui->lineFaceName->setProperty("FeatureName", QVariant());
+        ui->lineFaceName->setProperty("FaceName", QVariant());
     }
 
     ui->changeMode->setCurrentIndex(index);
