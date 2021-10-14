@@ -216,6 +216,9 @@ std::string AppServer::runPython(const QByteArray& msg)
         str += "\n\n";
         str += e.getStackTrace();
     }
+    catch (Base::SystemExitException &) {
+        throw;
+    }
     catch (Base::Exception &e) {
         str = e.what();
     }
