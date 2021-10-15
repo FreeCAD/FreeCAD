@@ -1121,7 +1121,7 @@ void MeshObject::trim(const Base::Polygon2d& polygon2d,
         this->_kernel.AddFacets(triangle);
 }
 
-void MeshObject::trim(const Base::Vector3f& base, const Base::Vector3f& normal)
+void MeshObject::trimByPlane(const Base::Vector3f& base, const Base::Vector3f& normal)
 {
     MeshCore::MeshTrimByPlane trim(this->_kernel);
     std::vector<FacetIndex> trimFacets, removeFacets;

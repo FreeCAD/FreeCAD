@@ -1744,6 +1744,22 @@ PyObject*  MeshPy::trim(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::trimByPlane(PyObject *args)
+{
+    PyObject *base, *norm;
+    if (!PyArg_ParseTuple(args, "O!O!", &Base::VectorPy::Type, &base,
+                                        &Base::VectorPy::Type, &norm))
+        return nullptr;
+
+    Base::Vector3d pnt = Py::Vector(base, false).toVector();
+    Base::Vector3d dir = Py::Vector(norm, false).toVector();
+
+    getMeshObjectPtr()->trimByPlane(Base::convertTo<Base::Vector3f>(pnt),
+                                    Base::convertTo<Base::Vector3f>(dir));
+
+    Py_Return;
+}
+
 PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 {
     char* method = "Laplace";

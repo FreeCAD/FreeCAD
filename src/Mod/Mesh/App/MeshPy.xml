@@ -447,7 +447,16 @@ The argument int is the mode: 0=inner, 1=outer
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<!-- The Const here is just a hack -->
+        <Methode Name="trimByPlane">
+            <Documentation>
+                <UserDocu>Trims the mesh with a given plane
+trimByPlane(Vector, Vector) -> None
+The plane is defined by a base and normal vector. Depending on the
+direction of the normal the part above or below will be kept.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <!-- The Const here is just a hack -->
 		<Methode Name="harmonizeNormals" Const="true">
 			<Documentation>
 				<UserDocu>Adjust wrong oriented facets</UserDocu>
