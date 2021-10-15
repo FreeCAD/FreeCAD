@@ -359,7 +359,7 @@ def cleanProjection(shape, tessellate=True, seglength=0.05):
 
     The function was formerly used to workaround bugs in the projection
     algorithm. These bugs have since been fixed. Now the function is only
-    used when tessalation of ellipses, splines and bezcurves is required
+    used when tessellation of ellipses, splines and bezcurves is required
     (DXF output and Draft_Shape2DView).
     """
     oldedges = shape.Edges
