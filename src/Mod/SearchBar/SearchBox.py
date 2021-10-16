@@ -72,6 +72,7 @@ class SearchBox(QtGui.QLineEdit):
     self.extraInfo.layout().setContentsMargins(0,0,0,0)
     self.setExtraInfoIsActive = False
     self.pendingExtraInfo = None
+    self.currentExtraInfo = None
     # Connect signals and slots
     self.listView.clicked.connect(lambda x: self.selectResult('select', x))
     self.listView.selectionModel().selectionChanged.connect(self.onSelectionChanged)
@@ -241,6 +242,7 @@ class SearchBox(QtGui.QLineEdit):
         addGroups(group['subitems'], depth+1)
     addGroups(filterGroups(self.itemGroups))
     self.proxyModel.setSourceModel(self.mdl)
+    self.currentExtraInfo = None # Unset this so that the ExtraInfo can be updated
     # TODO: try to find the already-highlighted item
     nbRows = self.listView.model().rowCount()
     if nbRows > 0:
@@ -303,6 +305,11 @@ class SearchBox(QtGui.QLineEdit):
 
   @staticmethod
   def setExtraInfo(self, index):
+    if self.currentExtraInfo == (index.row(), index.column(), index.model()):
+      # avoid useless updates of the extra info window; this also prevents segfaults when the widget
+      # is replaced when selecting an option from the right-click context menu
+      return
+    self.currentExtraInfo = (index.row(), index.column(), index.model())
     # TODO: use an atomic swap or mutex if possible
     if self.setExtraInfoIsActive:
       self.pendingExtraInfo = index

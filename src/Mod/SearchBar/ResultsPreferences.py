@@ -1,5 +1,6 @@
 import os
 import FreeCAD as App
+import FreeCADGui
 from PySide import QtGui
 import Serialize
 
@@ -48,10 +49,12 @@ def getAllParams():
   return [getParamGroups('UserParameter', 'User parameter')]
 
 def paramGroupAction(nfo):
-  print(repr(nfo))
+  FreeCADGui.runCommand('Std_DlgParameter',0)
+  # TODO: find a way to select the desired group in the parameter dialog once it opens
 
 def paramAction(nfo):
-  print(repr(nfo))
+  FreeCADGui.runCommand('Std_DlgParameter',0)
+  # TODO: find a way to select the desired parameter in the parameter dialog once it opens
 
 getters = {
   'Boolean'      : 'GetBool',
