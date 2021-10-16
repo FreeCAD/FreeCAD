@@ -19,10 +19,10 @@ def documentObjectAction(nfo):
 # For some reason, the viewer always works except when used for two consecutive items in the search results: it then disappears after a short zoom-in+zoom-out animation.
 # I'm giving up on getting this viewer to work in a clean way, and will try swapping two instances so that the same one is never used twice in a row.
 # Also, in order to avoid segfaults when the module is reloaded (which causes the previous viewer to be garbage collected at some point), we're using a global property that will survive module reloads.
-if not hasattr(App, '_SearchTools3DViewer'):
+if not hasattr(App, '_SearchBar3DViewer'):
   # Toggle between 
-  App._SearchTools3DViewer = None
-  App._SearchTools3DViewerB = None
+  App._SearchBar3DViewer = None
+  App._SearchBar3DViewerB = None
 
 class DocumentObjectToolTipWidget(QtGui.QWidget):
   def __init__(self, nfo, setParent):
@@ -34,18 +34,18 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
     description.setAlignment(QtCore.Qt.AlignTop)
     description.setText(html)
 
-    if App._SearchTools3DViewer is None:
+    if App._SearchBar3DViewer is None:
       oldFocus = QtGui.QApplication.focusWidget()
       SearchBox.globalIgnoreFocusOut
       SearchBox.globalIgnoreFocusOut = True
-      App._SearchTools3DViewer = SafeViewer.SafeViewer()
-      App._SearchTools3DViewerB = SafeViewer.SafeViewer()
+      App._SearchBar3DViewer = SafeViewer.SafeViewer()
+      App._SearchBar3DViewerB = SafeViewer.SafeViewer()
       oldFocus.setFocus()
       SearchBox.globalIgnoreFocusOut = False
       # Tried setting the preview to a fixed size to prevent it from disappearing when changing its contents, this sets it to a fixed size but doesn't actually pick the size, .resize does that but isn't enough to fix the bug.
       #safeViewerInstance.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed))
-    self.preview = App._SearchTools3DViewer
-    App._SearchTools3DViewer, App._SearchTools3DViewerB = App._SearchTools3DViewerB, App._SearchTools3DViewer
+    self.preview = App._SearchBar3DViewer
+    App._SearchBar3DViewer, App._SearchBar3DViewerB = App._SearchBar3DViewerB, App._SearchBar3DViewer
 
     obj = App.getDocument(str(nfo['toolTip']['docName'])).getObject(str(nfo['toolTip']['name']))
 

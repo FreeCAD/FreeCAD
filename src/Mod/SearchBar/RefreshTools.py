@@ -25,7 +25,7 @@ def loadAllWorkbenches():
   FreeCADGui.activateWorkbench(activeWorkbench)
 
 def cachePath():
-  return os.path.join(App.getUserAppDataDir(), 'Cache_SearchToolsMod')
+  return os.path.join(App.getUserAppDataDir(), 'Cache_SearchBarMod')
 
 def gatherTools():
   itemGroups = []
