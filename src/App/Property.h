@@ -265,7 +265,7 @@ public:
 
     virtual void beforeSave() const {}
 
-    virtual void SetRestoreError(const char *);
+    virtual void SetRestoreError(const char *) override;
 
     /** Return a unique ID for the property
      *
