@@ -136,7 +136,24 @@ class DraftLink(DraftObject):
                             ' Link')
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
-        obj.configLinkProperty('LinkTransform', 'ColoredElements')
+        if not hasattr(obj,'LinkCopyOnChange'):
+            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
+
+        if not hasattr(obj,'LinkCopyOnChangeTouched'):
+            obj.addProperty("App::PropertyBool","LinkCopyOnChangeTouched"," Link")
+
+        if not hasattr(obj,'LinkCopyOnChangeSource'):
+            obj.addProperty("App::PropertyXLink","LinkCopyOnChangeSource"," Link")
+
+        if not hasattr(obj,'LinkCopyOnChangeGroup'):
+            obj.addProperty("App::PropertyLink","LinkCopyOnChangeGroup"," Link")
+
+        obj.configLinkProperty('LinkCopyOnChange',
+                               'LinkCopyOnChangeTouched',
+                               'LinkCopyOnChangeSource',
+                               'LinkCopyOnChangeGroup',
+                               'LinkTransform',
+                               'ColoredElements')
 
         if not getattr(obj, 'Fuse', False):
             obj.setPropertyStatus('Shape', 'Transient')
