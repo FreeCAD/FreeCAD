@@ -537,8 +537,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                copied = _CopiedObjs.front().getObject();
 
             bool recomputeCopy = false;
-
-            if(!copied) {
+            int copyerror = 0;
+            if(!copied || !copied->isValid()) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
@@ -549,29 +549,43 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     for(auto it=objs.rbegin(); it!=objs.rend(); ++it)
                         _CopiedObjs.emplace_back(*it);
                     copied = objs.back();
+                    // IMPORTANT! must make a recomputation first before any
+                    // further change so that we can generate the correct
+                    // geometry element map.
+                    if (!copied->recomputeFeature(true))
+                        copyerror = 1;
                 }
             }
 
             if(copied) {
-                std::vector<App::Property*> props;
-                getPropertyList(props);
-                for(auto prop : props) {
-                    if(!App::LinkBaseExtension::isCopyOnChangeProperty(this,*prop))
-                        continue;
-                    auto p = copied->getPropertyByName(prop->getName());
-                    if(p && p->getContainer()==copied
-                            && p->getTypeId()==prop->getTypeId()
-                            && !p->isSame(*prop)) 
-                    {
-                        recomputeCopy = true;
-                        std::unique_ptr<App::Property> pcopy(prop->Copy());
-                        p->Paste(*pcopy);
+                if (!copyerror) {
+                    std::vector<App::Property*> props;
+                    getPropertyList(props);
+                    for(auto prop : props) {
+                        if(!App::LinkBaseExtension::isCopyOnChangeProperty(this,*prop))
+                            continue;
+                        auto p = copied->getPropertyByName(prop->getName());
+                        if(p && p->getContainer()==copied
+                                && p->getTypeId()==prop->getTypeId()
+                                && !p->isSame(*prop)) 
+                        {
+                            recomputeCopy = true;
+                            std::unique_ptr<App::Property> pcopy(prop->Copy());
+                            p->Paste(*pcopy);
+                        }
                     }
+                    if(recomputeCopy && !copied->recomputeFeature(true))
+                        copyerror = 2;
                 }
-                if(recomputeCopy)
-                    copied->recomputeFeature(true);
                 obj = copied;
                 _CopiedLink.setValue(copied,l.getSubValues(false));
+                if (copyerror) {
+                    FC_THROWM(Base::RuntimeError,
+                            (copyerror == 1 ? "Initial copy failed." : "Copy on change failed.")
+                             << " Please check report view for more details.\n"
+                             "You can show temporary document to reveal the failed objects using\n"
+                             "tree view context menu.");
+                }
             }
         }
 
@@ -733,7 +747,11 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     if(Context.getValue() == &Obj
         && !this->testStatus(App::ObjectStatus::Recompute2))
     {
-        update();
+        try {
+            update();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
     }
 }
 
