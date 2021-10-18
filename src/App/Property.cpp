@@ -145,6 +145,14 @@ const boost::any Property::getPathValue(const ObjectIdentifier &path) const
 
 void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
+    // This function is originally used by expression completer to discover
+    // extra attribute for a property. The completer has since been modified to
+    // look into Python attributes (of the Python value of the property with
+    // getPyObject()), there is no need to expose duplicated information
+    // through getPaths(), except those that provides extra information (e.g.
+    // Rotation.Angle with extra unit information which has no Python
+    // equivalent).
+
     (void)paths;
     // paths.emplace_back(getContainer(), getName());
 }
