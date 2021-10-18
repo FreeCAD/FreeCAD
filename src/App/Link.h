@@ -32,6 +32,7 @@
 #include <boost/preprocessor/seq/cat.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/tuple/enum.hpp>
+#include <Base/Parameter.h>
 #include "DocumentObject.h"
 #include "FeaturePython.h"
 #include "PropertyLinks.h"
@@ -96,6 +97,10 @@ public:
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
 
+#define LINK_PARAM_CLAIM_CHILD(...) \
+    (LinkClaimChild, bool, App::PropertyBool, false, \
+      "Claim the linked object as a child", ##__VA_ARGS__)
+
 #define LINK_PARAM_COPY_ON_CHANGE(...) \
     (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
       "Disabled: disable copy on change\n"\
@@ -103,6 +108,16 @@ public:
       "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"\
       "       the link will try to sync any change of the original linked object back to the copy.",\
       ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...) \
+    (LinkCopyOnChangeSource, App::DocumentObject*, App::PropertyLink, 0, "The copy on change source object", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_GROUP(...) \
+    (LinkCopyOnChangeGroup, App::DocumentObject*, App::PropertyLink, 0, \
+     "Linked to a internal group object for holding on change copies", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...) \
+    (LinkCopyOnChangeTouched, bool, App::PropertyBool, 0, "Indicating the copy on change source object has been changed", ##__VA_ARGS__)
 
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
@@ -158,6 +173,7 @@ public:
     LINK_PARAM(PLACEMENT)\
     LINK_PARAM(LINK_PLACEMENT)\
     LINK_PARAM(OBJECT)\
+    LINK_PARAM(CLAIM_CHILD)\
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
@@ -171,6 +187,9 @@ public:
     LINK_PARAM(LINK_EXECUTE)\
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
+    LINK_PARAM(COPY_ON_CHANGE_SOURCE)\
+    LINK_PARAM(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM(COPY_ON_CHANGE_TOUCHED)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -207,6 +226,13 @@ public:
 
     typedef std::map<std::string, PropInfo> PropInfoMap;
     virtual const PropInfoMap &getPropertyInfoMap() const;
+
+    enum LinkCopyOnChangeType {
+        CopyOnChangeDisabled = 0,
+        CopyOnChangeEnabled = 1,
+        CopyOnChangeOwned = 2,
+        CopyOnChangeTracking = 3
+    };
 
 #define LINK_PROP_GET(_1,_2,_param) \
     LINK_PTYPE(_param) BOOST_PP_SEQ_CAT((get)(LINK_PNAME(_param))(Value)) () const {\
@@ -307,13 +333,27 @@ public:
 
     static bool isCopyOnChangeProperty(App::DocumentObject *obj, const Property &prop);
 
+    void syncCopyOnChange();
+    void setOnChangeCopyObject(App::DocumentObject *obj, bool exclude, bool applyAll);
+    std::vector<App::DocumentObject *> getOnChangeCopyObjects(
+            std::vector<App::DocumentObject *> *excludes = nullptr,
+            App::DocumentObject *src = nullptr);
+
+    bool isLinkedToConfigurableObject() const;
+
+    void monitorOnChangeCopyObjects(const std::vector<App::DocumentObject*> &objs);
+
+    /// Check if the linked object is a copy on change
+    bool isLinkMutated() const;
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
-    void setupCopyOnChange(App::DocumentObject *parent);
+    void setupCopyOnChange(App::DocumentObject *parent, bool checkSource = false);
+    App::DocumentObject *makeCopyOnChange();
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj,
@@ -336,10 +376,14 @@ protected:
     mutable bool enableLabelCache;
     bool hasOldSubElement;
 
-    mutable bool checkingProperty = false;
-
     std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
+    std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
     bool hasCopyOnChange;
+
+    mutable bool checkingProperty = false;
+    bool pauseCopyOnChange = false;
+
+    boost::signals2::scoped_connection connCopyOnChangeSource;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -467,6 +511,7 @@ public:
 
 #define LINK_PARAMS_LINK \
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
+    LINK_PARAM_EXT(CLAIM_CHILD)\
     LINK_PARAM_EXT(TRANSFORM)\
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
@@ -475,6 +520,9 @@ public:
     LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -515,6 +563,9 @@ public:
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
@@ -570,6 +621,40 @@ public:
 };
 
 typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
+
+
+class AppExport LinkParams: public ParameterGrp::ObserverType {
+public:
+#define FC_LINK_PARAMS \
+    FC_LINK_PARAM(CopyOnChangeApplyToAll, bool, Bool, true) \
+
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    static const _ctype & _name() { return instance()->_##_name; }\
+    static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void update##_name(LinkParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
+
+    FC_LINK_PARAMS
+
+    LinkParams();
+    virtual ~LinkParams();
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    static LinkParams *instance();
+    ParameterGrp::handle getHandle();
+
+private:
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    _ctype _##_name;
+
+    FC_LINK_PARAMS
+    ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(LinkParams*),App::CStringHasher,App::CStringHasher> funcs;
+
+#undef FC_LINK_PARAM
+};
 
 } //namespace App
 

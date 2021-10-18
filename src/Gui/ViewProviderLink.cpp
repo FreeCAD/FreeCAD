@@ -47,6 +47,7 @@
 #include <QFileInfo>
 #include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/range.hpp>
 #include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/PlacementPy.h>
@@ -72,12 +73,15 @@
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
 #include "ViewParams.h"
+#include "ActionFunction.h"
+#include "Command.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
 using namespace Gui;
 using namespace Base;
 
+typedef boost::iterator_range<const char*> CharRange;
 ////////////////////////////////////////////////////////////////////////////
 
 static inline bool appendPathSafe(SoPath *path, SoNode *node) {
@@ -221,6 +225,10 @@ public:
 
     const char *getLinkedName() const {
         return pcLinked->getObject()->getNameInDocument();
+    }
+
+    const char *getLinkedLabel() const {
+        return pcLinked->getObject()->Label.getValue();
     }
 
     const char *getLinkedNameSafe() const {
@@ -970,7 +978,7 @@ void LinkView::renderDoubleSide(bool enable) {
     if(enable) {
         if(!pcShapeHints) {
             pcShapeHints = new SoShapeHints;
-            pcShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+            pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
             pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
             pcLinkRoot->insertChild(pcShapeHints,0);
         }
@@ -1490,14 +1498,53 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
     if(!subname || *subname==0) return true;
     auto len = path->getLength();
     if(nodeArray.empty()) {
-        appendPath(path,pcLinkRoot);
-    }else{
-        int idx = App::LinkBaseExtension::getArrayIndex(subname,&subname);
+        if(!appendPathSafe(path,pcLinkRoot))
+            return false;
+    } else {
+        int idx = -1;
+        if (subname[0]>='0' && subname[0]<='9') {
+            idx = App::LinkBaseExtension::getArrayIndex(subname,&subname);
+        } else {
+            while(1) {
+                const char *dot = strchr(subname,'.');
+                if(!dot)
+                    break;
+                int i = 0;
+                if (subname[0] == '$') {
+                    CharRange name(subname+1,dot);
+                    for(auto &info : nodeArray) {
+                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedLabel())) {
+                            idx = i;
+                            break;
+                        }
+                        ++i;
+                    }
+                } else {
+                    CharRange name(subname,dot);
+                    for(auto &info : nodeArray) {
+                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedName())) {
+                            idx = i;
+                            break;
+                        }
+                        ++i;
+                    }
+                }
+
+                if(idx<0)
+                    return false;
+
+                subname = dot+1;
+                if(!subname[0] || nodeArray[idx]->isGroup==0)
+                    break;
+                idx = -1;
+            }
+        }
+
         if(idx<0 || idx>=(int)nodeArray.size())
             return false;
-
         auto &info = *nodeArray[idx];
-        appendPath(path,pcLinkRoot);
+        if(!appendPathSafe(path,pcLinkRoot))
+            return false;
         if(info.groupIndex>=0 && !getGroupHierarchy(info.groupIndex,path))
             return false;
         appendPath(path,info.pcSwitch);
@@ -1566,7 +1613,7 @@ void LinkView::unlink(LinkInfoPtr info) {
         else {
             for(auto &info : nodeArray) {
                 int idx;
-                if(!info->isLinked() &&
+                if(info->isLinked() &&
                    (idx=info->pcRoot->findChild(pcLinkedRoot))>=0)
                     info->pcRoot->removeChild(idx);
             }
@@ -1797,6 +1844,10 @@ void ViewProviderLink::updateData(const App::Property *prop) {
     return inherited::updateData(prop);
 }
 
+static inline bool canScale(const Base::Vector3d &v) {
+    return fabs(v.x)>1e-7 && fabs(v.y)>1e-7 && fabs(v.z)>1e-7;
+}
+
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
     if(!prop) return;
     if(prop == &ext->_ChildCache) {
@@ -1812,8 +1863,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
         if(!prop->testStatus(App::Property::User3)) {
             const auto &v = ext->getScaleVector();
-            pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-            linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            if(canScale(v))
+                pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
+            SbMatrix matrix = convert(ext->getTransform(false));
+            linkView->renderDoubleSide(matrix.det3() < 0);
         }
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
@@ -1821,8 +1874,19 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
             ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
-            pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-            linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            if(canScale(v))
+                pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
+            SbMatrix matrix = convert(ext->getTransform(false));
+            linkView->renderDoubleSide(matrix.det3() < 0);
+        }
+    }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
+        if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
+            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(group));
+            if (vp) {
+                vp->hide();
+                vp->ShowInTree.setValue(false);
+            }
         }
     }else if(prop == ext->getLinkedObjectProperty()) {
 
@@ -1923,9 +1987,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 if(touched.empty()) {
                     for(int i=0;i<linkView->getSize();++i) {
                         Base::Matrix4D mat;
-                        if(propPlacements->getSize()>i)
+                        if(propPlacements && propPlacements->getSize()>i)
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales && propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i && canScale((*propScales)[i])) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
@@ -1937,9 +2001,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                         if(i<0 || i>=linkView->getSize())
                             continue;
                         Base::Matrix4D mat;
-                        if(propPlacements->getSize()>i)
+                        if(propPlacements && propPlacements->getSize()>i)
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales && propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i && canScale((*propScales)[i])) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
@@ -2081,24 +2145,33 @@ ViewProvider *ViewProviderLink::getLinkedView(
 
 std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
     auto ext = getLinkExtension();
+    std::vector<App::DocumentObject*> ret;
+
     if(ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
         // We claim the linked object instead
-        std::vector<App::DocumentObject*> ret;
         if(ext) {
-            auto obj = ext->getTrueLinkedObject(true);
+            auto obj = ext->getLinkedObjectValue();
             if(obj) ret.push_back(obj);
         }
-        return ret;
-    } else if(hasElements(ext) || isGroup(ext))
-        return ext->getElementListValue();
-    if(!hasSubName) {
+    } else if(hasElements(ext) || isGroup(ext)) {
+        ret = ext->getElementListValue();
+        if (ext->_getElementCountValue() 
+                && ext->getLinkClaimChildValue()
+                && ext->getLinkedObjectValue())
+            ret.insert(ret.begin(), ext->getLinkedObjectValue());
+    } else if(!hasSubName) {
         auto linked = getLinkedView(true);
-        if(linked)
-            return linked->claimChildren();
+        if(linked) {
+            ret = linked->claimChildren();
+            if (ext->getLinkClaimChildValue() && ext->getLinkedObjectValue())
+                ret.insert(ret.begin(), ext->getLinkedObjectValue());
+        }
     }
-    return std::vector<App::DocumentObject*>();
+    if (ext && ext->getLinkCopyOnChangeGroupValue())
+        ret.insert(ret.begin(), ext->getLinkCopyOnChangeGroupValue());
+    return ret;
 }
 
 bool ViewProviderLink::canDragObject(App::DocumentObject* obj) const {
@@ -2284,12 +2357,29 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0] &&
-       (isGroup(ext,true) || hasElements(ext) || ext->getElementCountValue())) {
-        int index = ext->getElementIndex(subname,&subname);
-        if(index>=0) {
-            _subname = std::to_string(index)+'.'+subname;
-            subname = _subname.c_str();
+    if(subname && subname[0]) {
+        if (auto linked = ext->getLinkedObjectValue()) {
+            if (const char *dot = strchr(subname,'.')) {
+                if(subname[0]=='$') {
+                    CharRange sub(subname+1, dot);
+                    if (!boost::equals(sub, linked->Label.getValue()))
+                        dot = nullptr;
+                } else {
+                    CharRange sub(subname, dot);
+                    if (!boost::equals(sub, linked->getNameInDocument()))
+                        dot = nullptr;
+                }
+                if (dot && linked->getSubObject(dot+1))
+                    subname = dot+1;
+            }
+        }
+
+        if (isGroup(ext,true) || hasElements(ext) || ext->getElementCountValue()) {
+            int index = ext->getElementIndex(subname,&subname);
+            if(index>=0) {
+                _subname = std::to_string(index)+'.'+subname;
+                subname = _subname.c_str();
+            }
         }
     }
     if(linkView->linkGetDetailPath(subname,pPath,det))
@@ -2300,7 +2390,27 @@ bool ViewProviderLink::getDetailPath(
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
-    return !element || element->canDelete();
+    if (element && !element->canDelete())
+        return false;
+    auto ext = getLinkExtension();
+    if (ext->isLinkMutated()) {
+        auto linked = ext->getLinkedObjectValue();
+        auto doc = ext->getContainer()->getDocument();
+        if (linked->getDocument() == doc) {
+            std::deque<std::string> objs;
+            for (auto obj : ext->getOnChangeCopyObjects(nullptr, linked)) {
+                if (obj->getDocument() == doc) {
+                    // getOnChangeCopyObjects() returns object in depending
+                    // order. So we delete it in reverse to avoid error
+                    // reported by some parent object failing to find child
+                    objs.emplace_front(obj->getNameInDocument());
+                }
+            }
+            for (auto &name : objs)
+                doc->removeObject(name.c_str());
+        }
+    }
+    return true;
 }
 
 bool ViewProviderLink::canDelete(App::DocumentObject *obj) const {
@@ -2339,11 +2449,121 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!ext)
         return;
 
+    _setupContextMenu(ext, menu, receiver, member);
+    Gui::ActionFunction* func = nullptr;
+    if (ext->isLinkedToConfigurableObject()) {
+        if (ext->getLinkCopyOnChangeValue() == 0) {
+            auto submenu = menu->addMenu(QObject::tr("Copy on change"));
+            auto act = submenu->addAction(QObject::tr("Enable"));
+            act->setToolTip(QObject::tr(
+                        "Enable auto copy of linked object when its configuration is changed"));
+            act->setData(-1);
+            if (!func) func = new Gui::ActionFunction(menu);
+            func->trigger(act, [ext](){
+                try {
+                    App::AutoTransaction guard("Enable Link copy on change");
+                    ext->getLinkCopyOnChangeProperty()->setValue(1);
+                    Command::updateActive();
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+            act = submenu->addAction(QObject::tr("Tracking"));
+            act->setToolTip(QObject::tr(
+                        "Copy the linked object when its configuration is changed.\n"
+                        "Also auto redo the copy if the original linked object is changed.\n"));
+            act->setData(-1);
+            func->trigger(act, [ext](){
+                try {
+                    App::AutoTransaction guard("Enable Link tracking");
+                    ext->getLinkCopyOnChangeProperty()->setValue(3);
+                    Command::updateActive();
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+        }
+    }
+
+    if (ext->getLinkCopyOnChangeValue() != 2
+            && ext->getLinkCopyOnChangeValue() != 0) {
+        QAction *act = menu->addAction(
+                QObject::tr("Disable copy on change"));
+        act->setData(-1);
+        if (!func) func = new Gui::ActionFunction(menu);
+        func->trigger(act, [ext](){
+            try {
+                App::AutoTransaction guard("Disable copy on change");
+                ext->getLinkCopyOnChangeProperty()->setValue((long)0);
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+    }
+
+    if (ext->isLinkMutated()) {
+        QAction* act = menu->addAction(QObject::tr("Rerefresh configurable object"));
+        act->setToolTip(QObject::tr(
+                    "Synchronize the original configurable source object by\n"
+                    "creating a new deep copy. Note that any changes made to\n"
+                    "the current copy will be lost.\n"));
+        act->setData(-1);
+        if (!func) func = new Gui::ActionFunction(menu);
+        func->trigger(act, [ext](){
+            try {
+                App::AutoTransaction guard("Link refresh");
+                ext->syncCopyOnChange();
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+    }
+}
+
+void ViewProviderLink::_setupContextMenu(
+        App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
+{
     if(linkEdit(ext)) {
-        linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
-    } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
-        QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
-        act->setData(QVariant((int)ViewProvider::Transform));
+        if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
+            linkvp->_setupContextMenu(ext, menu, receiver, member);
+        else
+            linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
+    }
+
+    if(ext->getLinkedObjectProperty()
+            && ext->_getShowElementProperty()
+            && ext->_getElementCountValue() > 1)
+    {
+        auto action = menu->addAction(QObject::tr("Toggle array elements"), [ext] {
+            try {
+                App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
+                ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
+                Command::updateActive();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
+        action->setToolTip(QObject::tr(
+                    "Change whether show each link array element as individual objects"));
+    }
+
+    if((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
+            || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly()))
+    {
+        bool found = false;
+        for(auto action : menu->actions()) {
+            if(action->data().toInt() == ViewProvider::Transform) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+            act->setToolTip(QObject::tr("Transform at the origin of the placement"));
+            act->setData(QVariant((int)ViewProvider::Transform));
+        }
     }
 
     if(ext->getColoredElementsProperty()) {
