@@ -624,6 +624,9 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& colors)
 {
+    if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
+        getObject()->touch(true);
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -779,6 +782,8 @@ void ViewProviderPartExt::unsetHighlightedFaces()
 
 void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& colors)
 {
+    if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
+        getObject()->touch(true);
     int size = static_cast<int>(colors.size());
     if (size > 1) {
         // Although indexed lineset is used the material binding must be PER_FACE!
@@ -814,6 +819,8 @@ void ViewProviderPartExt::unsetHighlightedEdges()
 
 void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& colors)
 {
+    if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
+        getObject()->touch(true);
     int size = static_cast<int>(colors.size());
     if (size > 1) {
 #if 0

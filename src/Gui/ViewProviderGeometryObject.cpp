@@ -157,6 +157,8 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &ShapeMaterial) {
+        if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
+            getObject()->touch(true);
         const App::Material& Mat = ShapeMaterial.getValue();
         long value = (long)(100*Mat.transparency);
         if (value != Transparency.getValue())
