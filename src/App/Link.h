@@ -24,7 +24,8 @@
 #define APP_LINK_H
 
 #include <unordered_set>
-
+#include <Base/Parameter.h>
+#include <Base/Bitmask.h>
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
@@ -89,6 +90,10 @@ public:
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
 
+#define LINK_PARAM_CLAIM_CHILD(...) \
+    (LinkClaimChild, bool, App::PropertyBool, false, \
+      "Claim the linked object as a child", ##__VA_ARGS__)
+
 #define LINK_PARAM_COPY_ON_CHANGE(...) \
     (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
       "Disabled: disable copy on change\n"\
@@ -96,6 +101,16 @@ public:
       "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"\
       "       the link will try to sync any change of the original linked object back to the copy.",\
       ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...) \
+    (LinkCopyOnChangeSource, App::DocumentObject*, App::PropertyLink, 0, "The copy on change source object", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_GROUP(...) \
+    (LinkCopyOnChangeGroup, App::DocumentObject*, App::PropertyLink, 0, \
+     "Linked to a internal group object for holding on change copies", ##__VA_ARGS__)
+
+#define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...) \
+    (LinkCopyOnChangeTouched, bool, App::PropertyBool, 0, "Indicating the copy on change source object has been changed", ##__VA_ARGS__)
 
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
@@ -151,6 +166,7 @@ public:
     LINK_PARAM(PLACEMENT)\
     LINK_PARAM(LINK_PLACEMENT)\
     LINK_PARAM(OBJECT)\
+    LINK_PARAM(CLAIM_CHILD)\
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
@@ -164,6 +180,9 @@ public:
     LINK_PARAM(LINK_EXECUTE)\
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
+    LINK_PARAM(COPY_ON_CHANGE_SOURCE)\
+    LINK_PARAM(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM(COPY_ON_CHANGE_TOUCHED)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -200,6 +219,13 @@ public:
 
     typedef std::map<std::string, PropInfo> PropInfoMap;
     virtual const PropInfoMap &getPropertyInfoMap() const;
+
+    enum LinkCopyOnChangeType {
+        CopyOnChangeDisabled = 0,
+        CopyOnChangeEnabled = 1,
+        CopyOnChangeOwned = 2,
+        CopyOnChangeTracking = 3
+    };
 
 #define LINK_PROP_GET(_1,_2,_param) \
     LINK_PTYPE(_param) BOOST_PP_SEQ_CAT((get)(LINK_PNAME(_param))(Value)) () const {\
@@ -300,15 +326,46 @@ public:
 
     static bool isCopyOnChangeProperty(App::DocumentObject *obj, const Property &prop);
 
+    void syncCopyOnChange();
+
+    /** Options used in setOnChangeCopyObject()
+     * Multiple options can be combined by bitwise or operator
+     */
+    enum class OnChangeCopyOptions {
+        /// If set, then exclude the input from object list to copy on change, or else, include the input object.
+        Exclude = 1,
+        /// If set , then apply the setting to all links to the input object, or else, apply only to this link.
+        ApplyAll = 2,
+    };
+
+    /** Include or exclude object from list of objects to copy on change
+     * @param obj: input object
+     * @param options: control options. @sa OnChangeCopyOptions.
+     */
+    void setOnChangeCopyObject(App::DocumentObject *obj, OnChangeCopyOptions options);
+
+    std::vector<App::DocumentObject *> getOnChangeCopyObjects(
+            std::vector<App::DocumentObject *> *excludes = nullptr,
+            App::DocumentObject *src = nullptr);
+
+    bool isLinkedToConfigurableObject() const;
+
+    void monitorOnChangeCopyObjects(const std::vector<App::DocumentObject*> &objs);
+
+    /// Check if the linked object is a copy on change
+    bool isLinkMutated() const;
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
-    void setupCopyOnChange(App::DocumentObject *parent);
+    void setupCopyOnChange(App::DocumentObject *parent, bool checkSource = false);
+    App::DocumentObject *makeCopyOnChange();
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
+    void detachElements();
     void checkGeoElementMap(const App::DocumentObject *obj,
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
@@ -329,10 +386,14 @@ protected:
     mutable bool enableLabelCache;
     bool hasOldSubElement;
 
-    mutable bool checkingProperty = false;
-
     std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
+    std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
     bool hasCopyOnChange;
+
+    mutable bool checkingProperty = false;
+    bool pauseCopyOnChange = false;
+
+    boost::signals2::scoped_connection connCopyOnChangeSource;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -460,6 +521,7 @@ public:
 
 #define LINK_PARAMS_LINK \
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
+    LINK_PARAM_EXT(CLAIM_CHILD)\
     LINK_PARAM_EXT(TRANSFORM)\
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
@@ -468,6 +530,9 @@ public:
     LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -508,6 +573,9 @@ public:
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_TYPE(COPY_ON_CHANGE_SOURCE, App::PropertyXLink)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
@@ -565,6 +633,66 @@ public:
 typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
 
 } //namespace App
+
+ENABLE_BITMASK_OPERATORS(App::Link::OnChangeCopyOptions)
+
+/*[[[cog
+import LinkParams
+LinkParams.declare()
+]]]*/
+
+namespace App {
+/** Convenient class to obtain App::Link related parameters
+
+ * The parameters are under group "User parameter:BaseApp/Preferences/Link"
+ *
+ * This class is auto generated by LinkParams.py. Modify that file
+ * instead of this one, if you want to add any parameter. You need
+ * to install Cog Python package for code generation:
+ * @code
+ *     pip install cogapp
+ * @endcode
+ *
+ * Once modified, you can regenerate the header and the source file,
+ * @code
+ *     python3 -m cogapp -r Link.h Link.cpp
+ * @endcode
+ *
+ * You can add a new parameter by adding lines in LinkParams.py. Available
+ * parameter types are 'Int, UInt, String, Bool, Float'. For example, to add
+ * a new Int type parameter,
+ * @code
+ *     ParamInt(parameter_name, default_value, documentation, on_change=False)
+ * @endcode
+ *
+ * If there is special handling on parameter change, pass in on_change=True.
+ * And you need to provide a function implementation in Link.cpp with
+ * the following signature.
+ * @code
+ *     void LinkParams:on<parameter_name>Changed()
+ * @endcode
+ */
+class AppExport LinkParams {
+public:
+    static ParameterGrp::handle getHandle();
+
+    //@{
+    /** Accessor for parameter CopyOnChangeApplyToAll
+     *
+     * Stores the last user choice of whether to apply CopyOnChange setup to all link
+     * that links to the same configurable object
+     */
+    static const bool & getCopyOnChangeApplyToAll();
+    static const bool & defaultCopyOnChangeApplyToAll();
+    static void removeCopyOnChangeApplyToAll();
+    static void setCopyOnChangeApplyToAll(const bool &v);
+    static const char *docCopyOnChangeApplyToAll();
+    //@}
+
+};
+
+} // namespace App
+//[[[end]]]
 
 
 #if defined(__clang__)

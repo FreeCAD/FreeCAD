@@ -273,6 +273,7 @@ protected:
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
     bool linkEdit(const App::LinkBaseExtension *ext=nullptr) const;
+    void _setupContextMenu(App::LinkBaseExtension *ext, QMenu*, QObject*, const char*);
 
     enum LinkType {
         LinkTypeNone,
