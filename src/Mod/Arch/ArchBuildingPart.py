@@ -600,7 +600,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
             c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
-        if not "ChildrenShapeolor" in pl:
+        if not "ChildrenShapeColor" in pl:
             vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
             c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
