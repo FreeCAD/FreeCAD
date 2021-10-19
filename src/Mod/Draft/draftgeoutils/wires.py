@@ -354,56 +354,35 @@ def removeInterVertices(wire):
 
 
 def cleanProjection(shape, tessellate=True, seglength=0.05):
-    """Return a valid compound of edges, by recreating them.
+    """Return a compound of edges, optionally tesselate ellipses, splines
+    and bezcurves.
 
-    This is because the projection algorithm somehow creates wrong shapes.
-    They display fine, but on loading the file the shape is invalid.
-
-    Now with tanderson's fix to `ProjectionAlgos`, that isn't the case,
-    but this function can be used for tessellating ellipses and splines
-    for DXF output-DF.
+    The function was formerly used to workaround bugs in the projection
+    algorithm. These bugs have since been fixed. Now the function is only
+    used when tessellation of ellipses, splines and bezcurves is required
+    (DXF output and Draft_Shape2DView).
     """
     oldedges = shape.Edges
     newedges = []
     for e in oldedges:
+        typ = geomType(e)
         try:
-            if geomType(e) == "Line":
-                newedges.append(e.Curve.toShape())
-
-            elif geomType(e) == "Circle":
-                if len(e.Vertexes) > 1:
-                    mp = findMidpoint(e)
-                    a = Part.Arc(e.Vertexes[0].Point,
-                                 mp,
-                                 e.Vertexes[-1].Point).toShape()
-                    newedges.append(a)
-                else:
-                    newedges.append(e.Curve.toShape())
-
-            elif geomType(e) == "Ellipse":
+            if typ in ["Line", "Circle"]:
+                newedges.append(e)
+            elif typ == "Ellipse":
                 if tessellate:
                     newedges.append(Part.Wire(curvetowire(e, seglength)))
                 else:
-                    if len(e.Vertexes) > 1:
-                        a = Part.Arc(e.Curve,
-                                     e.FirstParameter,
-                                     e.LastParameter).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-
-            elif (geomType(e) == "BSplineCurve"
-                  or geomType(e) == "BezierCurve"):
-                if tessellate:
+                    newedges.append(e)
+            elif typ in ["BSplineCurve", "BezierCurve"]:
+                if isLine(e.Curve):
+                    line = Part.LineSegment(e.Vertexes[0].Point,
+                                            e.Vertexes[-1].Point)
+                    newedges.append(line)
+                elif tessellate:
                     newedges.append(Part.Wire(curvetowire(e, seglength)))
                 else:
-                    if isLine(e.Curve):
-                        line = Part.LineSegment(e.Vertexes[0].Point,
-                                                e.Vertexes[-1].Point).toShape()
-                        newedges.append(line)
-                    else:
-                        newedges.append(e.Curve.toShape(e.FirstParameter,
-                                                        e.LastParameter))
+                    newedges.append(e)
             else:
                 newedges.append(e)
         except Part.OCCError:
