@@ -226,6 +226,31 @@ class MeshGeoTestCases(unittest.TestCase):
         res=f1.intersect(f2)
         self.assertTrue(len(res) == 0)
 
+    def testIntersectionCoplanar(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertTrue(len(res) == 2)
+
+    def testIntersectionOverlap(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [5.,0.,0.] )
+        self.planarMesh.append( [8.,5.,0.] )
+        self.planarMesh.append( [4.,0.,0.] )
+        self.planarMesh.append( [10.,0.,0.] )
+        self.planarMesh.append( [9.,5.,0.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertTrue(len(res) == 2)
 
     def testSelfIntersection(self):
         s = b"""solid Simple

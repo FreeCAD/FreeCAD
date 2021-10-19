@@ -326,8 +326,7 @@ bool MeshGeomEdge::IntersectWithEdge (const MeshGeomEdge &edge, Base::Vector3f &
         };
 
         if (is_in_range(t) && is_in_range(u)) {
-            res = p + t * r;
-            res = q + u * s;
+            res = p + t * r; // equal to q + u * s
             return true;
         }
 
@@ -1088,7 +1087,9 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
             }
         }
 
-        if (intersections.size() == 2) {
+        // If triangles overlap there can be more than two intersection points
+        // In that case use any two of them.
+        if (intersections.size() >= 2) {
             rclPt0 = intersections[0];
             rclPt1 = intersections[1];
         }
