@@ -182,6 +182,11 @@ std::string Metadata::classname() const
     return _classname;
 }
 
+boost::filesystem::path App::Metadata::subdirectory() const
+{
+    return _subdirectory;
+}
+
 std::vector<fs::path> Metadata::file() const
 {
     return _file;
@@ -283,6 +288,11 @@ void Metadata::setIcon(const fs::path& path)
 void Metadata::setClassname(const std::string& name)
 {
     _classname = name;
+}
+
+void App::Metadata::setSubdirectory(const boost::filesystem::path& path)
+{
+    _subdirectory = path;
 }
 
 void Metadata::addFile(const fs::path& path)
@@ -482,6 +492,9 @@ void Metadata::appendToElement(DOMElement* root) const
             case Meta::UrlType::documentation: typeAsString = "documentation"; break;
             }
             addAttribute(element, "type", typeAsString);
+            if (url.type == Meta::UrlType::repository) {
+                addAttribute(element, "branch", url.branch);
+            }
         }
     }
 
@@ -506,6 +519,8 @@ void Metadata::appendToElement(DOMElement* root) const
     appendSimpleXMLNode(root, "icon", _icon.string());
 
     appendSimpleXMLNode(root, "classname", _classname);
+
+    appendSimpleXMLNode(root, "subdirectory", _subdirectory.string());
 
     for (const auto& file : _file)
         appendSimpleXMLNode(root, "file", file.string());
@@ -572,6 +587,8 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _file.emplace_back(StrXUTF8(element->getTextContent()).str);
         else if (tagString == "classname")
             _classname = StrXUTF8(element->getTextContent()).str;
+        else if (tagString == "subdirectory")
+            _subdirectory = StrXUTF8(element->getTextContent()).str;
         else if (tagString == "icon")
             _icon = fs::path(StrXUTF8(element->getTextContent()).str);
         else if (tagString == "content")
@@ -652,6 +669,10 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* e)
         type = UrlType::readme;
     else if (typeAttribute == "documentation")
         type = UrlType::documentation;
+
+    if (type == UrlType::repository) 
+        branch = StrXUTF8(e->getAttribute(XUTF8Str("branch").unicodeForm())).str;
+
     location = StrXUTF8(e->getTextContent()).str;
 }
 

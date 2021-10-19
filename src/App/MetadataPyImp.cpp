@@ -49,10 +49,16 @@ PyObject* MetadataPy::PyMake(struct _typeobject*, PyObject* args, PyObject*)  //
 {
     // create a new instance of MetadataPy and the Twin object 
     const char* filename;
-    if (!PyArg_ParseTuple(args, "s!", &filename))
+    if (!PyArg_ParseTuple(args, "s", &filename))
         return nullptr;
-
-    return new MetadataPy(new Metadata(filename));
+    try {
+        auto md = new Metadata(filename);
+        return new MetadataPy(md);
+    }
+    catch (...) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Failed to create Metadata object");
+        return nullptr;
+    }
 }
 
 // constructor method
@@ -65,7 +71,7 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     // Main class constructor -- takes a file path, loads the metadata from it
     PyErr_Clear();
     const char* file;
-    if (PyArg_ParseTuple(args, "s!", &file)) {
+    if (PyArg_ParseTuple(args, "s", &file)) {
         App::Metadata* a = new Metadata(file);
         *(getMetadataPtr()) = *a;
         return 0;
@@ -104,9 +110,9 @@ Py::Object MetadataPy::getMaintainer(void) const
     auto maintainers = getMetadataPtr()->maintainer();
     Py::List pyMaintainers;
     for (const auto& m : maintainers) {
-        Py::Object pyMaintainer;
-        pyMaintainer.setAttr("name", Py::String(m.name));
-        pyMaintainer.setAttr("email", Py::String(m.email));
+        Py::Dict pyMaintainer;
+        pyMaintainer["name"] = Py::String(m.name);
+        pyMaintainer["email"] = Py::String(m.email);
         pyMaintainers.append(pyMaintainer);
     }
     return pyMaintainers;
@@ -117,9 +123,9 @@ Py::Object MetadataPy::getAuthor(void) const
     auto authors = getMetadataPtr()->author();
     Py::List pyAuthors;
     for (const auto& a : authors) {
-        Py::Object pyAuthor;
-        pyAuthor.setAttr("name", Py::String(a.name));
-        pyAuthor.setAttr("email", Py::String(a.email));
+        Py::Dict pyAuthor;
+        pyAuthor["name"] = Py::String(a.name);
+        pyAuthor["email"] = Py::String(a.email);
         pyAuthors.append(pyAuthor);
     }
     return pyAuthors;
@@ -130,28 +136,30 @@ Py::Object MetadataPy::getLicense(void) const
     auto licenses = getMetadataPtr()->license();
     Py::List pyLicenses;
     for (const auto& lic : licenses) {
-        Py::Object pyLicense;
-        pyLicense.setAttr("name", Py::String(lic.name));
-        pyLicense.setAttr("file", Py::String(lic.file.string()));
+        Py::Dict pyLicense;
+        pyLicense["name"] = Py::String(lic.name);
+        pyLicense["file"] = Py::String(lic.file.string());
         pyLicenses.append(pyLicense);
     }
     return pyLicenses;
 }
 
-Py::Object MetadataPy::getUrl(void) const
+Py::Object MetadataPy::getUrls(void) const
 {
     auto urls = getMetadataPtr()->url ();
     Py::List pyUrls;
     for (const auto& url : urls) {
-        Py::Object pyUrl;
-        pyUrl.setAttr("location", Py::String(url.location));
+        Py::Dict pyUrl;
+        pyUrl["location"] = Py::String(url.location);
         switch (url.type) {
-        case Meta::UrlType::website: pyUrl.setAttr("type", Py::String("website")); break;
-        case Meta::UrlType::repository: pyUrl.setAttr("type", Py::String("repository")); break;
-        case Meta::UrlType::bugtracker: pyUrl.setAttr("type", Py::String("bugtracker")); break;
-        case Meta::UrlType::readme: pyUrl.setAttr("type", Py::String("readme")); break;
-        case Meta::UrlType::documentation: pyUrl.setAttr("type", Py::String("documentation")); break;
+        case Meta::UrlType::website: pyUrl["type"] = Py::String("website"); break;
+        case Meta::UrlType::repository: pyUrl["type"] = Py::String("repository"); break;
+        case Meta::UrlType::bugtracker: pyUrl["type"] = Py::String("bugtracker"); break;
+        case Meta::UrlType::readme: pyUrl["type"] = Py::String("readme"); break;
+        case Meta::UrlType::documentation: pyUrl["type"] = Py::String("documentation"); break;
         }
+        if (url.type == Meta::UrlType::repository)
+            pyUrl["branch"] = Py::String(url.branch);
         pyUrls.append(pyUrl);
     }
     return pyUrls;
@@ -159,14 +167,14 @@ Py::Object MetadataPy::getUrl(void) const
 
 Py::Object dependencyToPyObject(const Meta::Dependency& d)
 {
-    Py::Object pyDependency;
-    pyDependency.setAttr("package",Py::String(d.package));
-    pyDependency.setAttr("version_lt", Py::String(d.version_lt));
-    pyDependency.setAttr("version_lte", Py::String(d.version_lte));
-    pyDependency.setAttr("version_eq", Py::String(d.version_eq));
-    pyDependency.setAttr("version_gt", Py::String(d.version_gt));
-    pyDependency.setAttr("version_gte", Py::String(d.version_gte));
-    pyDependency.setAttr("condition", Py::String(d.condition));
+    Py::Dict pyDependency;
+    pyDependency["package"] = Py::String(d.package);
+    pyDependency["version_lt"] = Py::String(d.version_lt);
+    pyDependency["version_lte"] = Py::String(d.version_lte);
+    pyDependency["version_eq"] = Py::String(d.version_eq);
+    pyDependency["version_gt"] = Py::String(d.version_gt);
+    pyDependency["version_gte"] = Py::String(d.version_gte);
+    pyDependency["condition"] = Py::String(d.condition);
     return pyDependency;
 }
 
@@ -222,6 +230,11 @@ Py::Object MetadataPy::getClassname(void) const
     return Py::String(getMetadataPtr()->classname());
 }
 
+Py::Object MetadataPy::getSubdirectory(void) const
+{
+    return Py::String(getMetadataPtr()->subdirectory().string());
+}
+
 Py::Object MetadataPy::getFile(void) const
 {
     auto files = getMetadataPtr()->file();
@@ -262,13 +275,13 @@ PyObject* MetadataPy::getGenericMetadata(PyObject* args)
     auto gm = (*getMetadataPtr())[name];
     auto pyGenericMetadata = new Py::List;
     for (const auto& item : gm) {
-        Py::Object pyItem;
-        pyItem.setAttr("contents", Py::String(item.contents));
+        Py::Dict pyItem;
+        pyItem["contents"] = Py::String(item.contents);
         Py::Dict pyAttributes;
         for (const auto& attribute : item.attributes) {
             pyAttributes[attribute.first] = Py::String(attribute.second);
         }
-        pyItem.setAttr("attributes", pyAttributes);
+        pyItem["attributes"] = pyAttributes;
         pyGenericMetadata->append(pyItem);
     }
     return pyGenericMetadata->ptr();

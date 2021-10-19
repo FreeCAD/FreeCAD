@@ -77,7 +77,7 @@ namespace App {
 
         /**
          * \struct Url
-         * \brief A URL, including type information (e.g. website, repository, or bugtracker, in package.xml v3)
+         * \brief A URL, including type information (e.g. website, repository, or bugtracker, in package.xml)
          */
         struct AppExport Url {
             Url() = default;
@@ -85,6 +85,7 @@ namespace App {
             explicit Url(const XERCES_CPP_NAMESPACE::DOMElement* e);
             std::string location; //< The actual URL, including protocol
             UrlType type; //< What kind of URL this is
+            std::string branch; //< If it's a repository, which branch to use
         };
 
         /**
@@ -194,6 +195,7 @@ namespace App {
         std::vector<std::string> tag() const; //< Zero or more text tags related to this package.
         boost::filesystem::path icon() const; //< Path to an icon file.
         std::string classname() const; //< Recognized for convenience -- generally only used by Workbenches.
+        boost::filesystem::path subdirectory() const; //< Optional, override the default subdirectory name for this item.
         std::vector<boost::filesystem::path> file() const; //< Arbitrary files associated with this package or content item.
         Meta::Version freecadmin() const; //< The minimum FreeCAD version.
         Meta::Version freecadmax() const; //< The maximum FreeCAD version.
@@ -246,6 +248,7 @@ namespace App {
         void addTag(const std::string& tag);
         void setIcon(const boost::filesystem::path& path);
         void setClassname(const std::string& name);
+        void setSubdirectory(const boost::filesystem::path& path);
         void addFile(const boost::filesystem::path& path);
         void addContentItem(const std::string& tag, const Metadata& item);
         void setFreeCADMin(const Meta::Version& version);
@@ -277,6 +280,7 @@ namespace App {
         std::vector<std::string> _tag;
         boost::filesystem::path _icon;
         std::string _classname;
+        boost::filesystem::path _subdirectory;
         std::vector<boost::filesystem::path> _file;
         Meta::Version _freecadmin;
         Meta::Version _freecadmax;
