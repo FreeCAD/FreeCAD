@@ -56,7 +56,7 @@
       </Documentation>
       <Parameter Name="License" Type="Object" />
     </Attribute>
-    <Attribute Name="Url" ReadOnly="true">
+    <Attribute Name="Urls" ReadOnly="true">
       <Documentation>
         <UserDocu>
           List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
@@ -67,7 +67,7 @@
           * documentation
         </UserDocu>
       </Documentation>
-      <Parameter Name="Url" Type="Object" />
+      <Parameter Name="Urls" Type="Object" />
     </Attribute>
     <Attribute Name="Author" ReadOnly="true">
       <Documentation>
@@ -117,6 +117,12 @@
     <Attribute Name="Classname" ReadOnly="true">
       <Documentation>
         <UserDocu>String: the name of the main Python class this item creates/represents</UserDocu>
+      </Documentation>
+      <Parameter Name="Classname" Type="Object" />
+    </Attribute>
+    <Attribute Name="Subdirectory" ReadOnly="true">
+      <Documentation>
+        <UserDocu>String: the name of the subdirectory this content item is located in. If empty, the item is in a directory named the same as the content item.</UserDocu>
       </Documentation>
       <Parameter Name="Classname" Type="Object" />
     </Attribute>

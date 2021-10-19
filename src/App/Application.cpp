@@ -117,6 +117,7 @@
 #include "ExpressionParser.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
+#include <App/MetadataPy.h>
 #include <Base/GeometryPyCXX.h>
 #include "Link.h"
 
@@ -307,6 +308,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
+    Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
 
     // Add document types
     Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
