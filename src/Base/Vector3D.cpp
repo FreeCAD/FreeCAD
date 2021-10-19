@@ -417,6 +417,13 @@ Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
 }
 
 template <class _Precision>
+bool Vector3<_Precision>::IsNull() const
+{
+    _Precision n{0.0};
+    return (x == n) && (y == n) && (z == n);
+}
+
+template <class _Precision>
 _Precision Vector3<_Precision>::GetAngle (const Vector3 &rcVect) const
 {
     _Precision len1 = Length();
