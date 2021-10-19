@@ -168,6 +168,10 @@ public:
    * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
    */
   bool IntersectWithLine (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /** Calculates the intersection point of an edge with this edge.
+   * The intersection must be inside both edges. If there is no intersection false is returned.
+   */
+  bool IntersectWithEdge (const MeshGeomEdge &edge, Base::Vector3f &res) const;
   /** Calculates the intersection point of the plane defined by the base \a rclPt and the direction \a rclDir
    * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
    */
@@ -185,11 +189,15 @@ public:
   void ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
                            Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const;
   /**
-   * Checks if the point is part of the facet. A point is regarded as part
-   * of a facet if the distance is lower \a fDistance and the projected point
-   * in the facet normal direction is inside the triangle.
+   * Checks if the point is part of the edge. A point is regarded as part
+   * of an edge if the distance is lower than \a fDistance to the projected point
+   * of \a rclPoint on the edge.
    */
   bool IsPointOf (const Base::Vector3f &rclPoint, float fDistance) const;
+  /**
+   * Checks if the projection point of \a point lies on the edge.
+   */
+  bool IsProjectionPointOf(const Base::Vector3f& point) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */
@@ -506,6 +514,8 @@ public:
   unsigned short NearestEdgeToPoint(const Base::Vector3f& rclPt) const;
   /** Returns the edge number \a side of the facet and the distance to the edge that is nearest to the point \a rclPt. */
   void NearestEdgeToPoint(const Base::Vector3f& rclPt, float& fDistance, unsigned short& side) const;
+  /** Returns the edge for \a side. */
+  MeshGeomEdge GetEdge(short side) const;
   /** The center and radius of the circum circle define a sphere in 3D. If the point \a rP is part of this sphere true is
    * returned, otherwise false.
    */
