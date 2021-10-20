@@ -1002,7 +1002,7 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                     if(geoid != Sketcher::Constraint::GeoUndef && pointpos == Sketcher::none){
                         // It is not possible to update on single addition/removal of a geometric element,
                         // as one removal may imply removing a constraint that should be added by a different element
-                        // that is still selected. The necessary checks outweight a full rebuild of the filter.
+                        // that is still selected. The necessary checks outweigh a full rebuild of the filter.
                         updateAssociatedConstraintsFilter();
                     }
                 }

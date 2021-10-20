@@ -354,7 +354,7 @@ def removeInterVertices(wire):
 
 
 def cleanProjection(shape, tessellate=True, seglength=0.05):
-    """Return a compound of edges, optionally tesselate ellipses, splines
+    """Return a compound of edges, optionally tessellate ellipses, splines
     and bezcurves.
 
     The function was formerly used to workaround bugs in the projection
