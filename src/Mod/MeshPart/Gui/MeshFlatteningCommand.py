@@ -20,12 +20,13 @@
 #*                                                                        *
 #**************************************************************************/
 
-
 import Mesh
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
 import MeshPartGui
+
+from PySide.QtCore import QT_TRANSLATE_NOOP # for translations
 
 class BaseCommand(object):
     def __init__(self):
@@ -43,8 +44,8 @@ class CreateFlatMesh(BaseCommand):
 
     def GetResources(self):
         return {'Pixmap': 'MeshPart_CreateFlatMesh.svg',
-                'MenuText': 'Unwrap Mesh',
-                'ToolTip': 'find a flat representation of a mesh'}
+                'MenuText': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Unwrap Mesh"),
+                'ToolTip': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Find a flat representation of a mesh.")}
 
     def Activated(self):
         import numpy as np
@@ -75,8 +76,8 @@ class CreateFlatFace(BaseCommand):
 
     def GetResources(self):
         return {'Pixmap': 'MeshPart_CreateFlatFace.svg',
-                          'MenuText': 'Unwrap Face',
-                          'ToolTip': 'find a flat representation of a mesh'}
+                'MenuText': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Unwrap Face"),
+                'ToolTip': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Find a flat representation of a mesh.")}
 
     def Activated(self):
         import numpy as np
