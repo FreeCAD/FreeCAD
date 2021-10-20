@@ -56,6 +56,13 @@ The two angles are given in radian.
               </UserDocu>
           </Documentation>
       </Methode>
+      <Methode Name="getEdge">
+          <Documentation>
+              <UserDocu>getEdge(int) -> Edge
+Returns the edge of the facet.
+              </UserDocu>
+          </Documentation>
+      </Methode>
       <Attribute Name="Index" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>The index of this facet in the MeshObject</UserDocu>

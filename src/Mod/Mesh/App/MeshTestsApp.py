@@ -252,6 +252,65 @@ class MeshGeoTestCases(unittest.TestCase):
         res = f1.intersect(f2)
         self.assertTrue(len(res) == 2)
 
+    def testIntersectionOfIntersectingEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(2)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 1)
+        self.assertEqual(res[0][0], 6.0)
+        self.assertEqual(res[0][1], 10.0)
+        self.assertEqual(res[0][2], 10.0)
+
+    def testIntersectionOfParallelEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfCollinearEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [7.,0.,0.] )
+        self.planarMesh.append( [13.,0.,0.] )
+        self.planarMesh.append( [10.,4.,0.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(0)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfWarpedEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [2.,2.,1.] )
+        self.planarMesh.append( [8.,2.,1.] )
+        self.planarMesh.append( [5.,6.,1.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(1)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
     def testSelfIntersection(self):
         s = b"""solid Simple
 facet normal 0.0e0 0.0e0 1.0e1

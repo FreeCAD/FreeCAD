@@ -27,6 +27,7 @@
 #include "Facet.h"
 #include <Mod/Mesh/App/FacetPy.h>
 #include <Mod/Mesh/App/FacetPy.cpp>
+#include <Mod/Mesh/App/EdgePy.h>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -78,6 +79,16 @@ PyObject*  FacetPy::unbound(PyObject *args)
     Py_Return;
 }
 
+PyObject* FacetPy::getEdge(PyObject *args)
+{
+    int index;
+    if (!PyArg_ParseTuple(args, "i", &index))
+        return nullptr;
+
+    Edge edge = getFacetPtr()->getEdge(index);
+    return new EdgePy(new Edge(edge));
+}
+
 Py::Long FacetPy::getIndex() const
 {
     return Py::Long((long) getFacetPtr()->Index);
@@ -85,7 +96,7 @@ Py::Long FacetPy::getIndex() const
 
 Py::Boolean FacetPy::getBound() const
 {
-    return Py::Boolean(getFacetPtr()->Index != UINT_MAX);
+    return Py::Boolean(getFacetPtr()->isBound());
 }
 
 Py::Object FacetPy::getNormal() const

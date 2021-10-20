@@ -198,6 +198,16 @@ public:
    * Checks if the projection point of \a point lies on the edge.
    */
   bool IsProjectionPointOf(const Base::Vector3f& point) const;
+  /**
+   * Checks if the two edges are parallel.
+   * \note Parallel edges could be collinear.
+   */
+  bool IsParallel(const MeshGeomEdge &edge) const;
+  /**
+   * Checks if the two edges are collinear.
+   * \note Collinear edges always are parallel.
+   */
+  bool IsCollinear(const MeshGeomEdge &edge) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */

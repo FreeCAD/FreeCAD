@@ -280,6 +280,25 @@ bool MeshGeomEdge::IntersectWithLine (const Base::Vector3f &rclPt,
     return dist2 + dist3 <= dist1 + eps;
 }
 
+bool MeshGeomEdge::IsParallel(const MeshGeomEdge &edge) const
+{
+    Base::Vector3f r(_aclPoints[1] - _aclPoints[0]);
+    Base::Vector3f s(edge._aclPoints[1] - edge._aclPoints[0]);
+    Base::Vector3f n = r.Cross(s);
+    return n.IsNull();
+}
+
+bool MeshGeomEdge::IsCollinear(const MeshGeomEdge &edge) const
+{
+    if (IsParallel(edge)) {
+        Base::Vector3f r(_aclPoints[1] - _aclPoints[0]);
+        Base::Vector3f d = edge._aclPoints[0] - _aclPoints[0];
+        return d.Cross(r).IsNull();
+    }
+
+    return false;
+}
+
 bool MeshGeomEdge::IntersectWithEdge (const MeshGeomEdge &edge, Base::Vector3f &res) const
 {
     const float eps = 1e-06f;
