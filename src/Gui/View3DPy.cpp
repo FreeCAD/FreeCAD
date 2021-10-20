@@ -243,7 +243,7 @@ PyObject *View3DInventorPy::method_varargs_ext_handler(PyObject *_self_and_name_
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -307,7 +307,7 @@ Py::Object View3DInventorPy::message(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
@@ -328,7 +328,7 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
@@ -474,7 +474,7 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -495,7 +495,7 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -516,7 +516,7 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -537,7 +537,7 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -558,7 +558,7 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -579,7 +579,7 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -600,7 +600,7 @@ Py::Object View3DInventorPy::viewIsometric(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -621,7 +621,7 @@ Py::Object View3DInventorPy::viewDimetric(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -642,7 +642,7 @@ Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -733,7 +733,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -759,7 +759,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -785,7 +785,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -806,7 +806,7 @@ Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -827,7 +827,7 @@ Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -1073,7 +1073,7 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -1092,7 +1092,7 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -1126,7 +1126,7 @@ Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -1415,23 +1415,23 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             Gui::Document* doc = _view->getViewer()->getDocument();
             ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(Point->getPath())
                     : _view->getViewer()->getViewProviderByPath(Point->getPath());
-            if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-                if(!vp->isSelectable())
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if (!vp->isSelectable())
                     return ret;
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                if(vp->useNewSelectionModel()) {
+                if (vp->useNewSelectionModel()) {
                     std::string subname;
-                    if(!vp->getElementPicked(Point,subname))
+                    if (!vp->getElementPicked(Point,subname))
                         return ret;
                     auto obj = vpd->getObject();
-                    if(!obj)
+                    if (!obj)
                         return ret;
-                    if(subname.size()) {
+                    if (subname.size()) {
                         std::pair<std::string,std::string> elementName;
                         auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
-                        if(!sobj)
+                        if (!sobj)
                             return ret;
-                        if(sobj!=obj) {
+                        if (sobj != obj) {
                             dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
                             dict.setItem("SubName",Py::String(subname));
                             obj = sobj;
@@ -1443,7 +1443,8 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                     dict.setItem("Object",
                         Py::String(obj->getNameInDocument()));
                     dict.setItem("Component",Py::String(subname));
-                } else {
+                }
+                else {
                     dict.setItem("Document",
                         Py::String(vpd->getObject()->getDocument()->getName()));
                     dict.setItem("Object",
@@ -1530,19 +1531,19 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                     if(!vp->isSelectable())
                         continue;
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                    if(vp->useNewSelectionModel()) {
+                    if (vp->useNewSelectionModel()) {
                         std::string subname;
-                        if(!vp->getElementPicked(point,subname))
+                        if (!vp->getElementPicked(point,subname))
                             continue;
                         auto obj = vpd->getObject();
-                        if(!obj)
+                        if (!obj)
                             continue;
-                        if(subname.size()) {
+                        if (subname.size()) {
                             std::pair<std::string,std::string> elementName;
                             auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
-                            if(!sobj)
+                            if (!sobj)
                                 continue;
-                            if(sobj!=obj) {
+                            if (sobj != obj) {
                                 dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
                                 dict.setItem("SubName",Py::String(subname));
                                 obj = sobj;
@@ -1554,7 +1555,8 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                         dict.setItem("Object",
                             Py::String(obj->getNameInDocument()));
                         dict.setItem("Component",Py::String(subname));
-                    } else {
+                    }
+                    else {
                         dict.setItem("Document",
                             Py::String(vpd->getObject()->getDocument()->getName()));
                         dict.setItem("Object",
@@ -2492,21 +2494,23 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-	PyObject* docObject = Py_None;
-	char* name;
+    PyObject* docObject = Py_None;
+    char* name;
     char *subname = 0;
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
-		throw Py::Exception();
+        throw Py::Exception();
 
-	if (docObject == Py_None)
-		_view->setActiveObject(0, name);
-    else{
-        if(!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
+    if (docObject == Py_None) {
+        _view->setActiveObject(0, name);
+    }
+    else {
+        if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
             throw Py::TypeError("Expect the second argument to be a document object or None");
-		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-		_view->setActiveObject(obj, name, subname);
-	}
-	return Py::None();
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+        _view->setActiveObject(obj, name, subname);
+    }
+
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
@@ -2519,10 +2523,10 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
     App::DocumentObject *parent = 0;
     std::string subname;
     App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
-    if(!obj)
+    if (!obj)
         return Py::None();
 
-    if(PyObject_IsTrue(resolve))
+    if (PyObject_IsTrue(resolve))
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(
