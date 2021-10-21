@@ -29,6 +29,7 @@
 #include <QList>
 #include <QFileInfo>
 #include <string>
+#include <functional>
 
 namespace Gui { namespace Dialog {
 
@@ -53,6 +54,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent*);
     QString createProjectFile(const QString&);
     void clearDirectory(const QFileInfo&);
+    void cleanup(QDir&, const QList<QFileInfo>&, const QString&);
 
 protected Q_SLOTS:
     void on_buttonCleanup_clicked();
@@ -63,6 +65,23 @@ private:
     QScopedPointer<DocumentRecoveryPrivate> d_ptr;
     Q_DISABLE_COPY(DocumentRecovery)
     Q_DECLARE_PRIVATE(DocumentRecovery)
+};
+
+class DocumentRecoveryFinder {
+public:
+    void checkForPreviousCrashes();
+
+private:
+    void checkDocumentDirs(QDir&, const QList<QFileInfo>&, const QString&);
+    void showRecoveryDialogIfNeeded();
+
+private:
+    QList<QFileInfo> restoreDocFiles;
+};
+
+class DocumentRecoveryHandler {
+public:
+    void checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const;
 };
 
 } //namespace Dialog

@@ -2416,80 +2416,8 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 void Application::checkForPreviousCrashes()
 {
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
-    tmp.setFilter(QDir::Files);
-
-    QList<QFileInfo> restoreDocFiles;
-    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
-    QList<QFileInfo> locks = tmp.entryInfoList();
-    for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
-        QString bn = it->baseName();
-        // ignore the lock file for this instance
-        QString pid = QString::number(QCoreApplication::applicationPid());
-        if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
-            QString fn = it->absoluteFilePath();
-            boost::interprocess::file_lock flock((const char*)fn.toLocal8Bit());
-            if (flock.try_lock()) {
-                // OK, this file is a leftover from a previous crash
-                QString crashed_pid = bn.mid(exeName.length()+1);
-                // search for transient directories with this PID
-                QString filter;
-                QTextStream str(&filter);
-                str << exeName << "_Doc_*_" << crashed_pid;
-                tmp.setNameFilters(QStringList() << filter);
-                tmp.setFilter(QDir::Dirs);
-                QList<QFileInfo> dirs = tmp.entryInfoList();
-                if (dirs.isEmpty()) {
-                    // delete the lock file immediately if no transient directories are related
-                    tmp.remove(fn);
-                }
-                else {
-                    int countDeletedDocs = 0;
-                    QString recovery_files = QString::fromLatin1("fc_recovery_files");
-                    for (QList<QFileInfo>::iterator it = dirs.begin(); it != dirs.end(); ++it) {
-                        QDir doc_dir(it->absoluteFilePath());
-                        doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
-                        uint entries = doc_dir.entryList().count();
-                        if (entries == 0) {
-                            // in this case we can delete the transient directory because
-                            // we cannot do anything
-                            if (tmp.rmdir(it->filePath()))
-                                countDeletedDocs++;
-                        }
-                        // search for the existence of a recovery file
-                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
-                            // store the transient directory in case it's not empty
-                            restoreDocFiles << *it;
-                        }
-                        // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
-                        else if (entries == 1 && doc_dir.exists(recovery_files)) {
-                            // if the sub-directory is empty delete the transient directory
-                            QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
-                            rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
-                            if (rec_dir.entryList().isEmpty()) {
-                                doc_dir.rmdir(recovery_files);
-                                if (tmp.rmdir(it->filePath()))
-                                    countDeletedDocs++;
-                            }
-                        }
-                    }
-
-                    // all directories corresponding to the lock file have been deleted
-                    // so delete the lock file, too
-                    if (countDeletedDocs == dirs.size()) {
-                        tmp.remove(fn);
-                    }
-                }
-            }
-        }
-    }
-
-    if (!restoreDocFiles.isEmpty()) {
-        Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
-        if (dlg.foundDocuments())
-            dlg.exec();
-    }
+    Gui::Dialog::DocumentRecoveryFinder finder;
+    finder.checkForPreviousCrashes();
 }
 
 App::Document *Application::reopen(App::Document *doc) {
