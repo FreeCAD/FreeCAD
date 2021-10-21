@@ -143,7 +143,7 @@ public:
     //
     //
     //
-    // For poperty data, Level1Data will generate and save the model data using
+    // For property data, Level1Data will generate and save the model data using
     // struct PropertyData. Note that, once PropertyData is generated, the next
     // time it (or its children) is accessed, it will be through the cached 
     // PropertyData (through ModelIndex lookup of dataMap), instead of Level1Data.
@@ -363,7 +363,7 @@ public:
                     // We add a special '.' property here so that the
                     // 'MatchContains' can work with local property reference.
                     // It won't work otherwise, because the local property
-                    // reference starts with '.', which equivalant to
+                    // reference starts with '.', which is equivalent to
                     // 'MatchStarts'.
                     res.first = ".";
                     res.second = &_FakeProp;
@@ -1678,7 +1678,7 @@ public:
             currentPath = std::move(pathString);
 
             // If the last component does not start with '.', it maybe a
-            // list/map index accesor, which cannot be completed.
+            // list/map index accessor, which cannot be completed.
             if(l.last().startsWith(QLatin1Char('.'))) {
                 Base::PyGILStateLocker lock;
                 Py::Object value = vexpr->getPyValue();
@@ -2252,7 +2252,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             }
             break;
         }
-        catch(Py::Exception &) {// shouldn't happend, just to be safe
+        catch(Py::Exception &) {// shouldn't happen, just to be safe
             Base::PyException e;
             FC_TRACE("split path error " << e.what());
             break;
