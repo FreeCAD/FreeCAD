@@ -634,6 +634,15 @@ bool GeomCurve::tangent(double u, Base::Vector3d& dir) const
     return false;
 }
 
+Base::Vector3d GeomCurve::value(double u) const
+{
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+
+    const gp_Pnt &point = c->Value(u);
+
+    return Base::Vector3d(point.X(),point.Y(),point.Z());
+}
+
 Base::Vector3d GeomCurve::pointAtParameter(double u) const
 {
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());

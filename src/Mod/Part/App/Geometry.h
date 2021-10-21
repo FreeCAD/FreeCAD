@@ -203,6 +203,8 @@ public:
 
     void reverse(void);
 
+    Base::Vector3d value(double u) const;
+
 protected:
     static bool intersect(const Handle(Geom_Curve) c, const Handle(Geom_Curve) c2,
                           std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
