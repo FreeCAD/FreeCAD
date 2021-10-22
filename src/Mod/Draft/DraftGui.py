@@ -473,9 +473,11 @@ class DraftToolBar:
         self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
+        self.yValue.installEventFilter(self.baseWidget) # Required to detect snap cycling in case of Y constraining.
         self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelz = self._label("labelz", zl)
         self.zValue = self._inputfield("zValue", zl)
+        self.zValue.installEventFilter(self.baseWidget) # Required to detect snap cycling in case of Z constraining.
         self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint")
 
