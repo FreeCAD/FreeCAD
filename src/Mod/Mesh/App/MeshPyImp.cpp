@@ -222,6 +222,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["APLY" ] = MeshCore::MeshIO::APLY;
     ext["PY"   ] = MeshCore::MeshIO::PY;
     ext["ASY"  ] = MeshCore::MeshIO::ASY;
+    ext["3MF"  ] = MeshCore::MeshIO::ThreeMF;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",

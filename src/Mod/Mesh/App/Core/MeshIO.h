@@ -60,7 +60,8 @@ namespace MeshIO {
         PY,
         AMF,
         SMF,
-        ASY
+        ASY,
+        ThreeMF
     };
     enum Binding {
         OVERALL,
@@ -197,6 +198,8 @@ public:
     bool SaveAsymptote (std::ostream &rstrOut) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML (Base::Writer &writer) const;
+    /** Saves the mesh object into a 3MF file. */
+    bool Save3MF (std::ostream &str) const;
     /** Saves a node to an OpenInventor file. */
     bool SaveMeshNode (std::ostream &rstrIn);
     /** Writes an IDTF file. */
@@ -223,6 +226,9 @@ public:
 protected:
     /** Writes an X3D file. */
     bool SaveX3DContent (std::ostream &rstrOut, bool exportViewpoints) const;
+    bool Save3MFModel(std::ostream &str) const;
+    bool Save3MFRels(std::ostream &str) const;
+    bool Save3MFContent(std::ostream &str) const;
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */
