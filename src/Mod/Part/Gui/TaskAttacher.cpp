@@ -1060,7 +1060,8 @@ TaskDlgAttacher::~TaskDlgAttacher()
 void TaskDlgAttacher::open()
 {
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    if (!document->hasPendingCommand())
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
 }
 
 void TaskDlgAttacher::clicked(int)
