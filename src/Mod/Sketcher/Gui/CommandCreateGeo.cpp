@@ -4812,7 +4812,7 @@ public:
 
                 // autoconstraints were added to the circles of the poles, which is ok because they must go to the
                 // right position, or the user will freak-out if they appear out of the autoconstrained position.
-                // However, autoconstrains on the first and last pole, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
+                // However, autoconstraints on the first and last pole, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the poles,
                 // so here we retrieve any autoconstraint on those poles' center and mangle it to the endpoint.
                 if (ConstrMethod == 0) {
