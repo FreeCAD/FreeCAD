@@ -64,23 +64,8 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-#if 0
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-#endif
-
     try {
-	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
         Gui::Command::openCommand(Msg.c_str());
