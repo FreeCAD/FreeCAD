@@ -31,6 +31,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
+#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/MDIView.h>
 #include <Gui/Control.h>
@@ -66,15 +67,33 @@ bool ViewProvider::doubleClicked(void)
 {
     try {
         PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-        std::string Msg("Edit ");
-        Msg += this->pcObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        Gui::Command::openCommand(text.toUtf8());
         PartDesignGui::setEdit(pcObject,body);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
     }
     return true;
+}
+
+void ViewProvider::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
+void ViewProvider::addDefaultAction(QMenu* menu, const QString& text)
+{
+    QAction* act = menu->addAction(text);
+    act->setData(QVariant((int)ViewProvider::Default));
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    func->trigger(act, boost::bind(&ViewProvider::startDefaultEditMode, this));
 }
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
