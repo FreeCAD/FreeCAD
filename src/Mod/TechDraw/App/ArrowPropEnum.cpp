@@ -30,14 +30,14 @@
 namespace TechDraw {
 
 const int   ArrowPropEnum::ArrowCount = 8;
-const char* ArrowPropEnum::ArrowTypeEnums[]= { QT_TRANSLATE_NOOP("TechDraw", "Filled Arrow"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Open Arrow"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Tick"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Dot"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Open Circle"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Fork"),
-                               QT_TRANSLATE_NOOP("TechDraw", "Filled Triangle"),
-                               QT_TRANSLATE_NOOP("TechDraw", "None"),
+const char* ArrowPropEnum::ArrowTypeEnums[]= { "Filled Arrow",
+                               "Open Arrow",
+                               "Tick",
+                               "Dot",
+                               "Open Circle",
+                               "Fork",
+                               "Filled Triangle",
+                               "None",
                                NULL};
 
 const std::vector<std::string> ArrowPropEnum::ArrowTypeIcons = { ":icons/arrowfilled.svg",
