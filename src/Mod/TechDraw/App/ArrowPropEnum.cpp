@@ -30,7 +30,7 @@
 namespace TechDraw {
 
 const int   ArrowPropEnum::ArrowCount = 8;
-const char* ArrowPropEnum::ArrowTypeEnums[]= { "Filled Arrow",
+const char* tr(ArrowPropEnum::ArrowTypeEnums[]) = { "Filled Arrow",
                                "Open Arrow",
                                "Tick",
                                "Dot",
