@@ -226,6 +226,59 @@ class MeshGeoTestCases(unittest.TestCase):
         res=f1.intersect(f2)
         self.assertTrue(len(res) == 0)
 
+    def testIntersectionOfTransformedMesh(self):
+        self.planarMesh.append( [0.0,10.0,10.0] )
+        self.planarMesh.append( [10.0,0.0,10.0] )
+        self.planarMesh.append( [10.0,10.0,10.0] )
+        self.planarMesh.append( [6.0,8.0,10.0] )
+        self.planarMesh.append( [16.0,8.0,10.0] )
+        self.planarMesh.append( [6.0,18.0,10.0] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        mat = Base.Matrix()
+        mat.rotateX(1.0)
+        mat.rotateY(1.0)
+        mat.rotateZ(1.0)
+        planarMeshObject.transformGeometry(mat)
+
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res=f1.intersect(f2)
+        self.assertEqual(len(res), 2)
+
+    def testIntersectionOfParallelTriangles(self):
+        self.planarMesh.append( [0.0,10.0,10.0] )
+        self.planarMesh.append( [10.0,0.0,10.0] )
+        self.planarMesh.append( [10.0,10.0,10.0] )
+        self.planarMesh.append( [6.0,8.0,10.1] )
+        self.planarMesh.append( [16.0,8.0,10.1] )
+        self.planarMesh.append( [6.0,18.0,10.1] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        mat = Base.Matrix()
+        mat.rotateX(1.0)
+        mat.rotateY(1.0)
+        mat.rotateZ(1.0)
+        planarMeshObject.transformGeometry(mat)
+
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res=f1.intersect(f2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOnEdge(self):
+        self.planarMesh.append( [5.0, -1.9371663331985474, 0.49737977981567383] )
+        self.planarMesh.append( [4.0, -1.9371663331985474, 0.49737977981567383] )
+        self.planarMesh.append( [5.0, -1.9842294454574585, 0.25066646933555603] )
+        self.planarMesh.append( [4.6488823890686035, -1.7827962636947632, 0.4577442705631256] )
+        self.planarMesh.append( [4.524135112762451, -2.0620131492614746, 0.5294350385665894] )
+        self.planarMesh.append( [4.6488823890686035, -1.8261089324951172, 0.23069120943546295] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertEqual(len(res), 2)
+
     def testIntersectionCoplanar(self):
         self.planarMesh.append( [0.,10.,10.] )
         self.planarMesh.append( [10.,0.,10.] )
@@ -251,6 +304,65 @@ class MeshGeoTestCases(unittest.TestCase):
         f2 = planarMeshObject.Facets[1]
         res = f1.intersect(f2)
         self.assertTrue(len(res) == 2)
+
+    def testIntersectionOfIntersectingEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(2)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 1)
+        self.assertEqual(res[0][0], 6.0)
+        self.assertEqual(res[0][1], 10.0)
+        self.assertEqual(res[0][2], 10.0)
+
+    def testIntersectionOfParallelEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfCollinearEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [7.,0.,0.] )
+        self.planarMesh.append( [13.,0.,0.] )
+        self.planarMesh.append( [10.,4.,0.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(0)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfWarpedEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [2.,2.,1.] )
+        self.planarMesh.append( [8.,2.,1.] )
+        self.planarMesh.append( [5.,6.,1.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(1)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
 
     def testSelfIntersection(self):
         s = b"""solid Simple

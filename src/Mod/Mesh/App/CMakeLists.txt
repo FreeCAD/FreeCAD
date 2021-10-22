@@ -28,12 +28,14 @@ if (BUILD_QT5)
     )
 endif()
 
+generate_from_xml(EdgePy)
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
 generate_from_xml(MeshPointPy)
 generate_from_xml(MeshPy)
 
 SET(Mesh_XML_SRCS
+    EdgePy.xml
     FacetPy.xml
     MeshFeaturePy.xml
     MeshPointPy.xml
@@ -331,6 +333,9 @@ SET(Mesh_SRCS
     Exporter.h
     Importer.cpp
     Importer.h
+    Edge.cpp
+    Edge.h
+    EdgePyImp.cpp
     Facet.cpp
     Facet.h
     FacetPyImp.cpp

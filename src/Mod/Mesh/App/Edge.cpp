@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -15,49 +15,60 @@
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
+ *   Fifth Floor, Boston, MA  02110-1301, USA                              *
  *                                                                         *
  ***************************************************************************/
 
 
-#ifndef MESH_FACET_H
-#define MESH_FACET_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <sstream>
+#endif
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
-#include <Base/Handle.h>
+#include "Edge.h"
+#include "Mesh.h"
 
-#include <Mod/Mesh/App/Edge.h>
+using namespace Mesh;
 
-namespace Mesh
+Edge::Edge()
+  : Index(-1)
+  , Mesh(nullptr)
 {
-// forward declaration
-class MeshObject;
+    for (int i=0; i<2; i++) {
+        PIndex[i] = MeshCore::POINT_INDEX_MAX;
+        NIndex[i] = MeshCore::FACET_INDEX_MAX;
+    }
+}
 
-/** The Facet helper class
- * The MeshFacet class provides an interface for the MeshFacetPy class for
- * convenient access to the Mesh data structure. This class should not be used
- * for programming algorithms in C++. Use Mesh Core classes instead!
- */
-class MeshExport Facet : public MeshCore::MeshGeomFacet
+Edge::Edge(const Edge& e)
+  : MeshCore::MeshGeomEdge(e)
+  , Index(e.Index)
+  , Mesh(e.Mesh)
 {
-public:
-    Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(), MeshObject* obj = nullptr, MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
-    Facet(const Facet& f);
-    ~Facet();
+    for (int i=0; i<2; i++) {
+        PIndex[i] = e.PIndex[i];
+        NIndex[i] = e.NIndex[i];
+    }
+}
 
-    bool isBound() const {return Index != MeshCore::FACET_INDEX_MAX;}
-    void operator = (const Facet& f);
-    Edge getEdge(int) const;
+Edge::~Edge()
+{
+}
 
-    MeshCore::FacetIndex Index;
-    MeshCore::PointIndex PIndex[3];
-    MeshCore::FacetIndex NIndex[3];
-    Base::Reference<MeshObject> Mesh;
-};
+void Edge::operator = (const Edge& e)
+{
+    MeshCore::MeshGeomEdge::operator = (e);
+    Mesh  = e.Mesh;
+    Index = e.Index;
+    for (int i=0; i<2; i++) {
+        PIndex[i] = e.PIndex[i];
+        NIndex[i] = e.NIndex[i];
+    }
+}
 
-} // namespace Mesh
-
-
-#endif // MESH_FACET_H
+void Edge::unbound()
+{
+    Index = -1;
+    Mesh = nullptr;
+}

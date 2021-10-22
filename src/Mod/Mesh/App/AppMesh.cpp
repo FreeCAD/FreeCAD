@@ -33,6 +33,7 @@
 #include "Mesh.h"
 #include "MeshPy.h"
 #include "MeshPointPy.h"
+#include "EdgePy.h"
 #include "FacetPy.h"
 #include "MeshFeaturePy.h"
 #include "FeatureMeshImport.h"
@@ -66,6 +67,7 @@ PyMOD_INIT_FUNC(Mesh)
 
     // add mesh elements
     Base::Interpreter().addType(&Mesh::MeshPointPy  ::Type,meshModule,"MeshPoint");
+    Base::Interpreter().addType(&Mesh::EdgePy       ::Type,meshModule,"Edge");
     Base::Interpreter().addType(&Mesh::FacetPy      ::Type,meshModule,"Facet");
     Base::Interpreter().addType(&Mesh::MeshPy       ::Type,meshModule,"Mesh");
     Base::Interpreter().addType(&Mesh::MeshFeaturePy::Type,meshModule,"Feature");

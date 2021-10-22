@@ -41,7 +41,7 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 */
 
 
-#include <math.h>
+#include <cmath>
 
 #define FABS(x) ((float)fabs(x))        /* implement as is fastest on your machine */
 

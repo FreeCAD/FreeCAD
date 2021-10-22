@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -15,49 +15,49 @@
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
+ *   Fifth Floor, Boston, MA  02110-1301, USA                              *
  *                                                                         *
  ***************************************************************************/
 
 
-#ifndef MESH_FACET_H
-#define MESH_FACET_H
+#ifndef MESH_EDGE_H
+#define MESH_EDGE_H
 
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Handle.h>
 
-#include <Mod/Mesh/App/Edge.h>
+#include <Mod/Mesh/App/Core/Elements.h>
 
 namespace Mesh
 {
 // forward declaration
 class MeshObject;
 
-/** The Facet helper class
- * The MeshFacet class provides an interface for the MeshFacetPy class for
+/** The Edge helper class
+ * The Edge class provides an interface for the EdgePy class for
  * convenient access to the Mesh data structure. This class should not be used
  * for programming algorithms in C++. Use Mesh Core classes instead!
  */
-class MeshExport Facet : public MeshCore::MeshGeomFacet
+class MeshExport Edge : public MeshCore::MeshGeomEdge
 {
 public:
-    Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(), MeshObject* obj = nullptr, MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
-    Facet(const Facet& f);
-    ~Facet();
+    Edge();
+    Edge(const Edge& f);
+    ~Edge();
 
-    bool isBound() const {return Index != MeshCore::FACET_INDEX_MAX;}
-    void operator = (const Facet& f);
-    Edge getEdge(int) const;
+    bool isBound() const {return Index != -1;}
+    void unbound();
+    void operator = (const Edge& f);
 
-    MeshCore::FacetIndex Index;
-    MeshCore::PointIndex PIndex[3];
-    MeshCore::FacetIndex NIndex[3];
+    int Index;
+    MeshCore::PointIndex PIndex[2];
+    MeshCore::FacetIndex NIndex[2];
     Base::Reference<MeshObject> Mesh;
 };
 
 } // namespace Mesh
 
 
-#endif // MESH_FACET_H
+#endif // MESH_EDGE_H

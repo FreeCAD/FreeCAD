@@ -274,6 +274,11 @@ public:
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
     }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
+    }
 
 private:
     // disable

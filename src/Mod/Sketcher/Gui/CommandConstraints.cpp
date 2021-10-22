@@ -7137,7 +7137,7 @@ bool CmdSketcherConstrainSnellsLaw::isActive(void)
 DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment)
 
 // NOTE: This command is deprecated. Nobody seriously uses today manual creation of an internal alignment constraint
-// The only reason this code remains is the extremelly unlikely scenario that some user macro may rely on it.
+// The only reason this code remains is the extremely unlikely scenario that some user macro may rely on it.
 CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     :Command("Sketcher_ConstrainInternalAlignment")
 {

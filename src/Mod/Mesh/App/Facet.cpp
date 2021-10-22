@@ -69,3 +69,23 @@ void Facet::operator = (const Facet& f)
         NIndex[i] = f.NIndex[i];
     }
 }
+
+Edge Facet::getEdge(int index) const
+{
+    index = index % 3;
+    Edge edge;
+    // geometric coordinates
+    edge._aclPoints[0] = this->_aclPoints[index];
+    edge._aclPoints[1] = this->_aclPoints[(index + 1) % 3];
+
+    // indices
+    edge.Index = index;
+    edge.PIndex[0] = this->PIndex[index];
+    edge.PIndex[1] = this->PIndex[(index + 1) % 3];
+    edge.NIndex[0] = this->Index;
+    edge.NIndex[1] = this->NIndex[index];
+    edge._bBorder = (this->NIndex[index] == MeshCore::FACET_INDEX_MAX);
+
+    edge.Mesh = this->Mesh;
+    return edge;
+}
