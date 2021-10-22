@@ -498,6 +498,7 @@ class DraftToolBar:
         self.layout.addLayout(al)
         self.labellength = self._label("labellength", ll)
         self.lengthValue = self._inputfield("lengthValue", ll)
+        self.lengthValue.installEventFilter(self.baseWidget) # Required to detect snap cycling if focusOnLength is True.
         self.lengthValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelangle = self._label("labelangle", al)
         self.angleLock = self._checkbox("angleLock",al,checked=self.alock)
