@@ -476,11 +476,11 @@ def emulFastMove(c, state): #Let's separate Z
                 else:
                     cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
                         ["M400", {}],
-                        ["G1", {'X' : params['X'],  'F': F}]]
+                        ["G1", {'X' : params['X'],  'Y' : state["lasty"], 'F': F}]]
             else:
                 cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
                         ["M400", {}],
-                        ["G1", {'Y' : params['Y'],  'F': F}]]
+                        ["G1", {'X' : state["lastx"], 'Y' : params['Y'],  'F': F}]]
 
         else:
             cmdlist = [["G1", {'Z' : params['Z'], 'F': F2}]]
@@ -489,9 +489,12 @@ def emulFastMove(c, state): #Let's separate Z
             if 'Y' in params:
                 cmdlist = [["G1", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
             else:
-                cmdlist = [["G1", {'X' : params['X'], 'F': F}]]
+                cmdlist = [["G1", {'X' : params['X'], 'Y' : state["lasty"], 'F': F}]]
         else:
-            cmdlist = [["G1", {'Y' : params['Y'], 'F': F}]]
+            if 'Y' in params:
+                cmdlist = [["G1", {'X' : state["lastx"], 'Y' : params['Y'], 'F': F}]]
+            else:
+                cmdlist = [["G1", {'X' : state["lastx"], 'Y' : state["lasty"], 'F': F}]]
                 
     return iter(cmdlist)
    
