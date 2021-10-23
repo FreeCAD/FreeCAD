@@ -646,7 +646,7 @@ void MainWindow::initDockWindows(bool show)
             [](QWidget *widget) {
                 if(widget)
                     return widget;
-                widget = new TaskView::TaskView();
+                widget = new TaskView::TaskView(getMainWindow());
                 widget->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
                 return widget;
             });
