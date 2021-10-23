@@ -220,6 +220,11 @@ if(FREECAD_USE_PYSIDE)
     endif()
 endif(FREECAD_USE_PYSIDE)
 
+if(BUILD_BGFX)
+    add_definitions(-DHAVE_BGFX)
+    list(APPEND FreeCADGui_LIBS bgfx bx bimg example-common)
+endif(BUILD_BGFX)
+
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
@@ -977,6 +982,7 @@ SET(View3D_CPP_SRCS
     CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
+    BGFXRenderer.cpp
     NaviCube.cpp
 )
 SET(View3D_SRCS
@@ -996,6 +1002,7 @@ SET(View3D_SRCS
     View3DInventorRiftViewer.h
     CoinRiftWidget.h
     View3DViewerPy.h
+    BGFXRenderer.h
     NaviCube.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})

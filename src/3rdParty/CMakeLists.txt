@@ -3,4 +3,9 @@ if (BUILD_SMESH AND NOT FREECAD_USE_EXTERNAL_SMESH)
     add_subdirectory(salomesmesh)
 endif()
 
+if (BUILD_BGFX)
+    set(BGFX_LIBRARY_TYPE "SHARED")
+    add_subdirectory(bgfx)
+endif()
+
 add_subdirectory(lazy_loader)

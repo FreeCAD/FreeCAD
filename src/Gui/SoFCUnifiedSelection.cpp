@@ -355,6 +355,9 @@ SoFCRenderCacheManager *SoFCUnifiedSelection::getRenderManager()
 
 void SoFCUnifiedSelection::getBoundingBox(SoGetBoundingBoxAction * action)
 {
+    if (pimpl->pcViewer)
+        pimpl->pcViewer->onGetBoundingBox(action);
+
     if (pimpl->useRenderer() && pimpl->manager.getSceneNodeId() == getNodeId()) {
         bool usecache = true;
         switch (action->getCurPathCode()) {

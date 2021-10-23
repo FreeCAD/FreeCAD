@@ -67,29 +67,30 @@ void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
+    glPushAttrib(GL_ENABLE_BIT | GL_DEPTH_BUFFER_BIT);
+    // glDisable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
     glBegin(GL_TRIANGLE_STRIP);
     if (mCol[0] < 0) {
-        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
+        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex3f(-1, 1, -1);
+        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex3f(-1,-1, -1);
+        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex3f( 1, 1, -1);
+        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex3f( 1,-1, -1);
     }
     else {
-        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f(-1, 1);
-        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex2f( 1, 1);
-        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
+        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex3f(-1, 1, -1);
+        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex3f(-1, 0, -1);
+        glColor3f(fCol[0],fCol[1],fCol[2]); glVertex3f( 1, 1, -1);
+        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex3f( 1, 0, -1);
         glEnd();
         glBegin(GL_TRIANGLE_STRIP);
-        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f(-1, 0);
-        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f(-1,-1);
-        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex2f( 1, 0);
-        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex2f( 1,-1);
+        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex3f(-1, 0, -1);
+        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex3f(-1,-1, -1);
+        glColor3f(mCol[0],mCol[1],mCol[2]); glVertex3f( 1, 0, -1);
+        glColor3f(tCol[0],tCol[1],tCol[2]); glVertex3f( 1,-1, -1);
     }
     glEnd();
 

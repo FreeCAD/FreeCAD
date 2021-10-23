@@ -49,6 +49,7 @@
 class SoTranslation;
 class SoTransform;
 class SoText2;
+class SoGetBoundingBoxAction;
 
 class SoSeparator;
 class SoDetail;
@@ -458,6 +459,8 @@ public:
     void toggleShadowLightManip(int toggle = -1);
 
     void setTransparencyOnTop(float t);
+
+    void onGetBoundingBox(SoGetBoundingBoxAction *);
 
     struct Private;
     friend struct Private;

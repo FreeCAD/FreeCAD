@@ -111,6 +111,7 @@
 #endif
 
 #include <QVariantAnimation>
+#include <QOpenGLWidget>
 
 #include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -176,6 +177,7 @@
 #include "ViewParams.h"
 
 #include "ViewProviderLink.h"
+#include "BGFXRenderer.h"
 
 namespace bp = boost::placeholders;
 
@@ -456,6 +458,8 @@ struct View3DInventorViewer::Private
     SoRayPickAction         pickAction;
     SoGetMatrixAction       pickMatrixAction;
 
+    std::unique_ptr<BGFXRenderer> bgfxRenderer;
+
     boost::signals2::scoped_connection connDocChange;
 
     Private(View3DInventorViewer *owner)
@@ -553,6 +557,10 @@ void View3DInventorViewer::init()
     // Coin should not clear the pixel-buffer, so the background image
     // is not removed.
     this->setClearWindow(false);
+
+    // In order to support blit FBO rendered by external render engine, we
+    // shall not clear depth buffer here.
+    this->setClearZBuffer(false);
 
     // setting up the defaults for the spin rotation
     initialize();
@@ -834,6 +842,7 @@ void View3DInventorViewer::init()
     naviCubeEnabled = true;
 
     updateHatchTexture();
+
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -3392,6 +3401,15 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
+void View3DInventorViewer::onGetBoundingBox(SoGetBoundingBoxAction *action)
+{
+    if (_pimpl->bgfxRenderer) {
+        float xmin, ymin, zmin, xmax, ymax, zmax;
+        if (_pimpl->bgfxRenderer->boundBox(xmin, ymin, zmin, xmax, ymax, zmax))
+            action->extendBy(SbBox3f(xmin, ymin, zmin, xmax, ymax, zmax));
+    }
+}
+
 // #define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
 // so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
@@ -3421,8 +3439,35 @@ void View3DInventorViewer::renderScene(void)
         }
     } else
         col = this->backgroundColor();
-    glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Done in bgfxRenderer below
+    //
+    // glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (!_pimpl->bgfxRenderer)
+        _pimpl->bgfxRenderer.reset(
+                new BGFXRenderer(qobject_cast<QOpenGLWidget*>(getGLWidget())));
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    SbMatrix viewMat, projMat;
+    if (cam) {
+        const SbViewportRegion vp = getSoRenderManager()->getViewportRegion();
+        SbViewVolume vol = cam->getViewVolume(vp.getViewportAspectRatio());
+        // float zNear = -1000.f, zFar = 1000.f;
+        // float near = 1.0f, far = 0.0f;
+        // if (vol.getNearDist() > zNear)
+        //     near = (vol.getNearDist() - zNear) / vol.getDepth() + 1.0f;
+        // if (vol.getDepth() < zFar)
+        //     far = 1.0f - zFar / std::max(vol.getDepth(), 1e-6f);
+        // vol = vol.zNarrow(near, far);
+        vol.getMatrices(viewMat, projMat);
+    } else {
+        viewMat = SbMatrix::identity();
+        projMat = SbMatrix::identity();
+    }
+    if (_pimpl->bgfxRenderer->render(col, &viewMat.getValue(), &projMat.getValue()))
+        getSoRenderManager()->scheduleRedraw();
+
     glEnable(GL_DEPTH_TEST);
 
 #if defined(ENABLE_GL_DEPTH_RANGE)

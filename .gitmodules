@@ -1,0 +1,3 @@
+[submodule "src/3rdParty/bgfx"]
+	path = src/3rdParty/bgfx
+	url = https://github.com/realthunder/bgfx.cmake.git
