@@ -2480,6 +2480,54 @@ bool StdCmdViewIvIssueCamPos::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("GetCamera");
 }
 
+//===========================================================================
+// Std_ViewZoomActual
+//===========================================================================
+DEF_STD_CMD_A(StdViewZoomActual)
+
+StdViewZoomActual::StdViewZoomActual()
+  : Command("Std_ViewZoomActual")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Zoom Actual");
+    sToolTipText  = QT_TR_NOOP("Zoom to actual size (1:1) so objects appear their actual size on your screen.");
+    sWhatsThis    = "Std_ViewZoomActual";
+    sStatusTip    = QT_TR_NOOP("Zoom Actual");
+    sPixmap       = "zoom-actual";
+    eType         = Alter3DView;
+}
+/**
+ * @brief StdViewZoomActual::activated
+ * Based on a macro by kisolre
+ * forum.freecadweb.org/viewtopic.php?p=407855#p407855
+ * The pixels of screen resolution are divided by the physical
+ * dots per inch, converted to metric, and used to set the height
+ * of the camera so objects on the screen appear their actual size
+ * After executing this command you should be able
+ * to roughly measure with a ruler an object on the screen.
+ * For example, a default cube should measure 10mm across.
+ * Should this prove inaccurate on a given machine a tweak parameter
+ * can be used: ZoomActualTweak in BaseApp/Preferences/View
+ * Usage: If the object is 1.5 times the expected size, enter 1.5 for the
+ * tweak parameter.
+ */
+
+void StdViewZoomActual::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+    double tweak = group->GetFloat("ZoomActualTweak", 1.0);
+    group->SetFloat("ZoomActualTweak",tweak);
+    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.ActiveDocument.ActiveView.getCameraNode().height\
+.setValue(min(Gui.activeView().getSize()[0], Gui.activeView().getSize()[1]) * %f * 25.4 / Gui.getMainWindow().physicalDpiX())", tweak);
+}
+
+bool StdViewZoomActual::isActive(void)
+{
+    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+}
 
 //===========================================================================
 // Std_ViewZoomIn
@@ -3827,6 +3875,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewSaveCamera());
     rcCmdMgr.addCommand(new StdCmdViewRestoreCamera());
     rcCmdMgr.addCommand(new StdCmdFreezeViews());
+    rcCmdMgr.addCommand(new StdViewZoomActual());
     rcCmdMgr.addCommand(new StdViewZoomIn());
     rcCmdMgr.addCommand(new StdViewZoomOut());
     rcCmdMgr.addCommand(new StdViewBoxZoom());
