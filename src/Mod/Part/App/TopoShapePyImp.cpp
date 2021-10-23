@@ -26,6 +26,7 @@
 # include <sstream>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
@@ -2198,26 +2199,49 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
     PyObject* checkFace = Py_False;
     TopAbs_State stateIn = TopAbs_IN;
     if (!PyArg_ParseTuple(args, "O!dO!", &(Base::VectorPy::Type), &point, &tolerance,  &PyBool_Type, &checkFace))
-        return NULL;
+        return nullptr;
+
     try {
         TopoDS_Shape shape = getTopoShapePtr()->getShape();
-        BRepClass3d_SolidClassifier solidClassifier(shape);
+        if (shape.IsNull()) {
+            PyErr_SetString(PartExceptionOCCError, "Cannot handle null shape");
+            return nullptr;
+        }
+
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(point)->value();
         gp_Pnt vertex = gp_Pnt(pnt.x,pnt.y,pnt.z);
-        solidClassifier.Perform(vertex, tolerance);
-        Standard_Boolean test = (solidClassifier.State() == stateIn);
-        if (PyObject_IsTrue(checkFace) && (solidClassifier.IsOnAFace()))
-            test = Standard_True;
-        return Py_BuildValue("O", (test ? Py_True : Py_False));
+        if (shape.ShapeType() == TopAbs_VERTEX ||
+            shape.ShapeType() == TopAbs_EDGE ||
+            shape.ShapeType() == TopAbs_WIRE) {
+
+            BRepBuilderAPI_MakeVertex mkVertex(vertex);
+            BRepExtrema_DistShapeShape extss;
+            extss.LoadS1(mkVertex.Vertex());
+            extss.LoadS2(shape);
+            if (!extss.Perform()) {
+                PyErr_SetString(PartExceptionOCCError, "Failed to determine distance to shape");
+                return nullptr;
+            }
+            Standard_Boolean test = (extss.Value() <= tolerance);
+            return Py_BuildValue("O", (test ? Py_True : Py_False));
+        }
+        else {
+            BRepClass3d_SolidClassifier solidClassifier(shape);
+            solidClassifier.Perform(vertex, tolerance);
+            Standard_Boolean test = (solidClassifier.State() == stateIn);
+
+            if (PyObject_IsTrue(checkFace) && (solidClassifier.IsOnAFace()))
+                test = Standard_True;
+            return Py_BuildValue("O", (test ? Py_True : Py_False));
+        }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return NULL;
+        return nullptr;
     }
     catch (const std::exception& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return NULL;
+        return nullptr;
     }
 }
 
