@@ -468,9 +468,20 @@ def emulFastMove(c, state): #Let's separate Z
         
     if 'Z' in params:
         if 'X' in params or 'Y' in params:
-            cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
+            if 'X' in params:
+                if 'Y' in params:
+                    cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
                         ["M400", {}],
                         ["G1", {'X' : params['X'], 'Y': params['Y'], 'F': F}]]
+                else:
+                    cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
+                        ["M400", {}],
+                        ["G1", {'X' : params['X'],  'F': F}]]
+            else:
+                cmdlist =  [["G1", {'Z' : params['Z'], 'F': F2}],
+                        ["M400", {}],
+                        ["G1", {'Y' : params['Y'],  'F': F}]]
+
         else:
             cmdlist = [["G1", {'Z' : params['Z'], 'F': F2}]]
     else:
