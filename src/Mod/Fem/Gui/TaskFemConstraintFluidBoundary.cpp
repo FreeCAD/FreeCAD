@@ -132,7 +132,7 @@ void initComboBox(QComboBox* combo, const std::vector<std::string>& textItems, c
 
 /* TRANSLATOR FemGui::TaskFemConstraintFluidBoundary */
 TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintFluidBoundary")
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintFluidBoundary")
     , dimension(-1)
 {
     // we need a separate container widget to add all controls to
@@ -175,8 +175,10 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     ui->checkReverse->blockSignals(true);
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     // Get the feature data
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
@@ -557,6 +559,9 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
     // sets the normal vector of the currently selecteed planar face as direction
 
     Q_UNUSED(pressed)
+
+    clearButtons(none);
+
     //get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.size() == 0) {
@@ -861,6 +866,12 @@ void TaskFemConstraintFluidBoundary::changeEvent(QEvent *e)
 
         ui->spinBoundaryValue->blockSignals(false);
     }
+}
+
+void TaskFemConstraintFluidBoundary::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

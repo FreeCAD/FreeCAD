@@ -33,6 +33,7 @@
 #include <Base/Quantity.h>
 
 #include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintHeatflux.h"
 
 #include <QObject>
@@ -43,7 +44,7 @@
 class Ui_TaskFemConstraintHeatflux;
 
 namespace FemGui {
-class TaskFemConstraintHeatflux : public TaskFemConstraint
+class TaskFemConstraintHeatflux : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -70,6 +71,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();

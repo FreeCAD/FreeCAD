@@ -88,16 +88,22 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QPushButton" name="btnAdd">
+        <widget class="QToolButton" name="btnAdd">
          <property name="text">
           <string>Add</string>
+         </property>
+         <property name="checkable">
+           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnRemove">
+        <widget class="QToolButton" name="btnRemove">
          <property name="text">
           <string>Remove</string>
+         </property>
+         <property name="checkable">
+           <bool>true</bool>
          </property>
         </widget>
        </item>
