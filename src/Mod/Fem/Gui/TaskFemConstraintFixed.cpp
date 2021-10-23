@@ -60,7 +60,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintFixed */
 
 TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintFixed")
+  : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintFixed")
 { //Note change "Fixed" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintFixed();
@@ -96,8 +96,10 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *C
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -242,6 +244,12 @@ bool TaskFemConstraintFixed::event(QEvent *e)
 
 void TaskFemConstraintFixed::changeEvent(QEvent *)
 {
+}
+
+void TaskFemConstraintFixed::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

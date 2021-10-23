@@ -59,8 +59,8 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintSpring */
 
 TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView, QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintSpring")
-{ 
+  : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintSpring")
+{
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintSpring();
     ui->setupUi(proxy);
@@ -95,7 +95,7 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     ui->if_tan->setMaximum(FLOAT_MAX);
     Base::Quantity ts = Base::Quantity((pcConstraint->tangentialStiffness.getValue()), Base::Unit::Stiffness);
     ui->if_tan->setValue(ts);
-    
+
 /* */
 
     ui->lw_references->clear();
@@ -107,8 +107,10 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -259,6 +261,12 @@ bool TaskFemConstraintSpring::event(QEvent *e)
 
 void TaskFemConstraintSpring::changeEvent(QEvent *)
 {
+}
+
+void TaskFemConstraintSpring::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

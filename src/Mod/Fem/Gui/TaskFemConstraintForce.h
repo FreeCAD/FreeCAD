@@ -30,6 +30,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
 
 #include <QKeyEvent>
@@ -47,7 +48,7 @@ class ViewProvider;
 
 namespace FemGui {
 
-class TaskFemConstraintForce : public TaskFemConstraint
+class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -71,6 +72,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;

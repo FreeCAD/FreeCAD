@@ -70,7 +70,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintForce */
 
 TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintForce")
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintForce")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -128,8 +128,10 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
     ui->checkReverse->blockSignals(false);
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -315,6 +317,8 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
     // sets the normal vector of the currently selecteed planar face as direction
     Q_UNUSED(pressed)
 
+    clearButtons(none);
+
     auto link = getDirection(Gui::Selection().getSelectionEx());
     if (!link.first) {
         QMessageBox::warning(this, tr("Wrong selection"), tr("Select an edge or a face, please."));
@@ -400,6 +404,12 @@ void TaskFemConstraintForce::changeEvent(QEvent *e)
         ui->retranslateUi(proxy);
         ui->spinForce->blockSignals(false);
     }
+}
+
+void TaskFemConstraintForce::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

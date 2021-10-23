@@ -31,6 +31,7 @@
 #include <Mod/Fem/App/FemSolverObject.h>
 
 #include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
 #include <QKeyEvent>
@@ -47,7 +48,7 @@ class ViewProvider;
 
 namespace FemGui {
 
-class TaskFemConstraintFluidBoundary : public TaskFemConstraint
+class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -92,6 +93,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateBoundaryTypeUI();
