@@ -34,6 +34,7 @@
 #include <Mod/Mesh/App/Types.h>
 
 class QAbstractButton;
+class QScrollArea;
 
 namespace Gui {
 class View3DInventor;
@@ -159,6 +160,7 @@ public:
     QSize sizeHint () const;
 
 private:
+    QScrollArea* scrollArea;
     static DockEvaluateMeshImp* _instance;
 };
 
