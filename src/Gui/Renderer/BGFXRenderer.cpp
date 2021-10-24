@@ -20,29 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+#include "../PreCompiled.h"
 #include "BGFXRenderer.h"
-
-#ifndef HAVE_BGFX
-BGFXRenderer::BGFXRenderer(QOpenGLWidget *)
-{
-}
-
-BGFXRenderer::~BGFXRenderer()
-{
-}
-
-bool BGFXRendere::render(const QColor &col,
-                         const void * viewMatrix,
-                         const void * projMatrix)
-{
-    (void)viewMatrix;
-    (void)projMatrix;
-    glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    return false;
-}
-#else // HAVE_BGFX
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
@@ -77,6 +56,7 @@ bool BGFXRendere::render(const QColor &col,
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+#include <QWindow>
 
 #include <Base/Console.h>
 
@@ -103,63 +83,14 @@ typedef QCocoaNativeContext OpenGLContext;
 FC_LOG_LEVEL_INIT("bgfx", true, true);
 
 using namespace Gui;
+using namespace bgfx;
 
 extern "C" int _main_(int, char**) {
     FC_LOG("begin");
     return 0;
 }
 
-struct PosColorVertex
-{
-	float m_x;
-	float m_y;
-	float m_z;
-	uint32_t m_abgr;
-
-	static void init()
-	{
-		ms_layout
-			.begin()
-			.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
-			.add(bgfx::Attrib::Color0,   4, bgfx::AttribType::Uint8, true)
-			.end();
-	};
-
-	static bgfx::VertexLayout ms_layout;
-};
-
-bgfx::VertexLayout PosColorVertex::ms_layout;
-
-static PosColorVertex s_cubeVertices[8] =
-{
-	{-1.0f,  1.0f,  1.0f, 0xff000000 },
-	{ 1.0f,  1.0f,  1.0f, 0xff0000ff },
-	{-1.0f, -1.0f,  1.0f, 0xff00ff00 },
-	{ 1.0f, -1.0f,  1.0f, 0xff00ffff },
-	{-1.0f,  1.0f, -1.0f, 0xffff0000 },
-	{ 1.0f,  1.0f, -1.0f, 0xffff00ff },
-	{-1.0f, -1.0f, -1.0f, 0xffffff00 },
-	{ 1.0f, -1.0f, -1.0f, 0xffffffff },
-};
-
-static const uint16_t s_cubeIndices[36] =
-{
-	0, 1, 2, // 0
-	1, 3, 2,
-	4, 6, 5, // 2
-	5, 6, 7,
-	0, 2, 4, // 4
-	4, 2, 6,
-	1, 5, 3, // 6
-	5, 7, 3,
-	0, 4, 1, // 8
-	4, 5, 1,
-	2, 3, 6, // 10
-	6, 3, 7,
-};
-
-typedef void (*FreeResourceFunc)(QOpenGLFunctions *functions, GLuint id);
-typedef std::vector<std::pair<GLuint, FreeResourceFunc>> PendingRemoves;
+////////////////////////////////////////////////////////
 
 namespace
 {
@@ -247,6 +178,169 @@ namespace
     #define checkFramebufferStatus() _checkFramebufferStatus(__LINE__)
 }
 
+////////////////////////////////////////////////////////
+
+class BGFXView;
+
+namespace Gui {
+
+class BGFXRendererLibP {
+public:
+    BGFXRendererLibP() {
+        for (auto &v : typeMap)
+            types.push_back(v.first);
+    }
+
+    BGFXView *getView(QOpenGLWidget *widget, RendererType::Enum type);
+
+    void removeView(QOpenGLWidget *widget);
+
+    bool prepare(QOpenGLWidget *widget, RendererType::Enum type)
+    {
+        if (!context) {
+            context.reset(new QOpenGLContext);
+            auto format = widget->format();
+            context->setShareContext(QOpenGLContext::globalShareContext());
+            context->setFormat(format);
+            context->create();
+            offscreen.reset(new QOffscreenSurface);
+            offscreen->setFormat(format);
+            offscreen->create();
+        }
+
+        if (currentType == RendererType::Noop) {
+            currentType = type;
+
+            bgfx::renderFrame();
+            bgfx::Init init;
+            init.type = currentType;
+
+            if (currentType == RendererType::OpenGL) {
+                makeCurrent();
+                init.platformData.context = qvariant_cast<OpenGLContext>(
+                    context->nativeHandle()).context();
+            } else {
+                window = new QWindow();
+                window->setObjectName(QLatin1String("bgfxScreenSurface"));
+                // d->offscreenWindow->setSurfaceType(QWindow::OpenGLSurface);
+                // d->offscreenWindow->setFormat(d->requestedFormat);
+                window->setGeometry(0, 0, widget->width(), widget->height());
+                window->create();
+                init.platformData.nwh = (void*)window->winId();
+            }
+            init.resolution.width = widget->width();
+            init.resolution.height = widget->height();
+            init.resolution.reset = BGFX_RESET_VSYNC;
+            if (!bgfx::init(init)) {
+                widget->makeCurrent();
+                FC_ERR("bgfx init failed");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void shutdown();
+
+    void makeCurrent()
+    {
+        context->makeCurrent(offscreen.get());
+        for (auto &v : pendingRemoves)
+            v.second(context->functions(), v.first);
+        pendingRemoves.clear();
+    }
+
+    void doneCurrent()
+    {
+        context->doneCurrent();
+    }
+
+    void freeFBO(GLint fbo)
+    {
+        pendingRemoves.emplace_back(fbo, freeFramebufferFunc);
+    }
+
+    typedef void (*FreeResourceFunc)(QOpenGLFunctions *functions, GLuint id);
+    std::vector<std::pair<GLuint, FreeResourceFunc>> pendingRemoves;
+    std::unordered_map<QOpenGLWidget *, std::unique_ptr<BGFXView>> views;
+    std::set<uint16_t> viewIds;
+    std::unique_ptr<QOpenGLContext> context;
+    std::unique_ptr<QOffscreenSurface> offscreen;
+
+    std::map<std::string, RendererType::Enum> typeMap = {
+        {"bgfx - OpenGL", RendererType::OpenGL},
+        {"bgfx - Vulkan", RendererType::Vulkan},
+#ifdef FC_OS_WIN32
+        {"bgfx - Direct3D9", RendererType::Direct3D9},
+        {"bgfx - Direct3D11", RendererType::Direct3D11},
+        {"bgfx - Direct3D12", RendererType::Direct3D12},
+#elif defined(FC_OS_MACOSX)
+        {"bgfx - Metal", RendererType::Metal},
+#endif
+    };
+    std::vector<std::string> types;
+    RendererType::Enum currentType = RendererType::Noop;
+    std::string name = "bgfx";
+    std::set<BGFXRenderer::Private *> renderers;
+    QWindow *window = nullptr;
+};
+
+BGFXRendererLibP _BGFXLib;
+BGFXRendererLib BGFXLib;
+
+} // namespace Gui
+
+struct PosColorVertex
+{
+	float m_x;
+	float m_y;
+	float m_z;
+	uint32_t m_abgr;
+
+	static void init()
+	{
+		ms_layout
+			.begin()
+			.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
+			.add(bgfx::Attrib::Color0,   4, bgfx::AttribType::Uint8, true)
+			.end();
+	};
+
+	static bgfx::VertexLayout ms_layout;
+};
+
+bgfx::VertexLayout PosColorVertex::ms_layout;
+
+static PosColorVertex s_cubeVertices[8] =
+{
+	{-1.0f,  1.0f,  1.0f, 0xff000000 },
+	{ 1.0f,  1.0f,  1.0f, 0xff0000ff },
+	{-1.0f, -1.0f,  1.0f, 0xff00ff00 },
+	{ 1.0f, -1.0f,  1.0f, 0xff00ffff },
+	{-1.0f,  1.0f, -1.0f, 0xffff0000 },
+	{ 1.0f,  1.0f, -1.0f, 0xffff00ff },
+	{-1.0f, -1.0f, -1.0f, 0xffffff00 },
+	{ 1.0f, -1.0f, -1.0f, 0xffffffff },
+};
+
+static const uint16_t s_cubeIndices[36] =
+{
+	0, 1, 2, // 0
+	1, 3, 2,
+	4, 6, 5, // 2
+	5, 6, 7,
+	0, 2, 4, // 4
+	4, 2, 6,
+	1, 5, 3, // 6
+	5, 7, 3,
+	0, 4, 1, // 8
+	4, 5, 1,
+	2, 3, 6, // 10
+	6, 3, 7,
+};
+
+////////////////////////////////////////////////////////
+
 class BGFXView
 {
 public:
@@ -278,8 +372,7 @@ public:
             m_program_non_instanced = BGFX_INVALID_HANDLE;
         }
         if (hasFBO) {
-            assert(pendingRemoves);
-            pendingRemoves->emplace_back(fbo, freeFramebufferFunc);
+            _BGFXLib.freeFBO(fbo);
             hasFBO = false;
         }
     }
@@ -322,7 +415,6 @@ public:
         bgfxFbo = bgfx::createFrameBuffer(2, attachment, true);
 
         bgfx::setViewFrameBuffer(viewId, bgfxFbo);
-
 
         m_timeOffset = bx::getHPCounter();
 
@@ -474,102 +566,6 @@ public:
 	bgfx::ProgramHandle m_program_non_instanced = BGFX_INVALID_HANDLE;
     GLuint fbo = 0;
     bool hasFBO = false;
-    PendingRemoves *pendingRemoves;
-};
-
-class BGFXSharedData : public QObject
-{
-public:
-    BGFXSharedData(QOpenGLWidget *widget)
-    {
-        auto format = widget->format();
-        context.setShareContext(QOpenGLContext::globalShareContext());
-        context.setFormat(format);
-        context.create();
-
-        offscreen.setFormat(format);
-        offscreen.create();
-
-        makeCurrent();
-
-        bgfx::renderFrame();
-        bgfx::Init init;
-        init.platformData.context = qvariant_cast<OpenGLContext>(
-                context.nativeHandle()).context();
-        init.resolution.width = widget->width();
-        init.resolution.height = widget->height();
-        init.resolution.reset = BGFX_RESET_VSYNC;
-        bgfx::renderFrame();
-        if (!bgfx::init(init)) {
-            FC_ERR("bgfx init failed");
-        }
-    }
-
-    ~BGFXSharedData()
-    {
-        bgfx::shutdown();
-    }
-
-    static std::shared_ptr<BGFXSharedData> instance(QOpenGLWidget *widget)
-    {
-        static std::weak_ptr<BGFXSharedData> _instance;
-        if (auto res = _instance.lock())
-            return res;
-        auto res = std::make_shared<BGFXSharedData>(widget);
-        _instance = res;
-        return res;
-    }
-
-    BGFXView &getView(QOpenGLWidget *widget)
-    {
-        auto &view = views[widget];
-        if (!view.widget) {
-            view.pendingRemoves = &pendingRemoves;
-            view.widget = widget;
-            view.viewId = 0;
-            for (int id : viewIds) {
-                if (view.viewId == id)
-                    ++view.viewId;
-                else
-                    break;
-            }
-            viewIds.insert(view.viewId);
-        } 
-        
-        if (widget->width() != int(view.width)
-                || widget->height() != int(view.height))
-            view.init();
-
-        return view;
-    }
-
-    void makeCurrent()
-    {
-        context.makeCurrent(&offscreen);
-        for (auto &v : pendingRemoves)
-            v.second(context.functions(), v.first);
-        pendingRemoves.clear();
-    }
-
-    void doneCurrent()
-    {
-        context.doneCurrent();
-    }
-
-    void removeView(QOpenGLWidget *widget)
-    {
-        auto it = views.find(widget);
-        if (it != views.end()) {
-            viewIds.erase(it->second.viewId);
-            views.erase(it);
-        }
-    }
-
-    PendingRemoves pendingRemoves;
-    std::unordered_map<QOpenGLWidget *, BGFXView> views;
-    std::set<uint16_t> viewIds;
-    QOpenGLContext context;
-    QOffscreenSurface offscreen;
 };
 
 #include <3rdParty/bgfx/bgfx/examples/00-helloworld/logo.h>
@@ -580,50 +576,65 @@ public:
     Private(QOpenGLWidget *widget)
         :widget(widget)
     {
+        _BGFXLib.renderers.insert(this);
     }
 
     ~Private()
     {
-        if (shared)
-            shared->removeView(widget);
+        _BGFXLib.renderers.erase(this);
+        deinit();
+    }
+
+    void deinit()
+    {
+        _deinit = true;
+        _BGFXLib.removeView(widget);
     }
 
     bool render(const QColor &col,
                 const void * viewMatrix,
                 const void * projMatrix)
     {
-        if (!shared)
-            shared = BGFXSharedData::instance(widget);
+        if (_deinit)
+            return false;
 
-        auto &view = shared->getView(widget);
-        if (!bgfx::isValid(view.bgfxFbo)) {
+        auto view = _BGFXLib.getView(widget, type); 
+        if (!view)
+            return false;
+
+        if (widget->width() != int(view->width)
+                || widget->height() != int(view->height))
+            view->init();
+
+        if (!bgfx::isValid(view->bgfxFbo)) {
             widget->makeCurrent();
             return false;
         }
 
-        int id =  view.viewId;
-        uint16_t width = view.width;
-        uint16_t height = view.height;
+        int id =  view->viewId;
+        uint16_t width = view->width;
+        uint16_t height = view->height;
 		bgfx::setDebug(BGFX_DEBUG_TEXT);
 		bgfx::setViewClear(id, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH , col.rgba64(), 1.0f , 0);
         bgfx::setViewRect(id, 0, 0, width, height);
 
-
         bgfx::setViewTransform(id, viewMatrix, projMatrix);
         bgfx::touch(id);
 
-        view.render();
+        view->render();
 
         widget->doneCurrent();
-        shared->makeCurrent();
+        _BGFXLib.makeCurrent();
         bgfx::frame();
         widget->makeCurrent();
-        view.blit();
+        view->blit();
         return true;
     }
 
     QOpenGLWidget *widget;
-    std::shared_ptr<BGFXSharedData> shared;
+    bool _deinit = false;
+    RendererType::Enum type;
+    std::string typeName;
 };
 
 BGFXRenderer::BGFXRenderer(QOpenGLWidget *widget)
@@ -650,4 +661,94 @@ bool BGFXRenderer::boundBox(float &xmin, float &ymin, float &zmin,
     return true;
 }
 
-#endif // HAVE_BGFX
+const std::string &BGFXRenderer::type() const
+{
+    return pimpl->typeName;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+BGFXRendererLib::BGFXRendererLib()
+{
+    RendererFactory::registerLib(this);
+}
+
+const std::string &BGFXRendererLib::name() const
+{
+    return _BGFXLib.name;
+}
+
+const std::vector<std::string> &BGFXRendererLib::types() const
+{
+    return _BGFXLib.types;
+}
+
+std::unique_ptr<Renderer> BGFXRendererLib::create(
+        const std::string &type, QOpenGLWidget *widget) const
+{
+    std::unique_ptr<Renderer> res;
+    auto it = _BGFXLib.typeMap.find(type);
+    if (it == _BGFXLib.typeMap.end()) {
+        FC_WARN("Unsupported renderer type " << type);
+        return res;
+    }
+    if (_BGFXLib.currentType != it->second) {
+        for (auto renderer : _BGFXLib.renderers) {
+            if (renderer->type != it->second)
+                renderer->deinit();
+        }
+        _BGFXLib.shutdown();
+    }
+    auto renderer = new BGFXRenderer(widget);
+    res.reset(renderer);
+    renderer->pimpl->typeName = it->first;
+    renderer->pimpl->type = it->second;
+    return res;
+}
+
+/////////////////////////////////////////////////////////
+void BGFXRendererLibP::removeView(QOpenGLWidget *widget)
+{
+    auto it = views.find(widget);
+    if (it != views.end()) {
+        viewIds.erase(it->second->viewId);
+        views.erase(it);
+        if (views.empty())
+            _BGFXLib.shutdown();
+    }
+}
+
+BGFXView *BGFXRendererLibP::getView(QOpenGLWidget *widget, RendererType::Enum type)
+{
+    if (!prepare(widget, type))
+        return nullptr;
+
+    auto &view = views[widget];
+    if (!view) {
+        view.reset(new BGFXView);
+        view->widget = widget;
+        view->viewId = 0;
+        for (int id : viewIds) {
+            if (view->viewId == id)
+                ++view->viewId;
+            else
+                break;
+        }
+        viewIds.insert(view->viewId);
+    } 
+    return view.get();
+}
+
+void BGFXRendererLibP::shutdown()
+{
+    if (currentType == RendererType::Noop)
+        return;
+    bgfx::shutdown();
+    if (window) {
+        window->deleteLater();
+        window = nullptr;
+    }
+    context.reset();
+    offscreen.reset();
+    currentType = RendererType::Noop;
+}

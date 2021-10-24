@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>620</width>
-    <height>722</height>
+    <height>763</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -153,44 +153,25 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="3" column="0">
-         <widget class="QLabel" name="aliasingLAbel">
+        <item row="0" column="0">
+         <widget class="QLabel" name="renderCacheLabel">
           <property name="text">
-           <string>Anti-Aliasing</string>
+           <string>Render cache</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="4">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="10" column="2">
-         <widget class="QLabel" name="backlightLabel">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="6" column="0">
+         <widget class="QLabel" name="markerSizeLabel">
           <property name="toolTip">
            <string/>
           </property>
           <property name="text">
-           <string>Intensity</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>Marker size:</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefComboBox" name="boxMarkerSize">
+        <item row="7" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -198,110 +179,64 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of vertices in the Sketcher workbench</string>
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </string>
           </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MarkerSize</cstring>
-          </property>
-          <property name="prefType" stdset="0">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="3">
-         <widget class="Gui::PrefSlider" name="sliderIntensity">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Intensity of the backlight</string>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="singleStep">
+          <property name="decimals">
            <number>1</number>
           </property>
+          <property name="minimum">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>200.000000000000000</double>
+          </property>
           <property name="value">
-           <number>100</number>
+           <double>5.000000000000000</double>
           </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+          <property name="prefEntry" stdset="0">
+           <cstring>PickRadius</cstring>
           </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksBelow</enum>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
-          <property name="tickInterval">
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="spinPickRadiusLabel">
+          <property name="text">
+           <string>Pick radius (px):</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="spinPreselectionDelayLabel">
+          <property name="text">
+           <string>Eye to eye distance for stereo modes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefSpinBox" name="renderCacheMergeCount">
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+          <property name="singleStep">
            <number>10</number>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BacklightIntensity</cstring>
-          </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="1" colspan="2">
-         <widget class="Gui::PrefComboBox" name="comboAliasing">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used </string>
-          </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AntiAliasing</cstring>
+           <cstring>RenderCacheMergeCount</cstring>
           </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Line Smoothing</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 2x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 4x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 8x</string>
-           </property>
-          </item>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="transparentRenderLabel">
           <property name="toolTip">
            <string/>
@@ -311,7 +246,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <widget class="Gui::PrefColorButton" name="backlightColor">
           <property name="enabled">
            <bool>false</bool>
@@ -331,160 +266,6 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="spinPickRadiusLabel">
-          <property name="text">
-           <string>Pick radius (px):</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefSpinBox" name="renderCacheMergeCount">
-          <property name="maximum">
-           <number>9999999</number>
-          </property>
-          <property name="singleStep">
-           <number>10</number>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>RenderCacheMergeCount</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1" colspan="2">
-         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Render types of transparent objects</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TransparentObjectRenderType</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>One pass</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backface pass</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="markerSizeLabel">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="text">
-           <string>Marker size:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="renderCacheLabel">
-          <property name="text">
-           <string>Render cache</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="renderCacheMergeCountMaxLabel">
-          <property name="text">
-           <string>Maximum cache merge</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
-          <property name="toolTip">
-           <string>Backlight is enabled with the defined color</string>
-          </property>
-          <property name="text">
-           <string>Backlight color</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EnableBacklight</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Pre-selection delay (second):</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</string>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1000.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>2.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EyeDistance</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinPreselectionDelay">
-          <property name="decimals">
-           <number>3</number>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PreSelectionDelay</cstring>
           </property>
          </widget>
         </item>
@@ -543,8 +324,15 @@ but slower response to any scene changes.
           </item>
          </widget>
         </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
+        <item row="2" column="0">
+         <widget class="QLabel" name="renderCacheMergeCountLabel">
+          <property name="text">
+           <string>Cache merge threshold</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -552,34 +340,234 @@ but slower response to any scene changes.
            </size>
           </property>
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </string>
-          </property>
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
+           <string>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</string>
           </property>
           <property name="decimals">
            <number>1</number>
           </property>
           <property name="minimum">
-           <double>0.500000000000000</double>
+           <double>0.100000000000000</double>
           </property>
           <property name="maximum">
-           <double>200.000000000000000</double>
+           <double>1000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>2.000000000000000</double>
           </property>
           <property name="value">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>PickRadius</cstring>
+           <cstring>EyeDistance</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="10" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinPreselectionDelay">
+          <property name="decimals">
+           <number>3</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PreSelectionDelay</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="renderCacheMergeCountMaxLabel">
+          <property name="text">
+           <string>Maximum cache merge</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="3">
+         <widget class="Gui::PrefSlider" name="sliderIntensity">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Intensity of the backlight</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::TicksBelow</enum>
+          </property>
+          <property name="tickInterval">
+           <number>10</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BacklightIntensity</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
+          <property name="toolTip">
+           <string>Backlight is enabled with the defined color</string>
+          </property>
+          <property name="text">
+           <string>Backlight color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>EnableBacklight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxEnhancedPick">
+          <property name="toolTip">
+           <string>Enable 3D picking acceleration. The effect is only noticable for very complex
+geometry shape, and may cause some initial lag due to bufferring.</string>
+          </property>
+          <property name="text">
+           <string>Pick acceleration</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectionPickRTree</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="4">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="comboAliasing">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>What kind of multisample anti-aliasing is used </string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AntiAliasing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Line Smoothing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 2x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 4x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 8x</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefComboBox" name="boxMarkerSize">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of vertices in the Sketcher workbench</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MarkerSize</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="QLabel" name="backlightLabel">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Intensity</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
          <widget class="Gui::PrefSpinBox" name="renderCacheMergeCountMax">
           <property name="maximum">
            <number>9999999</number>
@@ -595,34 +583,66 @@ Larger value eases to pick things, but can make small features impossible to sel
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="spinPreselectionDelayLabel">
+        <item row="10" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Eye to eye distance for stereo modes</string>
+           <string>Pre-selection delay (second):</string>
           </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="aliasingLAbel">
+          <property name="text">
+           <string>Anti-Aliasing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="comboTransparentRender">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Render types of transparent objects</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TransparentObjectRenderType</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>One pass</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Backface pass</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="renderCacheMergeCountLabel">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Cache merge threshold</string>
+           <string>Renderer</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxEnhancedPick">
-          <property name="toolTip">
-           <string>Enable 3D picking acceleration. The effect is only noticable for very complex
-geometry shape, and may cause some initial lag due to bufferring.</string>
-          </property>
-          <property name="text">
-           <string>Pick acceleration</string>
-          </property>
+        <item row="1" column="1" colspan="2">
+         <widget class="Gui::PrefComboBox" name="comboRenderer">
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Part</cstring>
+           <cstring>View</cstring>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SelectionPickRTree</cstring>
+           <cstring>RendererType</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring>Default</cstring>
           </property>
          </widget>
         </item>

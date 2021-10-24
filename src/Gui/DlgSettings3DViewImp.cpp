@@ -48,6 +48,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include "ViewParams.h"
+#include "Renderer/Renderer.h"
 
 using namespace Gui::Dialog;
 using namespace Gui;
@@ -91,6 +92,8 @@ void DlgSettings3DViewImp::saveSettings()
 
     index = ui->renderCache->currentIndex();
     hGrp->SetInt("RenderCache", index);
+
+    ui->comboRenderer->onSave();
 
     ui->comboTransparentRender->onSave();
 
@@ -149,6 +152,11 @@ void DlgSettings3DViewImp::loadSettings()
     ui->boxMarkerSize->addItem(tr("15px"), QVariant(15));
     ui->boxMarkerSize->setCurrentIndex(2); // default value 9px
     ui->boxMarkerSize->onRestore();
+
+    ui->comboRenderer->addItem(tr("Default"), QByteArray("Default"));
+    for (auto &type : RendererFactory::types())
+        ui->comboRenderer->addItem(tr(type.c_str()), QByteArray(type.c_str()));
+    ui->comboRenderer->onRestore();
 }
 
 /**

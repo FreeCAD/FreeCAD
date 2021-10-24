@@ -177,7 +177,7 @@
 #include "ViewParams.h"
 
 #include "ViewProviderLink.h"
-#include "BGFXRenderer.h"
+#include "Renderer/Renderer.h"
 
 namespace bp = boost::placeholders;
 
@@ -458,7 +458,7 @@ struct View3DInventorViewer::Private
     SoRayPickAction         pickAction;
     SoGetMatrixAction       pickMatrixAction;
 
-    std::unique_ptr<BGFXRenderer> bgfxRenderer;
+    std::unique_ptr<Renderer> renderer;
 
     boost::signals2::scoped_connection connDocChange;
 
@@ -3403,10 +3403,19 @@ void View3DInventorViewer::renderGLImage()
 
 void View3DInventorViewer::onGetBoundingBox(SoGetBoundingBoxAction *action)
 {
-    if (_pimpl->bgfxRenderer) {
+    if (_pimpl->renderer) {
         float xmin, ymin, zmin, xmax, ymax, zmax;
-        if (_pimpl->bgfxRenderer->boundBox(xmin, ymin, zmin, xmax, ymax, zmax))
+        if (_pimpl->renderer->boundBox(xmin, ymin, zmin, xmax, ymax, zmax))
             action->extendBy(SbBox3f(xmin, ymin, zmin, xmax, ymax, zmax));
+    }
+}
+
+void View3DInventorViewer::setRendererType(const std::string &type)
+{
+    if (!_pimpl->renderer || _pimpl->renderer->type() != type) {
+        _pimpl->renderer = RendererFactory::create(
+                type, qobject_cast<QOpenGLWidget*>(getGLWidget()));
+        getSoRenderManager()->scheduleRedraw();
     }
 }
 
@@ -3440,33 +3449,20 @@ void View3DInventorViewer::renderScene(void)
     } else
         col = this->backgroundColor();
 
-    // Done in bgfxRenderer below
+    // Done in renderer below
     //
     // glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (!_pimpl->bgfxRenderer)
-        _pimpl->bgfxRenderer.reset(
-                new BGFXRenderer(qobject_cast<QOpenGLWidget*>(getGLWidget())));
     SoCamera* cam = getSoRenderManager()->getCamera();
-    SbMatrix viewMat, projMat;
-    if (cam) {
+    if (cam && _pimpl->renderer) {
+        SbMatrix viewMat, projMat;
         const SbViewportRegion vp = getSoRenderManager()->getViewportRegion();
         SbViewVolume vol = cam->getViewVolume(vp.getViewportAspectRatio());
-        // float zNear = -1000.f, zFar = 1000.f;
-        // float near = 1.0f, far = 0.0f;
-        // if (vol.getNearDist() > zNear)
-        //     near = (vol.getNearDist() - zNear) / vol.getDepth() + 1.0f;
-        // if (vol.getDepth() < zFar)
-        //     far = 1.0f - zFar / std::max(vol.getDepth(), 1e-6f);
-        // vol = vol.zNarrow(near, far);
         vol.getMatrices(viewMat, projMat);
-    } else {
-        viewMat = SbMatrix::identity();
-        projMat = SbMatrix::identity();
+        if (_pimpl->renderer->render(col, &viewMat.getValue(), &projMat.getValue()))
+            getSoRenderManager()->scheduleRedraw();
     }
-    if (_pimpl->bgfxRenderer->render(col, &viewMat.getValue(), &projMat.getValue()))
-        getSoRenderManager()->scheduleRedraw();
 
     glEnable(GL_DEPTH_TEST);
 

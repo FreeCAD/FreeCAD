@@ -220,10 +220,18 @@ if(FREECAD_USE_PYSIDE)
     endif()
 endif(FREECAD_USE_PYSIDE)
 
+SET(Renderer_CPP_SRCS Renderer/Renderer.cpp)
+SET(Renderer_HPP_SRCS Renderer/Renderer.h)
+
 if(BUILD_BGFX)
     add_definitions(-DHAVE_BGFX)
+    list(APPEND Renderer_CPP_SRCS Renderer/BGFXRenderer.cpp)
+    list(APPEND Renderer_HPP_SRCS Renderer/BGFXRenderer.h)
     list(APPEND FreeCADGui_LIBS bgfx bx bimg example-common)
 endif(BUILD_BGFX)
+
+SET(Renderer_SRCS ${Renderer_CPP_SRCS} ${Renderer_HPP_SRCS})
+SOURCE_GROUP("Renderer" FILES ${Renderer_SRCS})
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
@@ -982,7 +990,6 @@ SET(View3D_CPP_SRCS
     CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
-    BGFXRenderer.cpp
     NaviCube.cpp
 )
 SET(View3D_SRCS
@@ -1002,7 +1009,6 @@ SET(View3D_SRCS
     View3DInventorRiftViewer.h
     CoinRiftWidget.h
     View3DViewerPy.h
-    BGFXRenderer.h
     NaviCube.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
@@ -1380,6 +1386,7 @@ SET(FreeCADGui_SRCS
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
+    ${Renderer_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
     ${View_SRCS}
@@ -1408,6 +1415,7 @@ if(MSVC)
         ${Help_CPP_SRCS}
         ${Inventor_CPP_SRCS}
         ${View3D_CPP_SRCS}
+        ${Renderer_CPP_SRCS}
         ${Viewprovider_CPP_SRCS}
         ${Widget_CPP_SRCS}
         ${Workbench_CPP_SRCS}

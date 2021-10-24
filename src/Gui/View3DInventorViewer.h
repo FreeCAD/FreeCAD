@@ -437,6 +437,7 @@ public:
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+    void setRendererType(const std::string &);
 
     void updateHatchTexture();
 

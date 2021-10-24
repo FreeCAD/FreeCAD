@@ -22,28 +22,42 @@
 
 #ifndef GUI_BGFX_RENDERER_H
 
-#include <memory>
-
-class QOpenGLWidget;
-class QColor;
+#include "Renderer.h"
 
 namespace Gui {
 
-class BGFXRenderer {
+class BGFXRendererLibP;
+
+class BGFXRendererLib : public RendererLib
+{
+public:
+    BGFXRendererLib();
+    virtual const std::string &name() const override;
+    virtual const std::vector<std::string> &types() const override;
+    virtual std::unique_ptr<Renderer> create(
+            const std::string &type, QOpenGLWidget *widget) const override;
+};
+
+class BGFXRenderer : public Renderer
+{
 public:
     BGFXRenderer(QOpenGLWidget *widget);
     ~BGFXRenderer();
-    bool render(const QColor &bg,
-                const void *viewMatrix,
-                const void *projMatrix);
-    bool boundBox(float &xmin, float &ymin, float &zmin,
-                  float &xmax, float &ymax, float &zmax);
+    virtual const std::string &type() const override;
+    virtual bool render(const QColor &bg,
+                        const void *viewMatrix,
+                        const void *projMatrix) override;
+    virtual bool boundBox(float &xmin, float &ymin, float &zmin,
+                          float &xmax, float &ymax, float &zmax) override;
+
+    friend class BGFXRendererLib;
+    friend class BGFXRendererLibP;
 
 private:
     class Private;
     std::unique_ptr<Private> pimpl;
 };
 
-}
+} // namespace Gui
 
 #endif // GUI_BGFX_RENDERER_H
