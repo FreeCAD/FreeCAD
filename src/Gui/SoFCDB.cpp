@@ -184,6 +184,7 @@ void Gui::SoFCDB::init()
     TouchpadNavigationStyle         ::init();
     GestureNavigationStyle          ::init();
     OpenCascadeNavigationStyle      ::init();
+    OpenSCADNavigationStyle         ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();

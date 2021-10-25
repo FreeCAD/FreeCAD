@@ -410,6 +410,23 @@ private:
     SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
+class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    OpenSCADNavigationStyle();
+    ~OpenSCADNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
+};
+
 } // namespace Gui
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
