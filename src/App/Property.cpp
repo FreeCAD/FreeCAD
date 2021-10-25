@@ -90,6 +90,8 @@ std::string Property::getFullName(bool python) const {
     if(father)
         ss << father->getFullName(python) 
             << '.' << father->getPropertyPrefix();
+    else
+        ss << "?.";
     ss << myName;
     return ss.str();
 }
