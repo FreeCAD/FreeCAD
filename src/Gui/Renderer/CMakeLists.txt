@@ -16,6 +16,10 @@ if(BUILD_BGFX)
     list(APPEND Renderer_CPP_SRCS BGFXRenderer.cpp)
     list(APPEND Renderer_HPP_SRCS BGFXRenderer.h)
     list(APPEND Renderer_LIBS bgfx bx bimg example-common)
+
+    file(GLOB_RECURSE Assets RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} bgfx/assets/*)
+    list(APPEND Renderer_Assets ${Assets})
+
 endif(BUILD_BGFX)
 
 if(BUILD_DILIGENT)
@@ -42,12 +46,8 @@ if(BUILD_DILIGENT)
     # endif()
 
     file(GLOB_RECURSE Assets RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Diligent/assets/*)
-    install(FILES ${Assets} DESTINATION ${CMAKE_INSTALL_DATADIR}/Renderer)
+    list(APPEND Renderer_Assets ${Assets})
 
-    ADD_CUSTOM_TARGET(Renderer_assets ALL SOURCES ${Assets})
-    fc_copy_sources(Renderer_assets
-                    "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Renderer"
-                    ${Assets})
 endif(BUILD_DILIGENT)
 
 set(Renderer_SRCS ${Renderer_CPP_SRCS} ${Renderer_HPP_SRCS})
@@ -85,4 +85,11 @@ else(WIN32)
     install(TARGETS FreeCADRenderer
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif(WIN32)
+
+install(FILES ${Renderer_Assets} DESTINATION ${CMAKE_INSTALL_DATADIR}/Renderer)
+
+ADD_CUSTOM_TARGET(Renderer_assets ALL SOURCES ${Assets})
+fc_copy_sources(Renderer_assets
+                "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Renderer"
+                ${Renderer_Assets})
 

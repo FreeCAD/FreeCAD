@@ -266,6 +266,11 @@ public:
         pendingRemoves.emplace_back(fbo, freeFramebufferFunc);
     }
 
+    std::string resource()
+    {
+        return RendererFactory::resourcePath() + "bgfx/assets/";
+    }
+
     typedef void (*FreeResourceFunc)(QOpenGLFunctions *functions, GLuint id);
     std::vector<std::pair<GLuint, FreeResourceFunc>> pendingRemoves;
     std::unordered_map<QOpenGLWidget *, std::unique_ptr<BGFXView>> views;
@@ -439,8 +444,8 @@ public:
                     );
 
         // Create program from shaders.
-        m_program = loadProgram("vs_instancing", "fs_instancing");
-		m_program_non_instanced = loadProgram("vs_cubes", "fs_cubes");
+        m_program = loadProgram("vs_instancing", "fs_instancing", _BGFXLib.resource().c_str());
+		m_program_non_instanced = loadProgram("vs_cubes", "fs_cubes", _BGFXLib.resource().c_str());
     }
 
     void render()
