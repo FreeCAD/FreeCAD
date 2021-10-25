@@ -2519,6 +2519,10 @@ void StdViewZoomActual::activated(int iMsg)
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
     double tweak = group->GetFloat("ZoomActualTweak", 1.0);
     group->SetFloat("ZoomActualTweak",tweak);
+    if (!(tweak >= 0.01)){
+        tweak = 1.0;
+        Base::Console().Error("Invalid ZoomActualTweak parameter -- must be greater than or equal to 0.01.  Using default 1.0.\n");
+    }
     doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     doCommand(Command::Gui, "Gui.ActiveDocument.ActiveView.getCameraNode().height\
 .setValue(min(Gui.activeView().getSize()[0], Gui.activeView().getSize()[1]) * %f * 25.4 / Gui.getMainWindow().physicalDpiX())", tweak);
