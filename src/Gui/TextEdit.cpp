@@ -48,6 +48,21 @@ TextEdit::TextEdit(QWidget* parent)
     shortcut->setKey(Qt::CTRL+Qt::Key_Space);
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, SIGNAL(activated()), this, SLOT(complete()));
+
+    QShortcut* shortcutFind = new QShortcut(this);
+    shortcutFind->setKey(QKeySequence::Find);
+    shortcutFind->setContext(Qt::WidgetShortcut);
+    connect(shortcutFind, SIGNAL(activated()), this, SIGNAL(showSearchBar()));
+
+    QShortcut* shortcutNext = new QShortcut(this);
+    shortcutNext->setKey(QKeySequence::FindNext);
+    shortcutNext->setContext(Qt::WidgetShortcut);
+    connect(shortcutNext, SIGNAL(activated()), this, SIGNAL(findNext()));
+
+    QShortcut* shortcutPrev = new QShortcut(this);
+    shortcutPrev->setKey(QKeySequence::FindPrevious);
+    shortcutPrev->setContext(Qt::WidgetShortcut);
+    connect(shortcutPrev, SIGNAL(activated()), this, SIGNAL(findPrevious()));
 }
 
 /** Destroys the object and frees any allocated resources */

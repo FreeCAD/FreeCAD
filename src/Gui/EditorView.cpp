@@ -25,9 +25,12 @@
 #ifndef _PreComp_
 # include <QAbstractTextDocumentLayout>
 # include <QApplication>
+# include <QCheckBox>
 # include <QClipboard>
 # include <QDateTime>
 # include <QHBoxLayout>
+# include <QVBoxLayout>
+# include <QLineEdit>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPrinter>
@@ -35,10 +38,15 @@
 # include <QScrollBar>
 # include <QPlainTextEdit>
 # include <QPrintPreviewDialog>
+# include <QSpacerItem>
+# include <QStyle>
 # include <QTextBlock>
 # include <QTextCodec>
+# include <QTextCursor>
+# include <QTextDocument>
 # include <QTextStream>
 # include <QTimer>
+# include <QToolButton>
 #endif
 
 #include "EditorView.h"
@@ -59,6 +67,7 @@ namespace Gui {
 class EditorViewP {
 public:
     QPlainTextEdit* textEdit;
+    SearchBar* searchBar;
     QString fileName;
     EditorView::DisplayName displayName;
     QTimer*  activityTimer;
@@ -90,19 +99,28 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     d->textEdit = editor;
     d->textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
 
+    d->searchBar = new SearchBar();
+    d->searchBar->setEditor(editor);
+
     // update editor actions on request
     Gui::MainWindow* mw = Gui::getMainWindow();
     connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
     connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
     connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
 
+    connect(editor, SIGNAL(showSearchBar()), d->searchBar, SLOT(activate()));
+    connect(editor, SIGNAL(findNext()), d->searchBar, SLOT(findNext()));
+    connect(editor, SIGNAL(findPrevious()), d->searchBar, SLOT(findPrevious()));
+
     // Create the layout containing the workspace and a tab bar
     QFrame* hbox = new QFrame(this);
     hbox->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    QHBoxLayout* layout = new QHBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(1);
     layout->addWidget(d->textEdit);
+    layout->addWidget(d->searchBar);
     d->textEdit->setParent(hbox);
+    d->searchBar->setParent(hbox);
     hbox->setLayout(layout);
     setCentralWidget(hbox);
 
@@ -648,6 +666,175 @@ void PythonEditorView::showDebugMarker(int line)
 void PythonEditorView::hideDebugMarker()
 {
     _pye->hideDebugMarker();
+}
+
+// ----------------------------------------------------------------------------
+
+SearchBar::SearchBar(QWidget* parent)
+    : QWidget(parent)
+    , textEditor(nullptr)
+{
+    horizontalLayout = new QHBoxLayout(this);
+    horizontalLayout->setSpacing(3);
+
+    closeButton = new QToolButton(this);
+    closeButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
+    closeButton->setAutoRaise(true);
+    connect(closeButton, &QToolButton::clicked, this, &SearchBar::deactivate);
+
+    horizontalLayout->addWidget(closeButton);
+
+    searchText = new QLineEdit(this);
+    searchText->setClearButtonEnabled(true);
+    horizontalLayout->addWidget(searchText);
+    connect(searchText, &QLineEdit::returnPressed, this, &SearchBar::findNext);
+    connect(searchText, &QLineEdit::textChanged, this, &SearchBar::findCurrent);
+    connect(searchText, &QLineEdit::textChanged, this, &SearchBar::updateButtons);
+
+    prevButton = new QToolButton(this);
+    prevButton->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
+    prevButton->setAutoRaise(true);
+    prevButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    horizontalLayout->addWidget(prevButton);
+    connect(prevButton, &QToolButton::clicked, this, &SearchBar::findPrevious);
+
+    nextButton = new QToolButton(this);
+    nextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
+    nextButton->setAutoRaise(true);
+    nextButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    horizontalLayout->addWidget(nextButton);
+    connect(nextButton, &QToolButton::clicked, this, &SearchBar::findNext);
+
+    matchCase = new QCheckBox(this);
+    horizontalLayout->addWidget(matchCase);
+    connect(matchCase, &QCheckBox::toggled, this, &SearchBar::findCurrent);
+
+    matchWord = new QCheckBox(this);
+    horizontalLayout->addWidget(matchWord);
+    connect(matchWord, &QCheckBox::toggled, this, &SearchBar::findCurrent);
+
+    horizontalSpacer = new QSpacerItem(192, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    horizontalLayout->addItem(horizontalSpacer);
+
+    retranslateUi();
+
+    setMinimumWidth(minimumSizeHint().width());
+    updateButtons();
+    hide();
+}
+
+void SearchBar::setEditor(QPlainTextEdit* textEdit)
+{
+    textEditor = textEdit;
+}
+
+void SearchBar::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape) {
+        hide();
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
+}
+
+void SearchBar::retranslateUi()
+{
+    prevButton->setText(tr("Previous"));
+    nextButton->setText(tr("Next"));
+    matchCase->setText(tr("Case sensitive"));
+    matchWord->setText(tr("Whole words"));
+}
+
+void SearchBar::activate()
+{
+    show();
+    searchText->selectAll();
+    searchText->setFocus(Qt::ShortcutFocusReason);
+}
+
+void SearchBar::deactivate()
+{
+    if (textEditor)
+        textEditor->setFocus();
+    hide();
+}
+
+void SearchBar::findPrevious()
+{
+    findText(true, false, searchText->text());
+}
+
+void SearchBar::findNext()
+{
+    findText(true, true, searchText->text());
+}
+
+void SearchBar::findCurrent()
+{
+    findText(false, true, searchText->text());
+}
+
+void SearchBar::findText(bool skip, bool next, const QString& str)
+{
+    if (!textEditor)
+        return;
+
+    QTextCursor cursor = textEditor->textCursor();
+    QTextDocument *doc = textEditor->document();
+    if (!doc || cursor.isNull())
+        return;
+
+    if (cursor.hasSelection())
+        cursor.setPosition((skip && next) ? cursor.position() : cursor.anchor());
+
+    bool found = true;
+    QTextCursor newCursor = cursor;
+    if (!str.isEmpty()) {
+        QTextDocument::FindFlags options;
+        if (!next)
+            options |= QTextDocument::FindBackward;
+        if (matchCase->isChecked())
+            options |= QTextDocument::FindCaseSensitively;
+        if (matchWord->isChecked())
+            options |= QTextDocument::FindWholeWords;
+
+        newCursor = doc->find(str, cursor, options);
+        if (newCursor.isNull()) {
+            QTextCursor ac(doc);
+            ac.movePosition(options & QTextDocument::FindBackward ? QTextCursor::End : QTextCursor::Start);
+            newCursor = doc->find(str, ac, options);
+            if (newCursor.isNull()) {
+                found = false;
+                newCursor = cursor;
+            }
+        }
+    }
+
+    if (!isVisible())
+        show();
+
+    textEditor->setTextCursor(newCursor);
+
+    QPalette palette;
+    palette.setColor(QPalette::Active, QPalette::Base, found ? Qt::white : QColor(255, 80, 80));
+    searchText->setPalette(palette);
+}
+
+void SearchBar::updateButtons()
+{
+    bool empty = searchText->text().isEmpty();
+    prevButton->setDisabled(empty);
+    nextButton->setDisabled(empty);
+}
+
+void SearchBar::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+
+    QWidget::changeEvent(event);
 }
 
 #include "moc_EditorView.cpp"
