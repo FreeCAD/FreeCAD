@@ -158,6 +158,7 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
     option(BUILD_CLOUD "Build the FreeCAD cloud module" OFF)
     option(BUILD_BGFX "Build bgfx renderer module" OFF)
+    option(BUILD_DILIGENT "Build DiligentEngine renderer module" OFF)
 
     if(MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)

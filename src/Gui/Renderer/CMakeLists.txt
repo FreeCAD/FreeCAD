@@ -18,6 +18,38 @@ if(BUILD_BGFX)
     list(APPEND Renderer_LIBS bgfx bx bimg example-common)
 endif(BUILD_BGFX)
 
+if(BUILD_DILIGENT)
+    add_definitions(-DHAVE_DILIGENT)
+
+    list(APPEND Renderer_CPP_SRCS DiligentRenderer.cpp
+                                  Diligent/TexturedCube.cpp)
+    list(APPEND Renderer_HPP_SRCS DiligentRenderer.h
+                                  Diligent/TexturedCube.hpp)
+    list(APPEND Renderer_LIBS
+        Diligent-Common
+        Diligent-GraphicsTools
+        Diligent-TextureLoader
+        Diligent-GraphicsEngineOpenGL-static
+        Diligent-GraphicsEngineVk-static)
+    # if (APPLE)
+    #     list(APPEND Renderer_LIBS
+    #         Diligent-GraphicsEngineMetal-static)
+    # endif()
+    # if (MSVC)
+    #     list(APPEND Renderer_LIBS
+    #         Diligent-GraphicsEngineD3D11-static
+    #         Diligent-GraphicsEngineD3D12-static)
+    # endif()
+
+    file(GLOB_RECURSE Assets RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Diligent/assets/*)
+    install(FILES ${Assets} DESTINATION ${CMAKE_INSTALL_DATADIR}/Renderer)
+
+    ADD_CUSTOM_TARGET(Renderer_assets ALL SOURCES ${Assets})
+    fc_copy_sources(Renderer_assets
+                    "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Renderer"
+                    ${Assets})
+endif(BUILD_DILIGENT)
+
 set(Renderer_SRCS ${Renderer_CPP_SRCS} ${Renderer_HPP_SRCS})
 
 # Create the library

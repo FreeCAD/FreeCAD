@@ -8,4 +8,10 @@ if (BUILD_BGFX)
     add_subdirectory(bgfx)
 endif()
 
+if (BUILD_DILIGENT)
+    add_subdirectory(Diligent/DiligentCore)
+    add_subdirectory(Diligent/DiligentFX)
+    add_subdirectory(Diligent/DiligentTools)
+endif()
+
 add_subdirectory(lazy_loader)
