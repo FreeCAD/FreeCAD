@@ -3450,11 +3450,6 @@ void View3DInventorViewer::renderScene(void)
     } else
         col = this->backgroundColor();
 
-    // Done in renderer below
-    //
-    // glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (cam && _pimpl->renderer) {
         SbMatrix viewMat, projMat;
@@ -3463,6 +3458,9 @@ void View3DInventorViewer::renderScene(void)
         vol.getMatrices(viewMat, projMat);
         if (_pimpl->renderer->render(col, &viewMat.getValue(), &projMat.getValue()))
             getSoRenderManager()->scheduleRedraw();
+    } else {
+        glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     glEnable(GL_DEPTH_TEST);
