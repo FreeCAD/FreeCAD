@@ -83,24 +83,11 @@ DlgSettings3DViewImp::~DlgSettings3DViewImp()
 
 void DlgSettings3DViewImp::saveSettings()
 {
-    // must be done as very first because we create a new instance of NavigatorStyle
-    // where we set some attributes afterwards
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-
-    int index = ui->comboAliasing->currentIndex();
-    hGrp->SetInt("AntiAliasing", index);
-
-    index = ui->renderCache->currentIndex();
-    hGrp->SetInt("RenderCache", index);
-
+    ui->comboAliasing->onSave();
+    ui->renderCache->onSave();
     ui->comboRenderer->onSave();
-
     ui->comboTransparentRender->onSave();
-
-    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
-    hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
-
+    ui->boxMarkerSize->onSave();
     ui->CheckBox_CornerCoordSystem->onSave();
     ui->CheckBox_ShowAxisCross->onSave();
     ui->CheckBox_WbByTab->onSave();
@@ -158,6 +145,14 @@ void DlgSettings3DViewImp::loadSettings()
     for (auto &type : RendererFactory::types())
         ui->comboRenderer->addItem(tr(type.c_str()), QByteArray(type.c_str()));
     ui->comboRenderer->onRestore();
+
+    auto checkComboRenderer = [this](int v) {
+        bool vis = ui->comboRenderer->count() > 1 && v == 3;
+        ui->comboRenderer->setVisible(vis);
+        ui->labelRenderer->setVisible(vis);
+    };
+    checkComboRenderer(ui->renderCache->currentIndex());
+    QObject::connect(ui->renderCache, QOverload<int>::of(&QComboBox::currentIndexChanged), checkComboRenderer);
 }
 
 /**
