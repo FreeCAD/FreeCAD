@@ -754,6 +754,9 @@ void BGFXRendererLibP::shutdown()
 {
     if (currentType == RendererType::Noop)
         return;
+    // Must make the context current before shutdown bgfx, or else it seems to
+    // mess up with the other context that is currently active
+    makeCurrent();
     bgfx::shutdown();
     if (window) {
         window->deleteLater();
