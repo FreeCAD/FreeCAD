@@ -47,7 +47,7 @@
 #include "ComplexGeoData.h"
 #include "MappedElement.h"
 
-FC_LOG_LEVEL_INIT("ComplexGeoData", true,true);
+FC_LOG_LEVEL_INIT("ComplexGeoData", true, 2);
 
 namespace bio = boost::iostreams;
 using namespace Data;
