@@ -67,8 +67,8 @@ std::unique_ptr<Renderer> RendererFactory::create(
     std::unique_ptr<Renderer> res;
     auto it = rendererTypes().find(type);
     if (it == rendererTypes().end()) {
-        if (type.size())
-            qWarning() << "Renderer '" << type.c_str() << "' no supported";
+        if (type.size() && type != "Default")
+            qWarning() << "Renderer '" << type.c_str() << "' not supported";
     } else
         res = it->second->create(type, widget);
     return res;
