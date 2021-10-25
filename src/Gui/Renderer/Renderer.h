@@ -20,7 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_RENDERER_H
+#ifndef RENDERER_RENDERER_H
+
+#include <FCConfig.h>
 
 #include <memory>
 #include <string>
@@ -29,11 +31,11 @@
 class QOpenGLWidget;
 class QColor;
 
-namespace Gui {
+namespace Render {
 
 class RenderLib;
 
-class Renderer
+class RendererExport Renderer
 {
 public:
     virtual ~Renderer() {}
@@ -55,14 +57,16 @@ public:
             const std::string &type, QOpenGLWidget *widget) const = 0;
 };
 
-class RendererFactory
+class RendererExport RendererFactory
 {
 public:
     static std::vector<std::string> types();
     static std::unique_ptr<Renderer> create(const std::string &type, QOpenGLWidget *widget);
     static void registerLib(RendererLib *);
+    static void setResourcePath(const std::string &path);
+    static const std::string &resourcePath();
 };
 
-}
+} // namespace Render
 
-#endif // GUI_RENDERER_H
+#endif // RENDERER_RENDERER_H

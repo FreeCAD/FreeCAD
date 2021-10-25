@@ -220,18 +220,8 @@ if(FREECAD_USE_PYSIDE)
     endif()
 endif(FREECAD_USE_PYSIDE)
 
-SET(Renderer_CPP_SRCS Renderer/Renderer.cpp)
-SET(Renderer_HPP_SRCS Renderer/Renderer.h)
-
-if(BUILD_BGFX)
-    add_definitions(-DHAVE_BGFX)
-    list(APPEND Renderer_CPP_SRCS Renderer/BGFXRenderer.cpp)
-    list(APPEND Renderer_HPP_SRCS Renderer/BGFXRenderer.h)
-    list(APPEND FreeCADGui_LIBS bgfx bx bimg example-common)
-endif(BUILD_BGFX)
-
-SET(Renderer_SRCS ${Renderer_CPP_SRCS} ${Renderer_HPP_SRCS})
-SOURCE_GROUP("Renderer" FILES ${Renderer_SRCS})
+add_subdirectory(Renderer)
+list(APPEND FreeCADGui_LIBS FreeCADRenderer)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)

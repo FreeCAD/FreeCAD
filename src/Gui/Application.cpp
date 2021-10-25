@@ -102,6 +102,7 @@
 #include "FileDialog.h"
 #include "ExpressionBindingPy.h"
 #include "ViewProviderLinkPy.h"
+#include "Renderer/Renderer.h"
 
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
@@ -2158,6 +2159,8 @@ void postAppSetup()
     plugin = QString::fromUtf8(App::GetApplication().getHomePath());
     plugin += QLatin1String("/plugins");
     QCoreApplication::addLibraryPath(plugin);
+
+    Render::RendererFactory::setResourcePath(App::Application::getResourceDir() + "Renderer");
 
     // setup the search paths for Qt style sheets
     QStringList qssPaths;

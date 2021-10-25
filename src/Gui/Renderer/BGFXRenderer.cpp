@@ -20,7 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "../PreCompiled.h"
+#include "FCConfig.h"
 #include "BGFXRenderer.h"
 
 #ifndef FC_OS_WIN32
@@ -41,14 +41,10 @@
 # endif
 #endif
 
-#if !defined(FC_OS_MACOSX)
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
-
 #include <unordered_map>
+#include <set>
 
+#undef GL_GLEXT_VERSION
 #include <QColor>
 #include <QVariant>
 #include <QOffscreenSurface>
@@ -57,8 +53,13 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
 #include <QWindow>
+#include <QDebug>
 
-#include <Base/Console.h>
+// #if !defined(FC_OS_MACOSX)
+// # include <GL/gl.h>
+// # include <GL/glu.h>
+// # include <GL/glext.h>
+// #endif
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
@@ -80,13 +81,18 @@ typedef QCocoaNativeContext OpenGLContext;
 #undef Status
 #undef None
 
-FC_LOG_LEVEL_INIT("bgfx", true, true);
-
-using namespace Gui;
+using namespace Render;
 using namespace bgfx;
 
+#define _RENDER_LOG(_lvl, _line, _msg) \
+    _lvl() << "bgfx (" << _line << "): " << _msg
+
+#define _RENDER_ERR(_line, _msg) _RENDER_LOG(qCritical, _line, _msg)
+#define RENDER_ERR(_msg) _RENDER_ERR(__LINE__, _msg)
+#define _RENDER_WARN(_line, _msg) _RENDER_LOG(qWarn, _line, _msg)
+#define RENDER_WARN(_msg) _RENDER_ERR(__LINE__, _msg)
+
 extern "C" int _main_(int, char**) {
-    FC_LOG("begin");
     return 0;
 }
 
@@ -118,7 +124,7 @@ namespace
             return false;
         unsigned clamped = qMin(unsigned(error - GL_INVALID_ENUM), 4U);
         const char *errors[] = { "GL_INVALID_ENUM", "GL_INVALID_VALUE", "GL_INVALID_OPERATION", "Unknown" };
-        _FC_ERR(__FILE__, line, msg << " (" << errors[clamped] << ")");
+        _RENDER_ERR(line, msg << " (" << errors[clamped] << ")");
         return true;
     }
     #define checkGLError(msg) _checkGLError(__LINE__, msg)
@@ -131,46 +137,46 @@ namespace
         case GL_FRAMEBUFFER_COMPLETE:
             return true;
         case GL_FRAMEBUFFER_UNSUPPORTED:
-            _FC_ERR(__FILE__, line, "Unsupported framebuffer format.");
+            _RENDER_ERR(line, "Unsupported framebuffer format.");
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete attachment.");
+            _RENDER_ERR(line, "Framebuffer incomplete attachment.");
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, missing attachment.");
+            _RENDER_ERR(line, "Framebuffer incomplete, missing attachment.");
             break;
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
         case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, duplicate attachment.");
+            _RENDER_ERR(line, "Framebuffer incomplete, duplicate attachment.");
             break;
 #endif
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, attached images must have same dimensions.");
+            _RENDER_ERR(line, "Framebuffer incomplete, attached images must have same dimensions.");
             break;
 #endif
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
         case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, attached images must have same format.");
+            _RENDER_ERR(line, "Framebuffer incomplete, attached images must have same format.");
             break;
 #endif
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, missing draw buffer.");
+            _RENDER_ERR(line, "Framebuffer incomplete, missing draw buffer.");
             break;
 #endif
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, missing read buffer.");
+            _RENDER_ERR(line, "Framebuffer incomplete, missing read buffer.");
             break;
 #endif
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-            _FC_ERR(__FILE__, line, "Framebuffer incomplete, attachments must have same number of samples per pixel.");
+            _RENDER_ERR(line, "Framebuffer incomplete, attachments must have same number of samples per pixel.");
             break;
 #endif
         default:
-            _FC_ERR(__FILE__, line, "An undefined error has occurred: " << status);
+            _RENDER_ERR(line, "An undefined error has occurred: " << status);
             break;
         }
         return false;
@@ -182,7 +188,7 @@ namespace
 
 class BGFXView;
 
-namespace Gui {
+namespace Render {
 
 class BGFXRendererLibP {
 public:
@@ -233,7 +239,7 @@ public:
             init.resolution.reset = BGFX_RESET_VSYNC;
             if (!bgfx::init(init)) {
                 widget->makeCurrent();
-                FC_ERR("bgfx init failed");
+                RENDER_ERR("init failed");
                 return false;
             }
         }
@@ -269,13 +275,13 @@ public:
 
     std::map<std::string, RendererType::Enum> typeMap = {
         {"bgfx - OpenGL", RendererType::OpenGL},
-        {"bgfx - Vulkan", RendererType::Vulkan},
+        // {"bgfx - Vulkan", RendererType::Vulkan},
 #ifdef FC_OS_WIN32
-        {"bgfx - Direct3D9", RendererType::Direct3D9},
-        {"bgfx - Direct3D11", RendererType::Direct3D11},
-        {"bgfx - Direct3D12", RendererType::Direct3D12},
+        // {"bgfx - Direct3D9", RendererType::Direct3D9},
+        // {"bgfx - Direct3D11", RendererType::Direct3D11},
+        // {"bgfx - Direct3D12", RendererType::Direct3D12},
 #elif defined(FC_OS_MACOSX)
-        {"bgfx - Metal", RendererType::Metal},
+        // {"bgfx - Metal", RendererType::Metal},
 #endif
     };
     std::vector<std::string> types;
@@ -288,7 +294,7 @@ public:
 BGFXRendererLibP _BGFXLib;
 BGFXRendererLib BGFXLib;
 
-} // namespace Gui
+} // namespace Renderer
 
 struct PosColorVertex
 {
@@ -689,7 +695,7 @@ std::unique_ptr<Renderer> BGFXRendererLib::create(
     std::unique_ptr<Renderer> res;
     auto it = _BGFXLib.typeMap.find(type);
     if (it == _BGFXLib.typeMap.end()) {
-        FC_WARN("Unsupported renderer type " << type);
+        RENDER_WARN("Unsupported renderer type " << type.c_str());
         return res;
     }
     if (_BGFXLib.currentType != it->second) {

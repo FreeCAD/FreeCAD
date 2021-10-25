@@ -20,13 +20,14 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "../PreCompiled.h"
-#include <Base/Console.h>
 #include "Renderer.h"
 
-FC_LOG_LEVEL_INIT("Renderer", true, true)
+#include <map>
+#include <vector>
+#include <string>
+#include <QDebug>
 
-using namespace Gui;
+using namespace Render;
 
 namespace {
 
@@ -67,8 +68,22 @@ std::unique_ptr<Renderer> RendererFactory::create(
     auto it = rendererTypes().find(type);
     if (it == rendererTypes().end()) {
         if (type.size())
-            FC_WARN("Renderer '" << type << "' no supported");
+            qWarning() << "Renderer '" << type.c_str() << "' no supported";
     } else
         res = it->second->create(type, widget);
     return res;
+}
+
+static std::string _ResourcePath;
+
+void RendererFactory::setResourcePath(const std::string &path)
+{
+    _ResourcePath = path;
+    if (_ResourcePath.size() && _ResourcePath.back() != '/' && _ResourcePath.back() != '\\')
+        _ResourcePath += "/";
+}
+
+const std::string &RendererFactory::resourcePath()
+{
+    return _ResourcePath;
 }

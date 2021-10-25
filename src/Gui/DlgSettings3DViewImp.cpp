@@ -52,6 +52,7 @@
 
 using namespace Gui::Dialog;
 using namespace Gui;
+using namespace Render;
 
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
 

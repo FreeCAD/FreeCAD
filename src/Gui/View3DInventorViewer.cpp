@@ -186,6 +186,7 @@ FC_LOG_LEVEL_INIT("3DViewer",true,true)
 //#define FC_LOGGING_CB
 
 using namespace Gui;
+using namespace Render;
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

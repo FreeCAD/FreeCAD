@@ -20,11 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_BGFX_RENDERER_H
+#ifndef RENDERER_BGFX_RENDERER_H
+#define RENDERER_BGFX_RENDERER_H
 
 #include "Renderer.h"
 
-namespace Gui {
+namespace Render {
 
 class BGFXRendererLibP;
 
@@ -58,6 +59,6 @@ private:
     std::unique_ptr<Private> pimpl;
 };
 
-} // namespace Gui
+} // namespace Renderer
 
-#endif // GUI_BGFX_RENDERER_H
+#endif // RENDERER_BGFX_RENDERER_H
