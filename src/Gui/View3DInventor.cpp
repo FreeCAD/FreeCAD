@@ -186,7 +186,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
-    OnChange(*hGrp,"RendererType");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
     OnChange(*hGrp,"HeadlightIntensity");
@@ -421,10 +420,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
     }
-    else if (strcmp(Reason,"RenderCache") == 0) {
+    else if (strcmp(Reason,"RenderCache") == 0 || strcmp(Reason,"RendererType") == 0) {
         _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
-    }
-    else if (strcmp(Reason,"RendererType") == 0) {
         _viewer->setRendererType(rGrp.GetASCII("RendererType"));
     }
     else if (strcmp(Reason, "DimensionsVisible") == 0) {

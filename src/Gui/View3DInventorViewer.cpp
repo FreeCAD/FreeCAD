@@ -3413,7 +3413,9 @@ void View3DInventorViewer::onGetBoundingBox(SoGetBoundingBoxAction *action)
 
 void View3DInventorViewer::setRendererType(const std::string &type)
 {
-    if (!_pimpl->renderer || _pimpl->renderer->type() != type) {
+    if (ViewParams::RenderCache() != 3)
+        _pimpl->renderer.reset();
+    else if (!_pimpl->renderer || _pimpl->renderer->type() != type) {
         _pimpl->renderer = RendererFactory::create(
                 type, qobject_cast<QOpenGLWidget*>(getGLWidget()));
         getSoRenderManager()->scheduleRedraw();
