@@ -64,6 +64,9 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
+    // Hidden properties
+    App::PropertyInteger TreeRank;
+
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
     virtual void update(const App::Property*) override;
@@ -155,6 +158,8 @@ public:
     void setShowable(bool enable);
     bool isShowable() const;
 
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *child1, const App::DocumentObject *child2) const;
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -206,6 +211,8 @@ protected:
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
+
+    static int lastTreeRank;
 
 private:
     bool _Showable = true;
