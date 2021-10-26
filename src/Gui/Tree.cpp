@@ -6298,19 +6298,19 @@ App::DocumentObject *DocumentItem::getTopParent(
             return false;
 
         ss.str("");
-        topParent = nullptr;
-        objItem->getSubName(ss,topParent);
-        // prefer item with no logical topParent so that we don't need to
+        App::DocumentObject *parentObj = nullptr;
+        objItem->getSubName(ss, parentObj);
+        // prefer item with no logical top parent so that we don't need to
         // correct the given sub object path.
-        if (!topParent) {
+        if (!parentObj) {
             if (noParent && curLevel >= 0 && count >= curLevel)
                 return false;
             noParent = true;
         } else if (noParent || (curLevel >= 0 && count >= curLevel))
             return false;
-
         if (ppitem)
             *ppitem = objItem;
+        topParent = parentObj;
         curLevel = count;
         curSub = ss.str();
         return true;
@@ -6319,9 +6319,21 @@ App::DocumentObject *DocumentItem::getTopParent(
     // First check the current item
     if (!countLevel(getTree()->currentItem())) {
         // check the selected items, pick one that's nearest to the root
-        for (auto item : getTree()->selectedItems())
-            countLevel(item);
-        if (!topParent) {
+        bool found = false;
+        for (auto item : getTree()->selectedItems()) {
+            if (countLevel(item))
+                found = true;
+        }
+        if (!found) {
+            while(auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+                if (group->getDocument() != document()->getDocument())
+                    break;
+                ss.str("");
+                ss << obj->getNameInDocument() << "." << subname;
+                subname = ss.str();
+                obj = group;
+            }
+
             // check all items corresponding to the requested object, pick one
             // that's nearest to the root
             _FOREACH_ITEM(item, obj)
