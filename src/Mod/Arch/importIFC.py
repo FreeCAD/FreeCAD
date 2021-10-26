@@ -174,7 +174,8 @@ def getPreferences():
         'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
         'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
         'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
-        'MULTICORE': p.GetInt("ifcMulticore", 0)
+        'MULTICORE': p.GetInt("ifcMulticore", 0),
+        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:
@@ -1332,6 +1333,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences['DEBUG'] and layers: print("Creating layers...", end="")
     # print(layers)
     for layer_name, layer_objects in layers.items():
+        if preferences['IMPORT_LAYER']:
+            continue
         lay = Draft.make_layer(layer_name)
         # the method make_layer does some nasty debug prints
         lay_grp = []
