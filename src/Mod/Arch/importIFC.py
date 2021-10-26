@@ -1333,7 +1333,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences['DEBUG'] and layers: print("Creating layers...", end="")
     # print(layers)
     for layer_name, layer_objects in layers.items():
-        if preferences['IMPORT_LAYER']:
+        if preferences['IMPORT_LAYER'] is False:
             continue
         lay = Draft.make_layer(layer_name)
         # the method make_layer does some nasty debug prints
