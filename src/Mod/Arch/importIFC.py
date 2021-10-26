@@ -1252,7 +1252,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # print("colors:",colors)
     # print("mattable:",mattable)
     # print("materials:",materials)
-    fcmats = {}
+    added_mats = []
     for material in materials:
         # print(material.id())
         # get and set material name
@@ -1273,27 +1273,34 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 if m == material.id():
                     if o in colors and colors[o] is not None:
                         mdict["DiffuseColor"] = str(colors[o])
+        # on ifc import only the "DiffuseColor" of the material dictionary is initialized
+        # on editing material in Gui a lot more keys of the material dictionary are initialized even with empty values
+        # TODO: there should be a generic material obj init method which will be used by Arch Gui, import IFC, FEM, etc
         # merge materials with same name and color if setting in prefs is True
         add_material = True
         if preferences['MERGE_MATERIALS']:
-            for key in list(fcmats.keys()):
-                if fcmats[key].Label == name \
-                        and "DiffuseColor" in mdict and "DiffuseColor" in fcmats[key].Material \
-                        and mdict["DiffuseColor"] == fcmats[key].Material["DiffuseColor"]:
-                    mat = fcmats[key]
+            for added_mat in added_mats:
+                if (
+                    # added_mat.Material["Name"] == name
+                    # above does not work because Name is not initialized in material dict
+                    added_mat.Label == name
+                    and ("DiffuseColor" in mdict and "DiffuseColor" in added_mat.Material)
+                    and mdict["DiffuseColor"] == added_mat.Material["DiffuseColor"]
+                ):
+                    matobj = added_mat
                     add_material = False
         # add a new material object
         if add_material is True:
-            mat = Arch.makeMaterial(name=name)
+            matobj = Arch.makeMaterial(name=name)
             if mdict:
-                mat.Material = mdict
-            fcmats[mat.Name] = mat
+                matobj.Material = mdict
+            added_mats.append(matobj)
         # fill material attribute of the objects
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
                     if hasattr(objects[o],"Material"):
-                        objects[o].Material = mat
+                        objects[o].Material = matobj
                         if FreeCAD.GuiUp:
                             # the reason behind ...
                             # there are files around in which the material color is different from the shape color
@@ -1312,13 +1319,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                 print("\nobject color != material color for object: ", o)
                                 print("    material color is used (most software uses shape color)")
                                 print("    obj: ", o, "label: ", objects[o].Label, " col: ", sh_color)
-                                print("    mat: ", m, "label: ", mat.Label, " col: ", ma_color)
+                                print("    mat: ", m, "label: ", matobj.Label, " col: ", ma_color)
                                 # print("    ", ifcfile[o])
                                 # print("    ", ifcfile[m])
                                 # print("    colors:")
                                 # print("    ", o, ": ", colors[o])
                                 # print("    ", m, ": ", colors[m])
-
     if preferences['DEBUG'] and materials: print("done")
 
     # Layers
@@ -1336,6 +1342,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences['DEBUG'] and layers: print("done")
 
     # restore links from full parametric definitions
+
     for p in parametrics:
         l = FreeCAD.ActiveDocument.getObject(p[2])
         if l:
