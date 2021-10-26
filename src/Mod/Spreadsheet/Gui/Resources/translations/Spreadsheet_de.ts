@@ -630,5 +630,17 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
       <source>Spreadsheet</source>
       <translation>Kalkulationstabelle</translation>
     </message>
+    <message>
+      <source>&amp;Spreadsheet</source>
+      <translation>&amp;Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <source>&amp;Alignment</source>
+      <translation>&amp;Ausrichtung</translation>
+    </message>
+    <message>
+      <source>&amp;Styles</source>
+      <translation>&amp;Stile</translation>
+    </message>
   </context>
 </TS>
