@@ -170,7 +170,7 @@ def getPreferences():
         'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
         'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
         'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
-        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),
+        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
         'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
         'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
         'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
@@ -1333,6 +1333,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # print(layers)
     for layer_name, layer_objects in layers.items():
         lay = Draft.make_layer(layer_name)
+        # the method make_layer does some nasty debug prints
         lay_grp = []
         for lobj_id in layer_objects:
             if lobj_id in objects:
