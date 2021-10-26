@@ -26,9 +26,13 @@
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
+#include <QTranslator>
+#include <memory>
+#include <list>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
 
 namespace Base {
 
@@ -43,6 +47,11 @@ private:
     Py::Object translateNoop(const Py::Tuple& args);
     Py::Object translateNoop3(const Py::Tuple& args);
     Py::Object trNoop(const Py::Tuple& args);
+    Py::Object installTranslator(const Py::Tuple& args);
+    Py::Object removeTranslators(const Py::Tuple& args);
+
+private:
+    std::list<std::shared_ptr<QTranslator>> translators;
 };
 
 } // namespace Base
