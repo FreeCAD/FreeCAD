@@ -170,6 +170,7 @@ struct ApplicationP
     ~ApplicationP()
     {
         delete macroMngr;
+        delete prefPackManager;
     }
 
     /// list of all handled documents
