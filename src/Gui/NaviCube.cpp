@@ -1828,7 +1828,10 @@ void NaviCubeShared::handleMenu(QWidget *parent) {
     static std::vector<const char *> commands = {
         "Std_OrthographicCamera",
         "Std_PerspectiveCamera",
+        0,
         "Std_ViewIsometric",
+        "Std_ViewDimetric",
+        "Std_ViewTrimetric",
         0,
         "Std_ViewFitAll",
     };
