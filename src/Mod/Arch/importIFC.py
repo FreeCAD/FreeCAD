@@ -1328,6 +1328,21 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                 # print("    ", m, ": ", colors[m])
     if preferences['DEBUG'] and materials: print("done")
 
+    # Grouping everything if required
+
+    # has to be before the Layer
+    # if REPLACE_PROJECT and only one storey and one building both are omitted
+    # the pure objects do not belong to any container, they will be added here
+    # if after Layer they are linked by Layer and will not be added here
+    if preferences['REPLACE_PROJECT'] and filename:
+        rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
+        rootgroup.Label = os.path.basename(filename)
+        print(objects)
+        for key,obj in objects.items():
+            # only add top-level objects
+            if not obj.InList:
+                rootgroup.addObject(obj)
+
     # Layers
 
     if preferences['DEBUG'] and layers: print("Creating layers...", end="")
@@ -1356,15 +1371,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         l = FreeCAD.ActiveDocument.getObject(p[2])
         if l:
             setattr(p[0],p[1],l)
-
-    # Grouping everything if required
-    if preferences['REPLACE_PROJECT'] and filename:
-        rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
-        rootgroup.Label = os.path.basename(filename)
-        for key,obj in objects.items():
-            # only add top-level objects
-            if not obj.InList:
-                rootgroup.addObject(obj)
 
     # Save colordict in non-GUI mode
     if colordict and not FreeCAD.GuiUp:
