@@ -86,10 +86,11 @@ else(WIN32)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif(WIN32)
 
-install(FILES ${Renderer_Assets} DESTINATION ${CMAKE_INSTALL_DATADIR}/Renderer)
+if (Renderer_Assets)
+    install(FILES ${Renderer_Assets} DESTINATION ${CMAKE_INSTALL_DATADIR}/Renderer)
 
-ADD_CUSTOM_TARGET(Renderer_assets ALL SOURCES ${Assets})
-fc_copy_sources(Renderer_assets
-                "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Renderer"
-                ${Renderer_Assets})
-
+    ADD_CUSTOM_TARGET(Renderer_assets ALL SOURCES ${Assets})
+    fc_copy_sources(Renderer_assets
+                    "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Renderer"
+                    ${Renderer_Assets})
+endif (Renderer_Assets)
