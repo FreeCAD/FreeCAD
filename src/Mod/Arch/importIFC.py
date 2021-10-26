@@ -1335,8 +1335,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     for layer_name, layer_objects in layers.items():
         if preferences['IMPORT_LAYER'] is False:
             continue
-        lay = Draft.make_layer(layer_name)
         # the method make_layer does some nasty debug prints
+        lay = Draft.make_layer(layer_name)
+        # ShapeColor and LineColor are not set, thus some some default values are used
+        # do not override the imported ShapeColor and LineColor with default layer values
+        if FreeCAD.GuiUp:
+            lay.ViewObject.OverrideLineColorChildren = False
+            lay.ViewObject.OverrideShapeColorChildren = False
         lay_grp = []
         for lobj_id in layer_objects:
             if lobj_id in objects:
