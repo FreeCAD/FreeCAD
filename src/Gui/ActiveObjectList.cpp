@@ -93,11 +93,6 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, bool enable) const
             Application::Instance->getViewProvider(info.activeObject));
     if(!vp) return;
 
-    if (TreeParams::TreeActiveAutoExpand()) {
-        vp->getDocument()->signalExpandObject(*vp, enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
-                                              info.obj, info.subname.c_str());
-    }
-
     Gui::Application::Instance->signalHighlightObject(*vp, info.mode,enable,info.obj,info.subname.c_str());
 }
 

@@ -5898,6 +5898,9 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         if (!sobj)
             sobj = obj.getObject();
         _FOREACH_ITEM(item, sobj)
+            if (TreeParams::TreeActiveAutoExpand()
+                    && item->highlightMode != HighlightMode::None)
+                item->setExpanded(false);
             item->setHighlight(set, high);
         END_FOREACH_ITEM;
         return;
@@ -5912,6 +5915,8 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
     }
     if (item) {
         item->setHighlight(set,high);
+        if (TreeParams::TreeActiveAutoExpand())
+            item->setExpanded(true);
         getTree()->scrollToItem(item);
     }
 }
