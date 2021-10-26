@@ -5352,12 +5352,15 @@ void DocumentItem::setDocumentLabel() {
                 QString::fromLatin1(document()->isModified()?" *":"")));
 }
 
-#define FOREACH_ITEM(_item, _obj) \
+#define _FOREACH_ITEM(_item, _obj) \
     auto _it = ObjectMap.end();\
-    if(_obj.getObject() && _obj.getObject()->getNameInDocument())\
-        _it = ObjectMap.find(_obj.getObject());\
+    if(_obj && _obj->getNameInDocument())\
+        _it = ObjectMap.find(_obj);\
     if(_it != ObjectMap.end()) {\
         for(auto _item : _it->second->items) {
+
+#define FOREACH_ITEM(_item, _obj) \
+    _FOREACH_ITEM(_item, _obj.getObject())
 
 #define FOREACH_ITEM_ALL(_item) \
     for(auto _v : ObjectMap) {\
@@ -5879,29 +5882,38 @@ void TreeWidget::slotChangedChildren(const ViewProviderDocumentObject &view) {
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,
     const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
-    (void)subname;
     if((parent && parent->getDocument()!=document()->getDocument())
         || (!parent && obj.getDocument() != document()))
         return;
 
     getTree()->_updateStatus(false);
-    FOREACH_ITEM(item,obj)
-        if(parent) {
-            App::DocumentObject *topParent = 0;
-            std::ostringstream ss;
-            item->getSubName(ss,topParent);
-            if(!topParent) {
-                if(parent!=obj.getObject())
-                    continue;
-            }
-        }
+
+    if (!parent) {
+        parent = obj.getObject();
+        subname = "";
+    }
+
+    if (!set || high == HighlightMode::None) {
+        auto sobj = parent->getSubObject(subname);
+        if (!sobj)
+            sobj = obj.getObject();
+        _FOREACH_ITEM(item, sobj)
+            item->setHighlight(set, high);
+        END_FOREACH_ITEM;
+        return;
+    }
+
+    auto item = findItemByObject(true, const_cast<App::DocumentObject*>(parent), subname, false);
+    if (!item) {
+        auto sobj = parent->getSubObject(subname);
+        if (!sobj)
+            sobj = obj.getObject();
+        item = findItemByObject(true, sobj, "", false);
+    }
+    if (item) {
         item->setHighlight(set,high);
-        if(parent) {
-            showItem(item,false,true);
-            getTree()->scrollToItem(item);
-            return;
-        }
-    END_FOREACH_ITEM
+        getTree()->scrollToItem(item);
+    }
 }
 
 static unsigned int countExpandedItem(const QTreeWidgetItem *item) {
@@ -6255,41 +6267,70 @@ App::DocumentObject *DocumentItem::getTopParent(
         return obj;
     }
 
-    // If no top level item, find an item that is closest to the top level
-    std::multimap<int,DocumentObjectItem*> items;
-    App::DocumentObject *topParent = 0;
-    std::string curSub;
     std::ostringstream ss;
-    int curLevel = 0;
-    for(auto item : it->second->items) {
-        int level=0;
-        for(auto parent=item->parent();parent;parent=parent->parent()) {
-            if(parent->isHidden())
-                level += 1000;
-            ++level;
+    bool noParent = false;
+    std::string curSub;
+    App::DocumentObject *topParent = nullptr;
+    int curLevel = -1;
+    auto countLevel = [&](QTreeWidgetItem *item) {
+        int count = -1;
+        DocumentObjectItem *objItem = nullptr;
+        for (auto parent = item; parent; parent = parent->parent()) {
+            if (parent->type() != TreeWidget::ObjectType)
+                break;
+            if (count < 0) {
+                objItem = static_cast<DocumentObjectItem*>(parent);
+                if (objItem->object()->getObject() != obj)
+                    continue;
+            }
+            if (parent->isHidden())
+                count += 1000;
+            else
+                ++count;
         }
+        if (!objItem)
+            return false;
+
         ss.str("");
-        App::DocumentObject *parent = 0;
-        item->getSubName(ss,parent);
-        if(!parent) {
-            if(ppitem)
-                *ppitem = item;
-            return obj;
-        }
-        if(!topParent || curLevel>level) {
-            topParent = parent;
-            curSub = ss.str();
-            curLevel = level;
-            if(ppitem)
-                *ppitem = item;
+        topParent = nullptr;
+        objItem->getSubName(ss,topParent);
+        // prefer item with no logical topParent so that we don't need to
+        // correct the given sub object path.
+        if (!topParent) {
+            if (noParent && curLevel >= 0 && count >= curLevel)
+                return false;
+            noParent = true;
+        } else if (noParent || (curLevel >= 0 && count >= curLevel))
+            return false;
+
+        if (ppitem)
+            *ppitem = objItem;
+        curLevel = count;
+        curSub = ss.str();
+        return true;
+    };
+
+    // First check the current item
+    if (!countLevel(getTree()->currentItem())) {
+        // check the selected items, pick one that's nearest to the root
+        for (auto item : getTree()->selectedItems())
+            countLevel(item);
+        if (!topParent) {
+            // check all items corresponding to the requested object, pick one
+            // that's nearest to the root
+            _FOREACH_ITEM(item, obj)
+                countLevel(item);
+            END_FOREACH_ITEM;
         }
     }
 
-    ss.str("");
-    ss << curSub << obj->getNameInDocument() << '.' << subname;
-    FC_LOG("Subname correction " << obj->getFullName() << '.' << subname
-            << " -> " << topParent->getFullName() << '.' << ss.str());
-    subname = ss.str();
+    if (topParent) {
+        ss.str("");
+        ss << curSub << obj->getNameInDocument() << '.' << subname;
+        FC_LOG("Subname correction " << obj->getFullName() << '.' << subname
+                << " -> " << topParent->getFullName() << '.' << ss.str());
+        subname = ss.str();
+    }
     return topParent;
 }
 
