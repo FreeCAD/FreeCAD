@@ -1574,7 +1574,7 @@ void StdCmdPlacement::activated(int iMsg)
 
 bool StdCmdPlacement::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
 }
 
 //===========================================================================
