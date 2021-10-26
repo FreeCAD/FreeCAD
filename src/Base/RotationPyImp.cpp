@@ -279,10 +279,38 @@ PyObject* RotationPy::slerp(PyObject * args)
     return new RotationPy(new Rotation(sl));
 }
 
+PyObject* RotationPy::fromEuler(PyObject * args)
+{
+    double A,B,C;
+    if (PyArg_ParseTuple(args, "ddd", &A, &B, &C)) {
+        this->getRotationPtr()->setYawPitchRoll(A,B,C);
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    const char *seq;
+    if (PyArg_ParseTuple(args, "sddd", &seq, &A, &B, &C)) {
+        try {
+            getRotationPtr()->setEulerAngles(
+                    Rotation::eulerSequenceFromName(seq), A, B, C);
+            Py_Return;
+        }
+        catch (const Base::Exception& e) {
+            e.setPyException();
+            return nullptr;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Expected arguments:\n"
+                                     "- float, float, float or\n"
+                                     "- string, float, float, float");
+    return nullptr;
+}
+
 PyObject* RotationPy::toEuler(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     double A,B,C;
     this->getRotationPtr()->getYawPitchRoll(A,B,C);
 

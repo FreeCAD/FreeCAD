@@ -83,13 +83,28 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="fromEuler">
+            <Documentation>
+                <UserDocu>
+                    fromEuler(angle1, angle2, angle3)
+                    Set the Euler angles of this rotation
+                    as yaw-pitch-roll in XY'Z'' convention.
+                    or:
+                    fromEuler(seq, angle1, angle2, angle3)
+                    Get the Euler angles in a given sequence for this rotation.
+
+                    NOTE: The angles are in degree
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="toEuler" Const="true">
 			<Documentation>
 				<UserDocu>
 					toEuler() -> list
 					Get the Euler angles of this rotation
 					as yaw-pitch-roll in XY'Z'' convention
-				</UserDocu>
+                    NOTE: The angles are in degree
+                </UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="toEulerAngles" Const="true">
