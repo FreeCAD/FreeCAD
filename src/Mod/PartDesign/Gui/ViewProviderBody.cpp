@@ -252,38 +252,46 @@ bool ViewProviderBody::doubleClicked(void)
     if(!activeView) 
         return false;
 
-    if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
-        //active body double-clicked. Deactivate.
-        Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
-    } else {
-        // assure the PartDesign workbench
-        if(App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/PartDesign")->GetBool("SwitchToWB", true))
-            Gui::Command::assureWorkbench("PartDesignWorkbench");
+    App::DocumentObject *topParent = nullptr;
+    std::string subname;
+    if (activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY, &topParent, &subname) == getObject()) {
+        bool selected;
+        {
+            Gui::SelectionNoTopParentCheck guard;
+            selected = Gui::Selection().isSelected(topParent ? topParent : getObject(), subname.c_str(), 0);
+        }
+        if (selected) {
+            //active body double-clicked. Deactivate.
+            Gui::Command::doCommand(Gui::Command::Gui,
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
+            return true;
+        }
+    }
+    // assure the PartDesign workbench
+    if(App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/PartDesign")->GetBool("SwitchToWB", true))
+        Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-        Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
-                PDBODYKEY, getObject()->getFullName(true).c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,
+            "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+            PDBODYKEY, getObject()->getFullName(true).c_str());
 
-        App::DocumentObject *topParent = nullptr;
-        std::string subname;
-        activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY, &topParent, &subname);
-        if (topParent) {
-            auto objs = topParent->getSubObjectList(subname.c_str());
-            if (objs.size() > 1) {
-                auto parent = objs[objs.size()-2]->getLinkedObject(true);
-                if (parent->isDerivedFrom(App::Part::getClassTypeId())) {
-                    objs.pop_back();
-                    App::SubObjectT part(objs);
-                    if (!activeView->isActiveObject(part.getObject(),PARTKEY,part.getSubName().c_str()))
-                        Gui::Command::doCommand(Gui::Command::Gui,
-                                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s, u'%s')",
-                                PARTKEY, part.getObjectPython().c_str(), part.getSubName().c_str());
-                }
+    topParent = nullptr;
+    subname.clear();
+    activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY, &topParent, &subname);
+    if (topParent) {
+        auto objs = topParent->getSubObjectList(subname.c_str());
+        if (objs.size() > 1) {
+            auto parent = objs[objs.size()-2]->getLinkedObject(true);
+            if (parent->isDerivedFrom(App::Part::getClassTypeId())) {
+                objs.pop_back();
+                App::SubObjectT part(objs);
+                if (!activeView->isActiveObject(part.getObject(),PARTKEY,part.getSubName().c_str()))
+                    Gui::Command::doCommand(Gui::Command::Gui,
+                            "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s, u'%s')",
+                            PARTKEY, part.getObjectPython().c_str(), part.getSubName().c_str());
             }
         }
     }
-
     return true;
 }
 
