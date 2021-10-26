@@ -262,6 +262,11 @@ void OverlayProxyWidget::mousePressEvent(QMouseEvent *ev)
     if(!owner->count() || ev->button() != Qt::LeftButton)
         return;
 
+    if (owner->getState() == OverlayTabWidget::State_HintHidden) {
+        ev->setAccepted(false);
+        return;
+    }
+
     owner->setState(OverlayTabWidget::State_Showing);
     OverlayManager::instance()->refresh(this);
 }
