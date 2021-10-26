@@ -1277,7 +1277,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         add_material = True
         if preferences['MERGE_MATERIALS']:
             for key in list(fcmats.keys()):
-                if key.startswith(name) \
+                if fcmats[key].Label == name \
                         and "DiffuseColor" in mdict and "DiffuseColor" in fcmats[key].Material \
                         and mdict["DiffuseColor"] == fcmats[key].Material["DiffuseColor"]:
                     mat = fcmats[key]
