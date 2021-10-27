@@ -1118,9 +1118,6 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
 
         this->preSelection = 1;
         int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z,0,true);
-        if(ret<0 && this->currentHighlight->getLength())
-            return true;
-
         if(ret) {
             clearHighlight();
             currentHighlight->append(path);

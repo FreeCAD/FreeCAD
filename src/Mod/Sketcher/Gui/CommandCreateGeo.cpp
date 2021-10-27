@@ -6066,7 +6066,7 @@ public:
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
-        if (Gui::Selection().getPreselection().pObjectName)
+        if (Gui::Selection().hasPreselection())
             applyCursor();
     }
 
@@ -6619,7 +6619,7 @@ namespace SketcherGui {
         virtual void mouseMove(Base::Vector2d onSketchPos)
         {
             Q_UNUSED(onSketchPos);
-            if (Gui::Selection().getPreselection().pObjectName)
+            if (Gui::Selection().hasPreselection())
                 applyCursor();
         }
 
