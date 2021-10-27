@@ -49,7 +49,7 @@
 #include "Action.h"
 #include "OverlayWidgets.h"
 
-FC_LOG_LEVEL_INIT("Gui", true, true)
+FC_LOG_LEVEL_INIT("Toolbar", true, 2)
 
 using namespace Gui;
 
@@ -303,6 +303,11 @@ ToolBarManager::ToolBarManager()
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
+    timerChild.setSingleShot(true);
+    QObject::connect(&timerChild, &QTimer::timeout, [this]() {
+        toolBars();
+    });
+
     auto toolbars = toolBars();
     for (auto &v : hPref->GetBoolMap()) {
         if (v.first.empty())
@@ -439,8 +444,10 @@ void ToolBarManager::onTimer()
         if (idx >= 0) {
             sbToolbars[idx] = tb;
             continue;
-        } else if (tb->parentWidget() != getMainWindow())
+        } else if (tb->parentWidget() != getMainWindow()) {
+            Base::StateLocker guard(adding);
             getMainWindow()->addToolBar(tb);
+        }
 
         if (defArea != curArea && mw->toolBarArea(tb) == defArea)
             lines.emplace(ToolBarKey(tb),tb);
@@ -456,6 +463,7 @@ void ToolBarManager::onTimer()
                 v.second->objectName()) ? gArea : area;
         if (!isToolBarAllowed(v.second, toolbarArea))
             continue;
+        Base::StateLocker guard(adding);
         if (first)
             first = false;
         else if (a != v.first.a)
@@ -488,6 +496,7 @@ void ToolBarManager::onTimer()
 
 QToolBar *ToolBarManager::createToolBar(const QString &name)
 {
+    Base::StateLocker guard(adding);
     auto toolbar = new QToolBar(getMainWindow());
     getMainWindow()->addToolBar(
             globalToolBarNames.count(name) ? globalArea : defaultArea, toolbar);
@@ -509,6 +518,9 @@ void ToolBarManager::connectToolBar(QToolBar *toolbar)
         if (this->restored)
             getMainWindow()->saveWindowSettings(true);
     });
+    QByteArray name = p->objectName().toUtf8();
+    p->setMovable(hMovable->GetBool(name, isDefaultMovable()));
+    FC_LOG("connect toolbar " << name.constData() << ' ' << p);
 }
 
 void ToolBarManager::setup(ToolBarItem* toolBarItems)
@@ -522,7 +534,6 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     QList<ToolBarItem*> items = toolBarItems->getItems();
     auto toolbars = toolBars();
-    bool movable = isDefaultMovable();
     for (auto item : items) {
         // search for the toolbar
         QString name;
@@ -572,17 +583,15 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         toolbar->setWindowTitle(QApplication::translate("Workbench", toolbarName.c_str())); // i18n
         toolbar->toggleViewAction()->setVisible(true);
-        {
-            QSignalBlocker blocker(toolbar);
-            setToolBarVisible(toolbar, visible);
-            toolbar->setMovable(hMovable->GetBool(toolbarName.c_str(), movable));
-        }
+        setToolBarVisible(toolbar, visible);
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
             auto area = getMainWindow()->toolBarArea(toolbar);
-            if (!isToolBarAllowed(toolbar, area))
+            if (!isToolBarAllowed(toolbar, area)) {
+                Base::StateLocker guard(adding);
                 getMainWindow()->addToolBar(toolbar);
+            }
 
             int &top_width = widths[area];
             if (top_width > 0 && getMainWindow()->toolBarBreak(toolbar))
@@ -710,7 +719,6 @@ void ToolBarManager::saveState() const
 
 void ToolBarManager::restoreState()
 {
-    bool movable = isDefaultMovable();
     std::map<int, QToolBar*> sbToolbars;
     for (auto &v : toolBars()) {
         QToolBar *toolbar = v.second;
@@ -721,18 +729,17 @@ void ToolBarManager::restoreState()
             toolbar->toggleViewAction()->setVisible(false);
             setToolBarVisible(toolbar, false);
         }
-        else if (this->toolbarNames.indexOf(toolbar->objectName()) >= 0) {
-            QSignalBlocker block(toolbar);
+        else if (this->toolbarNames.indexOf(toolbar->objectName()) >= 0)
             setToolBarVisible(toolbar, hPref->GetBool(toolbarName, toolbar->isVisible()));
-            toolbar->setMovable(hMovable->GetBool(toolbarName, movable));
-        }
         else
             setToolBarVisible(toolbar, false);
         int idx = hStatusBar->GetInt(toolbarName, -1);
         if (idx >= 0)
             sbToolbars[idx] = toolbar;
-        else if (toolbar->parentWidget() != getMainWindow())
+        else if (toolbar->parentWidget() != getMainWindow()) {
+            Base::StateLocker guard(adding);
             getMainWindow()->addToolBar(toolbar);
+        }
     }
 
     for (auto &v : sbToolbars) {
@@ -794,17 +801,24 @@ std::map<QString, QPointer<QToolBar>> ToolBarManager::toolBars()
         }
         if (p->windowTitle().isEmpty() || tb->windowTitle().isEmpty()) {
             // We now pre-create all recorded toolbars (with an empty title)
-            // when application starts to be able to restore the toolbar
+            // so that when application starts, Qt can restore the toolbar
             // position properly. However, some user code may later create the
             // toolbar with the same name without checking existence (e.g. Draft
-            // tray). So we replace our toolbar here.
+            // tray). So we will replace our toolbar here.
+            //
+            // Also, because findChildren() may return object in any order, we
+            // will only replace the toolbar having an empty title with the
+            // other that has a title.
+
             QToolBar *a = p, *b = tb;
             if (a->windowTitle().isEmpty())
                 std::swap(a, b);
             if (!a->windowTitle().isEmpty()) {
-                // replace toolbar b with a
+                // replace toolbar and insert it at the same location
+                FC_LOG("replacing " << name.toUtf8().constData() << ' ' << b << " -> " << a);
                 getMainWindow()->insertToolBar(b, a);
                 p = a;
+                connectToolBar(a);
                 if (connectedToolBars.erase(b)) {
                     b->setObjectName(QString::fromLatin1("__scrapped"));
                     b->deleteLater();
@@ -814,7 +828,7 @@ std::map<QString, QPointer<QToolBar>> ToolBarManager::toolBars()
         }
 
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("duplicate toolbar name " << name.toUtf8().constData());
+            FC_WARN("duplicate toolbar " << name.toUtf8().constData());
     }
     return res;
 }
@@ -850,6 +864,18 @@ void ToolBarManager::onMovableChanged(bool movable)
     if (toolbar) {
         Base::ConnectionBlocker block(connParam);
         hMovable->SetBool(toolbar->objectName().toUtf8(), movable);
+    }
+}
+
+void ToolBarManager::checkToolbar()
+{
+    if (_instance && !_instance->adding) {
+        // In case some user code creates its own toolbar without going through
+        // the toolbar manager, we shall call toolBars() using a timer to try
+        // to hook it up. One example is 'Draft Snap'. See comment in
+        // toolBars() on how we deal with this and move the toolBar to previous
+        // saved position.
+        _instance->timerChild.start();
     }
 }
 
@@ -995,7 +1021,10 @@ void ToolBarManager::showStatusBarContextMenu()
                         auto pos = toolbar->mapToGlobal(QPoint(0, 0));
                         QSignalBlocker blocker(toolbar);
                         statusBarArea->removeWidget(toolbar);
-                        getMainWindow()->addToolBar(toolbar);
+                        {
+                            Base::StateLocker guard(adding);
+                            getMainWindow()->addToolBar(toolbar);
+                        }
                         toolbar->setWindowFlags(Qt::Tool
                                 | Qt::FramelessWindowHint
                                 | Qt::X11BypassWindowManagerHint);

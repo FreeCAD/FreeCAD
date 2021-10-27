@@ -276,6 +276,7 @@ protected:
      * relevant user visible text.
      */
     void changeEvent(QEvent *e);
+    void childEvent(QChildEvent *e);
 
 private Q_SLOTS:
     /**

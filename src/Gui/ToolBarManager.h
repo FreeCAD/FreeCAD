@@ -94,6 +94,7 @@ public:
     void setDefaultMovable(bool enable);
     bool isDefaultMovable() const;
     void retranslate();
+    static void checkToolbar();
 
 protected Q_SLOTS:
     void onToggleToolBar(bool);
@@ -119,6 +120,7 @@ protected:
 
 private:
     QTimer timer;
+    QTimer timerChild;
     QStringList toolbarNames;
     static ToolBarManager* _instance;
     ParameterGrp::handle hPref;
@@ -129,6 +131,7 @@ private:
     boost::signals2::scoped_connection connParam;
     bool restored = false;
     bool migrating = false;
+    bool adding = false;
     Qt::ToolBarArea defaultArea;
     Qt::ToolBarArea globalArea;
     std::set<QString> globalToolBarNames;

@@ -2214,6 +2214,18 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
     }
 }
 
+void MainWindow::childEvent(QChildEvent *e)
+{
+    if (e->type() == QEvent::ChildAdded) {
+        // The parent maybe set in the object constructor, in which case we
+        // can't really tell the exact type of the object (i.e. e->child()). So
+        // there is no point using qobject_cast to check for QToolBar here.
+        ToolBarManager::checkToolbar();
+    }
+
+    QMainWindow::childEvent(e);
+}
+
 void MainWindow::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
