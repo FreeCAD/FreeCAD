@@ -100,10 +100,7 @@ def InitApplications():
 	Lib64Dir = os.path.realpath(Lib64Dir)
 	if os.path.exists(Lib64Dir):
 		libpaths.append(Lib64Dir)
-	if sys.version_info[0] == 3:
-		LibPyDir = FreeCAD.getHomePath()+'lib-py3'
-	else:
-		LibPyDir = FreeCAD.getHomePath()+'lib-py2'
+	LibPyDir = FreeCAD.getHomePath()+'lib-py3'
 	LibPyDir = os.path.realpath(LibPyDir)
 	if (os.path.exists(LibPyDir)):
 		libpaths.append(LibPyDir)
@@ -168,31 +165,45 @@ def InitApplications():
 	# proper python modules this can eventuelly be removed.
 	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
+	def RunInitPy(Dir):
+		InstallFile = os.path.join(Dir,"Init.py")
+		if (os.path.exists(InstallFile)):
+			try:
+				with open(file=InstallFile, encoding="utf-8") as f:
+					exec(f.read())
+			except Exception as inst:
+				Log('Init:      Initializing ' + Dir + '... failed\n')
+				Log('-'*100+'\n')
+				Log(traceback.format_exc())
+				Log('-'*100+'\n')
+				Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
+				Err('Please look into the log file for further information\n')
+			else:
+				Log('Init:      Initializing ' + Dir + '... done\n')
+		else:
+			Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
+
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
 			PathExtension.append(Dir)
-			InstallFile = os.path.join(Dir,"Init.py")
-			if (os.path.exists(InstallFile)):
-				try:
-					# XXX: This looks scary securitywise...
-					if sys.version_info.major < 3:
-						with open(InstallFile) as f:
-							exec(f.read())
-					else:
-						with open(file=InstallFile, encoding="utf-8") as f:
-							exec(f.read())
-				except Exception as inst:
-					Log('Init:      Initializing ' + Dir + '... failed\n')
-					Log('-'*100+'\n')
-					Log(traceback.format_exc())
-					Log('-'*100+'\n')
-					Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
-					Err('Please look into the log file for further information\n')
+			MetadataFile = os.path.join(Dir, "package.xml")
+			if os.path.exists(MetadataFile):
+				meta = FreeCAD.Metadata(MetadataFile)
+				content = meta.Content
+				if "workbench" in content:
+					workbenches = content["workbench"]
+					for workbench in workbenches:
+						subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
+						subdirectory = os.path.join(Dir, subdirectory)
+						classname = workbench.Classname
+						sys.path.insert(0,subdirectory)
+						PathExtension.append(subdirectory)
+						RunInitPy(subdirectory)
 				else:
-					Log('Init:      Initializing ' + Dir + '... done\n')
+					continue # The package content says there are no workbenches here, so just skip
 			else:
-				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
+				RunInitPy(Dir)
 
 	extension_modules = []
 

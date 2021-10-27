@@ -42,6 +42,7 @@ class Workbench:
     """The workbench base class."""
     MenuText = ""
     ToolTip = ""
+    Icon = None
 
     def Initialize(self):
         """Initializes this workbench."""
@@ -117,30 +118,56 @@ def InitApplications():
     ModDirs = FreeCAD.__ModDirs__
     #print ModDirs
     Log('Init:   Searching modules...\n')
+
+    def RunInitGuiPy(Dir):
+        InstallFile = os.path.join(Dir,"InitGui.py")
+        if (os.path.exists(InstallFile)):
+            try:
+                with open(file=InstallFile, encoding="utf-8") as f:
+                    exec(f.read())
+            except Exception as inst:
+                Log('Init:      Initializing ' + Dir + '... failed\n')
+                Log('-'*100+'\n')
+                Log(traceback.format_exc())
+                Log('-'*100+'\n')
+                Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
+                Err('Please look into the log file for further information\n')
+            else:
+                Log('Init:      Initializing ' + Dir + '... done\n')
+        else:
+            Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
+
     for Dir in ModDirs:
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
-            InstallFile = os.path.join(Dir,"InitGui.py")
-            if (os.path.exists(InstallFile)):
-                try:
-                    # XXX: This looks scary securitywise...
-                    if sys.version_info.major < 3:
-                        with open(InstallFile) as f:
-                            exec(f.read())
-                    else:
-                        with open(file=InstallFile, encoding="utf-8") as f:
-                            exec(f.read())
-                except Exception as inst:
-                    Log('Init:      Initializing ' + Dir + '... failed\n')
-                    Log('-'*100+'\n')
-                    Log(traceback.format_exc())
-                    Log('-'*100+'\n')
-                    Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
-                    Err('Please look into the log file for further information\n')
-                else:
-                    Log('Init:      Initializing ' + Dir + '... done\n')
-            else:
-                Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
+            MetadataFile = os.path.join(Dir, "package.xml")
+            if os.path.exists(MetadataFile):
+                meta = FreeCAD.Metadata(MetadataFile)
+                content = meta.Content
+                if "workbench" in content:
+                    FreeCAD.Gui.addIconPath(Dir)
+                    workbenches = content["workbench"]
+                    for workbench_metadata in workbenches:
+                        subdirectory = workbench_metadata.Name if not workbench_metadata.Subdirectory else workbench_metadata.Subdirectory
+                        subdirectory = os.path.join(Dir, subdirectory)
+                        RunInitGuiPy(subdirectory)
 
+                        # Brute force this for now:
+                        classname = workbench_metadata.Classname
+                        wb_handle = FreeCAD.Gui.getWorkbench(classname)
+                        if wb_handle:
+                            GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
+                        else:
+                            Log("Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
+                               
+
+
+
+                else:
+                    continue # The package content says there are no workbenches here, so just skip
+            else:
+                RunInitGuiPy(Dir)
+
+    extension_modules = []
 
     try:
         import pkgutil
@@ -168,6 +195,18 @@ def InitApplications():
                     Log('-'*80+'\n')
     except ImportError as inst:
         Err('During initialization the error "' + str(inst) + '" occurred\n')
+
+def GeneratePackageIcon(dir:str, subdirectory:str, workbench_metadata:FreeCAD.Metadata, wb_handle:Workbench) -> None:
+    relative_filename = workbench_metadata.Icon
+    if not relative_filename:
+        # Although a required element, this content item does not have an icon. Just bail out
+        return
+    absolute_filename = os.path.join(subdirectory, relative_filename)
+    if wb_handle.Icon:
+        Wrn(f"Packaged workbench {workbench_metadata.Name} specified icon in class {workbench_metadata.Classname}:\n") 
+        Wrn(f" ... Overwriting that specification with package.xml data")
+    wb_handle.Icon = absolute_filename
+
 
 Log ('Init: Running FreeCADGuiInit.py start script...\n')
 
