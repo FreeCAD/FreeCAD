@@ -269,6 +269,13 @@ void QGIRichAnno::setTextItem()
 
     m_text->centerAt(0.0, 0.0);
     m_rect->centerAt(0.0, 0.0);
+
+    QRectF r = m_text->boundingRect();
+    m_text->setTransformOriginPoint(r.center());
+    double rot = getViewObject()->Rotation.getValue();
+    m_text->setRotation(-rot);
+    m_rect->setTransformOriginPoint(r.center());
+    m_rect->setRotation(-rot);
 }
 
 void QGIRichAnno::setLineSpacing(int lineSpacing)
