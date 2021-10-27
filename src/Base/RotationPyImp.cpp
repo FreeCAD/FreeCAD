@@ -60,7 +60,7 @@ PyObject *RotationPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 }
 
 // constructor method
-int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
+int RotationPy::PyInit(PyObject* args, PyObject* kwds)
 {
     PyObject* o;
     if (PyArg_ParseTuple(args, "")) {
@@ -76,10 +76,18 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     double angle;
-    if (PyArg_ParseTuple(args, "O!d", &(Base::VectorPy::Type), &o, &angle)) {
-      // NOTE: The last parameter defines the rotation angle in degree.
-      getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
-      return 0;
+    static char *kw_deg[] = {"Axis", "Degree", nullptr};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_deg, &(Base::VectorPy::Type), &o, &angle)) {
+        // NOTE: The last parameter defines the rotation angle in degree.
+        getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
+        return 0;
+    }
+
+    PyErr_Clear();
+    static char *kw_rad[] = {"Axis", "Radian", nullptr};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kw_rad, &(Base::VectorPy::Type), &o, &angle)) {
+        getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), angle);
+        return 0;
     }
 
     PyErr_Clear();
