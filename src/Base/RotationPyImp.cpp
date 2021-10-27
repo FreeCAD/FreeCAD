@@ -279,35 +279,16 @@ PyObject* RotationPy::slerp(PyObject * args)
     return new RotationPy(new Rotation(sl));
 }
 
-PyObject* RotationPy::fromEuler(PyObject * args)
+PyObject* RotationPy::setYawPitchRoll(PyObject * args)
 {
     double A,B,C;
-    if (PyArg_ParseTuple(args, "ddd", &A, &B, &C)) {
-        this->getRotationPtr()->setYawPitchRoll(A,B,C);
-        Py_Return;
-    }
-
-    PyErr_Clear();
-    const char *seq;
-    if (PyArg_ParseTuple(args, "sddd", &seq, &A, &B, &C)) {
-        try {
-            getRotationPtr()->setEulerAngles(
-                    Rotation::eulerSequenceFromName(seq), A, B, C);
-            Py_Return;
-        }
-        catch (const Base::Exception& e) {
-            e.setPyException();
-            return nullptr;
-        }
-    }
-
-    PyErr_SetString(PyExc_TypeError, "Expected arguments:\n"
-                                     "- float, float, float or\n"
-                                     "- string, float, float, float");
-    return nullptr;
+    if (!PyArg_ParseTuple(args, "ddd", &A, &B, &C))
+        return nullptr;
+    this->getRotationPtr()->setYawPitchRoll(A,B,C);
+    Py_Return;
 }
 
-PyObject* RotationPy::toEuler(PyObject * args)
+PyObject* RotationPy::getYawPitchRoll(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -321,11 +302,29 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::setEulerAngles(PyObject * args)
+{
+    const char *seq;
+    double A,B,C;
+    if (!PyArg_ParseTuple(args, "sddd", &seq, &A, &B, &C))
+        return nullptr;
+
+    try {
+        getRotationPtr()->setEulerAngles(
+                Rotation::eulerSequenceFromName(seq), A, B, C);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        return nullptr;
+    }
+}
+
 PyObject* RotationPy::toEulerAngles(PyObject * args)
 {
     const char *seq = nullptr;
     if (!PyArg_ParseTuple(args, "|s", &seq))
-        return NULL;
+        return nullptr;
     if (!seq) {
         Py::List res;
         for (int i=1; i<Rotation::EulerSequenceLast; ++i)
@@ -465,7 +464,11 @@ PyObject *RotationPy::getCustomAttributes(const char* attr) const
         this->getRotationPtr()->getYawPitchRoll(A,B,C);
         return PyFloat_FromDouble(C);
     }
-    return 0;
+    else if (strcmp(attr, "toEuler") == 0) {
+        Py::Object self(const_cast<RotationPy*>(this), false);
+        return Py::new_reference_to(self.getAttr("getYawPitchRoll"));
+    }
+    return nullptr;
 }
 
 int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
