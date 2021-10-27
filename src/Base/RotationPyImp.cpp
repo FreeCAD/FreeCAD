@@ -35,7 +35,7 @@
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string RotationPy::representation(void) const
+std::string RotationPy::representation() const
 {
     RotationPy::PointerType ptr = reinterpret_cast<RotationPy::PointerType>(_pcTwinPointer);
     Py::Float q0(ptr->getValue()[0]);
@@ -44,10 +44,10 @@ std::string RotationPy::representation(void) const
     Py::Float q3(ptr->getValue()[3]);
     std::stringstream str;
     str << "Rotation (";
-    str << (std::string)q0.repr() << ", "
-        << (std::string)q1.repr() << ", "
-        << (std::string)q2.repr() << ", "
-        << (std::string)q3.repr();
+    str << static_cast<std::string>(q0.repr()) << ", "
+        << static_cast<std::string>(q1.repr()) << ", "
+        << static_cast<std::string>(q2.repr()) << ", "
+        << static_cast<std::string>(q3.repr());
     str << ")";
 
     return str.str();
@@ -170,7 +170,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
 
     PyErr_Clear();
     PyObject *v3;
-    char *priority = nullptr;
+    const char *priority = nullptr;
     if (PyArg_ParseTuple(args, "O!O!O!|s", &(Base::VectorPy::Type), &v1,
                                            &(Base::VectorPy::Type), &v2,
                                            &(Base::VectorPy::Type), &v3,
@@ -216,11 +216,11 @@ PyObject* RotationPy::richCompare(PyObject *v, PyObject *w, int op)
         Base::Rotation r1 = *static_cast<RotationPy*>(v)->getRotationPtr();
         Base::Rotation r2 = *static_cast<RotationPy*>(w)->getRotationPtr();
 
-        PyObject *res=0;
+        PyObject *res=nullptr;
         if (op != Py_EQ && op != Py_NE) {
             PyErr_SetString(PyExc_TypeError,
             "no ordering relation is defined for Rotation");
-            return 0;
+            return nullptr;
         }
         else if (op == Py_EQ) {
             res = (r1 == r2) ? Py_True : Py_False;
@@ -243,7 +243,7 @@ PyObject* RotationPy::richCompare(PyObject *v, PyObject *w, int op)
 PyObject* RotationPy::invert(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     this->getRotationPtr()->invert();
     Py_Return;
 }
@@ -251,7 +251,7 @@ PyObject* RotationPy::invert(PyObject * args)
 PyObject* RotationPy::inverted(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Rotation mult = this->getRotationPtr()->inverse();
     return new RotationPy(new Rotation(mult));
 }
@@ -260,7 +260,7 @@ PyObject* RotationPy::multiply(PyObject * args)
 {
     PyObject *rot;
     if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
-        return NULL;
+        return nullptr;
     Rotation mult = (*getRotationPtr()) * (*static_cast<RotationPy*>(rot)->getRotationPtr());
     return new RotationPy(new Rotation(mult));
 }
@@ -269,7 +269,7 @@ PyObject* RotationPy::multVec(PyObject * args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
-        return NULL;
+        return nullptr;
     Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
     getRotationPtr()->multVec(vec, vec);
     return new VectorPy(new Vector3d(vec));
@@ -368,7 +368,7 @@ PyObject* RotationPy::isSame(PyObject *args)
     PyObject *rot;
     double tol = 0.0;
     if (!PyArg_ParseTuple(args, "O!|d", &(RotationPy::Type), &rot, &tol))
-        return NULL;
+        return nullptr;
     Base::Rotation rot1 = * getRotationPtr();
     Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
     bool same = tol > 0.0 ? rot1.isSame(rot2, tol) : rot1.isSame(rot2);
@@ -378,7 +378,7 @@ PyObject* RotationPy::isSame(PyObject *args)
 PyObject* RotationPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     bool null = getRotationPtr()->isIdentity();
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
@@ -386,12 +386,12 @@ PyObject* RotationPy::isIdentity(PyObject *args)
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     bool null = getRotationPtr()->isNull();
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
-Py::Tuple RotationPy::getQ(void) const
+Py::Tuple RotationPy::getQ() const
 {
     double q0, q1, q2, q3;
     this->getRotationPtr()->getValue(q0,q1,q2,q3);
@@ -406,14 +406,14 @@ Py::Tuple RotationPy::getQ(void) const
 
 void RotationPy::setQ(Py::Tuple arg)
 {
-    double q0 = (double)Py::Float(arg.getItem(0));
-    double q1 = (double)Py::Float(arg.getItem(1));
-    double q2 = (double)Py::Float(arg.getItem(2));
-    double q3 = (double)Py::Float(arg.getItem(3));
+    double q0 = static_cast<double>(Py::Float(arg.getItem(0)));
+    double q1 = static_cast<double>(Py::Float(arg.getItem(1)));
+    double q2 = static_cast<double>(Py::Float(arg.getItem(2)));
+    double q3 = static_cast<double>(Py::Float(arg.getItem(3)));
     this->getRotationPtr()->setValue(q0,q1,q2,q3);
 }
 
-Py::Object RotationPy::getRawAxis(void) const
+Py::Object RotationPy::getRawAxis() const
 {
     Base::Vector3d axis; double angle;
     this->getRotationPtr()->getRawValue(axis, angle);
@@ -435,7 +435,7 @@ void RotationPy::setAxis(Py::Object arg)
     this->getRotationPtr()->setValue(axis, angle);
 }
 
-Py::Float RotationPy::getAngle(void) const
+Py::Float RotationPy::getAngle() const
 {
     Base::Vector3d axis; double angle;
     this->getRotationPtr()->getValue(axis, angle);
@@ -560,19 +560,17 @@ PyObject* RotationPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
 
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, PyObject* arg)
 {
     if (!PyObject_TypeCheck(self, &(RotationPy::Type)) ||
-
-            !PyLong_Check(other)
-            || arg != Py_None
-       )
+        !PyLong_Check(other) ||
+        arg != Py_None)
     {
         PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-        return 0;
+        return nullptr;
     }
 
     Rotation a = static_cast<RotationPy*>(self)->value();
@@ -591,49 +589,49 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
 PyObject* RotationPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* RotationPy::number_subtract_handler(PyObject * /*self*/, PyObject * /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int RotationPy::number_nonzero_handler (PyObject* /*self*/)
@@ -644,48 +642,48 @@ int RotationPy::number_nonzero_handler (PyObject* /*self*/)
 PyObject * RotationPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
