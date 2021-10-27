@@ -1337,7 +1337,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences['REPLACE_PROJECT'] and filename:
         rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
         rootgroup.Label = os.path.basename(filename)
-        print(objects)
+        # print(objects)
         for key,obj in objects.items():
             # only add top-level objects
             if not obj.InList:
