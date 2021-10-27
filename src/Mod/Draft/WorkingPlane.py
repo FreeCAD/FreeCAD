@@ -652,14 +652,14 @@ class Plane:
             if not geom_is_shape:
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object without Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object without Part.Shape geometry:'{}".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object with null Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object with null Part.Shape geometry:'{}".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if obj.HasSubObjects:
                 shapes.extend(obj.SubObjects)
@@ -672,7 +672,7 @@ class Plane:
         for n in range(len(shapes)):
             if not DraftGeomUtils.is_planar(shapes[n]):
                 FreeCAD.Console.PrintError(translate(
-                   "draft","'{}' object is not planar\n".format(names[n])))
+                   "draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
                 normal = DraftGeomUtils.get_normal(shapes[n])
@@ -683,8 +683,8 @@ class Plane:
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","{} and {} aren't coplanar\n".format(
-                        names[shape_ref],names[n])))
+                        "draft", "{} and {} aren't coplanar".format(
+                        names[shape_ref],names[n])) + "\n")
                     return False
         else:
             # suppose all geometries are straight lines or points
@@ -693,7 +693,7 @@ class Plane:
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","All Shapes must be coplanar\n"))
+                        "draft", "All Shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
             else:
@@ -701,7 +701,7 @@ class Plane:
 
         if not normal:
             FreeCAD.Console.PrintError(translate(
-                "draft","Selected Shapes must define a plane\n"))
+                "draft", "Selected Shapes must define a plane") + "\n")
             return False
 
         # set center of mass

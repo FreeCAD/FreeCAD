@@ -287,7 +287,7 @@ class Array(DraftLink):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "A parameter that determines "
                                      "how many symmetry planes "
-                                     " the circular array will have.")
+                                     "the circular array will have.")
             obj.addProperty("App::PropertyInteger",
                             "Symmetry",
                             "Circular array",
@@ -380,7 +380,7 @@ class Array(DraftLink):
                     obj.setPropertyStatus(pr, "Hidden")
 
     def execute(self, obj):
-        """Execture when the object is created or recomputed."""
+        """Execute when the object is created or recomputed."""
         if not obj.Base:
             return
 
