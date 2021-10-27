@@ -195,6 +195,7 @@ def InitApplications():
 					workbenches = content["workbench"]
 					for workbench in workbenches:
 						subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
+						subdirectory = subdirectory.replace("/",os.path.sep)
 						subdirectory = os.path.join(Dir, subdirectory)
 						classname = workbench.Classname
 						sys.path.insert(0,subdirectory)

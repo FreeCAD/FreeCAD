@@ -148,20 +148,22 @@ def InitApplications():
                     workbenches = content["workbench"]
                     for workbench_metadata in workbenches:
                         subdirectory = workbench_metadata.Name if not workbench_metadata.Subdirectory else workbench_metadata.Subdirectory
+                        subdirectory = subdirectory.replace("/",os.path.sep)
                         subdirectory = os.path.join(Dir, subdirectory)
                         RunInitGuiPy(subdirectory)
 
-                        # Brute force this for now:
+                        # Try to generate a new icon from the metadata-specified information
                         classname = workbench_metadata.Classname
-                        wb_handle = FreeCAD.Gui.getWorkbench(classname)
-                        if wb_handle:
-                            GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
-                        else:
-                            Log("Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
-                               
-
-
-
+                        if classname:
+                            try:
+                                wb_handle = FreeCAD.Gui.getWorkbench(classname)
+                                GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
+                            except Exception:
+                                Log(f"Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
+                                Log("Available workbenches at calltime were:\n")
+                                all_workbenches = FreeCAD.Gui.listWorkbenches()
+                                for wb in all_workbenches:
+                                    Log(f"    * {wb}\n")
                 else:
                     continue # The package content says there are no workbenches here, so just skip
             else:
