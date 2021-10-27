@@ -415,7 +415,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 else:
                     if preferences['DEBUG']: print(" no layer found", ptype,end="")
 
-
         # checking for full FreeCAD parametric definition, overriding everything else
         if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in psets.keys()]:
@@ -465,7 +464,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if ptype in preferences['SKIP']:  # preferences-set type skip list
             if preferences['DEBUG']: print(" skipped.")
             continue
-        if preferences['REPLACE_PROJECT']: # options-enabled project/site/building skip
+        if preferences['REPLACE_PROJECT']:  # options-enabled project/site/building skip
             if ptype in ['IfcProject','IfcSite']:
                 if preferences['DEBUG']: print(" skipped.")
                 continue
@@ -522,7 +521,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
             if shape.isNull() and (not preferences['ALLOW_INVALID']):
                 if preferences['DEBUG']: print("null shape ",end="")
-            elif not shape.isValid()  and (not preferences['ALLOW_INVALID']):
+            elif not shape.isValid() and (not preferences['ALLOW_INVALID']):
                 if preferences['DEBUG']: print("invalid shape ",end="")
             else:
 
@@ -915,12 +914,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if (pid in colors) and colors[pid]:
                 colordict[obj.Name] = colors[pid]
                 if FreeCAD.GuiUp:
-                    # if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
+                    # if preferences['DEBUG']:
+                    #    print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
                     if hasattr(obj.ViewObject,"ShapeColor"):
                         obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
                     if hasattr(obj.ViewObject,"Transparency"):
                         obj.ViewObject.Transparency = colors[pid][3]
-
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
@@ -962,7 +961,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     # But that would actually be an invalid IFC file, because the magnitude
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
-                    obj.Declination = ((math.degrees(math.atan2(y,x))-90+180)%360)-180
+                    obj.Declination = ((math.degrees(math.atan2(y,x))-90+180) % 360)-180
                     if (FreeCAD.GuiUp):
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
@@ -1123,7 +1122,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if preferences['DEBUG'] and first:
                 print("")
                 first = False
-            if preferences['DEBUG'] and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart","Project"])):
+            if (
+                preferences['DEBUG']
+                and (len(cobs) > 10)
+                and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart","Project"]))
+            ):
                 # avoid huge fusions
                 print("more than 10 shapes to add: skipping.")
             else:
@@ -1334,7 +1337,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # if REPLACE_PROJECT and only one storey and one building both are omitted
     # the pure objects do not belong to any container, they will be added here
     # if after Layer they are linked by Layer and will not be added here
-    if preferences['REPLACE_PROJECT'] and filename:
+    if preferences["REPLACE_PROJECT"] and filename:
         rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
         rootgroup.Label = os.path.basename(filename)
         # print(objects)
@@ -1348,7 +1351,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences['DEBUG'] and layers: print("Creating layers...", end="")
     # print(layers)
     for layer_name, layer_objects in layers.items():
-        if preferences['IMPORT_LAYER'] is False:
+        if preferences["IMPORT_LAYER"] is False:
             continue
         # the method make_layer does some nasty debug prints
         lay = Draft.make_layer(layer_name)

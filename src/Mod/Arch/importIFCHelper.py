@@ -396,6 +396,7 @@ def getColorFromProduct(product):
                     if color:
                         return color
 
+
 def getColorFromMaterial(material):
 
     if material.HasRepresentation:
@@ -540,6 +541,8 @@ def predefined_to_rgb(rgb_color):
 
 # ************************************************************************************************
 # property related methods
+
+
 def buildRelProperties(ifcfile):
     """
     Builds and returns a dictionary of {object:[properties]} from an IFC file
@@ -814,6 +817,7 @@ def get2DShape(representation,scaling=1000):
                         result.append(e)
             elif el.is_a("IfcIndexedPolyCurve"):
                 coords = el.Points.CoordList
+
                 def index2points(segment):
                     pts = []
                     for i in segment.wrappedValue:
@@ -898,7 +902,6 @@ def isRectangle(verts):
 
 
 def createFromProperties(propsets,ifcfile,parametrics):
-
     """
     Creates a FreeCAD parametric object from a set of properties.
     """
@@ -986,7 +989,6 @@ def createFromProperties(propsets,ifcfile,parametrics):
 
 
 def applyColorDict(doc,colordict=None):
-
     """applies the contents of a color dict to the objects in the given doc.
     If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
 
@@ -1007,7 +1009,6 @@ def applyColorDict(doc,colordict=None):
 
 
 def getParents(ifcobj):
-
     """finds the parent entities of an IFC entity"""
 
     parentlist = []
