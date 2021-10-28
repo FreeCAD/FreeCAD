@@ -164,6 +164,7 @@ public:
 
     bool isInGroupOnTop(const char *objname, const char *subname, bool altOnly=true) const;
     bool isInGroupOnTop(const std::string &key, bool altOnly=true) const;
+    const std::set<App::SubObjectT> &getObjectsOnTop() const;
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);

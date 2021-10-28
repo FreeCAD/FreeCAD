@@ -193,9 +193,9 @@ void DocumentObjectT::operator=(const Property *prop) {
 }
 
 bool DocumentObjectT::operator==(const DocumentObjectT &other) const {
+    // ignore label
     return document == other.document
         && object == other.object
-        && label == other.label
         && property == other.property;
 }
 

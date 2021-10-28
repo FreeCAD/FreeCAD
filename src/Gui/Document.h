@@ -134,6 +134,8 @@ public:
     mutable boost::signals2::signal<void (BaseView *, bool passive)> signalAttachView;
     /// signal on detaching view
     mutable boost::signals2::signal<void (BaseView *, bool passive)> signalDetachView;
+    /// signal on changes in show on top objects
+    mutable boost::signals2::signal<void (int, const App::SubObjectT &)> signalOnTopObject;
     //@}
 
     /** @name I/O of the document */

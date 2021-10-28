@@ -163,6 +163,7 @@ protected:
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotRecomputedObject(const App::DocumentObject &);
+    void slotOnTopObject(int, const App::SubObjectT &);
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
@@ -190,6 +191,8 @@ protected:
     void populateParents(const ViewProviderDocumentObject *vp);
     void setDocumentLabel();
 
+    void removeItemOnTop(DocumentObjectItem *item);
+
 private:
     const char *treeName; // for debugging purpose
     Gui::Document* pDocument;
@@ -214,6 +217,11 @@ private:
     Connection connectRecomputedObj;
     Connection connectChangedModified;
     Connection connectDetachView;
+    boost::signals2::scoped_connection connOnTopObject;
+    boost::signals2::scoped_connection connActivateView;
+
+    std::map<App::SubObjectT, std::vector<DocumentObjectItem*>> itemsOnTop;
+    bool updatingItemsOnTop = false;
 
     friend class TreeWidget;
     friend class DocumentObjectData;
@@ -269,6 +277,17 @@ public:
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
     int _getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
+    App::SubObjectT getSubNameT() const {
+        std::ostringstream ss;
+        App::DocumentObject *parent = nullptr;
+        getSubName(ss, parent);
+        if (!parent)
+            parent = object()->getObject();
+        else
+            ss << object()->getObject()->getNameInDocument() << ".";
+        return App::SubObjectT(parent, ss.str().c_str());
+    }
+
     void setHighlight(bool set, HighlightMode mode = HighlightMode::UserDefined);
 
     const char *getName() const;
@@ -295,6 +314,7 @@ private:
     int previousStatus;
     int selected;
     bool populated;
+    App::SubObjectT showOnTop;
     Gui::HighlightMode highlightMode = Gui::HighlightMode::None;
 
     friend class TreeWidget;
@@ -2588,6 +2608,16 @@ void TreeWidget::Private::toggleItemShowOnTop(DocumentObjectItem *oitem)
             gdoc->getActiveView());
     if (!view)
         return;
+    if (oitem->showOnTop.getObjectName().size()) {
+        view->getViewer()->checkGroupOnTop(SelectionChanges(
+                    SelectionChanges::RmvSelection,
+                    oitem->showOnTop.getDocumentName(),
+                    oitem->showOnTop.getObjectName(),
+                    oitem->showOnTop.getSubName()), true);
+        master->_updateStatus();
+        return;
+    }
+
     App::DocumentObject *topParent = 0;
     std::ostringstream ss;
     oitem->getSubName(ss,topParent);
@@ -2596,13 +2626,12 @@ void TreeWidget::Private::toggleItemShowOnTop(DocumentObjectItem *oitem)
     else
         ss << oitem->object()->getObject()->getNameInDocument() << '.';
     std::string subname = ss.str();
-    bool ontop = view->getViewer()->isInGroupOnTop(
-            topParent->getNameInDocument(), subname.c_str());
     view->getViewer()->checkGroupOnTop(SelectionChanges(
-                ontop ? SelectionChanges::RmvSelection : SelectionChanges::AddSelection,
+                SelectionChanges::AddSelection,
                 topParent->getDocument()->getName(),
                 topParent->getNameInDocument(),
                 subname.c_str()), true);
+    master->_updateStatus();
 }
 
 void TreeWidget::Private::toggleItemVisibility(DocumentObjectItem *oitem)
@@ -4837,6 +4866,7 @@ enum ItemStatus {
     ItemStatusTouched = 8,
     ItemStatusHidden = 16,
     ItemStatusExternal = 32,
+    ItemStatusShowOnTop = 64,
 };
 
 static QIcon getItemIcon(int currentStatus,
@@ -5307,6 +5337,19 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
         [this](BaseView *, bool passive) {
             if (!passive && document()->getMDIViews().empty())
                 this->setExpanded(false);
+        });
+
+    connOnTopObject = doc->signalOnTopObject.connect(
+        boost::bind(&DocumentItem::slotOnTopObject, this, bp::_1, bp::_2));
+
+    connActivateView = Application::Instance->signalActivateView.connect(
+        [this](const MDIView *view) {
+            if (view->getGuiDocument() != document()) return;
+            if (auto view3d = Base::freecad_dynamic_cast<View3DInventor>(view)) {
+                slotOnTopObject(SelectionChanges::ClrSelection, App::SubObjectT());
+                for (auto &objT : view3d->getViewer()->getObjectsOnTop())
+                    slotOnTopObject(SelectionChanges::AddSelection, objT);
+            }
         });
 
     setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
@@ -6103,6 +6146,54 @@ void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj
     getTree()->scrollToItem(item);
 }
 
+void DocumentItem::slotOnTopObject(int reason, const App::SubObjectT &objT)
+{
+    if (updatingItemsOnTop)
+        return;
+    Base::StateLocker guard(updatingItemsOnTop);
+    switch(reason) {
+    case SelectionChanges::ClrSelection:
+        if (itemsOnTop.size()) {
+            for (auto &v : itemsOnTop) {
+                for (auto item : v.second)
+                    item->showOnTop = App::SubObjectT();
+            }
+            itemsOnTop.clear();
+            getTree()->_updateStatus();
+        }
+        break;
+    case SelectionChanges::AddSelection:
+        if (auto sobj = objT.getSubObject()) {
+            auto it = ObjectMap.find(sobj);
+            if (it == ObjectMap.end())
+                break;
+            for (auto item : it->second->items) {
+                if (item->showOnTop == objT)
+                    continue;
+                if (item->getSubNameT() == objT) {
+                    removeItemOnTop(item);
+                    item->showOnTop = objT;
+                    auto &items = itemsOnTop[objT];
+                    items.push_back(item);
+                    getTree()->_updateStatus();
+                }
+            }
+        }
+        break;
+    case SelectionChanges::RmvSelection: {
+        auto it = itemsOnTop.find(objT);
+        if (it == itemsOnTop.end())
+            break;
+        for (auto item : it->second)
+            item->showOnTop = App::SubObjectT();
+        itemsOnTop.erase(it);
+        getTree()->_updateStatus();
+    }
+    default:
+        break;
+    }
+}
+
 void DocumentItem::slotRecomputedObject(const App::DocumentObject &obj) {
     if(obj.isValid())
         return;
@@ -6139,8 +6230,83 @@ Gui::Document* DocumentItem::document() const
 //    }
 //}
 
+void DocumentItem::removeItemOnTop(DocumentObjectItem *item)
+{
+    if (item->showOnTop.getObjectName().empty())
+        return;
+    auto it = itemsOnTop.find(item->showOnTop);
+    if (it == itemsOnTop.end())
+        return;
+    auto it2 = std::find(it->second.begin(), it->second.end(), item);
+    if (it2 == it->second.end())
+        return;
+    it->second.erase(it2);
+    if (it->second.empty()) {
+        itemsOnTop.erase(it);
+        Base::StateLocker guard(updatingItemsOnTop);
+        document()->foreachView<View3DInventor>([item](View3DInventor* view) {
+            view->getViewer()->checkGroupOnTop(SelectionChanges(
+                        SelectionChanges::RmvSelection,
+                        item->showOnTop.getDocumentName(),
+                        item->showOnTop.getObjectName(),
+                        item->showOnTop.getSubName()), true);
+        });
+    }
+}
+
 void DocumentItem::testItemStatus(void)
 {
+    if (auto view = Base::freecad_dynamic_cast<View3DInventor>(
+                document()->getActiveView()))
+    {
+        Base::StateLocker guard(updatingItemsOnTop);
+        auto viewer = view->getViewer();
+        // In case of objects changing hierarchy (e.g. drag and drop), update
+        // its on top status
+        std::vector<DocumentObjectItem *> changedItems;
+        for (auto it = itemsOnTop.begin(); it != itemsOnTop.end(); ) {
+            auto &items = it->second;
+            for (auto it2 = items.begin(); it2 != items.end(); ) {
+                auto item = *it2;
+                auto objT = item->getSubNameT();
+                if (objT == item->showOnTop) {
+                    ++it2;
+                    continue;
+                }
+                changedItems.push_back(item);
+                it2 = items.erase(it2);
+                if (items.empty()) {
+                    viewer->checkGroupOnTop(SelectionChanges(
+                                SelectionChanges::RmvSelection,
+                                item->showOnTop.getDocumentName(),
+                                item->showOnTop.getObjectName(),
+                                item->showOnTop.getSubName()), true);
+                }
+                item->showOnTop = objT;
+            }
+            if (items.empty())
+                it = itemsOnTop.erase(it);
+            else
+                ++it;
+        }
+
+        for (auto item : changedItems) {
+            auto &items = itemsOnTop[item->showOnTop];
+            items.push_back(item);
+            if (items.size() == 1)
+                view->getViewer()->checkGroupOnTop(SelectionChanges(
+                            SelectionChanges::AddSelection,
+                            item->showOnTop.getDocumentName(),
+                            item->showOnTop.getObjectName(),
+                            item->showOnTop.getSubName()), true);
+        }
+    } else {
+        for (auto &v : itemsOnTop) {
+            for (auto item : v.second)
+                item->showOnTop = App::SubObjectT();
+        }
+        itemsOnTop.clear();
+    }
     for(const auto &v : ObjectMap) {
         for(auto item : v.second->items)
             item->testItemStatus();
@@ -6694,6 +6860,7 @@ DocumentObjectItem::~DocumentObjectItem()
             myOwner->ObjectMap.erase(object()->getObject());
         if(requiredAtRoot(true,true))
             myOwner->slotNewObject(*object());
+        myOwner->removeItemOnTop(this);
     }
 }
 
@@ -6849,6 +7016,8 @@ void DocumentObjectItem::testItemStatus(bool resetStatus)
         currentStatus |= ItemStatusVisible;
     else
         currentStatus |= ItemStatusInvisible;
+    if (showOnTop.getObjectName().size())
+        currentStatus |= ItemStatusShowOnTop;
 
     TimingStop(testStatus2);
 
@@ -6979,15 +7148,24 @@ static QIcon getItemIcon(int currentStatus,
     }
 
     if (currentStatus & (ItemStatusInvisible | ItemStatusVisible)) {
-        static QPixmap pxInvisible, pxVisible;
-        if (pxInvisible.isNull())
-            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible.svg");
-        if (pxVisible.isNull())
-            pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
+        static QPixmap pxInvisible, pxVisible, pxInvisibleOnTop, pxVisibleOnTop;
 
         std::vector<std::pair<QByteArray, QPixmap> > icons;
-        icons.emplace_back(Gui::treeVisibilityIconTag(),
-                (currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
+        QPixmap *pixmap;
+        if (currentStatus & ItemStatusShowOnTop) {
+            if (pxInvisibleOnTop.isNull())
+                pxInvisibleOnTop = BitmapFactory().pixmap("TreeItemInvisibleOnTop.svg");
+            if (pxVisibleOnTop.isNull())
+                pxVisibleOnTop = BitmapFactory().pixmap("TreeItemVisibleOnTop.svg");
+            pixmap = (currentStatus & ItemStatusVisible) ? &pxVisibleOnTop : &pxInvisibleOnTop;
+        } else {
+            if (pxInvisible.isNull())
+                pxInvisible = BitmapFactory().pixmap("TreeItemInvisible.svg");
+            if (pxVisible.isNull())
+                pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
+            pixmap = (currentStatus & ItemStatusVisible) ? &pxVisible : &pxInvisible;
+        }
+        icons.emplace_back(Gui::treeVisibilityIconTag(), *pixmap);
         icons.emplace_back(Gui::treeMainIconTag(), pxOn);
         vp->getExtraIcons(icons);
 
