@@ -98,7 +98,9 @@
         <file>TreeHidden.svg</file>
         <file>TreeExternal.svg</file>
         <file>TreeItemVisible.svg</file>
+        <file>TreeItemVisibleOnTop.svg</file>
         <file>TreeItemInvisible.svg</file>
+        <file>TreeItemInvisibleOnTop.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-up.svg</file>
