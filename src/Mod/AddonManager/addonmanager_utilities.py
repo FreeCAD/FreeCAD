@@ -203,10 +203,13 @@ def construct_git_url(repo, filename):
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc == "github.com" or parsed_url.netloc == "framagit.com":
         return f"{repo.url}/raw/{repo.branch}/{filename}"
-    elif parsed_url.netloc == "gitlab.com" or parsed_url.netloc == "salsa.debian.org":
+    elif parsed_url.netloc == "gitlab.com":
+        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    elif parsed_url.netloc == "salsa.debian.org":
+        # e.g. https://salsa.debian.org/joha2/pyrate/-/raw/master/package.xml
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
     else:
-        FreeCAD.Console.PrintLog("Debug: addonmanager_utilities.construct_git_url: Unknown git host:", parsed_url.netloc)
+        FreeCAD.Console.PrintLog("Debug: addonmanager_utilities.construct_git_url: Unknown git host:" + parsed_url.netloc)
     return None
 
 def get_readme_url(repo):

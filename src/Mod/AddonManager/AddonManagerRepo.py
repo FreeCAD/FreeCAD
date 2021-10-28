@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
@@ -44,6 +43,9 @@ class AddonManagerRepo:
                 return "Macro"
             elif self.value == 3:
                 return "Package"
+
+        def __int__(self) -> int :
+            return self.value
 
     class UpdateStatus(Enum):
         NOT_INSTALLED = 0

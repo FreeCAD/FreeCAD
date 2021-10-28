@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 #***************************************************************************
 #*                                                                         *
 #* Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>      *
@@ -23,7 +22,6 @@
 
 import FreeCAD
 
-import git
 import tempfile
 import os
 import hashlib
@@ -67,6 +65,7 @@ class MetadataDownloadWorker(QObject):
         self.fetch_task = network_manager.get(self.request)
         self.fetch_task.finished.connect(self.resolve_fetch)
         self.fetch_task.redirected.connect(self.on_redirect)
+        self.fetch_task.sslErrors.connect(self.on_ssl_error)
 
     def abort(self):
         self.fetch_task.abort()
@@ -74,6 +73,12 @@ class MetadataDownloadWorker(QObject):
     def on_redirect(self, url):
         # For now just blindly follow all redirects
         self.fetch_task.redirectAllowed.emit()
+
+    def on_ssl_error(self, reply, errors):
+        FreeCAD.Console.PrintWarning(f"Error with encrypted connection:\n")
+        FreeCAD.Console.PrintWarning(reply)
+        for error in errors:
+            FreeCAD.Console.PrintWarning(error)
 
     def resolve_fetch(self):
         "Called when the data fetch completed, either with an error, or if it found the metadata file"
@@ -104,11 +109,15 @@ class MetadataDownloadWorker(QObject):
                 # There is no local copy yet, so we definitely have to update
                 # the cache
                 self.update_local_copy(new_xml)
+        elif self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
+            pass
+        else:
+            FreeCAD.Console.PrintWarning(f"Failed to connect to {self.url}:\n {self.fetch_task.error()}\n")
 
     def update_local_copy(self, new_xml):
         # We have to update the local copy of the metadata file and re-download
         # the icon file
-
+        
         name = self.repo.name
         repo_url = self.repo.url
         package_cache_directory = os.path.join(self.store, name)
@@ -116,7 +125,7 @@ class MetadataDownloadWorker(QObject):
             os.makedirs(package_cache_directory)
         new_xml_file = os.path.join(package_cache_directory, "package.xml")
         with open(new_xml_file, "wb") as f:
-            f.write(new_xml)
+            f.write(new_xml.data())
         metadata = FreeCAD.Metadata(new_xml_file)
         self.repo.metadata = metadata
         self.repo.repo_type = AddonManagerRepo.RepoType.PACKAGE
