@@ -1304,6 +1304,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 ):
                     matobj = added_mat
                     add_material = False
+                    break
         # add a new material object
         if add_material is True:
             matobj = Arch.makeMaterial(name=name)
