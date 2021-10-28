@@ -73,6 +73,8 @@ class CommandAddonManager:
                "showmacro_worker", "macro_worker", "install_worker",
                "update_metadata_cache_worker", "update_all_worker"]
 
+    lock = threading.Lock()
+
     def GetResources(self) -> Dict[str,str]:
         return {"Pixmap": "AddonManager",
                 "MenuText": QT_TRANSLATE_NOOP("Std_AddonMgr", "&Addon manager"),
@@ -113,6 +115,7 @@ class CommandAddonManager:
         # cleanup the leftovers from previous runs
         self.macro_repo_dir = tempfile.mkdtemp()
         self.packages_with_updates = []
+        self.startup_sequence = []
         self.addon_removed = False
         self.cleanup_workers()
 
@@ -189,30 +192,25 @@ class CommandAddonManager:
         self.dialog.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center())
 
         # set info for the progress bar:
-        self.number_of_progress_regions = 4
-        self.current_progress_region = 0
         self.dialog.progressBar.setMaximum (100)
 
-        # populate the table
-        self.populate_packages_table()
+        # begin populating the table in a set of sub-threads
+        self.startup()
 
         # set the label text to start with
-        self.show_information(translate("AddonInstaller", "Loading addon information"))
+        self.show_information(translate("AddonsInstaller", "Loading addon information"))
 
         # rock 'n roll!!!
         self.dialog.exec_()
 
-    def cleanup_workers(self) -> None:
-        """ Ensure that no workers are running by explicitly asking them to stop, and terminating them if they don't """
+    def cleanup_workers(self, wait=False) -> None:
+        """ Ensure that no workers are running by explicitly asking them to stop and waiting for them until they do """
         for worker in self.workers:
             if hasattr(self, worker):
                 thread = getattr(self, worker)
                 if thread:
                     if not thread.isFinished():
                         thread.requestInterruption()
-                        thread.wait(QtCore.QDeadlineTimer(250))
-                    if not thread.isFinished():
-                        thread.terminate() # Highly undesirable, hopefully the thread obeyed the request to interrupt
                         thread.wait()
 
     def wait_on_other_workers(self) -> None:
@@ -235,6 +233,7 @@ class CommandAddonManager:
 
         # ensure all threads are finished before closing
         oktoclose = True
+        self.startup_sequence = []
         for worker in self.workers:
             if hasattr(self, worker):
                 thread = getattr(self, worker)
@@ -248,10 +247,7 @@ class CommandAddonManager:
                 if hasattr(self, worker):
                     thread = getattr(self, worker)
                     if thread:
-                        thread.wait(QtCore.QDeadlineTimer(50)) # 50ms to wrap up whatever loop iteration it was on
-                        if not thread.isFinished():
-                            thread.terminate() # Highly undesirable, hopefully the thread obeyed the request to interrupt
-                            thread.wait()
+                        thread.wait()
 
         # all threads have finished
         if oktoclose:
@@ -284,7 +280,7 @@ class CommandAddonManager:
             FreeCAD.Console.PrintWarning("Could not terminate sub-threads in Addon Manager.\n")
             self.cleanup_workers()
 
-    def populate_packages_table(self) -> None:
+    def startup(self) -> None:
         """ Downloads the available packages listings and populates the table
 
         This proceeds in four stages: first, the main GitHub repository is queried for a list of possible
@@ -305,13 +301,36 @@ class CommandAddonManager:
 
         """
 
+        # Each function in this list is expected to launch a thread and connect its completion signal 
+        # to self.do_next_startup_phase
+        self.startup_sequence = [self.populate_packages_table, 
+                                 self.populate_macros, 
+                                 self.update_metadata_cache, 
+                                 self.check_updates]
+        self.current_progress_region = 0
+        self.number_of_progress_regions = len(self.startup_sequence)
+        self.do_next_startup_phase()
+
+    def do_next_startup_phase(self) -> None:
+        """ Pop the top item in self.startup_sequence off the list and run it """
+
+        if (len(self.startup_sequence) > 0):
+            phase_runner = self.startup_sequence.pop(0)
+            self.current_progress_region += 1
+            phase_runner()
+        else:
+            self.hide_progress_widgets()
+            self.dialog.tablePackages.setEnabled(True)
+            self.dialog.lineEditFilter.setFocus()
+
+    def populate_packages_table(self) -> None:
         self.item_model.clear()
         self.current_progress_region += 1
         self.update_worker = UpdateWorker()
         self.update_worker.status_message.connect(self.show_information)
         self.update_worker.addon_repo.connect(self.add_addon_repo)
         self.update_progress_bar(10,100)
-        self.update_worker.done.connect(self.populate_macros) # Link to step 2
+        self.update_worker.done.connect(self.do_next_startup_phase) # Link to step 2
         self.update_worker.start()
 
     def populate_macros(self) -> None:
@@ -320,8 +339,7 @@ class CommandAddonManager:
         self.macro_worker.status_message_signal.connect(self.show_information)
         self.macro_worker.progress_made.connect(self.update_progress_bar)
         self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-        self.macro_worker.done.connect(self.update_metadata_cache) # Link to step 3
-        self.macro_worker.done.connect(lambda : self.dialog.tablePackages.setEnabled(True))
+        self.macro_worker.done.connect(self.do_next_startup_phase) # Link to step 3
         self.macro_worker.start()
         
     def update_metadata_cache(self) -> None:
@@ -330,23 +348,24 @@ class CommandAddonManager:
         if pref.GetBool("AutoFetchMetadata", True):
             self.update_metadata_cache_worker = UpdateMetadataCacheWorker(self.item_model.repos)
             self.update_metadata_cache_worker.status_message.connect(self.show_information)
-            self.update_metadata_cache_worker.done.connect(self.check_updates) # Link to step 4
+            self.update_metadata_cache_worker.done.connect(self.do_next_startup_phase) # Link to step 4
             self.update_metadata_cache_worker.progress_made.connect(self.update_progress_bar)
             self.update_metadata_cache_worker.package_updated.connect(self.on_package_updated)
             self.update_metadata_cache_worker.start()
         else:
-            self.check_updates()
+            self.do_next_startup_phase()
 
     def on_package_updated(self, repo:AddonManagerRepo) -> None:
         """Called when the named package has either new metadata or a new icon (or both)"""
 
-        cache_path = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata", repo.name)
-        icon_filename = repo.metadata.Icon
-        icon_path = os.path.join(cache_path, icon_filename)
-        if os.path.isfile(icon_path):
-            addonicon = QtGui.QIcon(icon_path)
-            repo.icon = addonicon
-        self.item_model.reload_item(repo)
+        with self.lock:
+            cache_path = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata", repo.name)
+            icon_filename = repo.metadata.Icon
+            icon_path = os.path.join(cache_path, icon_filename)
+            if os.path.isfile(icon_path):
+                addonicon = QtGui.QIcon(icon_path)
+                repo.icon = addonicon
+            self.item_model.reload_item(repo)
             
 
     def check_updates(self) -> None:
@@ -356,16 +375,18 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         autocheck = pref.GetBool("AutoCheck", False)
         if not autocheck:
+            self.do_next_startup_phase()
             return
         if not self.packages_with_updates:
             if hasattr(self, "check_worker"):
                 thread = self.check_worker
                 if thread:
                     if not thread.isFinished():
+                        self.do_next_startup_phase()
                         return
             self.dialog.buttonUpdateAll.setText(translate("AddonsInstaller", "Checking for updates..."))
             self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
-            self.check_worker.done.connect(self.hide_progress_widgets)
+            self.check_worker.done.connect(self.do_next_startup_phase)
             self.check_worker.progress_made.connect(self.update_progress_bar)
             self.check_worker.update_status.connect(self.status_updated)
             self.check_worker.start()
@@ -440,9 +461,9 @@ class CommandAddonManager:
         if not current.isValid():
             self.selected_repo = None
             return
-
         source_selection = self.item_filter.mapToSource (current)
         self.selected_repo = self.item_model.repos[source_selection.row()]
+        self.dialog.description.clear()
         if self.selected_repo.repo_type == AddonManagerRepo.RepoType.MACRO:
             self.show_macro(self.selected_repo)
             self.dialog.buttonExecute.show()
@@ -832,11 +853,11 @@ class CommandAddonManager:
         if text_filter:
             test_regex = QtCore.QRegularExpression(text_filter)
             if test_regex.isValid():
-                self.dialog.labelFilterValidity.setToolTip(translate("AddonInstaller","Filter is valid"))
+                self.dialog.labelFilterValidity.setToolTip(translate("AddonsInstaller","Filter is valid"))
                 icon = QtGui.QIcon.fromTheme("ok", QtGui.QIcon(":/icons/edit_OK.svg"))
                 self.dialog.labelFilterValidity.setPixmap(icon.pixmap(16,16))
             else:
-                self.dialog.labelFilterValidity.setToolTip(translate("AddonInstaller","Filter regular expression is invalid"))
+                self.dialog.labelFilterValidity.setToolTip(translate("AddonsInstaller","Filter regular expression is invalid"))
                 icon = QtGui.QIcon.fromTheme("cancel", QtGui.QIcon(":/icons/edit_Cancel.svg"))
                 self.dialog.labelFilterValidity.setPixmap(icon.pixmap(16,16))
             self.dialog.labelFilterValidity.show()
