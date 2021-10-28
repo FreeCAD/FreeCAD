@@ -107,6 +107,9 @@ Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &
     double vv =  v*v;
     double ww =  w*w;
 
+    if (uu * vv * ww == 0)
+        THROWM(Base::ValueError,"Two points are coincident");
+
     double uv = -(u*v);
     double vw = -(v*w);
     double uw = -(u*w);
