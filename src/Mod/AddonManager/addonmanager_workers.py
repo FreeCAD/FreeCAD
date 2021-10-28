@@ -177,23 +177,6 @@ class UpdateWorker(QtCore.QThread):
                         r"url\s*=\s*(?P<url>https?://.*)\s*"
                         r"(branch\s*=\s*(?P<branch>.*)\s*)?"), p)
 
-        # querying official addons
-        for name, path, url, _, branch in p:
-            if self.current_thread.isInterruptionRequested():
-                return
-            if name in package_names:
-                # We've already got this info since it's a package
-                continue
-            if branch is None or len(branch) == 0:
-                branch = "master"
-            url = url.split(".git")[0]
-            addondir = moddir + os.sep + name
-            if os.path.exists(addondir) and os.listdir(addondir):
-                # make sure the folder exists and it contains files!
-                state = AddonManagerRepo.UpdateStatus.UNCHECKED
-            else:
-                state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-            self.addon_repo.emit(AddonManagerRepo(name, url, state, branch))
         # querying custom addons
         addon_list = (FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                         .GetString("CustomRepositories", "").split("\n"))
@@ -208,6 +191,8 @@ class UpdateWorker(QtCore.QThread):
             if self.current_thread.isInterruptionRequested():
                 return
             if addon and addon["url"]:
+                if addon["url"][-1] == "/":
+                    addon["url"] = addon["url"][0:-1] # Strip trailing slash
                 name = addon["url"].split("/")[-1]
                 if name.lower().endswith(".git"):
                     name = name[:-4]
@@ -220,6 +205,25 @@ class UpdateWorker(QtCore.QThread):
                 else:
                     state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
                 self.addon_repo.emit(AddonManagerRepo(name, addon["url"], state, addon["branch"]))
+
+        # querying official addons
+        for name, path, url, _, branch in p:
+            if self.current_thread.isInterruptionRequested():
+                return
+            if name in package_names:
+                # We've already got this info since it's a package or a custom repo
+                continue
+            if branch is None or len(branch) == 0:
+                branch = "master"
+            url = url.split(".git")[0]
+            addondir = moddir + os.sep + name
+            if os.path.exists(addondir) and os.listdir(addondir):
+                # make sure the folder exists and it contains files!
+                state = AddonManagerRepo.UpdateStatus.UNCHECKED
+            else:
+                state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            self.addon_repo.emit(AddonManagerRepo(name, url, state, branch))
+        
             self.status_message.emit(translate("AddonsInstaller", "Workbenches list was updated."))
             
         if not self.current_thread.isInterruptionRequested():
