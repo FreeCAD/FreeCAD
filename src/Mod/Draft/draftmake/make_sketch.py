@@ -132,7 +132,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         if len(points) >= 2:
             poly = Part.makePolygon(points)
             if not DraftGeomUtils.is_planar(poly, tol):
-                App.Console.PrintError(translate("draft","All Shapes must be coplanar") + '\n')
+                App.Console.PrintError(translate("draft", "All Shapes must be coplanar") + '\n')
                 return None
             normal = DraftGeomUtils.get_normal(poly, tol)
             if not normal:
