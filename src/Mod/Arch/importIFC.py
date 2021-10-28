@@ -1259,34 +1259,45 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     added_mats = []
     for material in materials:
         # print(material.id())
-        # get and set material name
+
+        mdict = {}
+        # on ifc import only the "DiffuseColor" of the material dictionary is initialized
+        # on editing material in Arch Gui a lot more keys of the material dictionary are initialized even with empty values
+        # TODO: there should be a generic material obj init method which will be used by Arch Gui, import IFC, FEM, etc
+
+        # get the material name
         name = "Material"
         if material.Name:
             name = material.Name
             if six.PY2:
                 name = name.encode("utf8")
+        mdict["Name"] = name
+
         # get material color
-        # the "DiffuseColor" of a material should never be 'None'
+        # the "DiffuseColor" of a material should never be "None"
         # values in colors are None if something went wrong
         # thus the "DiffuseColor" will only be set if the color is not None
-        mdict = {}
+        mat_color = None
         if material.id() in colors and colors[material.id()] is not None:
-            mdict["DiffuseColor"] = str(colors[material.id()])
+            mat_color = str(colors[material.id()])
         else:
             for o,m in mattable.items():
                 if m == material.id():
                     if o in colors and colors[o] is not None:
-                        mdict["DiffuseColor"] = str(colors[o])
-        # on ifc import only the "DiffuseColor" of the material dictionary is initialized
-        # on editing material in Gui a lot more keys of the material dictionary are initialized even with empty values
-        # TODO: there should be a generic material obj init method which will be used by Arch Gui, import IFC, FEM, etc
+                        mat_color = str(colors[o])
+        if mat_color is not None:
+            mdict["DiffuseColor"] = mat_color
+        else:
+            if preferences['DEBUG']: print("/n  no color for material: {}, ".format(str(material.id)),end="")
+
         # merge materials with same name and color if setting in prefs is True
         add_material = True
-        if preferences['MERGE_MATERIALS']:
+        if preferences["MERGE_MATERIALS"]:
             for added_mat in added_mats:
                 if (
                     # added_mat.Material["Name"] == name
-                    # above does not work because Name is not initialized in material dict
+                    # above does not work because FreeCAD would crash in some circumstances
+                    # https://forum.freecadweb.org/viewtopic.php?f=23&t=63260
                     added_mat.Label == name
                     and ("DiffuseColor" in mdict and "DiffuseColor" in added_mat.Material)
                     and mdict["DiffuseColor"] == added_mat.Material["DiffuseColor"]
@@ -1296,8 +1307,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # add a new material object
         if add_material is True:
             matobj = Arch.makeMaterial(name=name)
-            if mdict:
-                matobj.Material = mdict
+            matobj.Material = mdict
             added_mats.append(matobj)
         # fill material attribute of the objects
         for o,m in mattable.items():
