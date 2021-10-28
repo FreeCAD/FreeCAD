@@ -188,8 +188,9 @@ def get_zip_url(repo):
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return f"{repo.url}/archive/{repo.branch}.zip"
-    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
+    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com" or parsedUrl.netloc == "salsa.debian.org":
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
+        # https://salsa.debian.org/mess42/pyrate/-/archive/master/pyrate-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
@@ -202,7 +203,7 @@ def construct_git_url(repo, filename):
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc == "github.com" or parsed_url.netloc == "framagit.com":
         return f"{repo.url}/raw/{repo.branch}/{filename}"
-    elif parsed_url.netloc == "gitlab.com":
+    elif parsed_url.netloc == "gitlab.com" or parsed_url.netloc == "salsa.debian.org":
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
     else:
         FreeCAD.Console.PrintLog("Debug: addonmanager_utilities.construct_git_url: Unknown git host:", parsed_url.netloc)
@@ -226,7 +227,7 @@ def get_desc_regex(repo):
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
+    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com" or parsedUrl.netloc == "salsa.debian.org":
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
     FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", repo.url)
     return None
@@ -239,7 +240,6 @@ def get_readme_html_url(repo):
     if parsedUrl.netloc == "github.com":
         return f"{repo.url}/blob/{repo.branch}/README.md"
     else:
-        FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", repo.url)
         return None
 
 
@@ -251,7 +251,6 @@ def get_readme_regex(repo):
     if parsedUrl.netloc == "github.com":
         return "<article.*?>(.*?)</article>"
     else:
-        FreeCAD.Console.PrintWarning("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", repo.url)
         return None
 
 
