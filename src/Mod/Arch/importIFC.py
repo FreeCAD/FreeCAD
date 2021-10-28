@@ -613,7 +613,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                             baseface = Draft.makeCircle(ex[0].Edges[0])
                                         else:
                                             # curves or holes? We just make a Part face
-                                            baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                                            baseface = doc.addObject("Part::Feature",name+"_footprint")
                                             # bug/feature in ifcopenshell? Some faces of a shell may have non-null placement
                                             # workaround to remove the bad placement: exporting/reimporting as step
                                             if not ex[0].Placement.isNull():
@@ -639,7 +639,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                     if profileid:
                                         # store for possible shared use
                                         profiles[profileid] = baseface
-                                baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
+                                baseobj = doc.addObject("Part::Extrusion",name+"_body")
                                 baseobj.Base = baseface
                                 if addplacement:
                                     # apply delta placement (stored profile)
@@ -650,7 +650,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                 if FreeCAD.GuiUp:
                                     baseface.ViewObject.hide()
                         if (not baseobj):
-                            baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                            baseobj = doc.addObject("Part::Feature",name+"_body")
                             baseobj.Shape = shape
         else:
             # this object has no shape (storeys, etc...)
@@ -702,7 +702,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         obj.Height = baseobj.Dir.Length
                         obj.Normal = FreeCAD.Vector(baseobj.Dir).normalize()
                         bn = baseobj.Name
-                        FreeCAD.ActiveDocument.removeObject(bn)
+                        doc.removeObject(bn)
                     if (freecadtype in ["Structure","Wall"]) and not baseobj:
                         # remove sizes to prevent auto shape creation for types that don't require a base object
                         obj.Height = 0
@@ -823,7 +823,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             if product.Elevation:
                                 obj.Placement.Base.z = product.Elevation * ifcscale
             elif baseobj:
-                obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                obj = doc.addObject("Part::Feature",name)
                 obj.Shape = shape
             elif pid in additions:
                 # no baseobj but in additions, thus we make a BuildingPart container
@@ -922,7 +922,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         obj.ViewObject.Transparency = colors[pid][3]
 
             # if preferences['DEBUG'] is on, recompute after each shape
-            if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
+            if preferences['DEBUG']: doc.recompute()
 
             # attached 2D elements
 
@@ -970,11 +970,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         except(RuntimeError):
             print("Aborted.")
             progressbar.stop()
-            FreeCAD.ActiveDocument.recompute()
+            doc.recompute()
             return
 
     progressbar.stop()
-    FreeCAD.ActiveDocument.recompute()
+    doc.recompute()
 
     if preferences['MERGE_MODE_STRUCT'] == 2:
 
@@ -990,11 +990,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 if compound:
                     name = ifcfile[host].Name or "AnalysisModel"
                     if preferences['PREFIX_NUMBERS']: name = "ID" + str(host) + " " + name
-                    obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                    obj = doc.addObject("Part::Feature",name)
                     obj.Label = name
                     obj.Shape = Part.makeCompound(compound)
         if structshapes:  # remaining Structural shapes
-            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedStruct")
+            obj = doc.addObject("Part::Feature","UnclaimedStruct")
             obj.Shape = Part.makeCompound(structshapes.values())
 
         if preferences['DEBUG']: print("done")
@@ -1008,7 +1008,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         for host,children in groups.items():
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
                 # print(host, ' --> ', children)
-                obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
+                obj = doc.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
                 if host in objects.keys():
                     cobs = []
@@ -1022,12 +1022,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if cobs:
                         if preferences['DEBUG']: print("adding ",len(cobs), " object(s) to ", objects[host].Label)
                         Arch.addComponents(cobs,objects[host])
-                        if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
+                        if preferences['DEBUG']: doc.recompute()
 
         if preferences['DEBUG']: print("done")
 
         if preferences['MERGE_MODE_ARCH'] > 2:  # if ArchObj is compound or ArchObj not imported
-            FreeCAD.ActiveDocument.recompute()
+            doc.recompute()
 
             # cleaning bad shapes
             for obj in objects.values():
@@ -1048,7 +1048,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             if six.PY2:
                 grp_name = grp_name.encode("utf8")
-            grp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
+            grp = doc.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
@@ -1079,11 +1079,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 if compound:
                     name = ifcfile[host].Name or "Floor"
                     if preferences['PREFIX_NUMBERS']: name = "ID" + str(host) + " " + name
-                    obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                    obj = doc.addObject("Part::Feature",name)
                     obj.Label = name
                     obj.Shape = Part.makeCompound(compound)
         if shapes:  # remaining Arch shapes
-            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
+            obj = doc.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
 
         if preferences['DEBUG']: print("done")
@@ -1103,7 +1103,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         first = False
                     if preferences['DEBUG']: print("    subtracting",objects[subtraction[0]].Label, "from", objects[subtraction[1]].Label)
                     Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
-                    if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
+                    if preferences['DEBUG']: doc.recompute()
 
         # additions
 
@@ -1132,11 +1132,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             else:
                 if preferences['DEBUG']: print("    adding",len(cobs), "object(s) to", objects[host].Label)
                 Arch.addComponents(cobs,objects[host])
-                if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
+                if preferences['DEBUG']: doc.recompute()
 
         if preferences['DEBUG'] and first: print("done.")
 
-        FreeCAD.ActiveDocument.recompute()
+        doc.recompute()
 
         # cleaning bad shapes
 
@@ -1145,7 +1145,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 if obj.Shape.isNull() and not(Draft.getType(obj) in ["Site","Project"]):
                     Arch.rebuildArchShape(obj)
 
-    FreeCAD.ActiveDocument.recompute()
+    doc.recompute()
 
     # 2D elements
 
@@ -1221,7 +1221,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
                     sh = importIFCHelper.get2DShape(rep,ifcscale)
-                    if sh in FreeCAD.ActiveDocument.Objects:
+                    if sh in doc.Objects:
                         # dirty hack: get2DShape might return an object directly if non-shape based (texts for ex)
                         anno = sh
                     else:
@@ -1229,7 +1229,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if shapes2d:
                 sh = Part.makeCompound(shapes2d)
                 if preferences['DEBUG']: print(" shape")
-                anno = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                anno = doc.addObject("Part::Feature",name)
                 anno.Shape = sh
                 p = importIFCHelper.getPlacement(annotation.ObjectPlacement,ifcscale)
                 if p:  # and annotation.is_a("IfcAnnotation"):
@@ -1247,7 +1247,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if (aid in children) and (host in objects.keys()):
                         Arch.addComponents(anno,objects[host])
 
-    FreeCAD.ActiveDocument.recompute()
+    doc.recompute()
 
     # Materials
 
@@ -1338,7 +1338,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # the pure objects do not belong to any container, they will be added here
     # if after Layer they are linked by Layer and will not be added here
     if preferences["REPLACE_PROJECT"] and filename:
-        rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
+        rootgroup = doc.addObject("App::DocumentObjectGroup","Group")
         rootgroup.Label = os.path.basename(filename)
         # print(objects)
         for key,obj in objects.items():
@@ -1365,13 +1365,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if lobj_id in objects:
                 lay_grp.append(objects[lobj_id])
         lay.Group = lay_grp
-    FreeCAD.ActiveDocument.recompute()
+    doc.recompute()
     if preferences['DEBUG'] and layers: print("done")
 
     # restore links from full parametric definitions
 
     for p in parametrics:
-        l = FreeCAD.ActiveDocument.getObject(p[2])
+        l = doc.getObject(p[2])
         if l:
             setattr(p[0],p[1],l)
 
@@ -1382,7 +1382,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         d["colordict"] = json.dumps(colordict)
         doc.Meta = d
 
-    FreeCAD.ActiveDocument.recompute()
+    doc.recompute()
 
     if FreeCAD.GuiUp and ZOOMOUT:
         Gui.SendMsgToActiveView("ViewFit")
