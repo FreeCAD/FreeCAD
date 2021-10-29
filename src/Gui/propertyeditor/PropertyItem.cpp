@@ -2094,13 +2094,110 @@ void PropertyMatrixItem::setA44(double A44)
 
 // ---------------------------------------------------------------
 
-PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyRotationItem)
-
-PropertyRotationItem::PropertyRotationItem()
+RotationHelper::RotationHelper()
     : init_axis(false)
     , changed_value(false)
     , rot_angle(0)
     , rot_axis(0,0,1)
+{
+}
+
+void RotationHelper::setChanged(bool value)
+{
+    changed_value = value;
+}
+
+bool RotationHelper::hasChangedAndReset()
+{
+    if (!changed_value)
+        return false;
+
+    changed_value = false;
+    return true;
+}
+
+bool RotationHelper::isAxisInitialized() const
+{
+    return init_axis;
+}
+
+void RotationHelper::setValue(const Base::Vector3d& axis, double angle)
+{
+    rot_axis = axis;
+    rot_angle = angle;
+    init_axis = true;
+}
+
+void RotationHelper::getValue(Base::Vector3d& axis, double& angle) const
+{
+    axis = rot_axis;
+    angle = rot_angle;
+}
+
+double RotationHelper::getAngle(const Base::Rotation& val) const
+{
+    double angle;
+    Base::Vector3d dir;
+    val.getRawValue(dir, angle);
+    if (dir * this->rot_axis < 0.0)
+        angle = -angle;
+    return angle;
+}
+
+Base::Rotation RotationHelper::setAngle(double angle)
+{
+    Base::Rotation rot;
+    rot.setValue(this->rot_axis, Base::toRadians<double>(angle));
+    changed_value = true;
+    rot_angle = angle;
+    return rot;
+}
+
+Base::Vector3d RotationHelper::getAxis() const
+{
+    // We must store the rotation axis in a member because
+    // if we read the value from the property we would always
+    // get a normalized vector which makes it quite unhandy
+    // to work with
+    return this->rot_axis;
+}
+
+Base::Rotation RotationHelper::setAxis(const Base::Rotation& value, const Base::Vector3d& axis)
+{
+    this->rot_axis = axis;
+    Base::Rotation rot = value;
+    Base::Vector3d dummy; double angle;
+    rot.getValue(dummy, angle);
+    if (dummy * axis < 0.0)
+        angle = -angle;
+    rot.setValue(axis, angle);
+    changed_value = true;
+    return rot;
+}
+
+void RotationHelper::assignProperty(const Base::Rotation& value, double eps)
+{
+    double angle;
+    Base::Vector3d dir;
+    value.getRawValue(dir, angle);
+    Base::Vector3d cross = this->rot_axis.Cross(dir);
+    double len2 = cross.Sqr();
+    if (angle != 0) {
+        // vectors are not parallel
+        if (len2 > eps)
+            this->rot_axis = dir;
+        // vectors point into opposite directions
+        else if (this->rot_axis.Dot(dir) < 0)
+            this->rot_axis = -this->rot_axis;
+    }
+    this->rot_angle = Base::toDegrees(angle);
+}
+
+// ---------------------------------------------------------------
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyRotationItem)
+
+PropertyRotationItem::PropertyRotationItem()
 {
     m_a = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
     m_a->setParent(this);
@@ -2122,12 +2219,9 @@ Base::Quantity PropertyRotationItem::getAngle() const
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Rotation>())
         return Base::Quantity(0.0);
+
     const Base::Rotation& val = value.value<Base::Rotation>();
-    double angle;
-    Base::Vector3d dir;
-    val.getRawValue(dir, angle);
-    if (dir * this->rot_axis < 0.0)
-        angle = -angle;
+    double angle = h.getAngle(val);
     return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
 }
 
@@ -2137,20 +2231,13 @@ void PropertyRotationItem::setAngle(Base::Quantity angle)
     if (!value.canConvert<Base::Rotation>())
         return;
 
-    Base::Rotation rot;
-    rot.setValue(this->rot_axis, Base::toRadians<double>(angle.getValue()));
-    changed_value = true;
-    rot_angle = angle.getValue();
+    Base::Rotation rot = h.setAngle(angle.getValue());
     setValue(QVariant::fromValue(rot));
 }
 
 Base::Vector3d PropertyRotationItem::getAxis() const
 {
-    // We must store the rotation axis in a member because
-    // if we read the value from the property we would always
-    // get a normalized vector which makes it quite unhandy
-    // to work with
-    return this->rot_axis;
+    return h.getAxis();
 }
 
 void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
@@ -2158,14 +2245,9 @@ void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Rotation>())
         return;
-    this->rot_axis = axis;
+
     Base::Rotation rot = value.value<Base::Rotation>();
-    Base::Vector3d dummy; double angle;
-    rot.getValue(dummy, angle);
-    if (dummy * axis < 0.0)
-        angle = -angle;
-    rot.setValue(axis, angle);
-    changed_value = true;
+    rot = h.setAxis(rot, axis);
     setValue(QVariant::fromValue(rot));
 }
 
@@ -2176,20 +2258,7 @@ void PropertyRotationItem::assignProperty(const App::Property* prop)
     double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId())) {
         const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
-        double angle;
-        Base::Vector3d dir;
-        value.getRawValue(dir, angle);
-        Base::Vector3d cross = this->rot_axis.Cross(dir);
-        double len2 = cross.Sqr();
-        if (angle != 0) {
-            // vectors are not parallel
-            if (len2 > eps)
-                this->rot_axis = dir;
-            // vectors point into opposite directions
-            else if (this->rot_axis.Dot(dir) < 0)
-                this->rot_axis = -this->rot_axis;
-        }
-        this->rot_angle = Base::toDegrees(angle);
+        h.assignProperty(value, eps);
     }
 }
 
@@ -2201,13 +2270,13 @@ QVariant PropertyRotationItem::value(const App::Property* prop) const
     double angle;
     Base::Vector3d dir;
     value.getRawValue(dir, angle);
-    if (!init_axis) {
+    if (!h.isAxisInitialized()) {
         if (m_a->hasExpression()) {
             QString str = m_a->expressionAsString();
-            const_cast<PropertyRotationItem*>(this)->rot_angle = str.toDouble();
+            angle = str.toDouble();
         }
         else {
-            const_cast<PropertyRotationItem*>(this)->rot_angle = Base::toDegrees(angle);
+            angle = Base::toDegrees(angle);
         }
 
         PropertyItem* x = m_d->child(0);
@@ -2225,8 +2294,7 @@ QVariant PropertyRotationItem::value(const App::Property* prop) const
             QString str = z->expressionAsString();
             dir.z = str.toDouble();
         }
-        const_cast<PropertyRotationItem*>(this)->rot_axis = dir;
-        const_cast<PropertyRotationItem*>(this)->init_axis = true;
+        h.setValue(dir, angle);
     }
     return QVariant::fromValue<Base::Rotation>(value);
 }
@@ -2274,16 +2342,18 @@ void PropertyRotationItem::setValue(const QVariant& value)
         return;
     // Accept this only if the user changed the axis, angle or position but
     // not if >this< item loses focus
-    if (!changed_value)
+    if (!h.hasChangedAndReset())
         return;
-    changed_value = false;
 
+    Base::Vector3d axis;
+    double angle;
+    h.getValue(axis, angle);
     Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
-                    .arg(Base::UnitsApi::toNumber(rot_axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(rot_axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(rot_axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(rot_angle, format));
+                    .arg(Base::UnitsApi::toNumber(axis.x, format))
+                    .arg(Base::UnitsApi::toNumber(axis.y, format))
+                    .arg(Base::UnitsApi::toNumber(axis.z, format))
+                    .arg(Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
@@ -2394,7 +2464,7 @@ void PlacementEditor::updateValue(const QVariant& v, bool incr, bool data)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyPlacementItem)
 
-PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value(false), rot_angle(0), rot_axis(0,0,1)
+PropertyPlacementItem::PropertyPlacementItem()
 {
     m_a = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
     m_a->setParent(this);
@@ -2421,12 +2491,9 @@ Base::Quantity PropertyPlacementItem::getAngle() const
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Placement>())
         return Base::Quantity(0.0);
+
     const Base::Placement& val = value.value<Base::Placement>();
-    double angle;
-    Base::Vector3d dir;
-    val.getRotation().getRawValue(dir, angle);
-    if (dir * this->rot_axis < 0.0)
-        angle = -angle;
+    double angle = h.getAngle(val.getRotation());
     return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
 }
 
@@ -2437,21 +2504,14 @@ void PropertyPlacementItem::setAngle(Base::Quantity angle)
         return;
 
     Base::Placement val = value.value<Base::Placement>();
-    Base::Rotation rot;
-    rot.setValue(this->rot_axis, Base::toRadians<double>(angle.getValue()));
+    Base::Rotation rot = h.setAngle(angle.getValue());
     val.setRotation(rot);
-    changed_value = true;
-    rot_angle = angle.getValue();
     setValue(QVariant::fromValue(val));
 }
 
 Base::Vector3d PropertyPlacementItem::getAxis() const
 {
-    // We must store the rotation axis in a member because
-    // if we read the value from the property we would always
-    // get a normalized vector which makes it quite unhandy
-    // to work with
-    return this->rot_axis;
+    return h.getAxis();
 }
 
 void PropertyPlacementItem::setAxis(const Base::Vector3d& axis)
@@ -2459,16 +2519,11 @@ void PropertyPlacementItem::setAxis(const Base::Vector3d& axis)
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Placement>())
         return;
-    this->rot_axis = axis;
+
     Base::Placement val = value.value<Base::Placement>();
     Base::Rotation rot = val.getRotation();
-    Base::Vector3d dummy; double angle;
-    rot.getValue(dummy, angle);
-    if (dummy * axis < 0.0)
-        angle = -angle;
-    rot.setValue(axis, angle);
+    rot = h.setAxis(rot, axis);
     val.setRotation(rot);
-    changed_value = true;
     setValue(QVariant::fromValue(val));
 }
 
@@ -2486,9 +2541,10 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Placement>())
         return;
+
     Base::Placement val = value.value<Base::Placement>();
     val.setPosition(pos);
-    changed_value = true;
+    h.setChanged(true);
     setValue(QVariant::fromValue(val));
 }
 
@@ -2499,20 +2555,7 @@ void PropertyPlacementItem::assignProperty(const App::Property* prop)
     double eps = std::pow(10.0, -2*(decimals()+1));
     if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-        double angle;
-        Base::Vector3d dir;
-        value.getRotation().getRawValue(dir, angle);
-        Base::Vector3d cross = this->rot_axis.Cross(dir);
-        double len2 = cross.Sqr();
-        if (angle != 0) {
-            // vectors are not parallel
-            if (len2 > eps)
-                this->rot_axis = dir;
-            // vectors point into opposite directions
-            else if (this->rot_axis.Dot(dir) < 0)
-                this->rot_axis = -this->rot_axis;
-        }
-        this->rot_angle = Base::toDegrees(angle);
+        h.assignProperty(value.getRotation(), eps);
     }
 }
 
@@ -2524,13 +2567,13 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
     double angle;
     Base::Vector3d dir;
     value.getRotation().getRawValue(dir, angle);
-    if (!init_axis) {
+    if (!h.isAxisInitialized()) {
         if (m_a->hasExpression()) {
             QString str = m_a->expressionAsString();
-            const_cast<PropertyPlacementItem*>(this)->rot_angle = str.toDouble();
+            angle = str.toDouble();
         }
         else {
-            const_cast<PropertyPlacementItem*>(this)->rot_angle = Base::toDegrees(angle);
+            angle = Base::toDegrees(angle);
         }
 
         PropertyItem* x = m_d->child(0);
@@ -2548,8 +2591,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
             QString str = z->expressionAsString();
             dir.z = str.toDouble();
         }
-        const_cast<PropertyPlacementItem*>(this)->rot_axis = dir;
-        const_cast<PropertyPlacementItem*>(this)->init_axis = true;
+        h.setValue(dir, angle);
     }
     return QVariant::fromValue<Base::Placement>(value);
 }
@@ -2606,11 +2648,15 @@ void PropertyPlacementItem::setValue(const QVariant& value)
         return;
     // Accept this only if the user changed the axis, angle or position but
     // not if >this< item loses focus
-    if (!changed_value)
+    if (!h.hasChangedAndReset())
         return;
-    changed_value = false;
+
     const Base::Placement& val = value.value<Base::Placement>();
     Base::Vector3d pos = val.getPosition();
+
+    Base::Vector3d axis;
+    double angle;
+    h.getValue(axis, angle);
 
     Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
     QString data = QString::fromLatin1("App.Placement("
@@ -2619,10 +2665,10 @@ void PropertyPlacementItem::setValue(const QVariant& value)
                     .arg(Base::UnitsApi::toNumber(pos.x, format))
                     .arg(Base::UnitsApi::toNumber(pos.y, format))
                     .arg(Base::UnitsApi::toNumber(pos.z, format))
-                    .arg(Base::UnitsApi::toNumber(rot_axis.x, format))
-                    .arg(Base::UnitsApi::toNumber(rot_axis.y, format))
-                    .arg(Base::UnitsApi::toNumber(rot_axis.z, format))
-                    .arg(Base::UnitsApi::toNumber(rot_angle, format));
+                    .arg(Base::UnitsApi::toNumber(axis.x, format))
+                    .arg(Base::UnitsApi::toNumber(axis.y, format))
+                    .arg(Base::UnitsApi::toNumber(axis.z, format))
+                    .arg(Base::UnitsApi::toNumber(angle, format));
     setPropertyValue(data);
 }
 
