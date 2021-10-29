@@ -557,17 +557,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     if(PropertyView::showAll()) {
         if(props.size()) {
             menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
-            unsigned count = 0;
-            for(auto prop : props) {
-                if(prop->testStatus(App::Property::PropDynamic)
-                        && !boost::starts_with(prop->getName(),prop->getGroup()))
-                {
-                    ++count;
-                } else
-                    break;
-            }
-            if(count == props.size())
+            if (std::all_of(props.begin(), props.end(), [](auto prop) {
+                    return prop->testStatus(App::Property::PropDynamic)
+                        && !boost::starts_with(prop->getName(),prop->getGroup());
+               }))
+            {
                 menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
+            }
         }
 
         bool canRemove = !props.empty();
