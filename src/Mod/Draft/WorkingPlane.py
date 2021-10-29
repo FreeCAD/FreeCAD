@@ -652,7 +652,7 @@ class Plane:
             if not geom_is_shape:
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object without Part.Shape geometry:'{}".format(
+                    "Object without Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
