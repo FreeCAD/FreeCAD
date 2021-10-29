@@ -658,7 +658,7 @@ class Plane:
             if geom.isNull():
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object with null Part.Shape geometry:'{}".format(
+                    "Object with null Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
                 return False
             if obj.HasSubObjects:
