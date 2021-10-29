@@ -47,6 +47,7 @@ Q_DECLARE_METATYPE(Base::Vector3d)
 Q_DECLARE_METATYPE(QList<Base::Vector3d>)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
+Q_DECLARE_METATYPE(Base::Rotation)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 #endif
@@ -654,6 +655,46 @@ private:
     PropertyFloatItem* m_a42;
     PropertyFloatItem* m_a43;
     PropertyFloatItem* m_a44; 
+};
+
+/**
+ * Edit properties of rotation type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyRotationItem: public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(Base::Quantity Angle READ getAngle WRITE setAngle DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Vector3d Axis READ getAxis WRITE setAxis DESIGNABLE true USER true)
+    PROPERTYITEM_HEADER
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+    virtual void assignProperty(const App::Property*);
+
+    Base::Quantity getAngle() const;
+    void setAngle(Base::Quantity);
+    Base::Vector3d getAxis() const;
+    void setAxis(const Base::Vector3d&);
+
+protected:
+    PropertyRotationItem();
+    ~PropertyRotationItem();
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    bool init_axis;
+    bool changed_value;
+    double rot_angle;
+    Base::Vector3d rot_axis;
+    PropertyUnitItem * m_a;
+    PropertyVectorItem* m_d;
 };
 
 class PlacementEditor : public Gui::LabelButton

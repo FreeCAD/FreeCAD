@@ -161,6 +161,7 @@ void Gui::SoFCDB::init()
     PropertyDirectionItem           ::init();
     PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
+    PropertyRotationItem            ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();
     PropertyFloatListItem           ::init();

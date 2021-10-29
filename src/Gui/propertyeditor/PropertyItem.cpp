@@ -2092,6 +2092,232 @@ void PropertyMatrixItem::setA44(double A44)
     setData(QVariant::fromValue(Base::Matrix4D(getA11(),getA12(),getA13(),getA14(),getA21(),getA22(),getA23(),getA24(),getA31(),getA32(),getA33(),getA34(),getA41(),getA42(),getA43(),A44 )));
 }
 
+// ---------------------------------------------------------------
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyRotationItem)
+
+PropertyRotationItem::PropertyRotationItem()
+    : init_axis(false)
+    , changed_value(false)
+    , rot_angle(0)
+    , rot_axis(0,0,1)
+{
+    m_a = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
+    m_a->setParent(this);
+    m_a->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Angle")));
+    this->appendChild(m_a);
+    m_d = static_cast<PropertyVectorItem*>(PropertyVectorItem::create());
+    m_d->setParent(this);
+    m_d->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Axis")));
+    m_d->setReadOnly(true);
+    this->appendChild(m_d);
+}
+
+PropertyRotationItem::~PropertyRotationItem()
+{
+}
+
+Base::Quantity PropertyRotationItem::getAngle() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<Base::Rotation>())
+        return Base::Quantity(0.0);
+    const Base::Rotation& val = value.value<Base::Rotation>();
+    double angle;
+    Base::Vector3d dir;
+    val.getRawValue(dir, angle);
+    if (dir * this->rot_axis < 0.0)
+        angle = -angle;
+    return Base::Quantity(Base::toDegrees<double>(angle), Base::Unit::Angle);
+}
+
+void PropertyRotationItem::setAngle(Base::Quantity angle)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<Base::Rotation>())
+        return;
+
+    Base::Rotation rot;
+    rot.setValue(this->rot_axis, Base::toRadians<double>(angle.getValue()));
+    changed_value = true;
+    rot_angle = angle.getValue();
+    setValue(QVariant::fromValue(rot));
+}
+
+Base::Vector3d PropertyRotationItem::getAxis() const
+{
+    // We must store the rotation axis in a member because
+    // if we read the value from the property we would always
+    // get a normalized vector which makes it quite unhandy
+    // to work with
+    return this->rot_axis;
+}
+
+void PropertyRotationItem::setAxis(const Base::Vector3d& axis)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<Base::Rotation>())
+        return;
+    this->rot_axis = axis;
+    Base::Rotation rot = value.value<Base::Rotation>();
+    Base::Vector3d dummy; double angle;
+    rot.getValue(dummy, angle);
+    if (dummy * axis < 0.0)
+        angle = -angle;
+    rot.setValue(axis, angle);
+    changed_value = true;
+    setValue(QVariant::fromValue(rot));
+}
+
+void PropertyRotationItem::assignProperty(const App::Property* prop)
+{
+    // Choose an adaptive epsilon to avoid changing the axis when they are considered to
+    // be equal. See https://forum.freecadweb.org/viewtopic.php?f=10&t=24662&start=10
+    double eps = std::pow(10.0, -2*(decimals()+1));
+    if (prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId())) {
+        const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
+        double angle;
+        Base::Vector3d dir;
+        value.getRawValue(dir, angle);
+        Base::Vector3d cross = this->rot_axis.Cross(dir);
+        double len2 = cross.Sqr();
+        if (angle != 0) {
+            // vectors are not parallel
+            if (len2 > eps)
+                this->rot_axis = dir;
+            // vectors point into opposite directions
+            else if (this->rot_axis.Dot(dir) < 0)
+                this->rot_axis = -this->rot_axis;
+        }
+        this->rot_angle = Base::toDegrees(angle);
+    }
+}
+
+QVariant PropertyRotationItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+
+    const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
+    double angle;
+    Base::Vector3d dir;
+    value.getRawValue(dir, angle);
+    if (!init_axis) {
+        if (m_a->hasExpression()) {
+            QString str = m_a->expressionAsString();
+            const_cast<PropertyRotationItem*>(this)->rot_angle = str.toDouble();
+        }
+        else {
+            const_cast<PropertyRotationItem*>(this)->rot_angle = Base::toDegrees(angle);
+        }
+
+        PropertyItem* x = m_d->child(0);
+        PropertyItem* y = m_d->child(1);
+        PropertyItem* z = m_d->child(2);
+        if (x->hasExpression()) {
+            QString str = x->expressionAsString();
+            dir.x = str.toDouble();
+        }
+        if (y->hasExpression()) {
+            QString str = y->expressionAsString();
+            dir.y = str.toDouble();
+        }
+        if (z->hasExpression()) {
+            QString str = z->expressionAsString();
+            dir.z = str.toDouble();
+        }
+        const_cast<PropertyRotationItem*>(this)->rot_axis = dir;
+        const_cast<PropertyRotationItem*>(this)->init_axis = true;
+    }
+    return QVariant::fromValue<Base::Rotation>(value);
+}
+
+QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+
+    const Base::Rotation& p = static_cast<const App::PropertyRotation*>(prop)->getValue();
+    double angle;
+    Base::Vector3d dir;
+    p.getRawValue(dir, angle);
+    angle = Base::toDegrees<double>(angle);
+
+    QLocale loc;
+    QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
+                                     "Angle: %4")
+            .arg(loc.toString(dir.x,'f',decimals()),
+                 loc.toString(dir.y,'f',decimals()),
+                 loc.toString(dir.z,'f',decimals()),
+                 Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    return QVariant(data);
+}
+
+QVariant PropertyRotationItem::toString(const QVariant& prop) const
+{
+    const Base::Rotation& p = prop.value<Base::Rotation>();
+    double angle;
+    Base::Vector3d dir;
+    p.getRawValue(dir, angle);
+    angle = Base::toDegrees<double>(angle);
+
+    QLocale loc;
+    QString data = QString::fromUtf8("[(%1 %2 %3); %4]")
+            .arg(loc.toString(dir.x,'f',2),
+                 loc.toString(dir.y,'f',2),
+                 loc.toString(dir.z,'f',2),
+                 Base::Quantity(angle, Base::Unit::Angle).getUserString());
+    return QVariant(data);
+}
+
+void PropertyRotationItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert<Base::Rotation>())
+        return;
+    // Accept this only if the user changed the axis, angle or position but
+    // not if >this< item loses focus
+    if (!changed_value)
+        return;
+    changed_value = false;
+
+    Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals());
+    QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
+                    .arg(Base::UnitsApi::toNumber(rot_axis.x, format))
+                    .arg(Base::UnitsApi::toNumber(rot_axis.y, format))
+                    .arg(Base::UnitsApi::toNumber(rot_axis.z, format))
+                    .arg(Base::UnitsApi::toNumber(rot_angle, format));
+    setPropertyValue(data);
+}
+
+QWidget* PropertyRotationItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    Q_UNUSED(parent)
+    Q_UNUSED(receiver)
+    Q_UNUSED(method)
+    return nullptr;
+}
+
+void PropertyRotationItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    Q_UNUSED(editor)
+    Q_UNUSED(data)
+}
+
+QVariant PropertyRotationItem::editorData(QWidget *editor) const
+{
+    Q_UNUSED(editor)
+    return QVariant();
+}
+
+void PropertyRotationItem::propertyBound()
+{
+    if (isBound()) {
+        m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
+                                                  <<App::ObjectIdentifier::String("Angle"));
+
+        m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
+                                                  <<App::ObjectIdentifier::String("Axis"));
+    }
+}
+
 // --------------------------------------------------------------------
 
 PlacementEditor::PlacementEditor(const QString& name, QWidget * parent)
