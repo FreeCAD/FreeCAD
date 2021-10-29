@@ -1810,6 +1810,7 @@ void Application::initTypes(void)
     App ::PropertyPlacement         ::init();
     App ::PropertyPlacementList     ::init();
     App ::PropertyPlacementLink     ::init();
+    App ::PropertyRotation          ::init();
     App ::PropertyGeometry          ::init();
     App ::PropertyComplexGeoData    ::init();
     App ::PropertyColor             ::init();
