@@ -399,7 +399,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
         Range range(from,to);
 
         CellAddress addr(dstFrom);
-        if(!ri) {
+        if(ri == 0) {
             roffset = addr.row() - from.row();
             coffset = addr.col() - from.col();
         }
@@ -410,10 +410,10 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
             ccount = 1;
         } else {
             rcount = dstRows/range.rowCount();
-            if(!rcount)
+            if(rcount == 0)
                 rcount = 1;
             ccount = dstCols/range.colCount();
-            if(!ccount)
+            if(ccount == 0)
                 ccount = 1;
         }
         for(int ci=0; ci < cellCount; ++ci) {
@@ -482,7 +482,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                 }
             }
         }
-        if(!cellCount || range.next()) {
+        if(cellCount == 0 || range.next()) {
             do {
                 for(int r=0; r < rcount; ++r) {
                     for(int c=0; c < ccount; ++c) {
@@ -1400,7 +1400,7 @@ void PropertySheet::recomputeDependencies(CellAddress key)
 
 void PropertySheet::hasSetValue()
 {
-    if(!updateCount || 
+    if(updateCount == 0 || 
        !owner || !owner->getNameInDocument() || owner->isRestoring() ||
        this!=&owner->cells ||
        testFlag(LinkDetached)) 
