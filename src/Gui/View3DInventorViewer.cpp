@@ -1278,6 +1278,13 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
 
     if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
         return;
+
+    if (alt && Reason.Type == SelectionChanges::RmvSelection) {
+        auto objT = Reason.Object;
+        _pimpl->objectsOnTop.erase(objT);
+        guiDocument->signalOnTopObject(Reason.Type, objT);
+    }
+
     auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
     if(!obj || !obj->getNameInDocument())
         return;
@@ -1469,21 +1476,11 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
     SoFullPath & detailPath = *_pimpl->tmpPath;
     detailPath.truncate(0);
 
-    if (alt && guiDocument) {
-        switch(Reason.Type) {
-        case SelectionChanges::AddSelection:
-        case SelectionChanges::RmvSelection: {
-            auto objT = Reason.Object;
-            objT.setSubName(objT.getSubNameNoElement());
-            if (Reason.Type == SelectionChanges::AddSelection)
-                _pimpl->objectsOnTop.insert(objT);
-            else
-                _pimpl->objectsOnTop.erase(objT);
-            guiDocument->signalOnTopObject(Reason.Type, objT);
-            break;
-        } default:
-            break;
-        }
+    if (alt && Reason.Type == SelectionChanges::AddSelection) {
+        auto objT = Reason.Object;
+        objT.setSubName(objT.getSubNameNoElement());
+        _pimpl->objectsOnTop.insert(objT);
+        guiDocument->signalOnTopObject(Reason.Type, objT);
     }
 
     SoDetail *det = 0;
