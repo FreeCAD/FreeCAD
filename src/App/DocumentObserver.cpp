@@ -409,6 +409,18 @@ void SubObjectT::setSubName(const char *s) {
     subname = s?s:"";
 }
 
+bool SubObjectT::isVisible() const
+{
+    auto obj = getObject();
+    if (!obj)
+        return false;
+    int vis = obj->isElementVisibleEx(subname.c_str(), DocumentObject::GS_SELECT);
+    if (vis >= 0)
+        return vis > 0;
+    auto sobj = getSubObject();
+    return sobj && sobj->Visibility.getValue();
+}
+
 bool SubObjectT::normalize()
 {
     std::ostringstream ss;

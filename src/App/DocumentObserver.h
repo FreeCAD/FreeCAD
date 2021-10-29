@@ -282,6 +282,8 @@ public:
     PyObject *getPyObject() const;
     void setPyObject(PyObject *);
 
+    bool isVisible() const;
+
 private:
     std::string subname;
 };

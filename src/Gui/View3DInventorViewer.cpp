@@ -1402,9 +1402,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         if(info.elements.empty() && !info.alt) {
             pcGroup->removeChild(index);
             objs.erase(it);
-
-            if(alt)
+            if(alt) {
                 Gui::Selection().rmvPreselect();
+                if (Reason.Object.isVisible())
+                    Gui::Selection().updateSelection(true,
+                            Reason.pDocName, Reason.pObjectName, Reason.pSubName);
+            }
         }
         return;
     }
