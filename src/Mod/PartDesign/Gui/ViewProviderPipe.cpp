@@ -89,11 +89,6 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPipe::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
-}
-
 bool ViewProviderPipe::setEdit(int ModNum) {
     if (ModNum == ViewProvider::Default )
         setPreviewDisplayMode(true);

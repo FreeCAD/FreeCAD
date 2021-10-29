@@ -81,11 +81,6 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderLoft::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
-}
-
 bool ViewProviderLoft::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default)

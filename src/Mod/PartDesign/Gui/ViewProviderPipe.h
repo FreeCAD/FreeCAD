@@ -49,7 +49,6 @@ public:
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
-    bool doubleClicked();
 
     virtual bool onDelete(const std::vector<std::string> &);
     void highlightReferences(Reference mode, bool on);
