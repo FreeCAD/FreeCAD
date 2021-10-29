@@ -129,6 +129,10 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     unsigned int lCLine = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Current line highlight")), lCLine));
+    col = Qt::black;
+    unsigned int lBackground = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
+    d->colormap.push_back(QPair<QString, unsigned int>
+        (QString::fromLatin1(QT_TR_NOOP("Background")), lBackground));
 
     QStringList labels; labels << tr("Items");
     ui->displayItems->setHeaderLabels(labels);
@@ -168,7 +172,13 @@ void DlgSettingsEditorImp::on_colorButton_changed()
 
     int index = ui->displayItems->indexOfTopLevelItem(ui->displayItems->currentItem());
     d->colormap[index].second = lcol;
-    pythonSyntax->setColor( d->colormap[index].first, col );
+    if (d->colormap[index].first != QStringLiteral("Background"))
+        pythonSyntax->setColor( d->colormap[index].first, col );
+    else if (col != Qt::black)
+        ui->textEdit1->setStyleSheet(QStringLiteral("background: %1").arg(
+                    col.name(QColor::HexRgb)));
+    else
+        ui->textEdit1->setStyleSheet(QString());
 }
 
 void DlgSettingsEditorImp::saveSettings()
@@ -214,14 +224,24 @@ void DlgSettingsEditorImp::loadSettings()
 
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
+    QColor background = Qt::black;
     for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it){
         unsigned long col = static_cast<unsigned long>((*it).second);
         col = hGrp->GetUnsigned((*it).first.toLatin1(), col);
         (*it).second = static_cast<unsigned int>(col);
         QColor color;
         color.setRgb((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
-        pythonSyntax->setColor( (*it).first, color );
+        if ((*it).first == QStringLiteral("Background"))
+            background = color;
+        else
+            pythonSyntax->setColor( (*it).first, color );
     }
+
+    if (background != Qt::black)
+        ui->textEdit1->setStyleSheet(QStringLiteral("background: %1").arg(
+                    background.name(QColor::HexRgb)));
+    else
+        ui->textEdit1->setStyleSheet(QString());
 
     // fill up font styles
     //

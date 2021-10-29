@@ -74,6 +74,9 @@
           <FCUInt Name="BackgroundColor" Value="1953789183"/>
           <FCUInt Name="CursorCrosshairColor" Value="4294967295"/>
         </FCParamGroup>
+        <FCParamGroup Name="Editor">
+          <FCUInt Name="Background" Value="3368601600"/>
+        </FCParamGroup>
       </FCParamGroup>
     </FCParamGroup>
     <FCText Name="Name">Overlay dark theme</FCText>

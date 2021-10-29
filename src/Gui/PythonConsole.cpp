@@ -123,6 +123,7 @@ struct PythonConsoleP
         colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
         colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
         colormap[QLatin1String("Python error")] = Qt::red;
+        colormap[QLatin1String("Background")] = Qt::black;
     }
 };
 struct InteractiveInterpreterP
@@ -543,7 +544,13 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
             value = hPrefGrp->GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
-            pythonSyntax->setColor(QString::fromLatin1(sReason), color);
+            if (it.key() != QStringLiteral("Background"))
+                pythonSyntax->setColor(QString::fromLatin1(sReason), color);
+            else if (value)
+                setStyleSheet(QStringLiteral("background: %1").arg(
+                            color.name(QColor::HexRgb)));
+            else
+                setStyleSheet(QString());
         }
     }
 }
