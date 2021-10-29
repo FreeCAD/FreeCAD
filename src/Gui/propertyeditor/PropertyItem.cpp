@@ -2740,7 +2740,7 @@ QStringList PropertyEnumItem::getEnum() const
     auto prop = getFirstProperty();
     if (prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId())) {
         const App::PropertyEnumeration* prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
-        for(int i=0,last=prop_enum->getEnum().maxValue();i<=last;++i)
+        for(int i=0; i<prop_enum->getEnum().maxValue(); ++i)
             res.push_back(QString::fromUtf8(prop_enum->getEnums()[i]));
     }
     return res;
