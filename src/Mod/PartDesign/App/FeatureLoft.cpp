@@ -185,6 +185,8 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 SC.PerformInfinitePoint(Precision::Confusion());
                 if ( SC.State() == TopAbs_IN)
                     s.setShape(s.getShape().Reversed(),false);
+                if (Linearize.getValue())
+                    s.linearize(true, false);
             }
         }
 

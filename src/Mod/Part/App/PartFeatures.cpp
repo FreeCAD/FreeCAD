@@ -50,6 +50,7 @@
 #include <App/Document.h>
 #include "TopoShapeOpCode.h"
 #include "PartFeatures.h"
+#include "PartParams.h"
 
 
 using namespace Part;
@@ -316,6 +317,8 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree,(5),"Loft",App::Prop_None,"Maximum Degree");
     MaxDegree.setConstraints(&Degrees);
+    ADD_PROPERTY_TYPE(Linearize,(false), "Loft", App::Prop_None,
+            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
 }
 
 short Loft::mustExecute() const
@@ -421,8 +424,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
         Standard_Boolean isClosed = Closed.getValue() ? Standard_True : Standard_False;
         int degMax = MaxDegree.getValue();
-        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makELoft(
-                    shapes, isSolid, isRuled, isClosed, degMax));
+        TopoShape result(0,getDocument()->getStringHasher());
+        result.makELoft(shapes, isSolid, isRuled, isClosed, degMax);
+        if (Linearize.getValue())
+            result.linearize(true, false);
+        this->Shape.setValue(result);
 #endif
         return Part::Feature::execute();
     }
@@ -430,6 +436,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
+}
+
+void Part::Loft::setupObject()
+{
+    Feature::setupObject();
+    Linearize.setValue(PartParams::LinearizeExtrusionDraft());
 }
 
 // ----------------------------------------------------------------------------
@@ -446,6 +458,8 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
     ADD_PROPERTY_TYPE(Frenet,(false),"Sweep",App::Prop_None,"Frenet");
     ADD_PROPERTY_TYPE(Transition,(long(1)),"Sweep",App::Prop_None,"Transition mode");
+    ADD_PROPERTY_TYPE(Linearize,(false), "Sweep", App::Prop_None,
+            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
     Transition.setEnums(TransitionEnums);
 }
 
@@ -662,8 +676,11 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                  break;
     }
     try {
-        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEPipeShell(
-                    shapes,isSolid,isFrenet,transMode,TOPOP_SWEEP));
+        TopoShape result(0,getDocument()->getStringHasher());
+        result.makEPipeShell(shapes,isSolid,isFrenet,transMode,TOPOP_SWEEP);
+        if (Linearize.getValue())
+            result.linearize(true, false);
+        this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
 #endif
@@ -674,6 +691,12 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
     }
+}
+
+void Part::Sweep::setupObject()
+{
+    Feature::setupObject();
+    Linearize.setValue(PartParams::LinearizeExtrusionDraft());
 }
 
 // ----------------------------------------------------------------------------

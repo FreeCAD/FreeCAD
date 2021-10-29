@@ -65,6 +65,8 @@ public:
     App::PropertyDistance    InnerFit;
     App::PropertyEnumeration InnerFitJoin;
 
+    App::PropertyBool        Linearize;
+
     App::PropertyInteger _ProfileBasedVersion;
 
     short mustExecute() const;

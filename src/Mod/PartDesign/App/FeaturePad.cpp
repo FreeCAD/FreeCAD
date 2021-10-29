@@ -91,8 +91,6 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of the reverse part for inner holes.");
 
     ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pad", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
-    ADD_PROPERTY_TYPE(Linearize,(false), "Pad", App::Prop_None,
-            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
     ADD_PROPERTY_TYPE(CheckUpToFaceLimits,(true), "Pad", App::Prop_None,
             "When using 'UpToXXXX' method, check whether the sketch shape is within\n"
             "the up-to-face. And remove the up-to-face limitation to make padding/extrusion\n"
@@ -123,7 +121,6 @@ void Pad::setupObject()
 {
     ProfileBased::setupObject();
     UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
-    Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
 }
 
 App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)

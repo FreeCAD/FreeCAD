@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>360</height>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,32 @@
       <string>Model settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkSingleSolid">
+        <property name="text">
+         <string>Enforce single solid in Body</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SingleSolid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
+        <property name="text">
+         <string>Automatically refine model shape of features in PartDesign workbench</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RefineModel</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
         <property name="text">
@@ -46,36 +72,37 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="checkSingleSolid">
-        <property name="text">
-         <string>Enforce single solid in Body</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>SingleSolid</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
-        <property name="text">
-         <string>Automatically refine model shape of features in PartDesign workbench</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>RefineModel</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="checkAutoGroupSolids">
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkAutoGroupSolids">
         <property name="text">
          <string>Auto group solids in Body</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutoGroupSolids</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkLinearize">
+        <property name="toolTip">
+         <string>Try to replace flat BSpline face with simple planar face.
+Currently only applies to Loft, Sweep, drafted Extrusion
+in Part workbench, and equivalent features in PartDesign.</string>
+        </property>
+        <property name="text">
+         <string>Linearize flat BSpline face when possible</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LinearizeExtrusionDraft</cstring>
         </property>
        </widget>
       </item>
@@ -92,9 +119,15 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="checkObjectNaming">
+       <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
         <property name="text">
          <string>Add name of base object</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseBaseObjectName</cstring>
         </property>
        </widget>
       </item>
@@ -118,12 +151,18 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="comboBoxCommandOverride">
+       <widget class="Gui::PrefComboBox" name="comboBoxCommandOverride">
         <property name="toolTip">
          <string>Override non-PartDesign command with an equivalent PartDesign command when operate on PartDesign feature.</string>
         </property>
         <property name="currentIndex">
          <number>2</number>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CommandOverride</cstring>
         </property>
         <item>
          <property name="text">
@@ -150,12 +189,18 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="comboBoxWrapFeature">
+       <widget class="Gui::PrefComboBox" name="comboBoxWrapFeature">
         <property name="toolTip">
          <string>If a non-PartDesign object references a PartDesign feature, incorporate the object into PartDesign body using a wrap feature.</string>
         </property>
         <property name="currentIndex">
          <number>2</number>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableWrapFeature</cstring>
         </property>
         <item>
          <property name="text">
@@ -196,6 +241,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

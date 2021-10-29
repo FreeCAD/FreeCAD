@@ -82,6 +82,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FeatureOffset.h>
+#include <Mod/Part/App/PartParams.h>
 #include "Body.h"
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
@@ -110,6 +111,9 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(InnerFitJoin,(long(0)),"SketchBased",App::Prop_None,"Fit join type of inner holes");
     InnerFitJoin.setEnums(Part::Offset::JoinEnums);
 
+    ADD_PROPERTY_TYPE(Linearize,(false), "SketchBased", App::Prop_None,
+            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
+
     ADD_PROPERTY_TYPE(_ProfileBasedVersion,(0),"Part Design",(App::PropertyType)(App::Prop_Hidden), 0);
 }
 
@@ -127,6 +131,7 @@ void ProfileBased::setupObject()
 {
     FeatureAddSub::setupObject();
     AllowMultiFace.setValue(true);
+    Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
     _ProfileBasedVersion.setValue(1);
 }
 

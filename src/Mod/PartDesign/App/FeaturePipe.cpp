@@ -319,6 +319,8 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
             if (SC.State() == TopAbs_IN) {
                 result.setShape(result.getShape().Reversed(),false);
             }
+            if (feat->Linearize.getValue())
+                result.linearize(true, false);
         }
 
         //result.Move(invObjLoc);
