@@ -131,6 +131,11 @@ void Enumeration::setEnums(const char **plEnums)
 
 void Enumeration::setEnums(const std::vector<std::string> &values)
 {
+    if (values.empty()) {
+        setEnums(nullptr);
+        return;
+    }
+
     std::string oldValue;
     bool preserve = isValid();
     if (preserve) {
@@ -158,7 +163,10 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     // Other state variables
     _maxVal = values.size() - 1;
     _ownEnumArray = true;
-    _index = 0;
+    if (_index < 0)
+        _index = 0;
+    else if (_index > _maxVal)
+        _index = _maxVal;
 
     if (preserve) {
         setValue(oldValue);
@@ -294,16 +302,9 @@ bool Enumeration::isValid(void) const
 
 Enumeration & Enumeration::operator=(const Enumeration &other)
 {
-    if (this == &other)
-        return *this;
-
     if (other._ownEnumArray) {
         setEnums(other.getEnumVector());
     } else {
-        if (isValid() && _ownEnumArray) {
-            tearDown();
-        }
-
         _EnumArray = other._EnumArray;
     }
 
@@ -316,14 +317,19 @@ Enumeration & Enumeration::operator=(const Enumeration &other)
 
 bool Enumeration::operator==(const Enumeration &other) const
 {
-    if(_index != other._index)
+    if(_index != other._index || _maxVal != other._maxVal)
         return false;
-    if (getCStr() == other.getCStr())
+    if (_EnumArray == other._EnumArray)
         return true;
-    if (getCStr() == NULL || other.getCStr() == NULL) {
-        return false;
+    for (int i=0; i<=_maxVal; ++i) {
+        if (_EnumArray[i] == other._EnumArray[i])
+            continue;
+        if (_EnumArray[i] == nullptr || other._EnumArray[i] == nullptr)
+            return false;
+        if (strcmp(_EnumArray[i], other._EnumArray[i]) != 0)
+            return false;
     }
-    return (strcmp(getCStr(), other.getCStr()) == 0);
+    return true;
 }
 
 bool Enumeration::operator==(const char *other) const
