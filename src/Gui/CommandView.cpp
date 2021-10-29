@@ -2515,6 +2515,14 @@ StdViewZoomActual::StdViewZoomActual()
 void StdViewZoomActual::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+    if (!cam || cam->getTypeId() != SoOrthographicCamera::getClassTypeId()){
+        QMessageBox::critical(getMainWindow(), QObject::tr("Zoom actual"),
+            QObject::tr("Zoom actual is only available for Orthographic cameras.\n"));
+        return;
+    }
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
     double tweak = group->GetFloat("ZoomActualTweak", 1.0);
