@@ -40,6 +40,7 @@
 #include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
 #include <Gui/MetaTypes.h>
+#include <FCGlobal.h>
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
@@ -657,6 +658,28 @@ private:
     PropertyFloatItem* m_a44; 
 };
 
+class RotationHelper
+{
+public:
+    RotationHelper();
+    void setChanged(bool);
+    bool hasChangedAndReset();
+    bool isAxisInitialized() const;
+    void setValue(const Base::Vector3d& axis, double angle);
+    void getValue(Base::Vector3d& axis, double& angle) const;
+    double getAngle(const Base::Rotation& val) const;
+    Base::Rotation setAngle(double);
+    Base::Vector3d getAxis() const;
+    Base::Rotation setAxis(const Base::Rotation& value, const Base::Vector3d& axis);
+    void assignProperty(const Base::Rotation& value, double eps);
+
+private:
+    bool init_axis;
+    bool changed_value;
+    double rot_angle;
+    Base::Vector3d rot_axis;
+};
+
 /**
  * Edit properties of rotation type.
  * \author Werner Mayer
@@ -689,10 +712,7 @@ protected:
     virtual void setValue(const QVariant&);
 
 private:
-    bool init_axis;
-    bool changed_value;
-    double rot_angle;
-    Base::Vector3d rot_axis;
+    mutable RotationHelper h;
     PropertyUnitItem * m_a;
     PropertyVectorItem* m_d;
 };
@@ -752,10 +772,7 @@ protected:
     virtual void setValue(const QVariant&);
 
 private:
-    bool init_axis;
-    bool changed_value;
-    double rot_angle;
-    Base::Vector3d rot_axis;
+    mutable RotationHelper h;
     PropertyUnitItem * m_a;
     PropertyVectorItem* m_d;
     PropertyVectorDistanceItem* m_p;
