@@ -23,38 +23,11 @@
 #ifndef PARTGUI_VIEWPROVIDERPARTSPLINE_H
 #define PARTGUI_VIEWPROVIDERPARTSPLINE_H
 
-#include "ViewProviderExt.h"
+#include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Gui/ViewProviderExtension.h>
 
 namespace PartGui
 {
-
-class PartGuiExport ViewProviderSpline : public ViewProviderPartExt
-{
-    PROPERTY_HEADER(PartGui::ViewProviderSpline);
-
-public:
-    /// constructor
-    ViewProviderSpline();
-    /// destructor
-    virtual ~ViewProviderSpline();
-
-    // Display properties
-    App::PropertyBool ControlPoints;
-
-    QIcon getIcon(void) const;
-    void updateData(const App::Property* prop);
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-
-protected:
-    void onChanged(const App::Property* prop);
-    void toggleControlPoints(bool);
-    void showControlPoints(bool, const App::Property* prop);
-    void showControlPointsOfEdge(const TopoDS_Edge&);
-    void showControlPointsOfFace(const TopoDS_Face&);
-
-    SoSwitch     *pcControlPoints;
-};
 
 class PartGuiExport ViewProviderSplineExtension : public Gui::ViewProviderExtension
 {
@@ -62,7 +35,7 @@ class PartGuiExport ViewProviderSplineExtension : public Gui::ViewProviderExtens
 
 public:
     /// Constructor
-    ViewProviderSplineExtension(void);
+    ViewProviderSplineExtension();
     virtual ~ViewProviderSplineExtension() = default;
 
     App::PropertyBool ControlPoints;
@@ -78,6 +51,22 @@ protected:
     void showControlPointsOfFace(const TopoDS_Face&);
 
     SoSwitch     *pcControlPoints;
+};
+
+class PartGuiExport ViewProviderSpline : public ViewProviderPartExt
+{
+    PROPERTY_HEADER(PartGui::ViewProviderSpline);
+
+public:
+    /// constructor
+    ViewProviderSpline();
+    /// destructor
+    virtual ~ViewProviderSpline();
+
+    QIcon getIcon() const;
+
+private:
+    ViewProviderSplineExtension extension;
 };
 
 typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension> ViewProviderSplineExtensionPython;
