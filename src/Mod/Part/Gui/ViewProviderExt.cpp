@@ -985,6 +985,9 @@ void ViewProviderPartExt::updateVisual()
         TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
         for (int i=1; i <= faceMap.Extent(); i++) {
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
+            if (mesh.IsNull()) {
+                mesh = Part::Tools::triangulationOfFace(TopoDS::Face(faceMap(i)));
+            }
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
@@ -1024,7 +1027,7 @@ void ViewProviderPartExt::updateVisual()
             // a free edge.
             int hash = aEdge.HashCode(INT_MAX);
             if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     int nbNodesInEdge = aPoly->NbNodes();
                     numNodes += nbNodesInEdge;
@@ -1058,6 +1061,9 @@ void ViewProviderPartExt::updateVisual()
             const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
+            if (mesh.IsNull()) {
+                mesh = Part::Tools::triangulationOfFace(actFace);
+            }
             if (mesh.IsNull()) {
                 parts[ii] = 0;
                 continue;
@@ -1220,7 +1226,7 @@ void ViewProviderPartExt::updateVisual()
             // handling of the free edge that are not associated to a face
             int hash = aEdge.HashCode(INT_MAX);
             if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     if (!aLoc.IsIdentity()) {
                         identity = false;
