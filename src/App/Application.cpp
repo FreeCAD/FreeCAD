@@ -633,7 +633,7 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     if(!path || !path[0])
         return nullptr;
     if(DocFileMap.empty()) {
-        for(auto &v : DocMap) {
+        for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
             if(file.size())
                 DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
@@ -643,15 +643,15 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     if(it != DocFileMap.end())
         return it->second;
 
-    if (checkCanonical == MatchAbsolute)
+    if (checkCanonical == PathMatchMode::MatchAbsolute)
         return nullptr;
 
     std::string filepath = FileInfo(path).filePath();
     QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
-    for (auto &v : DocMap) {
+    for (const auto &v : DocMap) {
         QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
         if (canonicalPath == fi.canonicalFilePath()) {
-            if (checkCanonical == MatchCanonical)
+            if (checkCanonical == PathMatchMode::MatchCanonical)
                 return v.second;
             bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
             FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
@@ -778,7 +778,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                     break;
                 _pendingDocs = std::move(_pendingDocsReopen);
                 _pendingDocsReopen.clear();
-                for(auto &file : _pendingDocs) {
+                for(const auto &file : _pendingDocs) {
                     auto doc = getDocumentByPath(file.c_str());
                     if(doc)
                         closeDocument(doc->getName());
@@ -791,7 +791,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
         std::vector<Document*> docs;
         docs.reserve(newDocs.size());
-        for(auto &d : newDocs) {
+        for(const auto &d : newDocs) {
             auto doc = d.getDocument();
             if(!doc)
                 continue;
@@ -843,7 +843,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             seq.next();
         }
         // Close the document for reloading
-        for(auto doc : docs)
+        for(const auto doc : docs)
             closeDocument(doc->getName());
 
     }while(!_pendingDocs.empty());
@@ -883,7 +883,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 
     // Before creating a new document we check whether the document is already open
-    auto doc = getDocumentByPath(File.filePath().c_str(), MatchCanonicalWarning);
+    auto doc = getDocumentByPath(File.filePath().c_str(), PathMatchMode::MatchCanonicalWarning);
     if(doc) {
         if(doc->testStatus(App::Document::PartialDoc)
                 || doc->testStatus(App::Document::PartialRestore)) {
@@ -897,7 +897,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                 doc = nullptr;
             } else if(_allowPartial) {
                 bool reopen = false;
-                for(auto &name : objNames) {
+                for(const auto &name : objNames) {
                     auto obj = doc->getObject(name.c_str());
                     if(!obj || obj->testStatus(App::PartialObject)) {
                         reopen = true;

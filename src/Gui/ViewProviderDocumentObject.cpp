@@ -197,7 +197,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             // modified then it must be be reversed.
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
                 // Note: reverting document modified status like that is not
-                // appropreiate because we can't tell if there is any other
+                // appropriate because we can't tell if there is any other
                 // property being changed due to the change of Visibility here.
                 // Temporary setting the Visibility property as 'NoModify' is
                 // the proper way.

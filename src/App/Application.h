@@ -122,7 +122,7 @@ public:
     App::Document* getDocument(const char *Name) const;
 
     /// Path matching mode for getDocumentByPath()
-    enum PathMatchMode {
+    enum class PathMatchMode {
         /// Match by resolving to absolute file path
         MatchAbsolute = 0,
         /** Match by absolute path first. If not found then match by resolving
@@ -145,7 +145,7 @@ public:
      * @return Return the document found by matching with the given path
      */
     App::Document* getDocumentByPath(const char *path,
-                                     PathMatchMode checkCanonical = MatchAbsolute) const;
+                                     PathMatchMode checkCanonical = PathMatchMode::MatchAbsolute) const;
 
     /// gets the (internal) name of the document
     const char * getDocumentName(const App::Document* ) const;

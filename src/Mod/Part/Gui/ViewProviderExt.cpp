@@ -399,7 +399,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             updateVisual();
             // updateVisual() may not be triggered by any change (e.g.
             // triggered by an external object through forceUpdate()). And
-            // since DiffuseColor is not changed here either, do not falsly set
+            // since DiffuseColor is not changed here either, do not falsely set
             // the document modified status
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
                     App::Property::NoModify, &DiffuseColor);

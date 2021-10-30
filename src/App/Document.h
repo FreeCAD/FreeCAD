@@ -75,7 +75,7 @@ public:
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
         RestoreError = 10,
-        LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
+        LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
     };
 
     /** @name Properties */
