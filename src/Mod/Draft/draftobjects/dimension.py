@@ -163,7 +163,7 @@ class DimensionBase(DraftAnnotation):
                                      "There are various possibilities:\n"
                                      "- An object, and one of its edges.\n"
                                      "- An object, and two of its vertices.\n"
-                                     "- An arc object, and its edge.\n")
+                                     "- An arc object, and its edge.")
             obj.addProperty("App::PropertyLinkSubList",
                             "LinkedGeometry",
                             "Dimension",
