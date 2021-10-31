@@ -74,6 +74,14 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc,
 
         // TODO: Any other logic (hover, select effects on view etc.)
     }
+
+    if (!bodyOfActiveObject) {
+        // by default select the first item so that the user
+        // can continue by clicking Ok without further action
+        QListWidgetItem* first = ui->bodySelect->item(0);
+        if (first)
+            first->setSelected(true);
+    }
 }
 
 void DlgActiveBody::accept()
