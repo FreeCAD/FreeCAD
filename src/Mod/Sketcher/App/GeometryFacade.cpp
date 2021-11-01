@@ -46,11 +46,9 @@ GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtens
 GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
 : Geo(geometry), OwnerGeo(false)
 {
-    if(geometry != nullptr)
-        initExtension();
-    else
-        THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
+    assert(geometry != nullptr); // This should never be nullptr, as this constructor is protected
 
+    initExtension();
 }
 
 GeometryFacade::~GeometryFacade()
@@ -104,8 +102,8 @@ void GeometryFacade::initExtension()
 
 void GeometryFacade::initExtension() const
 {
-    if(!Geo->hasExtension(SketchGeometryExtension::getClassTypeId()))
-           THROWM(Base::ValueError, "GeometryConstFacade for const::Geometry without SketchGeometryExtension");
+    // const Geometry without SketchGeometryExtension cannot initiliase a GeometryFacade
+    assert(Geo->hasExtension(SketchGeometryExtension::getClassTypeId()));
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
 

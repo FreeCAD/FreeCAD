@@ -118,10 +118,23 @@ public: // Utility methods
     static bool getBlocked(const Part::Geometry * geometry);
 
 public:
+    // Explicit deletion to show intent (not that it is needed)
+    GeometryFacade(const GeometryFacade&) = delete;
+    GeometryFacade& operator=(const GeometryFacade&) = delete;
+
+    GeometryFacade(GeometryFacade&&) = default;
+    GeometryFacade& operator=(GeometryFacade&&) = default;
+
     ~GeometryFacade();
     void setGeometry(Part::Geometry *geometry);
+
     void setOwner(bool owner) {
         OwnerGeo = owner;
+    }
+
+    // returns if the facade is the owner of the geometry pointer.
+    bool getOwner() const {
+        return OwnerGeo;
     }
 
     // Geometry Extension Interface
@@ -160,7 +173,7 @@ public:
                     std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
              >::type
     >
-    GeometryT * getGeometry() const {return dynamic_cast<GeometryT *>(Geo);}
+    const GeometryT * getGeometry() const {return dynamic_cast<const GeometryT *>(Geo);}
 
     virtual PyObject *getPyObject(void) override;
 
