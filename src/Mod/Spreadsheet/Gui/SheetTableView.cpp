@@ -163,8 +163,8 @@ SheetTableView::SheetTableView(QWidget *parent)
     auto cellProperties = new QAction(tr("Properties..."), this);
     addAction(cellProperties);
     
-    horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-    verticalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+    horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
     contextMenu = new QMenu(this);
 
