@@ -65,6 +65,8 @@ namespace bp = boost::placeholders;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
     //
     qApp->translate("Workbench", "Measure");
+    qApp->translate("Workbench", "Refresh");
+    qApp->translate("Workbench", "Toggle 3D");
     qApp->translate("Workbench", "Part Design Helper");
     qApp->translate("Workbench", "Part Design Modeling");
 #endif
