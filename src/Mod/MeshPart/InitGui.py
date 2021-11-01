@@ -59,13 +59,13 @@ class MeshPartWorkbench ( Workbench ):
     ToolTip = "MeshPart workbench"
 
 
-def Initialize(self):
-    # load the module
-    import MeshPartGui
-    import MeshPart
+    def Initialize(self):
+        # load the module
+        import MeshPartGui
+        import MeshPart
 
 
-def GetClassName(self):
-    return "MeshPartGui::Workbench"
+    def GetClassName(self):
+        return "MeshPartGui::Workbench"
 
 # Gui.addWorkbench(MeshPartWorkbench())
