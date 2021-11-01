@@ -82,10 +82,12 @@ enum InternalAlignmentType {
  * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
  * in addition to PointPos.
  */
-enum PointPos { none    = 0,
-                start   = 1,
-                end     = 2,
-                mid     = 3 };
+enum PointPos : int {
+    none    = 0,
+    start   = 1,
+    end     = 2,
+    mid     = 3
+};
 
 class SketcherExport Constraint : public Base::Persistence
 {
