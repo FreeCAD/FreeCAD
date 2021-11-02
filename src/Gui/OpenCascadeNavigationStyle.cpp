@@ -303,10 +303,8 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (/*(curmode == NavigationStyle::SELECTION || viewer->isEditing()) && */!processed)
+    if (!processed)
         processed = inherited::processSoEvent(ev);
-    else
-        return true;
 
     return processed;
 }

@@ -136,10 +136,6 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = true;
             }
-            //else if (press && (this->currentmode == NavigationStyle::IDLE)) {
-            //    this->setViewing(true);
-            //    processed = true;
-            //}
             else if (press && (this->currentmode == NavigationStyle::PANNING ||
                                this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
@@ -285,11 +281,6 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockButton1 = false;
             processed = true;
         }
-
-        //if (curmode == NavigationStyle::DRAGGING) {
-        //    if (doSpin())
-        //        newmode = NavigationStyle::SPINNING;
-        //}
         break;
     case BUTTON1DOWN:
     case CTRLDOWN|BUTTON1DOWN:
@@ -311,9 +302,6 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         newmode = NavigationStyle::DRAGGING;
         break;
-    //case BUTTON1DOWN|BUTTON2DOWN|BUTTON3DOWN:
-    //    newmode = NavigationStyle::ZOOMING;
-    //    break;
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
     case CTRLDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::ZOOMING;
@@ -335,10 +323,8 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (/*(curmode == NavigationStyle::SELECTION || viewer->isEditing()) && */!processed)
+    if (!processed)
         processed = inherited::processSoEvent(ev);
-    else
-        return true;
 
     return processed;
 }

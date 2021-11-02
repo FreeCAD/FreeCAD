@@ -299,8 +299,5 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
     // hierarchy.
     if (!processed)
         processed = inherited::processSoEvent(ev);
-    else
-        return true;
-
     return processed;
 }

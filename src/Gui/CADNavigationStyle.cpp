@@ -135,39 +135,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON1:
             this->lockrecenter = true;
             this->button1down = press;
-#if 0 // disable to avoid interferences where this key combination is used, too
-            if (press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
-                this->lockrecenter = false;
-            }
-            else if (!press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // is it just a left click?
-                if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->moveToPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
-                    processed = true;
-                }
-            }
-            else
-#endif
             if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                 newmode = NavigationStyle::SEEK_MODE;
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = true;
             }
-            //else if (press && (this->currentmode == NavigationStyle::IDLE)) {
-            //    this->setViewing(true);
-            //    processed = true;
-            //}
             else if (press && (this->currentmode == NavigationStyle::PANNING ||
                                this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
@@ -327,11 +299,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockButton1 = false;
             processed = true;
         }
-
-        //if (curmode == NavigationStyle::DRAGGING) {
-        //    if (doSpin())
-        //        newmode = NavigationStyle::SPINNING;
-        //}
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
@@ -364,16 +331,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
-    //case CTRLDOWN:
-    //case CTRLDOWN|BUTTON1DOWN:
-    //case CTRLDOWN|SHIFTDOWN:
-    //case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
-    //    newmode = NavigationStyle::SELECTION;
-    //    break;
-    //case BUTTON1DOWN|BUTTON3DOWN:
-    //case CTRLDOWN|BUTTON3DOWN:
-    //    newmode = NavigationStyle::ZOOMING;
-    //    break;
 
         // There are many cases we don't handle that just falls through to
         // the default case, like SHIFTDOWN, CTRLDOWN, CTRLDOWN|SHIFTDOWN,
@@ -385,10 +342,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     default:
         // The default will make a spin stop and otherwise not do
         // anything.
-        //if ((curmode != NavigationStyle::SEEK_WAIT_MODE) &&
-        //    (curmode != NavigationStyle::SEEK_MODE)) {
-        //    newmode = NavigationStyle::IDLE;
-        //}
         break;
     }
 
@@ -404,10 +357,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (/*(curmode == NavigationStyle::SELECTION || viewer->isEditing()) && */!processed)
+    if (!processed)
         processed = inherited::processSoEvent(ev);
-    else
-        return true;
 
     return processed;
 }
