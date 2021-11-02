@@ -266,9 +266,6 @@ void TaskSketcherGeneral::onChangedSketchView(const Gui::ViewProvider& vp,
             QSignalBlocker block(widget);
             widget->checkGridView(sketchView->ShowGrid.getValue());
             widget->enableGridSettings(sketchView->ShowGrid.getValue());
-            if (sketchView->ShowGrid.getValue()) {
-                sketchView->createGrid();
-            }
         }
         else if (&sketchView->GridSize == &prop) {
             QSignalBlocker block(widget);
@@ -295,7 +292,6 @@ void TaskSketcherGeneral::onToggleGridView(bool on)
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->ShowGrid.setValue(on);
     widget->enableGridSettings(on);
-    if (on) sketchView->createGrid();
 }
 
 void TaskSketcherGeneral::onSetGridSize(double val)
