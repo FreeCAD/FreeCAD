@@ -115,6 +115,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
     add_varargs_method("setAnimationEnabled",&View3DInventorPy::setAnimationEnabled,"setAnimationEnabled()");
     add_varargs_method("isAnimationEnabled",&View3DInventorPy::isAnimationEnabled,"isAnimationEnabled()");
+    add_varargs_method("setPopupMenuEnabled",&View3DInventorPy::setPopupMenuEnabled,"setPopupMenuEnabled()");
+    add_varargs_method("isPopupMenuEnabled",&View3DInventorPy::isPopupMenuEnabled,"isPopupMenuEnabled()");
     add_varargs_method("dump",&View3DInventorPy::dump,"dump(filename, [onlyVisible=False])");
     add_varargs_method("dumpNode",&View3DInventorPy::dumpNode,"dumpNode(node)");
     add_varargs_method("setStereoType",&View3DInventorPy::setStereoType,"setStereoType()");
@@ -950,6 +952,23 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     SbBool ok = _view->getViewer()->isAnimationEnabled();
+    return Py::Boolean(ok ? true : false);
+}
+
+Py::Object View3DInventorPy::setPopupMenuEnabled(const Py::Tuple& args)
+{
+    int ok;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
+        throw Py::Exception();
+    _view->getViewer()->setPopupMenuEnabled(ok!=0);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isPopupMenuEnabled(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SbBool ok = _view->getViewer()->isPopupMenuEnabled();
     return Py::Boolean(ok ? true : false);
 }
 
