@@ -88,13 +88,11 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
     const SoType type(ev->getTypeId());
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2s size(vp.getViewportSizePixels());
-    const SbVec2f prevnormalized = this->lastmouseposition;
-    const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+    const SbVec2f posn = getNormalizedPosition(ev, vp);
 
+    const SbVec2f prevnormalized = this->lastmouseposition;
     this->lastmouseposition = posn;
+    const SbVec2s pos(ev->getPosition());
 
     // Set to true if any event processing happened. Note that it is not
     // necessary to restrict ourselves to only do one "action" for an
