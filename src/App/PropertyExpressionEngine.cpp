@@ -42,6 +42,7 @@ FC_LOG_LEVEL_INIT("App",true);
 using namespace App;
 using namespace Base;
 using namespace boost;
+using namespace boost::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer)
 
