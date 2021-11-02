@@ -214,6 +214,7 @@ protected:
     void addToLog(const SbVec2s pos, const SbTime time);
 
     void syncModifierKeys(const SoEvent * const ev);
+    SbBool handleKeyboardEvent(const SoKeyboardEvent * const event, const SbVec2f & posn);
 
 protected:
     struct { // tracking mouse movement in a log

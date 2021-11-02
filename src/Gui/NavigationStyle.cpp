@@ -1387,6 +1387,55 @@ void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
     }
 }
 
+SbBool NavigationStyle::handleKeyboardEvent(const SoKeyboardEvent * const event, const SbVec2f & posn)
+{
+    SbBool processed = false;
+    const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
+    switch (event->getKey()) {
+    case SoKeyboardEvent::LEFT_CONTROL:
+    case SoKeyboardEvent::RIGHT_CONTROL:
+        this->ctrldown = press;
+        break;
+    case SoKeyboardEvent::LEFT_SHIFT:
+    case SoKeyboardEvent::RIGHT_SHIFT:
+        this->shiftdown = press;
+        break;
+    case SoKeyboardEvent::LEFT_ALT:
+    case SoKeyboardEvent::RIGHT_ALT:
+        this->altdown = press;
+        break;
+    case SoKeyboardEvent::H:
+        processed = true;
+        viewer->saveHomePosition();
+        break;
+    case SoKeyboardEvent::R:
+        processed = true;
+        viewer->resetToHomePosition();
+        break;
+    case SoKeyboardEvent::S:
+    case SoKeyboardEvent::HOME:
+    case SoKeyboardEvent::LEFT_ARROW:
+    case SoKeyboardEvent::UP_ARROW:
+    case SoKeyboardEvent::RIGHT_ARROW:
+    case SoKeyboardEvent::DOWN_ARROW:
+        if (!this->isViewing())
+            this->setViewing(true);
+        break;
+    case SoKeyboardEvent::PAGE_UP:
+        processed = true;
+        doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
+        break;
+    case SoKeyboardEvent::PAGE_DOWN:
+        processed = true;
+        doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
+        break;
+    default:
+        break;
+    }
+
+    return processed;
+}
+
 // The viewer is a state machine, and all changes to the current state
 // are made through this call.
 void NavigationStyle::setViewingMode(const ViewerMode newmode)
