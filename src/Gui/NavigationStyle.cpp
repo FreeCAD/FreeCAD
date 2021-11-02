@@ -1372,6 +1372,21 @@ void NavigationStyle::clearLog(void)
     this->log.historysize = 0;
 }
 
+void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
+{
+    // Mismatches in state of the modifier keys happens if the user
+    // presses or releases them outside the viewer window.
+    if (this->ctrldown != ev->wasCtrlDown()) {
+        this->ctrldown = ev->wasCtrlDown();
+    }
+    if (this->shiftdown != ev->wasShiftDown()) {
+        this->shiftdown = ev->wasShiftDown();
+    }
+    if (this->altdown != ev->wasAltDown()) {
+        this->altdown = ev->wasAltDown();
+    }
+}
+
 // The viewer is a state machine, and all changes to the current state
 // are made through this call.
 void NavigationStyle::setViewingMode(const ViewerMode newmode)

@@ -190,9 +190,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
+    syncModifierKeys(ev);
     //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
     //track mouse button states
     if (evIsButton) {

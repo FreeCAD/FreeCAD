@@ -918,9 +918,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
         //whatever else, we don't track
         }
     }
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
+
+    syncModifierKeys(ev);
 
     smev.modifiers =
         (this->button1down ? NS::Event::BUTTON1DOWN : 0) |

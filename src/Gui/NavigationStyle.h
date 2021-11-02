@@ -213,6 +213,7 @@ protected:
     void clearLog(void);
     void addToLog(const SbVec2s pos, const SbTime time);
 
+    void syncModifierKeys(const SoEvent * const ev);
 
 protected:
     struct { // tracking mouse movement in a log
