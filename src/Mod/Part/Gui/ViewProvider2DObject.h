@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_IEWPROVIDER2DOBJECT_H
-#define PARTGUI_IEWPROVIDER2DOBJECT_H
+#ifndef PARTGUI_VIEWPROVIDER2DOBJECT_H
+#define PARTGUI_VIEWPROVIDER2DOBJECT_H
 
 #include "ViewProvider.h"
 #include <App/PropertyUnits.h>
@@ -103,5 +103,5 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObje
 } // namespace PartGui
 
 
-#endif // PARTGUI_IEWPROVIDER2DOBJECT_H
+#endif // PARTGUI_VIEWPROVIDER2DOBJECT_H
 
