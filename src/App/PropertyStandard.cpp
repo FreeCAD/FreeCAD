@@ -375,7 +375,7 @@ const char * PropertyEnumeration::getValueAsString() const
     return _enum.getCStr();
 }
 
-Enumeration PropertyEnumeration::getEnum() const
+const Enumeration & PropertyEnumeration::getEnum() const
 {
     return _enum;
 }
