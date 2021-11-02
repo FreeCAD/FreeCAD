@@ -1372,16 +1372,6 @@ void NavigationStyle::clearLog(void)
     this->log.historysize = 0;
 }
 
-SbVec2f NavigationStyle::getNormalizedPosition(const SoEvent * const ev,
-                                               const SbViewportRegion & vpRgn) const
-{
-    const SbVec2s size(vpRgn.getViewportSizePixels());
-    const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
-    return posn;
-}
-
 void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
 {
     // Mismatches in state of the modifier keys happens if the user

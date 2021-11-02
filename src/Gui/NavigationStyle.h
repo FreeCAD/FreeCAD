@@ -213,7 +213,6 @@ protected:
     void clearLog(void);
     void addToLog(const SbVec2s pos, const SbTime time);
 
-    SbVec2f getNormalizedPosition(const SoEvent * const ev, const SbViewportRegion & vpRgn) const;
     void syncModifierKeys(const SoEvent * const ev);
     SbBool handleKeyboardEvent(const SoKeyboardEvent * const event, const SbVec2f & posn);
 

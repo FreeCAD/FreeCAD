@@ -96,11 +96,11 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
     const SoType type(ev->getTypeId());
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2f posn = getNormalizedPosition(ev, vp);
+    const SbVec2s pos(ev->getPosition());
+    const SbVec2f posn = normalizePixelPos(pos);
 
     const SbVec2f prevnormalized = this->lastmouseposition;
     this->lastmouseposition = posn;
-    const SbVec2s pos(ev->getPosition());
 
     // Set to true if any event processing happened. Note that it is not
     // necessary to restrict ourselves to only do one "action" for an
