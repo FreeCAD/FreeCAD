@@ -274,7 +274,7 @@ void ViewProvider2DObjectGrid::onChanged(const App::Property* prop)
     ViewProviderPart::onChanged(prop);
 
     if (prop == &ShowGrid || prop == &ShowOnlyInEditMode || prop == &Visibility) {
-        if (ShowGrid.getValue() && Visibility.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
+        if (ShowGrid.getValue() && ((Visibility.getValue() && !ShowOnlyInEditMode.getValue()) || this->isEditing()))
             createGrid();
         else
             Gui::coinRemoveAllChildren(GridRoot);
