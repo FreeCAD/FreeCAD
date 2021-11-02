@@ -120,6 +120,12 @@ public:
     /** Current column */
     inline int column() const { return col_curr; }
 
+    /** Row count */
+    inline int rowCount() const { return row_end - row_begin + 1; }
+
+    /** Column count */
+    inline int colCount() const { return col_end - col_begin + 1; }
+
     /** Position of start of range */
     inline CellAddress from() const { return CellAddress(row_begin, col_begin); }
 
