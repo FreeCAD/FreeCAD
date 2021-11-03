@@ -43,6 +43,7 @@
 
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "DlgActiveBody.h"
 
 using namespace std;
 namespace bp = boost::placeholders;
@@ -111,12 +112,15 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
 
     auto shouldMakeBody( false );
-    if (pcActiveBody == nullptr) {
+    if (!pcActiveBody) {
         if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
             shouldMakeBody = true;
         } else {
-            PartDesignGui::needActiveBodyError();
-            return;
+            PartDesignGui::DlgActiveBody dia(Gui::getMainWindow(), doc);
+            if (dia.exec() == QDialog::DialogCode::Accepted)
+                pcActiveBody = dia.getActiveBody();
+            if (!pcActiveBody)
+                return;
         }
     }
 
@@ -130,7 +134,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
-    if (pcActiveBody == nullptr) {
+    if (!pcActiveBody) {
         return;
     }
 

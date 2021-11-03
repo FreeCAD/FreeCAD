@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="847"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="848"/>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1562"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1563"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="1074"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1463"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1464"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="133"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="134"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../Command.cpp" line="1197"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1198"/>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../../Command.cpp" line="1362"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../../Command.cpp" line="1154"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1156"/>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
@@ -242,18 +242,18 @@
     <message>
       <location filename="../../Command.cpp" line="1528"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Flip normals</source>
-      <translation>Normák tükrözés</translation>
+      <translation>Aktuálisok tükrözése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Flips the normals of the mesh</source>
-      <translation>A háló normák tükrözése</translation>
+      <translation>Az aktuális hálók tükrözése</translation>
     </message>
   </context>
   <context>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../Command.cpp" line="565"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
@@ -298,18 +298,18 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Harmonize normals</source>
-      <translation>Normák összehangolása</translation>
+      <translation>Aktuálisok összehangolása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1496"/>
       <location filename="../../Command.cpp" line="1498"/>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>A hálón lévő normák összehangolása</translation>
+      <translation>A hálón lévő aktuálisok összehangolása</translation>
     </message>
   </context>
   <context>
@@ -317,7 +317,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="369"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="370"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1788"/>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="895"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../Command.cpp" line="738"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="739"/>
@@ -405,7 +405,7 @@
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="795"/>
@@ -424,7 +424,7 @@
     <message>
       <location filename="../../Command.cpp" line="1100"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1286"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Command.cpp" line="1318"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
@@ -500,7 +500,7 @@
     <message>
       <location filename="../../Command.cpp" line="1240"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1241"/>
@@ -519,7 +519,7 @@
     <message>
       <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1877"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../Command.cpp" line="1045"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1716"/>
@@ -575,7 +575,7 @@
     <message>
       <location filename="../../Command.cpp" line="1751"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1752"/>
@@ -594,7 +594,7 @@
     <message>
       <location filename="../../Command.cpp" line="1400"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1401"/>
@@ -613,7 +613,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1831"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="173"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="94"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="95"/>
@@ -669,7 +669,7 @@
     <message>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
@@ -688,7 +688,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="228"/>
@@ -701,7 +701,7 @@
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
@@ -720,7 +720,7 @@
     <message>
       <location filename="../../Command.cpp" line="692"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
+      <source>Mesh Create</source>
       <translation>Háló létrehozás</translation>
     </message>
     <message>
@@ -816,7 +816,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
       <source>Harmonize normals</source>
-      <translation>Normák összehangolása</translation>
+      <translation>Aktuálisok összehangolása</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
@@ -1090,7 +1090,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
       <source>Flipped normals found</source>
-      <translation>Tükrözött normákat talált</translation>
+      <translation>Tükrözött aktuálisokat talált</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
@@ -1108,12 +1108,12 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <source>No flipped normals</source>
-      <translation>Nincsenek tükrözött normák</translation>
+      <translation>Nincsenek tükrözött aktuálisok</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="465"/>
       <source>%1 flipped normals</source>
-      <translation>%1 tükrözött normák</translation>
+      <translation>%1 tükrözött aktuálisok</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="545"/>
@@ -1550,7 +1550,7 @@ vagy fekete lesz.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="292"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ha a két felület között bezárt szög kisebb mint a gyűrődési szög, akkor a közös élen található felületek simák maradnak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ez a legkisebb szög két felület között, ahol az aktuálisokat lapos árnyékolásra számolják ki.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ha a két felület között bezárt szög kisebb mint a gyűrődési szög, akkor a közös élen található felületek simák maradnak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="295"/>
@@ -1566,7 +1566,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation>Ha ez a beállítás be van állítva Phong árnyékolás van használva, egyébként lapos árnyékolás.
+      <translation>Ha ez a beállítás be van állítva Phong árnyékolást használ, egyébként lapos árnyékolás.
 Az árnyékolás határozza meg a felületek megjelenését.
 
 Lapos árnyékolással az aktuális felületek nem csúcspontokkal határozottak meg, amely
@@ -1597,7 +1597,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="362"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A végpontonkénti normál meghatározás más néven&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;amíg a felülenténki normák más néven &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A végpontonkénti aktuális meghatározás más néven&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;amíg a felületenkénti aktuálisok meghatározása más néven &lt;/span&gt;lapos árnyékolás&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1651,48 +1651,48 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automatikus</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>Adaptív</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Elülső</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Elülső négyoldalú</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Parallelogramma</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Idő:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Futó gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Nem sikerült elindítani</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -1908,7 +1908,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normák felülettel kijelzett háromszögeket részesíti előnyben</translation>
+      <translation>Csak az aktuális felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
   </context>
   <context>
@@ -2038,7 +2038,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
-      <translation>Normál</translation>
+      <translation>Alapértelmezett</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="364"/>
@@ -2083,7 +2083,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normák felülettel kijelzett háromszögeket részesíti előnyben</translation>
+      <translation>Csak az aktuális felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="72"/>

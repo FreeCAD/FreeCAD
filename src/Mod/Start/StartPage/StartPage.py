@@ -26,6 +26,7 @@
 
 import six
 import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re,hashlib
+import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore,QtGui
 
@@ -173,13 +174,7 @@ def getInfo(filename):
             import gnomevfs
         except Exception:
             # alternative method
-            key = "file://"+path
-            try:
-                # will raise exception in python2
-                key = key.encode('utf8')
-            except Exception:
-                pass
-            fhash = hashlib.md5(key).hexdigest()
+            fhash = hashlib.md5(bytes(urllib.parse.quote("file://"+path,safe=":/"),"ascii")).hexdigest()
             thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
         else:
             uri = gnomevfs.get_uri_from_local_path(path)
@@ -228,7 +223,11 @@ def getInfo(filename):
         if zfile:
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                doc = str(zfile.read(files[0]))
+                try:
+                    doc = str(zfile.read(files[0]))
+                except OSError as e:
+                    print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
+                    return None
                 doc = doc.replace("\n"," ")
             if  imagePath in files:
                 image = saveIcon(filename,zfile.read(imagePath),'png')
@@ -384,7 +383,7 @@ def buildCard(filename,method,arg=None):
                             f.write(cacheheader)
                             f.write(result)
 
-                return result.replace('$METHOD$', method).replace('$ARG$', arg)
+                return result.replace('$METHOD$', method).replace('$ARG$', urllib.parse.quote(arg))
 
     return result
 
@@ -545,15 +544,18 @@ def handle():
         for cfolder in cfolders.split(";;"): # allow several paths separated by ;;
             if not os.path.isdir(cfolder):
                 cfolder = os.path.dirname(cfolder)
-            SECTION_CUSTOM += encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
-            SECTION_CUSTOM += "<ul>"
-            for basename in os.listdir(cfolder):
-                filename = os.path.join(cfolder,basename)
-                SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
-            SECTION_CUSTOM += "</ul>"
-            # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
-            HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
-            dn += 1
+            if not os.path.exists(cfolder):
+                FreeCAD.Console.PrintWarning("Custom folder not found: %s" % cfolder)
+            else:
+                SECTION_CUSTOM += encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
+                SECTION_CUSTOM += "<ul>"
+                for basename in os.listdir(cfolder):
+                    filename = os.path.join(cfolder,basename)
+                    SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
+                SECTION_CUSTOM += "</ul>"
+                # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
+                HTML = HTML.replace("id=\"customtip\" class","id=\"customtip\" style=\"display:none;\" class")
+                dn += 1
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
     # build IMAGE_SRC paths

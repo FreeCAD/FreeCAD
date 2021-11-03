@@ -104,7 +104,9 @@ class ViewProviderDraft(object):
                              "Pattern",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+            patterns = list(utils.svg_patterns().keys())
+            patterns.sort()
+            vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
             _tip = "Defines the size of the hatch pattern."
@@ -383,14 +385,22 @@ class ViewProviderDraft(object):
 
         Returns
         -------
-        bool
+        bool or None
             It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
+            None if mode is not zero.
             It is `False` otherwise.
         """
-        if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
+        if mode != 0:
+            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
+            # case of an unrecognized context menu action)
+            return None
+        elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
             return True
-        return False
+        else:
+            _wrn = "Please load the Draft Workbench to enable editing this object"
+            App.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft", _wrn))
+            return False
 
     def unsetEdit(self, vobj, mode=0):
         """Terminate the edit mode of the object.
@@ -417,7 +427,7 @@ class ViewProviderDraft(object):
             This is `obj.ViewObject`.
 
         mode : int, optional
-            It defaults to 0. It is not used.
+            It defaults to 0.
             It indicates the type of edit in the underlying C++ code.
 
         Returns
@@ -426,6 +436,8 @@ class ViewProviderDraft(object):
             This method always returns `False` so it passes
             control to the base class to finish the edit mode.
         """
+        if mode != 0:
+            return False
         if App.activeDraftCommand:
             App.activeDraftCommand.finish()
         if App.GuiUp: # remove guard after splitting every viewprovider
@@ -459,6 +471,9 @@ class ViewProviderDraft(object):
                 return ":/icons/Draft_N-Curve.svg"
             elif tp in ("ShapeString"):
                 return ":/icons/Draft_ShapeString_tree.svg"
+        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):

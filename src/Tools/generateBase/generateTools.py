@@ -63,7 +63,7 @@ class copier:
             # uncomment for debug: print ('!!! replacing',match.group(1))
             expr = self.preproc(match.group(1), 'eval')
             try: return str(eval(expr, self.globals, self.locals))
-            except: return str(self.handle(expr))
+            except Exception: return str(self.handle(expr))
         block = self.locals['_bl']
         if last is None: last = len(block)
         while i<last:
@@ -100,12 +100,15 @@ class copier:
                 except TypeError:
                     self.ouf.write(self.regex.sub(repl, line))
                 i=i+1
-    def __init__(self, regex=_never, dict={},
+    def __init__(self, regex=_never, dict=None,
             restat=_never, restend=_never, recont=_never, 
             preproc=identity, handle=nohandle, ouf=sys.stdout):
         "Initialize self's attributes"
         self.regex   = regex
-        self.globals = dict
+        if dict is not None:
+            self.globals = dict
+        else:
+            self.globals = {}
         self.globals['sys'] = sys
         self.locals  = { '_cb':self.copyblock }
         self.restat  = restat

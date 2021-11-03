@@ -25,7 +25,7 @@ To build the installer you can do the following:
 9. Right-click on the file FreeCAD-installer.nsi and choose "Compile NSIS script"
    to compile the installer.
 10. The folder ~\MSVCRedist contains already all MSVC 2019 x64 redistributable DLLs necessary
-   for FreeCAD 0.19. If another MSVC version was used to compile FreeCAD, replace the DLLs by
+   for FreeCAD 0.20dev. If another MSVC version was used to compile FreeCAD, replace the DLLs by
    the ones of the used MSVC. (They are usually available in the folder
    C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC)
 

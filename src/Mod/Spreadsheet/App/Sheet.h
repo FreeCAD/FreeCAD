@@ -94,6 +94,8 @@ public:
 
     bool importFromFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\');
 
+    bool getCharsFromPrefs(char &delimiter, char &quote, char &escape, std::string &errMsg);
+
     bool exportToFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\') const;
 
     bool mergeCells(const App::Range &range);
@@ -127,6 +129,8 @@ public:
     void getSpans(App::CellAddress address, int & rows, int & cols) const;
 
     bool isMergedCell(App::CellAddress address) const;
+
+    App::CellAddress getAnchor(App::CellAddress address) const;
 
     void setColumnWidth(int col, int width);
 

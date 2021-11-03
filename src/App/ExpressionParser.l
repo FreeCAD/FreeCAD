@@ -381,4 +381,3 @@ not[ \t]+in                  COUNTCHARS; RET_TOKEN(TOK_NOT_IN);
 <INITIAL>{DIGIT}*","{DIGIT}+{EXPO}?     COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
 {DIGIT}+"."{DIGIT}*{EXPO}?              COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
 {DIGIT}+{EXPO}                          COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
-

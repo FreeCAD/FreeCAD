@@ -88,17 +88,7 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
             if (!ok) return -1;
         }
         else if (PyUnicode_Check(pcObj)) {
-#if PY_MAJOR_VERSION >= 3
             getMeshObjectPtr()->load(PyUnicode_AsUTF8(pcObj));
-#else
-            PyObject* unicode = PyUnicode_AsEncodedString(pcObj, "utf-8", 0);
-            char* pItem = PyString_AsString(unicode);
-            Py_DECREF(unicode);
-            getMeshObjectPtr()->load(pItem);
-        }
-        else if (PyString_Check(pcObj)) {
-            getMeshObjectPtr()->load(PyString_AsString(pcObj));
-#endif
         }
         else {
             PyErr_Format(PyExc_TypeError, "Cannot create a mesh out of a '%s'",
@@ -232,6 +222,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["APLY" ] = MeshCore::MeshIO::APLY;
     ext["PY"   ] = MeshCore::MeshIO::PY;
     ext["ASY"  ] = MeshCore::MeshIO::ASY;
+    ext["3MF"  ] = MeshCore::MeshIO::ThreeMF;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
@@ -524,6 +515,32 @@ PyObject*  MeshPy::outer(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::section(PyObject *args, PyObject *kwds)
+{
+    PyObject *pcObj;
+    PyObject *connectLines = Py_True;
+    float fMinDist = 0.0001f;
+
+    static char* keywords_section[] = {"Mesh", "ConnectLines", "MinDist", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!f",keywords_section,
+                                     &(MeshPy::Type), &pcObj, &PyBool_Type, &connectLines, &fMinDist))
+        return nullptr;
+
+    MeshPy* pcObject = static_cast<MeshPy*>(pcObj);
+
+    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines), fMinDist);
+    Py::List outer;
+    for (const auto& it : curves) {
+        Py::List inner;
+        for (const auto& jt : it) {
+            inner.append(Py::Vector(jt));
+        }
+        outer.append(inner);
+    }
+
+    return Py::new_reference_to(outer);
+}
+
 PyObject*  MeshPy::coarsen(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -723,15 +740,9 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         for (Py::List::iterator it = list_f.begin(); it != list_f.end(); ++it) {
             Py::Tuple f(*it);
             MeshCore::MeshFacet face;
-#if PY_MAJOR_VERSION >= 3
             face._aulPoints[0] = (long)Py::Long(f.getItem(0));
             face._aulPoints[1] = (long)Py::Long(f.getItem(1));
             face._aulPoints[2] = (long)Py::Long(f.getItem(2));
-#else
-            face._aulPoints[0] = (long)Py::Int(f.getItem(0));
-            face._aulPoints[1] = (long)Py::Int(f.getItem(1));
-            face._aulPoints[2] = (long)Py::Int(f.getItem(2));
-#endif
             faces.push_back(face);
         }
 
@@ -755,11 +766,7 @@ PyObject* MeshPy::removeFacets(PyObject *args)
     std::vector<unsigned long> indices;
     Py::Sequence ary(list);
     for (Py::Sequence::iterator it = ary.begin(); it != ary.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
         Py::Long f(*it);
-#else
-        Py::Int f(*it);
-#endif
         indices.push_back((long)f);
     }
 
@@ -776,10 +783,10 @@ PyObject* MeshPy::getInternalFacets(PyObject *args)
     MeshCore::MeshEvalInternalFacets eval(kernel);
     eval.Evaluate();
 
-    const std::vector<unsigned long>& indices = eval.GetIndices();
+    const std::vector<FacetIndex>& indices = eval.GetIndices();
     Py::List ary(indices.size());
     Py::List::size_type pos=0;
-    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
+    for (std::vector<FacetIndex>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
         ary[pos++] = Py::Long(*it);
     }
 
@@ -861,13 +868,9 @@ PyObject* MeshPy::getSegment(PyObject *args)
     }
 
     Py::List ary;
-    const std::vector<unsigned long>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
-    for (std::vector<unsigned long>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
+    const std::vector<FacetIndex>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
+    for (std::vector<FacetIndex>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
         ary.append(Py::Long((int)*it));
-#else
-        ary.append(Py::Int((int)*it));
-#endif
     }
 
     return Py::new_reference_to(ary);
@@ -1017,7 +1020,7 @@ PyObject* MeshPy::getSeparateComponents(PyObject *args)
         return NULL;
 
     Py::List meshesList;
-    std::vector<std::vector<unsigned long> > segs;
+    std::vector<std::vector<FacetIndex> > segs;
     segs = getMeshObjectPtr()->getComponents();
     for (unsigned int i=0; i<segs.size(); i++) {
         MeshObject* mesh = getMeshObjectPtr()->meshFromSegment(segs[i]);
@@ -1032,14 +1035,10 @@ PyObject* MeshPy::getFacetSelection(PyObject *args)
         return 0;
 
     Py::List ary;
-    std::vector<unsigned long> facets;
+    std::vector<FacetIndex> facets;
     getMeshObjectPtr()->getFacetsFromSelection(facets);
-    for (std::vector<unsigned long>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
+    for (std::vector<FacetIndex>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
         ary.append(Py::Long((int)*it));
-#else
-        ary.append(Py::Int((int)*it));
-#endif
     }
 
     return Py::new_reference_to(ary);
@@ -1051,14 +1050,10 @@ PyObject* MeshPy::getPointSelection(PyObject *args)
         return 0;
 
     Py::List ary;
-    std::vector<unsigned long> points;
+    std::vector<PointIndex> points;
     getMeshObjectPtr()->getPointsFromSelection(points);
-    for (std::vector<unsigned long>::const_iterator it = points.begin(); it != points.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
+    for (std::vector<PointIndex>::const_iterator it = points.begin(); it != points.end(); ++it) {
         ary.append(Py::Long((int)*it));
-#else
-        ary.append(Py::Int((int)*it));
-#endif
     }
 
     return Py::new_reference_to(ary);
@@ -1070,14 +1065,10 @@ PyObject* MeshPy::meshFromSegment(PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &list))
         return 0;
 
-    std::vector<unsigned long> segment;
+    std::vector<FacetIndex> segment;
     Py::Sequence ary(list);
     for (Py::Sequence::iterator it = ary.begin(); it != ary.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
         Py::Long f(*it);
-#else
-        Py::Int f(*it);
-#endif
         segment.push_back((long)f);
     }
 
@@ -1171,7 +1162,7 @@ PyObject*  MeshPy::getSelfIntersections(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    std::vector<std::pair<unsigned long, unsigned long> > selfIndices;
+    std::vector<std::pair<FacetIndex, FacetIndex> > selfIndices;
     std::vector<std::pair<Base::Vector3f, Base::Vector3f> > selfPoints;
     MeshCore::MeshEvalSelfIntersection eval(getMeshObjectPtr()->getKernel());
     eval.GetIntersections(selfIndices);
@@ -1242,6 +1233,30 @@ PyObject*  MeshPy::removeInvalidPoints(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::hasPointsOnEdge(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getMeshObjectPtr()->hasPointsOnEdge();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::removePointsOnEdge(PyObject *args, PyObject *kwds)
+{
+    PyObject *fillBoundary = Py_False;
+    static char* keywords[] = {"FillBoundary", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!", keywords, &PyBool_Type, &fillBoundary))
+        return nullptr;
+    try {
+        getMeshObjectPtr()->removePointsOnEdge(PyObject_IsTrue(fillBoundary) ? true : false);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return nullptr;
+    }
+    Py_Return;
+}
+
 PyObject*  MeshPy::flipNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -1278,7 +1293,7 @@ PyObject*  MeshPy::getNonUniformOrientedFacets(PyObject *args)
 
     const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
     MeshCore::MeshEvalOrientation cMeshEval(kernel);
-    std::vector<unsigned long> inds = cMeshEval.GetIndices();
+    std::vector<FacetIndex> inds = cMeshEval.GetIndices();
     Py::Tuple tuple(inds.size());
     for (std::size_t i=0; i<inds.size(); i++) {
         tuple.setItem(i, Py::Long(inds[i]));
@@ -1724,17 +1739,11 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
     // if no mesh is given
     try {
         Py::Sequence list(pcObj);
-        std::vector<unsigned long> facets;
+        std::vector<FacetIndex> facets;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long idx(*it);
             unsigned long iIdx = static_cast<unsigned long>(idx);
             facets.push_back(iIdx);
-#else
-            Py::Int idx(*it);
-            unsigned long iIdx = static_cast<unsigned long>(idx);
-            facets.push_back(iIdx);
-#endif
         }
 
         getMeshObjectPtr()->collapseFacets(facets);
@@ -1774,11 +1783,7 @@ PyObject*  MeshPy::foraminate(PyObject *args)
                 tuple.setItem(0, Py::Float(res.x));
                 tuple.setItem(1, Py::Float(res.y));
                 tuple.setItem(2, Py::Float(res.z));
-#if PY_MAJOR_VERSION >= 3
                 dict.setItem(Py::Long(index), tuple);
-#else
-                dict.setItem(Py::Int(index), tuple);
-#endif
             }
         }
 
@@ -1853,6 +1858,22 @@ PyObject*  MeshPy::trim(PyObject *args)
     for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
         polygon2d.Add(Base::Vector2d(it->x, it->y));
     getMeshObjectPtr()->trim(polygon2d, proj, MeshObject::CutType(mode));
+
+    Py_Return;
+}
+
+PyObject*  MeshPy::trimByPlane(PyObject *args)
+{
+    PyObject *base, *norm;
+    if (!PyArg_ParseTuple(args, "O!O!", &Base::VectorPy::Type, &base,
+                                        &Base::VectorPy::Type, &norm))
+        return nullptr;
+
+    Base::Vector3d pnt = Py::Vector(base, false).toVector();
+    Base::Vector3d dir = Py::Vector(norm, false).toVector();
+
+    getMeshObjectPtr()->trimByPlane(Base::convertTo<Base::Vector3f>(pnt),
+                                    Base::convertTo<Base::Vector3f>(dir));
 
     Py_Return;
 }
@@ -1940,7 +1961,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
                            (float)Py::Float(dir_t.getItem(1)),
                            (float)Py::Float(dir_t.getItem(2)));
 
-        unsigned long index = 0;
+        FacetIndex index = 0;
         Base::Vector3f res;
         MeshCore::MeshAlgorithm alg(getMeshObjectPtr()->getKernel());
 
@@ -1956,11 +1977,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
             tuple.setItem(0, Py::Float(res.x));
             tuple.setItem(1, Py::Float(res.y));
             tuple.setItem(2, Py::Float(res.z));
-#if PY_MAJOR_VERSION >= 3
             dict.setItem(Py::Long((int)index), tuple);
-#else
-            dict.setItem(Py::Int((int)index), tuple);
-#endif
         }
 
 #if 0 // for testing only
@@ -2002,14 +2019,10 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<unsigned long>& segm = it->getIndices();
+        const std::vector<FacetIndex>& segm = it->getIndices();
         Py::List ary;
-        for (std::vector<unsigned long>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-#if PY_MAJOR_VERSION >= 3
+        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
             ary.append(Py::Long((int)*jt));
-#else
-            ary.append(Py::Int((int)*jt));
-#endif
         }
         s.append(ary);
     }
@@ -2046,14 +2059,10 @@ PyObject*  MeshPy::getSegmentsOfType(PyObject *args)
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-        const std::vector<unsigned long>& segm = it->getIndices();
+        const std::vector<FacetIndex>& segm = it->getIndices();
         Py::List ary;
-        for (std::vector<unsigned long>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-#if PY_MAJOR_VERSION >= 3
+        for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
             ary.append(Py::Long((int)*jt));
-#else
-            ary.append(Py::Int((int)*jt));
-#endif
         }
         s.append(ary);
     }
@@ -2080,11 +2089,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
         float c2 = (float)Py::Float(t[1]);
         float tol1 = (float)Py::Float(t[2]);
         float tol2 = (float)Py::Float(t[3]);
-#if PY_MAJOR_VERSION >= 3
         int num = (int)Py::Long(t[4]);
-#else
-        int num = (int)Py::Int(t[4]);
-#endif
         segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
@@ -2096,11 +2101,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
             Py::List ary;
             for (MeshCore::MeshSegment::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
-#if PY_MAJOR_VERSION >= 3
                 ary.append(Py::Long((int)*jt));
-#else
-                ary.append(Py::Int((int)*jt));
-#endif
             }
             list.append(ary);
         }
@@ -2212,15 +2213,9 @@ Py::Tuple MeshPy::getTopology(void) const
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
         it = Facets.begin(); it != Facets.end(); ++it) {
         Py::Tuple f(3);
-#if PY_MAJOR_VERSION >= 3
         f.setItem(0,Py::Long((int)it->I1));
         f.setItem(1,Py::Long((int)it->I2));
         f.setItem(2,Py::Long((int)it->I3));
-#else
-        f.setItem(0,Py::Int((int)it->I1));
-        f.setItem(1,Py::Int((int)it->I2));
-        f.setItem(2,Py::Int((int)it->I3));
-#endif
         facet.append(f);
     }
     tuple.setItem(1, facet);

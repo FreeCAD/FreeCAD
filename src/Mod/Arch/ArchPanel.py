@@ -19,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part, ArchNesting
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math, Part
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui

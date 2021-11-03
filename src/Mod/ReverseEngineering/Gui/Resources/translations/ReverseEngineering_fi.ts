@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="213"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -243,7 +243,7 @@
       <translation>Poisson pinnan rekonstruointi</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
       <translation>Segmentaatio</translation>
     </message>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="208"/>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -526,12 +526,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="311"/>
       <source>Create</source>
       <translation>Luo</translation>
     </message>

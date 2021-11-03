@@ -111,11 +111,7 @@ PyObject * Exception::getPyObject(void)
     edict.setItem("sclassname", Py::String(typeid(*this).name()));
     edict.setItem("sErrMsg", Py::String(this->getMessage()));
     edict.setItem("sfile", Py::String(this->getFile()));
-#if PY_MAJOR_VERSION >= 3
     edict.setItem("iline", Py::Long(this->getLine()));
-#else
-    edict.setItem("iline", Py::Int(this->getLine()));
-#endif
     edict.setItem("sfunction", Py::String(this->getFunction()));
     edict.setItem("swhat", Py::String(this->what()));
     edict.setItem("btranslatable", Py::Boolean(this->getTranslatable()));
@@ -138,11 +134,7 @@ void Exception::setPyObject( PyObject * pydict)
                 _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
 
             if (edict.hasKey("iline"))
-#if PY_MAJOR_VERSION >= 3
                 _line = static_cast<long>(Py::Long(edict.getItem("iline")));
-#else
-                _line = static_cast<int>(Py::Int(edict.getItem("iline")));
-#endif
             if (edict.hasKey("btranslatable"))
                 _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
             if (edict.hasKey("breported"))
@@ -256,17 +248,13 @@ const char* XMLAttributeError::what() const throw()
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
-    if (sFileName) {
-        _sErrMsgAndFileName = _sErrMsg + ": ";
-        _sErrMsgAndFileName += sFileName;
-    }
+    setFileName(sFileName);
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
   : Exception( sMessage ),file(File)
 {
-    _sErrMsgAndFileName = _sErrMsg + ": ";
-    _sErrMsgAndFileName += File.fileName();
+    setFileName(File.filePath().c_str());
 }
 
 FileException::FileException()
@@ -280,6 +268,15 @@ FileException::FileException(const FileException &inst)
   , file(inst.file)
   , _sErrMsgAndFileName(inst._sErrMsgAndFileName.c_str())
 {
+}
+
+void FileException::setFileName(const char * sFileName) {
+    file.setFile(sFileName);
+    _sErrMsgAndFileName = _sErrMsg;
+    if (sFileName) {
+        _sErrMsgAndFileName += ": ";
+        _sErrMsgAndFileName += sFileName;
+    }
 }
 
 std::string FileException::getFileName() const
@@ -332,7 +329,7 @@ void FileException::setPyObject( PyObject * pydict)
 
         Py::Dict edict(pydict);
         if (edict.hasKey("filename"))
-            file.setFile(static_cast<std::string>(Py::String(edict.getItem("filename"))));
+            setFileName(Py::String(edict.getItem("filename")).as_std_string("utf-8").c_str());
     }
 }
 

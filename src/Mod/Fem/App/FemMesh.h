@@ -30,7 +30,7 @@
 
 #include <vector>
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <SMESH_Version.h>
 #include <SMDSAbs_ElementType.hxx>
 
@@ -46,7 +46,7 @@ class TopoDS_Solid;
 namespace Fem
 {
 
-typedef boost::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
+typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
 
 /** The representation of a FemMesh
  */

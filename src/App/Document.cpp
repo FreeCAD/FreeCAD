@@ -66,6 +66,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 # include <climits>
 # include <bitset>
 # include <random>
+# include <boost/filesystem.hpp>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -148,6 +149,8 @@ using namespace zipios;
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
 #endif
+
+namespace fs = boost::filesystem;
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
 typedef boost::adjacency_list <
@@ -2642,8 +2645,8 @@ private:
 
         Base::FileInfo tmp(sourcename);
         if (tmp.renameFile(targetname.c_str()) == false) {
-            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
-                                    sourcename.c_str(), targetname.c_str());
+            throw Base::FileException(
+                "Cannot rename tmp save file to project file", targetname);
         }
     }
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {
@@ -2775,9 +2778,8 @@ private:
 
         Base::FileInfo tmp(sourcename);
         if (tmp.renameFile(targetname.c_str()) == false) {
-            Base::Console().Error("Save interrupted: Cannot rename file from '%s' to '%s'\n",
-                                  sourcename.c_str(), targetname.c_str());
-            //throw Base::FileException("Save interrupted: Cannot rename temporary file to project file", tmp);
+            throw Base::FileException(
+                "Save interrupted: Cannot rename temporary file to project file", tmp);
         }
 
         if (numberOfFiles <= 0) {
@@ -2866,6 +2868,14 @@ bool Document::saveToFile(const char* filename) const
         fn += uuid;
     }
     Base::FileInfo tmp(fn);
+    // In case some folders in the path do not exist
+#ifdef FC_OS_WIN32
+    QString utf8Name = QString::fromUtf8(filename);
+    auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
+#else
+    auto parentPath = fs::absolute(fs::path(filename)).parent_path();
+#endif
+    fs::create_directories(parentPath);
 
     std::vector<std::string> fileNames;
 

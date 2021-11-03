@@ -43,18 +43,28 @@ def purge_results(analysis):
         analysis group as a container for all  objects needed for the analysis
     """
 
+    # if analysis typ check is used result mesh
+    # without result obj is created in the analysis
+    # we could run into trouble in one loop because
+    # we will delete objects and try to access them later
+
+    # result object
     for m in analysis.Group:
         if m.isDerivedFrom("Fem::FemResultObject"):
             if m.Mesh and is_of_type(m.Mesh, "Fem::MeshResult"):
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
-    # if analysis typ check is used result mesh
-    # without result obj is created in the analysis
-    # we could run into trouble in one loop because
-    # we will delete objects and try to access them later
+
+    # result mesh
     for m in analysis.Group:
         if is_of_type(m, "Fem::MeshResult"):
+            analysis.Document.removeObject(m.Name)
+    analysis.Document.recompute()
+
+    # dat text object
+    for m in analysis.Group:
+        if is_of_type(m, "App::TextDocument") and m.Name.startswith("ccx_dat_file"):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 

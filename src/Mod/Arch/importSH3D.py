@@ -24,7 +24,7 @@ __title__  = "FreeCAD SweetHome3D Importer"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math,Sketcher
+import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -105,7 +105,8 @@ def read(filename):
 class SH3DHandler(xml.sax.ContentHandler):
 
     def __init__(self,z):
-
+        
+        super().__init__()
         self.makeIndividualWalls = False
         self.z = z
         self.windows = []

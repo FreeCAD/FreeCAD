@@ -235,7 +235,6 @@ class MatrixTransform:
             setattr(fp, prop, value)
 
     def execute(self, fp):
-        pass
         if fp.Matrix and fp.Base:
             sh=fp.Base.Shape#.copy()
             m=sh.Placement.toMatrix().multiply(fp.Matrix)
@@ -388,68 +387,66 @@ class Frustum:
             fp.Placement = plm
 
 class Twist:
-    def __init__(self, obj,child=None,h=1.0,angle=0.0):
+    def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
+        import FreeCAD
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
-        obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
+                        "The base object that must be transformed")
+        obj.addProperty("App::PropertyQuantity","Angle","Base","Twist Angle")
+        obj.Angle = FreeCAD.Units.Angle # assign the Angle unit
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
+        obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
         obj.Base = child
-        obj.Angle =  angle
+        obj.Angle = angle
         obj.Height = h
+        obj.Scale = scale
         obj.Proxy = self
 
     def execute(self, fp):
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        pass
-        #if prop in ["Angle","Height"]:
-        #    self.createGeometry(fp)
+        if prop in ["Angle","Height"]:
+            self.createGeometry(fp)
 
     def createGeometry(self,fp):
         import FreeCAD,Part,math,sys
-        #tangle = -twist #openscad uses degrees clockwise
-        if fp.Base and fp.Angle and fp.Height and \
-            fp.Base.Shape.isValid():
-        #wire=fp.Base.Shape.Wires[0].transformGeometry(fp.Base.Placement.toMatrix()) 
-            solids=[]
-            for faceb in fp.Base.Shape.Faces:
-            #fp.Base.Shape.Faces[0].check()
+        if fp.Base and fp.Height and fp.Base.Shape.isValid():
+            solids = []
+            for lower_face in fp.Base.Shape.Faces:
+                upper_face = lower_face.copy()
+                face_transform = FreeCAD.Matrix()
+                face_transform.rotateZ(math.radians(fp.Angle.Value))
+                face_transform.scale(fp.Scale[0], fp.Scale[1], 1.0)
+                face_transform.move(FreeCAD.Vector(0,0,fp.Height.Value))
+                upper_face.transformShape(face_transform, False, True) # True to check for non-uniform scaling
 
-            #faceb=fp.Base.Shape.Faces[0]
-            #faceb=fp.Base.Shape.removeSplitter().Faces[0]
-                faceu=faceb.copy()
-                facetransform=FreeCAD.Matrix()
-                facetransform.rotateZ(math.radians(fp.Angle.Value))
-                facetransform.move(FreeCAD.Vector(0,0,fp.Height.Value))
-                faceu.transformShape(facetransform)
-                step = 2 + abs(int(fp.Angle.Value // 90)) #resolution in z direction
-                # print abs(int(fp.Angle.Value // 90)) #resolution in z direction
-                # print step
-                zinc = fp.Height.Value/(step-1.0)
-                angleinc = math.radians(fp.Angle.Value)/(step-1.0)
-                spine = Part.makePolygon([(0,0,i*zinc) \
-                        for i in range(step)])
-                auxspine = Part.makePolygon([(math.cos(i*angleinc),\
-                        math.sin(i*angleinc),i*fp.Height.Value/(step-1)) \
-                        for i in range(step)])
-                faces=[faceb,faceu]
-                for wire in faceb.Wires:
-                    pipeshell=Part.BRepOffsetAPI.MakePipeShell(spine)
-                    pipeshell.setSpineSupport(spine)
-                    pipeshell.add(wire)
-                    # Was before function change
-                    # pipeshell.setAuxiliarySpine(auxspine,True,False)
-                    if sys.version_info.major < 3:
-                        pipeshell.setAuxiliarySpine(auxspine,True,long(0))
+                spine = Part.makePolygon([(0,0,0),(0,0,fp.Height.Value)])
+                if fp.Angle.Value == 0.0:
+                    auxiliary_spine = Part.makePolygon([(1,1,0),(fp.Scale[0],fp.Scale[1],fp.Height.Value)])
+                else:
+                    num_revolutions = abs(fp.Angle.Value)/360.0
+                    pitch = fp.Height.Value / num_revolutions
+                    height = fp.Height.Value
+                    radius = 1.0
+                    if fp.Angle.Value < 0.0:
+                        left_handed = True
                     else:
-                        pipeshell.setAuxiliarySpine(auxspine,True,0)
-                    print(pipeshell.getStatus())
-                    assert(pipeshell.isReady())
-                    #fp.Shape=pipeshell.makeSolid()
-                    pipeshell.build()
-                    faces.extend(pipeshell.shape().Faces)
+                        left_handed = False
+
+                    auxiliary_spine = Part.makeHelix(pitch, height, radius, 0.0, left_handed)
+
+                faces = [lower_face,upper_face]
+                for wire1,wire2 in zip(lower_face.Wires,upper_face.Wires):
+                    pipe_shell = Part.BRepOffsetAPI.MakePipeShell(spine)
+                    pipe_shell.setSpineSupport(spine)
+                    pipe_shell.add(wire1)
+                    pipe_shell.add(wire2)
+                    pipe_shell.setAuxiliarySpine(auxiliary_spine,True,0)
+                    print(pipe_shell.getStatus())
+                    assert(pipe_shell.isReady())
+                    pipe_shell.build()
+                    faces.extend(pipe_shell.shape().Faces)
                 try:
                     fullshell=Part.Shell(faces)
                     solid=Part.Solid(fullshell)
@@ -461,10 +458,93 @@ class Twist:
                     solids.append(Part.Compound(faces))
                 fp.Shape=Part.Compound(solids)
 
+
+
+class PrismaticToroid:
+    def __init__(self, obj,child=None,angle=360.0,n=3):
+        obj.addProperty("App::PropertyLink","Base","Base",
+                        "The 2D face that will be swept")
+        obj.addProperty("App::PropertyAngle","Angle","Base","Angle to sweep through")
+        obj.addProperty("App::PropertyInteger","Segments","Base","Number of segments per 360° (OpenSCAD's \"$fn\")")
+
+        obj.Base = child
+        obj.Angle =  angle
+        obj.Segments = n
+        obj.Proxy = self
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def onChanged(self, fp, prop):
+        if prop in ["Angle","Segments"]:
+            self.createGeometry(fp)
+
+    def createGeometry(self,fp):
+        import FreeCAD,Part,math,sys
+        if fp.Base and fp.Angle and fp.Segments and fp.Base.Shape.isValid():
+            solids = []
+            min_sweep_angle_per_segment = 360.0 / fp.Segments # This is how OpenSCAD defines $fn
+            num_segments = math.floor(abs(fp.Angle) / min_sweep_angle_per_segment)
+            num_ribs = num_segments + 1
+            sweep_angle_per_segment = fp.Angle / num_segments # Always >= min_sweep_angle_per_segment
+
+            # From the OpenSCAD documentation:
+            # The 2D shape must lie completely on either the right (recommended) or the left side of the Y-axis. 
+            # More precisely speaking, every vertex of the shape must have either x >= 0 or x <= 0. If the shape 
+            # spans the X axis a warning appears in the console windows and the rotate_extrude() is ignored. If 
+            # the 2D shape touches the Y axis, i.e. at x=0, it must be a line that touches, not a point.
+
+            for start_face in fp.Base.Shape.Faces:
+                ribs = []
+                end_face = start_face
+                for rib in range(num_ribs):
+                    angle = rib * sweep_angle_per_segment
+                    intermediate_face = start_face.copy()
+                    face_transform = FreeCAD.Matrix()
+                    face_transform.rotateY (math.radians (angle))
+                    intermediate_face.transformShape (face_transform)
+                    if rib == num_ribs-1:
+                        end_face = intermediate_face
+
+                    edges = []
+                    for edge in intermediate_face.OuterWire.Edges:
+                        if edge.BoundBox.XMin != 0.0 or edge.BoundBox.XMax != 0.0:
+                            edges.append(edge)
+
+                    ribs.append(Part.Wire(edges))
+                    
+                faces = []
+                shell = Part.makeShellFromWires (ribs)
+                for face in shell.Faces:
+                    faces.append(face)
+
+                if abs(fp.Angle) < 360.0 and faces:
+                    if fp.Angle > 0:
+                        faces.append(start_face.reversed()) # Reversed so the normal faces out of the shell
+                        faces.append(end_face)
+                    else:
+                        faces.append(start_face) 
+                        faces.append(end_face.reversed()) # Reversed so the normal faces out of the shell
+
+                try:
+                    shell = Part.makeShell(faces)
+                    shell.sewShape()
+                    shell.fix(1e-7,1e-7,1e-7)
+                    clean_shell = shell.removeSplitter()
+                    solid = Part.makeSolid (clean_shell)
+                    if solid.Volume < 0:
+                        solid.reverse()
+                    print (f"Solid volume is {solid.Volume}")
+                    solids.append(solid)
+                except Part.OCCError:
+                    print ("Could not create solid: creating compound instead")
+                    solids.append(Part.Compound(faces))
+            fp.Shape = Part.Compound(solids)
+
 class OffsetShape:
     def __init__(self, obj,child=None,offset=1.0):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.addProperty("App::PropertyDistance","Offset","Base","Offset outwards")
 
         obj.Base = child
@@ -475,7 +555,6 @@ class OffsetShape:
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        pass
         if prop in ["Offset"]:
             self.createGeometry(fp)
 
@@ -508,33 +587,139 @@ class CGALFeature:
             raise ValueError
 
 def makeSurfaceVolume(filename):
-    import FreeCAD,Part
-    f1=open(filename)
-    coords=[]
-    miny=1
-    for line in f1.readlines():
-        sline=line.strip()
-        if sline and not sline.startswith('#'):
-            ycoord=len(coords)
-            lcoords=[]
-            for xcoord, num in enumerate(sline.split()):
-                fnum=float(num)
-                lcoords.append(FreeCAD.Vector(float(xcoord),float(ycoord),fnum))
-                miny=min(fnum,miny)
-            coords.append(lcoords)
-    s=Part.BSplineSurface()
-    s.interpolate(coords)
-    plane=Part.makePlane(len(coords[0])-1,len(coords)-1,FreeCAD.Vector(0,0,miny-1))
-    l1=Part.makeLine(plane.Vertexes[0].Point,s.value(0,0))
-    l2=Part.makeLine(plane.Vertexes[1].Point,s.value(1,0))
-    l3=Part.makeLine(plane.Vertexes[2].Point,s.value(0,1))
-    l4=Part.makeLine(plane.Vertexes[3].Point,s.value(1,1))
-    f0=plane.Faces[0]
-    f0.reverse()
-    f1=Part.Face(Part.Wire([plane.Edges[0],l1.Edges[0],s.vIso(0).toShape(),l2.Edges[0]]))
-    f2=Part.Face(Part.Wire([plane.Edges[1],l3.Edges[0],s.uIso(0).toShape(),l1.Edges[0]]))
-    f3=Part.Face(Part.Wire([plane.Edges[2],l4.Edges[0],s.vIso(1).toShape(),l3.Edges[0]]))
-    f4=Part.Face(Part.Wire([plane.Edges[3],l2.Edges[0],s.uIso(1).toShape(),l4.Edges[0]]))
-    f5=s.toShape().Faces[0]
-    solid=Part.Solid(Part.Shell([f0,f1,f2,f3,f4,f5]))
-    return solid,(len(coords[0])-1)/2.0,(len(coords)-1)/2.0
+    import FreeCAD,Part,sys
+    with open(filename) as f1:
+        coords = []
+        min_z = sys.float_info.max
+        for line in f1.readlines():
+            sline=line.strip()
+            if sline and not sline.startswith('#'):
+                ycoord=len(coords)
+                lcoords=[]
+                for xcoord, num in enumerate(sline.split()):
+                    fnum=float(num)
+                    lcoords.append(FreeCAD.Vector(float(xcoord),float(ycoord),fnum))
+                    min_z = min(fnum,min_z)
+                coords.append(lcoords)
+                
+        num_rows = len(coords)
+        num_cols = len(coords[0])
+
+        # OpenSCAD does not spline this surface, so neither do we: just create a bunch of faces, 
+        # using four triangles per quadrilateral
+        faces = []
+        for row in range(num_rows-1):
+            for col in range(num_cols-1):
+                a = coords[row+0][col+0]
+                b = coords[row+0][col+1]
+                c = coords[row+1][col+1]
+                d = coords[row+1][col+0]
+                centroid = 0.25 * (a + b + c + d)
+                ab = Part.makeLine(a,b)
+                bc = Part.makeLine(b,c)
+                cd = Part.makeLine(c,d)
+                da = Part.makeLine(d,a)
+
+                diag_a = Part.makeLine(a, centroid)
+                diag_b = Part.makeLine(b, centroid)
+                diag_c = Part.makeLine(c, centroid)
+                diag_d = Part.makeLine(d, centroid)
+
+                wire1 = Part.Wire([ab,diag_a,diag_b])
+                wire2 = Part.Wire([bc,diag_b,diag_c])
+                wire3 = Part.Wire([cd,diag_c,diag_d])
+                wire4 = Part.Wire([da,diag_d,diag_a])
+
+                try:
+                    face = Part.Face(wire1)
+                    faces.append(face)
+                    face = Part.Face(wire2)
+                    faces.append(face)
+                    face = Part.Face(wire3)
+                    faces.append(face)
+                    face = Part.Face(wire4)
+                    faces.append(face)
+                except Exception:
+                    print ("Failed to create the face from {},{},{},{}".format(coords[row+0][col+0],\
+                        coords[row+0][col+1],coords[row+1][col+1],coords[row+1][col+0]))
+        
+        last_row = num_rows-1
+        last_col = num_cols-1
+
+        # Create the face to close off the y-min border: OpenSCAD places the lower surface of the shell
+        # at 1 unit below the lowest coordinate in the surface
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][0]))
+        for col in range(num_cols-1):
+            a = coords[0][col]
+            b = coords[0][col+1]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[0][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+        
+        # Create the face to close off the y-max border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[last_row][0]))
+        for col in range(num_cols-1):
+            a = coords[last_row][col]
+            b = coords[last_row][col+1]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+         # Create the face to close off the x-min border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][0]))
+        for row in range(num_rows-1):
+            a = coords[row][0]
+            b = coords[row+1][0]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][0]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+         # Create the face to close off the x-max border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][last_col]))
+        for row in range(num_rows-1):
+            a = coords[row][last_col]
+            b = coords[row+1][last_col]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+        # Create a bottom surface to close off the shell
+        a = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        b = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        c = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        d = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        ab = Part.makeLine(a,b)
+        bc = Part.makeLine(b,c)
+        cd = Part.makeLine(c,d)
+        da = Part.makeLine(d,a)
+        wire = Part.Wire([ab,bc,cd,da])
+        face = Part.Face(wire)
+        faces.append(face)
+
+        s = Part.Shell(faces)
+        solid = Part.Solid(s)
+        return solid,last_col,last_row

@@ -26,12 +26,14 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <stdexcept>
+# include <QAbstractSpinBox>
 # include <QByteArray>
 # include <QComboBox>
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
 # include <QFileOpenEvent>
+# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 # include <QMessageBox>
@@ -64,14 +66,9 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-#if QT_VERSION > 0x050000
-    // In Qt 4.x 'commitData' is a virtual method
     connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
             SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
-#endif
-#if QT_VERSION >= 0x050600
     setFallbackSessionManagementEnabled(false);
-#endif
 }
 
 GUIApplication::~GUIApplication()
@@ -332,6 +329,30 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
         }
         else if (ev->type() == QEvent::Wheel) {
             return !sb->hasFocus();
+        }
+    }
+    return false;
+}
+
+KeyboardFilter::KeyboardFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
+        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        QAbstractSpinBox *target = dynamic_cast<QAbstractSpinBox *>(obj);
+        if (kev->key() == Qt::Key_Period && target)
+        {
+            QChar decimalPoint = QLocale().decimalPoint();
+            QChar groupSeparator = QLocale().groupSeparator();
+            if (decimalPoint != Qt::Key_Period && (groupSeparator != Qt::Key_Period || (kev->modifiers() & Qt::KeypadModifier))) {
+                QKeyEvent modifiedKeyEvent(kev->type(), decimalPoint.digitValue(), kev->modifiers(), QString(decimalPoint), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
+            }
         }
     }
     return false;

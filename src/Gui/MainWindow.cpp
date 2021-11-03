@@ -47,16 +47,12 @@
 # include <QStatusBar>
 # include <QTimer>
 # include <QToolBar>
-#if QT_VERSION >= 0x050000
 # include <QUrlQuery>
-#endif
 # include <QWhatsThis>
 # include <QHBoxLayout>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 #include <QWidgetAction>
 
@@ -216,11 +212,8 @@ public:
     MDITabbar( QWidget * parent = 0 ) : QTabBar(parent)
     {
         menu = new QMenu(this);
-        // For Qt 4.2.x the tabs might be very wide
-#if QT_VERSION >= 0x040200
         setDrawBase(false);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-#endif
     }
 
     ~MDITabbar()
@@ -339,31 +332,20 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // support for grouped dragging of dockwidgets
     // https://woboq.com/blog/qdockwidget-changes-in-56.html
-#if QT_VERSION >= 0x050600
     setDockOptions(dockOptions() | QMainWindow::GroupedDragging);
-#endif
 
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
     // Movable tabs
-#if QT_VERSION >= 0x040800
     d->mdiArea->setTabsMovable(true);
-#endif
-#if QT_VERSION >= 0x040500
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
     if (tab) {
-        // 0000636: Two documents close
-#if QT_VERSION < 0x040800
-        connect(tab, SIGNAL(tabCloseRequested(int)),
-                this, SLOT(tabCloseRequested(int)));
-#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
     }
-#endif
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
@@ -412,12 +394,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     QClipboard *clipbd = QApplication::clipboard();
     connect(clipbd, SIGNAL(dataChanged()), this, SLOT(updateEditorActions()));
 
-    // show main window timer
-    d->visibleTimer = new QTimer(this);
-    d->visibleTimer->setObjectName(QString::fromLatin1("visibleTimer"));
-    connect(d->visibleTimer, SIGNAL(timeout()),this, SLOT(showMainWindow()));
-    d->visibleTimer->setSingleShot(true);
-
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
@@ -453,15 +429,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pDockMgr->registerDockWindow("Std_SelectionView", pcSelectionView);
     }
 
-#if QT_VERSION < 0x040500
-    // Report view
-    if (d->hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
-        Gui::DockWnd::ReportView* pcReport = new Gui::DockWnd::ReportView(this);
-        pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
-    }
-#else
     // Report view (must be created before PythonConsole!)
     if (d->hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
         ReportOutput* pcReport = new ReportOutput(this);
@@ -509,7 +476,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
         l->unusedTabBars << result;
     }
-#endif
 #endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
@@ -895,15 +861,15 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
         discardBtn->setShortcut(QKeySequence::mnemonic(text));
     }
 
-    int res = 0;
+    int res = ConfirmSaveResult::Cancel;
     box.adjustSize(); // Silence warnings from Qt on Windows
     switch (box.exec())
     {
     case QMessageBox::Save:
-        res = checkBox.isChecked()?2:1;
+        res = checkBox.isChecked()?ConfirmSaveResult::SaveAll:ConfirmSaveResult::Save;
         break;
     case QMessageBox::Discard:
-        res = checkBox.isChecked()?-2:-1;
+        res = checkBox.isChecked()?ConfirmSaveResult::DiscardAll:ConfirmSaveResult::Discard;
         break;
     }
     if(addCheckbox && res)
@@ -921,40 +887,62 @@ bool MainWindow::closeAllDocuments (bool close)
     Base::StateLocker guard(d->_closingAll);
     auto docs = App::GetApplication().getDocuments();
     try {
-        docs = App::Document::getDependentDocuments(docs,true);
-    }catch(Base::Exception &e) {
+        docs = App::Document::getDependentDocuments(docs, true);
+    }
+    catch(Base::Exception &e) {
         e.ReportException();
     }
+
     bool checkModify = true;
     bool saveAll = false;
-    for(auto doc : docs) {
+    int failedSaves = 0;
+
+    for (auto doc : docs) {
         auto gdoc = Application::Instance->getDocument(doc);
-        if(!gdoc)
+        if (!gdoc)
             continue;
-        if(!gdoc->canClose(false))
+        if (!gdoc->canClose(false))
             return false;
-        if(!gdoc->isModified()
+        if (!gdoc->isModified()
                 || doc->testStatus(App::Document::PartialDoc)
                 || doc->testStatus(App::Document::TempDoc))
             continue;
         bool save = saveAll;
-        if(!save && checkModify) {
-            int res = confirmSave(doc->Label.getStrValue().c_str(),this,docs.size()>1);
-            if(res==0)
+        if (!save && checkModify) {
+            int res = confirmSave(doc->Label.getStrValue().c_str(), this, docs.size()>1);
+            switch (res)
+            {
+            case ConfirmSaveResult::Cancel:
                 return false;
-            if(res>0) {
+            case ConfirmSaveResult::SaveAll:
+                saveAll = true;
+                /* FALLTHRU */
+            case ConfirmSaveResult::Save:
                 save = true;
-                if(res==2)
-                    saveAll = true;
-            } else if(res==-2)
+                break;
+            case ConfirmSaveResult::DiscardAll:
                 checkModify = false;
+            }
         }
-        if(save && !gdoc->save())
+
+        if (save && !gdoc->save())
+            failedSaves++;
+    }
+
+    if (failedSaves > 0) {
+        int ret = QMessageBox::question(
+            getMainWindow(),
+            QObject::tr("%1 Document(s) not saved").arg(QString::number(failedSaves)),
+            QObject::tr("Some documents could not be saved. Do you want to cancel closing?"),
+            QMessageBox::Discard | QMessageBox::Cancel,
+            QMessageBox::Discard);
+        if (ret == QMessageBox::Cancel)
             return false;
     }
-    if(close)
+
+    if (close)
         App::GetApplication().closeAllDocuments();
-    // d->mdiArea->closeAllSubWindows();
+
     return true;
 }
 
@@ -1449,6 +1437,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         if (Workbench* wb = WorkbenchManager::instance()->active())
             wb->removeTaskWatcher();
 
+        /*emit*/ mainWindowClosed();
         d->activityTimer->stop();
         saveWindowSettings();
         d->_restoring = true; // prevent futher triggering of saving window setting
@@ -1463,7 +1452,6 @@ void MainWindow::closeEvent (QCloseEvent * e)
                 fi.deleteFile();
         }
 
-        /*emit*/ mainWindowClosed();
         if (this->property("QuitOnClosed").isValid()) {
             QApplication::closeAllWindows();
             qApp->quit(); // stop the event loop
@@ -1471,32 +1459,16 @@ void MainWindow::closeEvent (QCloseEvent * e)
     }
 }
 
-void MainWindow::showEvent(QShowEvent  * /*e*/)
+void MainWindow::showEvent(QShowEvent* e)
 {
-    // needed for logging
     std::clog << "Show main window" << std::endl;
-    d->visibleTimer->start(15000);
+    QMainWindow::showEvent(e);
 }
 
-void MainWindow::hideEvent(QHideEvent  * /*e*/)
+void MainWindow::hideEvent(QHideEvent* e)
 {
-    // needed for logging
     std::clog << "Hide main window" << std::endl;
-    d->visibleTimer->stop();
-}
-
-void MainWindow::showMainWindow()
-{
-    // Under certain circumstances it can happen that at startup the main window
-    // appears for a short moment and disappears immediately. The workaround
-    // starts a timer to check for the visibility of the main window and call
-    // ShowWindow() if needed.
-    // So far, this phenomena only appeared with Qt4.1.4
-#if defined(Q_OS_WIN) && (QT_VERSION == 0x040104)
-    WId id = this->winId();
-    ShowWindow(id, SW_SHOW);
-    std::cout << "Force to show main window" << std::endl;
-#endif
+    QMainWindow::hideEvent(e);
 }
 
 void MainWindow::processMessages(const QList<QByteArray> & msg)
@@ -1831,6 +1803,32 @@ void MainWindow::stopSplasher(void)
         delete d->splashscreen;
         d->splashscreen = 0;
     }
+}
+
+QPixmap MainWindow::aboutImage() const
+{
+    // See if we have a custom About screen image set
+    QPixmap about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    if (fi.isFile() && fi.exists())
+        about_image.load(fi.filePath(), "PNG");
+
+    std::string about_path = App::Application::Config()["AboutImage"];
+    if (!about_path.empty() && about_image.isNull()) {
+        QString path = QString::fromUtf8(about_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        about_image.load(path);
+
+        // Now try the icon paths
+        if (about_image.isNull()) {
+            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        }
+    }
+
+    return about_image;
 }
 
 QPixmap MainWindow::splashImage() const
@@ -2185,15 +2183,10 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 //#ifndef QT_NO_OPENSSL
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
-#if QT_VERSION >= 0x050000
             QUrlQuery urlq(url);
             if (urlq.hasQueryItem(QLatin1String("sid"))) {
                 urlq.removeAllQueryItems(QLatin1String("sid"));
                 url.setQuery(urlq);
-#else
-            if (it->hasEncodedQueryItem(QByteArray("sid"))) {
-                url.removeEncodedQueryItem(QByteArray("sid"));
-#endif
                 url.setScheme(QLatin1String("http"));
             }
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();

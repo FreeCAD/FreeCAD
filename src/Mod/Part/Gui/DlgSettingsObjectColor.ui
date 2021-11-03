@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>475</width>
-    <height>572</height>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,26 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
+          <property name="toolTip">
+           <string>The default color for new shapes</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>204</green>
+            <blue>204</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_11">
           <property name="minimumSize">
@@ -48,7 +68,173 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="4" column="1">
+         <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexSize">
+          <property name="toolTip">
+           <string>The default size for new vertices</string>
+          </property>
+          <property name="suffix">
+           <string>px</string>
+          </property>
+          <property name="maximum">
+           <number>9</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapePointSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Line width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
+          <property name="toolTip">
+           <string>The default line thickness for new shapes</string>
+          </property>
+          <property name="suffix">
+           <string>px</string>
+          </property>
+          <property name="maximum">
+           <number>9</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeLineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Vertex color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeVertexColor">
+          <property name="toolTip">
+           <string>The default color for new vertices</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>25</red>
+            <green>25</green>
+            <blue>25</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeVertexColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
+          <property name="toolTip">
+           <string>The color of bounding boxes in the 3D view</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BoundingBoxColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="RespectSystemDPI">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Auto scale vertex size and line width according to system device pixel ratio.&lt;/p&gt;&lt;p&gt;This may not work well if you have multiple monitors with different pixel scaling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Respect system device pixel ratio</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
+          <property name="toolTip">
+           <string>The default line color for new shapes</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>25</red>
+            <green>25</green>
+            <blue>25</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeLineColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Shape color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Bounding box color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="twosideRendering">
           <property name="minimumSize">
            <size>
@@ -92,8 +278,8 @@ will be used or black.</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_fontsize">
           <property name="minimumSize">
            <size>
             <width>182</width>
@@ -101,180 +287,35 @@ will be used or black.</string>
            </size>
           </property>
           <property name="text">
-           <string>Shape color</string>
+           <string>Bounding box font size</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
+        <item row="7" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="BoundingBoxFontSize">
           <property name="toolTip">
-           <string>The color of bounding boxes in the 3D view</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BoundingBoxColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Vertex color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeVertexColor">
-          <property name="toolTip">
-           <string>The default color for new vertices</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>25</red>
-            <green>25</green>
-            <blue>25</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeVertexColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
-          <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
+           <string>The font size of bounding boxes in the 3D view</string>
           </property>
           <property name="suffix">
-           <string>px</string>
+           <string notr="true">pt</string>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <number>9</number>
+           <double>64.000000000000000</double>
           </property>
           <property name="value">
-           <number>2</number>
+           <double>10.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeLineWidth</cstring>
+           <cstring>BoundingBoxFontSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
-          <property name="toolTip">
-           <string>The default color for new shapes</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexSize">
-          <property name="toolTip">
-           <string>The default size for new vertices</string>
-          </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapePointSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Bounding box color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
-          <property name="toolTip">
-           <string>The default line color for new shapes</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>25</red>
-            <green>25</green>
-            <blue>25</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeLineColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Line width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="RespectSystemDPI">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Auto scale vertex size and line width according to system device pixel ratio.&lt;/p&gt;&lt;p&gt;This may not work well if you have multiple monitors with different pixel scaling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Respect system device pixel ratio</string>
           </property>
          </widget>
         </item>
@@ -491,9 +532,9 @@ will be used or black.</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
@@ -501,13 +542,18 @@ will be used or black.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

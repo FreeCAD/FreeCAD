@@ -487,9 +487,26 @@ std::list<std::string> Workbench::listCommandbars() const
 // --------------------------------------------------------------------
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "File");
+    qApp->translate("CommandGroup", "Edit");
+    qApp->translate("CommandGroup", "Help");
+    qApp->translate("CommandGroup", "Link");
+    qApp->translate("CommandGroup", "Tools");
+    qApp->translate("CommandGroup", "View");
+    qApp->translate("CommandGroup", "Window");
+    qApp->translate("CommandGroup", "Standard");
+    qApp->translate("CommandGroup", "Macros");
+    qApp->translate("CommandGroup", "Macro");
+    qApp->translate("CommandGroup", "Structure");
+    qApp->translate("CommandGroup", "Standard-Test");
+    qApp->translate("CommandGroup", "Standard-View");
+    qApp->translate("CommandGroup", "TreeView");
+    qApp->translate("CommandGroup", "Measure");
+
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
     qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
     qApp->translate("Workbench", "Visibility");
@@ -554,7 +571,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_ToggleShowOnTop"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete"
-                  << "Std_SendToPythonConsole";
+                  << "Std_SendToPythonConsole" << "Std_TransformManip";
         }
     }
     else if (strcmp(recipient,"Tree") == 0)
@@ -600,8 +617,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_LassoElementSelection"
           << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
-          << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
-          << "Std_Edit" << "Std_RenameActiveObject" << "Separator" << "Std_DlgPreferences";
+          << "Separator" << "Std_Placement" << "Std_TransformManip" << "Std_Alignment"
+          << "Std_Edit" << "Std_RenameActiveObject" << "Separator" << "Std_UserEditMode"
+          << "Separator" << "Std_DlgPreferences";
 
     MenuItem* axoviews = new MenuItem;
     axoviews->setCommand("Axonometric");
@@ -737,7 +755,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     file->setCommand("File");
     *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator" << "Std_Cut"
           << "Std_Copy" << "Std_Paste" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+          << "Std_UserEditMode" << "Separator" << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
     ToolBarItem* wb = new ToolBarItem( root );

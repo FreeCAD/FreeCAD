@@ -131,7 +131,8 @@ class _TaskPanel(object):
                     .format(self._paramWidget.potentialTxt.text())
                 )
             if quantity is not None:
-                self._obj.Potential = float(quantity.getValueAs(unit))
+                self._obj.Potential = quantity.getValueAs(unit).Value
+
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
         self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()

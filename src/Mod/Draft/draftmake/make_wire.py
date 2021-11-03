@@ -46,7 +46,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     Parameters
     ----------
-    pointlist : [Base.Vector]
+    pointslist : [Base.Vector]
         List of points to create the polyline
 
     closed : bool
@@ -68,24 +68,34 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
-        return
+        return None
 
     import Part
 
-    if not isinstance(pointslist, list):
-        e = pointslist.Wires[0].Edges
-        pointslist = Part.Wire(Part.__sortEdges__(e))
-        nlist = []
-        for v in pointslist.Vertexes:
-            nlist.append(v.Point)
-        if DraftGeomUtils.isReallyClosed(pointslist):
-            closed = True
-        pointslist = nlist
+    if isinstance(pointslist, (list,tuple)):
+        for pnt in pointslist:
+            if not isinstance(pnt, App.Vector):
+                App.Console.PrintError(
+                    "Items must be Base.Vector objects, not {}\n".format(
+                    type(pnt)))
+                return None
+
+    elif isinstance(pointslist, Part.Wire):
+        for edge in pointslist.Edges:
+            if not DraftGeomUtils.is_straight_line(edge):
+                App.Console.PrintError("All edges must be straight lines\n")
+                return None
+        closed = pointslist.isClosed()
+        pointslist = [v.Point for v in pointslist.OrderedVertexes]
+
+    else:
+        App.Console.PrintError("Can't make Draft Wire from {}\n".format(
+            type(pointslist)))
+        return None
+
 
     if len(pointslist) == 0:
-        print("Invalid input points: ", pointslist)
-    #print(pointslist)
-    #print(closed)
+        App.Console.PrintWarning("Draft Wire created with empty point list\n")
     
     if placement:
         utils.type_check([(placement, App.Placement)], "make_wire")

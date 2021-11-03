@@ -59,7 +59,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderWeld, TechDrawGui::ViewProviderDrawingV
 
 ViewProviderWeld::ViewProviderWeld()
 {
-    sPixmap = "actions/techdraw-weldsymbol";
+    sPixmap = "actions/TechDraw_WeldSymbol";
     static const char *group = "Text";
 
     ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()),group,App::Prop_None, "The name of the font to use");

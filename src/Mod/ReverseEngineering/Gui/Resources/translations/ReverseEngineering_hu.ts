@@ -243,7 +243,7 @@
       <translation>Poisson felszín helyreállítás</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
       <translation>Szegmentálás</translation>
     </message>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normák felülettel kijelzett háromszögeket részesíti előnyben</translation>
+      <translation>Csak az aktuális felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="311"/>
       <source>Create</source>
       <translation>Létrehozás</translation>
     </message>

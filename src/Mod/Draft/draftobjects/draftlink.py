@@ -218,6 +218,8 @@ class DraftLink(DraftObject):
             if not getattr(obj, 'BuildShape', True) and not getattr(obj, 'Fuse', False):
                 obj.Shape = Part.Shape()
                 return False  # return False to call LinkExtension::execute()
+        elif hasattr(obj, 'Count') and obj.Count != len(pls): # required for regular pointarrays
+            obj.Count = len(pls)
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)

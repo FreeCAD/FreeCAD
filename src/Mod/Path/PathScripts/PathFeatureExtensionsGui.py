@@ -440,7 +440,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 baseItem.setData(base[0].Label, QtCore.Qt.EditRole)
                 baseItem.setSelectable(False)
                 for sub in sorted(base[1]):
-                    if sub.startswith('Face') or True:
+                    if sub.startswith('Face'):
                         show = True
                         baseItem.appendRow(self.createItemForBaseModel(base[0], sub, edges, extensions))
                 if show:
@@ -755,7 +755,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             return _ext
 
     def _resetCachedExtensions(self):
-        PathLog.error("_resetCachedExtensions()")
+        PathLog.debug("_resetCachedExtensions()")
         reset = dict()
         # Keep waterline extensions as they will not change
         for k in self.extensionsCache.keys():

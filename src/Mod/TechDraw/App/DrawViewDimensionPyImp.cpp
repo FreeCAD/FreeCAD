@@ -63,11 +63,7 @@ PyObject* DrawViewDimensionPy::getText(PyObject* args)
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     std::string  textString = dvd->getFormattedDimensionValue();
 //TODO: check multiversion code!
-#if PY_MAJOR_VERSION >= 3
     PyObject* pyText = Base::PyAsUnicodeObject(textString);
-#else
-    PyObject *pyText = PyString_FromString(textString.c_str());
-#endif
     return pyText;
 }
 

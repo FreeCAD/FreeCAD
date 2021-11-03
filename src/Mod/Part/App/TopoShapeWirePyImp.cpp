@@ -355,9 +355,9 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
         return 0;
     PY_TRY {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
-        Handle(Adaptor3d_HCurve) hcurve = adapt.Trim(adapt.FirstParameter(),
-                                                    adapt.LastParameter(),
-                                                    tol2d);
+        auto hcurve = adapt.Trim(adapt.FirstParameter(),
+                                 adapt.LastParameter(),
+                                 tol2d);
         Approx_Curve3d approx(hcurve, tol3d, GeomAbs_C0, maxseg, maxdeg);
         if (approx.IsDone()) {
             return new BSplineCurvePy(new GeomBSplineCurve(approx.Curve()));
@@ -383,17 +383,10 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
         // use no kwds
         PyObject* dist_or_num;
         if (PyArg_ParseTuple(args, "O", &dist_or_num)) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check(dist_or_num)) {
                 numPoints = PyLong_AsLong(dist_or_num);
                 uniformAbscissaPoints = true;
             }
-#else
-            if (PyInt_Check(dist_or_num)) {
-                numPoints = PyInt_AsLong(dist_or_num);
-                uniformAbscissaPoints = true;
-            }
-#endif
             else if (PyFloat_Check(dist_or_num)) {
                 distance = PyFloat_AsDouble(dist_or_num);
                 uniformAbscissaDistance = true;

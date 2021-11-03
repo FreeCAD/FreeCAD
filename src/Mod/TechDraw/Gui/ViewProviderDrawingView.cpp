@@ -63,7 +63,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
 //    Base::Console().Message("VPDV::VPDV\n");
-    sPixmap = "TechDraw_Tree_View";
+    sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");

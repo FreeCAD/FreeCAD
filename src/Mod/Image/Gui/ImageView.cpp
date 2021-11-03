@@ -358,12 +358,12 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
       _currY = box_y;
       switch(cEvent->buttons())
       {
-          case Qt::MidButton:
+          case Qt::MiddleButton:
               _currMode = panning;
               this->setCursor(QCursor(Qt::ClosedHandCursor));
               startDrag();
               break;
-          //case Qt::LeftButton | Qt::MidButton:
+          //case Qt::LeftButton | Qt::MiddleButton:
           //    _currMode = zooming;
           //    break;
           case Qt::LeftButton:
@@ -392,7 +392,7 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
        int box_y = cEvent->y() - offset.y();
        _currX = box_x;
        _currY = box_y;
-       if(cEvent->button() == Qt::MidButton)
+       if(cEvent->button() == Qt::MiddleButton)
        {
            double icX = _pGLImageBox->WCToIC_X(_currX);
            double icY = _pGLImageBox->WCToIC_Y(_currY);

@@ -64,7 +64,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderHatch, Gui::ViewProviderDocumentObject)
 
 ViewProviderHatch::ViewProviderHatch()
 {
-    sPixmap = "TechDraw_Tree_Hatch";
+    sPixmap = "TechDraw_TreeHatch";
 
     static const char *vgroup = "Hatch";
     ADD_PROPERTY_TYPE(HatchColor,(TechDraw::DrawHatch::prefSvgHatchColor()),

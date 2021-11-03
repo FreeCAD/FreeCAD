@@ -675,17 +675,17 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     double qd2 = 2.0*(q13-q02);
 
     // handle gimbal lock
-    if (fabs(qd2-1.0) < DBL_EPSILON) {
+    if (fabs(qd2-1.0) <= 16 * DBL_EPSILON) { // Tolerance copied from OCC "gp_Quaternion.cxx"
         // north pole
         y = 0.0;
         p = D_PI/2.0;
         r = 2.0 * atan2(quat[0],quat[3]);
     }
-    else if (fabs(qd2+1.0) < DBL_EPSILON) {
+    else if (fabs(qd2+1.0) <= 16 * DBL_EPSILON) { // Tolerance copied from OCC "gp_Quaternion.cxx"
         // south pole
         y = 0.0;
         p = -D_PI/2.0;
-        r = -2.0 * atan2(quat[0],quat[3]);
+        r = 2.0 * atan2(quat[0],quat[3]);
     }
     else {
         y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));

@@ -78,7 +78,7 @@ tuple(typename, start, end, children, refs, hiddenRefs) with the following eleme
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="evalExpression">
+        <Methode Name="evalExpression" Class="true">
             <Documentation>
                 <UserDocu>Evaluate an expression</UserDocu>
             </Documentation>

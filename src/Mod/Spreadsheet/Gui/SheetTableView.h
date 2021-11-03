@@ -37,11 +37,7 @@ public:
     SheetViewHeader(QTableView *owner, Qt::Orientation o) 
         : QHeaderView(o),owner(owner) 
     {
-#if QT_VERSION >= 0x050000
         setSectionsClickable(true);
-#else
-        setClickable(true);
-#endif
     }
 
 Q_SIGNALS:
@@ -71,8 +67,6 @@ public:
     void updateHiddenRows();
     void updateHiddenColumns();
 
-    bool eventFilter(QObject *o, QEvent *ev);
-
     QColor foregroundColor() const;
     void setForegroundColor(const QColor &c);
     QColor aliasForegroundColor() const;
@@ -89,18 +83,22 @@ public Q_SLOTS:
     void pasteFormat();
     void pasteFormula();
     void pasteValueFormat();
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
+    void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
     void insertRows();
+    void insertRowsAfter();
     void removeRows();
     void showRows();
-    void hideRows();
+    void toggleRows();
     void insertColumns();
+    void insertColumnsAfter();
     void removeColumns();
     void showColumns();
-    void hideColumns();
+    void toggleColumns();
     void cellProperties();
     void cellAlias();
     void editMode(QAction *);
@@ -115,14 +113,11 @@ protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
-
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
-#if QT_VERSION >= 0x050000
-            , const QVector<int> &
-#endif
-            );
+    void mousePressEvent(QMouseEvent* event);
 
     void contextMenuEvent (QContextMenuEvent * e);
+
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight , const QVector<int> &);
 
     void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 
@@ -130,11 +125,13 @@ protected:
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+    int tabCounter;
+
+    QMenu *contextMenu;
 
     std::set<long> hiddenRows;
     std::set<long> hiddenColumns;
 
-    QMenu *contextMenu;
     QMenu *pasteMenu;
 
 #define SHEET_CELL_MODE(_name,_label,_doc) QAction *actionEdit##_name;

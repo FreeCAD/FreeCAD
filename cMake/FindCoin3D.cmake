@@ -9,7 +9,7 @@
 SET( COIN3D_FOUND "NO" )
 
 IF (WIN32)
-  IF (CYGWIN)
+  IF (CYGWIN OR MINGW)
 
     FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
       ${CMAKE_INCLUDE_PATH}
@@ -24,7 +24,7 @@ IF (WIN32)
       /usr/local/lib
     )
 
-  ELSE (CYGWIN)
+  ELSE (CYGWIN OR MINGW)
 
     FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/include"
@@ -115,6 +115,10 @@ IF(COIN3D_LIBRARIES)
     string(REGEX MATCH "define[ \t]+COIN_MICRO_VERSION[ \t]+([0-9?])" _coin3d_micro_version_match "${_coin3d_basic_h}")
     set(COIN3D_MICRO_VERSION "${CMAKE_MATCH_1}")
     set(COIN3D_VERSION "${COIN3D_MAJOR_VERSION}.${COIN3D_MINOR_VERSION}.${COIN3D_MICRO_VERSION}")
+  ENDIF()
+
+  IF(NOT PIVY_VERSION)
+    execute_process (COMMAND ${Python3_EXECUTABLE} -c "import pivy as p; print(p.__version__,end='')" OUTPUT_VARIABLE PIVY_VERSION)
   ENDIF()
 
 ENDIF(COIN3D_LIBRARIES)

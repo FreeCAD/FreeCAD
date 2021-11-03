@@ -95,6 +95,12 @@ public:
     virtual void printPreview();
     //@}
 
+    /** @name Undo/Redo actions */
+    //@{
+    virtual QStringList undoActions() const;
+    virtual QStringList redoActions() const;
+    //@}
+
     QSize minimumSizeHint () const;
 
     /// MDI view mode enum

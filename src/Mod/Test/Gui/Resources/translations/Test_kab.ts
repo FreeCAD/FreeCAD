@@ -4,97 +4,97 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="16"/>
+      <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
       <translation type="unfinished">FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="31"/>
+      <location filename="../../UnitTest.ui" line="32"/>
       <source>Failures and errors</source>
       <translation type="unfinished">Failures and errors</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="47"/>
+      <location filename="../../UnitTest.ui" line="48"/>
       <source>Description</source>
       <translation type="unfinished">Description</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="82"/>
+      <location filename="../../UnitTest.ui" line="83"/>
       <source>&amp;Start</source>
       <translation type="unfinished">&amp;Start</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="85"/>
+      <location filename="../../UnitTest.ui" line="86"/>
       <source>Alt+S</source>
       <translation type="unfinished">Alt+S</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="114"/>
+      <location filename="../../UnitTest.ui" line="115"/>
       <source>&amp;Help</source>
       <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="117"/>
+      <location filename="../../UnitTest.ui" line="118"/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="127"/>
+      <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;About</source>
       <translation>&amp;Ɣef</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="130"/>
+      <location filename="../../UnitTest.ui" line="131"/>
       <source>Alt+A</source>
       <translation type="unfinished">Alt+A</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="140"/>
+      <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Close</source>
       <translation type="unfinished">&amp;Close</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="143"/>
+      <location filename="../../UnitTest.ui" line="144"/>
       <source>Alt+C</source>
       <translation type="unfinished">Alt+C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="161"/>
+      <location filename="../../UnitTest.ui" line="162"/>
       <source>Idle</source>
       <translation type="unfinished">Idle</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="168"/>
+      <location filename="../../UnitTest.ui" line="169"/>
       <source>Progress</source>
       <translation type="unfinished">Progress</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="197"/>
+      <location filename="../../UnitTest.ui" line="198"/>
       <source>Remaining:</source>
       <translation type="unfinished">Remaining:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="214"/>
+      <location filename="../../UnitTest.ui" line="215"/>
       <source>Errors:</source>
       <translation type="unfinished">Errors:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="231"/>
+      <location filename="../../UnitTest.ui" line="232"/>
       <source>Failures:</source>
       <translation type="unfinished">Failures:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="248"/>
+      <location filename="../../UnitTest.ui" line="249"/>
       <source>Run:</source>
       <translation>Rmed:</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="258"/>
+      <location filename="../../UnitTest.ui" line="259"/>
       <source>Test</source>
       <translation>Akayad</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="270"/>
+      <location filename="../../UnitTest.ui" line="271"/>
       <source>Select test name:</source>
       <translation type="unfinished">Select test name:</translation>
     </message>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Help</source>
       <translation type="unfinished">Help</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Click 'start', and the test thus produced will be run.
 Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>About FreeCAD UnitTest</source>
       <translation type="unfinished">About FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

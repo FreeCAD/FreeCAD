@@ -472,22 +472,24 @@ const std::vector<std::pair<Unit, const char *> > &Unit::unitTypes() {
         units.emplace_back(Unit::ElectricalInductance,"ElectricalInductance");
         units.emplace_back(Unit::ElectricalConductance,"ElectricalConductance");
         units.emplace_back(Unit::ElectricalResistance,"ElectricalResistance");
+        units.emplace_back(Unit::ElectricalConductivity,"ElectricalConductivity");
         units.emplace_back(Unit::AmountOfSubstance,"AmountOfSubstance");
         units.emplace_back(Unit::LuminousIntensity,"LuminousIntensity");
-        units.emplace_back(Unit::Pressure,"Pressure");
         units.emplace_back(Unit::CompressiveStrength,"CompressiveStrength");
+        units.emplace_back(Unit::Pressure,"Pressure");
         units.emplace_back(Unit::ShearModulus,"ShearModulus");
         units.emplace_back(Unit::Stress,"Stress");
         units.emplace_back(Unit::UltimateTensileStrength,"UltimateTensileStrength");
         units.emplace_back(Unit::YieldStrength,"YieldStrength");
         units.emplace_back(Unit::YoungsModulus,"YoungsModulus");
+        units.emplace_back(Unit::Stiffness,"Stiffness");
         units.emplace_back(Unit::Force,"Force");
         units.emplace_back(Unit::Work,"Work");
         units.emplace_back(Unit::Power,"Power");
         units.emplace_back(Unit::SpecificEnergy,"SpecificEnergy");
         units.emplace_back(Unit::ThermalConductivity,"ThermalConductivity");
         units.emplace_back(Unit::ThermalExpansionCoefficient,"ThermalExpansionCoefficient");
-        units.emplace_back(Unit::VolumetricThermalExpansionCoefficient, "VolumetricThermalExpansionCoefficient");
+        units.emplace_back(Unit::VolumetricThermalExpansionCoefficient,"VolumetricThermalExpansionCoefficient");
         units.emplace_back(Unit::SpecificHeat,"SpecificHeat");
         units.emplace_back(Unit::ThermalTransferCoefficient,"ThermalTransferCoefficient");
         units.emplace_back(Unit::HeatFlux,"HeatFlux");
@@ -538,6 +540,7 @@ Unit Unit::ElectricalCapacitance(-2,-1,4,2);
 Unit Unit::ElectricalInductance(2,1,-2,-2);
 Unit Unit::ElectricalConductance(-2,-1,3,2);
 Unit Unit::ElectricalResistance(2,1,-3,-2);
+Unit Unit::ElectricalConductivity(-3,-1,3,2);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
 
@@ -549,6 +552,9 @@ Unit Unit::Stress                  (-1,1,-2);
 Unit Unit::UltimateTensileStrength (-1,1,-2);
 Unit Unit::YieldStrength           (-1,1,-2);
 Unit Unit::YoungsModulus           (-1,1,-2);
+
+// Stiffness [kg/s^-2]
+Unit Unit::Stiffness               (0,1,-2);
 
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);

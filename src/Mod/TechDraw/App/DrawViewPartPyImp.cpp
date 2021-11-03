@@ -553,17 +553,10 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
         int i = 0;
         for ( ; i < size; i++) {
             PyObject* po = PyList_GetItem(pSubs, i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(po)) {
                 std::string s = PyUnicode_AsUTF8(po);       //py3 only!!!
                 subs.push_back(s);
             }
-#else
-            if (PyString_Check(po)) {
-                std::string s = PyString_AsString(po);         //py2 only!!!
-                subs.push_back(s);
-            }
-#endif
         }
     }
     CenterLine* cl = nullptr;

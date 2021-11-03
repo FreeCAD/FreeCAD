@@ -260,6 +260,16 @@ Creerà un 'filtro composto' per ogni forma.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Frammenti booleani</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Dividi gli oggetti dove si intersecano</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation>Frammenti booleani</translation>
@@ -321,6 +331,24 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
       <translation>Selezionare prima almeno due oggetti, o uno o più composti! Se viene selezionato un solo composto, le forme composte saranno intersecate tra loro (altrimenti, i composti con autointersezioni non sono validi).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Selezione non valida</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Calcolo del risultato fallito con un errore: 
+
+{err}
+
+fare clic su 'Continua' per creare comunque la forma, o 'Annulla' per annullare.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Selezionare almeno due oggetti, oppure uno o più composti. Se viene selezionato un solo composto, le forme composte saranno intersecate tra loro (altrimenti, i composti con autointersezioni non sono validi).</translation>
@@ -329,16 +357,6 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Trancia in composto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Frammenti booleani</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Dividi gli oggetti dove si intersecano</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -376,24 +394,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 o con le forme di un composto.
 Questo significa che i volumi sovrapposti delle forme saranno rimossi.
 Un 'filtro composto' può essere usato per estrarre i pezzi rimanenti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Selezione non valida</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Calcolo del risultato fallito con un errore: 
-
-{err}
-
-fare clic su 'Continua' per creare comunque la forma, o 'Annulla' per annullare.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -3115,7 +3115,7 @@ fare clic su 'Continua' per creare comunque la forma, o 'Annulla' per annullare.
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Beccheggio:</translation>
+      <translation>Passo:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="236"/>
@@ -4204,7 +4204,7 @@ Selezionare prima uno o più spigoli.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1314"/>
       <source>Pitch:</source>
-      <translation>Beccheggio:</translation>
+      <translation>Passo:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
@@ -4992,7 +4992,7 @@ Selezionare prima uno o più spigoli.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Beccheggio:</translation>
+      <translation>Passo:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="236"/>

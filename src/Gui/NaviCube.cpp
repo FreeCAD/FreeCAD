@@ -2073,7 +2073,7 @@ void NaviCubeShared::setColors(QWidget *parent)
         colors.push_back(info.color);
         grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
         ColorButton *button = new ColorButton(nullptr);
-        button->setAllowChangeAlpha(true);
+        button->setAllowTransparency(true);
         button->setAutoChangeColor(true);
         button->setColor(info.color);
         QObject::connect(button, &ColorButton::changed, [this, button, info]() {

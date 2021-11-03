@@ -2124,9 +2124,9 @@ def SetupProperties():
     return [tup[1] for tup in ObjectSurface.opPropertyDefinitions(False)]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Surface operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectSurface(obj, name)
+    obj.Proxy = ObjectSurface(obj, name, parentJob)
     return obj

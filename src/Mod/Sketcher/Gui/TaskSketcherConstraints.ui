@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::TaskSketcherConstraints</class>
+ <widget class="QWidget" name="SketcherGui::TaskSketcherConstraints">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>417</width>
+    <height>388</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>388</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Filter:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxFilter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>All</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Geometric</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Datums</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Named</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Reference</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Coincident</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Point on Object</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Horizontal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Parallel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Perpendicular</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tangent</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Equality</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Symmetric</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Block</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Horizontal Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Distance</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Radius</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Weight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Snell's Law</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Internal Alignment</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Multiple Filters</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Selection Filter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Associated Constraint Filter</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="multipleFilterButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Click to select multiple filters</string>
+       </property>
+       <property name="text">
+        <string>Select Multiple</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="settingsDialogButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Settings</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="Resources/Sketcher.qrc">
+         <normaloff>:/icons/dialogs/Sketcher_Settings.svg</normaloff>:/icons/dialogs/Sketcher_Settings.svg</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="showAllButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Shows all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Show Listed</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="hideAllButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Hides all the constraints in the list</string>
+       </property>
+       <property name="text">
+        <string>Hide Listed</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="visibilityButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Restricts 3D visibility to the listed elements</string>
+       </property>
+       <property name="text">
+        <string>Restrict Visibility</string>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextOnly</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="ConstraintView" name="listWidgetConstraints">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="modelColumn">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ConstraintView</class>
+   <extends>QListWidget</extends>
+   <header location="global">QListWidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/Sketcher.qrc"/>
+ </resources>
+ <connections/>
+</ui>

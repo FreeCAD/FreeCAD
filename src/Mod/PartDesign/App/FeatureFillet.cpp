@@ -76,7 +76,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     }
     baseShape.setTransform(Base::Matrix4D());
 
-    auto edges = getContiniusEdges(baseShape);
+    auto edges = getContinuousEdges(baseShape);
     if (edges.size() == 0)
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
 
@@ -121,14 +121,15 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     }
 }
 
-void Fillet::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+void Fillet::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-            strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0)
-    {
+        strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
         App::PropertyFloatConstraint p;
         p.Restore(reader);
         static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
+    }
+    else {
+        DressUp::handleChangedPropertyType(reader, TypeName, prop);
     }
 }

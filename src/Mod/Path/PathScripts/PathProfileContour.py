@@ -42,9 +42,9 @@ def SetupProperties():
     return PathProfile.SetupProperties()
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Profile operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectContour(obj, name)
+    obj.Proxy = ObjectContour(obj, name, parentJob)
     return obj

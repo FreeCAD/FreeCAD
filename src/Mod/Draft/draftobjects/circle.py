@@ -79,10 +79,7 @@ class Circle(DraftObject):
 
         if obj.FirstAngle.Value == obj.LastAngle.Value:
             shape = Part.Wire(shape)
-            if hasattr(obj,"MakeFace"):
-                if obj.MakeFace:
-                    shape = Part.Face(shape)
-            else:
+            if getattr(obj,"MakeFace",True):
                 shape = Part.Face(shape)
 
         obj.Shape = shape

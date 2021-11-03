@@ -145,6 +145,15 @@ target_link_libraries(Path ${Path_LIBS})
 if(NOT ${Boost_VERSION} LESS 107500)
     set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
     set_target_properties(Path PROPERTIES CXX_STANDARD 14)
+
+    # Suppress -Wc++17-extensions when using  OCCT 7.5 or newer
+    if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+        unset(_flag_found CACHE)
+        check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
+        if (_flag_found)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
+        endif()
+    endif()
 endif()
 
 if(FREECAD_USE_PCH)

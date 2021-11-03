@@ -51,7 +51,7 @@ DEF_STD_CMD_A(StdCmdPart)
 StdCmdPart::StdCmdPart()
   : Command("Std_Part")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = "Std_Part";
@@ -222,7 +222,7 @@ DEF_STD_CMD_A(StdCmdPartActive)
 StdCmdPartActive::StdCmdPartActive()
   : Command("Std_PartActive")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part in active container");
     sToolTipText  = QT_TR_NOOP("Create a new part and add it to current active container");
     sWhatsThis    = "Std_PartActive";
@@ -284,7 +284,7 @@ public:
     StdCmdPartActions()
         : GroupCommand("Std_PartActions")
     {
-        sGroup        = QT_TR_NOOP("Structure");
+        sGroup        = "Structure";
         sMenuText     = QT_TR_NOOP("Part actions");
         sToolTipText  = QT_TR_NOOP("Actions for making a part");
         sWhatsThis    = "Std_PartActions";
@@ -308,7 +308,7 @@ DEF_STD_CMD_A(StdCmdGroup)
 StdCmdGroup::StdCmdGroup()
   : Command("Std_Group")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = "Std_Group";
@@ -338,7 +338,7 @@ class StdCmdDatum##_name : public Command \
 public:\
     virtual const char* className() const { return "StdCmdDatum" #_name; }\
     StdCmdDatum##_name():Command("Std_Datum" #_name) {\
-        sGroup          = QT_TR_NOOP("Structure");\
+        sGroup          = "Structure";\
         sMenuText       = QT_TR_NOOP("Create a " _desc);\
         sToolTipText    = QT_TR_NOOP("Create a new " _desc);\
         sWhatsThis      = "PartDesign_" # _name;\
@@ -371,7 +371,7 @@ public:
     StdCmdDatumActions()
         : GroupCommand("Std_DatumActions")
     {
-        sGroup        = QT_TR_NOOP("Structure");
+        sGroup        = "Structure";
         sMenuText     = QT_TR_NOOP("Datum actions");
         sToolTipText  = QT_TR_NOOP("Actions for making various datum features");
         sWhatsThis    = "Std_DatumActions";

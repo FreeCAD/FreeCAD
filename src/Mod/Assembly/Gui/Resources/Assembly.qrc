@@ -58,5 +58,7 @@
         <file>translations/Assembly_val-ES.qm</file>
         <file>translations/Assembly_ar.qm</file>
         <file>translations/Assembly_vi.qm</file>
+        <file>translations/Assembly_es-AR.qm</file>
+        <file>translations/Assembly_bg.qm</file>
   </qresource>
 </RCC>

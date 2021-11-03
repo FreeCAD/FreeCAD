@@ -48,6 +48,132 @@ using namespace Gui;
 using namespace App;
 using namespace Base;
 
+ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
+  : spinbox(sb)
+{
+    lineedit = spinbox->findChild<QLineEdit*>();
+    makeLabel(lineedit);
+    QObject::connect(iconLabel, &ExpressionLabel::clicked, [=]() {
+        this->openFormulaDialog();
+    });
+}
+
+ExpressionSpinBox::~ExpressionSpinBox()
+{
+}
+
+void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
+{
+    Q_ASSERT(isBound());
+
+    try {
+        ExpressionBinding::setExpression(expr);
+    }
+    catch (const Base::Exception & e) {
+        spinbox->setReadOnly(true);
+        QPalette p(lineedit->palette());
+        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
+        lineedit->setPalette(p);
+    }
+}
+
+void ExpressionSpinBox::onChange()
+{
+    Q_ASSERT(isBound());
+    if (hasExpression()) {
+        std::unique_ptr<Expression> result(getExpression()->eval());
+        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+        if (value) {
+            setNumberExpression(value);
+            spinbox->setReadOnly(true);
+
+            QPalette p(lineedit->palette());
+            p.setColor(QPalette::Text, Qt::lightGray);
+            lineedit->setPalette(p);
+        }
+    }
+    else {
+        spinbox->setReadOnly(false);
+        QPalette p(lineedit->palette());
+        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+        lineedit->setPalette(p);
+    }
+}
+
+void ExpressionSpinBox::resizeWidget()
+{
+    try {
+        if (hasExpression()) {
+            std::unique_ptr<Expression> result(getExpression()->eval());
+            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+            if (value) {
+                spinbox->setReadOnly(true);
+                QPalette p(lineedit->palette());
+                p.setColor(QPalette::Text, Qt::lightGray);
+                lineedit->setPalette(p);
+            }
+        }
+        else {
+            spinbox->setReadOnly(false);
+            QPalette p(lineedit->palette());
+            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+            lineedit->setPalette(p);
+        }
+    }
+    catch (const Base::Exception &) {
+        spinbox->setReadOnly(true);
+        QPalette p(lineedit->palette());
+        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
+        lineedit->setPalette(p);
+    }
+}
+
+void ExpressionSpinBox::openFormulaDialog()
+{
+    Q_ASSERT(isBound());
+
+    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    Unit unit;
+
+    if (qprop != 0)
+        unit = qprop->getUnit();
+
+    auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, spinbox);
+    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
+        this->finishFormulaDialog(box);
+    });
+
+    box->show();
+    box->setExpressionInputSize(box->width(), box->height());
+}
+
+void ExpressionSpinBox::finishFormulaDialog(Gui::Dialog::DlgExpressionInput *box)
+{
+    if (box->result() == QDialog::Accepted)
+        setExpression(box->getExpression());
+    else if (box->discardedFormula())
+        setExpression(std::shared_ptr<Expression>());
+
+    box->deleteLater();
+}
+
+void ExpressionSpinBox::drawControl(QStyleOptionSpinBox& opt)
+{
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = QAbstractSpinBox::StepNone;
+    }
+
+    QStylePainter p(spinbox);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
+
+// ----------------------------------------------------------------------------
+
 UnsignedValidator::UnsignedValidator( QObject * parent )
   : QValidator( parent )
 {
@@ -143,6 +269,7 @@ public:
 
 UIntSpinBox::UIntSpinBox (QWidget* parent)
   : QSpinBox (parent)
+  , ExpressionSpinBox(this)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
@@ -151,12 +278,6 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
     setRange(0, 99);
     setValue(0);
     updateValidator();
-
-    defaultPalette = lineEdit()->palette();
-    iconLabel = new ExpressionLabel(lineEdit());
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-
-    LineEditStyle::setup(lineEdit());
 }
 
 UIntSpinBox::~UIntSpinBox()
@@ -245,49 +366,6 @@ void UIntSpinBox::updateValidator()
     d->mValidator->setRange(this->minimum(), this->maximum());
 }
 
-void UIntSpinBox::bind(const App::ObjectIdentifier &_path)
-{
-    ExpressionBinding::bind(_path);
-}
-
-void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
-{
-    Q_ASSERT(isBound());
-
-    try {
-        ExpressionBinding::setExpression(expr);
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-}
-
-void UIntSpinBox::onChange() {
-
-    if (hasExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-        if (value) {
-            setValue(boost::math::round(value->getValue()));
-            setReadOnly(true);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Text, Qt::lightGray);
-            lineEdit()->setPalette(p);
-        }
-    }
-    else {
-        setReadOnly(false);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-        lineEdit()->setPalette(p);
-    }
-}
-
-
 bool UIntSpinBox::apply(const std::string & propName)
 {
     if (!ExpressionBinding::apply(propName)) {
@@ -298,115 +376,39 @@ bool UIntSpinBox::apply(const std::string & propName)
         return false;
 }
 
-bool UIntSpinBox::apply()
+void UIntSpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    return ExpressionBinding::apply();
+    setValue(boost::math::round(expr->getValue()));
 }
 
 void UIntSpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);
-
-    try {
-        if (hasExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                setReadOnly(true);
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-        }
-        else {
-            setReadOnly(false);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-        }
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-
-}
-
-void UIntSpinBox::openFormulaDialog()
-{
-    Q_ASSERT(isBound());
-
-    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
-    Unit unit;
-
-    if (qprop != 0)
-        unit = qprop->getUnit();
-
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
-    box->show();
-
-    box->setExpressionInputSize(width(), height());
-}
-
-void UIntSpinBox::finishFormulaDialog()
-{
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
-    if (!box) {
-        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
-        return;
-    }
-
-    if (box->result() == QDialog::Accepted)
-        setExpression(box->getExpression());
-    else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
-
-    box->deleteLater();
-}
-
-void UIntSpinBox::keyPressEvent(QKeyEvent *event)
-{
-    if (event->text() == QString::fromUtf8("=") && isBound())
-        openFormulaDialog();
-    else
-        QAbstractSpinBox::keyPressEvent(event);
+    resizeWidget();
 }
 
 void UIntSpinBox::paintEvent(QPaintEvent*)
 {
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    if (hasExpression()) {
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
-        opt.state &= ~QStyle::State_Active;
-        opt.stepEnabled = StepNone;
-    }
-
-    QStylePainter p(this);
-    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+    drawControl(opt);
 }
 
 // ----------------------------------------------------------------------------
 
-IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
-
-    defaultPalette = lineEdit()->palette();
-    iconLabel = new ExpressionLabel(lineEdit());
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+IntSpinBox::IntSpinBox(QWidget* parent)
+    : QSpinBox(parent)
+    , ExpressionSpinBox(this)
+{
 }
 
-IntSpinBox::~IntSpinBox() {
+IntSpinBox::~IntSpinBox()
+{
 
 }
 
-
-bool IntSpinBox::apply(const std::string& propName) {
-
+bool IntSpinBox::apply(const std::string& propName)
+{
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %d", propName.c_str(), value());
         return true;
@@ -415,153 +417,39 @@ bool IntSpinBox::apply(const std::string& propName) {
         return false;
 }
 
-void IntSpinBox::bind(const ObjectIdentifier& _path) {
-
-    ExpressionBinding::bind(_path);
-}
-
-void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void IntSpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    Q_ASSERT(isBound());
-
-    try {
-        ExpressionBinding::setExpression(expr);
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-}
-
-void IntSpinBox::onChange() {
-
-    if (hasExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-        if (value) {
-            setValue(boost::math::round(value->getValue()));
-            setReadOnly(true);
-
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Text, Qt::lightGray);
-            lineEdit()->setPalette(p);
-        }
-    }
-    else {
-        setReadOnly(false);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-        lineEdit()->setPalette(p);
-    }
+    setValue(boost::math::round(expr->getValue()));
 }
 
 void IntSpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);
-
-    try {
-        if (hasExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                setReadOnly(true);
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-        }
-        else {
-            setReadOnly(false);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-        }
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-
-}
-
-void IntSpinBox::openFormulaDialog()
-{
-    Q_ASSERT(isBound());
-
-    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
-    Unit unit;
-
-    if (qprop != 0)
-        unit = qprop->getUnit();
-
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(),unit, this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
-    box->show();
-
-    box->setExpressionInputSize(width(), height());
-}
-
-void IntSpinBox::finishFormulaDialog()
-{
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
-    if (!box) {
-        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
-        return;
-    }
-
-    if (box->result() == QDialog::Accepted)
-        setExpression(box->getExpression());
-    else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
-
-    box->deleteLater();
-}
-
-void IntSpinBox::keyPressEvent(QKeyEvent *event)
-{
-    if (event->text() == QString::fromUtf8("=") && isBound())
-        openFormulaDialog();
-    else
-        QAbstractSpinBox::keyPressEvent(event);
+    resizeWidget();
 }
 
 void IntSpinBox::paintEvent(QPaintEvent*)
 {
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    if (hasExpression()) {
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
-        opt.state &= ~QStyle::State_Active;
-        opt.stepEnabled = StepNone;
-    }
-
-    QStylePainter p(this);
-    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+    drawControl(opt);
 }
 
 // ----------------------------------------------------------------------------
 
-DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
-
-    defaultPalette = lineEdit()->palette();
-    iconLabel = new ExpressionLabel(lineEdit());
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+DoubleSpinBox::DoubleSpinBox(QWidget* parent)
+    : QDoubleSpinBox(parent)
+    , ExpressionSpinBox(this)
+{
 }
 
-DoubleSpinBox::~DoubleSpinBox() {
+DoubleSpinBox::~DoubleSpinBox()
+{
 
 }
 
-
-bool DoubleSpinBox::apply(const std::string& propName) {
-
+bool DoubleSpinBox::apply(const std::string& propName)
+{
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value());
         return true;
@@ -570,133 +458,22 @@ bool DoubleSpinBox::apply(const std::string& propName) {
     return false;
 }
 
-void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
-
-    ExpressionBinding::bind(_path);
-}
-
-void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void DoubleSpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    Q_ASSERT(isBound());
-
-    try {
-        ExpressionBinding::setExpression(expr);
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-}
-
-void DoubleSpinBox::onChange() {
-
-    if (hasExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-        if (value) {
-            setValue(value->getValue());
-            setReadOnly(true);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Text, Qt::lightGray);
-            lineEdit()->setPalette(p);
-        }
-    }
-    else {
-        setReadOnly(false);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-        lineEdit()->setPalette(p);
-    }
+    setValue(expr->getValue());
 }
 
 void DoubleSpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);
-
-    try {
-        if (isBound() && getExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                setReadOnly(true);
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-        }
-        else {
-            setReadOnly(false);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-        }
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-}
-
-void DoubleSpinBox::openFormulaDialog()
-{
-    Q_ASSERT(isBound());
-
-    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
-    Unit unit;
-
-    if (qprop != 0)
-        unit = qprop->getUnit();
-
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
-    box->show();
-
-    box->setExpressionInputSize(width(), height());
-}
-
-void DoubleSpinBox::finishFormulaDialog()
-{
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
-    if (!box) {
-        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
-        return;
-    }
-
-    if (box->result() == QDialog::Accepted)
-        setExpression(box->getExpression());
-    else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
-
-    box->deleteLater();
-}
-
-void DoubleSpinBox::keyPressEvent(QKeyEvent *event)
-{
-    if (event->text() == QString::fromUtf8("=") && isBound())
-        openFormulaDialog();
-    else
-        QAbstractSpinBox::keyPressEvent(event);
+    resizeWidget();
 }
 
 void DoubleSpinBox::paintEvent(QPaintEvent*)
 {
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    if (hasExpression()) {
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
-        opt.state &= ~QStyle::State_Active;
-        opt.stepEnabled = StepNone;
-    }
-
-    QStylePainter p(this);
-    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+    drawControl(opt);
 }
 
 #include "moc_SpinBox.cpp"

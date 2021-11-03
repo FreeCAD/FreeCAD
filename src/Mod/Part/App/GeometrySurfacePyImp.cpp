@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeShell.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Elips.hxx>
@@ -75,6 +76,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeShellPy.h>
 
 namespace Part {
 const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f, double l)
@@ -152,6 +154,52 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
+}
+
+PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
+{
+    PyObject* bound = nullptr;
+    PyObject* segm = nullptr;
+    static char *kwlist[] = {"Bounds", "Segment", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O!O!", kwlist,
+        &PyTuple_Type, &bound, &PyBool_Type, &segm))
+        return nullptr;
+
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
+    try {
+        if (!s.IsNull()) {
+            if (segm) {
+                Standard_Boolean segment = PyObject_IsTrue(segm) ? Standard_True : Standard_False;
+                BRepBuilderAPI_MakeShell mkBuilder(s, segment);
+                TopoDS_Shape sh = mkBuilder.Shape();
+                return new TopoShapeShellPy(new TopoShape(sh));
+            }
+            else {
+                double u1,u2,v1,v2;
+                s->Bounds(u1,u2,v1,v2);
+
+                if (bound) {
+                    Py::Tuple tuple(bound);
+                    u1 = double(Py::Float(tuple[0]));
+                    u2 = double(Py::Float(tuple[1]));
+                    v1 = double(Py::Float(tuple[2]));
+                    v2 = double(Py::Float(tuple[3]));
+                }
+
+                BRepBuilderAPI_MakeShell mkBuilder(s, u1, u2, v1, v2);
+                TopoDS_Shape sh = mkBuilder.Shape();
+                return new TopoShapeShellPy(new TopoShape(sh));
+            }
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::getD0(PyObject *args)

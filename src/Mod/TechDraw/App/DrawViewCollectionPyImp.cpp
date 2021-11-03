@@ -50,11 +50,7 @@ PyObject* DrawViewCollectionPy::addView(PyObject* args)
 
     int i = collect->addView(view);
 
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong((long) i);
-#else
     return PyLong_FromLong((long) i);
-#endif
 }
 
 PyObject* DrawViewCollectionPy::removeView(PyObject* args)
@@ -72,11 +68,7 @@ PyObject* DrawViewCollectionPy::removeView(PyObject* args)
 
     int i = collect->removeView(view);
 
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong((long) i);
-#else
     return PyLong_FromLong((long) i);
-#endif
 }
 
 

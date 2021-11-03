@@ -64,7 +64,7 @@ class Rotate(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rotate, self).Activated(name=translate("draft","Rotate"))
+        super(Rotate, self).Activated(name="Rotate")
         if not self.ui:
             return
         self.ghosts = []
@@ -75,7 +75,7 @@ class Rotate(gui_base_original.Modifier):
         """Get the object selection."""
         if Gui.Selection.getSelection():
             return self.proceed()
-        self.ui.selectUi()
+        self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to rotate"))
         self.call = \
             self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
@@ -95,7 +95,6 @@ class Rotate(gui_base_original.Modifier):
         self.center = None
         self.ui.rotateSetCenterUi()
         self.ui.modUi()
-        self.ui.setTitle(translate("draft", "Rotate"))
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _msg(translate("draft", "Pick rotation center"))

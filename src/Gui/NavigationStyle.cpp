@@ -1320,6 +1320,16 @@ AbstractMouseSelection *NavigationStyle::currentSelection()
     return mouseSelection;
 }
 
+void NavigationStyle::abortSelection()
+{
+    pcPolygon.clear();
+    if (mouseSelection) {
+        mouseSelection->releaseMouseModel(true);
+        delete mouseSelection;
+        mouseSelection = 0;
+    }
+}
+
 void NavigationStyle::stopSelection()
 {
     pcPolygon.clear();

@@ -22,9 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLineEdit>
 # include <QPixmapCache>
+# include <QStyle>
 #endif
 #include "ExpressionBinding.h"
+#include "QuantitySpinBox_p.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "Command.h"
@@ -68,7 +71,7 @@ void ExpressionBinding::unbind()
     path = App::ObjectIdentifier();
 }
 
-void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
+void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
 {
     DocumentObject * docObj = path.getDocumentObject();
     if (!docObj)
@@ -159,7 +162,7 @@ bool ExpressionBinding::hasExpression(bool checkDoubleBinding) const
                     || !App::VariableExpression::isDoubleBinding(getExpression().get()));
 }
 
-boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
+std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject * docObj = path.getDocumentObject();
 
@@ -260,7 +263,7 @@ bool ExpressionBinding::setExpressionString(const char *str, bool no_throw)
         return false;
     }
     try {
-        boost::shared_ptr<Expression> expr;
+        std::shared_ptr<Expression> expr;
         if (str && str[0])
             expr = Expression::parse(obj, str);
         setExpression(expr);
@@ -282,4 +285,11 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
     if (docObj == &obj) {
         unbind();
     }
+}
+
+void ExpressionBinding::makeLabel(QLineEdit* le)
+{
+    defaultPalette = le->palette();
+    iconLabel = new ExpressionLabel(le);
+    LineEditStyle::setup(le);
 }

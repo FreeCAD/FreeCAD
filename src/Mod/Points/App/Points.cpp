@@ -41,7 +41,7 @@
 #include "PointsAlgos.h"
 #include "PointsPy.h"
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 # include <ppl.h>
 #endif
 
@@ -86,7 +86,7 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
     std::vector<value_type>& kernel = getBasicPoints();
-#ifdef _WIN32
+#ifdef _MSC_VER
     // Win32-only at the moment since ppl.h is a Microsoft library. Points is not using Qt so we cannot use QtConcurrent
     // We could also rewrite Points to leverage SIMD instructions
     // Other option: openMP. But with VC2013 results in high CPU usage even after computation (busy-waits for >100ms)
@@ -104,7 +104,7 @@ Base::BoundBox3d PointKernel::getBoundBox(void)const
 {
     Base::BoundBox3d bnd;
 
-#ifdef _WIN32
+#ifdef _MSC_VER
     // Thread-local bounding boxes
     Concurrency::combinable<Base::BoundBox3d> bbs;
     // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)

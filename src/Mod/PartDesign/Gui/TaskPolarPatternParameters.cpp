@@ -104,7 +104,6 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
 void TaskPolarPatternParameters::setupUI()
 {
     TaskTransformedParameters::setupUI();
-    ui->spinOccurrences->setMinimum(1);
 
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
@@ -121,6 +120,8 @@ void TaskPolarPatternParameters::setupUI()
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     ui->polarAngle->bind(pcPolarPattern->Angle);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
+    ui->spinOccurrences->setMaximum(pcPolarPattern->Occurrences.getMaximum());
+    ui->spinOccurrences->setMinimum(pcPolarPattern->Occurrences.getMinimum());
 
     ui->comboAxis->setEnabled(true);
     ui->checkReverse->setEnabled(true);

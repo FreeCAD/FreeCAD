@@ -31,8 +31,6 @@
 # include <BRepAdaptor_Curve.hxx>
 #endif
 
-
-#include "FeaturePolarPattern.h"
 #include "DatumLine.h"
 #include <Base/Axis.h>
 #include <Base/Exception.h>
@@ -41,6 +39,8 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/OriginFeature.h>
 
+#include "FeaturePolarPattern.h"
+
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -48,12 +48,17 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY(Angle,(360.0));
-    ADD_PROPERTY(Occurrences,(3));
+    ADD_PROPERTY_TYPE(Axis, (0), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY(Angle, (360.0));
+    Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY(Occurrences, (3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short PolarPattern::mustExecute() const
@@ -69,7 +74,8 @@ short PolarPattern::mustExecute() const
 std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<Part::TopoShape> &)
 {
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
+    double radians = Base::toRadians<double>(angle);
+    if (radians < Precision::Angular())
         throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
@@ -87,9 +93,9 @@ std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<Part::Topo
     bool reversed = Reversed.getValue();
     double offset;
     if (std::fabs(angle - 360.0) < Precision::Confusion())
-        offset = Base::toRadians<double>(angle) / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        offset = radians / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
     else
-        offset = Base::toRadians<double>(angle) / (occurrences - 1);
+        offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
     if (refObject == NULL)
@@ -171,6 +177,21 @@ std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<Part::Topo
     }
 
     return transformations;
+}
+
+void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 }

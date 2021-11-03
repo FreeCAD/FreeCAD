@@ -91,7 +91,14 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Get the part outside the intersection</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="coarsen">
+        <Methode Name="section" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Get the section curves of this and the given mesh object.
+lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="coarsen">
 			<Documentation>
 				<UserDocu>Coarse the mesh</UserDocu>
 			</Documentation>
@@ -177,7 +184,7 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="countSegments" Const="true">
+        <Methode Name="countSegments" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of segments which may also be 0</UserDocu>
 			</Documentation>
@@ -313,6 +320,19 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="hasPointsOnEdge" Const="true">
+            <Documentation>
+                <UserDocu>Check if points lie on edges</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removePointsOnEdge" Keyword="true">
+            <Documentation>
+                <UserDocu>removePointsOnEdge(FillBoundary=False)
+Remove points that lie on edges.
+If FillBoundary is True then the holes by removing the affected facets
+will be re-filled.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="hasInvalidNeighbourhood" Const="true">
             <Documentation>
                 <UserDocu>Check if the mesh has invalid neighbourhood indices</UserDocu>
@@ -451,7 +471,16 @@ The argument int is the mode: 0=inner, 1=outer
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<!-- The Const here is just a hack -->
+        <Methode Name="trimByPlane">
+            <Documentation>
+                <UserDocu>Trims the mesh with a given plane
+trimByPlane(Vector, Vector) -> None
+The plane is defined by a base and normal vector. Depending on the
+direction of the normal the part above or below will be kept.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <!-- The Const here is just a hack -->
 		<Methode Name="harmonizeNormals" Const="true">
 			<Documentation>
 				<UserDocu>Adjust wrong oriented facets</UserDocu>

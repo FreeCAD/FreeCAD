@@ -71,11 +71,7 @@ PyObject* DrawSVGTemplatePy::getEditFieldContent(PyObject* args)
     }
     std::string content = getDrawSVGTemplatePtr()->EditableTexts[fieldName];
     if (!content.empty()) {
-#if PY_MAJOR_VERSION < 3
-        result = PyString_FromString(content.c_str());
-#else
         result = PyUnicode_FromString(content.c_str());
-#endif
     }
     return result;
 }

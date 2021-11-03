@@ -62,7 +62,7 @@ public:
      * Returns the BaseFeature property's object(if any) otherwise return first original,
      *         which serves as "Support" for old style workflows
      * @param silent if couldn't determine the base feature and silent == true,
-     *               silently return a nullptr, otherwise throw Base::Exception. 
+     *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
@@ -103,12 +103,12 @@ public:
     virtual void getAddSubShape(std::vector<std::pair<Part::TopoShape, Type> > &shapes);
 
 protected:
-    virtual void handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
     virtual void positionBySupport(void);
     TopoShape refineShapeIfActive(const TopoShape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
-		     TopoDS_Compound &compoundOut) const; 
+                     TopoDS_Compound &compoundOut) const;
+    static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
     virtual void setupObject ();
 

@@ -89,12 +89,17 @@
 #include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "MDIViewPage.h"
+#include "PreferencesGui.h"
+#include "QGIViewPart.h"
+#include "Rez.h"
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
 #include "TaskActiveView.h"
 #include "TaskDetail.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderViewPart.h"
 
+class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
@@ -114,7 +119,7 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageDefault";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageDefault";
+    sPixmap         = "actions/TechDraw_PageDefault";
 }
 
 void CmdTechDrawPageDefault::activated(int iMsg)
@@ -177,7 +182,7 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageTemplate";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageTemplate";
+    sPixmap         = "actions/TechDraw_PageTemplate";
 }
 
 void CmdTechDrawPageTemplate::activated(int iMsg)
@@ -256,7 +261,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_RedrawPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RedrawPage";
+    sPixmap         = "actions/TechDraw_RedrawPage";
 }
 
 void CmdTechDrawRedrawPage::activated(int iMsg)
@@ -293,7 +298,7 @@ CmdTechDrawView::CmdTechDrawView()
     sToolTipText    = QT_TR_NOOP("Insert a View");
     sWhatsThis      = "TechDraw_View";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-View";
+    sPixmap         = "actions/TechDraw_View";
 }
 
 void CmdTechDrawView::activated(int iMsg)
@@ -400,7 +405,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ActiveView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ActiveView";
+    sPixmap         = "actions/TechDraw_ActiveView";
 }
 
 void CmdTechDrawActiveView::activated(int iMsg)
@@ -434,7 +439,7 @@ CmdTechDrawSectionView::CmdTechDrawSectionView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_SectionView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-SectionView";
+    sPixmap         = "actions/TechDraw_SectionView";
 }
 
 void CmdTechDrawSectionView::activated(int iMsg)
@@ -484,7 +489,7 @@ CmdTechDrawDetailView::CmdTechDrawDetailView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_DetailView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DetailView";
+    sPixmap         = "actions/TechDraw_DetailView";
 }
 
 void CmdTechDrawDetailView::activated(int iMsg)
@@ -533,7 +538,7 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup()
     sToolTipText    = QT_TR_NOOP("Insert multiple linked views of drawable object(s)");
     sWhatsThis      = "TechDraw_ProjectionGroup";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ProjectionGroup";
+    sPixmap         = "actions/TechDraw_ProjectionGroup";
 }
 
 void CmdTechDrawProjectionGroup::activated(int iMsg)
@@ -650,7 +655,7 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 //    sToolTipText    = QT_TR_NOOP("Insert a new View of a multiple Parts in the active drawing");
 //    sWhatsThis      = "TechDraw_NewMulti";
 //    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-multiview";
+//    sPixmap         = "actions/TechDraw_multiview";
 //}
 
 //void CmdTechDrawNewMulti::activated(int iMsg)
@@ -730,6 +735,42 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
     return true;
 }
 
+bool _checkDirectPlacement(const QGIViewPart *viewPart, const std::vector<std::string> &subNames, QPointF &placement)
+{
+    // Let's see, if we can help speed up the placement of the balloon:
+    // As of now we support:
+    //     Single selected vertex: place the ballon tip end here
+    //     Single selected edge:   place the ballon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+    //
+    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
+
+    if (subNames.size() != 1) {
+        // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
+        return false;
+    }
+
+    std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
+    if (geoType == "Vertex") {
+        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
+        TechDraw::Vertex *vertex = static_cast<DrawViewPart *>(viewPart->getViewObject())->getProjVertexByIndex(index);
+        if (vertex) {
+            placement = viewPart->mapToScene(Rez::guiX(vertex->x()), Rez::guiX(vertex->y()));
+            return true;
+        }
+    }
+    else if (geoType == "Edge") {
+        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
+        TechDraw::BaseGeom *geo = static_cast<DrawViewPart *>(viewPart->getViewObject())->getGeomByIndex(index);
+        if (geo) {
+            Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
+            placement = viewPart->mapToScene(midPoint.x, midPoint.y);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 DEF_STD_CMD_A(CmdTechDrawBalloon)
 
 CmdTechDrawBalloon::CmdTechDrawBalloon()
@@ -755,6 +796,7 @@ void CmdTechDrawBalloon::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
     if( objFeat == nullptr ) {
         return;
@@ -763,8 +805,23 @@ void CmdTechDrawBalloon::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     
     page->balloonParent = objFeat;
-    page->balloonPlacing = true;
 
+    Gui::Document *guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+    ViewProviderPage *pageVP = dynamic_cast<ViewProviderPage *>(guiDoc->getViewProvider(page));
+    ViewProviderViewPart *partVP = dynamic_cast<ViewProviderViewPart *>(guiDoc->getViewProvider(objFeat));
+
+    if (pageVP && partVP) {
+        QGVPage *viewPage = pageVP->getGraphicsView();
+        if (viewPage) {
+            viewPage->startBalloonPlacing();
+
+            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(partVP->getQView());
+            QPointF placement;
+            if (viewPart && _checkDirectPlacement(viewPart, selection[0].getSubNames(), placement)) {
+                viewPage->createBalloon(placement, objFeat);
+            }
+        }
+    }
 }
 
 bool CmdTechDrawBalloon::isActive(void)
@@ -789,7 +846,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroup";
+    sPixmap       = "actions/TechDraw_ClipGroup";
 }
 
 void CmdTechDrawClipGroup::activated(int iMsg)
@@ -828,7 +885,7 @@ CmdTechDrawClipGroupAdd::CmdTechDrawClipGroupAdd()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupAdd";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupAdd";
+    sPixmap       = "actions/TechDraw_ClipGroupAdd";
 }
 
 void CmdTechDrawClipGroupAdd::activated(int iMsg)
@@ -907,7 +964,7 @@ CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupRemove";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupRemove";
+    sPixmap       = "actions/TechDraw_ClipGroupRemove";
 }
 
 void CmdTechDrawClipGroupRemove::activated(int iMsg)
@@ -979,7 +1036,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol()
     sToolTipText  = QT_TR_NOOP("Insert symbol from a SVG file");
     sWhatsThis    = "TechDraw_Symbol";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-symbol";
+    sPixmap       = "actions/TechDraw_symbol";
 }
 
 void CmdTechDrawSymbol::activated(int iMsg)
@@ -1003,11 +1060,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol",page);
         filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-#if PY_MAJOR_VERSION < 3
-        doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
-#else
         doCommand(Doc,"f = open(\"%s\",'r')",(const char*)filename.toUtf8());
-#endif
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
 
@@ -1040,7 +1093,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
     sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-DraftView";
+    sPixmap       = "actions/TechDraw_DraftView";
 }
 
 void CmdTechDrawDraftView::activated(int iMsg)
@@ -1106,7 +1159,7 @@ CmdTechDrawArchView::CmdTechDrawArchView()
     sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ArchView";
+    sPixmap       = "actions/TechDraw_ArchView";
 }
 
 void CmdTechDrawArchView::activated(int iMsg)
@@ -1168,7 +1221,7 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView()
     sToolTipText  = QT_TR_NOOP("Insert View to a spreadsheet");
     sWhatsThis    = "TechDraw_SpreadsheetView";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-SpreadsheetView";
+    sPixmap       = "actions/TechDraw_SpreadsheetView";
 }
 
 void CmdTechDrawSpreadsheetView::activated(int iMsg)
@@ -1226,7 +1279,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageSVG";
+    sPixmap       = "actions/TechDraw_ExportPageSVG";
 }
 
 void CmdTechDrawExportPageSVG::activated(int iMsg)
@@ -1268,7 +1321,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageDXF";
+    sPixmap       = "actions/TechDraw_ExportPageDXF";
 }
 
 static inline QString _getDefaultName(const App::DocumentObject *obj) {

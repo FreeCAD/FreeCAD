@@ -34,6 +34,7 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {

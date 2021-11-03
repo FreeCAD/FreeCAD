@@ -27,18 +27,16 @@
 # include "InventorAll.h"
 # include <unordered_map>
 # include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
 # include <sstream>
 # include <stdexcept>
 # include <iostream>
+# include <functional>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
-#if QT_VERSION >= 0x050000
 # include <QMessageLogContext>
-#endif
 # include <QPointer>
 # include <QSessionManager>
 # include <QStatusBar>
@@ -48,6 +46,7 @@
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/filesystem.hpp>
 #include <QtOpenGL.h>
 #if defined(HAVE_QT5_OPENGL)
 #include <QWindow>
@@ -77,9 +76,11 @@
 #include "DocumentPy.h"
 #include "View.h"
 #include "View3DPy.h"
+#include "UiLoader.h"
 #include "WidgetFactory.h"
 #include "Command.h"
 #include "Macro.h"
+#include "PreferencePackManager.h"
 #include "ProgressBar.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -147,7 +148,7 @@
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace std;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 Application* Application::Instance = 0L;
@@ -171,11 +172,15 @@ struct ApplicationP
             macroMngr = new MacroManager();
         else
             macroMngr = nullptr;
+
+        // Create the Theme Manager
+        prefPackManager = new PreferencePackManager();
     }
 
     ~ApplicationP()
     {
         delete macroMngr;
+        delete prefPackManager;
     }
 
     /// list of all handled documents
@@ -184,6 +189,7 @@ struct ApplicationP
     Gui::Document*   activeDocument;
     Gui::Document*  editDocument;
     MacroManager*  macroMngr;
+    PreferencePackManager* prefPackManager;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
     bool isClosing;
@@ -299,59 +305,8 @@ FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_FromString(SoDB::getVersion());
-#else
-    return PyString_FromString(SoDB::getVersion());
-#endif
 }
-
-// Copied from https://github.com/python/cpython/blob/master/Objects/moduleobject.c
-#if PY_MAJOR_VERSION >= 3
-#if PY_MINOR_VERSION <= 4
-static int
-_add_methods_to_object(PyObject *module, PyObject *name, PyMethodDef *functions)
-{
-    PyObject *func;
-    PyMethodDef *fdef;
-
-    for (fdef = functions; fdef->ml_name != NULL; fdef++) {
-        if ((fdef->ml_flags & METH_CLASS) ||
-            (fdef->ml_flags & METH_STATIC)) {
-            PyErr_SetString(PyExc_ValueError,
-                            "module functions cannot set"
-                            " METH_CLASS or METH_STATIC");
-            return -1;
-        }
-        func = PyCFunction_NewEx(fdef, (PyObject*)module, name);
-        if (func == NULL) {
-            return -1;
-        }
-        if (PyObject_SetAttrString(module, fdef->ml_name, func) != 0) {
-            Py_DECREF(func);
-            return -1;
-        }
-        Py_DECREF(func);
-    }
-
-    return 0;
-}
-
-int
-PyModule_AddFunctions(PyObject *m, PyMethodDef *functions)
-{
-    int res;
-    PyObject *name = PyModule_GetNameObject(m);
-    if (name == NULL) {
-        return -1;
-    }
-
-    res = _add_methods_to_object(m, name, functions);
-    Py_DECREF(name);
-    return res;
-}
-#endif
-#endif
 
 struct PyMethodDef FreeCADGui_methods[] = {
     {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
@@ -374,12 +329,12 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, bp::_1, bp::_2));
-        App::GetApplication().signalDeleteDocument.connect(boost::bind(&Gui::Application::slotDeleteDocument, this, bp::_1));
-        App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, bp::_1));
-        App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, bp::_1));
-        App::GetApplication().signalRelabelDocument.connect(boost::bind(&Gui::Application::slotRelabelDocument, this, bp::_1));
-        App::GetApplication().signalShowHidden.connect(boost::bind(&Gui::Application::slotShowHidden, this, bp::_1));
+        App::GetApplication().signalNewDocument.connect(std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
+        App::GetApplication().signalDeleteDocument.connect(std::bind(&Gui::Application::slotDeleteDocument, this, sp::_1));
+        App::GetApplication().signalRenameDocument.connect(std::bind(&Gui::Application::slotRenameDocument, this, sp::_1));
+        App::GetApplication().signalActiveDocument.connect(std::bind(&Gui::Application::slotActiveDocument, this, sp::_1));
+        App::GetApplication().signalRelabelDocument.connect(std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
+        App::GetApplication().signalShowHidden.connect(std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
 
         App::GetApplication().signalFinishOpenDocument.connect([]() {
             std::vector<App::Document*> docs;
@@ -464,7 +419,6 @@ Application::Application(bool GUIenabled)
             "workbenches."
             );
 
-#if PY_MAJOR_VERSION >= 3
         // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
         // otherwise the executable was launched
         PyObject* modules = PyImport_GetModuleDict();
@@ -484,9 +438,6 @@ Application::Application(bool GUIenabled)
             // extend the method list
             PyModule_AddFunctions(module, Application::Methods);
         }
-#else
-        PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods, FreeCADGui_doc);
-#endif
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
 
         UiLoaderPy::init_type();
@@ -503,7 +454,6 @@ Application::Application(bool GUIenabled)
             module,"ExpressionBinding");
 
         //insert Selection module
-#if PY_MAJOR_VERSION >= 3
         static struct PyModuleDef SelectionModuleDef = {
             PyModuleDef_HEAD_INIT,
             "Selection", "Selection module", -1,
@@ -511,9 +461,6 @@ Application::Application(bool GUIenabled)
             NULL, NULL, NULL, NULL
         };
         PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
-#else
-        PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,"Selection module");
-#endif
         Py_INCREF(pSelectionModule);
         PyModule_AddObject(module, "Selection", pSelectionModule);
 
@@ -904,13 +851,13 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     d->documents[&Doc] = pDoc;
 
     // connect the signals to the application for the new document
-    pDoc->signalNewObject.connect(boost::bind(&Gui::Application::slotNewObject, this, bp::_1));
-    pDoc->signalDeletedObject.connect(boost::bind(&Gui::Application::slotDeletedObject, this, bp::_1));
-    pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, bp::_1, bp::_2));
-    pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, bp::_1));
-    pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, bp::_1));
-    pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, bp::_1));
-    pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, bp::_1));
+    pDoc->signalNewObject.connect(std::bind(&Gui::Application::slotNewObject, this, sp::_1));
+    pDoc->signalDeletedObject.connect(std::bind(&Gui::Application::slotDeletedObject, this, sp::_1));
+    pDoc->signalChangedObject.connect(std::bind(&Gui::Application::slotChangedObject, this, sp::_1, sp::_2));
+    pDoc->signalRelabelObject.connect(std::bind(&Gui::Application::slotRelabelObject, this, sp::_1));
+    pDoc->signalActivatedObject.connect(std::bind(&Gui::Application::slotActivatedObject, this, sp::_1));
+    pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
+    pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
 
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc)
@@ -1402,6 +1349,50 @@ void Application::tryClose(QCloseEvent * e)
     }
 }
 
+int Application::getUserEditMode(const std::string &mode) const
+{
+    if (mode.empty()) {
+        return userEditMode;
+    }
+    for (auto const &uem : userEditModes) {
+        if (uem.second == mode) {
+            return uem.first;
+        }
+    }
+    return -1;
+}
+
+std::string Application::getUserEditModeName(int mode) const
+{
+    if (mode == -1) {
+        return userEditModes.at(userEditMode);
+    }
+    if (userEditModes.find(mode) != userEditModes.end()) {
+        return userEditModes.at(mode);
+    }
+    return "";
+}
+
+bool Application::setUserEditMode(int mode)
+{
+    if (userEditModes.find(mode) != userEditModes.end() && userEditMode != mode) {
+        userEditMode = mode;
+        this->signalUserEditModeChanged(userEditMode);
+        return true;
+    }
+    return false;
+}
+
+bool Application::setUserEditMode(const std::string &mode)
+{
+    for (auto const &uem : userEditModes) {
+        if (uem.second == mode) {
+            return setUserEditMode(uem.first);
+        }
+    }
+    return false;
+}
+
 bool Application::initializeWorkbench(const char *name)
 {
     Workbench* wb = WorkbenchManager::instance()->getWorkbench(name);
@@ -1784,11 +1775,7 @@ QStringList Application::workbenches(void) const
     // insert all items
     while (PyDict_Next(_pcWorkbenchDictionary, &pos, &key, &value)) {
         /* do something interesting with the values... */
-#if PY_MAJOR_VERSION >= 3
         const char* wbName = PyUnicode_AsUTF8(key);
-#else
-        const char* wbName = PyString_AsString(key);
-#endif
         // add only allowed workbenches
         bool ok = true;
         if (!extra.isEmpty()&&ok) {
@@ -1857,26 +1844,25 @@ CommandManager &Application::commandManager(void)
     return d->commandManager;
 }
 
+Gui::PreferencePackManager* Application::prefPackManager(void)
+{
+    return d->prefPackManager;
+}
+
+
 //**************************************************************************
 // Init, Destruct and singleton
 
-#if QT_VERSION >= 0x050000
 typedef void (*_qt_msg_handler_old)(QtMsgType, const QMessageLogContext &, const QString &);
-#else
-typedef void (*_qt_msg_handler_old)(QtMsgType type, const char *msg);
-#endif
 _qt_msg_handler_old old_qtmsg_handler = 0;
 
-#if QT_VERSION >= 0x050000
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
 #ifdef FC_DEBUG
     switch (type)
     {
-#if QT_VERSION >= 0x050500
     case QtInfoMsg:
-#endif
     case QtDebugMsg:
         Base::Console().Message("%s\n", msg.toUtf8().constData());
         break;
@@ -1900,36 +1886,6 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     Base::Console().Log("%s\n", msg.toUtf8().constData());
 #endif
 }
-#else
-void messageHandler(QtMsgType type, const char *msg)
-{
-#ifdef FC_DEBUG
-    switch (type)
-    {
-    case QtDebugMsg:
-        Base::Console().Message("%s\n", msg);
-        break;
-    case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg);
-        break;
-    case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg);
-        break;
-    case QtFatalMsg:
-        Base::Console().Error("%s\n", msg);
-        abort();                    // deliberately core dump
-    }
-#ifdef FC_OS_WIN32
-    if (old_qtmsg_handler)
-        (*old_qtmsg_handler)(type, msg);
-#endif
-#else
-    // do not stress user with Qt internals but write to log file if enabled
-    Q_UNUSED(type);
-    Base::Console().Log("%s\n", msg);
-#endif
-}
-#endif
 
 #ifdef FC_DEBUG // redirect Coin messages to FreeCAD
 void messageHandlerCoin(const SoError * error, void * /*userdata*/)
@@ -1951,11 +1907,7 @@ void messageHandlerCoin(const SoError * error, void * /*userdata*/)
         }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
-#if QT_VERSION >=0x050000
         (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), QString::fromLatin1(msg));
-#else
-        (*old_qtmsg_handler)(QtDebugMsg, msg);
-#endif
 #endif
     }
     else if (error) {
@@ -1986,11 +1938,7 @@ void Application::initApplication(void)
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
-#if QT_VERSION >=0x050000
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);
-#else
-        old_qtmsg_handler = qInstallMsgHandler(messageHandler);
-#endif
         init = true;
     }
     catch (...) {
@@ -2089,13 +2037,13 @@ GuiExport void postMainWindowSetup(MainWindow &mw);
 
 void preAppSetup()
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif
-#if QT_VERSION >= 0x050600
+
+    // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
     ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
@@ -2111,21 +2059,30 @@ void preAppSetup()
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
-#endif // QT_VERSION >= 0x050600
 
-#if QT_VERSION >= 0x050100
     //Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
 
     // Use software rendering for OpenGL
-#if QT_VERSION >= 0x050400
     ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
     bool useSoftwareOpenGL = hOpenGL->GetBool("UseSoftwareOpenGL", false);
     if (useSoftwareOpenGL) {
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
-#endif // QT_VERSION >= 0x050400
+
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+        // By default (on platforms that support it, see docs for
+        // Qt::AA_CompressHighFrequencyEvents) QT applies compression
+        // for high frequency events (mouse move, touch, window resizes)
+        // to keep things smooth even when handling the event takes a
+        // while (e.g. to calculate snapping).
+        // However, tablet pen move events (and mouse move events
+        // synthesised from those) are not compressed by default (to
+        // allow maximum precision when e.g. hand-drawing curves),
+        // leading to unacceptable slowdowns using a tablet pen. Enable
+        // compression for tablet events here to solve that.
+        QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
+    #endif
 }
 
 void postAppSetup()
@@ -2305,6 +2262,12 @@ void postMainWindowSetup(MainWindow &mw)
         WheelEventFilter* filter = new WheelEventFilter(qApp);
         qApp->installEventFilter(filter);
     }
+    
+    //filter keyboard events to substitute decimal separator
+    if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
+        KeyboardFilter* filter = new KeyboardFilter(qApp);
+        qApp->installEventFilter(filter);
+    }
 
 #if defined(HAVE_QT5_OPENGL)
     {
@@ -2452,10 +2415,26 @@ void postMainWindowSetup(MainWindow &mw)
     SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
 #endif
 
+    // Now run the background autoload, for workbenches that should be loaded at startup, but not
+    // displayed to the user immediately
+    std::string autoloadCSV = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("BackgroundAutoloadModules", "");
+
+    // Tokenize the comma-separated list and load the requested workbenches if they exist in this installation
+    std::vector<std::string> backgroundAutoloadedModules;
+    std::stringstream stream(autoloadCSV);
+    std::string workbench;
+    while (std::getline(stream, workbench, ','))
+        if (wb.contains(QString::fromLatin1(workbench.c_str())))
+            Application::Instance->initializeWorkbench(workbench.c_str());
+
     _ApplicationStartUp = false;
 
     // gets called once we start the event loop
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
+
+    // run the Application event loop
+    Base::Console().Log("Init: Entering event loop\n");
 
     // boot phase reference point
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=21665
@@ -2695,21 +2674,6 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QBrush(QColor(160,160,160)));
         }
-#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
-        // Under Windows the tree indicator branch gets corrupted after a while.
-        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
-        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
-        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
-        QString qss = QString::fromLatin1(
-               "QTreeView::branch:closed:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_closed.png);\n"
-               "}\n"
-               "\n"
-               "QTreeView::branch:open:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_open.png);\n"
-               "}\n");
-        qApp->setStyleSheet(qss);
-#endif
     }
 
     // At startup time unpolish() mustn't be executed because otherwise the QSint widget
@@ -2724,80 +2688,8 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 void Application::checkForPreviousCrashes()
 {
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
-    tmp.setFilter(QDir::Files);
-
-    QList<QFileInfo> restoreDocFiles;
-    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
-    QList<QFileInfo> locks = tmp.entryInfoList();
-    for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
-        QString bn = it->baseName();
-        // ignore the lock file for this instance
-        QString pid = QString::number(QCoreApplication::applicationPid());
-        if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
-            QString fn = it->absoluteFilePath();
-            boost::interprocess::file_lock flock((const char*)fn.toLocal8Bit());
-            if (flock.try_lock()) {
-                // OK, this file is a leftover from a previous crash
-                QString crashed_pid = bn.mid(exeName.length()+1);
-                // search for transient directories with this PID
-                QString filter;
-                QTextStream str(&filter);
-                str << exeName << "_Doc_*_" << crashed_pid;
-                tmp.setNameFilters(QStringList() << filter);
-                tmp.setFilter(QDir::Dirs);
-                QList<QFileInfo> dirs = tmp.entryInfoList();
-                if (dirs.isEmpty()) {
-                    // delete the lock file immediately if no transient directories are related
-                    tmp.remove(fn);
-                }
-                else {
-                    int countDeletedDocs = 0;
-                    QString recovery_files = QString::fromLatin1("fc_recovery_files");
-                    for (QList<QFileInfo>::iterator it = dirs.begin(); it != dirs.end(); ++it) {
-                        QDir doc_dir(it->absoluteFilePath());
-                        doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
-                        uint entries = doc_dir.entryList().count();
-                        if (entries == 0) {
-                            // in this case we can delete the transient directory because
-                            // we cannot do anything
-                            if (tmp.rmdir(it->filePath()))
-                                countDeletedDocs++;
-                        }
-                        // search for the existence of a recovery file
-                        else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
-                            // store the transient directory in case it's not empty
-                            restoreDocFiles << *it;
-                        }
-                        // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
-                        else if (entries == 1 && doc_dir.exists(recovery_files)) {
-                            // if the sub-directory is empty delete the transient directory
-                            QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
-                            rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
-                            if (rec_dir.entryList().isEmpty()) {
-                                doc_dir.rmdir(recovery_files);
-                                if (tmp.rmdir(it->filePath()))
-                                    countDeletedDocs++;
-                            }
-                        }
-                    }
-
-                    // all directories corresponding to the lock file have been deleted
-                    // so delete the lock file, too
-                    if (countDeletedDocs == dirs.size()) {
-                        tmp.remove(fn);
-                    }
-                }
-            }
-        }
-    }
-
-    if (!restoreDocFiles.isEmpty()) {
-        Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
-        if (dlg.foundDocuments())
-            dlg.exec();
-    }
+    Gui::Dialog::DocumentRecoveryFinder finder;
+    finder.checkForPreviousCrashes();
 }
 
 App::Document *Application::reopen(App::Document *doc) {

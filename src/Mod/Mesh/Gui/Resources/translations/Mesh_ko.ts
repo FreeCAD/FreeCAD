@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="848"/>
       <source>Add triangle</source>
-      <translation type="unfinished">Add triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="849"/>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
@@ -209,13 +209,13 @@
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Close hole</source>
-      <translation type="unfinished">Close hole</translation>
+      <translation>구멍 닫기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1675"/>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Close holes interactively</source>
-      <translation type="unfinished">Close holes interactively</translation>
+      <translation>대화식으로 구멍 닫기</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Fill holes...</source>
-      <translation type="unfinished">Fill holes...</translation>
+      <translation>구멍 메우기...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
@@ -492,7 +492,7 @@
       <location filename="../../Command.cpp" line="1320"/>
       <location filename="../../Command.cpp" line="1322"/>
       <source>Mark a component to remove it from the mesh</source>
-      <translation type="unfinished">Mark a component to remove it from the mesh</translation>
+      <translation>메시에서 제거할 구성요소를 표시합니다.</translation>
     </message>
   </context>
   <context>
@@ -511,7 +511,7 @@
       <location filename="../../Command.cpp" line="1242"/>
       <location filename="../../Command.cpp" line="1244"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation type="unfinished">Remove topologic independent components from the mesh</translation>
+      <translation>메시에서 토폴로지 독립 구성요소 제거</translation>
     </message>
   </context>
   <context>
@@ -739,8 +739,8 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -1594,7 +1594,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="362"/>
@@ -1642,7 +1642,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu:</source>
-      <translation type="unfinished">Mu:</translation>
+      <translation>Mu:</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1653,48 +1653,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation type="unfinished">Automatic</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation type="unfinished">Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation type="unfinished">Frontal Quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation type="unfinished">Parallelograms</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>시간:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation type="unfinished">Running gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation type="unfinished">Failed to start</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>에러</translation>
     </message>
@@ -1704,7 +1704,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
       <source>Add triangle</source>
-      <translation type="unfinished">Add triangle</translation>
+      <translation>삼각형 추가</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>

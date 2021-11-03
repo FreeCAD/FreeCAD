@@ -217,7 +217,7 @@ class CurveOnMeshHandler::Private
 public:
     struct PickedPoint
     {
-        unsigned long facet;
+        MeshCore::FacetIndex facet;
         SbVec3f point;
         SbVec3f normal;
     };

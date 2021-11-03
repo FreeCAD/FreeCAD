@@ -73,7 +73,7 @@ class Drawing(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Drawing, self).Activated(name=translate("draft","Drawing"))
+        super(Drawing, self).Activated(name="Drawing")
         _wrn(translate("draft","The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead."))
         if not Gui.Selection.getSelection():
             self.ghost = None

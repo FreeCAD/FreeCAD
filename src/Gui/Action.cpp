@@ -43,10 +43,8 @@
 
 #include <QWidgetAction>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QWindow>
-# include <QScreen>
-#endif
+#include <QWindow>
+#include <QScreen>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <cctype>
@@ -418,7 +416,7 @@ Action::addWidget(QMenu *menu,
  * to the command object.
  */
 ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
-  : Action(pcCmd, parent), _group(0), _dropDown(false),_external(false),_toggle(false)
+  : Action(pcCmd, parent), _group(0), _dropDown(false),_external(false),_toggle(false),_isMode(false)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
@@ -542,7 +540,7 @@ void ActionGroup::setCheckedAction(int i)
     QAction* a = actions[i];
     a->setChecked(true);
     this->setIcon(a->icon());
-    this->setToolTip(a->toolTip());
+    if (!this->_isMode) this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(i));
 }
 
@@ -588,7 +586,7 @@ void ActionGroup::onActivated (QAction* a)
     // The following logic is moved to Command::onInvoke()
 #if 0
     this->setIcon(a->icon());
-    this->setToolTip(a->toolTip());
+    if (!this->_isMode) this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(index));
 #endif
 
@@ -2461,7 +2459,7 @@ public:
         :Command(name)
     {
         menuText      = hGrp->GetASCII("Name", "Custom");
-        sGroup        = QT_TR_NOOP("Tools");
+        sGroup        = "Tools";
         sMenuText     = menuText.c_str();
         sWhatsThis    = "Std_CmdToolbarSubMenu";
         eType         = NoTransaction | NoHistory;

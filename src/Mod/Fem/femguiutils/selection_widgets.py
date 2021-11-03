@@ -231,16 +231,15 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
-    def __init__(self, ref, eltypes=[], multigeom=True):
+    def __init__(self, ref, eltypes, multigeom, showHintEmptyList):
         super(GeometryElementsSelection, self).__init__()
         # init ui stuff
         FreeCADGui.Selection.clearSelection()
-        self.selection_mode_solid = False
         self.sel_server = None
         self.obj_notvisible = []
         self.initElemTypes(eltypes)
         self.allow_multiple_geom_types = multigeom
-        # print(self.allow_multiple_geom_types)
+        self.showHintEmptyList = showHintEmptyList
         self.initUI()
         # set references and fill the list widget
         self.references = []
@@ -270,17 +269,30 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initUI(self):
         # auch ArchPanel ist coded ohne ui-file
         # title
-        self.setWindowTitle(self.tr("Geometry reference selector for a ") + self.sel_elem_text)
+        self.setWindowTitle(
+            self.tr("Geometry reference selector for a") + " " + self.sel_elem_text
+        )
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         # label
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
-        self._helpTextLbl.setText(self.tr(
-            'Click on "Add" and select geometric elements to add them to the list. '
-            "If no geometry is added to the list, all remaining ones are used. "
-            "The following geometry elements are allowed to select: "
-        ) + self.sel_elem_text)
+        helpTextPart1 = self.tr(
+            'Click on "Add" and select geometric elements to add them to the list.{}'
+            "The following geometry elements are allowed to select: {}{}{}"
+            .format("<br>", "<b>", self.sel_elem_text, "</b>")
+        )
+        helpTextEmpty = self.tr(
+            "{}If no geometry is added to the list, all remaining ones are used.".format("<br>")
+        )
+        if self.showHintEmptyList is True:
+            self._helpTextLbl.setText(
+                helpTextPart1 + helpTextEmpty
+            )
+        else:
+            self._helpTextLbl.setText(
+                helpTextPart1
+            )
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -288,9 +300,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.lb_selmod.setText(self.tr("Selection mode"))
         self.rb_standard = QtGui.QRadioButton(self.tr(self.sel_elem_text.lstrip("Solid, ")))
         self.rb_solid = QtGui.QRadioButton(self.tr("Solid"))
-        self.rb_standard.setChecked(True)
-        self.rb_solid.setChecked(False)
-        # radio butoon layout
+        # radio button layout
         rbtnLayout = QtGui.QHBoxLayout()
         rbtnLayout.addWidget(self.lb_selmod)
         rbtnLayout.addWidget(self.rb_standard)
@@ -300,8 +310,19 @@ class GeometryElementsSelection(QtGui.QWidget):
         mainLayout.addWidget(self._helpTextLbl)
         mainLayout.addWidget(self.pushButton_Add)
         mainLayout.addWidget(self.list_References)
-        if "Solid" in self.sel_elem_types:
+
+        # if only "Solid" is avail, std-sel-mode is obsolete
+        if "Solid" in self.sel_elem_types and len(self.sel_elem_types) == 1:
+            self.selection_mode_solid = True
+        else:
+            self.selection_mode_solid = False
+
+        # show radio buttons, if a solid and at least one nonsolid is allowed
+        if "Solid" in self.sel_elem_types and len(self.sel_elem_types) > 1:
+            self.rb_standard.setChecked(True)
+            self.rb_solid.setChecked(False)
             mainLayout.addLayout(rbtnLayout)
+
         self.setLayout(mainLayout)
         # signals and slots
         self.list_References.itemSelectionChanged.connect(self.select_clicked_reference_shape)

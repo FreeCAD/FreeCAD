@@ -82,6 +82,8 @@
 
 #include "ImpExpDxf.h"
 
+namespace Import {
+
 class ImportOCAFExt : public Import::ImportOCAF2
 {
 public:
@@ -98,7 +100,6 @@ private:
     }
 };
 
-namespace Import {
 class Module : public Py::ExtensionModule<Module>
 {
 public:

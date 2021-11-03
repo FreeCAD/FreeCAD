@@ -68,7 +68,7 @@ class Array(gui_base_original.Modifier):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Array", "Array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Array", "Creates an array from a selected object.\nBy default, it is a 2x2 orthogonal array.\nOnce the array is created its type can be changed\nto polar or circular, and its properties can be modified.")}
 
-    def Activated(self, name=translate("draft","Array")):
+    def Activated(self, name="Array"):
         """Execute when the command is called."""
         super(Array, self).Activated(name=name)
         if not Gui.Selection.getSelection():
@@ -121,7 +121,7 @@ class LinkArray(Array):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(LinkArray, self).Activated(name=translate("draft","Link array"))
+        super(LinkArray, self).Activated(name="Link array")
 
 
 Gui.addCommand('Draft_LinkArray', LinkArray())

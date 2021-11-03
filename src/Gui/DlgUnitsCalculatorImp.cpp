@@ -81,11 +81,13 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance
           << Base::Unit::ElectricalResistance
+          << Base::Unit::ElectricalConductivity
           << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent
           << Base::Unit::ElectricPotential
           << Base::Unit::Frequency
           << Base::Unit::Force
+          << Base::Unit::Stiffness
           << Base::Unit::HeatFlux
           << Base::Unit::Length
           << Base::Unit::LuminousIntensity

@@ -53,6 +53,7 @@
 #include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
+#include "SpreadsheetViewPy.h"
 #include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
@@ -98,9 +99,12 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
             this, SLOT(rowResized(int, int, int)));
 
-    connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
-    connect(ui->cellAlias, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
-    connect(ui->cellAlias, SIGNAL(textEdited(QString)), this, SLOT(aliasChanged(QString)));
+    connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
+    connect(ui->cellContent, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellContent, &LineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellAlias, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
@@ -215,20 +219,6 @@ void SheetView::setCurrentCell(QString str)
     updateAliasLine();
 }
 
-void SheetView::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Delete) {
-        if (event->modifiers() == 0) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-        else if (event->modifiers() == Qt::ControlModifier) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-    }
-    else
-        Gui::MDIView::keyPressEvent(event);
-}
-
 void SheetView::updateContentLine()
 {
     QModelIndex i = ui->cells->currentIndex();
@@ -238,7 +228,6 @@ void SheetView::updateContentLine()
         if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
-        ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
@@ -255,7 +244,6 @@ void SheetView::updateAliasLine()
         if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
-        ui->cellAlias->setIndex(i);
         ui->cellAlias->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
@@ -322,52 +310,65 @@ void SheetView::resizeRow(int col, int newSize)
         ui->cells->setRowHeight(col, newSize);
 }
 
-void SheetView::editingFinished()
+void SheetView::editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
 {
-    if (ui->cellContent->completerActive()) {
-        ui->cellContent->hideCompleter();
-        return;
-    }
+    QModelIndex i = ui->cells->currentIndex();
 
-    if (ui->cellAlias->completerActive()) {
-        ui->cellAlias->hideCompleter();
-        return;
+    if (i.isValid()) {
+        confirmContentChanged(ui->cellContent->text());
+        ui->cells->finishEditWithMove(key, modifiers);
+    }
+}
+
+void SheetView::confirmAliasChanged(const QString& text)
+{
+    bool aliasOkay = true;
+
+    ui->cellAlias->setDocumentObject(sheet);
+    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+        aliasOkay = false;
     }
 
     QModelIndex i = ui->cells->currentIndex();
+    if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+        App::AutoTransaction guard("Edit cell alias");
+        try {
+            if (!aliasOkay) {
+                //do not show error message if failure to set new alias is because it is already the same string
+                std::string current_alias;
+                (void)cell->getAlias(current_alias);
+                if (text != QString::fromUtf8(current_alias.c_str())) {
+                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(text).c_str());
+                }
+            }
+            else {
+                std::string address = CellAddress(i.row(), i.column()).toString();
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                    address, text.toStdString());
+                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+                ui->cells->setFocus();
+            }
+        } catch (Base::Exception & e) {
+            e.ReportException();
+            guard.close(true);
+            QMessageBox::critical(getMainWindow(), tr("Edit cell alias"),
+                    tr("Failed to edit cell alias: %1").arg(QString::fromUtf8(e.what())));
+        }
+    }
+}
 
+
+void SheetView::confirmContentChanged(const QString& text)
+{
+    QModelIndex i = ui->cells->currentIndex();
     if (!i.isValid())
         return;
 
     App::AutoTransaction guard("Edit cell");
     try {
-        std::string str = ui->cellAlias->text().toUtf8().constData();
-        bool aliasOkay = true;
-
-        if (!str.empty() && !sheet->isValidAlias(str.c_str())){
-            aliasOkay = false;
-        }
-
-        ui->cellAlias->setDocumentObject(sheet);
+        std::string str = text.toUtf8().constData();
         CellAddress addr(i.row(), i.column());
         sheet->setCell(addr, ui->cellContent->text().toUtf8().constData());
-
-        Cell * cell = sheet->getCell(addr);
-        if (cell && !aliasOkay){
-            //do not show error message if failure to set new alias is because it is already the same string
-            std::string current_alias;
-            cell->getAlias(current_alias);
-            if (str != current_alias){
-                Base::Console().Error("Unable to set alias: %s\n", str.c_str());
-            }
-        }
-        if (aliasOkay) {
-            std::string address = CellAddress(i.row(), i.column()).toString();
-            Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
-                                address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
-            Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
-        }
-        ui->cells->setCurrentIndex(ui->cellContent->next());
         ui->cells->setFocus();
     } catch (Base::Exception & e) {
         e.ReportException();
@@ -455,7 +456,11 @@ QModelIndex SheetView::currentIndex() const
 
 PyObject *SheetView::getPyObject()
 {
-    return Gui::MDIView::getPyObject();
+    if (!pythonObject)
+        pythonObject = new SpreadsheetViewPy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void SheetView::deleteSelf()

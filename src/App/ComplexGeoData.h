@@ -103,12 +103,12 @@ public:
     /// get subelement by combined name
     virtual Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,

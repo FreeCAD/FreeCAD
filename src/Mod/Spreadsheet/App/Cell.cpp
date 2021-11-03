@@ -43,7 +43,6 @@
 #include <Base/Writer.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/StdStlTools.h>
 #include <App/ExpressionParser.h>
 #include <App/Application.h>
 #include "Sheet.h"
@@ -529,6 +528,7 @@ void Cell::setDisplayUnit(const std::string &unit)
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
         auto e = Expression::parseUnit(owner->sheet(), unit.c_str());
+
         if (!e)
             throw Base::UnitsMismatchError("Invalid unit");
         UnitExpression *expr = static_cast<UnitExpression*>(e.get());

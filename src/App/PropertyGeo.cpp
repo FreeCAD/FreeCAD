@@ -42,6 +42,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
+#include <Base/RotationPy.h>
 
 #include "Document.h"
 #include "DocumentObject.h"
@@ -120,39 +121,24 @@ void PropertyVector::setPyObject(PyObject *value)
         item = PyTuple_GetItem(value,0);
         if (PyFloat_Check(item))
             cVec.x = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.x = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.x = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // y
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
             cVec.y = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.y = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.y = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // z
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
             cVec.z = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.z = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.z = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         setValue( cVec );
@@ -557,13 +543,8 @@ void PropertyMatrix::setPyObject(PyObject *value)
                 item = PyTuple_GetItem(value,x+y*4);
                 if (PyFloat_Check(item))
                     cMatrix[x][y] = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-                else if (PyInt_Check(item))
-                    cMatrix[x][y] = (double)PyInt_AsLong(item);
-#else
                 else if (PyLong_Check(item))
                     cMatrix[x][y] = (double)PyLong_AsLong(item);
-#endif
                 else
                     throw Base::TypeError("Not allowed type used in matrix tuple (a number expected)...");
             }
@@ -1193,6 +1174,190 @@ void PropertyPlacementLink::Paste(const Property &from)
 {
     aboutToSetValue();
     _pcLink = dynamic_cast<const PropertyPlacementLink&>(from)._pcLink;
+    hasSetValue();
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyRotation
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyRotation , App::Property)
+
+PropertyRotation::PropertyRotation()
+{
+
+}
+
+
+PropertyRotation::~PropertyRotation()
+{
+
+}
+
+void PropertyRotation::setValue(const Base::Rotation &rot)
+{
+    aboutToSetValue();
+    _rot = rot;
+    hasSetValue();
+}
+
+bool PropertyRotation::setValueIfChanged(const Base::Rotation &rot, double atol)
+{
+    if (_rot.isSame(rot, atol)) {
+        return false;
+    }
+
+    setValue(rot);
+    return true;
+}
+
+
+const Base::Rotation & PropertyRotation::getValue() const
+{
+    return _rot;
+}
+
+void PropertyRotation::getPaths(std::vector<ObjectIdentifier> &paths) const
+{
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Angle")));
+
+
+    // Unlike the above path (which provides units that are not available
+    // through python, the following paths provides the same value. They are no
+    // longer needed, because the expression completer will now dig into all
+    // python attributes.
+    //
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
+}
+
+void PropertyRotation::setPathValue(const ObjectIdentifier &path, const App::any &value)
+{
+    if (path.getSubPathStr() == ".Angle") {
+        double avalue;
+
+        if (value.type() == typeid(Base::Quantity))
+            avalue = App::any_cast<Base::Quantity>(value).getValue();
+        else if (value.type() == typeid(double))
+            avalue = App::any_cast<double>(value);
+        else if (value.type() == typeid(int))
+            avalue =  App::any_cast<int>(value);
+        else if (value.type() == typeid(unsigned int))
+            avalue =  App::any_cast<unsigned int >(value);
+        else if (value.type() == typeid(short))
+            avalue =  App::any_cast<short>(value);
+        else if (value.type() == typeid(unsigned short))
+            avalue =  App::any_cast<unsigned short>(value);
+        else if (value.type() == typeid(long))
+            avalue =  App::any_cast<long>(value);
+        else if (value.type() == typeid(unsigned long))
+            avalue =  App::any_cast<unsigned long>(value);
+        else
+            throw std::bad_cast();
+
+        Property::setPathValue(path, Base::toRadians(avalue));
+    }
+    else {
+        Property::setPathValue(path, value);
+    }
+}
+
+App::any PropertyRotation::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".Angle") {
+        // Convert angle to degrees
+        return Base::Quantity(Base::toDegrees(App::any_cast<double>(Property::getPathValue(path))), Unit::Angle);
+    }
+    else {
+        return Property::getPathValue(path);
+    }
+}
+
+bool PropertyRotation::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Angle") {
+        Base::Vector3d axis; double angle;
+        _rot.getValue(axis,angle);
+        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle)));
+        return true;
+    }
+
+    return false;
+}
+
+PyObject *PropertyRotation::getPyObject()
+{
+    return new Base::RotationPy(new Base::Rotation(_rot));
+}
+
+void PropertyRotation::setPyObject(PyObject *value)
+{
+    if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
+        Base::MatrixPy *object = static_cast<Base::MatrixPy*>(value);
+        Base::Matrix4D mat = object->value();
+        Base::Rotation p;
+        p.setValue(mat);
+        setValue(p);
+    }
+    else if (PyObject_TypeCheck(value, &(Base::RotationPy::Type))) {
+        setValue(*static_cast<Base::RotationPy*>(value)->getRotationPtr());
+    }
+    else {
+        std::string error = std::string("type must be 'Matrix' or 'Rotation', not ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+}
+
+void PropertyRotation::Save (Base::Writer &writer) const
+{
+    Vector3d axis;
+    double rfAngle;
+    _rot.getValue(axis, rfAngle);
+
+    writer.Stream() << writer.ind() << "<PropertyRotation";
+    writer.Stream() << " A=\"" <<  rfAngle << "\""
+                    << " Ox=\"" <<  axis.x << "\""
+                    << " Oy=\"" <<  axis.y << "\""
+                    << " Oz=\"" <<  axis.z << "\""
+                    << "/>\n";
+}
+
+void PropertyRotation::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("PropertyRotation");
+    aboutToSetValue();
+
+    _rot = Rotation(Vector3d(reader.getAttributeAsFloat("Ox"),
+                             reader.getAttributeAsFloat("Oy"),
+                             reader.getAttributeAsFloat("Oz")),
+                             reader.getAttributeAsFloat("A"));
+    hasSetValue();
+}
+
+Property *PropertyRotation::Copy() const
+{
+    PropertyRotation *p = new PropertyRotation();
+    p->_rot = _rot;
+    return p;
+}
+
+void PropertyRotation::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _rot = dynamic_cast<const PropertyRotation&>(from)._rot;
     hasSetValue();
 }
 

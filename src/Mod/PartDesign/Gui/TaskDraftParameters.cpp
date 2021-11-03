@@ -65,8 +65,8 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     double a = pcDraft->Angle.getValue();
 
-    ui->draftAngle->setMinimum(0.0);
-    ui->draftAngle->setMaximum(89.99);
+    ui->draftAngle->setMinimum(pcDraft->Angle.getMinimum());
+    ui->draftAngle->setMaximum(pcDraft->Angle.getMaximum());
     ui->draftAngle->setValue(a);
     ui->draftAngle->selectAll();
     QMetaObject::invokeMethod(ui->draftAngle, "setFocus", Qt::QueuedConnection);

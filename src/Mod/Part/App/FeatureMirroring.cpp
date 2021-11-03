@@ -88,6 +88,9 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
         Normal.setValue(v.getValue());
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 App::DocumentObjectExecReturn *Mirroring::execute(void)

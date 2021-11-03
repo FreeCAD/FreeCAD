@@ -32,8 +32,6 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
-
-#include "FeatureLinearPattern.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
 #include <App/OriginFeature.h>
@@ -42,6 +40,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
+#include "FeatureLinearPattern.h"
+
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -49,12 +49,15 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
+
 LinearPattern::LinearPattern()
 {
     ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short LinearPattern::mustExecute() const
@@ -185,6 +188,21 @@ std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<Part::Top
     }
 
     return transformations;
+}
+
+void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 }

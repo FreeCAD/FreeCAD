@@ -63,9 +63,9 @@ public:
     Product* getParentAssembly();
     void ensureInitialisation();
     
-    boost::shared_ptr<Part3D> m_part;
-    virtual boost::shared_ptr<Geometry3D> getGeometry3D(const char* Type );
-    void setCalculatedPlacement( boost::shared_ptr<Part3D> part );
+    std::shared_ptr<Part3D> m_part;
+    virtual std::shared_ptr<Geometry3D> getGeometry3D(const char* Type );
+    void setCalculatedPlacement( std::shared_ptr<Part3D> part );
 };
 
 } //namespace Assembly

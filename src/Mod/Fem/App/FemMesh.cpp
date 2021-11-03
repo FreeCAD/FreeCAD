@@ -1105,6 +1105,393 @@ std::set<int> FemMesh::getFacesOnly(void) const
     return resultIDs;
 }
 
+namespace {
+class NastranElement {
+public:
+    virtual ~NastranElement() = default;
+    bool isValid() const {
+        return element_id >= 0;
+    }
+    virtual void read(const std::string& str1, const std::string& str2) = 0;
+    virtual void addToMesh(SMESHDS_Mesh* meshds) = 0;
+
+protected:
+    int element_id = -1;
+    std::vector<int> elements;
+};
+
+typedef std::shared_ptr<NastranElement> NastranElementPtr;
+
+class GRIDElement : public NastranElement {
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddNodeWithID(node.x, node.y, node.z, element_id);
+    }
+
+protected:
+    Base::Vector3d node;
+};
+
+class GRIDFreeFieldElement : public GRIDElement {
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 6)
+            return;//Line does not include Nodal coordinates
+
+        element_id = atoi(token_results[1].c_str());
+        node.x = atof(token_results[3].c_str());
+        node.y = atof(token_results[4].c_str());
+        node.z = atof(token_results[5].c_str());
+    }
+};
+
+class GRIDLongFieldElement : public GRIDElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,24).c_str());
+        node.x = atof(str1.substr(40,56).c_str());
+        node.y = atof(str1.substr(56,72).c_str());
+        node.z = atof(str2.substr(8,24).c_str());
+    }
+};
+
+class GRIDSmallFieldElement : public GRIDElement {
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+class CTRIA3Element : public NastranElement {
+public:
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        const SMDS_MeshNode* n0 = meshds->FindNode(elements[0]);
+        const SMDS_MeshNode* n1 = meshds->FindNode(elements[1]);
+        const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
+        if (n0 && n1 && n2) {
+            meshds->AddFaceWithID
+            (
+                n0, n1, n2,
+                element_id
+            );
+        }
+        else {
+            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+                                    element_id,
+                                    elements[0],
+                                    elements[1],
+                                    elements[2]);
+        }
+    }
+};
+
+class CTRIA3FreeFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 6)
+            return;//Line does not include enough nodal IDs
+
+        element_id = atoi(token_results[1].c_str());
+        elements.push_back(atoi(token_results[3].c_str()));
+        elements.push_back(atoi(token_results[4].c_str()));
+        elements.push_back(atoi(token_results[5].c_str()));
+    }
+};
+
+class CTRIA3LongFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+    }
+};
+
+class CTRIA3SmallFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+class CTETRAElement : public NastranElement {
+public:
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        const SMDS_MeshNode* n0 = meshds->FindNode(elements[1]);
+        const SMDS_MeshNode* n1 = meshds->FindNode(elements[0]);
+        const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
+        const SMDS_MeshNode* n3 = meshds->FindNode(elements[3]);
+        const SMDS_MeshNode* n4 = meshds->FindNode(elements[4]);
+        const SMDS_MeshNode* n5 = meshds->FindNode(elements[6]);
+        const SMDS_MeshNode* n6 = meshds->FindNode(elements[5]);
+        const SMDS_MeshNode* n7 = meshds->FindNode(elements[8]);
+        const SMDS_MeshNode* n8 = meshds->FindNode(elements[7]);
+        const SMDS_MeshNode* n9 = meshds->FindNode(elements[9]);
+        if (n0 && n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 && n9) {
+            meshds->AddVolumeWithID
+            (
+                n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+                element_id
+            );
+        }
+        else {
+            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+                                    element_id,
+                                    elements[1],
+                                    elements[0],
+                                    elements[2],
+                                    elements[3],
+                                    elements[4],
+                                    elements[6],
+                                    elements[5],
+                                    elements[8],
+                                    elements[7],
+                                    elements[9]);
+        }
+    }
+};
+
+class CTETRAFreeFieldElement : public CTETRAElement {
+public:
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 14)
+            return;//Line does not include enough nodal IDs
+
+        element_id = atoi(token_results[1].c_str());
+        elements.push_back(atoi(token_results[3].c_str()));
+        elements.push_back(atoi(token_results[4].c_str()));
+        elements.push_back(atoi(token_results[5].c_str()));
+        elements.push_back(atoi(token_results[6].c_str()));
+        elements.push_back(atoi(token_results[7].c_str()));
+        elements.push_back(atoi(token_results[8].c_str()));
+        elements.push_back(atoi(token_results[10].c_str()));
+        elements.push_back(atoi(token_results[11].c_str()));
+        elements.push_back(atoi(token_results[12].c_str()));
+        elements.push_back(atoi(token_results[13].c_str()));
+    }
+};
+
+class CTETRALongFieldElement : public CTETRAElement {
+public:
+    void read(const std::string& str1, const std::string& str2) {
+        int id = atoi(str1.substr(8,16).c_str());
+        int offset = 0;
+
+        if(id < 1000000)
+            offset = 0;
+        else if (id < 10000000)
+            offset = 1;
+        else if (id < 100000000)
+            offset = 2;
+
+
+        element_id = id;
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+        elements.push_back(atoi(str2.substr(8+offset,16+offset).c_str()));
+        elements.push_back(atoi(str2.substr(16+offset,24+offset).c_str()));
+        elements.push_back(atoi(str2.substr(24+offset,32+offset).c_str()));
+        elements.push_back(atoi(str2.substr(32+offset,40+offset).c_str()));
+    }
+};
+
+
+class CTETRASmallFieldElement : public CTETRAElement {
+public:
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+// NASTRAN-95
+
+class GRIDNastran95Element : public GRIDElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8, 16).c_str());
+        node.x = atof(str.substr(24, 32).c_str());
+        node.y = atof(str.substr(32, 40).c_str());
+        node.z = atof(str.substr(40, 48).c_str());
+    }
+};
+
+class CBARElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddEdgeWithID(
+            elements[0],
+            elements[1],
+            element_id
+        );
+    }
+};
+
+class CTRMEMElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            element_id
+        );
+    }
+};
+
+class CTRIA1Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            element_id
+        );
+    }
+};
+
+class CQUAD1Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+        elements.push_back(atoi(str.substr(48, 56).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            element_id
+        );
+    }
+};
+
+class CTETRANastran95Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+        elements.push_back(atoi(str.substr(48, 56).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            element_id
+        );
+    }
+};
+
+class CWEDGEElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+        elements.push_back(atoi(str.substr(48,56).c_str()));
+        elements.push_back(atoi(str.substr(56,64).c_str()));
+        elements.push_back(atoi(str.substr(64,72).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            element_id
+        );
+    }
+};
+
+class CHEXA1Element : public NastranElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,16).c_str());
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+
+        elements.push_back(atoi(str2.substr(8,16).c_str()));
+        elements.push_back(atoi(str2.substr(16,24).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
+    }
+};
+
+class CHEXA2Element : public NastranElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,16).c_str());
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+
+        elements.push_back(atoi(str2.substr(8,16).c_str()));
+        elements.push_back(atoi(str2.substr(16,24).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
+    }
+};
+
+}
+
 void FemMesh::readNastran(const std::string &Filename)
 {
     Base::TimeInfo Start;
@@ -1115,116 +1502,69 @@ void FemMesh::readNastran(const std::string &Filename)
     std::ifstream inputfile;
     inputfile.open(Filename.c_str());
     inputfile.seekg(std::ifstream::beg);
-    std::string line1,line2,temp;
-    std::vector<string> token_results;
-    token_results.clear();
-    Base::Vector3d current_node;
-    std::vector<Base::Vector3d> vertices;
-    vertices.clear();
-    std::vector<unsigned int> nodal_id;
-    nodal_id.clear();
-    std::vector<unsigned int> tetra_element;
-    std::vector<std::vector<unsigned int> > all_elements;
-    std::vector<unsigned int> element_id;
-    element_id.clear();
-    bool nastran_free_format = false;
+    std::string line1,line2;
+    std::vector<NastranElementPtr> mesh_elements;
+    enum Format {
+        FreeField,
+        SmallField,
+        LongField
+    };
+    Format nastranFormat = Format::LongField;
+
     do
     {
         std::getline(inputfile,line1);
-        if (line1.size() == 0) continue;
-        if (!nastran_free_format && line1.find(',')!= std::string::npos)
-            nastran_free_format = true;
-        if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
-        {
+        if (line1.size() == 0)
+            continue;
+        if (line1.find(',') != std::string::npos)
+            nastranFormat = Format::FreeField;
+
+        NastranElementPtr ptr;
+        if (line1.find("GRID*") != std::string::npos) { //We found a Grid line
             //Now lets extract the GRID Points = Nodes
             //As each GRID Line consists of two subsequent lines we have to
             //take care of that as well
-            std::getline(inputfile,line2);
-            //Get the Nodal ID
-            nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
-            //Extract X Value
-            current_node.x = atof(line1.substr(40,56).c_str());
-            //Extract Y Value
-            current_node.y = atof(line1.substr(56,72).c_str());
-            //Extract Z Value
-            current_node.z = atof(line2.substr(8,24).c_str());
-
-            vertices.push_back(current_node);
+            if (nastranFormat == Format::LongField) {
+                std::getline(inputfile,line2);
+                ptr = std::make_shared<GRIDLongFieldElement>();
+                ptr->read(line1, line2);
+            }
         }
-        else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-        {
-            tetra_element.clear();
+        else if (line1.find("GRID") != std::string::npos) { //We found a Grid line
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<GRIDFreeFieldElement>();
+                ptr->read(line1, "");
+            }
+        }
+        else if (line1.find("CTRIA3") != std::string::npos) {
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<CTRIA3FreeFieldElement>();
+                ptr->read(line1, "");
+            }
+            else {
+                ptr = std::make_shared<CTRIA3LongFieldElement>();
+                ptr->read(line1, "");
+            }
+        }
+        else if (line1.find("CTETRA") != std::string::npos) {
             //Lets extract the elements
             //As each Element Line consists of two subsequent lines as well
             //we have to take care of that
             //At a first step we only extract Quadratic Tetrahedral Elements
             std::getline(inputfile,line2);
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            int offset = 0;
-
-            if(id < 1000000)
-                offset = 0;
-            else if (id < 10000000)
-                offset = 1;
-            else if (id < 100000000)
-                offset = 2;
-
-
-            element_id.push_back(id);
-            tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
-            tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
-            tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
-            tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
-            tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
-            tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
-            tetra_element.push_back(atoi(line2.substr(8+offset,16+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(16+offset,24+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(24+offset,32+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(32+offset,40+offset).c_str()));
-
-            all_elements.push_back(tetra_element);
-        }
-        else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
-        {
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1, sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 3)
-                continue;//Line does not include Nodal coordinates
-            nodal_id.push_back(atoi(token_results[1].c_str()));
-            current_node.x = atof(token_results[3].c_str());
-            current_node.y = atof(token_results[4].c_str());
-            current_node.z = atof(token_results[5].c_str());
-            vertices.push_back(current_node);
-        }
-        else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-        {
-            tetra_element.clear();
-            //Lets extract the elements
-            //As each Element Line consists of two subsequent lines as well
-            //we have to take care of that
-            //At a first step we only extract Quadratic Tetrahedral Elements
-            std::getline(inputfile,line2);
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 11)
-                continue;//Line does not include enough nodal IDs
-            element_id.push_back(atoi(token_results[1].c_str()));
-            tetra_element.push_back(atoi(token_results[3].c_str()));
-            tetra_element.push_back(atoi(token_results[4].c_str()));
-            tetra_element.push_back(atoi(token_results[5].c_str()));
-            tetra_element.push_back(atoi(token_results[6].c_str()));
-            tetra_element.push_back(atoi(token_results[7].c_str()));
-            tetra_element.push_back(atoi(token_results[8].c_str()));
-            tetra_element.push_back(atoi(token_results[10].c_str()));
-            tetra_element.push_back(atoi(token_results[11].c_str()));
-            tetra_element.push_back(atoi(token_results[12].c_str()));
-            tetra_element.push_back(atoi(token_results[13].c_str()));
-
-            all_elements.push_back(tetra_element);
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<CTETRAFreeFieldElement>();
+                ptr->read(line1.append(line2), "");
+            }
+            else {
+                ptr = std::make_shared<CTETRALongFieldElement>();
+                ptr->read(line1, line2);
+            }
         }
 
+        if (ptr && ptr->isValid()) {
+            mesh_elements.push_back(ptr);
+        }
     }
     while (inputfile.good());
     inputfile.close();
@@ -1232,50 +1572,13 @@ void FemMesh::readNastran(const std::string &Filename)
     Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     //Now fill the SMESH datastructure
-    std::vector<Base::Vector3d>::const_iterator anodeiterator;
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
     meshds->ClearMesh();
-    unsigned int j=0;
-    for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
-    {
-        meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
-        j++;
+
+    for (auto it : mesh_elements) {
+        it->addToMesh(meshds);
     }
 
-    for(unsigned int i=0;i<all_elements.size();i++)
-    {
-        // an consistent data structure is only possible
-        // if the elements are added in the right order
-        // thus the order is very important
-        //meshds->AddVolumeWithID
-        //(
-        //    meshds->FindNode(all_elements[i][0]),
-        //    meshds->FindNode(all_elements[i][2]),
-        //    meshds->FindNode(all_elements[i][1]),
-        //    meshds->FindNode(all_elements[i][3]),
-        //    meshds->FindNode(all_elements[i][6]),
-        //    meshds->FindNode(all_elements[i][5]),
-        //    meshds->FindNode(all_elements[i][4]),
-        //    meshds->FindNode(all_elements[i][9]),
-        //    meshds->FindNode(all_elements[i][7]),
-        //    meshds->FindNode(all_elements[i][8]),
-        //    element_id[i]
-        //);
-        meshds->AddVolumeWithID
-        (
-            meshds->FindNode(all_elements[i][1]),
-            meshds->FindNode(all_elements[i][0]),
-            meshds->FindNode(all_elements[i][2]),
-            meshds->FindNode(all_elements[i][3]),
-            meshds->FindNode(all_elements[i][4]),
-            meshds->FindNode(all_elements[i][6]),
-            meshds->FindNode(all_elements[i][5]),
-            meshds->FindNode(all_elements[i][8]),
-            meshds->FindNode(all_elements[i][7]),
-            meshds->FindNode(all_elements[i][9]),
-            element_id[i]
-        );
-    }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
 }
@@ -1291,416 +1594,129 @@ void FemMesh::readNastran95(const std::string &Filename)
     inputfile.open(Filename.c_str());
     inputfile.seekg(std::ifstream::beg);
     std::string line1,line2,tcard;
-    float cx, cy, cz;
-    std::vector<string> token_results;
-    token_results.clear();
-    Base::Vector3d current_node;
-    std::vector<Base::Vector3d> vertices;
-    vertices.clear();
-    std::vector<unsigned int> nodal_id;
 
-    nodal_id.clear();
+    std::vector<NastranElementPtr> mesh_nodes;
+    std::vector<NastranElementPtr> mesh_elements;
 
-    std::vector<unsigned int> bar_element;
-    std::vector<unsigned int> tri_element;
-    std::vector<unsigned int> quad_element;
-    std::vector<unsigned int> tetra_element;
-    std::vector<unsigned int> wedge_element;
-    std::vector<unsigned int> hexa_element;
-
-    std::vector<std::vector<unsigned int> > all_elements;
-
-    std::vector<unsigned int> element_id;
-    std::vector<unsigned int> element_type;
-
-    element_id.clear();
-    element_type.clear();
-
-    bool nastran_free_format = false;
     do
     {
-        std::getline(inputfile,line1);
+        NastranElementPtr node;
+        NastranElementPtr elem;
+        std::getline(inputfile, line1);
         //cout << line1 << endl;
-        if (line1.size() == 0) continue;
-        //if (!nastran_free_format && line1.find(',')!= std::string::npos)
-        //    nastran_free_format = true;
+        if (line1.size() == 0)
+            continue;
+
         tcard = line1.substr(0, 8).c_str();
         //boost::algorithm::trim(tcard);
-        if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
+        if (line1.find("GRID*") != std::string::npos ) //We found a Grid line
         {
             //Now lets extract the GRID Points = Nodes
             //As each GRID Line consists of two subsequent lines we have to
             //take care of that as well
             std::getline(inputfile,line2);
-            //Get the Nodal ID
-            nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
-            //Extract X Value
-            current_node.x = atof(line1.substr(40,56).c_str());
-            //Extract Y Value
-            current_node.y = atof(line1.substr(56,72).c_str());
-            //Extract Z Value
-            current_node.z = atof(line2.substr(8,24).c_str());
-
-            vertices.push_back(current_node);
+            node = std::make_shared<GRIDLongFieldElement>();
+            node->read(line1, line2);
         }
-        else if (!nastran_free_format && line1.find("GRID") != std::string::npos) //We found a Grid line
+        else if (line1.find("GRID") != std::string::npos) //We found a Grid line
         {
             //Base::Console().Log("Found a GRID\n");
             //D06.inp
             //GRID    109             .9      .7
             //Now lets extract the GRID Points = Nodes
             //Get the Nodal ID
-            unsigned int id = atoi(line1.substr(8, 16).c_str());
-
-            //Extract X Value
-            cx = atof(line1.substr(24, 32).c_str());
-            current_node.x = cx;
-            //Extract Y Value
-            cy = atof(line1.substr(32, 40).c_str());
-            current_node.y = cy;
-            //Extract Z Value
-            cz = atof(line1.substr(40, 48).c_str());
-            current_node.z = cz;
-            //  atof(line1.substr(40, 48).c_str());
-            //Base::Console().Log("nid = %d %f %f %f\n", id, cx, cy, cz);
-
-            nodal_id.push_back(id);
-            vertices.push_back(current_node);
+            node = std::make_shared<GRIDNastran95Element>();
+            node->read(line1, "");
         }
         
         //1D
         else if (line1.substr(0,6)=="CBAR")
         {
-            //Base::Console().Log("Found a CTRMEM\n");
-            bar_element.clear();
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-
-            element_type.push_back(100);
-            element_id.push_back(id);
-            bar_element.push_back(atoi(line1.substr(24,32).c_str()));
-            bar_element.push_back(atoi(line1.substr(32,40).c_str()));
-
-            all_elements.push_back(bar_element);
+            elem = std::make_shared<CBARElement>();
+            elem->read(line1, "");
         }
         //2d
-//        else if (!nastran_free_format && line1.find("CTRMEM")!= std::string::npos)
         else if (line1.substr(0,6)=="CTRMEM")
         {
-            //Base::Console().Log("Found a CTRMEM\n");
-            tri_element.clear();
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-
             //D06
-            //CTRMEM  322     1       179     180     185                                     
-            element_type.push_back(230);
-            element_id.push_back(id);
-            tri_element.push_back(atoi(line1.substr(24,32).c_str()));
-            tri_element.push_back(atoi(line1.substr(32,40).c_str()));
-            tri_element.push_back(atoi(line1.substr(40,48).c_str()));
-
-            all_elements.push_back(tri_element);
+            //CTRMEM  322     1       179     180     185
+            elem = std::make_shared<CTRMEMElement>();
+            elem->read(line1, "");
         }
         else if (line1.substr(0, 6) == "CTRIA1")
         {
-            //Base::Console().Log("Found a CTRMEM\n");
-            tri_element.clear();
-            unsigned int id = atoi(line1.substr(8, 16).c_str());
-
             //D06
-            //CTRMEM  322     1       179     180     185                                     
-            element_type.push_back(231);
-            element_id.push_back(id);
-            tri_element.push_back(atoi(line1.substr(24, 32).c_str()));
-            tri_element.push_back(atoi(line1.substr(32, 40).c_str()));
-            tri_element.push_back(atoi(line1.substr(40, 48).c_str()));
-
-            all_elements.push_back(tri_element);
+            //CTRMEM  322     1       179     180     185
+            elem = std::make_shared<CTRIA1Element>();
+            elem->read(line1, "");
         }
         else if (line1.substr(0, 6) == "CQUAD1")
         {
-            //Base::Console().Log("Found a CQUAD1\n");
-            quad_element.clear();
-            unsigned int id = atoi(line1.substr(8, 16).c_str());
-
             //D06
             //CTRMEM  322     1       179     180     185                                     
-            element_type.push_back(241);
-            element_id.push_back(id);
-            quad_element.push_back(atoi(line1.substr(24, 32).c_str()));
-            quad_element.push_back(atoi(line1.substr(32, 40).c_str()));
-            quad_element.push_back(atoi(line1.substr(40, 48).c_str()));
-            quad_element.push_back(atoi(line1.substr(48, 56).c_str()));
-
-            all_elements.push_back(quad_element);
+            elem = std::make_shared<CQUAD1Element>();
+            elem->read(line1, "");
         }
         
         //3d element
-        else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
+        else if (line1.find("CTETRA")!= std::string::npos)
         {
             //d011121a.inp    
             //CTETRA  3       200     104     114     3       103                             
-            tetra_element.clear();
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            element_type.push_back(340);
-
-            element_id.push_back(id);
-            tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
-            tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
-            tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
-            tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
-            //tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
-            //tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
-
-            all_elements.push_back(tetra_element);
+            elem = std::make_shared<CTETRANastran95Element>();
+            elem->read(line1, "");
         }
-        else if (!nastran_free_format && line1.find("CWEDGE")!= std::string::npos)
+        else if (line1.find("CWEDGE")!= std::string::npos)
         {
             //d011121a.inp    
             //CWEDGE  11      200     6       17      16      106     117     116             
-            tetra_element.clear();
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            element_type.push_back(360);
-
-            element_id.push_back(id);
-            wedge_element.push_back(atoi(line1.substr(24,32).c_str()));
-            wedge_element.push_back(atoi(line1.substr(32,40).c_str()));
-            wedge_element.push_back(atoi(line1.substr(40,48).c_str()));
-            wedge_element.push_back(atoi(line1.substr(48,56).c_str()));
-            wedge_element.push_back(atoi(line1.substr(56,64).c_str()));
-            wedge_element.push_back(atoi(line1.substr(64,72).c_str()));
-
-            all_elements.push_back(wedge_element);
+            elem = std::make_shared<CTETRANastran95Element>();
+            elem->read(line1, "");
         }
-        else if (!nastran_free_format && line1.find("CHEXA1")!= std::string::npos)
+        else if (line1.find("CHEXA1")!= std::string::npos)
         {
             //d011121a.inp    
             //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
             //+SOL1   113     112                                                             
-            tetra_element.clear();
             std::getline(inputfile,line2);
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            element_type.push_back(381);
-
-            element_id.push_back(id);
-            hexa_element.push_back(atoi(line1.substr(24,32).c_str()));
-            hexa_element.push_back(atoi(line1.substr(32,40).c_str()));
-            hexa_element.push_back(atoi(line1.substr(40,48).c_str()));
-            hexa_element.push_back(atoi(line1.substr(48,56).c_str()));
-            hexa_element.push_back(atoi(line1.substr(56,64).c_str()));
-            hexa_element.push_back(atoi(line1.substr(64,72).c_str()));
-            
-            hexa_element.push_back(atoi(line2.substr(8,16).c_str()));
-            hexa_element.push_back(atoi(line2.substr(16,24).c_str()));
-
-            all_elements.push_back(hexa_element);
+            elem = std::make_shared<CHEXA1Element>();
+            elem->read(line1, line2);
         }
-        else if (!nastran_free_format && line1.find("CHEXA2")!= std::string::npos)
+        else if (line1.find("CHEXA2")!= std::string::npos)
         {
             //d011121a.inp    
             //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
             //+SOL1   113     112                                                             
-            tetra_element.clear();
             std::getline(inputfile,line2);
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            element_type.push_back(382);
-
-            element_id.push_back(id);
-            hexa_element.push_back(atoi(line1.substr(24,32).c_str()));
-            hexa_element.push_back(atoi(line1.substr(32,40).c_str()));
-            hexa_element.push_back(atoi(line1.substr(40,48).c_str()));
-            hexa_element.push_back(atoi(line1.substr(48,56).c_str()));
-            hexa_element.push_back(atoi(line1.substr(56,64).c_str()));
-            hexa_element.push_back(atoi(line1.substr(64,72).c_str()));
-            
-            hexa_element.push_back(atoi(line2.substr(8,16).c_str()));
-            hexa_element.push_back(atoi(line2.substr(16,24).c_str()));
-
-            all_elements.push_back(hexa_element);
+            elem = std::make_shared<CHEXA2Element>();
+            elem->read(line1, line2);
         }
 
-// free format
-        else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
-        {
-            //Base::Console().Log("Found a free format GRID\n");
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1, sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 3)
-                continue;//Line does not include Nodal coordinates
-            nodal_id.push_back(atoi(token_results[1].c_str()));
-            current_node.x = atof(token_results[3].c_str());
-            current_node.y = atof(token_results[4].c_str());
-            current_node.z = atof(token_results[5].c_str());
-            vertices.push_back(current_node);
-        }
-        else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-        {
-            //Quadratic Tetrahedral Elements
-            //Base::Console().Log("Found a CTETRA\n");
-            tetra_element.clear();
-            std::getline(inputfile,line2);
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 11)
-                continue;//Line does not include enough nodal IDs
-            element_id.push_back(atoi(token_results[1].c_str()));
-            tetra_element.push_back(atoi(token_results[3].c_str()));
-            tetra_element.push_back(atoi(token_results[4].c_str()));
-            tetra_element.push_back(atoi(token_results[5].c_str()));
-            tetra_element.push_back(atoi(token_results[6].c_str()));
-            tetra_element.push_back(atoi(token_results[7].c_str()));
-            tetra_element.push_back(atoi(token_results[8].c_str()));
-            tetra_element.push_back(atoi(token_results[10].c_str()));
-            tetra_element.push_back(atoi(token_results[11].c_str()));
-            tetra_element.push_back(atoi(token_results[12].c_str()));
-            tetra_element.push_back(atoi(token_results[13].c_str()));
-
-            all_elements.push_back(tetra_element);
+        if (node && node->isValid()) {
+            mesh_nodes.push_back(node);
         }
 
+        if (elem && elem->isValid()) {
+            mesh_elements.push_back(elem);
+        }
     }
     while (inputfile.good());
     inputfile.close();
 
-//  Base::Console().Log("Done saving node.\n");
     Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     //Now fill the SMESH datastructure
-    std::vector<Base::Vector3d>::const_iterator anodeiterator;
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
     meshds->ClearMesh();
-    unsigned int j=0;
-    for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
-    {
-        meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
-        //Base::Console().Log("nid = %d %f %f %f\n", nodal_id[j], (*anodeiterator).x, (*anodeiterator).y, (*anodeiterator).z);
-        j++;
+
+    for (auto it : mesh_nodes) {
+        it->addToMesh(meshds);
     }
 
-
-    for(size_t i=0;i<all_elements.size();i++)
-    {
-        if (element_type[i]==10)
-        {
-            meshds->AddVolumeWithID
-            (
-                //tetra 10 point
-                meshds->FindNode(all_elements[i][1]),
-                meshds->FindNode(all_elements[i][0]),
-                meshds->FindNode(all_elements[i][2]),
-                meshds->FindNode(all_elements[i][3]),
-                meshds->FindNode(all_elements[i][4]),
-                meshds->FindNode(all_elements[i][6]),
-                meshds->FindNode(all_elements[i][5]),
-                meshds->FindNode(all_elements[i][8]),
-                meshds->FindNode(all_elements[i][7]),
-                meshds->FindNode(all_elements[i][9]),
-                element_id[i]
-            );
-            
-        }
-        //1D element
-        else if (element_type[i] == 100)
-        {
-            //Base::Console().Log("eid = %d %d %d %d\n", element_id[i], all_elements[i][0], all_elements[i][1], all_elements[i][2]);
-            //cbar
-            meshds->AddEdgeWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                element_id[i]
-            );
-        }
-        //2d element
-        else if (element_type[i] == 230)
-        {
-            //Base::Console().Log("eid = %d %d %d %d\n", element_id[i], all_elements[i][0], all_elements[i][1], all_elements[i][2]);
-            //ctramem
-            meshds->AddFaceWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                element_id[i]
-            );
-        }
-        else if (element_type[i] == 231)
-        {
-            //ctria1
-            meshds->AddFaceWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                element_id[i]
-            );
-        }
-        else if (element_type[i] == 241)
-        {
-            //cquad1
-            meshds->AddFaceWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                all_elements[i][3],
-                element_id[i]
-            );
-        }
-        
-        //3d element
-        else if (element_type[i] == 340)
-        {
-            //ctetra
-            meshds->AddVolumeWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                all_elements[i][3],
-                element_id[i]
-            );
-        }
-        else if (element_type[i] == 360)
-        {
-            //cwedge
-            meshds->AddVolumeWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                all_elements[i][3],
-                all_elements[i][4],
-                all_elements[i][5],
-                element_id[i]
-            );
-        }
-        else if (element_type[i] == 381)
-        {
-            //chexa1
-            meshds->AddVolumeWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                all_elements[i][3],
-                all_elements[i][4],
-                all_elements[i][5],
-                all_elements[i][6],
-                all_elements[i][7],
-                element_id[i]
-            );
-        }
-        else if (element_type[i] == 382)
-        {
-            //chexa2
-            meshds->AddVolumeWithID(
-                all_elements[i][0],
-                all_elements[i][1],
-                all_elements[i][2],
-                all_elements[i][3],
-                all_elements[i][4],
-                all_elements[i][5],
-                all_elements[i][6],
-                all_elements[i][7],
-                element_id[i]
-            );
-        }
+    for (auto it : mesh_elements) {
+        it->addToMesh(meshds);
     }
+
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 }
 

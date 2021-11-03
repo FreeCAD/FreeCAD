@@ -46,10 +46,10 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
 {
     ui->setupUi(this);
     ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
-    ui->DressUpColor->setAllowChangeAlpha(true);
-    ui->AdditiveColor->setAllowChangeAlpha(true);
-    ui->SubtractiveColor->setAllowChangeAlpha(true);
-    ui->IntersectingColor->setAllowChangeAlpha(true);
+    ui->DressUpColor->setAllowTransparency(true);
+    ui->AdditiveColor->setAllowTransparency(true);
+    ui->SubtractiveColor->setAllowTransparency(true);
+    ui->IntersectingColor->setAllowTransparency(true);
 
     App::Color c;
     QColor qc;
@@ -88,6 +88,7 @@ void DlgSettingsObjectColor::saveSettings()
     ui->DefaultShapeVertexColor->onSave();
     ui->DefaultShapeVertexSize->onSave();
     ui->BoundingBoxColor->onSave();
+    ui->BoundingBoxFontSize->onSave();
     ui->twosideRendering->onSave();
     // Annotations
     ui->AnnotationTextColor->onSave();
@@ -110,6 +111,7 @@ void DlgSettingsObjectColor::loadSettings()
     ui->DefaultShapeVertexColor->onRestore();
     ui->DefaultShapeVertexSize->onRestore();
     ui->BoundingBoxColor->onRestore();
+    ui->BoundingBoxFontSize->onRestore();
     ui->twosideRendering->onRestore();
     // Annotations
     ui->AnnotationTextColor->onRestore();

@@ -212,15 +212,18 @@ struct EditData {
     CurvesMaterials(0),
     RootCrossMaterials(0),
     EditCurvesMaterials(0),
+    EditMarkersMaterials(0),
     PointsCoordinate(0),
     CurvesCoordinate(0),
     RootCrossCoordinate(0),
     EditCurvesCoordinate(0),
+    EditMarkersCoordinate(0),
     CurveSet(0),
     SelectedCurveSet(0),
     PreSelectedCurveSet(0),
     RootCrossSet(0),
     EditCurveSet(0),
+    EditMarkerSet(0),
     PointSet(0),
     SelectedPointSet(0),
     PreSelectedPointSet(0),
@@ -233,6 +236,7 @@ struct EditData {
     CurvesDrawStyle(0),
     RootCrossDrawStyle(0),
     EditCurvesDrawStyle(0),
+    EditMarkersDrawStyle(0),
     ConstraintDrawStyle(0),
     InformationDrawStyle(0)
     {
@@ -328,15 +332,18 @@ struct EditData {
     SoMaterial    *CurvesMaterials;
     SoMaterial    *RootCrossMaterials;
     SoMaterial    *EditCurvesMaterials;
+    SoMaterial    *EditMarkersMaterials;
     SoCoordinate3 *PointsCoordinate;
     SoCoordinate3 *CurvesCoordinate;
     SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
+    SoCoordinate3 *EditMarkersCoordinate;
     SoLineSet     *CurveSet;
     SoIndexedLineSet     *SelectedCurveSet;
     SoIndexedLineSet     *PreSelectedCurveSet;
     SoLineSet     *RootCrossSet;
     SoLineSet     *EditCurveSet;
+    SoMarkerSet   *EditMarkerSet;
     SoMarkerSet   *PointSet;
     SoIndexedMarkerSet   *SelectedPointSet;
     SoIndexedMarkerSet   *PreSelectedPointSet;
@@ -360,6 +367,7 @@ struct EditData {
     SoDrawStyle * CurvesDrawStyle;
     SoDrawStyle * RootCrossDrawStyle;
     SoDrawStyle * EditCurvesDrawStyle;
+    SoDrawStyle * EditMarkersDrawStyle;
     SoDrawStyle * ConstraintDrawStyle;
     SoDrawStyle * InformationDrawStyle;
 
@@ -401,6 +409,8 @@ ViewProviderSketch::ViewProviderSketch()
     ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
     ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
     ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera type will be forced to orthographic view when entering editing mode.");
+    ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, only objects (or part of) located behind the sketch plane are visible.");
     ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
 
     {//visibility automation: update defaults to follow preferences
@@ -409,6 +419,8 @@ ViewProviderSketch::ViewProviderSketch()
         this->ShowLinks.setValue(hGrp->GetBool("ShowLinks", true));
         this->ShowSupport.setValue(hGrp->GetBool("ShowSupport", true));
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
+        this->ForceOrtho.setValue(hGrp->GetBool("ForceOrtho", false));
+        this->SectionView.setValue(hGrp->GetBool("SectionView", false));
 
         // well it is not visibility automation but a good place nevertheless
         this->ShowGrid.setValue(hGrp->GetBool("ShowGrid", false));
@@ -1066,9 +1078,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     doBoxSelection(prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
 
-                    //disable framebuffer drawing in viewer
-                    const_cast<Gui::View3DInventorViewer *>(viewer)->setRenderType(Gui::View3DInventorViewer::Native);
-
                     // a redraw is required in order to clear the rubberband
                     draw(true,false);
                     const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
@@ -1456,10 +1465,6 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                     if (getSketchObject()->moveTemporaryPoint(GeoId, PosId, vec, false) == 0) {
                         setPositionText(Base::Vector2d(x,y));
                         draw(true,false);
-                        signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
-                    } else {
-                        signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
-                        //Base::Console().Log("Error solving:%d\n",ret);
                     }
                 }
             }
@@ -1497,9 +1502,6 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 if (getSketchObject()->moveTemporaryPoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
                     draw(true,false);
-                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSolvedSketch().getSolveTime()));
-                } else {
-                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSolvedSketch().getSolveTime()));
                 }
             }
             return true;
@@ -1520,16 +1522,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_StartRubberBand: {
             setSketchMode(STATUS_SKETCH_UseRubberBand);
             rubberband->setWorking(true);
-            viewer->setRenderType(Gui::View3DInventorViewer::Image);
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
             // Here we must use the device-pixel-ratio to compute the correct y coordinate (#0003130)
-#if QT_VERSION >= 0x050600
             qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
-#else
-            qreal dpr = 1;
-#endif
             newCursorPos = cursorPos;
             rubberband->setCoords(prvCursorPos.getValue()[0],
                        viewer->getGLWidget()->height()*dpr - prvCursorPos.getValue()[1],
@@ -3552,28 +3549,40 @@ bool ViewProviderSketch::doubleClicked(void)
 
 QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
 {
-    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits option
-    bool                            iHideUnits;
-    QString                         userStr; // final return string
+    Base::Reference<ParameterGrp>   hGrpSketcher; // param group that includes HideUnits and ShowDimensionalName option
+    bool                            iHideUnits; // internal HideUnits setting
+    bool                            iShowDimName; // internal ShowDimensionalName setting
+    QString                         nameStr; // name parameter string
+    QString                         valueStr; // dimensional value string
+    QString                         presentationStr; // final return string
     QString                         unitStr;  // the actual unit string
     QString                         baseUnitStr; // the expected base unit string
+    QString                         formatStr; // the user defined format for the representation string
     double                          factor; // unit scaling factor, currently not used
     Base::UnitSystem                unitSys; // current unit system
 
     if(!constraint->isActive)
         return QString::fromLatin1(" ");
 
-    // Get value of HideUnits option. Default is false.
+    // get parameter group for Sketcher display settings
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
+    // Get value of HideUnits option. Default is false.
     iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
+    // Get Value of ShowDimensionalName option. Default is true.
+    iShowDimName = hGrpSketcher->GetBool("ShowDimensionalName", false);
+    // Get the defined format string
+    formatStr = QString::fromStdString(hGrpSketcher->GetASCII("DimensionalStringFormat", "%N = %V"));
 
-    // Get the current display string including units
-    userStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+    // Get the current name parameter string of the constraint
+    nameStr = QString::fromStdString(constraint->Name);
+
+    // Get the current value string including units
+    valueStr = constraint->getPresentationValue().getUserString(factor, unitStr);
 
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
     // place. Otherwise, display units.
-    if( iHideUnits )
+    if( iHideUnits && constraint->Type != Sketcher::Angle )
     {
         // Only hide the default length unit. Right now there is not an easy way
         // to get that from the Unit system so we have to manually add it here.
@@ -3613,19 +3622,45 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
-                userStr.remove(rxUnits);              //getUserString(defaultDecimals) without units
+                valueStr.remove(rxUnits);                      //getUserString(defaultDecimals) without units
             }
         }
     }
 
     if (constraint->Type == Sketcher::Diameter){
-        userStr.insert(0, QChar(8960)); // Diameter sign
+        valueStr.insert(0, QChar(8960)); // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius){
-        userStr.insert(0, QChar(82)); // Capital letter R
+        valueStr.insert(0, QChar(82)); // Capital letter R
     }
 
-    return userStr;
+    /**
+    Create the representation string from the user defined format string
+    Format options are:
+    %N - the constraint name parameter
+    %V - the value of the dimensional constraint, including any unit characters
+    */
+    if (iShowDimName && !nameStr.isEmpty())
+    {
+        if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%N")))
+        {
+            presentationStr = formatStr;
+            presentationStr.replace(QLatin1String("%N"), nameStr);
+            presentationStr.replace(QLatin1String("%V"), valueStr);
+        }
+        else
+        {
+            // user defined format string does not contain any valid parameter, using default format "%N = %V"
+            presentationStr = nameStr + QLatin1String(" = ") + valueStr;
+            FC_WARN("When parsing dimensional format string \""
+                    << QString(formatStr).toStdString()
+                    << "\", no valid parameter found, using default format.");
+        }
+
+        return presentationStr;
+    }
+
+    return valueStr;
 }
 
 QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
@@ -3805,6 +3840,7 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
+        thisIcon.visible = (*it)->isInVirtualSpace == getIsShownVirtualSpace();
 
         if ((*it)->Type==Symmetric) {
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
@@ -3890,36 +3926,44 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue &&iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
+        // and only icons that are visible
+        if(init.type != QString::fromLatin1("Constraint_Symmetric") && init.visible){
 
             IconQueue::iterator i = iconQueue.begin();
+
+
             while(i != iconQueue.end()) {
-                bool addedToGroup = false;
+                if((*i).visible) {
+                    bool addedToGroup = false;
 
-                for(IconQueue::iterator j = thisGroup.begin();
-                    j != thisGroup.end(); ++j) {
-                    float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
-                        // Found an icon in iconQueue that's close enough to
-                        // a member of thisGroup, so move it into thisGroup
-                        thisGroup.push_back(*i);
-                        i = iconQueue.erase(i);
-                        addedToGroup = true;
-                        break;
+                    for(IconQueue::iterator j = thisGroup.begin();
+                        j != thisGroup.end(); ++j) {
+                        float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
+                        if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
+                            // Found an icon in iconQueue that's close enough to
+                            // a member of thisGroup, so move it into thisGroup
+                            thisGroup.push_back(*i);
+                            i = iconQueue.erase(i);
+                            addedToGroup = true;
+                            break;
+                        }
                     }
-                }
 
-                if(addedToGroup) {
-                    if(i == iconQueue.end())
-                        // We just got the last icon out of iconQueue
-                        break;
-                    else
-                        // Start looking through the iconQueue again, in case
-                        // we have an icon that's now close enough to thisGroup
-                        i = iconQueue.begin();
-                } else
-                    ++i;
+                    if(addedToGroup) {
+                        if(i == iconQueue.end())
+                            // We just got the last icon out of iconQueue
+                            break;
+                        else
+                            // Start looking through the iconQueue again, in case
+                            // we have an icon that's now close enough to thisGroup
+                            i = iconQueue.begin();
+                    } else
+                        ++i;
+                }
+                else // if !visible we skip it
+                   i++;
             }
+
         }
 
         if(thisGroup.size() == 1) {
@@ -4087,7 +4131,14 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize)).toImage();
+    QPixmap pxMap;
+    std::stringstream constraintName;
+    constraintName << type.toLatin1().data() << edit->constraintIconSize; // allow resizing by embedding size
+    if (! Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
+        pxMap = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize));
+        Gui::BitmapFactory().addPixmapToCache(constraintName.str().c_str(), pxMap); // Cache for speed, avoiding pixmapFromSvg
+    }
+    QImage icon = pxMap.toImage();
 
     QFont font = QApplication::font();
     font.setPixelSize(static_cast<int>(1.0 * edit->constraintIconSize));
@@ -4239,6 +4290,8 @@ void ViewProviderSketch::updateInventorNodeSizes()
     edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
     edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
     edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->EditMarkersDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", edit->MarkerSize);
     edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
     edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
 }
@@ -4930,7 +4983,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -4983,7 +5036,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -5113,7 +5166,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoSeparator *sep = new SoSeparator();
             sep->ref();
-            // no caching for fluctuand data structures
+            // no caching for frequently-changing data structures
             sep->renderCaching = SoSeparator::OFF;
 
             // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -5207,7 +5260,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
-                // no caching for fluctuand data structures
+                // no caching for frequently-changing data structures
                 sep->renderCaching = SoSeparator::OFF;
 
                 // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -5276,7 +5329,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoSeparator* sep = new SoSeparator();
                 sep->ref();
-                // no caching for fluctuand data structures
+                // no caching for frequently-changing data structures
                 sep->renderCaching = SoSeparator::OFF;
 
                 // every information visual node gets its own material for to-be-implemented preselection and selection
@@ -6269,7 +6322,7 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string    = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+                        asciiText->string    = SbString( getPresentationString(Constr).toUtf8().constData() );
                         asciiText->datumtype = SoDatumLabel::ANGLE;
                         asciiText->param1    = Constr->LabelDistance;
                         asciiText->param2    = startangle;
@@ -6439,8 +6492,11 @@ Restart:
 
     }
 
-    this->drawConstraintIcons();
-    this->updateColor();
+    // Avoids unneeded calls to pixmapFromSvg
+    if(_Mode==STATUS_NONE || _Mode==STATUS_SKETCH_UseHandler) {
+       this->drawConstraintIcons();
+       this->updateColor();
+    }
 
     // delete the cloned objects
     if (temp) {
@@ -6468,7 +6524,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
         sep->ref();
-        // no caching for fluctuand data structures
+        // no caching for frequently-changing data structures
         sep->renderCaching = SoSeparator::OFF;
 
         // every constrained visual node gets its own material for preselection and selection
@@ -6711,6 +6767,47 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
     edit->EditCurveSet->numVertices.finishEditing();
+    edit->EditCurvesMaterials->diffuseColor.finishEditing();
+}
+
+void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    assert(edit);
+
+    // determine marker size
+    int augmentedmarkersize = edit->MarkerSize;
+
+    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
+
+    auto defaultmarker = std::find(supportedsizes.begin(), supportedsizes.end(), edit->MarkerSize);
+
+    if(defaultmarker != supportedsizes.end()) {
+        auto validAugmentationLevels = std::distance(defaultmarker,supportedsizes.end());
+
+        if(augmentationlevel >= validAugmentationLevels)
+            augmentationlevel = validAugmentationLevels - 1;
+
+        augmentedmarkersize = *std::next(defaultmarker, augmentationlevel);
+    }
+
+    edit->EditMarkerSet->markerIndex.startEditing();
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", augmentedmarkersize);
+
+    // add the points to set
+    edit->EditMarkersCoordinate->point.setNum(EditMarkers.size());
+    edit->EditMarkersMaterials->diffuseColor.setNum(EditMarkers.size());
+    SbVec3f *verts = edit->EditMarkersCoordinate->point.startEditing();
+    SbColor *color = edit->EditMarkersMaterials->diffuseColor.startEditing();
+
+    int i=0; // setting up the line set
+    for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin(); it != EditMarkers.end(); ++it,i++) {
+        verts[i].setValue(it->x,it->y,zEdit);
+        color[i] = InformationColor;
+    }
+
+    edit->EditMarkersCoordinate->point.finishEditing();
+    edit->EditMarkersMaterials->diffuseColor.finishEditing();
+    edit->EditMarkerSet->markerIndex.finishEditing();
 }
 
 void ViewProviderSketch::updateData(const App::Property *prop)
@@ -6985,6 +7082,29 @@ QString ViewProviderSketch::appendConstraintMsg(const QString & singularmsg,
     return msg;
 }
 
+inline QString intListHelper(const std::vector<int> &ints) 
+{
+    QString results;
+    if (ints.size() < 8) { // The 8 is a bit heuristic... more than that and we shift formats
+        for (const auto i : ints) {
+            if (results.isEmpty())
+                results.append(QString::fromUtf8("%1").arg(i));
+            else
+                results.append(QString::fromUtf8(", %1").arg(i));
+        }
+    }
+    else {
+        const int numToShow = 3;
+        int more = ints.size() - numToShow;
+        for (int i = 0; i < numToShow; ++i) {
+            results.append(QString::fromUtf8("%1, ").arg(ints[i]));
+        }
+        results.append(QCoreApplication::translate("ViewProviderSketch","and %1 more").arg(more));
+    }
+    std::string testString = results.toStdString();
+    return results;
+}
+
 void ViewProviderSketch::UpdateSolverInformation()
 {
     // Updates Solver Information with the Last solver execution at SketchObject level
@@ -6995,76 +7115,48 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed    = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(tr("Empty sketch"));
-        signalSolved(QString());
+        signalSetUp(QString::fromUtf8("empty_sketch"), tr("Empty sketch"), QString(), QString());
     }
-    else if (dofs < 0) { // over-constrained sketch
-        std::string msg;
-        SketchObject::appendConflictMsg(getSketchObject()->getLastConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Over-constrained sketch "))
-                    .arg(tr("(click to select)"))
-                    .arg(QString::fromStdString(msg)));
-        signalSolved(QString());
+    else if (dofs < 0 || hasConflicts) { // over-constrained sketch
+        signalSetUp(QString::fromUtf8("conflicting_constraints"),
+            tr("Over-constrained: "),
+            QString::fromUtf8("#conflicting"),
+            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) { // malformed constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Sketch contains malformed constraints "))
-                    .arg(tr("(click to select)"))
-                    .arg(appendMalformedMsg(getSketchObject()->getLastMalformedConstraints())));
-        signalSolved(QString());
+        signalSetUp(QString::fromUtf8("malformed_constraints"),
+            tr("Malformed constraints: "),
+            QString::fromUtf8("#malformed"),
+            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastMalformedConstraints())));
     }
-    else if (hasConflicts) { // conflicting constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Sketch contains conflicting constraints "))
-                    .arg(tr("(click to select)"))
-                    .arg(appendConflictMsg(getSketchObject()->getLastConflicting())));
-        signalSolved(QString());
+    else if (hasRedundancies) {
+        signalSetUp(QString::fromUtf8("redundant_constraints"),
+            tr("Redundant constraints:"),
+            QString::fromUtf8("#redundant"),
+            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
+    }
+    else if (hasPartiallyRedundant) {
+        signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
+            tr("Partially redundant:"),
+            QString::fromUtf8("#partiallyredundant"),
+            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastPartiallyRedundant())));
+    }
+    else if (getSketchObject()->getLastSolverStatus() != 0) {
+        signalSetUp(QString::fromUtf8("solver_failed"),
+            tr("Solver failed to converge"),
+            QString::fromUtf8(""),
+            QString::fromUtf8(""));
+    } else if (dofs > 0) {
+        signalSetUp(QString::fromUtf8("under_constrained"),
+            tr("Under constrained:"),
+            QString::fromUtf8("#dofs"),
+            QString::fromUtf8("%1 %2").arg(dofs).arg(tr("DoF")));
     }
     else {
-        if (hasRedundancies) { // redundant constraints
-            signalSetUp(QString::fromLatin1("<font color='orangered'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                        .arg(tr("Sketch contains redundant constraints "))
-                        .arg(tr("(click to select)"))
-                        .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
-        }
-
-        QString partiallyRedundantString;
-
-        if(hasPartiallyRedundant) {
-            partiallyRedundantString = QString::fromLatin1("<br/><font color='royalblue'><span style=\"background-color: #ececec;\">%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span></font><br/>")
-                                .arg(tr("Sketch contains partially redundant constraints "))
-                                .arg(tr("(click to select)"))
-                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
-        }
-
-        if (getSketchObject()->getLastSolverStatus() == 0) {
-            if (dofs == 0) {
-                // color the sketch as fully constrained if it has geometry (other than the axes)
-                if(getSolvedSketch().getGeometrySize()>2)
-                    edit->FullyConstrained = true;
-
-                if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span> %2").arg(tr("Fully constrained sketch")).arg(partiallyRedundantString));
-                }
-            }
-            else if (!hasRedundancies) {
-                QString infoString;
-
-                if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
-                        .arg(partiallyRedundantString));
-                else
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
-                        .arg(dofs)
-                        .arg(partiallyRedundantString));
-            }
-
-            signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
-        }
-        else {
-            signalSolved(QString::fromLatin1("<font color='red'>%1</font>").arg(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime())));
-        }
+        signalSetUp(QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());
+        // color the sketch as fully constrained if it has geometry (other than the axes)
+        if(getSolvedSketch().getGeometrySize()>2)
+            edit->FullyConstrained = true;
     }
 }
 
@@ -7226,13 +7318,34 @@ void ViewProviderSketch::createEditInventorNodes(void)
     SbColor cursorTextColor(0,0,1);
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
 
+    // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
+    SoSeparator* editMarkersRoot = new SoSeparator;
+    edit->EditRoot->addChild(editMarkersRoot);
+    edit->EditMarkersMaterials = new SoMaterial;
+    edit->EditMarkersMaterials->setName("EditMarkersMaterials");
+    editMarkersRoot->addChild(edit->EditMarkersMaterials);
+
+    edit->EditMarkersCoordinate = new SoCoordinate3;
+    edit->EditMarkersCoordinate->setName("EditMarkersCoordinate");
+    editMarkersRoot->addChild(edit->EditMarkersCoordinate);
+
+    edit->EditMarkersDrawStyle = new SoDrawStyle;
+    edit->EditMarkersDrawStyle->setName("EditMarkersDrawStyle");
+    edit->EditMarkersDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    editMarkersRoot->addChild(edit->EditMarkersDrawStyle);
+
+    edit->EditMarkerSet = new SoMarkerSet;
+    edit->EditMarkerSet->setName("EditMarkerSet");
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", edit->MarkerSize);
+    editMarkersRoot->addChild(edit->EditMarkerSet);
+
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();
     SoPickStyle* ps = new SoPickStyle();
     ps->style.setValue(SoPickStyle::UNPICKABLE);
     Coordsep->addChild(ps);
     Coordsep->setName("CoordSeparator");
-    // no caching for fluctuand data structures
+    // no caching for frequently-changing data structures
     Coordsep->renderCaching = SoSeparator::OFF;
 
     SoMaterial *CoordTextMaterials = new SoMaterial;
@@ -7385,6 +7498,8 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                         "if ActiveSketch.ViewObject.RestoreCamera:\n"
                         "  ActiveSketch.ViewObject.TempoVis.saveCamera()\n"
+                        "  if ActiveSketch.ViewObject.ForceOrtho:\n"
+                        "    ActiveSketch.ViewObject.Document.ActiveView.setCameraType('Orthographic')\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
                               QString::fromLatin1(getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();

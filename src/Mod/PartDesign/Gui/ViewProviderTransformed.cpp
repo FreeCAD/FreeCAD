@@ -231,4 +231,3 @@ void ViewProviderTransformed::checkAddSubColor()
         }
     }
 }
-

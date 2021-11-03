@@ -169,11 +169,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "htmldocument");
-#if PY_MAJOR_VERSION >= 3
             const char* contents = PyUnicode_AsUTF8(result);
-#else
-            const char* contents = PyString_AsString(result);
-#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(contents);
@@ -204,11 +200,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "page");
-#if PY_MAJOR_VERSION >= 3
             const char* page = PyUnicode_AsUTF8(result);
-#else
-            const char* page = PyString_AsString(result);
-#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(page);
@@ -293,11 +285,7 @@ HttpServer::HttpServer(QObject* parent)
 {
 }
 
-#if QT_VERSION >=0x050000
 void HttpServer::incomingConnection(qintptr socket)
-#else
-void HttpServer::incomingConnection(int socket)
-#endif
 {
     if (disabled)
         return;
@@ -375,7 +363,7 @@ void HttpServer::discardClient()
 StdCmdPythonHelp::StdCmdPythonHelp()
   : Command("Std_PythonHelp"), server(0)
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sWhatsThis    = "Std_PythonHelp";

@@ -51,13 +51,7 @@ def make_text(string, placement=None, screen=False):
     ----------
     string: str, or list of str
         String to display on screen.
-
-        If it is a list, each element in the list should be a string.
-        In this case each element will be printed in its own line, that is,
-        a newline will be added at the end of each string.
-
-        If an empty string is passed `''` this won't cause an error
-        but the text `'Label'` will be displayed in the 3D view.
+        If it is a list, each element in the list represents a new text line.
 
     placement: Base::Placement, Base::Vector3, or Base::Rotation, optional
         It defaults to `None`.
@@ -92,17 +86,15 @@ def make_text(string, placement=None, screen=False):
 
     _msg("string: {}".format(string))
     try:
-        utils.type_check([(string, (str, list))])
+        utils.type_check([(string, (str, list))], name=_name)
     except TypeError:
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    if not all(isinstance(element, str) for element in string):
+    if (type(string) is list
+            and not all(isinstance(element, str) for element in string)):
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
-
-    if isinstance(string, str):
-        string = [string]
 
     _msg("placement: {}".format(placement))
     if not placement:

@@ -213,7 +213,8 @@ class JobCreate:
     def setupTemplate(self):
         templateFiles = []
         for path in PathPreferences.searchPaths():
-            templateFiles.extend(self.templateFilesIn(path))
+            cleanPaths = [f.replace("\\", "/") for f in self.templateFilesIn(path)]  # Standardize slashes used across os platforms
+            templateFiles.extend(cleanPaths)
 
         template = {}
         for tFile in templateFiles:

@@ -53,8 +53,8 @@ public:
 
     QPlainTextEdit* getEditor() const { return editor; }
     App::TextDocument* getTextObject() const { return textDocument; }
-    QStringList undoActions() const;
-    QStringList redoActions() const;
+    QStringList undoActions() const override;
+    QStringList redoActions() const override;
 
 protected:
     void showEvent(QShowEvent*) override;

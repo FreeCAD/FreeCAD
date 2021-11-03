@@ -107,10 +107,6 @@ void MDIView::deleteSelf()
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
         // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
-#if QT_VERSION < 0x050000
-        // With Qt5 this would lead to some annoying flickering
-        getMainWindow()->removeWindow(this);
-#endif
         parent->close();
     }
     else {
@@ -282,6 +278,34 @@ void MDIView::printPdf()
 void MDIView::printPreview()
 {
     std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+}
+
+QStringList MDIView::undoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecUndos = doc->getUndoVector();
+        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
+}
+
+QStringList MDIView::redoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecRedos = doc->getRedoVector();
+        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
 }
 
 QSize MDIView::minimumSizeHint () const

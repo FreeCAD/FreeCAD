@@ -216,7 +216,6 @@ protected:
     bool onDoubleClickItem(QTreeWidgetItem *);
 
 protected Q_SLOTS:
-    void onCreateGroup();
     void onRelabelObject();
     void onActivateDocument(QAction*);
     void onStartEditing();
@@ -267,11 +266,16 @@ private:
     void changeEvent(QEvent *e) override;
     void setupText();
 
+    void updateChildren(App::DocumentObject *obj,
+            const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
+
+    bool CheckForDependents();
+    void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+
 private:
     class Private;
     std::unique_ptr<Private> pimpl;
 
-    QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;

@@ -99,11 +99,7 @@ public:
         Trackball
     };
 
-#if QT_VERSION < 0x050000
-    enum RotationCenterMode {
-#else
     enum class RotationCenterMode {
-#endif
         WindowCenter       = 0, /**< The center of the window */
         ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
         FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
@@ -161,6 +157,7 @@ public:
 
     void startSelection(AbstractMouseSelection*);
     void startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     AbstractMouseSelection *currentSelection();
     SbBool isSelecting() const;
@@ -407,6 +404,23 @@ class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
 public:
     OpenCascadeNavigationStyle();
     ~OpenCascadeNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
+};
+
+class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    OpenSCADNavigationStyle();
+    ~OpenSCADNavigationStyle();
     const char* mouseButtons(ViewerMode);
 
 protected:

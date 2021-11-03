@@ -110,7 +110,7 @@ def mirror(objlist, p1, p2):
 
     for obj in objlist:
         mir = App.ActiveDocument.addObject("Part::Mirroring", "mirror")
-        mir.Label = obj.Label + " (" + translate("draft","mirrored" + ")")
+        mir.Label = obj.Label + " (" + translate("draft","mirrored") + ") "
         mir.Source = obj
         mir.Base = p1
         mir.Normal = pnorm

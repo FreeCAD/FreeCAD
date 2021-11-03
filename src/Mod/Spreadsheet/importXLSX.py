@@ -152,7 +152,9 @@ tokenDic = {
   'MIN'  :( 0, 'min',  0),
   'STDEVA':( 0, 'stddev',0),
   'SUM'  :( 0, 'sum',  0),
-  'PI'   :( 0, 'pi',   1)
+  'PI'   :( 0, 'pi',   1),
+  '_xlfn.CEILING.MATH':( 0, 'ceil',  0),
+  '_xlfn.FLOOR.MATH'  :( 0, 'floor', 0)
   }
 
 
@@ -398,8 +400,8 @@ def handleWorkBook(theBook, sheetDict, Doc):
     aliasName = getText(nameRef.childNodes)
     #print("aliasName: ", aliasName)
 
-    aliasRef = getText(theAlias.childNodes)
-    if '$' in aliasRef:
+    aliasRef = getText(theAlias.childNodes) # aliasRef can be None
+    if aliasRef and '$' in aliasRef:
       refList = aliasRef.split('!$')
       adressList = refList[1].split('$')
       #print("aliasRef: ", aliasRef)

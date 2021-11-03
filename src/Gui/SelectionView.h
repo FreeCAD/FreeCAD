@@ -109,6 +109,7 @@ protected:
 private:
     float x,y,z;
     std::vector<App::DocumentObject*> searchList;
+    bool openedAutomatically;
 };
 
 } // namespace DockWnd

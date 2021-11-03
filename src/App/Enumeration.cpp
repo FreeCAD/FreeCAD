@@ -302,9 +302,16 @@ bool Enumeration::isValid(void) const
 
 Enumeration & Enumeration::operator=(const Enumeration &other)
 {
+    if (this == &other)
+        return *this;
+
     if (other._ownEnumArray) {
         setEnums(other.getEnumVector());
     } else {
+        if (isValid() && _ownEnumArray) {
+            tearDown();
+        }
+
         _EnumArray = other._EnumArray;
     }
 

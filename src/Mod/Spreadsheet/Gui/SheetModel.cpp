@@ -234,11 +234,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     if (cell->hasException()) {
         switch (role) {
         case Qt::ToolTipRole: {
-#if QT_VERSION >= 0x050000
             QString txt(Base::Tools::fromStdString(cell->getException()).toHtmlEscaped());
-#else
-            QString txt(Qt::escape(Base::Tools::fromStdString(cell->getException())));
-#endif
             return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
         }
         case Qt::DisplayRole: {
@@ -251,7 +247,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(QString::fromUtf8("#ERR"));
 #endif
         }
-        case Qt::TextColorRole:
+        case Qt::ForegroundRole:
             return QVariant::fromValue(QColor(255.0, 0, 0));
         case Qt::TextAlignmentRole:
             return QVariant(Qt::AlignVCenter | Qt::AlignLeft);
@@ -324,7 +320,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
     if (!prop) {
         switch (role) {
-        case  Qt::TextColorRole: {
+        case  Qt::ForegroundRole: {
             return QColor(0, 0, 255.0);
         }
         case Qt::TextAlignmentRole: {
@@ -344,7 +340,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
 
         switch (role) {
-        case Qt::TextColorRole:
+        case Qt::ForegroundRole:
             return getForeground(cell);
         case Qt::DisplayRole:
             return QVariant(QString::fromUtf8(stringProp->getValue()));
@@ -368,7 +364,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         const App::PropertyQuantity * floatProp = static_cast<const App::PropertyQuantity*>(prop);
 
         switch (role) {
-        case  Qt::TextColorRole: {
+        case  Qt::ForegroundRole: {
             const Base::Unit & computedUnit = floatProp->getUnit();
             DisplayUnit displayUnit;
             if (cell->getDisplayUnit(displayUnit) &&
@@ -439,7 +435,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         }
 
         switch (role) {
-        case  Qt::TextColorRole:
+        case  Qt::ForegroundRole:
             return getForeground(cell, d < 0 ? -1 : 1);
         case Qt::TextAlignmentRole: {
             if (alignment & Cell::ALIGNMENT_HIMPLIED) {
@@ -477,7 +473,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
 
         switch (role) {
-        case  Qt::TextColorRole:
+        case  Qt::ForegroundRole:
             return getForeground(cell);
         case Qt::TextAlignmentRole: {
             if (alignment & Cell::ALIGNMENT_HIMPLIED) {

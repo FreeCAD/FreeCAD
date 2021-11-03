@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>创建新的空轨迹 </translation>
+      <source>Create a new empty trajectory</source>
+      <translation type="unfinished">Create a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
-      <translation>修改轨迹...</translation>
+      <translation>修饰轨迹...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>

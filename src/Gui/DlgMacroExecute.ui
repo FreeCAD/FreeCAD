@@ -162,11 +162,11 @@
          <number>6</number>
         </property>
         <item row="0" column="0">
-         <widget class="Gui::FileChooser" name="fileChooser" native="true">
+         <widget class="Gui::FileChooser" name="fileChooser">
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="mode" >
+          <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>
           </property>
          </widget>

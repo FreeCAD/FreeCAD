@@ -25,10 +25,9 @@ objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
-import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC,ArchIFCView
+import FreeCAD,ArchIFC,ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:

@@ -760,6 +760,51 @@ bool CmdFemConstraintPressure::isActive(void)
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintSpring)
+
+CmdFemConstraintSpring::CmdFemConstraintSpring()
+  : Command("FEM_ConstraintSpring")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint spring");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a spring acting on a face");
+    sWhatsThis      = "FEM_ConstraintSpring";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "FEM_ConstraintSpring";
+}
+
+void CmdFemConstraintSpring::activated(int)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("ConstraintSpring");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint spring on face"));
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.normalStiffness = 1.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.tangentialStiffness = 0.0",FeatName.c_str()); //OvG: set default to False
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                             Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintSpring::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintPulley)
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
@@ -1687,6 +1732,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
     rcCmdMgr.addCommand(new CmdFemConstraintTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
+    rcCmdMgr.addCommand(new CmdFemConstraintSpring());
 
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());

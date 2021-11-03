@@ -60,10 +60,10 @@ class Downgrade(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Downgrade, self).Activated(name=translate("draft","Downgrade"))
+        super(Downgrade, self).Activated(name="Downgrade")
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to upgrade"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

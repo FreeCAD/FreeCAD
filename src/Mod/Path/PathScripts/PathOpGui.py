@@ -214,11 +214,6 @@ class TaskPanelPage(object):
     def _installTCUpdate(self):
         return hasattr(self.form, 'toolController')
 
-    def setParent(self, parent):
-        '''setParent() ... used to transfer parent object link to child class.
-        Do not overwrite.'''
-        self.parent = parent
-
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
         self.signalDirtyChanged = callback
@@ -1000,8 +995,10 @@ class TaskPanel(object):
     def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
         PathLog.track(obj.Label, deleteOnReject, opPage, selectionFactory)
         FreeCAD.ActiveDocument.openTransaction(translate("Path", "AreaOp Operation"))
+        self.obj = obj
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
+        self.parent = None
 
         # members initialized later
         self.clearanceHeight = None
@@ -1050,9 +1047,9 @@ class TaskPanel(object):
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
+            page.parent = self  # save pointer to this current class as "parent"
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
-            page.setParent(self)
 
         taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
 
@@ -1092,7 +1089,6 @@ class TaskPanel(object):
             self.form = forms
 
         self.selectionFactory = selectionFactory
-        self.obj = obj
         self.isdirty = deleteOnReject
         self.visibility = obj.ViewObject.Visibility
         obj.ViewObject.Visibility = True
@@ -1207,7 +1203,18 @@ class TaskPanel(object):
                     page.clearBase()
                     page.addBaseGeometry(sel)
 
+        # Update properties based upon expressions in case expression value has changed
+        for (prp, expr) in self.obj.ExpressionEngine:
+            val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+            value = val.Value if hasattr(val, 'Value') else val
+            prop = getattr(self.obj, prp)
+            if hasattr(prop, "Value"):
+                prop.Value = value
+            else:
+                prop = value
+
         self.panelSetFields()
+
         for page in self.featurePages:
             page.pageRegisterSignalHandlers()
 
@@ -1280,12 +1287,12 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Visibility = False
-
         FreeCAD.ActiveDocument.commitTransaction()
+
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
@@ -1329,6 +1336,7 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
+        self.job = None
 
 
 def SetupOperation(name,

@@ -24,7 +24,7 @@
 #define FEM_HYPOTHESISPY_H
 
 #include <CXX/Extensions.hxx>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <SMESH_Version.h>
 
 class SMESH_Hypothesis;
@@ -36,13 +36,13 @@ class HypothesisPy : public Py::PythonExtension<HypothesisPy>
 {
 public:
     typedef Py::PythonExtension<HypothesisPy> HypothesisPyBase;
-    HypothesisPy(boost::shared_ptr<SMESH_Hypothesis>);
+    HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
     virtual ~HypothesisPy();
-    boost::shared_ptr<SMESH_Hypothesis> getHypothesis() const
+    std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
     { return hyp; }
 
 private:
-    boost::shared_ptr<SMESH_Hypothesis> hyp;
+    std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
 typedef Py::ExtensionObject<HypothesisPy> Hypothesis;
@@ -71,7 +71,7 @@ public:
     Py::Object isAuxiliary(const Py::Tuple& args);
     Py::Object setParametersByMesh(const Py::Tuple& args);
 
-    boost::shared_ptr<SMESH_Hypothesis> getHypothesis() const
+    std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
     { return hyp; }
 
 protected:
@@ -83,7 +83,7 @@ private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
 private:
-    boost::shared_ptr<SMESH_Hypothesis> hyp;
+    std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
 #if SMESH_VERSION_MAJOR >= 9

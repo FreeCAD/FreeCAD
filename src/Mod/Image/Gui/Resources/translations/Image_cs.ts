@@ -184,7 +184,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="128"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Standardní</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="146"/>

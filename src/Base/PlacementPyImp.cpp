@@ -326,11 +326,7 @@ PyObject *PlacementPy::getCustomAttributes(const char* attr) const
     // for backward compatibility
     if (strcmp(attr, "isNull") == 0) {
         PyObject *w, *res;
-#if PY_MAJOR_VERSION >= 3
         w = PyUnicode_InternFromString("isIdentity");
-#else
-        w = PyString_InternFromString("isIdentity");
-#endif
         res = PyObject_GenericGetAttr(const_cast<PlacementPy *>(this), w);
         Py_XDECREF(w);
         return res;
@@ -485,26 +481,11 @@ PyObject * PlacementPy::number_or_handler (PyObject* /*self*/, PyObject* /*other
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int PlacementPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * PlacementPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * PlacementPy::number_long_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
 
 PyObject * PlacementPy::number_float_handler (PyObject * /*self*/)
 {
@@ -512,16 +493,3 @@ PyObject * PlacementPy::number_float_handler (PyObject * /*self*/)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * PlacementPy::number_oct_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * PlacementPy::number_hex_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif

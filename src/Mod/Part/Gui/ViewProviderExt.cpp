@@ -135,6 +135,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderPartExtPy.h"
 
@@ -144,96 +145,6 @@ using namespace PartGui;
 namespace bio = boost::iostreams;
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
-
-
-void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
-                                     const Handle(Poly_Triangulation)& aPolyTri,
-                                     TColgp_Array1OfDir& theNormals)
-{
-    const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
-
-    if(aPolyTri->HasNormals())
-    {
-        // normals pre-computed in triangulation structure
-        const TShort_Array1OfShortReal& aNormals = aPolyTri->Normals();
-        const Standard_ShortReal*       aNormArr = &(aNormals.Value(aNormals.Lower()));
-
-        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
-        {
-            const Standard_Integer anId = 3 * (aNodeIter - aNodes.Lower());
-            const gp_Dir aNorm(aNormArr[anId + 0],
-                               aNormArr[anId + 1],
-                               aNormArr[anId + 2]);
-            theNormals(aNodeIter) = aNorm;
-        }
-
-        if(theFace.Orientation() == TopAbs_REVERSED)
-        {
-            for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
-            {
-                theNormals.ChangeValue(aNodeIter).Reverse();
-            }
-        }
-
-        return;
-    }
-
-    // take in face the surface location
-    Poly_Connect thePolyConnect(aPolyTri);
-    const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
-    Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
-    const Standard_Real    aTol      = Precision::Confusion();
-    Handle(TShort_HArray1OfShortReal) aNormals = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
-    const Poly_Array1OfTriangle& aTriangles = aPolyTri->Triangles();
-    const TColgp_Array1OfPnt2d*  aNodesUV   = aPolyTri->HasUVNodes() && !aSurf.IsNull()
-            ? &aPolyTri->UVNodes()
-            : NULL;
-    Standard_Integer aTri[3];
-
-    for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
-    {
-        // try to retrieve normal from real surface first, when UV coordinates are available
-        if(aNodesUV == NULL
-                || GeomLib::NormEstim(aSurf, aNodesUV->Value(aNodeIter), aTol, theNormals(aNodeIter)) > 1)
-        {
-            // compute flat normals
-            gp_XYZ eqPlan(0.0, 0.0, 0.0);
-
-            for(thePolyConnect.Initialize(aNodeIter); thePolyConnect.More(); thePolyConnect.Next())
-            {
-                aTriangles(thePolyConnect.Value()).Get(aTri[0], aTri[1], aTri[2]);
-                const gp_XYZ v1(aNodes(aTri[1]).Coord() - aNodes(aTri[0]).Coord());
-                const gp_XYZ v2(aNodes(aTri[2]).Coord() - aNodes(aTri[1]).Coord());
-                const gp_XYZ vv = v1 ^ v2;
-                const Standard_Real aMod = vv.Modulus();
-
-                if(aMod >= aTol)
-                {
-                    eqPlan += vv / aMod;
-                }
-            }
-
-            const Standard_Real aModMax = eqPlan.Modulus();
-            theNormals(aNodeIter) = (aModMax > aTol) ? gp_Dir(eqPlan) : gp::DZ();
-        }
-
-        const Standard_Integer anId = (aNodeIter - aNodes.Lower()) * 3;
-        aNormals->SetValue(anId + 1, (Standard_ShortReal)theNormals(aNodeIter).X());
-        aNormals->SetValue(anId + 2, (Standard_ShortReal)theNormals(aNodeIter).Y());
-        aNormals->SetValue(anId + 3, (Standard_ShortReal)theNormals(aNodeIter).Z());
-    }
-
-    aPolyTri->SetNormals(aNormals);
-
-    if(theFace.Orientation() == TopAbs_REVERSED)
-    {
-        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
-        {
-            theNormals.ChangeValue(aNodeIter).Reverse();
-        }
-    }
-}
-
 
 namespace PartGui {
 
@@ -275,11 +186,18 @@ ViewProviderPartExt::ViewProviderPartExt()
     VisualTouched = true;
     forceUpdateCount = 0;
 
+    // get default line color
     unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
-    float r,g,b;
-    r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
+    float lr,lg,lb;
+    lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
+    // get default vertex color
+    unsigned long vcol = Gui::ViewParams::instance()->getDefaultShapeVertexColor(); 
+    float vr,vg,vb;
+    vr = ((vcol >> 24) & 0xff) / 255.0; vg = ((vcol >> 16) & 0xff) / 255.0; vb = ((vcol >> 8) & 0xff) / 255.0;
     int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
     int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
+	
+
 
     NormalsFromUV = PartParams::NormalsFromUVNodes();
 
@@ -287,17 +205,26 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     static const char *osgroup = "Object Style";
 
-    App::Material mat;
-    mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(r,g,b);
-    mat.specularColor.set(0.0f,0.0f,0.0f);
-    mat.emissiveColor.set(0.0f,0.0f,0.0f);
-    mat.shininess = 1.0f;
-    mat.transparency = 0.0f;
-    ADD_PROPERTY_TYPE(LineMaterial,(mat), osgroup, App::Prop_None, "Object line material.");
-    ADD_PROPERTY_TYPE(PointMaterial,(mat), osgroup, App::Prop_None, "Object point material.");
-    ADD_PROPERTY_TYPE(LineColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
-    ADD_PROPERTY_TYPE(PointColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
+    App::Material lmat;
+    lmat.ambientColor.set(0.2f,0.2f,0.2f);
+    lmat.diffuseColor.set(lr,lg,lb);
+    lmat.specularColor.set(0.0f,0.0f,0.0f);
+    lmat.emissiveColor.set(0.0f,0.0f,0.0f);
+    lmat.shininess = 1.0f;
+    lmat.transparency = 0.0f;
+
+    App::Material vmat;
+    vmat.ambientColor.set(0.2f,0.2f,0.2f);
+    vmat.diffuseColor.set(vr,vg,vb);
+    vmat.specularColor.set(0.0f,0.0f,0.0f);
+    vmat.emissiveColor.set(0.0f,0.0f,0.0f);
+    vmat.shininess = 1.0f;
+    vmat.transparency = 0.0f;	
+	
+    ADD_PROPERTY_TYPE(LineMaterial,(lmat), osgroup, App::Prop_None, "Object line material.");
+    ADD_PROPERTY_TYPE(PointMaterial,(vmat), osgroup, App::Prop_None, "Object point material.");
+    ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
+    ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
     ADD_PROPERTY_TYPE(DiffuseColor,(ShapeColor.getValue()), osgroup, App::Prop_None, "Object diffuse color.");
     ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
@@ -532,7 +459,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
-    }else if(prop == &ShapeColor) {
+    }
+    else if(prop == &ShapeColor) {
         if(!ShapeColor.testStatus(App::Property::User3)) {
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
                     App::Property::User3, &ShapeColor);
@@ -2009,48 +1937,25 @@ void ViewProviderPartExt::updateVisual()
 
 
             // cycling through the poly mesh
+#if OCC_VERSION_HEX < 0x070600
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-            if (NormalsFromUV)
-                getNormals(actFace, mesh, Normals);
-
-            std::vector<std::pair<gp_Vec,int> > centers;
-            centers.reserve(nbTriInFace);
-            for (int g=1;g<=nbTriInFace;g++) {
-                Standard_Integer N1,N2,N3;
-                Triangles(g).Get(N1,N2,N3);
-                gp_Vec V1(Nodes(N1).XYZ()), V2(Nodes(N2).XYZ()), V3(Nodes(N3).XYZ());
-                centers.emplace_back((V1+V2+V3)/3.0,g);
-            }
-
-            // The sorint isn't necessary after we had auto turn on two sided
-            // light for transparent object.
-#if 0
-            // Pre-sort the tiangles. This is necessary for per-part
-            // transparency sorting to work for highly curvatured surface
-            std::sort(centers.begin(),centers.end(),
-                [](const std::pair<gp_Vec,int> &a, const std::pair<gp_Vec,int> &b) {
-                    if(a.first.Z() < b.first.Z())
-                        return true;
-                    if(a.first.Z() > b.first.Z())
-                        return false;
-                    if(a.first.Y() < b.first.Y())
-                        return true;
-                    if(a.first.Y() > b.first.Y())
-                        return false;
-                    return a.first.X() < b.first.X();
-                }
-            );
+#else
+            int numNodes =  mesh->NbNodes();
+            TColgp_Array1OfDir Normals (1, numNodes);
 #endif
+            if (NormalsFromUV)
+                Part::Tools::getPointNormals(actFace, mesh, Normals);
 
-            int g = 0;
-            for(auto &info : centers) {
-                ++g;
-
+            for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
-                Triangles(info.second).Get(N1,N2,N3);
+#if OCC_VERSION_HEX < 0x070600
+                Triangles(g).Get(N1,N2,N3);
+#else
+                mesh->Triangle(g).Get(N1,N2,N3);
+#endif
 
                 // change orientation of the triangle if the face is reversed
                 if ( orient != TopAbs_FORWARD ) {
@@ -2060,7 +1965,11 @@ void ViewProviderPartExt::updateVisual()
                 }
 
                 // get the 3 points of this triangle
+#if OCC_VERSION_HEX < 0x070600
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
+#else
+                gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
+#endif
 
                 // get the 3 normals of this triangle
                 gp_Vec NV1, NV2, NV3;
@@ -2137,7 +2046,11 @@ void ViewProviderPartExt::updateVisual()
                         // rare cases where some points are only referenced by the polygon
                         // but not by any triangle. Thus, we must apply the coordinates to
                         // make sure that everything is properly set.
+#if OCC_VERSION_HEX < 0x070600
                         gp_Pnt p(Nodes(nodeIndex));
+#else
+                        gp_Pnt p(mesh->Node(nodeIndex));
+#endif
                         if (!identity)
                             p.Transform(myTransf);
                         verts[index].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));

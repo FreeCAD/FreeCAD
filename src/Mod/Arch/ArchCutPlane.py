@@ -21,7 +21,6 @@
 #*****************************************************************************
 
 import FreeCAD,ArchCommands
-from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -65,7 +64,8 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
         obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
         obj.ViewObject.Transparency = 75
         if "Additions" in archObject.Object.PropertiesList:
-            return ArchCommands.removeComponents(obj,archObject.Object)
+            ArchCommands.removeComponents(obj,archObject.Object)
+            return None
         else:
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
             cutObj.Base = archObject.Object
@@ -120,7 +120,7 @@ class _CutPlaneTaskPanel:
         self.linecut=linecut
         self.plan=None
         if linecut:
-            self.plan=plan=getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
+            self.plan = getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
         else :
             self.plan = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 

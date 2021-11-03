@@ -91,7 +91,7 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 		</Methode>
         <Methode Name="parameterAtDistance" Const="true">
 			<Documentation>
-				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter.
 parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 			</Documentation>
 		</Methode>
@@ -145,6 +145,8 @@ of the nearest orthogonal projection of the point.</UserDocu>
           <Documentation>
               <UserDocu>
                   Returns all intersection points and curve segments between the curve and the curve/surface.
+
+				  arguments: curve/surface (for the intersection), precision (float)
               </UserDocu>
           </Documentation>
       </Methode>

@@ -150,6 +150,7 @@ public:
     void setExclusive (bool);
     bool isExclusive() const;
     void setVisible (bool);
+    void setIsMode(bool b) { _isMode = b; }
 
     void setDropDownMenu(bool b) { _dropDown = b; }
     QAction* addAction(QAction*);
@@ -169,6 +170,7 @@ protected:
     bool _dropDown;
     bool _external;
     bool _toggle;
+    bool _isMode;
     QList<QAction*> _actions;
 };
 

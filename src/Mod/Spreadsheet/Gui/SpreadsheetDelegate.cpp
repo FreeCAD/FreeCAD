@@ -81,7 +81,6 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
             else
                 editor->setObjectName(QLatin1String("label"));
             editor->setContextMenuPolicy(Qt::NoContextMenu);
-            editor->setIndex(index);
             connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
             lastEditor = editor;
             return editor;
@@ -120,10 +119,9 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
 
     SpreadsheetGui::TextEdit *editor = new SpreadsheetGui::TextEdit(parent);
     lastEditor = editor;
-    editor->setIndex(index);
 
     editor->setDocumentObject(sheet);
-    connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+    connect(editor, &SpreadsheetGui::TextEdit::finishedWithKey, this, &SpreadsheetDelegate::on_editorFinishedWithKey);
     return editor;
 }
 
@@ -315,6 +313,11 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
         model->setData(index, checkbox->isChecked());
         return;
     }
+}
+
+void SpreadsheetDelegate::on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
+{
+    Q_EMIT finishedWithKey(key, modifiers);
 }
 
 QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const

@@ -115,6 +115,8 @@ public:
     App::PropertyBool ShowLinks;
     App::PropertyBool ShowSupport;
     App::PropertyBool RestoreCamera;
+    App::PropertyBool ForceOrtho;
+    App::PropertyBool SectionView;
     App::PropertyString EditingWorkbench;
 
     /// Draw all constraint icons
@@ -128,6 +130,9 @@ public:
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+
+    /// draw the edit markers
+    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
 
     /// Is the view provider selectable
     bool isSelectable(void) const override;
@@ -272,9 +277,7 @@ public:
     /// signals if the constraints list has changed
     boost::signals2::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<void (QString msg)> signalSetUp;
-    /// signals if the sketch has been solved
-    boost::signals2::signal<void (QString msg)> signalSolved;
+    boost::signals2::signal<void (const QString &state, const QString &msg, const QString &url, const QString &linkText)> signalSetUp;
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
         
@@ -375,6 +378,8 @@ protected:
 
         /// Angle to rotate an icon
         double iconRotation;
+
+        bool visible;
     };
 
     /// Internal type used for drawing constraint icons

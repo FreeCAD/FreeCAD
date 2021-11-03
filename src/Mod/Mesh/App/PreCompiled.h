@@ -53,7 +53,6 @@
 #include <float.h>
 #include <fcntl.h>
 #include <ios>
-#include <io.h>
 
 #ifdef FC_USE_GTS
 #  include <gts.h>
@@ -75,6 +74,7 @@
 // FIXME: Causes problem with boost/numeric/bindings/lapack/syev.hpp(117)
 #ifdef FC_OS_WIN32
 //# include <windows.h>
+#include <io.h>
 #endif
 
 #include <boost/algorithm/string/replace.hpp>

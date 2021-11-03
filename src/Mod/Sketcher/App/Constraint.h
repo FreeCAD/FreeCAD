@@ -82,7 +82,10 @@ enum InternalAlignmentType {
  * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
  * in addition to PointPos.
  */
-enum PointPos { none, start, end, mid };
+enum PointPos { none    = 0,
+                start   = 1,
+                end     = 2,
+                mid     = 3 };
 
 class SketcherExport Constraint : public Base::Persistence
 {
@@ -126,6 +129,9 @@ public:
         return Type == Distance || Type == DistanceX || Type == DistanceY ||
                Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight;
     }
+
+    /// utility function to swap the index in First/Second/Third of the provided constraint from the fromGeoId GeoId to toGeoId
+    void substituteIndex(int fromGeoId, int toGeoId);
 
     friend class PropertyConstraintList;
 

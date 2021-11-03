@@ -311,7 +311,7 @@ end:
 
 QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     : QAbstractSpinBox(parent),
-      ExpressionBinding(),
+      ExpressionSpinBox(this),
       d_ptr(new QuantitySpinBoxPrivate())
 {
     d_ptr->locale = locale();
@@ -321,13 +321,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     QObject::connect(this, SIGNAL(editingFinished()),
                      this, SLOT(handlePendingEmit()));
 
-    defaultPalette = lineEdit()->palette();
-
-    iconLabel = new ExpressionLabel(lineEdit());
-
-    LineEditStyle::setup(lineEdit());
-
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
 
 QuantitySpinBox::~QuantitySpinBox()
@@ -343,21 +336,6 @@ void QuantitySpinBox::ignoreSizeHint(bool enable)
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
-}
-
-void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
-{
-    Q_ASSERT(isBound());
-
-    try {
-        ExpressionBinding::setExpression(expr);
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
 }
 
 QString QuantitySpinBox::boundToName() const
@@ -432,36 +410,11 @@ QString Gui::QuantitySpinBox::expressionText() const
     return QString();
 }
 
-
-void Gui::QuantitySpinBox::onChange()
+void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    Q_ASSERT(isBound());
-    if (hasExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-        if (value) {
-            std::stringstream s;
-            s << value->getValue();
-
-            lineEdit()->setText(getUserString(value->getQuantity()));
-            handlePendingEmit();
-
-            setReadOnly(true);
-
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Text, Qt::lightGray);
-            lineEdit()->setPalette(p);
-        }
-    }
-    else {
-        setReadOnly(false);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-        lineEdit()->setPalette(p);
-    }
+    lineEdit()->setText(getUserString(expr->getQuantity()));
+    handlePendingEmit();
 }
-
 
 bool QuantitySpinBox::apply(const std::string & propName)
 {
@@ -493,56 +446,14 @@ bool QuantitySpinBox::apply(const std::string & propName)
 void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);
-
-    try {
-        if (hasExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                setReadOnly(true);
-                QPalette p(lineEdit()->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineEdit()->setPalette(p);
-            }
-        }
-        else {
-            setReadOnly(false);
-            QPalette p(lineEdit()->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineEdit()->setPalette(p);
-        }
-    }
-    catch (const Base::Exception &) {
-        setReadOnly(true);
-        QPalette p(lineEdit()->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineEdit()->setPalette(p);
-    }
-
-}
-
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
-{
-    if (event->text() == QString::fromUtf8("=") && isBound())
-        openFormulaDialog();
-    else
-        QAbstractSpinBox::keyPressEvent(event);
+    resizeWidget();
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
 {
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    if (hasExpression()) {
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
-        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
-        opt.state &= ~QStyle::State_Active;
-        opt.stepEnabled = StepNone;
-    }
-
-    QStylePainter p(this);
-    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+    drawControl(opt);
 }
 
 void QuantitySpinBox::updateText(const Quantity &quant)
@@ -632,33 +543,13 @@ void QuantitySpinBox::userInput(const QString & text)
 
 void QuantitySpinBox::openFormulaDialog()
 {
-    Q_ASSERT(isBound());
-
-    Q_D(const QuantitySpinBox);
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
-    box->show();
-
-    box->setExpressionInputSize(width(), height());
-
+    ExpressionSpinBox::openFormulaDialog();
     Q_EMIT showFormulaDialog(true);
 }
 
-void QuantitySpinBox::finishFormulaDialog()
+void QuantitySpinBox::finishFormulaDialog(Dialog::DlgExpressionInput *input)
 {
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
-    if (!box) {
-        qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
-        return;
-    }
-
-    if (box->result() == QDialog::Accepted)
-        setExpression(box->getExpression());
-    else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
-
-    box->deleteLater();
-
+    ExpressionSpinBox::finishFormulaDialog(input);
     Q_EMIT showFormulaDialog(false);
 }
 

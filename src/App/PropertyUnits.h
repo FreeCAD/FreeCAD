@@ -111,6 +111,10 @@ public:
     const Constraints*  getConstraints(void) const;
     //@}
 
+    double getMinimum() const;
+    double getMaximum() const;
+    double getStepSize() const;
+
     virtual const char* getEditorName(void) const;
     virtual void setPyObject(PyObject *);
 
@@ -230,6 +234,18 @@ class AppExport PropertyPressure: public PropertyQuantity
 public:
     PropertyPressure(void);
     virtual ~PropertyPressure(){}
+};
+
+/** Stiffness property
+ * This is a property for representing stiffness. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyStiffness: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyStiffness(void);
+    virtual ~PropertyStiffness(){}
 };
 
 /** Force property

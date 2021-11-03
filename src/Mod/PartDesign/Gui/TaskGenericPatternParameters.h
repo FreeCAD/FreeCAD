@@ -23,6 +23,7 @@
 #ifndef GUI_TASKVIEW_TaskGenericPatternParameters_H
 #define GUI_TASKVIEW_TaskGenericPatternParameters_H
 
+#include <memory>
 #include <App/DocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
@@ -72,7 +73,7 @@ private:
 
 private:
     Ui_TaskGenericPatternParameters* ui;
-    boost::shared_ptr<App::Expression> expr;
+    std::shared_ptr<App::Expression> expr;
 };
 
 

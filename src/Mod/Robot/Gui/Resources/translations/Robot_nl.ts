@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>Maak een nieuw leeg traject </translation>
+      <source>Create a new empty trajectory</source>
+      <translation>Maak een nieuw leeg traject</translation>
     </message>
   </context>
   <context>

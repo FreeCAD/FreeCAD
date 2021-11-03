@@ -299,6 +299,7 @@ void TaskPocketParameters::updateUI(int index)
     // up to face
     else if (index == 3) {
         isOffsetEditVisable = true;
+        isReversedEnabled = true;
         isFaceEditEnabled    = true;
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
@@ -310,6 +311,7 @@ void TaskPocketParameters::updateUI(int index)
     else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
+        isReversedEnabled = true;
     }    
 
     if (index != 3) {

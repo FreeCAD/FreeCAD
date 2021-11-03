@@ -47,6 +47,9 @@ using namespace Spreadsheet;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Spreadsheet");
+    qApp->translate("Workbench", "&Spreadsheet");
+    qApp->translate("Workbench", "&Alignment");
+    qApp->translate("Workbench", "&Styles");
 #endif
 
 /// @namespace ImageGui @class Workbench
@@ -81,7 +84,7 @@ void Workbench::activated()
                 foregroundColor = new QtColorPicker();
                 foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
-                foregroundColor->setCurrentColor(palette.color(QPalette::Foreground));
+                foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
                 QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             }
             foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));

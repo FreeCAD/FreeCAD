@@ -293,7 +293,10 @@ will be used or black.</string>
         <item row="2" column="4">
          <widget class="Gui::PrefComboBox" name="comboBoxShapeType">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the default shape type hint of a newly created mesh object.&lt;/p&gt;&lt;p&gt;You can later on change the view object property of any mesh object.&lt;/p&gt;&lt;p&gt;Note that the section filling function when using clip plane only works&lt;/p&gt;&lt;p&gt;for 'Solid' shape type.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Specify the default shape type hint of a newly created mesh object.
+You can later on change the view object property of any mesh object.
+Note that the section filling function when using clip plane only works
+for 'Solid' shape type.</string>
           </property>
           <property name="prefPath" stdset="0">
            <string>Mod/Mesh</string>

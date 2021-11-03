@@ -46,6 +46,7 @@
 #include <Poly_Array1OfTriangle.hxx>
 #include <Poly_PolygonOnTriangulation.hxx>
 #include <Poly_Triangulation.hxx>
+#include <Standard_Version.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -318,13 +319,26 @@ namespace // internal utils
     {
       myFaceTol         = SMESH_MesherHelper::MaxTolerance( face );
       myTree            = triaTree;
+#if OCC_VERSION_HEX < 0x070600
       myNodes           = & tr->Nodes();
+#else
+      TColgp_Array1OfPnt* trNodes = new TColgp_Array1OfPnt( 1, tr->NbNodes() );
+      for (Standard_Integer i = myNodes->Lower(); i <= myNodes->Upper(); i++)
+      {
+        trNodes->SetValue(i, tr->Node(i));
+      }
+      myNodes = trNodes;
+      myOwnNodes = true;
+#endif
       myPolyTrias       = & tr->Triangles();
       myTriasDeflection = tr->Deflection();
       if ( !loc.IsIdentity() ) // transform nodes if necessary
       {
         TColgp_Array1OfPnt* trsfNodes = new TColgp_Array1OfPnt( myNodes->Lower(), myNodes->Upper() );
         trsfNodes->Assign( *myNodes );
+#if OCC_VERSION_HEX >= 0x070600
+        delete myNodes; // it's already a copy
+#endif
         myNodes    = trsfNodes;
         myOwnNodes = true;
         const gp_Trsf& trsf = loc;

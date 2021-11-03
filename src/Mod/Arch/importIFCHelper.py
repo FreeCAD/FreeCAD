@@ -241,15 +241,18 @@ def buildRelMattable(ifcfile):
     mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+        # the related object might not exist
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        if r.RelatedObjects:
+            for o in r.RelatedObjects:
+                if r.RelatingMaterial.is_a("IfcMaterial"):
+                    mattable[o.id()] = r.RelatingMaterial.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                    mattable[o.id()] = r.RelatingMaterial.Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                    mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                    mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
 
     return mattable
 
@@ -392,6 +395,7 @@ def getColorFromProduct(product):
                     color = getColorFromStyledItem(style)
                     if color:
                         return color
+
 
 def getColorFromMaterial(material):
 
@@ -537,6 +541,8 @@ def predefined_to_rgb(rgb_color):
 
 # ************************************************************************************************
 # property related methods
+
+
 def buildRelProperties(ifcfile):
     """
     Builds and returns a dictionary of {object:[properties]} from an IFC file
@@ -605,7 +611,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
-def getIfcPsetPoperties(ifcfile, pid):
+def getIfcPsetProperties(ifcfile, pid):
     """ directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})
@@ -811,6 +817,7 @@ def get2DShape(representation,scaling=1000):
                         result.append(e)
             elif el.is_a("IfcIndexedPolyCurve"):
                 coords = el.Points.CoordList
+
                 def index2points(segment):
                     pts = []
                     for i in segment.wrappedValue:
@@ -895,7 +902,6 @@ def isRectangle(verts):
 
 
 def createFromProperties(propsets,ifcfile,parametrics):
-
     """
     Creates a FreeCAD parametric object from a set of properties.
     """
@@ -983,7 +989,6 @@ def createFromProperties(propsets,ifcfile,parametrics):
 
 
 def applyColorDict(doc,colordict=None):
-
     """applies the contents of a color dict to the objects in the given doc.
     If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
 
@@ -1004,7 +1009,6 @@ def applyColorDict(doc,colordict=None):
 
 
 def getParents(ifcobj):
-
     """finds the parent entities of an IFC entity"""
 
     parentlist = []

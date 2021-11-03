@@ -150,7 +150,7 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation &rot
   // 3.1415926535897932384626433832795
   SbVec3f Up(0,0,1),result;
 
-  unsigned long i=0;
+  int i=0;
   for( std::vector<SbVec3f>::const_iterator it=normalVector.begin();it != normalVector.end(); ++it,i++)
   {
     rot.multVec(*it,result);

@@ -37,9 +37,7 @@
 # include <QSpinBox>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -587,6 +585,22 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
     } else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgPreferencesImp::reload()
+{
+    for (int i = 0; i < ui->tabWidgetStack->count(); i++) {
+        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        for (int j = 0; j < tabWidget->count(); j++) {
+            QWidget* widget = tabWidget->widget(j);
+            if (auto scrollarea = qobject_cast<QScrollArea*>(widget))
+                widget = scrollarea->widget();
+            PreferencePage* page = qobject_cast<PreferencePage*>(widget);
+            if (page)
+                page->loadSettings();
+        }
+    }
+    applyChanges();
 }
 
 #include "moc_DlgPreferencesImp.cpp"

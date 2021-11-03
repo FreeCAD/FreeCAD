@@ -207,10 +207,8 @@ struct Node_Object
         :Slice(slc)
     {
         ObjectType = Base::Type::fromName(type->c_str());
-        delete (type);
-        if(subname){
+        if (subname) {
             SubName = *subname;
-            delete subname;
         }
     }
     ~Node_Object(){

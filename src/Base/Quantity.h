@@ -75,6 +75,7 @@ struct BaseExport QuantityFormat {
         denominator = denom;
     }
     QuantityFormat();
+    QuantityFormat(NumberFormat format, int decimals=-1);
     inline char toFormat() const {
         switch (format) {
         case Fixed:
@@ -251,6 +252,11 @@ public:
     static Quantity KiloNewton;
     static Quantity MegaNewton;
 
+    static Quantity NewtonPerMeter;
+    static Quantity MilliNewtonPerMeter;
+    static Quantity KiloNewtonPerMeter;
+    static Quantity MegaNewtonPerMeter;
+    
     static Quantity Pascal;
     static Quantity KiloPascal;
     static Quantity MegaPascal;
@@ -276,6 +282,8 @@ public:
     static Quantity MilliVolt;
     static Quantity KiloVolt;
 
+    static Quantity MegaSiemens;
+    static Quantity KiloSiemens;
     static Quantity Siemens;
     static Quantity MilliSiemens;
     static Quantity MicroSiemens;

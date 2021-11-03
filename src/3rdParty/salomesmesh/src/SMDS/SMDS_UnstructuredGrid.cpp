@@ -139,8 +139,8 @@ int SMDS_UnstructuredGrid::InsertNextLinkedCell(int type, int npts, vtkIdType *p
   for (; it != setOfNodes.end(); ++it)
     {
       //MESSAGE("reverse link for node " << *it << " cell " << cellid);
-      this->Links->ResizeCellList(*it, 1);
-      this->Links->AddCellReference(cellid, *it);
+      this->GetLinks()->ResizeCellList(*it, 1);
+      this->GetLinks()->AddCellReference(cellid, *it);
     }
 
   return cellid;
@@ -332,9 +332,13 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
     {
       newTypes->SetValue(alreadyCopied, this->Types->GetValue(j));
       idCellsOldToNew[j] = alreadyCopied; // old vtkId --> new vtkId
+#ifdef VTK_CELL_ARRAY_V2
+      vtkIdType oldLoc = this->GetCellLocationsArray()->GetValue(j);
+#else
       vtkIdType oldLoc = this->Locations->GetValue(j);
+#endif
       vtkIdType nbpts;
-      vtkIdType *oldPtsCell = 0;
+      vtkIdTypePtr oldPtsCell = 0;
       this->Connectivity->GetCell(oldLoc, nbpts, oldPtsCell);
       assert(nbpts < NBMAXNODESINCELL);
       //MESSAGE(j << " " << alreadyCopied << " " << (int)this->Types->GetValue(j) << " " << oldLoc << " " << nbpts );
@@ -952,6 +956,21 @@ void SMDS_UnstructuredGrid::GetNodeIds(std::set<int>& nodeSet, int downId, unsig
  */
 void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> localClonedNodeIds)
 {
+#ifdef VTK_CELL_ARRAY_V2
+  vtkNew<vtkIdList> cellPoints;
+  this->GetCellPoints(vtkVolId, cellPoints.GetPointer());
+  for (vtkIdType i = 0; i < cellPoints->GetNumberOfIds(); i++)
+    {
+      if (localClonedNodeIds.count(cellPoints->GetId(i)))
+        {
+          vtkIdType oldpt = cellPoints->GetId(i);
+          cellPoints->SetId(i, localClonedNodeIds[oldpt]);
+          //MESSAGE(oldpt << " --> " << pts[i]);
+          //this->RemoveReferenceToCell(oldpt, vtkVolId);
+          //this->AddReferenceToCell(pts[i], vtkVolId);
+        }
+    }
+#else
   vtkIdType npts = 0;
   vtkIdType *pts; // will refer to the point id's of the face
   this->GetCellPoints(vtkVolId, npts, pts);
@@ -966,6 +985,7 @@ void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> loc
           //this->AddReferenceToCell(pts[i], vtkVolId);
         }
     }
+#endif
 }
 
 /*! reorder the nodes of a face
@@ -995,11 +1015,20 @@ void SMDS_UnstructuredGrid::BuildLinks()
     this->Links->UnRegister(this);
     }
 
+#ifdef VTK_CELL_ARRAY_V2
+  this->Links = SMDS_CellLinks::New();
+  GetLinks()->Allocate(this->GetNumberOfPoints());
+  GetLinks()->Register(this);
+//FIXME: vtk9
+  GetLinks()->BuildLinks(this);
+  GetLinks()->Delete();
+#else
   this->Links = SMDS_CellLinks::New();
   this->Links->Allocate(this->GetNumberOfPoints());
   this->Links->Register(this);
   this->Links->BuildLinks(this, this->Connectivity);
   this->Links->Delete();
+#endif
 }
 
 /*! Create a volume (prism or hexahedron) by duplication of a face.

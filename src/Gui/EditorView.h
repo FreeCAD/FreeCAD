@@ -30,6 +30,10 @@
 QT_BEGIN_NAMESPACE
 class QPlainTextEdit;
 class QPrinter;
+class QHBoxLayout;
+class QToolButton;
+class QCheckBox;
+class QSpacerItem;
 QT_END_NAMESPACE
 
 namespace Gui {
@@ -130,6 +134,43 @@ public Q_SLOTS:
 
 private:
     PythonEditor* _pye;
+};
+
+class SearchBar : public QWidget
+{
+    Q_OBJECT
+
+public:
+    SearchBar(QWidget* parent = nullptr);
+
+    void setEditor(QPlainTextEdit *textEdit);
+
+protected:
+    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent*);
+
+public Q_SLOTS:
+    void activate();
+    void deactivate();
+    void findPrevious();
+    void findNext();
+    void findCurrent();
+
+private:
+    void retranslateUi();
+    void findText(bool skip, bool next, const QString& str);
+    void updateButtons();
+
+private:
+    QPlainTextEdit* textEditor;
+    QHBoxLayout* horizontalLayout;
+    QSpacerItem* horizontalSpacer;
+    QToolButton* closeButton;
+    QLineEdit* searchText;
+    QToolButton* prevButton;
+    QToolButton* nextButton;
+    QCheckBox* matchCase;
+    QCheckBox* matchWord;
 };
 
 } // namespace Gui

@@ -193,6 +193,8 @@ SET(Features_SRCS
     SubShapeBinderPython.cpp
     PartParams.h
     PartParams.cpp
+    PrismExtension.cpp
+    PrismExtension.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 

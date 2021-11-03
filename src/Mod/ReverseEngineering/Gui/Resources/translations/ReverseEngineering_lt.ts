@@ -243,7 +243,7 @@
       <translation type="unfinished">Poisson reconstruction</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
       <translation type="unfinished">Segmentation</translation>
     </message>
@@ -325,7 +325,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Kurti išdėstymą</translation>
     </message>
   </context>
   <context>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="311"/>
       <source>Create</source>
       <translation>Sukurti</translation>
     </message>

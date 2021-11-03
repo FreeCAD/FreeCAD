@@ -1,5 +1,6 @@
 # SGEOM cmake build file
 #PROJECT(SMESH Fortran CXX)
+set(CMAKE_AUTOMOC FALSE)
 
 SET(SMESH_VERSION_MAJOR 7)  # see main CMakeLists.txt of FreeCAD
 SET(SMESH_VERSION_MINOR 7)
@@ -45,6 +46,12 @@ elseif(CMAKE_COMPILER_IS_CLANGXX)
     check_cxx_compiler_flag("-Wno-missing-field-initializers" _flag_found)
     if (_flag_found)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers")
+    endif ()
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
     endif ()
 endif()
 
@@ -236,7 +243,7 @@ TARGET_LINK_LIBRARIES(DriverSTL ${SMESH_LIBS} Driver SMDS ${Boost_LIBRARIES})
 
 SET_BIN_DIR(DriverSTL DriverSTL)
 if(WIN32)
-    set_target_properties(DriverSTL PROPERTIES COMPILE_FLAGS "-DMESHDRIVERSTL_EXPORTS -DBASICS_EXPORT -DSMESHUtils_EXPORTS -DBASICS_EXPORTS")
+    set_target_properties(DriverSTL PROPERTIES COMPILE_FLAGS "-DMESHDRIVERSTL_EXPORTS -DSMESHUtils_EXPORTS -DBASICS_EXPORTS")
 endif(WIN32)
 
 

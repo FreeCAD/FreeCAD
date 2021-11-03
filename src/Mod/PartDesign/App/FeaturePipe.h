@@ -69,7 +69,7 @@ public:
                                                    const std::vector<App::DocumentObject*> &multisections = {});
 protected:
     ///get the given edges and all their tangent ones
-    void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
+    void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     TopoShape buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &trsf);
     void buildPipePathOld(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
     void setupAlgorithmOld(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);

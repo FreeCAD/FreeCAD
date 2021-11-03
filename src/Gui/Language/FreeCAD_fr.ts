@@ -277,6 +277,36 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Défaut</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformer</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Coupe</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Couleur</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Entrer une expression…</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expression : </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Taille de mot</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Remerciements</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD n'existerait pas sans leurs efforts :</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licence</translation>
     </message>
@@ -494,6 +516,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Collection</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Remerciements</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD ne serait pas possible sans les contributions de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Particuliers</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1404,6 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
       <translation>Texte source</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Les lignes de code doivent être numérotées </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Appuyer sur &lt;Tab&gt; insérera une quantité de taille d'indentation définie</translation>
     </message>
@@ -1401,6 +1438,10 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     <message>
       <source>Color:</source>
       <translation>Couleur :</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Les lignes de code seront numérotées</translation>
     </message>
   </context>
   <context>
@@ -2537,10 +2578,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
       <translation>Centralisé</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Quel type d'anticrénelage multiéchantillon est utilisé </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objets transparents :</translation>
     </message>
@@ -2563,14 +2600,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distance entre les yeux pour les modes stéréo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Ecart pupillaire utilisée pour les projections stéréo.
-La valeur spécifiée est un facteur qui sera multiplié avec la
-taille de la boîte englobante de l'objet 3D qui est actuellement affichée. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2628,6 +2657,18 @@ La modification de cette option nécessite un redémarrage de l'application.</tr
     <message>
       <source>Use software OpenGL</source>
       <translation>Utiliser OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Quel type d'anticrénelage multi-échantillon est utilisé</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Ecart pupillaire utilisée pour les projections stéréo.
+La valeur spécifiée est un facteur qui sera multiplié avec la
+taille de la boîte englobante de l'objet 3D qui est actuellement affichée.</translation>
     </message>
   </context>
   <context>
@@ -3243,32 +3284,59 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <source>Framebuffer (as is)</source>
       <translation>Tampon de trame (en l'état)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Mémoire tampon de pixels</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Ateliers non chargés</translation>
+      <source>Workbench Name</source>
+      <translation>Nom de l'atelier</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charger les ateliers sélectionnés, en ajoutant leurs fenêtres de préférences dans la boîte de dialogue des préférences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation>Chargement automatique?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Charger la sélection</translation>
+      <source>Load Now</source>
+      <translation>Charger maintenant</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ateliers non chargés disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pour préserver les ressources, FreeCAD ne charge pas les ateliers avant qu'ils soient utilisés. Les charger peut permettre d'accéder à des préférences supplémentaires en lien avec leurs fonctionnalités.&lt;/p&gt;&lt;p&gt;Les ateliers suivants sont disponibles dans votre installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pour préserver les ressources, FreeCAD ne charge pas les ateliers tant qu'ils ne sont pas utilisés. Le chargement de ceux-ci peut donner accès à des préférences supplémentaires liées à leurs fonctionnalités.&lt;/p&gt;&lt;p&gt;Les ateliers suivants sont disponibles dans votre installation, mais ne sont pas encore chargés :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Atelier</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Chargement automatique</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Si coché</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>sera automatiquement chargé par FreeCAD au démarrage</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Il s'agit de l'atelier de démarrage, qui doit être chargé automatiquement. Voir Préférences/Général/Chargement automatique pour changer.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Chargé</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Charger maintenant</translation>
     </message>
   </context>
   <context>
@@ -3485,12 +3553,6 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
       <translation>Étape de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Quel sera le zoom.
-Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Le sens du zoom sera inversé</translation>
     </message>
@@ -3575,6 +3637,28 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Object center</source>
       <translation>Centre de l'objet</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Tourner vers l'état le plus proche lorsque vous cliquez sur une face du cube</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Tourner au plus près</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Taille du cube</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Taille du cube de navigation</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Quel sera le zoom.
+Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom.</translation>
     </message>
   </context>
   <context>
@@ -3887,12 +3971,12 @@ Le système par défaut est celui défini dans les préférences générales.</t
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unité inconnue : </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unité incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unité inconnue :</translation>
     </message>
   </context>
   <context>
@@ -4127,7 +4211,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 Article</translation>
+      <translation>0 élément</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -4419,32 +4503,32 @@ La colonne « État » indique si le document peut être récupéré.</translati
       <translation>Veuillez sélectionner 1, 2 ou 3 points avant de cliquer sur ce bouton.  Un point peut être sur un sommet, une face ou une arête.  S'il est sur une face ou une arête, le point utilisé sera le point à la position de la souris le long de la face ou de l'arête.  Si 1 point est sélectionné il sera utilisé comme centre de rotation.  Si 2 points sont choisis le point médian sera le centre de rotation et un nouvel axe personnalisé sera créé, si nécessaire.  Si 3 points sont choisis le premier point devient le centre de rotation et se trouve sur le vecteur qui est perpendiculaire au plan défini par les 3 points.  Des informations de distance et d’angle sont fournies dans la vue rapport, ce qui peut être utile pour aligner des objets.  Pour plus de commodité, lors de l'utilisation de Maj + clic la distance appropriée ou l’angle sont copiés dans le presse-papiers.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Autour de l'axe y:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Autour de l'axe z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Autour de l'axe x:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Rotation autour de l'axe X</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Rotation autour de l'axe Y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Rotation autour de l'axe z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Angle d'Euler (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4607,6 +4691,16 @@ La colonne « État » indique si le document peut être récupéré.</translati
       <source>Partial</source>
       <translation>Partiel</translation>
     </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Utiliser les sélections originales</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ignorer les dépendances et continuer avec les objets
+initialement sélectionnés avant d'ouvrir ce dialogue</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DlgTreeWidget</name>
@@ -4689,7 +4783,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Log messages</source>
-      <translation>Message du journal</translation>
+      <translation>Journal des messages</translation>
     </message>
     <message>
       <source>Warnings</source>
@@ -5955,6 +6049,18 @@ Do you want to specify another directory?</source>
       <source>Vietnamese</source>
       <translation>Vietnamien</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grec</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6878,14 +6984,6 @@ Veuillez consulter la vue rapport pour plus d'informations...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Chemin physique : </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Document : </translation>
@@ -6915,6 +7013,46 @@ Document : </translation>
     <message>
       <source>Workbenches</source>
       <translation>Ateliers</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Chemin physique : </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -8689,6 +8827,17 @@ Document : </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>Mode d'édition</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Définit le comportement lors de l'édition d'un objet depuis l'arbre</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -9711,6 +9860,10 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Opérations spéciales</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonométrique</translation>
     </message>
   </context>
   <context>

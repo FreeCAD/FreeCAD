@@ -77,6 +77,13 @@ class GuiExport MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    enum ConfirmSaveResult {
+        Cancel = 0,
+        Save,
+        SaveAll,
+        Discard,
+        DiscardAll
+    };
     /**
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.
@@ -139,6 +146,8 @@ public:
     void startSplasher(void);
     /** Stops the splasher after startup. */
     void stopSplasher(void);
+    /* The image of the About dialog, it might be empty. */
+    QPixmap aboutImage() const;
     /* The image of the splash screen of the application. */
     QPixmap splashImage() const;
     /** Shows the online documentation. */
@@ -307,10 +316,6 @@ private Q_SLOTS:
      * This method gets frequently activated and test the commands if they are still active.
      */
     void _updateActions();
-    /**
-     * \internal
-     */
-    void showMainWindow();
     /**
      * \internal
      */

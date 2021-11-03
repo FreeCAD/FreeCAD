@@ -41,10 +41,7 @@
 # include <qmessagebox.h>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QWindow>
-#endif
-
+#include <QWindow>
 #include <QStack>
 
 #include <Base/Console.h>
@@ -377,10 +374,8 @@ public:
 #endif
 
         qreal dpr = 1.0;
-#if QT_VERSION >= 0x050000
         auto window = master->window()->windowHandle();
         dpr = window ? window->devicePixelRatio() : qApp->devicePixelRatio();
-#endif
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
 #else
         hotX = static_cast<int>(hotX * dpr);
@@ -463,12 +458,10 @@ public:
                 pxCursor = BitmapFactory().merge(pxCursor, pixmapReplace, BitmapFactoryInst::TopLeft);
                 pxReplace = pxCursor;
 
-#if QT_VERSION >= 0x050000
                 pxMove.setDevicePixelRatio(dpr);
                 pxCopy.setDevicePixelRatio(dpr);
                 pxLink.setDevicePixelRatio(dpr);
                 pxReplace.setDevicePixelRatio(dpr);
-#endif
             }
         }
 
@@ -892,9 +885,6 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
 void TreeWidgetItemDelegate::paint(QPainter *painter,
                 const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-#if QT_VERSION < 0x050000
-    return QStyledItemDelegate::paint(painter, option, index);
-#else
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
@@ -917,7 +907,6 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         painter->fillRect(rect, _TreeItemBackground);
     }
     style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
-#endif
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -931,11 +920,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         return;
 
     QSize size;
-#if QT_VERSION >= 0x050000
     size = option->icon.actualSize(QSize(0xffff, 0xffff));
-#else
-    size = item->icon(0).actualSize(QSize(0xffff, 0xffff));
-#endif
     if (size.height())
         option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
                                        TreeWidget::iconSize());
@@ -1040,10 +1025,6 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->hideInTreeAction, SIGNAL(toggled(bool)),
             this, SLOT(onHideInTree()));
 
-    this->createGroupAction = new QAction(this);
-    connect(this->createGroupAction, SIGNAL(triggered()),
-            this, SLOT(onCreateGroup()));
-
     this->relabelObjectAction = new QAction(this);
 #ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
@@ -1121,10 +1102,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-#if QT_VERSION >= 0x040200
     // causes unexpected drop events (possibly only with Qt4.1.x)
     this->setMouseTracking(true); // needed for itemEntered() to work
-#endif
+
 
     this->preselectTimer = new QTimer(this);
     this->preselectTimer->setSingleShot(true);
@@ -1503,7 +1483,6 @@ void TreeWidget::_setupDocumentMenu(DocumentItem *docitem, QMenu &menu)
         if(doc->testStatus(App::Document::SkipRecompute))
             menu.addAction(this->allowPartialRecomputeAction);
         menu.addAction(this->markRecomputeAction);
-        menu.addAction(this->createGroupAction);
     }
 }
 
@@ -1527,9 +1506,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     QMenu subMenu;
     QMenu editMenu;
 
-#if QT_VERSION >= 0x050100
     contextMenu.setToolTipsVisible(true);
-#endif
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
     connect(&subMenuGroup, SIGNAL(triggered(QAction*)),
@@ -1558,24 +1535,26 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         hideInTreeAction->setChecked(!objitem->object()->showInTree());
         contextMenu.addAction(this->hideInTreeAction);
 
-        if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
-            contextMenu.addAction(this->createGroupAction);
-
+        contextMenu.addSeparator();
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->recomputeObjectAction);
-        contextMenu.addAction(this->relabelObjectAction);
 
-        if(this->selectedItems().size()==1 && _setupObjectMenu(objitem, editMenu)) {
-            auto topact = contextMenu.actions().front();
-            bool first = true;
-            for(auto action : editMenu.actions()) {
-                contextMenu.insertAction(topact,action);
-                if(first) {
-                    first = false;
-                    contextMenu.setDefaultAction(action);
+        if(this->selectedItems().size()==1) {
+            // relabeling is only possible for a single selected document
+            contextMenu.addAction(this->relabelObjectAction);
+
+            if (_setupObjectMenu(objitem, editMenu)) {
+                auto topact = contextMenu.actions().front();
+                bool first = true;
+                for(auto action : editMenu.actions()) {
+                    contextMenu.insertAction(topact,action);
+                    if(first) {
+                        first = false;
+                        contextMenu.setDefaultAction(action);
+                    }
                 }
+                contextMenu.insertSeparator(topact);
             }
-            contextMenu.insertSeparator(topact);
         }
     }
 
@@ -1657,34 +1636,6 @@ void TreeWidget::showEvent(QShowEvent *ev) {
     QTreeWidget::showEvent(ev);
 }
 
-void TreeWidget::onCreateGroup()
-{
-    if (!this->contextItem)
-        return;
-
-    QString name = tr("Group");
-    App::AutoTransaction trans("Create group");
-    if (this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
-        App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
-                              "(\"App::DocumentObjectGroup\",\"Group\").Label = '%2'")
-                              .arg(QString::fromLatin1(doc->getName()), name);
-        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-    }
-    else if (this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
-            (this->contextItem);
-        App::DocumentObject* obj = objitem->object()->getObject();
-        App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
-                              ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label = '%3'")
-                              .arg(QString::fromLatin1(doc->getName()),
-                                   QString::fromLatin1(obj->getNameInDocument()),
-                                   name);
-        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-    }
-}
 
 void TreeWidget::onRelabelObject()
 {
@@ -1900,13 +1851,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
         QHeaderView::Interactive : QHeaderView::ResizeToContents;
     for(auto inst : Instances) {
         if(!tree || tree==inst) {
-#if QT_VERSION >= 0x050000
             inst->header()->setSectionResizeMode(0, mode);
             inst->header()->setSectionResizeMode(1, mode);
-#else
-            inst->header()->setResizeMode(0, mode);
-            inst->header()->setResizeMode(1, mode);
-#endif
             if (TreeParams::ResizableColumn()) {
                 QSignalBlocker blocker(inst);
                 if (TreeParams::ColumnSize1() > 0)
@@ -2522,11 +2468,7 @@ void TreeWidget::onToolTipTimer()
                 info = QString::fromUtf8(Obj->Label2.getValue());
         }
     } else {
-#if (QT_VERSION >= 0x050000)
         info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
-#else
-        info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
-#endif
     }
     if (info.isEmpty()) {
         pimpl->tooltipItem = nullptr;
@@ -2760,9 +2702,7 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
                         && !pimpl->skipMouseRelease
                         && ev->button() == Qt::RightButton) {
                     QMenu menu;
-#if QT_VERSION >= 0x050100
                     menu.setToolTipsVisible(true);
-#endif
                     if (_setupObjectMenu(oitem, menu)) {
                         handled = true;
                         menu.exec(QCursor::pos());
@@ -2884,7 +2824,6 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
 #ifndef FC_CUSTOM_DRAG_AND_DROP
-#   if QT_VERSION >= 0x050000
     // Qt5 does not change drag cursor in response to modifier key press,
     // because QDrag installs a event filter that eats up key event. We install
     // a filter after Qt and generate fake mouse move event in response to key
@@ -2893,7 +2832,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         _DragEventFilter = true;
         qApp->installEventFilter(this);
     }
-#   endif
 #endif
 
     QTreeWidget::dragMoveEvent(event);
@@ -4428,15 +4366,12 @@ void TreeWidget::setupText()
     this->hideInTreeAction->setText(tr("Hide item"));
     this->hideInTreeAction->setStatusTip(tr("Hide the item in tree"));
 
-    this->createGroupAction->setText(tr("Create group..."));
-    this->createGroupAction->setStatusTip(tr("Create a group"));
-
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
 
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
-
+    
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
 
@@ -4452,9 +4387,11 @@ void TreeWidget::setupText()
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
     this->recomputeObjectAction->setText(tr("Recompute object"));
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
+    this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp)
@@ -4768,9 +4705,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
-#if QT_VERSION >= 0x040700
     this->searchBox->setPlaceholderText(tr("Search"));
-#endif
     connect(this->searchBox, SIGNAL(returnPressed()),
             this, SLOT(accept()));
     connect(this->searchBox, SIGNAL(textChanged(QString)),

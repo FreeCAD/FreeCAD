@@ -22,6 +22,11 @@
 				<UserDocu>Return the shape for the geometry.</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="toShell" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Make a shell of the surface.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getD0" Const="true">
             <Documentation>
                 <UserDocu>Returns the point of given parameter</UserDocu>

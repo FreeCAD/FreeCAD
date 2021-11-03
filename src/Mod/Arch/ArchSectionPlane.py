@@ -20,13 +20,11 @@
 #***************************************************************************
 
 import FreeCAD
-import WorkingPlane
 import math
 import Draft
 import ArchCommands
 import DraftVecUtils
 import ArchComponent
-import os
 import re
 import tempfile
 import uuid
@@ -377,9 +375,12 @@ def getSVG(source,
                 drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
+        elif o.isDerivedFrom("App::DocumentObjectGroup"):
+            # These will have been expanded by getSectionData already
+            pass
         elif looksLikeDraft(o):
             drafts.append(o)
-        elif not o.isDerivedFrom("App::DocumentObjectGroup"):
+        else:
             nonspaces.append(o)
         if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)
@@ -468,8 +469,8 @@ def getSVG(source,
             hshapes = source.Proxy.shapecache[1]
             sshapes = source.Proxy.shapecache[2]
             cutface = source.Proxy.shapecache[3]
-            cutvolume = source.Proxy.shapecache[4]
-            invcutvolume = source.Proxy.shapecache[5]
+            # cutvolume = source.Proxy.shapecache[4] # Unused
+            # invcutvolume = source.Proxy.shapecache[5] # Unused
             objectSshapes = source.Proxy.shapecache[6]
         else:
             if showFill:
@@ -637,10 +638,6 @@ def getDXF(obj):
         return result
     if not allOn:
             objs = Draft.removeHidden(objs)
-    # separate spaces and Draft objects
-    spaces = []
-    nonspaces = []
-    drafts = []
     objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:
@@ -928,6 +925,8 @@ class _SectionPlane:
         if not "UseMaterialColorForFill" in pl:
             obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."))
             obj.UseMaterialColorForFill = False
+        if not "Depth" in pl:
+            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):

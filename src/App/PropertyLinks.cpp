@@ -3212,13 +3212,13 @@ public:
         // time stamp changed, touch the linking document.
         std::set<Document*> docs;
         for(auto link : links) {
-            auto doc = static_cast<DocumentObject*>(link->getContainer())->getDocument();
-            auto ret = docs.insert(doc);
+            auto linkdoc = static_cast<DocumentObject*>(link->getContainer())->getDocument();
+            auto ret = docs.insert(linkdoc);
             if(ret.second) {
                 // This will signal the Gui::Document to call setModified();
-                FC_LOG("touch document " << doc->getName() 
+                FC_LOG("touch document " << linkdoc->getName() 
                         << " on time stamp change of " << link->getFullName());
-                doc->Comment.touch();
+                linkdoc->Comment.touch();
             }
         }
     }

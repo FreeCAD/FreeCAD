@@ -403,7 +403,7 @@ If ALT key is down, then does the oppsite of the above long press action.</strin
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
+         <widget class="Gui::PrefCheckBox" name="checkBoxUseAutoRotation">
           <property name="enabled">
            <bool>true</bool>
           </property>

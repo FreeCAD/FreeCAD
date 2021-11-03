@@ -277,6 +277,36 @@
     </message>
 </context>
 <context>
+    <name>EditMode</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExpressionLabel</name>
+    <message>
+        <source>Enter an expression...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expression: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::AccelLineEdit</name>
     <message>
         <source>none</source>
@@ -465,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
@@ -493,6 +515,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Collection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <extracomment>Header for the Credits tab of the About screen</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would not be possible without the contributions of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Individuals</source>
+        <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Organizations</source>
+        <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1359,10 +1400,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
         <translation></translation>
     </message>
     <message>
-        <source>Code lines will be numbered </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1396,6 +1433,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code lines will be numbered</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2495,10 +2536,6 @@ but slower response to any scene changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>What kind of multisample anti-aliasing is used </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Transparent objects:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2520,12 +2557,6 @@ but slower response to any scene changes.</source>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2579,6 +2610,16 @@ Changing this option requires a restart of the application.</source>
     </message>
     <message>
         <source>Use software OpenGL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What kind of multisample anti-aliasing is used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3184,31 +3225,58 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <source>Framebuffer (as is)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Pixel buffer</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-        <source>Unloaded Workbenches</source>
+        <source>Workbench Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>Autoload?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load Selected</source>
+        <source>Load Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>Available Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+        <source>Workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autoload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If checked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will be loaded automatically when FreeCAD starts up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load now</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3422,11 +3490,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>How much will be zoomed.
-Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Direction of zoom operations will be inverted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3510,6 +3573,27 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
         <source>Object center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotates to nearest possible state when clicking a cube face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate to nearest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cube size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of the navigation cube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How much will be zoomed.
+Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3821,11 +3905,11 @@ The preference system is the one set in the general preferences.</source>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-        <source>unknown unit: </source>
+        <source>unit mismatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unit mismatch</source>
+        <source>unknown unit:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4351,31 +4435,31 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around y-axis:</source>
+        <source>Pitch (around y-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around z-axis:</source>
+        <source>Roll (around x-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Around x-axis:</source>
+        <source>Yaw (around z-axis):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the x-axis</source>
+        <source>Yaw (around z-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the y-axis</source>
+        <source>Pitch (around y-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotation around the z-axis</source>
+        <source>Roll (around the x-axis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Euler angles (xy&apos;z&apos;&apos;)</source>
+        <source>Euler angles (zy&apos;x&apos;&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4537,6 +4621,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Partial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Use Original Selections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5880,6 +5973,18 @@ Do you want to specify another directory?</source>
         <source>Vietnamese</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Bulgarian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Greek</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish, Argentina</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::TreeDockWidget</name>
@@ -6792,12 +6897,6 @@ Please check report view for more...</source>
     </message>
     <message>
         <source>
-
-Pyhsical path: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
 Document: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -6824,6 +6923,40 @@ Document: </source>
     </message>
     <message>
         <source>Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Physical path: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+&quot;%1&quot;
+
+Would you like to save the file with a different name?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document not saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 Document(s) not saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8599,6 +8732,17 @@ Document: </source>
     </message>
 </context>
 <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+        <source>Edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Defines behavior when editing an object from tree</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
@@ -9613,6 +9757,10 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Special Ops</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axonometric</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

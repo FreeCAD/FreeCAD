@@ -471,13 +471,16 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->_editViewProviderParent = vp;
     d->_editSubElement.clear();
     d->_editSubname.clear();
-    if(subname) {
+
+    if (subname) {
         const char *element = Data::ComplexGeoData::findElementName(subname);
-        if(element) {
+        if (element) {
             d->_editSubname = std::string(subname,element-subname);
             d->_editSubElement = element;
-        }else
+        }
+        else {
             d->_editSubname = subname;
+        }
     }
 
     auto sobjs = obj->getSubObjectList(subname);
@@ -1225,6 +1228,31 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
     return ret == QMessageBox::Yes;
 }
 
+bool Document::askIfSavingFailed(const QString& error)
+{
+    int ret = QMessageBox::question(
+        getMainWindow(),
+        QObject::tr("Could not save document"),
+        QObject::tr("There was an issue trying to save the file. "
+                    "This may be because some of the parent folders do not exist, "
+                    "or you do not have sufficient permissions, "
+                    "or for other reasons. Error details:\n\n\"%1\"\n\n"
+                    "Would you like to save the file with a different name?")
+        .arg(error),
+        QMessageBox::Yes, QMessageBox::No);
+
+    if (ret == QMessageBox::No) {
+        // TODO: Understand what exactly is supposed to be returned here
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+        return false;
+    }
+    else if (ret == QMessageBox::Yes) {
+        return saveAs();
+    }
+
+    return false;
+}
+
 /// Save the document
 bool Document::save(void)
 {
@@ -1234,7 +1262,7 @@ bool Document::save(void)
             std::map<App::Document*,bool> dmap;
             try {
                 docs = getDocument()->getDependentDocuments();
-                for(auto it=docs.begin(); it!=docs.end();) {
+                for (auto it=docs.begin(); it!=docs.end();) {
                     App::Document *doc = *it;
                     if (doc == getDocument()) {
                         dmap[doc] = doc->mustExecute();
@@ -1252,7 +1280,8 @@ bool Document::save(void)
                     dmap[doc] = doc->mustExecute();
                     ++it;
                 }
-            }catch(const Base::RuntimeError &e) {
+            }
+            catch (const Base::RuntimeError &e) {
                 e.ReportException();
                 docs = {getDocument()};
                 dmap.clear();
@@ -1264,6 +1293,7 @@ bool Document::save(void)
                         QObject::tr("The file contains external dependencies. "
                         "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
+
                 if (ret != QMessageBox::Yes) {
                     docs = {getDocument()};
                     dmap.clear();
@@ -1276,24 +1306,31 @@ bool Document::save(void)
 
             Gui::WaitCursor wc;
             // save all documents
-            for(auto doc : docs) {
+            for (auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
-                if(!dmap[doc] && doc->mustExecute()) {
+                if (!dmap[doc] && doc->mustExecute()) {
                     App::AutoTransaction trans("Recompute");
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
+
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
                 auto gdoc = Application::Instance->getDocument(doc);
-                if(gdoc) gdoc->setModified(false);
+                if (gdoc)
+                    gdoc->setModified(false);
             }
 
             // empty file name signals the intention to rebuild recent file
             // list without changing the list content.
             getMainWindow()->appendRecentFile(QString());
         }
+        catch (const Base::FileException& e) {
+            e.ReportException();
+            return askIfSavingFailed(QString::fromUtf8(e.what()));
+        }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
                 QString::fromLatin1(e.what()));
+            return false;
         }
         return true;
     }
@@ -1311,6 +1348,7 @@ bool Document::saveAs(void)
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
         QString::fromUtf8(getDocument()->FileName.getValue()),
         QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
@@ -1335,6 +1373,10 @@ bool Document::saveAs(void)
             // getMainWindow()->appendRecentFile(fi.filePath());
             getMainWindow()->appendRecentFile(QString::fromUtf8(
                         getDocument()->FileName.getValue()));
+        }
+        catch (const Base::FileException& e) {
+            e.ReportException();
+            return askIfSavingFailed(QString::fromUtf8(e.what()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
@@ -2180,11 +2222,33 @@ bool Document::canClose (bool checkModify, bool checkLink)
 
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
-        int res = getMainWindow()->confirmSave(getDocument()->Label.getValue(),getActiveView());
-        if(res>0)
+        const char *docName = getDocument()->Label.getValue();
+        int res = getMainWindow()->confirmSave(docName, getActiveView());
+        switch (res)
+        {
+        case MainWindow::ConfirmSaveResult::Cancel:
+            ok = false;
+            break;
+        case MainWindow::ConfirmSaveResult::SaveAll:
+        case MainWindow::ConfirmSaveResult::Save:
             ok = save();
-        else
-            ok = res<0;
+            if (!ok) {
+                int ret = QMessageBox::question(
+                    getActiveView(),
+                    QObject::tr("Document not saved"),
+                    QObject::tr("The document%1 could not be saved. Do you want to cancel closing it?")
+                    .arg(docName?(QString::fromUtf8(" ")+QString::fromUtf8(docName)):QString()),
+                    QMessageBox::Discard | QMessageBox::Cancel,
+                    QMessageBox::Discard);
+                if (ret == QMessageBox::Discard)
+                    ok = true;
+            }
+            break;
+        case MainWindow::ConfirmSaveResult::DiscardAll:
+        case MainWindow::ConfirmSaveResult::Discard:
+            ok = true;
+            break;
+        }
     }
 
     if (ok) {

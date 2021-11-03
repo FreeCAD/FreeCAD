@@ -161,6 +161,8 @@ public:
     _Precision Sqr (void) const;
     /// Set length to 1.
     Vector3 & Normalize (void);
+    /// Checks whether this is the null vector
+    bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
     _Precision GetAngle (const Vector3 &rcVect) const;
     /** Transforms this point to the coordinate system defined by origin \a rclBase,

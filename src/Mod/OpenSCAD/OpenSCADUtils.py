@@ -131,12 +131,12 @@ def getopenscadversion(osfilename=None):
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
-        p=subprocess.Popen([osfilename,'-v'],\
-            stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
-        p.wait()
-        stdout=p.stdout.read().strip()
-        stderr=p.stderr.read().strip()
-        return (stdout or stderr)
+        with subprocess.Popen([osfilename,'-v'],\
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True) as p:
+            p.wait()
+            stdout=p.stdout.read().strip()
+            stderr=p.stderr.read().strip()
+            return (stdout or stderr)
 
 def newtempfilename():
     import os,time
@@ -168,12 +168,22 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
             FreeCAD.Console.PrintMessage(stdoutd+u'\n')
             return stdoutd
 
-    osfilename = FreeCAD.ParamGet(\
-        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetString('openscadexecutable')
+    preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+    osfilename = preferences.GetString('openscadexecutable')
+    transferMechanism = preferences.GetInt('transfermechanism',0)
+    if transferMechanism == 0: # Use the Python temp-directory creation function
+        transferDirectory = tempfile.gettempdir() 
+    elif transferMechanism == 1: # Use a user-specified directory for the transfer
+        transferDirectory = preferences.GetString('transferdirectory')
+    elif transferMechanism ==  2: # Use pipes instead of tempfiles
+        return call_openscad_with_pipes(inputfilename, outputfilename, outputext, keepname)
+    else:
+        raise OpenSCADError("Invalid transfer mechanism specified");
+
     if osfilename and os.path.isfile(osfilename):
         if not outputfilename:
-            dir1=tempfile.gettempdir()
+
+            dir1 = transferDirectory
             if keepname:
                 outputfilename=os.path.join(dir1,'%s.%s' % (os.path.split(\
                     inputfilename)[1].rsplit('.',1)[0],outputext))
@@ -185,6 +195,47 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
     else:
         raise OpenSCADError('OpenSCAD executable unavailable')
 
+def call_openscad_with_pipes(input_filename, output_filename, output_extension, keep_name):
+    ''' Call OpenSCAD by sending input data to stdin, and read the output from stdout. 
+        Returns the tempfile the output is stored in on success, or None on failure.
+        NOTE: This feature was added to OpenSCAD in 2021.01'''
+
+    # For testing purposes continue using temp files, but now OpenSCAD does not need
+    # read or write access to the files, only the FreeCAD process does. In the future
+    # this could be changed to keep everything in memory, if desired.
+    import subprocess,tempfile,os
+    transfer_directory = tempfile.gettempdir()
+
+    # Load the data back in from our tempfile:
+    with open(input_filename) as datafile:
+        openscad_data = datafile.read()
+        # On the command line this looks like: 
+        #   $ cat myfile.scad | openscad --export-format csg -o - -
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+        openscad_executable = preferences.GetString('openscadexecutable')
+        p = subprocess.Popen([openscad_executable,"--export-format","csg", "-o", "-", "-"], 
+                             stdin=subprocess.PIPE, 
+                             stdout=subprocess.PIPE, 
+                             stderr=subprocess.PIPE)
+        stdoutd,stderrd = p.communicate (input = openscad_data.encode('utf8'), timeout=15)
+        stdoutd = stdoutd.decode("utf8")
+        stderrd = stderrd.decode("utf8")
+        if p.returncode != 0:
+            raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderrd.strip()))
+
+        if not output_filename:
+            dir1 = transfer_directory
+            if keep_name:
+                output_filename=os.path.join(dir1,'%s.%s' % (os.path.split(\
+                    input_filename)[1].rsplit('.',1)[0],output_extension))
+            else:
+                output_filename=os.path.join(dir1,'%s.%s' % \
+                    (next(tempfilenamegen),output_extension))
+        with open(output_filename,"w") as outfile:
+            outfile.write(stdoutd);
+            return output_filename
+    return None
+ 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
     returns the filename of the result (or None),
@@ -329,7 +380,6 @@ def angneg(d):
     return d if (d <= 180.0) else (d-360)
 
 def shorthexfloat(f):
-    s=f.hex()
     mantisse, exponent = f.hex().split('p',1)
     return '%sp%s' % (mantisse.rstrip('0'),exponent)
 

@@ -268,6 +268,7 @@ public:
     /** @name Selection methods */
     //@{
     AbstractMouseSelection *startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     bool isSelecting() const;
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
@@ -485,13 +486,6 @@ protected:
     void printDimension();
     void selectAll();
     void slotChangeDocument(const App::Document &, const App::Property &);
-
-    enum eWinGestureTuneState{
-        ewgtsDisabled, //suppress tuning/re-tuning after errors
-        ewgtsNeedTuning, //gestures are to be re-tuned upon next event
-        ewgtsTuned
-    };
-    eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
 
 private:
     static void setViewportCB(void * userdata, SoAction * action);

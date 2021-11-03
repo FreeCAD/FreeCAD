@@ -90,7 +90,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 
     for (std::map<std::string,Command*>::iterator it = sCommands.begin(); it != sCommands.end(); ++it) {
         QLatin1String group(it->second->getGroupName());
-        QString text = qApp->translate(it->second->className(), it->second->getGroupName());
+        QString text = it->second->translatedGroupName();
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
         if (jt != groupMap.end()) {
@@ -113,11 +113,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
     ui->commandTreeWidget->setHeaderLabels(labels);
     ui->commandTreeWidget->header()->hide();
     ui->commandTreeWidget->setIconSize(QSize(32, 32));
-#if QT_VERSION >= 0x050000
     ui->commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    ui->commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
 
     ui->assignedTreeWidget->setHeaderLabels(labels);
     ui->assignedTreeWidget->header()->hide();
@@ -525,7 +521,7 @@ void DlgCustomKeyboardImp::changeEvent(QEvent *e)
             QVariant data = ui->categoryBox->itemData(i, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
             if (!aCmds.empty()) {
-                QString text = qApp->translate(aCmds[0]->className(), aCmds[0]->getGroupName());
+                QString text = aCmds[0]->translatedGroupName();
                 ui->categoryBox->setItemText(i, text);
             }
         }

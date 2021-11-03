@@ -29,10 +29,10 @@
 # include <QListWidget>
 # include <Precision.hxx>
 # include <gp_Pln.hxx>
+# include <functional>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
 #include <App/Part.h>
@@ -44,6 +44,7 @@
 #include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
@@ -73,7 +74,8 @@
 #include "TaskWrapParameters.h"
 #include "ViewProviderAddSub.h"
 
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
+#include "DlgActiveBody.h"
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -114,8 +116,10 @@ bool setEdit(App::DocumentObject *obj, App::DocumentObject *container, const cha
         subname += obj->getNameInDocument();
         subname += '.';
     }
-    _FCMD_OBJ_DOC_CMD(Gui,parent,"setEdit(" << Gui::Command::getObjectCmd(parent) 
-            << ",0,'" << subname << "')");
+
+    Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
+                                                     << Gui::Command::getObjectCmd(parent)
+                                                     << ", 0, '" << subname << "')");
     return true;
 }
 
@@ -136,9 +140,9 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     if (activeView) {
         if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+            auto doc = activeView->getAppDocument();
 
             if (!activeBody && autoActivate) {
-                auto doc = activeView->getAppDocument();
                 App::SubObjectT ref;
                 for (auto & sel : Gui::Selection().getSelectionT(doc->getName(), 0)) {
                     auto objs = sel.getSubObjectList();
@@ -169,12 +173,16 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 }
             }
             if (!activeBody && messageIfNot) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                DlgActiveBody dia(
+                    Gui::getMainWindow(),
+                    doc,
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one.\n\nIf you have a legacy document "
-                                "with PartDesign objects without Body, use the migrate function in "
-                                "PartDesign to put them into a Body."
-                                ));
+                                "Please make one active (double click) or create one."
+                                "\n\nIf you have a legacy document with PartDesign objects without Body, "
+                                "use the migrate function in PartDesign to put them into a Body."
+                        ));
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    activeBody = dia.getActiveBody();
             }
         }
     }
@@ -193,6 +201,36 @@ PartDesign::Body *getBody(App::SubObjectT &sobjT,
     if (res)
         sobjT = App::SubObjectT(topParent, parentSub.c_str());
     return res;
+}
+
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent,
+                                  std::string *subname)
+{
+    App::DocumentObject *parent = 0;
+    std::string sub;
+
+    for(auto &v : body->getParents()) {
+        if(v.first->getDocument()!=doc)
+            continue;
+        if(parent) {
+            body = 0;
+            break;
+        }
+        parent = v.first;
+        sub = v.second;
+    }
+
+    if(body) {
+        auto _doc = parent?parent->getDocument():body->getDocument();
+        _FCMD_DOC_CMD(Gui, _doc, "ActiveView.setActiveObject('" << PDBODYKEY
+                      << "'," << Gui::Command::getObjectCmd(parent?parent:body)
+                      << ",'" << sub << "')");
+        return Gui::Application::Instance->activeView()->
+            getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+    }
+
+    return dynamic_cast<PartDesign::Body*>(body);
 }
 
 void needActiveBodyError(void)
@@ -706,10 +744,10 @@ public:
                 else { 
                     auto &info = conns[doc];
                     info.connChangedObject = activeBody->getDocument()->signalChangedObject.connect(
-                            boost::bind(&Monitor::slotChangedObject, this, activeBody, bp::_1, bp::_2));
+                            std::bind(&Monitor::slotChangedObject, this, activeBody, sp::_1, sp::_2));
 
                     info.connDeletedObject = activeBody->getDocument()->signalDeletedObject.connect(
-                            boost::bind(&Connections::disconnect, &info, bp::_1));
+                            std::bind(&Connections::disconnect, &info, sp::_1));
                     if (parent)
                         info.activeBodyT = App::SubObjectT(parent, subname);
                     else
@@ -719,7 +757,7 @@ public:
             });
 
         Gui::Application::Instance->signalInEdit.connect(
-                boost::bind(&Monitor::slotInEdit, this, bp::_1));
+                std::bind(&Monitor::slotInEdit, this, sp::_1));
 
         Gui::Application::Instance->signalResetEdit.connect(
             [this](const Gui::ViewProviderDocumentObject &) {
@@ -727,7 +765,7 @@ public:
             });
 
         Gui::Control().signalShowDialog.connect(
-                boost::bind(&Monitor::slotShowDialog, this, bp::_1, bp::_2));
+                std::bind(&Monitor::slotShowDialog, this, sp::_1, sp::_2));
 
         Gui::Control().signalRemoveDialog.connect(
             [this](QWidget *, std::vector<QWidget*> &contents) {
@@ -805,7 +843,7 @@ public:
             if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
                 connVisibilityChanged = 
                     static_cast<PartDesign::Body*>(linked)->signalSiblingVisibilityChanged.connect(
-                        boost::bind(&Monitor::slotVisibilityChanged, this, bp::_1));
+                        std::bind(&Monitor::slotVisibilityChanged, this, sp::_1));
                 editBodyT = App::SubObjectT(objs.begin(), it+1);
                 auto editObj = sobjT.getSubObject();
                 editObjT = editObj;

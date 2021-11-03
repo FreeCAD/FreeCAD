@@ -729,6 +729,15 @@ checkvalueunit('FractureToughness', '25')
 checkvalueunit('Density', '1 kg/m^3')
 checkvalueunit('Density', '0 kg/m^3')
 
+# syntax error in unit system, only the try: except in the checkvalueunit let it work
+checkvalueunit('ThermalConductivity', '0.02583 W/m/K')
+checkvalueunit('ThermalConductivity', '123abc456 W/m/K')
+checkvalueunit('ThermalConductivity', '25.83e−3 W/m/K')
+checkvalueunit('ThermalConductivity', '25.83e-3 W/m/K')
+from FreeCAD import Units
+Units.Quantity('25.83e−3 W/m/K')
+
+
 # test mat unit properties
 mat = {
     'Name': 'Concrete',

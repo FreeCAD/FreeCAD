@@ -30,7 +30,14 @@
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
+#include <Poly_Triangle.hxx>
+#include <Poly_Triangulation.hxx>
 #include <TColStd_ListOfTransient.hxx>
+#include <TColgp_Array1OfDir.hxx>
+#include <TopLoc_Location.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <vector>
 
 class gp_Lin;
 class gp_Pln;
@@ -104,7 +111,72 @@ public:
                                      const Standard_Integer theNbPnts,
                                      const Standard_Integer theNbIter,
                                      const Standard_Integer theMaxDeg);
-
+    /*!
+     * @brief getTriangulation
+     * The indexes of the triangles are adjusted to the points vector.
+     * @param face
+     * @param points
+     * @param facets
+     * @return true if a triangulation exists or false otherwise
+     */
+    static bool getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>& points, std::vector<Poly_Triangle>& facets);
+    /*!
+     * \brief getPolygonOnTriangulation
+     * Get the polygon of edge.
+     * \note \a edge must belong to face.
+     * \param edge
+     * \param face
+     * \param points
+     * \return true if a triangulation exists or false otherwise
+     */
+    static bool getPolygonOnTriangulation(const TopoDS_Edge& edge, const TopoDS_Face& face, std::vector<gp_Pnt>& points);
+    /*!
+     * \brief getPolygon3D
+     * \param edge
+     * \param points
+     * \return true if a polygon exists or false otherwise
+     */
+    static bool getPolygon3D(const TopoDS_Edge& edge, std::vector<gp_Pnt>& points);
+    /*!
+     * \brief getPointNormals
+     * Calculate the point normals of the given triangulation.
+     * \param points
+     * \param facets
+     * \param normals
+     */
+    static void getPointNormals(const std::vector<gp_Pnt>& points, const std::vector<Poly_Triangle>& facets, std::vector<gp_Vec>& vertexnormals);
+    /*!
+     * \brief getPointNormals
+     * Computes the more accurate surface normals for the points. If the calculation for a point fails then the precomputed
+     * point normal of the triangulation is used.
+     * \param points
+     * \param face
+     * \param vertexnormals
+     */
+    static void getPointNormals(const std::vector<gp_Pnt>& points, const TopoDS_Face& face, std::vector<gp_Vec>& vertexnormals);
+    /*!
+     * \brief getPointNormals
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * \param face
+     * \param aPoly
+     * \param vertexnormals
+     */
+    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, TColgp_Array1OfDir& normals);
+    /*!
+     * \brief getPointNormals
+     * Computes the exact surface normals for the points by using the UV coordinates of the mesh vertexes.
+     * \param face
+     * \param aPoly
+     * \param vertexnormals
+     */
+    static void getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, std::vector<gp_Vec>& normals);
+    /*!
+     * \brief applyTransformationOnNormals
+     * Apply the transformation to the vectors
+     * \param loc
+     * \param normals
+     */
+    static void applyTransformationOnNormals(const TopLoc_Location& loc, std::vector<gp_Vec>& normals);
 };
 
 } //namespace Part

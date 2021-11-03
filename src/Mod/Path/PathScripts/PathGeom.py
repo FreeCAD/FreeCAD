@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -343,7 +344,10 @@ def edgeForCmd(cmd, startPoint):
             PathLog.debug("MidPoint:{}".format(midPoint))
             PathLog.debug("EndPoint:{}".format(endPoint))
 
-            return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
+            if pointsCoincide(startPoint, endPoint, 0.001):
+                return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
+            else:
+                return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
         # It's a Helix
         #print('angle: A=%.2f B=%.2f' % (getAngle(A)/math.pi, getAngle(B)/math.pi))
@@ -571,7 +575,7 @@ def combineHorizontalFaces(faces):
     '''combineHorizontalFaces(faces)...
     This function successfully identifies and combines multiple connected faces and
     works on multiple independent faces with multiple connected faces within the list.
-    The return value is list of simplifed faces.
+    The return value is a list of simplified faces.
     The Adaptive op is not concerned with which hole edges belong to which face.
 
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
@@ -607,7 +611,7 @@ def combineHorizontalFaces(faces):
     for i in range(len(extrudedFaces)):
         temp = extrudedFaces.pop().fuse(allFacesSolid)
         allFacesSolid = temp
-    cut = bboxSolid.cut(allFacesSolid)        
+    cut = bboxSolid.cut(allFacesSolid)
 
     # Debug
     # Part.show(cut)

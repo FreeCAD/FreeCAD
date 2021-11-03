@@ -43,7 +43,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     : TaskDialog(),sketchView(sketchView)
 {
     assert(sketchView);
-    Constraints = new TaskSketcherConstrains(sketchView);
+    Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
     General = new TaskSketcherGeneral(sketchView);
     Messages = new TaskSketcherMessages(sketchView);

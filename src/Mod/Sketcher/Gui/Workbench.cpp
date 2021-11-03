@@ -34,6 +34,7 @@
 using namespace SketcherGui;
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench", "Sketcher");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
@@ -233,6 +234,22 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarIte
     geom    << "Sketcher_CompCreateRegularPolygon";
 }
 
+template <typename T>
+void SketcherAddWorkspaceRectangles(T& geom);
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom    << "Sketcher_CreateRectangle"
+            << "Sketcher_CreateRectangle_Center"
+            << "Sketcher_CreateOblong";
+}
+
+template <>
+inline void SketcherAddWorkspaceRectangles<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCreateRectangles";
+}
 
 template <typename T>
 void SketcherAddWorkspaceFillets(T& geom);
@@ -257,14 +274,15 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             << "Sketcher_CreateLine";
     SketcherAddWorkspaceArcs(geom);
     geom    << "Separator"
-            << "Sketcher_CreatePolyline"
-            << "Sketcher_CreateRectangle";
+            << "Sketcher_CreatePolyline";
+    SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     geom    << "Sketcher_CreateSlot"
             << "Separator";
     SketcherAddWorkspaceFillets(geom);
     geom    << "Sketcher_Trimming"
             << "Sketcher_Extend"
+            << "Sketcher_Split"
             << "Sketcher_ExternalCmds"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
@@ -275,9 +293,6 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }
-
-//template <typename T>
-//void SketcherAddWorkbenchConstraints(T& cons);
 
 template <typename T>
 inline void SketcherAddWorkbenchConstraints(T& cons);
@@ -302,6 +317,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
             << "Sketcher_ConstrainDistance"
             << "Sketcher_ConstrainRadius"
             << "Sketcher_ConstrainDiameter"
+            << "Sketcher_ConstrainRadiam"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
             << "Sketcher_ConstrainInternalAlignment"
@@ -361,6 +377,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
                 << "Sketcher_Copy"
                 << "Sketcher_Move"
                 << "Sketcher_RectangularArray"
+                << "Sketcher_RemoveAxesAlignment"
                 << "Separator"
                 << "Sketcher_DeleteAllGeometry"
                 << "Sketcher_DeleteAllConstraints";
@@ -380,6 +397,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"
                 << "Sketcher_RectangularArray"
+                << "Sketcher_RemoveAxesAlignment"
                 << "Sketcher_DeleteAllConstraints";
 }
 

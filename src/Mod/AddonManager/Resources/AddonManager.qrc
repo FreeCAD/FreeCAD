@@ -24,6 +24,7 @@
         <file>icons/ExtMan_workbench_icon.svg</file>
         <file>icons/fasteners_workbench_icon.svg</file>
         <file>icons/flamingo_workbench_icon.svg</file>
+        <file>icons/FEM_FrontISTR_workbench_icon.svg</file>
         <file>icons/GDML_workbench_icon.svg</file>
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/FCGear_workbench_icon.svg</file>
@@ -97,5 +98,7 @@
         <file>translations/AddonManager_vi.qm</file>
         <file>translations/AddonManager_zh-CN.qm</file>
         <file>translations/AddonManager_zh-TW.qm</file>
+        <file>translations/AddonManager_es-AR.qm</file>
+        <file>translations/AddonManager_bg.qm</file>
     </qresource>
 </RCC>

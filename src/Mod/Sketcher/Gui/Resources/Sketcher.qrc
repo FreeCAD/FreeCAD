@@ -49,6 +49,8 @@
         <file>icons/constraints/Constraint_PointToObject.svg</file>
         <file>icons/constraints/Constraint_Radius.svg</file>
         <file>icons/constraints/Constraint_Radius_Driven.svg</file>
+        <file>icons/constraints/Constraint_Radiam.svg</file>
+        <file>icons/constraints/Constraint_Radiam_Driven.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw.svg</file>
         <file>icons/constraints/Constraint_SnellsLaw_Driven.svg</file>
         <file>icons/constraints/Constraint_Symmetric.svg</file>
@@ -147,6 +149,8 @@
         <file>icons/geometry/Sketcher_CreateHyperbolic_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateLine.svg</file>
         <file>icons/geometry/Sketcher_CreateLine_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong.svg</file>
+        <file>icons/geometry/Sketcher_CreateOblong_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc.svg</file>
@@ -160,6 +164,8 @@
         <file>icons/geometry/Sketcher_CreatePolyline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
@@ -171,6 +177,7 @@
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
@@ -203,8 +210,10 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Oblong.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
     </qresource>
     <qresource>
@@ -228,6 +237,7 @@
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>
         <file>icons/tools/Sketcher_RectangularArray.svg</file>
+        <file>icons/tools/Sketcher_RemoveAxesAlignment.svg</file>
         <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
@@ -237,6 +247,9 @@
         <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/dialogs/Sketcher_Settings.svg</file>
     </qresource>
     <qresource>
         <file>translations/Sketcher_af.qm</file>
@@ -276,5 +289,7 @@
         <file>translations/Sketcher_vi.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_es-AR.qm</file>
+        <file>translations/Sketcher_bg.qm</file>
     </qresource>
 </RCC>

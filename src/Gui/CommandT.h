@@ -30,6 +30,7 @@
 #include <Gui/Command.h>
 #include <exception>
 #include <type_traits>
+#include <typeinfo>
 #include <boost/format.hpp>
 
 namespace Gui {
@@ -40,11 +41,24 @@ public:
     static std::string str(const std::string& s) {
         return s;
     }
+    static std::string str(const char* s) {
+        return s;
+    }
+    static std::string str(const QString& s) {
+        return s.toStdString();
+    }
     static std::string str(const std::stringstream& s) {
         return s.str();
     }
+    static std::string str(const std::ostringstream& s) {
+        return s.str();
+    }
     static std::string str(const std::ostream& s) {
-        return dynamic_cast<const std::ostringstream&>(s).str();
+        if (typeid(s) == typeid(std::ostringstream))
+            return dynamic_cast<const std::ostringstream&>(s).str();
+        else if (typeid(s) == typeid(std::stringstream))
+            return dynamic_cast<const std::stringstream&>(s).str();
+        throw Base::TypeError("Not a std::stringstream or std::ostringstream");
     }
     static std::string toStr(boost::format& f) {
         return f.str();
@@ -154,6 +168,39 @@ inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::DocumentOb
 template<typename T>
 inline void cmdAppDocument(const App::DocumentObject* obj, T&& cmd) {
     _cmdDocument(Gui::Command::Doc, obj, "App", std::forward<T>(cmd));
+}
+
+/** Runs a command for accessing a document's attribute or method
+ * @param doc: pointer to a Document
+ * @param cmd: command string, supporting printf like formatter
+ *
+ * Example:
+ * @code{.cpp}
+ *      cmdAppDocumentArgs(obj, "addObject('%s')", "Part::Feature");
+ * @endcode
+ *
+ * Translates to command (assuming obj's document name is 'DocName':
+ * @code{.py}
+ *       App.getDocument('DocName').addObject('Part::Feature')
+ * @endcode
+ */
+template<typename...Args>
+void cmdAppDocumentArgs(const App::Document* doc, const std::string& cmd, Args&&... args) {
+    std::string _cmd;
+    try {
+        boost::format fmt(cmd);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s",
+            doc->getName(), _cmd.c_str());
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("%s: %s\n", e.what(), cmd.c_str());
+    }
+    catch (const Base::Exception&) {
+        Base::Console().Error("App.getDocument('%s').%s\n",
+            doc->getName(), _cmd.c_str());
+        throw;
+    }
 }
 
 /** Runs a command for accessing an object's Gui::Document attribute or method

@@ -61,8 +61,9 @@ public:
     void updateProperties();
 
 protected:
-    virtual void handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    static const App::PropertyQuantityConstraint::Constraints floatSize;
+    static const App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace Part

@@ -90,11 +90,7 @@ void cleanupSWIG_T(const char* TypeName)
         PyObject *key, *value;
         pos = 0;
         while (PyDict_Next(dict, &pos, &key, &value)) {
-#if PY_MAJOR_VERSION >= 3
             if (value != Py_None && PyUnicode_Check(key)) {
-#else
-            if (value != Py_None && PyString_Check(key)) {
-#endif
                 void* ptr = 0;
                 if (SWIG_ConvertPtr(value, &ptr, 0, 0) == 0)
                     PyDict_SetItem(dict, key, Py_None);

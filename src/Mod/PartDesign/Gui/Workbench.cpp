@@ -49,16 +49,24 @@ using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "&Sketch");
+    //
+    qApp->translate("Workbench", "&Part Design");
     qApp->translate("Workbench", "Create a datum");
     qApp->translate("Workbench", "Create an additive feature");
     qApp->translate("Workbench", "Create a subtractive feature");
     qApp->translate("Workbench", "Apply a pattern");
     qApp->translate("Workbench", "Apply a dress-up feature");
+    qApp->translate("Workbench", "Sprocket...");
+    qApp->translate("Workbench", "Involute gear...");
+    qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    //
+    qApp->translate("Workbench", "Measure");
+    qApp->translate("Workbench", "Part Design Helper");
+    qApp->translate("Workbench", "Part Design Modeling");
 #endif
 
 /// @namespace PartDesignGui @class Workbench
@@ -503,37 +511,50 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // datums
     Gui::MenuItem* datums = new Gui::MenuItem;
     datums->setCommand("Create a datum");
-    *datums << "PartDesign_Point" << "PartDesign_Line"
-        << "PartDesign_Plane";
+
+    *datums << "PartDesign_Point"
+            << "PartDesign_Line"
+            << "PartDesign_Plane";
 
     // additives
     Gui::MenuItem* additives = new Gui::MenuItem;
     additives->setCommand("Create an additive feature");
-    *additives << "PartDesign_Pad" << "PartDesign_Revolution"
-        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe" << "PartDesign_AdditiveHelix";
+
+    *additives << "PartDesign_Pad"
+               << "PartDesign_Revolution"
+               << "PartDesign_AdditiveLoft"
+               << "PartDesign_AdditivePipe"
+               << "PartDesign_AdditiveHelix";
 
     // subtractives
     Gui::MenuItem* subtractives = new Gui::MenuItem;
     subtractives->setCommand("Create a subtractive feature");
-    *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
-        << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
-        << "PartDesign_SubtractivePipe" << "PartDesign_SubtractiveHelix";
+
+    *subtractives << "PartDesign_Pocket"
+                  << "PartDesign_Hole"
+                  << "PartDesign_Groove"
+                  << "PartDesign_SubtractiveLoft"
+                  << "PartDesign_SubtractivePipe"
+                  << "PartDesign_SubtractiveHelix";
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
     transformations->setCommand("Apply a pattern");
     *transformations << "PartDesign_Mirrored" 
-        //<< "PartDesign_Scaled"
                      << "PartDesign_LinearPattern"
                      << "PartDesign_PolarPattern"
                      << "PartDesign_GenericPattern"
                      << "PartDesign_MultiTransform";
+//                     << "PartDesign_Scaled"
 
     // dressups
     Gui::MenuItem* dressups = new Gui::MenuItem;
     dressups->setCommand("Apply a dress-up feature");
-    *dressups << "PartDesign_Fillet" << "PartDesign_Chamfer"
-        << "PartDesign_Draft" << "PartDesign_Thickness";
+
+    *dressups << "PartDesign_Fillet"
+              << "PartDesign_Chamfer"
+              << "PartDesign_Draft"
+              << "PartDesign_Thickness";
 
     *part << "PartDesign_Body"
           << "Separator"
@@ -557,7 +578,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Split"
           << "PartDesign_Extrusion"
           << "Separator"
-          //<< "PartDesign_Hole"
           << "PartDesign_Migrate"
           << "PartDesign_Sprocket"
           << "PartDesign_InvoluteGear";
@@ -566,14 +586,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* measure = new Gui::MenuItem;
     root->insertItem(item, measure);
     measure->setCommand("Measure");
+
     *measure << "Part_Measure_Linear"
-        << "Part_Measure_Angular"
-        << "Separator"
-        << "Part_Measure_Refresh"
-        << "Part_Measure_Clear_All"
-        << "Part_Measure_Toggle_All"
-        << "Part_Measure_Toggle_3D"
-        << "Part_Measure_Toggle_Delta";
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Refresh"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3D"
+             << "Part_Measure_Toggle_Delta";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
@@ -598,6 +619,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Helper");
+
     *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_EditSketch"
@@ -613,6 +635,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
+
     *part << "PartDesign_Pad"
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
@@ -648,14 +671,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // use Part's measure features also for PartDesign
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
+
     *measure << "Part_Measure_Linear"
-        << "Part_Measure_Angular"
-        << "Separator"
-        << "Part_Measure_Refresh"
-        << "Part_Measure_Clear_All"
-        << "Part_Measure_Toggle_All"
-        << "Part_Measure_Toggle_3D"
-        << "Part_Measure_Toggle_Delta";
+             << "Part_Measure_Angular"
+             << "Separator"
+             << "Part_Measure_Refresh"
+             << "Part_Measure_Clear_All"
+             << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3D"
+             << "Part_Measure_Toggle_Delta";
 
     return root;
 }

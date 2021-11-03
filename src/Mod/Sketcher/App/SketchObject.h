@@ -143,15 +143,26 @@ public:
     int addCopyOfConstraints(const SketchObject &orig);
     /// add constraint
     int addConstraint(const Constraint *constraint);
+    /// add constraint
+    int addConstraint(std::unique_ptr<Constraint> constraint);
     /// delete constraint
     int delConstraint(int ConstrId);
+    /** deletes a group of constraints at once, if norecomputes is active, the default behaviour is that
+     * it will solve the sketch.
+     *
+     * If updating the Geometry property as a consequence of a (successful) solve() is not wanted, updategeometry=false,
+     * prevents the update. This allows to update the solve status (e.g. dof), without updating the geometry (i.e. make it
+     * move to fulfil the constraints).
+     */
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry=true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident=true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
     /// Deletes all constraints referencing an external geometry
     int delConstraintsToExternal();
     /// transfers all constraints of a point to a new point
-    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId,
+                            bool doNotTransformTangencies = false);
+
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
     /// add an external geometry reference
@@ -168,18 +179,27 @@ public:
     /** deletes all external geometry */
     int delAllExternal();
 
+    const Part::Geometry* _getGeometry(int GeoId) const;
+    int setGeometry(int GeoId, const Part::Geometry *);
+    /// returns GeoId of all geometries projected from the same external geometry reference
+    std::vector<int> getRelatedGeometry(int GeoId) const;
+    /// Sync frozen external geometries
+    int syncGeometry(const std::vector<int> &geoIds);
+
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
      *  id==-2 for the vertical sketch axis
      *  id<=-3 for user defined projected external geometries,
      */
-    const Part::Geometry* getGeometry(int GeoId) const;
-    int setGeometry(int GeoId, const Part::Geometry *);
-    /// returns GeoId of all geometries projected from the same external geometry reference
-    std::vector<int> getRelatedGeometry(int GeoId) const;
-    /// Sync frozen external geometries
-    int syncGeometry(const std::vector<int> &geoIds);
+    template <  typename GeometryT = Part::Geometry,
+                typename = typename std::enable_if<
+                    std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
+             >::type
+    >
+    const GeometryT * getGeometry(int GeoId) const {
+        return static_cast<const GeometryT*>(_getGeometry(GeoId));
+    }
 
     std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
 
@@ -196,6 +216,11 @@ public:
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;
+
+    /// converts a GeoId index into an index of the CompleteGeometry vector
+    int getCompleteGeometryIndex(int GeoId) const;
+
+    int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
@@ -236,6 +261,8 @@ public:
 
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// set the driving status of a group of constraints at once
+    int setVirtualSpace(std::vector<int> constrIds, bool isinvirtualspace);
     /// get the driving status of this constraint
     int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
     /// toggle the driving status of this constraint
@@ -280,6 +307,8 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, int endPoint);
+    /// split a curve
+    int split(int geoId, const Base::Vector3d &point);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
@@ -287,6 +316,8 @@ public:
     /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
     int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool moveonly = false, bool clone=false, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
+
+    int removeAxesAlignment(const std::vector<int> &geoIdList);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
@@ -355,6 +386,9 @@ public:
                              std::vector<PointPos> &PosIdList);
     void getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    /// returns a list of indices of all constraints involving given GeoId
+    void getConstraintIndices(int GeoId, std::vector<int> &constraintList);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
@@ -518,6 +552,14 @@ public:
             const char *name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const {return internaltransaction;};
+
+    /** retrieves intersection points of this curve with the closest two curves around a point of this curve.
+     * - it includes internal and external intersecting geometry.
+     * - it returns Constraint::GeoUndef if no intersection is found.
+     */
+    bool seekTrimPoints(int GeoId, const Base::Vector3d &point,
+                                  int &GeoId1, Base::Vector3d &intersect1,
+                                  int &GeoId2, Base::Vector3d &intersect2);
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
@@ -565,7 +607,7 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void restoreFinished() override;
 
-    std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
+    std::string validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr);
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
@@ -628,6 +670,24 @@ protected:
     // Checks whether the geometry state stored in the geometry extension matches the current sketcher situation (e.g. constraints)
     // and corrects the state if not matching.
     void synchroniseGeometryState();
+
+    // helper function to create a new constraint and move it to the Constraint Property
+    void addConstraint( Sketcher::ConstraintType constrType,
+                        int firstGeoId,
+                        Sketcher::PointPos firstPos,
+                        int secondGeoId = Constraint::GeoUndef,
+                        Sketcher::PointPos secondPos = Sketcher::none,
+                        int thirdGeoId = Constraint::GeoUndef,
+                        Sketcher::PointPos thirdPos = Sketcher::none);
+
+    // creates a new constraint
+    std::unique_ptr<Constraint> createConstraint(   Sketcher::ConstraintType constrType,
+                                                    int firstGeoId,
+                                                    Sketcher::PointPos firstPos,
+                                                    int secondGeoId = Constraint::GeoUndef,
+                                                    Sketcher::PointPos secondPos = Sketcher::none,
+                                                    int thirdGeoId = Constraint::GeoUndef,
+                                                    Sketcher::PointPos thirdPos = Sketcher::none);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to

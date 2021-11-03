@@ -494,7 +494,7 @@ geometry shape, and may cause some initial lag due to bufferring.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used </string>
+           <string>What kind of multisample anti-aliasing is used</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AntiAliasing</cstring>

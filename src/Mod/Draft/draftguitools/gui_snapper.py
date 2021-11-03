@@ -407,6 +407,12 @@ class Snapper:
                     # Special snapping for polygons: add the center
                     snaps.extend(self.snapToPolygon(obj))
 
+                elif (Draft.getType(obj) == "BuildingPart"
+                      and self.isEnabled("Center")):
+                    # snap to the base placement of empty BuildingParts
+                    snaps.append([obj.Placement.Base, 'center',
+                                  self.toWP(obj.Placement.Base)])
+
                 if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                     if "Edge" in comp:
                         # we are snapping to an edge
@@ -458,14 +464,19 @@ class Snapper:
                 # for points we only snap to points
                 snaps.extend(self.snapToEndpoints(obj.Points))
 
-            elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart"):
-                # snap to the center of WPProxies and BuildingParts
-                snaps.append([obj.Placement.Base, 'endpoint',
+            elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
+                  and self.isEnabled("Center")):
+                # snap to the center of WPProxies or to the base
+                # placement of no empty BuildingParts
+                snaps.append([obj.Placement.Base, 'center',
                               self.toWP(obj.Placement.Base)])
 
             elif Draft.getType(obj) == "SectionPlane":
                 # snap to corners of section planes
                 snaps.extend(self.snapToEndpoints(obj.Shape))
+
+        if not snaps:
+            return None
 
         # updating last objects list
         if not self.lastObj[1]:
@@ -473,15 +484,6 @@ class Snapper:
         elif self.lastObj[1] != obj.Name:
             self.lastObj[0] = self.lastObj[1]
             self.lastObj[1] = obj.Name
-
-        if not snaps:
-            self.spoint = self.cstr(lastpoint, constrain, point)
-            self.running = False
-            if self.trackLine and lastpoint:
-                self.trackLine.p2(self.spoint)
-                self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
-                self.trackLine.on()
-            return self.spoint
 
         # calculating the nearest snap point
         shortest = 1000000000000000000

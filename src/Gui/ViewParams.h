@@ -77,6 +77,7 @@ public:
     FC_VIEW_PARAM(MarkerSize,int,Int,9, "") \
     FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFFFF, "") \
     FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,0x191919FF, "") \
+    FC_VIEW_PARAM(DefaultShapeVertexColor,unsigned long,Unsigned,0x191919FF, "") \
     FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCCFF, "") \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2, "") \
     FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2, "") \

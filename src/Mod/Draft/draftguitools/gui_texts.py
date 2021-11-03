@@ -62,13 +62,12 @@ class Text(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Text")
-        super(Text, self).Activated(name)
+        super(Text, self).Activated(name="Text")
         if self.ui:
             self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()
@@ -86,19 +85,20 @@ class Text(gui_base_original.Creator):
 
     def createObject(self):
         """Create the actual object in the current document."""
+        rot, sup, pts, fil = self.getStrings()
+        base = pts[1:-1]
+
         text_list = self.text
+
+        if not text_list:
+            self.finish()
+            return None
 
         # If the last element is an empty string "" we remove it
         if not text_list[-1]:
             text_list.pop()
 
-        # For Python 2 we convert the string to unicode,
-        # Python 3 nothing needs to be done
-        if sys.version_info.major < 3:
-            u_list = [unicode(line) for line in text_list]
-            t_list = ['"' + str(line.encode("utf8")) + '"' for line in u_list]
-        else:
-            t_list = ['"' + line + '"' for line in text_list]
+        t_list = ['"' + line + '"' for line in text_list]
 
         list_as_text = ", ".join(t_list)
 
@@ -108,9 +108,12 @@ class Text(gui_base_original.Creator):
         _cmd = 'Draft.make_text'
         _cmd += '('
         _cmd += string + ', '
-        _cmd += 'placement=' + DraftVecUtils.toString(self.node[0])
+        _cmd += 'placement=pl'
         _cmd += ')'
-        _cmd_list = ['_text_ = ' + _cmd,
+        _cmd_list = ['pl = FreeCAD.Placement()',
+                     'pl.Rotation.Q = ' + rot,
+                     'pl.Base = ' + base,
+                     '_text_ = ' + _cmd,
                      'Draft.autogroup(_text_)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(translate("draft", "Create Text"),

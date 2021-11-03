@@ -243,7 +243,7 @@ boost::python::list spanIntersect(const Span& span1, const Span& span2) {
 }
 
 //Matrix(boost::python::list &l){}
-boost::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python::list& lst) {
+std::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python::list& lst) {
 	double m[16] = {1,0,0,0,0,1,0,0, 0,0,1,0, 0,0,0,1};
 
   boost::python::ssize_t n = boost::python::len(lst);
@@ -255,7 +255,7 @@ boost::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python
 	if(j>=16)break;
   }
 
-  return boost::shared_ptr<geoff_geometry::Matrix>( new geoff_geometry::Matrix(m) );
+  return std::shared_ptr<geoff_geometry::Matrix>( new geoff_geometry::Matrix(m) );
 }
 
 boost::python::list InsideCurves(const CArea& a, const CCurve& curve) {
@@ -486,7 +486,7 @@ BOOST_PYTHON_MODULE(area) {
         .def("GetArea",&AreaGetArea)
     ;
 
-	bp::class_<geoff_geometry::Matrix, boost::shared_ptr<geoff_geometry::Matrix> > ("Matrix")
+	bp::class_<geoff_geometry::Matrix, std::shared_ptr<geoff_geometry::Matrix> > ("Matrix")
         .def(bp::init<geoff_geometry::Matrix>())
 	    .def("__init__", bp::make_constructor(&matrix_constructor))
 	    .def("TransformedPoint", &transformed_point)

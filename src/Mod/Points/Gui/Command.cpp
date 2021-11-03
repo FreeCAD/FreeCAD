@@ -33,6 +33,7 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -197,10 +198,16 @@ CmdPointsConvert::CmdPointsConvert()
 void CmdPointsConvert::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    int decimals = Base::UnitsApi::getDecimals();
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        QObject::tr("Enter maximum distance:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 

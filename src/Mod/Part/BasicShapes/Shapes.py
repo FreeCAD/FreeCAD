@@ -26,7 +26,9 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Basic shapes"
 
 
-import FreeCAD, FreeCADGui, Part
+import FreeCAD
+import Part
+
 
 def makeTube(outerRadius, innerRadius, height):
     outer_cylinder = Part.makeCylinder(outerRadius, height)
@@ -49,9 +51,16 @@ class TubeFeature:
         if fp.InnerRadius >= fp.OuterRadius:
             raise ValueError("Inner radius must be smaller than outer radius")
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
-        # Return False here to signal FeaturePython to call its default
-        # execute() for extensions
-        return False
+
+def addTube(doc, name="Tube"):
+    """addTube(document, [name]): adds a tube object"""
+
+    obj = doc.addObject("Part::FeaturePython", name)
+    TubeFeature(obj)
+    if FreeCAD.GuiUp:
+        from . import ViewProviderShapes
+        ViewProviderShapes.ViewProviderTube(obj.ViewObject)
+    return obj
 
 _ParamUnits = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units");
 _ParamDecimals = None
@@ -130,6 +139,7 @@ def _setupDecimals():
     _Decimals = _ParamDecimals
 
 def showPreselectInfo():
+    import FreeCADGui
     sel = FreeCADGui.Selection.getPreselection()
     if not sel.Object or len(sel.SubElementNames) != 1:
         return
@@ -276,6 +286,7 @@ def _getGeoAttributes(txt, geo, attrs):
     return txt
 
 def showPreselectMeasure():
+    import FreeCADGui
     try:
         count = FreeCADGui.Selection.countObjectsOfType()
         if count > 3:

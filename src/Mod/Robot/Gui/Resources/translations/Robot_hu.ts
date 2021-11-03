@@ -51,8 +51,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
-      <source>Create a new empty trajectory </source>
-      <translation>Új üres útvonal létrehozása </translation>
+      <source>Create a new empty trajectory</source>
+      <translation>Új üres pálya létrehozása</translation>
     </message>
   </context>
   <context>

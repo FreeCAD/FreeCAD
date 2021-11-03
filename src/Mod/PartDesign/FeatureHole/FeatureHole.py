@@ -154,7 +154,7 @@ class Hole():
                                     secondLineIndex = i
                                 if (firstLineIndex > -1) and (secondLineIndex > -1):
                                     break
-                            except:
+                            except Exception:
                                 # Unknown curvetype GeomAbs_OtherCurve
                                 continue
                         axis.References = [(support,  elementList[0]),  (support,  "Edge" + str(firstLineIndex+1)),  (support,  "Edge" + str(secondLineIndex+1))] 

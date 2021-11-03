@@ -24,7 +24,6 @@
 #ifndef PART_GEOMETRYEXTENSION_H
 #define PART_GEOMETRYEXTENSION_H
 
-#include <Base/StdStlTools.h>
 #include <Base/Persistence.h>
 #include <memory>
 #include <string>

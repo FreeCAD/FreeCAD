@@ -106,8 +106,8 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->chamferSize2->bind(pcChamfer->Size2);
 
     ui->chamferAngle->setUnit(Base::Unit::Angle);
-    ui->chamferAngle->setMinimum(0.0);
-    ui->chamferAngle->setMaximum(180.0);
+    ui->chamferAngle->setMinimum(pcChamfer->Angle.getMinimum());
+    ui->chamferAngle->setMaximum(pcChamfer->Angle.getMaximum());
     ui->chamferAngle->setValue(pcChamfer->Angle.getValue());
     ui->chamferAngle->bind(pcChamfer->Angle);
 

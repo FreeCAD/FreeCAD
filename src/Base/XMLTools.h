@@ -45,6 +45,18 @@ XERCES_CPP_NAMESPACE_BEGIN
     class DOMDocument;
 XERCES_CPP_NAMESPACE_END
 
+// Helper class
+class BaseExport XMLTools
+{
+public:
+    static std::string toStdString(const XMLCh* const toTranscode);
+    static std::basic_string<XMLCh> toXMLString(const char* const fromTranscode);
+    static void initialize();
+    static void terminate();
+
+private:
+    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
+};
 
 //**************************************************************************
 //**************************************************************************
@@ -75,17 +87,10 @@ inline StrX::StrX(const XMLCh* const toTranscode)
 {
     // Call the private transcoding method
     fLocalForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-//#ifdef FC_OS_WIN32
-//    assert(0)
-//    WideCharToMultiByte(CP_UTF8,0,toTranscode,-1,fLocaleForm)
-//#else
-//    fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-//#endif
 }
 
 inline StrX::~StrX()
 {
-    //delete [] fLocalForm; // don't work on VC7.1
     XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fLocalForm);
 }
 
@@ -112,12 +117,6 @@ public :
     const char* c_str() const;
     /// string which holds the UTF-8 form
     std::string  str;
-
-    static void terminate();
-
-private :
-    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
-    //  This is the local code page form of the string.
 };
 
 inline std::ostream& operator<<(std::ostream& target, const StrXUTF8& toDump)
@@ -128,39 +127,7 @@ inline std::ostream& operator<<(std::ostream& target, const StrXUTF8& toDump)
 
 inline StrXUTF8::StrXUTF8(const XMLCh* const toTranscode)
 {
-    XERCES_CPP_NAMESPACE_USE;
-    if(!transcoder.get()){
-        XMLTransService::Codes  res;
-        transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
-        if (res != XMLTransService::Ok)
-            throw Base::UnicodeError("Can\'t create UTF-8 encoder in StrXUTF8::StrXUTF8()");
-    }
-
-    //char outBuff[128];
-    static XMLByte outBuff[128];
-#if (XERCES_VERSION_MAJOR == 2)
-    unsigned int outputLength;
-    unsigned int eaten = 0;
-    unsigned int offset = 0;
-    unsigned int inputLength = XMLString::stringLen(toTranscode);
-#else
-    XMLSize_t outputLength;
-    XMLSize_t eaten = 0;
-    XMLSize_t offset = 0;
-    XMLSize_t inputLength = XMLString::stringLen(toTranscode);
-#endif
-
-    while (inputLength)
-    {
-        outputLength = transcoder->transcodeTo(toTranscode + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
-        str.append(reinterpret_cast<const char*>(outBuff), outputLength);
-        offset += eaten;
-        inputLength -= eaten;
-
-        //  Bail out if nothing more was produced
-        if (outputLength == 0)
-            break;
-    }
+    str = XMLTools::toStdString(toTranscode);
 }
 
 // -----------------------------------------------------------------------
@@ -198,18 +165,11 @@ private :
 
 inline XStr::XStr(const char* const toTranscode)
 {
-    // Call the private transcoding method
-//#ifdef FC_OS_WIN32
-//    assert(0)
-//    WideCharToMultiByte()
-//#else
     fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-//#endif
 }
 
 inline XStr::~XStr()
 {
-    //delete [] fUnicodeForm;
     XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
 }
 
@@ -236,54 +196,13 @@ public :
     /// Getter method
     const XMLCh* unicodeForm() const;
 
-    static void terminate();
-
 private :
     std::basic_string<XMLCh>  str;
-    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
 };
 
 inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 {
-    if (!fromTranscode)
-        return;
-
-    XERCES_CPP_NAMESPACE_USE;
-    if(!transcoder.get()){
-        XMLTransService::Codes  res;
-        transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
-        if (res != XMLTransService::Ok)
-            throw Base::UnicodeError("Can\'t create UTF-8 decoder in XUTF8Str::XUTF8Str()");
-    }
-
-    static XMLCh outBuff[128];
-    const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
-#if (XERCES_VERSION_MAJOR == 2)
-    unsigned int outputLength;
-    unsigned int eaten = 0;
-    unsigned int offset = 0;
-    unsigned int inputLength = std::string(fromTranscode).size();
-#else
-    XMLSize_t outputLength;
-    XMLSize_t eaten = 0;
-    XMLSize_t offset = 0;
-    XMLSize_t inputLength = std::string(fromTranscode).size();
-#endif
-
-    unsigned char* charSizes = new unsigned char[inputLength];
-    while (inputLength)
-    {
-        outputLength = transcoder->transcodeFrom(xmlBytes + offset, inputLength, outBuff, 128, eaten, charSizes);
-        str.append(outBuff, outputLength);
-        offset += eaten;
-        inputLength -= eaten;
-
-        //  Bail out if nothing more was produced
-        if (outputLength == 0)
-            break;
-    }
-
-    delete[] charSizes;
+    str = XMLTools::toXMLString(fromTranscode);
 }
 
 inline XUTF8Str::~XUTF8Str()

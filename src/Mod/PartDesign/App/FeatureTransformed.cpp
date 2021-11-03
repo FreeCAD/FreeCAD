@@ -36,6 +36,9 @@
 # include <Bnd_Box.hxx>
 #endif
 
+#ifndef FC_DEBUG
+#include <ctime>
+#endif
 
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include "FeatureTransformed.h"
@@ -165,19 +168,21 @@ App::DocumentObject* Transformed::getSketchObject() const
     }
 }
 
-void Transformed::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+void Transformed::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
-    Base::Type inputType = Base::Type::fromName(TypeName);
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
+    Base::Type inputType = Base::Type::fromName(TypeName);
     if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
-            inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
         App::PropertyFloat floatProp;
         floatProp.Restore(reader);
         static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+    }
+    else {
+        PartDesign::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

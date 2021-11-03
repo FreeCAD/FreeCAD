@@ -69,7 +69,7 @@ struct parser : qi::grammar<IIterator, Sys(), qi::space_type> {
     details::kernel_prop_par<Sys> kernel_prop;
     details::system_prop_par<Sys> system_prop;
 
-    qi::rule<IIterator, boost::shared_ptr<graph>(Sys*), qi::locals<int, std::vector<boost::shared_ptr<graph> > >, qi::space_type> cluster;
+    qi::rule<IIterator, std::shared_ptr<graph>(Sys*), qi::locals<int, std::vector<std::shared_ptr<graph> > >, qi::space_type> cluster;
     details::cluster_prop_par<Sys> cluster_prop;
 
     details::obj_par<Sys> objects;

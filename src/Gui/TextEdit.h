@@ -64,6 +64,11 @@ public:
 private Q_SLOTS:
     void complete();
 
+Q_SIGNALS:
+    void showSearchBar();
+    void findNext();
+    void findPrevious();
+
 protected:
     void keyPressEvent(QKeyEvent *);
 

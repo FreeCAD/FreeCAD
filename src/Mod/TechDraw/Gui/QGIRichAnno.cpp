@@ -43,6 +43,7 @@
 #include <QTextFrame>
 #include <QTextBlock>
 #include <QTextCursor>
+#include <QDialog>
 
 
 # include <math.h>
@@ -80,6 +81,7 @@
 #include "QGCustomRect.h"
 
 #include "QGIRichAnno.h"
+#include "mrichtextedit.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -365,6 +367,38 @@ double QGIRichAnno::prefPointSize(void)
     
     double ptsSize = round(fontSize * mmToPts);
     return ptsSize;
+}
+
+void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
+    Q_UNUSED(event);
+
+    TechDraw::DrawRichAnno *annotation = dynamic_cast<TechDraw::DrawRichAnno *>(getViewObject());
+    if (annotation == nullptr) {
+        return;
+    }
+
+    QString text = QString::fromUtf8(annotation->AnnoText.getValue());
+
+    QDialog dialog(0);
+    dialog.setWindowTitle(QObject::tr("Rich text editor"));
+    dialog.setMinimumWidth(400);
+    dialog.setMinimumHeight(400);
+
+    MRichTextEdit richEdit(&dialog, text);
+    QGridLayout gridLayout(&dialog);
+    gridLayout.addWidget(&richEdit, 0, 0, 1, 1);
+
+    connect(&richEdit, SIGNAL(saveText(QString)), &dialog, SLOT(accept()));
+    connect(&richEdit, SIGNAL(editorFinished(void)), &dialog, SLOT(reject()));
+
+    if (dialog.exec()) {
+        QString newText = richEdit.toHtml();
+        if (newText != text) {
+            App::GetApplication().setActiveTransaction("Set Rich Annotation Text");
+            annotation->AnnoText.setValue(newText.toStdString());
+            App::GetApplication().closeActiveTransaction();
+        }
+    }
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>

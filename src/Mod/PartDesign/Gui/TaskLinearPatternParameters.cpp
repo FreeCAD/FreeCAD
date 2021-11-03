@@ -121,8 +121,9 @@ void TaskLinearPatternParameters::setupUI()
 
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     ui->spinLength->bind(pcLinearPattern->Length);
-    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
+    ui->spinOccurrences->setMaximum(pcLinearPattern->Occurrences.getMaximum());
+    ui->spinOccurrences->setMinimum(pcLinearPattern->Occurrences.getMinimum());
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);

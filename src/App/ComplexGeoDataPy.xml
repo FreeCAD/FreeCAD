@@ -5,7 +5,7 @@
       Name="ComplexGeoDataPy" 
       Twin="ComplexGeoData" 
       Include="App/ComplexGeoData.h" 
-  	  TwinPointer="ComplexGeoData" 
+      TwinPointer="ComplexGeoData"
       Namespace="Data" 
       FatherInclude="Base/PersistencePy.h" 
       FatherNamespace="Base"
@@ -14,9 +14,54 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>Father of all complex geometric data types</UserDocu>
     </Documentation>
-    <Methode Name="getFacesFromSubelement" Const="true">
+    <Methode Name="getElementTypes" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of element types</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="countSubElements" Const="true">
+      <Documentation>
+        <UserDocu>Return the number of elements of a type</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getFacesFromSubElement" Const="true">
       <Documentation>
         <UserDocu>Return vertexes and faces from a sub-element</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLinesFromSubElement" Const="true">
+      <Documentation>
+        <UserDocu>Return vertexes and lines from a sub-element</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPoints" Const="true">
+      <Documentation>
+        <UserDocu>Return a tuple of points and normals with a given accuracy</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLines" Const="true">
+      <Documentation>
+        <UserDocu>Return a tuple of points and lines with a given accuracy</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getFaces" Const="true">
+      <Documentation>
+        <UserDocu>Return a tuple of points and triangles with a given accuracy</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="applyTranslation">
+      <Documentation>
+        <UserDocu>Apply an additional translation to the placement</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="applyRotation">
+      <Documentation>
+        <UserDocu>Apply an additional rotation to the placement</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transformGeometry">
+      <Documentation>
+        <UserDocu>Apply a transformation to the underlying geometry</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setElementName" Keyword="true">
@@ -50,76 +95,70 @@ to one element
           <UserDocu>getElementMappedName(name) - Return the mapped element name</UserDocu>
       </Documentation>
     </Methode>
-      <Attribute Name="BoundBox" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Get the BoundBox of the object</UserDocu>
-		  </Documentation>
-		  <Parameter Name="BoundBox" Type="Object" />
-	  </Attribute>
-      <Attribute Name="Rotation" ReadOnly="true">
+    <Attribute Name="BoundBox" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the BoundBox of the object</UserDocu>
+      </Documentation>
+      <Parameter Name="BoundBox" Type="Object" />
+    </Attribute>
+    <Attribute Name="Rotation" ReadOnly="true">
         <Documentation>
             <UserDocu>
-Get the orientation of the geometry element.
+                Get the orientation of the geometry element.
 
-Note that the rotation returned is the intrinsic orientation of the
-the underlying geometry, which may not be the same as its 'Placement'.
+                Note that the rotation returned is the intrinsic orientation of the
+                the underlying geometry, which may not be the same as its 'Placement'.
             </UserDocu>
         </Documentation>
-		<Parameter Name="Rotation" Type="Object" />
-      </Attribute>
-	  <Attribute Name="Placement" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>Get the current transformation of the object as placement</UserDocu>
-		  </Documentation>
-		  <Parameter Name="Placement" Type="Object" />
-	  </Attribute>
-	  <Attribute Name="Matrix" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>Get the current transformation of the object as matrix</UserDocu>
-		  </Documentation>
-		  <Parameter Name="Matrix" Type="Object" />
-	  </Attribute>
-      <Attribute Name="Hasher">
-		  <Documentation>
-              <UserDocu>Get/Set the string hasher of this object</UserDocu>
-		  </Documentation>
-		  <Parameter Name="Hasher" Type="Object" />
-	  </Attribute>
-      <Attribute Name="ElementMapSize" ReadOnly="true">
-		  <Documentation>
-              <UserDocu>Get the current element map size</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ElementMapSize" Type="Int" />
-	  </Attribute>
-      <Attribute Name="ElementMap">
-		  <Documentation>
-              <UserDocu>Get/Set a dict of element mapping</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ElementMap" Type="Dict" />
-	  </Attribute>
-      <Attribute Name="ElementReverseMap" ReadOnly="true">
-		  <Documentation>
-              <UserDocu>Get a dict of element reverse mapping</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ElementReverseMap" Type="Dict" />
-	  </Attribute>
-      <Attribute Name="ElementTypes" ReadOnly="true">
-		  <Documentation>
-              <UserDocu>A list of support element types</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ElementTypes" Type="Tuple" />
-	  </Attribute>
-      <Attribute Name="ElementMapVersion" ReadOnly="true">
-		  <Documentation>
-              <UserDocu>Element map version</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ElementMapVersion" Type="String" />
-	  </Attribute>
-      <Attribute Name="Tag">
-          <Documentation>
-              <UserDocu>Geometry Tag</UserDocu>
-          </Documentation>
-          <Parameter Name="Tag" Type="Int"/>
-      </Attribute>
+        <Parameter Name="Rotation" Type="Object" />
+    </Attribute>
+    <Attribute Name="CenterOfGravity" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the center of gravity</UserDocu>
+      </Documentation>
+      <Parameter Name="CenterOfGravity" Type="Object" />
+    </Attribute>
+    <Attribute Name="Placement" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Get the current transformation of the object as placement</UserDocu>
+      </Documentation>
+      <Parameter Name="Placement" Type="Object" />
+    </Attribute>
+    <Attribute Name="Tag">
+      <Documentation>
+        <UserDocu>Geometry Tag</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Hasher">
+        <Documentation>
+            <UserDocu>Get/Set the string hasher of this object</UserDocu>
+        </Documentation>
+        <Parameter Name="Hasher" Type="Object" />
+    </Attribute>
+    <Attribute Name="ElementMapSize" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Get the current element map size</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementMapSize" Type="Int" />
+    </Attribute>
+    <Attribute Name="ElementMap">
+        <Documentation>
+            <UserDocu>Get/Set a dict of element mapping</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementMap" Type="Dict" />
+    </Attribute>
+    <Attribute Name="ElementReverseMap" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Get a dict of element reverse mapping</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementReverseMap" Type="Dict" />
+    </Attribute>
+    <Attribute Name="ElementMapVersion" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Element map version</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementMapVersion" Type="String" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>

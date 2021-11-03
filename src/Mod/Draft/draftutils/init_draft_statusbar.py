@@ -97,14 +97,22 @@ def scale_to_label(scale):
     """
     transform a float number into a 1:X or X:1 scale and return it as label
     """
-    f = 1/scale
-    f = round(f,2)
-    f = f.as_integer_ratio()
-    if f[1] == 1 or f[0] == 1:
-        label = str(f[1]) + ":" + str(f[0])
-        return label
+    f = round(scale, 2)
+    if f == 1.0:
+        return "1:1"
+    elif f > 1.0:
+        f = f.as_integer_ratio()
+        if f[1] == 1:
+            return str(f[0]) + ":1"
+        else:
+            return str(scale)
     else:
-        return str(scale)
+        f = round(1/scale, 2)
+        f = f.as_integer_ratio()
+        if f[1] == 1:
+            return "1:" + str(f[0])
+        else:
+            return str(scale)
 
 def label_to_scale(label):
     """
@@ -340,6 +348,7 @@ def init_draft_statusbar_snap():
 
     # add snap widget to the statusbar
     sb.insertPermanentWidget(2, snap_widget)
+    snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.show()
 
 
@@ -373,11 +382,13 @@ def show_draft_statusbar():
 
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
+            snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
             snap_widget.show()
         else:
             snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
             if snap_widget:
                 sb.insertPermanentWidget(2, snap_widget)
+                snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
                 snap_widget.show()
             elif params.GetBool("DisplayStatusbarSnapWidget", True):
                 t = QtCore.QTimer()

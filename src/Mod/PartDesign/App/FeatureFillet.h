@@ -53,9 +53,7 @@ public:
     //@}
 
 protected:
-    virtual void handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 };
 
 } //namespace Part

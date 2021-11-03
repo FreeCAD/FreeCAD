@@ -63,7 +63,7 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length","UpToLast","UpToFirst","UpToFace","TwoLengths",NULL};
+const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", NULL};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 
@@ -73,8 +73,10 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
-    ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pad", App::Prop_None, "Reference axis of direction");
+    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
 
     // Remove the constraints and keep the type to allow to accept negative values
@@ -105,6 +107,8 @@ short Pad::mustExecute() const
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
+        ReferenceAxis.isTouched() ||
+        AlongSketchNormal.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched() ||
         UsePipeForDraft.isTouched())
@@ -137,6 +141,12 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         if (std::abs(L2) < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Second length too small");
     }
+
+    // if midplane is true, disable reversed and vice versa
+    bool hasMidplane = Midplane.getValue();
+    bool hasReversed = Reversed.getValue();
+    Midplane.setReadOnly(hasReversed);
+    Reversed.setReadOnly(hasMidplane);
 
     Part::Feature* obj = 0;
     TopoShape sketchshape;
@@ -192,25 +202,51 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         base.move(invObjLoc);
 
         Base::Vector3d paddingDirection;
-
-        // use the given vector if necessary
+        
         if (!UseCustomVector.getValue()) {
-            paddingDirection = SketchVector;
+            if (ReferenceAxis.getValue() == nullptr) {
+                // use sketch's normal vector for direction
+                paddingDirection = SketchVector;
+                AlongSketchNormal.setReadOnly(true);
+            }
+            else {
+                // update Direction from ReferenceAxis
+                try {
+                    App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
+                    const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
+                    Base::Vector3d base;
+                    Base::Vector3d dir;
+                    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
+                    paddingDirection = dir;
+                }
+                catch (const Base::Exception& e) {
+                    return new App::DocumentObjectExecReturn(e.what());
+                }
+            }
         }
         else {
+            // use the given vector
             // if null vector, use SketchVector
             if ( (fabs(Direction.getValue().x) < Precision::Confusion())
                 && (fabs(Direction.getValue().y) < Precision::Confusion())
-                && (fabs(Direction.getValue().z) < Precision::Confusion()) )
-            {
+                && (fabs(Direction.getValue().z) < Precision::Confusion()) ) {
                 Direction.setValue(SketchVector);
             }
-
             paddingDirection = Direction.getValue();
         }
 
+        // disable options of UseCustomVector  
+        Direction.setReadOnly(!UseCustomVector.getValue());
+        ReferenceAxis.setReadOnly(UseCustomVector.getValue());
+        // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
+        if (UseCustomVector.getValue())
+            AlongSketchNormal.setReadOnly(false);
+
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
+
+        // store the finally used direction to display it in the dialog
+        Direction.setValue(dir.X(), dir.Y(), dir.Z());
 
         // The length of a gp_Dir is 1 so the resulting pad would have
         // the length L in the direction of dir. But we want to have its height in the
@@ -227,9 +263,15 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         if (factor < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Creation failed because direction is orthogonal to sketch's normal vector");
 
-        // perform the length correction
-        L = L / factor;
-        L2 = L2 / factor;
+        // perform the length correction if not along custom vector
+        if (AlongSketchNormal.getValue()) {
+            L = L / factor;
+            L2 = L2 / factor;
+        }
+
+        // explicitly set the Direction so that the dialog shows also the used direction
+        // if the sketch's normal vector was used
+        Direction.setValue(paddingDirection);
 
         dir.Transform(invTrsf);
 
@@ -370,4 +412,3 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
-

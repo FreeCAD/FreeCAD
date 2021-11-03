@@ -1095,11 +1095,8 @@ std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
     DOMNode *pcElem2 = pcElem->getFirstChild();
     if (pcElem2)
         return std::string(StrXUTF8(pcElem2->getNodeValue()).c_str());
-    else if (pPreset==0)
-        return std::string("");
-
     else
-        return std::string(pPreset);
+        return std::string("");
 }
 
 std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
@@ -1120,6 +1117,8 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str() );
+            else
+                vrValues.emplace_back(""); // For a string, an empty value is possible and allowed
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -1145,6 +1144,8 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
                 vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
+            else
+                vrValues.emplace_back(Name, std::string()); // For a string, an empty value is possible and allowed
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -1647,8 +1648,7 @@ void ParameterManager::Init(void)
 
 void ParameterManager::Terminate(void)
 {
-    StrXUTF8::terminate();
-    XUTF8Str::terminate();
+    XMLTools::terminate();
     XMLPlatformUtils::Terminate();
 }
 

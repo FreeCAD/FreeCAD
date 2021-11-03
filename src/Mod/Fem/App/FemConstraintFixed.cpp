@@ -32,8 +32,6 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Adaptor3d_IsoCurve.hxx>
-#include <Adaptor3d_HSurface.hxx>
-#include <BRepAdaptor_HSurface.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <TopoDS_Vertex.hxx>

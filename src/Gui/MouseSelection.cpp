@@ -74,11 +74,11 @@ void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
     initialize();
 }
 
-void AbstractMouseSelection::releaseMouseModel()
+void AbstractMouseSelection::releaseMouseModel(bool abort)
 {
     if (_pcView3D) {
         // do termination of your mousemodel
-        terminate();
+        terminate(abort);
 
         _pcView3D->getWidget()->setCursor(m_cPrevCursor);
         _pcView3D = 0;
@@ -347,8 +347,10 @@ void PolyPickerSelection::initialize()
     lastConfirmed = false;
 }
 
-void PolyPickerSelection::terminate()
+void PolyPickerSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Native);
     _pcView3D->redraw(true);
@@ -459,11 +461,7 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
-#if QT_VERSION >= 0x050600
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
-#else
-        qreal dpr = 1.0;
-#endif
         QRect r = _pcView3D->getGLWidget()->rect();
         if (dpr != 1.0) {
             r.setHeight(r.height()*dpr);
@@ -788,11 +786,7 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
-#if QT_VERSION >= 0x050600
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
-#else
-        qreal dpr = 1.0;
-#endif
         QRect r = _pcView3D->getGLWidget()->rect();
         if (dpr != 1.0) {
             r.setHeight(r.height()*dpr);
@@ -928,8 +922,10 @@ void RubberbandSelection::initialize()
     _pcView3D->redraw();
 }
 
-void RubberbandSelection::terminate()
+void RubberbandSelection::terminate(bool abort)
 {
+    Q_UNUSED(abort)
+
     _pcView3D->removeGraphicsItem(&rubberband);
     if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);
@@ -1029,14 +1025,15 @@ BoxZoomSelection::~BoxZoomSelection()
 {
 }
 
-void BoxZoomSelection::terminate()
+void BoxZoomSelection::terminate(bool abort)
 {
-    RubberbandSelection::terminate();
-
-    int xmin = std::min<int>(m_iXold, m_iXnew);
-    int xmax = std::max<int>(m_iXold, m_iXnew);
-    int ymin = std::min<int>(m_iYold, m_iYnew);
-    int ymax = std::max<int>(m_iYold, m_iYnew);
-    SbBox2s box(xmin, ymin, xmax, ymax);
-    _pcView3D->boxZoom(box);
+    RubberbandSelection::terminate(abort);
+    if (!abort) {
+        int xmin = std::min<int>(m_iXold, m_iXnew);
+        int xmax = std::max<int>(m_iXold, m_iXnew);
+        int ymin = std::min<int>(m_iYold, m_iYnew);
+        int ymax = std::max<int>(m_iYold, m_iYnew);
+        SbBox2s box(xmin, ymin, xmax, ymax);
+        _pcView3D->boxZoom(box);
+    }
 }

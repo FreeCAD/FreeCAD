@@ -38,8 +38,6 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
@@ -186,6 +184,12 @@
 #if OCC_VERSION_HEX >= 0x070300
 # include <BRepAlgoAPI_Defeaturing.hxx>
 #endif
+
+#if OCC_VERSION_HEX < 0x070600
+# include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCompCurve.hxx>
+#endif
+
 #endif // _PreComp_
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -486,6 +490,7 @@ PyObject * TopoShape::getPyObject()
         }
     }
 
+    prop->setNotTracking();
     return prop;
 }
 
@@ -984,65 +989,27 @@ void TopoShape::exportFaceSet(double dev, double ca,
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
-        Standard_Integer nbNodesInFace,nbTriInFace;
+        std::vector<gp_Pnt> points;
+        std::vector<Poly_Triangle> facets;
+        if (!Tools::getTriangulation(aFace, points, facets))
+            continue;
+
         std::vector<Base::Vector3f> vertices;
         std::vector<int> indices;
+        vertices.resize(points.size());
+        indices.resize(4 * facets.size());
 
-        // doing the meshing and checking the result
-        TopLoc_Location aLoc;
-        Handle(Poly_Triangulation) aPoly = BRep_Tool::Triangulation(aFace,aLoc);
-        if (aPoly.IsNull()) continue;
-
-        // getting the transformation of the shape/face
-        gp_Trsf myTransf;
-        Standard_Boolean identity = true;
-        if (!aLoc.IsIdentity()) {
-            identity = false;
-            myTransf = aLoc.Transformation();
+        for (std::size_t i = 0; i < points.size(); i++) {
+            vertices[i] = Base::convertTo<Base::Vector3f>(points[i]);
         }
 
-        // getting size and create the array
-        nbNodesInFace = aPoly->NbNodes();
-        nbTriInFace = aPoly->NbTriangles();
-        vertices.resize(nbNodesInFace);
-        indices.resize(4*nbTriInFace);
-
-        // check orientation
-        TopAbs_Orientation orient = aFace.Orientation();
-
-        // cycling through the poly mesh
-        const Poly_Array1OfTriangle& Triangles = aPoly->Triangles();
-        const TColgp_Array1OfPnt& Nodes = aPoly->Nodes();
-        for (int i=1;i<=nbTriInFace;i++) {
-            // Get the triangle
-            Standard_Integer N1,N2,N3;
-            Triangles(i).Get(N1,N2,N3);
-
-            // change orientation of the triangles
-            if (orient != TopAbs_FORWARD) {
-                Standard_Integer tmp = N1;
-                N1 = N2;
-                N2 = tmp;
-            }
-
-            gp_Pnt V1 = Nodes(N1);
-            gp_Pnt V2 = Nodes(N2);
-            gp_Pnt V3 = Nodes(N3);
-
-            // transform the vertices to the place of the face
-            if (!identity) {
-                V1.Transform(myTransf);
-                V2.Transform(myTransf);
-                V3.Transform(myTransf);
-            }
-
-            vertices[N1-1].Set((float)(V1.X()),(float)(V1.Y()),(float)(V1.Z()));
-            vertices[N2-1].Set((float)(V2.X()),(float)(V2.Y()),(float)(V2.Z()));
-            vertices[N3-1].Set((float)(V3.X()),(float)(V3.Y()),(float)(V3.Z()));
-
-            int j = i - 1;
-            N1--; N2--; N3--;
-            indices[4*j] = N1; indices[4*j+1] = N2; indices[4*j+2] = N3; indices[4*j+3] = -1;
+        for (std::size_t i = 0; i < facets.size(); i++) {
+            Standard_Integer n1,n2,n3;
+            facets[i].Get(n1, n2, n3);
+            indices[4 * i    ] = n1;
+            indices[4 * i + 1] = n2;
+            indices[4 * i + 2] = n3;
+            indices[4 * i + 3] = -1;
         }
 
         builder.beginSeparator();
@@ -1057,7 +1024,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
         builder.endPoints();
         builder.addIndexedFaceSet(indices);
         builder.endSeparator();
-    } // end of face loop
+    }
 }
 
 void TopoShape::exportLineSet(std::ostream& str) const
@@ -1070,71 +1037,26 @@ void TopoShape::exportLineSet(std::ostream& str) const
     // build up map edge->face
     TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
     TopExp::MapShapesAndAncestors(this->_Shape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
-    for (int i=0; i<M.Extent(); i++)
-    {
+
+    for (int i=0; i<M.Extent(); i++) {
         const TopoDS_Edge& aEdge = TopoDS::Edge(M(i+1));
-        gp_Trsf myTransf;
-        TopLoc_Location aLoc;
+        std::vector<gp_Pnt> points;
 
-        // try to triangulate the edge
-        Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
-
-        std::vector<Base::Vector3f> vertices;
-        Standard_Integer nbNodesInFace;
-
-        // triangulation succeeded?
-        if (!aPoly.IsNull()) {
-            if (!aLoc.IsIdentity()) {
-                myTransf = aLoc.Transformation();
-            }
-            nbNodesInFace = aPoly->NbNodes();
-            vertices.resize(nbNodesInFace);
-
-            const TColgp_Array1OfPnt& Nodes = aPoly->Nodes();
-
-            gp_Pnt V;
-            for (Standard_Integer i=0;i < nbNodesInFace;i++) {
-                V = Nodes(i+1);
-                V.Transform(myTransf);
-                vertices[i].Set((float)(V.X()),(float)(V.Y()),(float)(V.Z()));
-            }
-        }
-        else {
+        if (!Tools::getPolygon3D(aEdge, points)) {
             // the edge has not its own triangulation, but then a face the edge is attached to
             // must provide this triangulation
 
             // Look for one face in our map (it doesn't care which one we take)
             const TopoDS_Face& aFace = TopoDS::Face(edge2Face.FindFromKey(aEdge).First());
-
-            // take the face's triangulation instead
-            Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(aFace,aLoc);
-            if (!aLoc.IsIdentity()) {
-                myTransf = aLoc.Transformation();
-            }
-
-            if (aPolyTria.IsNull()) break;
-
-            // this holds the indices of the edge's triangulation to the actual points
-            Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(aEdge, aPolyTria, aLoc);
-            if (aPoly.IsNull())
-                continue; // polygon does not exist
-
-            // getting size and create the array
-            nbNodesInFace = aPoly->NbNodes();
-            vertices.resize(nbNodesInFace);
-
-            const TColStd_Array1OfInteger& indices = aPoly->Nodes();
-            const TColgp_Array1OfPnt& Nodes = aPolyTria->Nodes();
-
-            gp_Pnt V;
-            int pos = 0;
-            // go through the index array
-            for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
-                V = Nodes(indices(i));
-                V.Transform(myTransf);
-                vertices[pos++].Set((float)(V.X()),(float)(V.Y()),(float)(V.Z()));
-            }
+            if (!Tools::getPolygonOnTriangulation(aEdge, aFace, points))
+                continue;
         }
+
+        std::vector<Base::Vector3f> vertices;
+        vertices.reserve(points.size());
+        std::for_each(points.begin(), points.end(), [&vertices](const gp_Pnt& p) {
+            vertices.push_back(Base::convertTo<Base::Vector3f>(p));
+        });
 
         builder.addLineSet(vertices, 2, 0, 0, 0);
     }
@@ -1548,9 +1470,9 @@ bool TopoShape::isClosed() const
 TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return this->_Shape;
     BRepAlgoAPI_Cut mkCut(this->_Shape, shape);
     return makeShell(mkCut.Shape());
 }
@@ -1558,7 +1480,7 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
 TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
@@ -1594,9 +1516,9 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return shape;
     BRepAlgoAPI_Common mkCommon(this->_Shape, shape);
     return makeShell(mkCommon.Shape());
 }
@@ -1604,7 +1526,7 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
 TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return this->_Shape;
 #if OCC_VERSION_HEX < 0x060900
     (void)shapes;
     (void)tolerance;
@@ -1640,9 +1562,9 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
+        return shape;
     if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
+        return this->_Shape;
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return makeShell(mkFuse.Shape());
 }
@@ -1952,12 +1874,20 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot sweep along empty spine");
 
+#if OCC_VERSION_HEX >= 0x070600
+    Handle(Adaptor3d_Curve) myPath;
+    if (this->_Shape.ShapeType() == TopAbs_EDGE) {
+        const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
+        myPath = new BRepAdaptor_Curve(path_edge);
+    }
+#else
     Handle(Adaptor3d_HCurve) myPath;
     if (this->_Shape.ShapeType() == TopAbs_EDGE) {
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         BRepAdaptor_Curve path_adapt(path_edge);
         myPath = new BRepAdaptor_HCurve(path_adapt);
     }
+#endif
     //else if (this->_Shape.ShapeType() == TopAbs_WIRE) {
     //    const TopoDS_Wire& path_wire = TopoDS::Wire(this->_Shape);
     //    BRepAdaptor_CompCurve path_adapt(path_wire);
@@ -2237,6 +2167,60 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     TopoDS_Wire wire = mkWire.Wire();
     BRepLib::BuildCurves3d(wire);
+    return TopoDS_Shape(std::move(wire));
+}
+
+TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+                                  Standard_Real height, Standard_Real nbturns,
+                                  Standard_Real breakperiod, Standard_Boolean leftHanded) const
+{
+    // 1000 periods is an OCCT limit. The 3D curve gets truncated
+    // if the 2D curve spans beyond this limit.
+    if ((breakperiod < 0) || (breakperiod > 1000))
+        Standard_Failure::Raise("Break period must be in [0, 1000]");
+    if (breakperiod == 0)
+        breakperiod = 1000;
+    if (nbturns <= 0)
+        Standard_Failure::Raise("Number of turns must be greater than 0");
+
+    Standard_Real nbPeriods = nbturns/breakperiod;
+    Standard_Real nbFullPeriods = floor(nbPeriods);
+    Standard_Real partPeriod = nbPeriods - nbFullPeriods;
+
+    // A Bezier curve is used below, to get a periodic surface also for spirals.
+    TColgp_Array1OfPnt poles(1,2);
+    poles(1) = gp_Pnt(radiusbottom, 0, 0);
+    poles(2) = gp_Pnt(radiustop, 0, height);
+    Handle(Geom_BezierCurve) meridian = new Geom_BezierCurve(poles);
+
+    gp_Ax1 axis(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle(Geom_Surface) surf = new Geom_SurfaceOfRevolution(meridian, axis);
+
+    gp_Pnt2d beg(0, 0);
+    gp_Pnt2d end(0, 0);
+    gp_Vec2d dir(breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    if (leftHanded == Standard_True)
+        dir = gp_Vec2d(-breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    Handle(Geom2d_TrimmedCurve) segm;
+    TopoDS_Edge edgeOnSurf;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (unsigned long i = 0; i < nbFullPeriods; i++) {
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+        beg = end;
+    }
+    if (partPeriod > Precision::Confusion()) {
+        dir.Scale(partPeriod);
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+    }
+
+    TopoDS_Wire wire = mkWire.Wire();
+    BRepLib::BuildCurves3d(wire, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
     return TopoDS_Shape(std::move(wire));
 }
 
@@ -2959,9 +2943,9 @@ TopoDS_Shape TopoShape::removeShape(const std::vector<TopoDS_Shape>& s) const
     return reshape.Apply(this->_Shape, TopAbs_SHAPE);
 }
 
-void TopoShape::sewShape()
+void TopoShape::sewShape(double tolerance)
 {
-    BRepBuilderAPI_Sewing sew;
+    BRepBuilderAPI_Sewing sew(tolerance);
     sew.Load(this->_Shape);
     sew.Perform();
 
@@ -3141,54 +3125,49 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
     for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
         TopoDS_Face face = TopoDS::Face(xp.Current());
 
-        TopLoc_Location loc;
-        Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
-        if (theTriangulation.IsNull()) {
+        std::vector<gp_Pnt> points;
+        std::vector<Poly_Triangle> facets;
+        if (!Tools::getTriangulation(face, points, facets)) {
+            bool done = false;
             if (!meshed) {
                 // Retry to make sure the shape is meshed
                 meshed = true;
                 meshShape(this->_Shape);
-                theTriangulation = BRep_Tool::Triangulation(face, loc);
+                done = Tools::getTriangulation(face, points, facets);
             }
-            if (theTriangulation.IsNull()) {
+            if (!done) {
                 // For a face that cannot be meshed append an empty domain.
                 // It's important for some algorithms (e.g. color mapping) that the numbers of
                 // faces and domains match
                 Domain domain;
                 domains.push_back(domain);
-                continue;
             }
         }
+        else {
+            Domain domain;
+            // copy the points
+            domain.points.reserve(points.size());
+            for (const auto& it : points) {
+                Standard_Real X, Y, Z;
+                it.Coord (X, Y, Z);
+                domain.points.emplace_back(X, Y, Z);
+            }
 
-        Domain domain;
-        // copy the points
-        const TColgp_Array1OfPnt& points = theTriangulation->Nodes();
-        domain.points.reserve(points.Length());
-        for (int i = 1; i <= points.Length(); i++) {
-            gp_Pnt p = points(i);
-            p.Transform(loc.Transformation());
-            Standard_Real X, Y, Z;
-            p.Coord (X, Y, Z);
-            domain.points.emplace_back(X, Y, Z);
+            // copy the triangles
+            domain.facets.reserve(facets.size());
+            for (const auto& it : facets) {
+                Standard_Integer N1, N2, N3;
+                it.Get(N1, N2, N3);
+
+                Facet tria;
+                tria.I1 = N1;
+                tria.I2 = N2;
+                tria.I3 = N3;
+                domain.facets.push_back(tria);
+            }
+
+            domains.push_back(domain);
         }
-
-        // copy the triangles
-        const TopAbs_Orientation anOrientation = face.Orientation();
-        bool flip = (anOrientation == TopAbs_REVERSED);
-        const Poly_Array1OfTriangle& faces = theTriangulation->Triangles();
-        domain.facets.reserve(faces.Length());
-        for (int i = 1; i <= faces.Length(); i++) {
-            Standard_Integer N1, N2, N3;
-            faces(i).Get(N1, N2, N3);
-
-            Facet tria;
-            tria.I1 = N1-1; tria.I2 = N2-1; tria.I3 = N3-1;
-            if (flip)
-                std::swap(tria.I1, tria.I2);
-            domain.facets.push_back(tria);
-        }
-
-        domains.push_back(domain);
     }
 }
 
@@ -3321,24 +3300,70 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
 }
 
 void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
-                         const std::vector<Facet> &Topo, float Accuracy)
+                         const std::vector<Facet> &Topo, double tolerance)
 {
     gp_XYZ p1, p2, p3;
-    TopoDS_Vertex Vertex1, Vertex2, Vertex3;
+    std::vector<TopoDS_Vertex> Vertexes;
+    std::map<std::pair<uint32_t, uint32_t>, TopoDS_Edge> Edges;
     TopoDS_Face newFace;
     TopoDS_Wire newWire;
-    BRepBuilderAPI_Sewing aSewingTool;
     Standard_Real x1, y1, z1;
     Standard_Real x2, y2, z2;
     Standard_Real x3, y3, z3;
-
-    aSewingTool.Init(Accuracy,Standard_True);
 
     TopoDS_Compound aComp;
     BRep_Builder BuildTool;
     BuildTool.MakeCompound(aComp);
 
-    unsigned int ctPoints = Points.size();
+    uint32_t ctPoints = Points.size();
+    Vertexes.resize(ctPoints);
+
+    // Create array of vertexes
+    auto CreateVertex = [](const Base::Vector3d& v) {
+        gp_XYZ p(v.x, v.y, v.z);
+        return BRepBuilderAPI_MakeVertex(p);
+    };
+    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
+        if (it->I1 < ctPoints) {
+            if (Vertexes[it->I1].IsNull())
+                Vertexes[it->I1] = CreateVertex(Points[it->I1]);
+        }
+        if (it->I2 < ctPoints) {
+            if (Vertexes[it->I2].IsNull())
+                Vertexes[it->I2] = CreateVertex(Points[it->I2]);
+        }
+        if (it->I3 < ctPoints) {
+            if (Vertexes[it->I3].IsNull())
+                Vertexes[it->I3] = CreateVertex(Points[it->I3]);
+        }
+    }
+
+    // Create map of edges
+    auto CreateEdge = [&Vertexes, &Edges](uint32_t p1, uint32_t p2) {
+        // First check if the edge of a neighbour facet already exists
+        // The point indices must be flipped.
+        auto key1 = std::make_pair(p2, p1);
+        auto key2 = std::make_pair(p1, p2);
+        auto it = Edges.find(key1);
+        if (it != Edges.end()) {
+            TopoDS_Edge edge = it->second;
+            edge.Reverse();
+            Edges[key2] = edge;
+        }
+        else {
+            Edges[key2] = BRepBuilderAPI_MakeEdge(Vertexes[p1], Vertexes[p2]);
+        }
+    };
+    auto GetEdge = [&Edges](uint32_t p1, uint32_t p2) {
+        auto key = std::make_pair(p1, p2);
+        return Edges[key];
+    };
+    for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
+        CreateEdge(it->I1, it->I2);
+        CreateEdge(it->I2, it->I3);
+        CreateEdge(it->I3, it->I1);
+    }
+
     for (std::vector<Facet>::const_iterator it = Topo.begin(); it != Topo.end(); ++it) {
         if (it->I1 >= ctPoints || it->I2 >= ctPoints || it->I3 >= ctPoints)
             continue;
@@ -3351,11 +3376,11 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         p3.SetCoord(x3,y3,z3);
 
         if ((!(p1.IsEqual(p2,0.0))) && (!(p1.IsEqual(p3,0.0)))) {
-            Vertex1 = BRepBuilderAPI_MakeVertex(p1);
-            Vertex2 = BRepBuilderAPI_MakeVertex(p2);
-            Vertex3 = BRepBuilderAPI_MakeVertex(p3);
+            const TopoDS_Edge& e1 = GetEdge(it->I1, it->I2);
+            const TopoDS_Edge& e2 = GetEdge(it->I2, it->I3);
+            const TopoDS_Edge& e3 = GetEdge(it->I3, it->I1);
 
-            newWire = BRepBuilderAPI_MakePolygon(Vertex1, Vertex2, Vertex3, Standard_True);
+            newWire = BRepBuilderAPI_MakeWire(e1, e2, e3);
             if (!newWire.IsNull()) {
                 newFace = BRepBuilderAPI_MakeFace(newWire);
                 if (!newFace.IsNull())
@@ -3364,11 +3389,20 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
         }
     }
 
+    // If performSewing is true BRepBuilderAPI_Sewing creates a compound of
+    // shells. Since the resulting shape isn't very usable in most use cases
+    // it's fine to set it to false so the algorithm only performs some control
+    // checks and creates a compound of faces.
+    // However, the computing time can be reduced by 90%.
+    // If a shell is needed then the sewShape() function should be called explicitly.
+    BRepBuilderAPI_Sewing aSewingTool;
+    Standard_Boolean performSewing = Standard_False;
+    aSewingTool.Init(tolerance, performSewing);
     aSewingTool.Load(aComp);
 
 #if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-    pi->NewScope(100, "Sewing Faces...");
+    pi->NewScope(100, "Create shape from mesh...");
     pi->Show();
 
     aSewingTool.Perform(pi);
@@ -3519,7 +3553,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         Normals.clear();
 }
 
-void TopoShape::getLinesFromSubelement(const Data::Segment* element,
+void TopoShape::getLinesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &vertices,
                                        std::vector<Line> &lines) const
 {
@@ -3534,83 +3568,42 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
         }
         bool meshed = false;
         for(TopExp_Explorer exp(shape.getShape(),TopAbs_EDGE);exp.More();exp.Next()) {
-            std::size_t line_start = vertices.size();
             TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
-            TopLoc_Location aLoc;
-            gp_Trsf myTransf;
-
-            TopoDS_Shape aFace = findAncestorShape(aEdge, TopAbs_FACE);
-
-            if(aFace.IsNull()) {
-                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
-
-                Standard_Integer nbNodesInFace;
-
-                // triangulation succeeded?
-                if (aPoly.IsNull()) {
+            std::vector<gp_Pnt> points;
+            TopoDS_Face aFace = TopoDS::Face(findAncestorShape(aEdge, TopAbs_FACE));
+            if (aFace.IsNull()) {
+                bool done = Tools::getPolygon3D(aEdge, points);
+                if (!done) {
                     if (meshed)
                         continue;
-                    // make sure the shape is meshed
                     meshed = true;
                     meshShape(shape.getShape());
-                    aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
-                    if (aPoly.IsNull())
+                    if (!Tools::getPolygon3D(aEdge, points))
                         continue;
-                }
-
-                if (!aLoc.IsIdentity()) {
-                    myTransf = aLoc.Transformation();
-                }
-                nbNodesInFace = aPoly->NbNodes();
-
-                const TColgp_Array1OfPnt& Nodes = aPoly->Nodes();
-
-                gp_Pnt V;
-                for (Standard_Integer i=0;i < nbNodesInFace;i++) {
-                    V = Nodes(i+1);
-                    V.Transform(myTransf);
-                    vertices.emplace_back(V.X(),V.Y(),V.Z());
                 }
             }
             else {
                 // the edge has not its own triangulation, but then a face the edge is attached to
                 // must provide this triangulation
 
-                // take the face's triangulation instead
-                Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(aFace),aLoc);
-                if (aPolyTria.IsNull()) {
+                if (!Part::Tools::getPolygonOnTriangulation(aEdge, aFace, points)) {
                     if (meshed)
                         continue;
                     // make sure the shape is meshed
                     meshed = true;
                     meshShape(shape.getShape());
-                    aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(aFace),aLoc);
-                    if (aPolyTria.IsNull())
+                    if (!Part::Tools::getPolygonOnTriangulation(aEdge, aFace, points))
                         continue;
-                }
-
-                if (!aLoc.IsIdentity()) {
-                    myTransf = aLoc.Transformation();
-                }
-
-                // this holds the indices of the edge's triangulation to the actual points
-                Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(aEdge, aPolyTria, aLoc);
-                if (aPoly.IsNull())
-                    continue; // polygon does not exist
-
-                const TColStd_Array1OfInteger& indices = aPoly->Nodes();
-                const TColgp_Array1OfPnt& Nodes = aPolyTria->Nodes();
-
-                gp_Pnt V;
-                // go through the index array
-                for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
-                    V = Nodes(indices(i));
-                    V.Transform(myTransf);
-                    vertices.emplace_back(V.X(),V.Y(),V.Z());
                 }
             }
 
-            if(line_start+1 < vertices.size()) {
+            auto line_start = vertices.size();
+            vertices.reserve(vertices.size() + points.size());
+            std::for_each(points.begin(), points.end(), [&vertices](const gp_Pnt& p) {
+                vertices.push_back(Base::convertTo<Base::Vector3d>(p));
+            });
+
+            if (line_start+1 < vertices.size()) {
                 lines.emplace_back();
                 lines.back().I1 = line_start;
                 lines.back().I2 = vertices.size()-1;
@@ -3619,7 +3612,7 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
     }
 }
 
-void TopoShape::getFacesFromSubelement(const Data::Segment* element,
+void TopoShape::getFacesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &points,
                                        std::vector<Base::Vector3d> &pointNormals,
                                        std::vector<Facet> &faces) const

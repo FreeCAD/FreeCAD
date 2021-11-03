@@ -31,8 +31,10 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
+#include <Mod/Mesh/App/Types.h>
 
 class QAbstractButton;
+class QScrollArea;
 
 namespace Gui {
 class View3DInventor;
@@ -127,7 +129,7 @@ protected:
     void refreshList();
     void showInformation();
     void cleanInformation();
-    void addViewProvider(const char* vp, const std::vector<unsigned long>& indices);
+    void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
     void changeEvent(QEvent *e);
@@ -158,6 +160,7 @@ public:
     QSize sizeHint () const;
 
 private:
+    QScrollArea* scrollArea;
     static DockEvaluateMeshImp* _instance;
 };
 

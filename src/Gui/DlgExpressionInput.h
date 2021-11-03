@@ -23,13 +23,12 @@
 #ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
-#include <boost/shared_ptr.hpp>
-
 #include <QTimer>
 #include <QDialog>
 #include <Base/Unit.h>
 #include <App/ObjectIdentifier.h>
 #include <App/ExpressionParser.h>
+#include <memory>
 
 namespace Ui {
 class DlgExpressionInput;
@@ -89,10 +88,10 @@ class GuiExport DlgExpressionInput : public QDialog
     Q_PROPERTY(QColor errorBackgroundColor READ errorBackgroundColor WRITE setErrorBackgroundColor)
 
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, boost::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
+    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
     ~DlgExpressionInput();
 
-    boost::shared_ptr<App::Expression> getExpression() const { return expression; }
+    std::shared_ptr<App::Expression> getExpression() const { return expression; }
 
     bool discardedFormula() const { return discarded; }
 
@@ -147,7 +146,7 @@ private Q_SLOTS:
 private:
     QTimer timer;
     ::Ui::DlgExpressionInput *ui;
-    boost::shared_ptr<App::Expression> expression;
+    std::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
     const Base::Unit impliedUnit;

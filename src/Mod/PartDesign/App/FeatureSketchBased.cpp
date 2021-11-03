@@ -686,8 +686,13 @@ void ProfileBased::generatePrism(TopoShape& prism,
 
         if (method == "TwoLengths") {
             // midplane makes no sense here
-            Loffset = -L2;
             Ltotal += L2;
+            if (reversed)
+                Loffset = -L;
+            else if (midplane)
+                Loffset = -0.5 * (L2 + L);
+            else
+                Loffset = -L2;
         } else if (midplane)
             Loffset = -Ltotal/2;
 
@@ -819,8 +824,8 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &f
     return false;
 #else
     // This is not as easy as it looks, because a distance of zero might be OK if
-    // the axis touches the sketchshape in in a linear edge or a vertex
-    // Note: This algorithm does not catch cases where the sketchshape touches the
+    // the axis touches the sketchshape in a linear edge or a vertex
+    // Note: This algorithm doesn't catch cases where the sketchshape touches the
     // axis in two or more points
     // Note: And it only works on closed outer wires
     TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
@@ -1139,6 +1144,10 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
                 hasValidAxis = true;
                 axis = sketch->getAxis(Part::Part2DObject::H_Axis);
             }
+            else if (subReferenceAxis[0] == "N_Axis") {
+                hasValidAxis = true;
+                axis = sketch->getAxis(Part::Part2DObject::N_Axis);
+            }
             else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0, 4) == "Axis") {
                 int AxId = std::atoi(subReferenceAxis[0].substr(4, 4000).c_str());
                 if (AxId >= 0 && AxId < sketch->getAxisCount()) {
@@ -1312,10 +1321,10 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 }
 
 
-void ProfileBased::handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName)
+void ProfileBased::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
 {
-    if((strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
+    //check if we load the old sketch property
+    if ((strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
 
         std::vector<std::string> vec;
         // read my element
@@ -1323,7 +1332,7 @@ void ProfileBased::handleChangedPropertyName(
         // get the value of my attribute
         std::string name = reader.getAttribute("value");
 
-        if (name != "") {                    
+        if (name != "") {
             App::Document* document = getDocument();
             DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
             Profile.setValue(object, vec);
@@ -1331,6 +1340,9 @@ void ProfileBased::handleChangedPropertyName(
         else {
             Profile.setValue(0, vec);
         }
+    }
+    else {
+        PartDesign::FeatureAddSub::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 

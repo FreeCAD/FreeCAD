@@ -150,20 +150,9 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
-
-        else if (PyFloat_Check(other)) {
+        else if (PyNumber_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
-        }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(other)) {
-        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        long b = PyInt_AsLong(other);
-#else
-    else if (PyLong_Check(other)) {
-        long b = PyLong_AsLong(other);
-#endif
-            return new VectorPy(a * (double)b);
         }
         else {
             PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
@@ -172,18 +161,9 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
     else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
-        if (PyFloat_Check(self)) {
+        if (PyNumber_Check(self)) {
             double b = PyFloat_AsDouble(self);
             return new VectorPy(a * b);
-        }
-#if PY_MAJOR_VERSION >= 3
-        else if (PyLong_Check(self)) {
-            long b = PyLong_AsLong(self);
-#else
-        else if (PyInt_Check(self)) {
-            long b = PyInt_AsLong(self);
-#endif
-            return new VectorPy(a * (double)b);
         }
         else {
             PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
@@ -227,7 +207,7 @@ int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *valu
         return -1;
     }
 
-    if (PyFloat_Check(value)) {
+    if (PyNumber_Check(value)) {
         VectorPy::PointerType ptr = static_cast<VectorPy*>(self)->getVectorPtr();
         (*ptr)[index] = PyFloat_AsDouble(value);
     }
@@ -252,11 +232,7 @@ PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
     }
     else if (PySlice_Check(item)) {
         Py_ssize_t start, stop, step, slicelength, cur, i;
-#if PY_MAJOR_VERSION < 3
-        PySliceObject* slice = reinterpret_cast<PySliceObject*>(item);
-#else
         PyObject* slice = item;
-#endif
 
         if (PySlice_GetIndicesEx(slice,
                          sequence_length(self),
@@ -847,13 +823,6 @@ PyObject * VectorPy::number_or_handler (PyObject* self, PyObject* other)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int VectorPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * VectorPy::number_int_handler (PyObject* self)
 {
     PyErr_Format(PyExc_TypeError, "int() argument must be a string or a number, not '%s'",
@@ -861,32 +830,9 @@ PyObject * VectorPy::number_int_handler (PyObject* self)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * VectorPy::number_long_handler (PyObject* self)
-{
-    PyErr_Format(PyExc_TypeError, "long() argument must be a string or a number, not '%s'",
-                 Py_TYPE(self)->tp_name);
-    return 0;
-}
-#endif
-
 PyObject * VectorPy::number_float_handler (PyObject* self)
 {
     PyErr_Format(PyExc_TypeError, "float() argument must be a string or a number, not '%s'",
                  Py_TYPE(self)->tp_name);
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * VectorPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
-    return 0;
-}
-
-PyObject * VectorPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
-    return 0;
-}
-#endif

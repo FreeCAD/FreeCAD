@@ -80,7 +80,7 @@ G80
 # POSTAMBLE possible values:
 #    Multi line text with gcode. Postable gcode
 #    The postamble text will appear following the last operation.
-POSTAMBLE_DEFAULT = '''M05 (stop spindel)
+POSTAMBLE_DEFAULT = '''M05 (stop spindle)
 G17 (Default: XY-plane)
 G54 (Default: First coordinate system)
 G40 (Default: Cutter radius compensation none)

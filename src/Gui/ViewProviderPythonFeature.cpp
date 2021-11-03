@@ -58,7 +58,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 #include "View3DInventorViewer.h"
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>

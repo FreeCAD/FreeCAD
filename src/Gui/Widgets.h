@@ -37,6 +37,7 @@
 #include <QModelIndex>
 #include <QProxyStyle>
 #include "ExpressionBinding.h"
+#include "Base/Parameter.h"
 
 class QTextEdit;
 
@@ -212,11 +213,7 @@ private Q_SLOTS:
     void updateClearButton(const QString &text);
 
 private:
-#if QT_VERSION >= 0x050200
     QAction *clearAction;
-#else
-    QToolButton *clearButton;
-#endif
 };
 
 // ------------------------------------------------------------------------------
@@ -261,7 +258,7 @@ class GuiExport ColorButton : public QPushButton
     Q_PROPERTY( QColor color READ color WRITE setColor )
     Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
     Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
-    Q_PROPERTY( bool allowChangeAlpha READ allowChangeAlpha WRITE setAllowChangeAlpha )
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency)
 
 public:
     ColorButton(QWidget* parent = 0);
@@ -279,14 +276,14 @@ public:
     void setDrawFrame(bool);
     bool drawFrame() const;
 
+    void setAllowTransparency(bool);
+    bool allowTransparency() const;
+
     void setModal(bool);
     bool isModal() const;
 
     void setAutoChangeColor(bool);
     bool autoChangeColor() const;
-
-    void setAllowChangeAlpha(bool);
-    bool allowChangeAlpha() const;
 
 public Q_SLOTS:
     void onChooseColor();
@@ -326,23 +323,107 @@ class GuiExport UrlLabel : public QLabel
 {
   Q_OBJECT
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
+  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal)
 
 public:
   UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
   virtual ~UrlLabel();
 
   QString url() const;
+  bool launchExternal() const;
+  
+Q_SIGNALS:
+  void linkClicked(QString url);
 
 public Q_SLOTS:
   void setUrl( const QString &u );
+  void setLaunchExternal(bool l);
 
 protected:
-  void enterEvent ( QEvent * );
-  void leaveEvent ( QEvent * );
   void mouseReleaseEvent ( QMouseEvent * );
 
 private:
   QString _url;
+  bool _launchExternal;
+};
+
+
+/**
+ * A text label whose appearance can change based on a specified state. 
+ *
+ * The state is an arbitrary string exposed as a Qt Property (and thus available for selection via 
+ * a stylesheet). This is intended for things like messages to the user, where a message that is an 
+ * "error" might be colored differently than one that is a "warning" or a "message".
+ * 
+ * In order of style precedence for a given state: User preference > Stylesheet > Default
+ * unless the stylesheet sets the overridePreference, in which case the stylesheet will
+ * take precedence. If a stylesheet sets styles for this widgets states, it should also
+ * set the "handledByStyle" property to ensure the style values are used, rather than the
+ * defaults.
+ * 
+ * For example, the .qss might contain:
+ * Gui--StatefulLabel {
+ *   qproperty-overridePreference: true;
+ * }
+ * Gui--StatefulLabel[state="special_state"] {
+ *   color: red;
+ * }
+ * In this case, StatefulLabels with state "special_state" will be colored red, regardless of any
+ * entry in preferences. Use the "overridePreference" stylesheet option with care!
+ * 
+ * @author Chris Hennes
+ */
+class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*>
+{
+    Q_OBJECT
+        Q_PROPERTY( bool overridePreference MEMBER _overridePreference WRITE setOverridePreference)
+        Q_PROPERTY( QString state MEMBER _state WRITE setState )
+
+public:
+    StatefulLabel(QWidget* parent = nullptr);
+    virtual ~StatefulLabel();
+
+    /** If an unrecognized state is set, use this style */
+    void setDefaultStyle(const QString &defaultStyle);
+
+    /** If any of the states have user preferences associated with them, this sets the parameter
+        group that stores those preferences. All states must be in the same parameter group, but
+        the group does not have to have entries for all of them. */
+    void setParameterGroup(const std::string& groupName);
+
+    /** Register a state and its corresponding style (optionally attached to a user preference) */
+    void registerState(const QString &state, const QString &styleCSS, 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& color, 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& foregroundColor, const QColor& backgroundColor, 
+        const std::string& preferenceName = std::string());
+
+    /** Observes the parameter group and clears the cache if it changes */
+    void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason);
+
+public Q_SLOTS:
+    void setState(QString state);
+    void setOverridePreference(bool overridePreference);
+
+private:
+    QString _state;
+    bool _overridePreference;
+    ParameterGrp::handle _parameterGroup;
+    ParameterGrp::handle _stylesheetGroup;
+
+    struct StateData {
+        QString defaultCSS;
+        std::string preferenceString;
+    };
+    
+    std::map<QString, StateData> _availableStates;
+    std::map<QString, QString> _styleCache;
+    QString _defaultStyle;
 };
 
 // ----------------------------------------------------------------------
@@ -477,7 +558,7 @@ private:
 
 // ----------------------------------------------------------------------
 
-class PropertyListEditor : public QPlainTextEdit
+class GuiExport PropertyListEditor : public QPlainTextEdit
 {
     Q_OBJECT
 
@@ -561,7 +642,7 @@ class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
 public:
     ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 

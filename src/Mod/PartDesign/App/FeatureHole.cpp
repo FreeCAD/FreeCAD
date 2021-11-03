@@ -650,6 +650,8 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
+const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 Hole::Hole()
 {
     initAddSubType(FeatureAddSub::Subtractive);
@@ -694,6 +696,7 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut deth");
 
     ADD_PROPERTY_TYPE(HoleCutCountersinkAngle, (90.0), "Hole", App::Prop_None, "Head cut countersink angle");
+    HoleCutCountersinkAngle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(DepthType, (0L), "Hole", App::Prop_None, "Type");
     DepthType.setEnums(DepthTypeEnums);
@@ -704,12 +707,14 @@ Hole::Hole()
     DrillPoint.setEnums(DrillPointEnums);
 
     ADD_PROPERTY_TYPE(DrillPointAngle, (118.0), "Hole", App::Prop_None, "Drill point angle");
+    DrillPointAngle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(DrillForDepth, ((long)0), "Hole", App::Prop_None,
         "The size of the drill point will be taken into\n account for the depth of blind holes");
 
     ADD_PROPERTY_TYPE(Tapered, (false),"Hole",  App::Prop_None, "Tapered");
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
+    TaperedAngle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(ThreadDepthType, (0L), "Hole", App::Prop_None, "Thread depth type");
     ThreadDepthType.setEnums(ThreadDepthTypeEnums);
@@ -1466,6 +1471,7 @@ void Hole::onChanged(const App::Property *prop)
         ThreadDepth.setReadOnly(Threaded.getValue() && std::string(ThreadDepthType.getValueAsString()) != "Dimension");
     }
     else if (prop == &ThreadDepth) {
+        // Nothing else needs to be updated on ThreadDepth change
     }
     else if (prop == &UseCustomThreadClearance) {
         updateDiameterParam();
@@ -1987,21 +1993,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
                 continue;
 
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-
             gp_Pnt loc = circle->Axis().Location();
 
-            gp_Trsf sketchTransformation;
+
             gp_Trsf localSketchTransformation;
-            Base::Placement SketchPos = profile->Placement.getValue();
-            Base::Matrix4D mat = SketchPos.toMatrix();
-            sketchTransformation.SetValues(
-                        mat[0][0], mat[0][1], mat[0][2], mat[0][3],
-                        mat[1][0], mat[1][1], mat[1][2], mat[1][3],
-                        mat[2][0], mat[2][1], mat[2][2], mat[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                        , 0.00001, 0.00001
-#endif
-                    ); //precision was removed in OCCT CR0025194
             localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                       gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
@@ -2015,7 +2010,6 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             hole = hole.makETransform(localSketchTransformation);
             holes.push_back(hole);
         }
-
         TopoShape compound = TopoShape().makECompound(holes);
 
         // set the subtractive shape property for later usage in e.g. pattern
@@ -2050,10 +2044,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             result = getSolid(result);
             retry = false;
         } catch (Standard_Failure & e) {
-            FC_WARN(getFullName() << ": cutting with compound failed ("
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
                     << e.GetMessageString() << "), retry...");
         } catch (Base::Exception & e)  {
-            FC_WARN(getFullName() << ": cutting with compound failed ("
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
                     << e.what() << "), retry...");
         }
 
@@ -2064,26 +2058,24 @@ App::DocumentObjectExecReturn *Hole::execute(void)
                 try {
                     result.makEShape(maker, {base,hole});
                 } catch (Standard_Failure &) {
-                    std::string msg("Cut failed on profile Edge");
+                    std::string msg("Boolean operation failed on profile Edge");
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 } catch (Base::Exception &e) {
                     e.ReportException();
-                    std::string msg("Cut failed on profile Edge");
+                    std::string msg("Boolean operataion failed on profile Edge");
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 }
                 base = getSolid(result);
                 if (base.isNull()) {
-                    std::string msg("Cut produced non-solid on profile Edge");
+                    std::string msg("Boolean operataion produced non-solid on profile Edge");
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 }
             }
             result = base;
         }
-
-        remapSupportShape(result.getShape());
 
         this->Shape.setValue(result);
 
@@ -2247,10 +2239,9 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
 
 void Hole::readCutDefinitions()
 {
-    const char subpath[] = "Mod/PartDesign/Resources/Hole";
     std::vector<std::string> dirs {
-        ::App::Application::getResourceDir() + subpath,
-        ::App::Application::getUserAppDataDir() + subpath,
+        ::App::Application::getResourceDir() + "Mod/PartDesign/Resources/Hole",
+        ::App::Application::getUserAppDataDir() + "PartDesign/Hole"
     };
 
     std::clog << "Looking for thread definitions in: ";

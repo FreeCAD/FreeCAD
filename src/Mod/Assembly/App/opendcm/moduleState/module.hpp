@@ -43,7 +43,7 @@ struct ModuleState {
             void saveState(std::ostream& stream);
             void loadState(std::istream& stream);
 
-            void system_sub(boost::shared_ptr<Sys> subsys) {};
+            void system_sub(std::shared_ptr<Sys> subsys) {};
         };
 
 

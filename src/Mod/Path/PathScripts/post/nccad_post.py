@@ -53,7 +53,7 @@ TOOL_CHANGE = '''G77      ; Move to release position
 M10 O6.0 ; Stop spindle
 M01 Insert tool TOOL
 G76      ; Move to reference point to ensure correct coordinates after tool change
-M10 O6.1 ; Start spindel'''
+M10 O6.1 ; Start spindle'''
 
 
 # gCode finishing the program

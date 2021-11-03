@@ -119,9 +119,12 @@ class ScaleTaskPanel:
     def setValue(self, val=None):
         """Set the value of the points."""
         if self.lock.isChecked():
-            self.xValue.setValue(val)
-            self.yValue.setValue(val)
-            self.zValue.setValue(val)
+            if not self.xValue.hasFocus():
+                self.xValue.setValue(val)
+            if not self.yValue.hasFocus():
+                self.yValue.setValue(val)
+            if not self.zValue.hasFocus():
+                self.zValue.setValue(val)
         if self.sourceCmd:
             self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 

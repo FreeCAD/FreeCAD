@@ -34,10 +34,16 @@ YZ, and XZ planes.
 #  in FreeCAD and a couple of utility functions.
 
 import math
+import lazy_loader.lazy_loader as lz
 
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils.translate import translate
+
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+Part = lz.LazyLoader("Part", globals(), "Part")
+FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
@@ -515,7 +521,7 @@ class Plane:
         self.v = v2
         self.axis = v3
 
-    def alignToFace(self, shape, offset=0):
+    def alignToFace(self, shape, offset=0, parent=None):
         """Align the plane to a face.
 
         It uses the center of mass of the face as `position`,
@@ -536,6 +542,10 @@ class Plane:
             Defaults to zero. A value which will be used to offset
             the plane in the direction of its `axis`.
 
+        parent : object
+            Defaults to None. The ParentGeoFeatureGroup of the object
+            the face belongs to.
+
         Returns
         -------
         bool
@@ -548,17 +558,21 @@ class Plane:
         """
         # Set face to the unique selected face, if found
         if not shape.isNull() and shape.ShapeType == 'Face':
-            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass,
-                                     shape.Faces[0].normalAt(0, 0),
-                                     offset)
+            if parent:
+                place = parent.getGlobalPlacement()
+            else:
+                place = FreeCAD.Placement()
+            cen = place.multVec(shape.Faces[0].CenterOfMass)
+            place.Base = FreeCAD.Vector(0, 0, 0) # Reset the Base for the conversion of the normal.
+            nor = place.multVec(shape.Faces[0].normalAt(0, 0))
+            self.alignToPointAndAxis(cen, nor, offset)
             import DraftGeomUtils
             q = DraftGeomUtils.getQuad(shape)
             if q:
-                self.u = q[1]
-                self.v = q[2]
+                self.u = place.multVec(q[1])
+                self.v = place.multVec(q[2])
                 if not DraftVecUtils.equals(self.u.cross(self.v), self.axis):
-                    self.u = q[2]
-                    self.v = q[1]
+                    self.u, self.v = self.v, self.u
                 if DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
                     # the X axis is vertical: rotate 90 degrees
                     self.u, self.v = self.v.negative(), self.u
@@ -603,12 +617,6 @@ class Plane:
         """Align the plane to a selection if it defines a plane.
 
         If the selection uniquely defines a plane it will be used.
-        Currently it only works with one object selected, a `'Face'`.
-        It extracts the shape of the object or subobject
-        and then calls `alignToFace(shape, offset)`.
-
-        This method only works when `FreeCAD.GuiUp` is `True`,
-        that is, when the graphical interface is loaded.
 
         Parameter
         ---------
@@ -621,22 +629,8 @@ class Plane:
         bool
             `True` if the operation was successful, and `False` otherwise.
             It returns `False` if the selection has no elements,
-            or if it has more than one element,
             or if the object is not derived from `'Part::Feature'`
             or if the object doesn't have a `Shape`.
-
-        To do
-        -----
-        The method returns `False` if the selection list has more than
-        one element.
-        The method should search the list for objects like faces, points,
-        edges, wires, etc., and call the appropriate aligning submethod.
-
-        The method could work for curves (`'Edge'`  or `'Wire'`) but
-        `alignToCurve()` isn't fully implemented.
-
-        When the interface is not loaded it should fail and print
-        a message, `FreeCAD.Console.PrintError()`.
 
         See Also
         --------
@@ -644,22 +638,47 @@ class Plane:
         """
         import FreeCADGui, Part
         sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name, 0)
-        if len(sex) == 0:
+        if not sel_ex:
             return False
-        elif len(sex) == 1:
-            if sex[0].SubElementNames:
-                if len(sex[0].SubElementNames) > 1:
-                    return False
-                shape = Part.getShape(sex[0].Object, sex[0].SubElements[0],
-                        needSubElement = True)
-            else:
-                shape = Part.getShape(sex[0].Object)
 
-            return self.alignToFace(shape, offset) \
-                    or self.alignToCurve(shape, offset)
-        else:
-            # len(sex) > 2, look for point and line, three points, etc.
+        shapes = list()
+        for sex in sel_ex:
+            for sub in sex.SubElementNames if sex.SubElementNames else ['']:
+                shape = Part.getShape(sex.Object, sub, needSubElement = True)
+                if not shape or shape.isNull():
+                    FreeCAD.Console.PrintError(translate(
+                        "draft",
+                        "Object without Part.Shape geometry:'{}.{}'\n".format(
+                            sex.ObjectName, sub)))
+                    return False
+                shapes.append(shape)
+
+
+        normal = Part.Compound(shapes).findPlane()
+        if not normal:
+            FreeCAD.Console.PrintError(translate(
+                "draft","Selected Shapes must define a plane\n"))
             return False
+
+        # set center of mass
+        ctr_mass = FreeCAD.Vector(0,0,0)
+        ctr_pts = FreeCAD.Vector(0,0,0)
+        mass = 0
+        for shape in shapes:
+            if hasattr(shape, "CenterOfMass"):
+                ctr_mass += shape.CenterOfMass*shape.Mass
+                mass += shape.Mass
+            else:
+                ctr_pts += shape.Point
+        if mass > 0:
+            ctr_mass /= mass
+        # all shapes are vertexes
+        else:
+            ctr_mass = ctr_pts/len(shapes)
+
+        self.alignToPointAndAxis(ctr_mass, normal, offset)
+
+        return True
 
     def setup(self, direction=None, point=None, upvec=None, force=False):
         """Set up the working plane if it exists but is undefined.
@@ -782,7 +801,7 @@ class Plane:
             import FreeCADGui
             if FreeCADGui.ActiveDocument:
                 view = FreeCADGui.ActiveDocument.ActiveView
-                if view:
+                if view and hasattr(view,"getActiveOject"):
                     a = view.getActiveObject("Arch")
                     if a:
                         p = a.Placement.inverse().multiply(p)

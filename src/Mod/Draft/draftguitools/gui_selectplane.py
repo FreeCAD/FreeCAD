@@ -75,6 +75,10 @@ class Draft_SelectPlane:
 
     def Activated(self):
         """Execute when the command is called."""
+        # finish active Draft command if any
+        if FreeCAD.activeDraftCommand is not None:
+            FreeCAD.activeDraftCommand.finish()
+
         # Reset variables
         self.view = Draft.get3DView()
         self.wpButton = FreeCADGui.draftToolBar.wplabel
@@ -85,12 +89,10 @@ class Draft_SelectPlane:
             p = FreeCAD.DraftWorkingPlane
             self.states.append([p.u, p.v, p.axis, p.position])
 
-        m = translate("draft", "Pick a face, 3 vertices or a WP Proxy to define the drawing plane")
-        _msg(m)
-
         # Create task panel
         FreeCADGui.Control.closeDialog()
         self.taskd = task_selectplane.SelectPlaneTaskPanel()
+        self.taskd.reject = self.reject
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
@@ -125,20 +127,24 @@ class Draft_SelectPlane:
         self.taskd.form.fieldGridExtension.valueChanged.connect(self.onSetExtension)
         self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
+        # save previous WP to ensure back to the last used when restored
+        FreeCAD.DraftWorkingPlane.save()
+
         # Try to find a WP from the current selection
-        if self.handle():
-            self.finish()
-            return
+        if FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name):
+            if self.handle():
+                pass
+            # Try another method
+            elif FreeCAD.DraftWorkingPlane.alignToSelection():
+                FreeCADGui.Selection.clearSelection()
+                self.display(FreeCAD.DraftWorkingPlane.axis)
+            return None
 
-        # Try another method
-        if FreeCAD.DraftWorkingPlane.alignToSelection():
-            FreeCADGui.Selection.clearSelection()
-            self.display(FreeCAD.DraftWorkingPlane.axis)
-            self.finish()
-            return
-
-        # Execute the actual task panel
-        FreeCADGui.Control.showDialog(self.taskd)
+        # Execute the actual task panel delayed to catch possible active Draft command
+        todo.delay(FreeCADGui.Control.showDialog, self.taskd)
+        _msg(translate(
+                "draft",
+                "Pick a face, 3 vertices or a WP Proxy to define the drawing plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def finish(self, close=False):
@@ -158,7 +164,6 @@ class Draft_SelectPlane:
 
         # Reset everything else
         FreeCADGui.Control.closeDialog()
-        FreeCAD.DraftWorkingPlane.restore()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 

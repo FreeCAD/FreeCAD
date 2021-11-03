@@ -73,8 +73,9 @@ enum ColumnIndex {
 
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
-  , SelectionObserver(false,0)
+  , SelectionObserver(true,0)
   , x(0.0f), y(0.0f), z(0.0f)
+  , openedAutomatically(false)
 {
     setWindowTitle(tr("Selection View"));
 
@@ -84,9 +85,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     QLineEdit* searchBox = new QLineEdit(this);
     LineEditStyle::setup(searchBox);
-#if QT_VERSION >= 0x040700
     searchBox->setPlaceholderText(tr("Search"));
-#endif
     searchBox->setToolTip(tr("Searches object labels"));
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setSpacing(2);
@@ -129,19 +128,12 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     vLayout->addWidget(pickList);
 
     for(int i=0; i<LastIndex; ++i) {
-#if QT_VERSION >= 0x050000
         selectionView->header()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
         pickList->header()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
-#else
-        selectionView->header()->setResizeMode(i, QHeaderView::ResizeToContents);
-        pickList->header()->setResizeMode(i, QHeaderView::ResizeToContents);
-#endif
     }
 
-#if QT_VERSION >= 0x040200
     selectionView->setMouseTracking(true); // needed for itemEntered() to work
     pickList->setMouseTracking(true);
-#endif
 
     resize(200, 200);
 
@@ -193,6 +185,22 @@ static void addItem(QTreeWidget *tree, const App::SubObjectT &objT)
 /// @cond DOXERR
 void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("Selection");
+    bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
+    hGrp->SetBool("AutoShowSelectionView", autoShow); // Remove this line once the preferences window item is implemented
+
+    if (autoShow) {
+        if (!parentWidget()->isVisible() && Selection().hasSelection()) {
+            parentWidget()->show();
+            openedAutomatically = true;
+        }
+        else if (openedAutomatically && !Selection().hasSelection()) {
+            parentWidget()->hide();
+            openedAutomatically = false;
+        }
+    }
+
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {

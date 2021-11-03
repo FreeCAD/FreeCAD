@@ -48,6 +48,8 @@ def setupSearchPaths(PathExtension):
 	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
 		if "FREECAD_LIBPACK_BIN" in os.environ:
 			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
+		if "WINDIR" in os.environ:
+			os.add_dll_directory(os.environ["WINDIR"] + os.sep + "system32")
 		for path in PathExtension:
 			os.add_dll_directory(path)
 

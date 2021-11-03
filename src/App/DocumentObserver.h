@@ -100,6 +100,8 @@ public:
     /*! Constructor */
     DocumentObjectT(const DocumentObject*);
     /*! Constructor */
+    DocumentObjectT(const Document*, const std::string& objName);
+    /*! Constructor */
     DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
     DocumentObjectT(const Property*);
@@ -289,6 +291,34 @@ private:
 };
 
 /**
+ * The PropertyLinkT class is a helper class to create Python statements for proprty links.
+ */
+class AppExport PropertyLinkT
+{
+public:
+    /*! Constructor */
+    PropertyLinkT();
+
+    /*! Constructor */
+    PropertyLinkT(DocumentObject *obj);
+
+    /*! Constructor */
+    PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames);
+
+    /*! Constructor */
+    PropertyLinkT(const std::vector<DocumentObject*>& objs);
+
+    /*! Constructor */
+    PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames);
+
+    /*! Get the property as Python command. */
+    std::string getPropertyPython() const;
+
+private:
+    std::string toPython;
+};
+
+/**
  * @brief The DocumentWeakPtrT class
  */
 class AppExport DocumentWeakPtrT
@@ -433,6 +463,11 @@ public:
      */
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
+    }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
     }
 
 private:

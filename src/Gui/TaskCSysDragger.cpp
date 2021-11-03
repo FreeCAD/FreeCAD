@@ -50,18 +50,11 @@
 using namespace Gui;
 
 
-static double radiansToDegrees(const double &radiansIn)
-{
-  return radiansIn * (180.0 / M_PI);
-}
-
-static double degreesToRadains(const double &degreesIn)
+static double degreesToRadians(const double &degreesIn)
 {
   return degreesIn * (M_PI / 180.0);
 }
 
-static double lastTranslationIncrement = 1.0;
-static double lastRotationIncrement = degreesToRadains(15.0);
 
 TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
@@ -164,7 +157,7 @@ void TaskCSysDragger::onTIncrementSlot(double freshValue)
 
 void TaskCSysDragger::onRIncrementSlot(double freshValue)
 {
-  dragger->rotationIncrement.setValue(degreesToRadains(freshValue));
+  dragger->rotationIncrement.setValue(degreesToRadians(freshValue));
 }
 
 void TaskCSysDragger::open()
@@ -174,16 +167,20 @@ void TaskCSysDragger::open()
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
 //   dragger->translationIncrement.setValue(lastTranslationIncrement);
 //   dragger->rotationIncrement.setValue(lastRotationIncrement);
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  double lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
+  double lastRotationIncrement = hGrp->GetFloat("LastRotationIncrement", 15.0);
   tSpinBox->setValue(lastTranslationIncrement);
-  rSpinBox->setValue(radiansToDegrees(lastRotationIncrement));
+  rSpinBox->setValue(lastRotationIncrement);
 
   Gui::TaskView::TaskDialog::open();
 }
 
 bool TaskCSysDragger::accept()
 {
-  lastTranslationIncrement = dragger->translationIncrement.getValue();
-  lastRotationIncrement = dragger->rotationIncrement.getValue();
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  hGrp->SetFloat("LastTranslationIncrement", tSpinBox->rawValue());
+  hGrp->SetFloat("LastRotationIncrement", rSpinBox->rawValue());
 
   App::DocumentObject* dObject = vpObject.getObject();
   if (dObject) {

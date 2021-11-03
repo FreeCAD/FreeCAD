@@ -48,17 +48,30 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "Delaunay",
         "Frontal",
         "BAMG",
-        "DelQuad"
+        "DelQuad",
+        "Packing Parallelograms"
     ]
     known_mesh_algorithm_3D = [
         "Automatic",
         "Delaunay",
         "New Delaunay",
         "Frontal",
-        "Frontal Delaunay",
-        "Frontal Hex",
         "MMG3D",
-        "R-tree"
+        "R-tree",
+        "HXT"
+    ]
+    known_mesh_RecombinationAlgorithms = [
+        "Simple",
+        "Blossom",
+        "Simple full-quad",
+        "Blossom full-quad"
+    ]
+    known_mesh_HighOrderOptimizers = [
+        "None",
+        "Optimization",
+        "Elastic+Optimization",
+        "Elastic",
+        "Fast curving"
     ]
 
     def __init__(self, obj):
@@ -66,9 +79,32 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
+
+        # HighOrderOptimize
+        # was once App::PropertyBool, so check this
+        high_order_optimizer = ""
+        if obj.HighOrderOptimize is True:
+            high_order_optimizer = "Optimization"
+        elif obj.HighOrderOptimize is False:
+            high_order_optimizer = "None"
+        obj.removeProperty("HighOrderOptimize")
+        # add new HighOrderOptimize property
         self.add_properties(obj)
+        # write the stored high_order_optimizer
+        if high_order_optimizer:
+            obj.HighOrderOptimize = high_order_optimizer
+
+        # Algorithm3D
+        # refresh the list of known 3D algorithms for existing meshes
+        # since some algos are meanwhile deprecated and new algos are available
+        obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
 
     def add_properties(self, obj):
+
+        # this method is called from onDocumentRestored
+        # thus only add and or set a attribute
+        # if the attribute does not exist
+
         if not hasattr(obj, "MeshBoundaryLayerList"):
             obj.addProperty(
                 "App::PropertyLinkList",
@@ -148,7 +184,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyBool",
                 "OptimizeStd",
                 "FEM Gmsh Mesh Params",
-                "Optimize tetra elements"
+                "Optimize tetrahedral elements"
             )
             obj.OptimizeStd = True
 
@@ -163,12 +199,13 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
 
         if not hasattr(obj, "HighOrderOptimize"):
             obj.addProperty(
-                "App::PropertyBool",
+                "App::PropertyEnumeration",
                 "HighOrderOptimize",
                 "FEM Gmsh Mesh Params",
-                "Optimize high order meshes"
+                "Optimization of high order meshes"
             )
-            obj.HighOrderOptimize = False
+            obj.HighOrderOptimize = MeshGmsh.known_mesh_HighOrderOptimizers
+            obj.HighOrderOptimize = "None"
 
         if not hasattr(obj, "RecombineAll"):
             obj.addProperty(
@@ -178,6 +215,25 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "Apply recombination algorithm to all surfaces"
             )
             obj.RecombineAll = False
+
+        if not hasattr(obj, "Recombine3DAll"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Recombine3DAll",
+                "FEM Gmsh Mesh Params",
+                "Apply recombination algorithm to all volumes"
+            )
+            obj.Recombine3DAll = False
+
+        if not hasattr(obj, "RecombinationAlgorithm"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "RecombinationAlgorithm",
+                "FEM Gmsh Mesh Params",
+                "Recombination algorithm"
+            )
+            obj.RecombinationAlgorithm = MeshGmsh.known_mesh_RecombinationAlgorithms
+            obj.RecombinationAlgorithm = "Simple"
 
         if not hasattr(obj, "CoherenceMesh"):
             obj.addProperty(
@@ -212,6 +268,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             # https://forum.freecadweb.org/viewtopic.php?t=41738
             # https://forum.freecadweb.org/viewtopic.php?f=18&t=45260&start=20#p389494
 
+        if not hasattr(obj, "MeshSizeFromCurvature"):
+            obj.addProperty(
+                "App::PropertyIntegerConstraint",
+                "MeshSizeFromCurvature",
+                "FEM Gmsh Mesh Params",
+                "number of elements per 2*pi radians, 0 to deactivate"
+            )
+            obj.MeshSizeFromCurvature = (12, 0, 10000, 1)
+
         if not hasattr(obj, "Algorithm2D"):
             obj.addProperty(
                 "App::PropertyEnumeration",
@@ -220,7 +285,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "mesh algorithm 2D"
             )
             obj.Algorithm2D = MeshGmsh.known_mesh_algorithm_2D
-            obj.Algorithm2D = "Automatic"  # ?
+            obj.Algorithm2D = "Automatic"
 
         if not hasattr(obj, "Algorithm3D"):
             obj.addProperty(
@@ -230,7 +295,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "mesh algorithm 3D"
             )
             obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
-            obj.Algorithm3D = "Automatic"  # ?
+            obj.Algorithm3D = "Automatic"
 
         if not hasattr(obj, "GroupsOfNodes"):
             obj.addProperty(

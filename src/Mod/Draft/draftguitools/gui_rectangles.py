@@ -56,11 +56,10 @@ class Rectangle(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Rectangle")
-        super(Rectangle, self).Activated(name)
+        super(Rectangle, self).Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Rectangle")
             self.ui.extUi()
             if utils.getParam("UsePartPrimitives", False):
                 self.fillstate = self.ui.hasFill.isChecked()
@@ -126,7 +125,7 @@ class Rectangle(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Plane"),
                             _cmd_list)
             else:
-                _cmd = 'Draft.makeRectangle'
+                _cmd = 'Draft.make_rectangle'
                 _cmd += '('
                 _cmd += 'length=' + str(length) + ', '
                 _cmd += 'height=' + str(height) + ', '

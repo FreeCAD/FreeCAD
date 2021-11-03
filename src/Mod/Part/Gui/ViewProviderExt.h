@@ -196,8 +196,6 @@ protected:
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop) override;
-    void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
-                    TColgp_Array1OfDir& theNormals);
 
     virtual bool hasBaseFeature() const;
 

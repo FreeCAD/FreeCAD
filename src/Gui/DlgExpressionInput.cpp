@@ -48,7 +48,7 @@ using namespace App;
 using namespace Gui::Dialog;
 
 DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
-                                       boost::shared_ptr<const Expression> _expression,
+                                       std::shared_ptr<const Expression> _expression,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
@@ -76,12 +76,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
     else {
         QVariant text = parent->property("text");
-#if QT_VERSION >= 0x050000
-        if (text.canConvert(QMetaType::QString))
-#else
-        if (text.canConvert(QVariant::String))
-#endif
-        {
+        if (text.canConvert(QMetaType::QString)) {
             ui->expression->setPlainText(text.toString());
         }
     }
@@ -182,7 +177,7 @@ void DlgExpressionInput::onTimer()
             ui->msg->setStyleSheet(textColorStyle);
             return;
         }
-        boost::shared_ptr<Expression> expr(
+        std::shared_ptr<Expression> expr(
                 Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {

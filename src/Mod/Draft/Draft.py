@@ -422,4 +422,9 @@ if App.GuiUp:
     from draftviewproviders.view_text import (ViewProviderText,
                                               ViewProviderDraftText)
 
+from draftobjects.hatch import (Hatch)
+from draftmake.make_hatch import (make_hatch)
+if App.GuiUp:
+    from draftviewproviders.view_hatch import (ViewProviderDraftHatch)
+
 ## @}

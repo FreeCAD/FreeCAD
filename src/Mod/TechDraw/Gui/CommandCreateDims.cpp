@@ -929,9 +929,9 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Link Dimension to 3D Geometry");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Dimension_Link";
+    sWhatsThis      = "TechDraw_LinkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Link";
+    sPixmap         = "TechDraw_LinkDimension";
 }
 
 void CmdTechDrawLinkDimension::activated(int iMsg)
@@ -1272,7 +1272,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LandmarkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "techdraw-landmarkdistance";
+    sPixmap         = "TechDraw_LandmarkDimension";
 }
 
 void CmdTechDrawLandmarkDimension::activated(int iMsg)

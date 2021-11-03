@@ -46,6 +46,7 @@
 #include <App/Part.h>
 #include <App/AutoTransaction.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
@@ -77,6 +78,7 @@
 #include "WorkflowManager.h"
 #include "ViewProvider.h"
 #include "ViewProviderBody.h"
+#include "DlgActiveBody.h"
 
 #include <Mod/Part/Gui/PartParams.h>
 
@@ -577,12 +579,15 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // objects (in which case, just make one) to make a new sketch.
 
         pcActiveBody = PartDesignGui::getBody(bodyT, /* messageIfNot = */ false );
-        if (pcActiveBody == nullptr) {
-            if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+        if (!pcActiveBody) {
+            if ( doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0 ) {
                 shouldMakeBody = true;
             } else {
-                PartDesignGui::needActiveBodyError();
-                return;
+                PartDesignGui::DlgActiveBody dia(Gui::getMainWindow(), doc);
+                if (dia.exec() == QDialog::DialogCode::Accepted)
+                    pcActiveBody = dia.getActiveBody();
+                if (!pcActiveBody)
+                    return;
             }
         }
 
@@ -1012,7 +1017,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         if (!pcActiveBody->isSolid()) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
-            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature  before attempting a subtractive command."));
+            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
@@ -1143,6 +1148,12 @@ void CmdPartDesignPad::activated(int iMsg)
         Gui::Command::updateActive();
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
+
+        if (sketch) {
+            std::ostringstream str;
+            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
+        }
+
         finishProfileBased(cmd, sketch, Feat);
     };
 

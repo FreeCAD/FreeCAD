@@ -301,6 +301,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Sketcher_ConstrainDistance"
            << "Sketcher_ConstrainRadius"
            << "Sketcher_ConstrainDiameter"
+           << "Sketcher_ConstrainRadiam"
            << "Sketcher_ConstrainAngle"
 
            << "Separator"

@@ -34,6 +34,7 @@
 #include "ui_DlgGeneral.h"
 #include "Action.h"
 #include "Application.h"
+#include "Command.h"
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
@@ -42,6 +43,15 @@
 #include "ViewParams.h"
 #include "OverlayWidgets.h"
 #include "Language/Translator.h"
+#include "Gui/PreferencePackManager.h"
+#include "DlgPreferencesImp.h"
+
+#include "DlgCreateNewPreferencePackImp.h"
+
+// Only needed until PreferencePacks can be managed from the AddonManager:
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -87,7 +97,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         else
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
-
 }
 
 /**
@@ -193,7 +202,6 @@ void DlgGeneralImp::loadSettings()
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
 
-#if QT_VERSION >= 0x040800
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
@@ -201,7 +209,6 @@ void DlgGeneralImp::loadSettings()
                 native[0] = native[0].toUpper();
             langname = native;
         }
-#endif
 
         ui->Languages->addItem(langname, lang);
         if (language == lang) {

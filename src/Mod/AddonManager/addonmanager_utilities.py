@@ -28,14 +28,9 @@ import shutil
 import sys
 import ctypes
 
-if sys.version_info.major < 3:
-    import urllib2
-    from urllib2 import URLError
-    from urlparse import urlparse
-else:
-    import urllib.request as urllib2
-    from urllib.error import URLError
-    from urllib.parse import urlparse
+import urllib.request as urllib2
+from urllib.error import URLError
+from urllib.parse import urlparse
 
 from PySide import QtGui, QtCore
 
@@ -251,23 +246,26 @@ def restart_freecad():
 def get_zip_url(baseurl):
     "Returns the location of a zip file from a repo, if available"
 
-    url = getserver(baseurl).strip("/")
-    if url.endswith("github.com"):
+    parsedUrl = urlparse(baseurl)
+    if parsedUrl.netloc == "github.com":
         return baseurl+"/archive/master.zip"
-    elif url.endswith("framagit.org") or url.endswith("gitlab.com"):
+    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
         return baseurl+"/-/archive/master/"+reponame+"-master.zip"
     else:
-        print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", url)
+        print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", parsedUrl.netloc)
         return None
 
 
 def get_readme_url(url):
     "Returns the location of a readme file"
 
-    if "github" in url or "framagit" in url or "gitlab" in url:
+    parsedUrl = urlparse(url)
+    if parsedUrl.netloc == "github.com" or parsedUrl.netloc == "framagit.com":
         return url+"/raw/master/README.md"
+    elif parsedUrl.netloc == "gitlab.com":
+        return url+"/-/raw/master/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
     return None
@@ -277,9 +275,10 @@ def get_desc_regex(url):
     """Returns a regex string that extracts a WB description to be displayed in the description
     panel of the Addon manager, if the README could not be found"""
 
-    if "github" in url:
+    parsedUrl = urlparse(url)
+    if parsedUrl.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    elif "framagit" in url or "gitlab" in url:
+    elif parsedUrl.netloc == "framagit.org" or parsedUrl.netloc == "gitlab.com":
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
     print("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", url)
     return None
@@ -288,7 +287,8 @@ def get_desc_regex(url):
 def get_readme_html_url(url):
     """Returns the location of a html file containing readme"""
 
-    if "github" in url:
+    parsedUrl = urlparse(url)
+    if parsedUrl.netloc == "github.com":
         return url + "/blob/master/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", url)
@@ -299,7 +299,8 @@ def get_readme_regex(url):
     """Return a regex string that extracts the contents to be displayed in the description
     panel of the Addon manager, from raw HTML data (the readme's html rendering usually)"""
 
-    if ("github" in url):
+    parsedUrl = urlparse(url)
+    if parsedUrl.netloc == "github.com":
         return "<article.*?>(.*?)</article>"
     else:
         print("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", url)

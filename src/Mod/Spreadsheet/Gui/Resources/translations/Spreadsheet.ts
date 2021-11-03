@@ -2,6 +2,103 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>Spreadsheet</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="739"/>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="874"/>
+        <source>Cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="751"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="753"/>
+        <source>Apply the changes to the current cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="755"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="757"/>
+        <source>Deletes the contents of the current cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="759"/>
+        <source>Compute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="761"/>
+        <source>Updates the values handled by controllers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="907"/>
+        <source>Create Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="933"/>
+        <source>Add controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="973"/>
+        <source>Add property controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="919"/>
+        <source>Add controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="922"/>
+        <source>Adds a cell controller to a selected spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_Create</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="902"/>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="905"/>
+        <source>Adds a spreadsheet object to the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="944"/>
+        <source>Add property controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="947"/>
+        <source>Adds a property controller to a selected spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdCreateSpreadsheet</name>
     <message>
         <source>Spreadsheet</source>
@@ -552,6 +649,61 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
 </context>
 <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import/Export Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (&apos;) or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delimiter Character: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Escape Character: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=&quot; font-style:italic;&quot;&gt;tab&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;comma&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quote Character: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SpreadsheetGui::Module</name>
     <message>
         <source>Unnamed</source>
@@ -561,24 +713,56 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-        <source>Insert rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) above</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) below</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous rows</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove row(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) left</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) right</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous columns</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove column(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

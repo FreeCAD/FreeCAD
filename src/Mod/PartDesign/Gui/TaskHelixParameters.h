@@ -31,8 +31,6 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
 
-class Ui_TaskHelixParameters;
-
 namespace App {
 class Property;
 }
@@ -42,6 +40,7 @@ class ViewProvider;
 }
 
 namespace PartDesignGui {
+class Ui_TaskHelixParameters;
 
 
 
@@ -55,6 +54,8 @@ public:
 
     virtual void apply() override;
     virtual void refresh() override;
+
+    static bool showPreview(PartDesign::Helix*);
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
@@ -71,6 +72,7 @@ private Q_SLOTS:
     void onHeightChanged(double);
     void onTurnsChanged(double);
     void onAngleChanged(double);
+    void onGrowthChanged(double);
     void onAxisChanged(int);
     void onLeftHandedChanged(bool);
     void onReversedChanged(bool);
@@ -86,11 +88,12 @@ protected:
     //mirrors of helixes's properties
     App::PropertyLength*      propPitch;
     App::PropertyLength*      propHeight;
-    App::PropertyFloat*       propTurns;
+    App::PropertyFloatConstraint*       propTurns;
     App::PropertyBool*        propLeftHanded;
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;
     App::PropertyAngle*       propAngle;
+    App::PropertyLength*      propGrowth;
     App::PropertyEnumeration* propMode;
     App::PropertyBool*        propOutside;
 

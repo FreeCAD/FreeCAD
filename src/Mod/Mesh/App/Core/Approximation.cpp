@@ -117,7 +117,7 @@ Base::Vector3f Approximation::GetGravity() const
     return clGravity;
 }
 
-unsigned long Approximation::CountPoints() const
+std::size_t Approximation::CountPoints() const
 { 
     return _vPoints.size();
 }
@@ -220,10 +220,24 @@ float PlaneFit::Fit()
 
     // It may happen that the result have nan values
     for (int i=0; i<3; i++) {
-        if (boost::math::isnan(U[i]) || 
-            boost::math::isnan(V[i]) ||
-            boost::math::isnan(W[i]))
+        if (boost::math::isnan(W[i]))
             return FLOAT_MAX;
+    }
+
+    // In some cases when the points exactly lie on a plane it can happen that
+    // U or V have nan values but W is valid.
+    // In this case create an orthonormal basis
+    bool validUV = true;
+    for (int i = 0; i < 3; i++) {
+        if (boost::math::isnan(U[i]) ||
+            boost::math::isnan(V[i])) {
+            validUV = false;
+            break;
+        }
+    }
+
+    if (!validUV) {
+        Wm4::Vector3<double>::GenerateOrthonormalBasis(U, V, W);
     }
 
     _vDirU.Set(float(U.X()), float(U.Y()), float(U.Z()));
@@ -418,7 +432,7 @@ Base::BoundBox3f PlaneFit::GetBoundings() const
 {
     Base::BoundBox3f bbox;
     std::vector<Base::Vector3f> pts = GetLocalPoints();
-    for (auto it : pts)
+    for (const auto& it : pts)
         bbox.Add(it);
     return bbox;
 }
@@ -462,7 +476,7 @@ const double& QuadraticFit::GetCoeffArray() const
     return _fCoeff[0];
 }
 
-double QuadraticFit::GetCoeff(unsigned long ulIndex) const
+double QuadraticFit::GetCoeff(std::size_t ulIndex) const
 {
     assert(ulIndex < 10);
 

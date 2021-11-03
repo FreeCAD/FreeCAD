@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
@@ -129,28 +130,26 @@ private:
             throw Py::OverflowError("port number is lower than 0");
         }
 
-        QTcpServer server;
-        if (server.listen(QHostAddress(QString::fromLatin1(addr)), port)) {
-            bool ok = server.waitForNewConnection(timeout);
-            QTcpSocket* socket = server.nextPendingConnection();
-            if (socket) {
-                socket->waitForReadyRead();
-                if (socket->bytesAvailable()) {
-                    QByteArray request = socket->readAll();
-                    std::string str = AppServer::runPython(request);
-                    socket->write(str.c_str());
-                    socket->waitForBytesWritten();
-                    socket->close();
+        try {
+            AppServer server(true);
+            if (server.listen(QHostAddress(QString::fromLatin1(addr)), port)) {
+                bool ok = server.waitForNewConnection(timeout);
+                QTcpSocket* socket = server.nextPendingConnection();
+                if (socket) {
+                    socket->waitForReadyRead();
                 }
-            }
 
-            server.close();
-            return Py::Boolean(ok);
+                server.close();
+                return Py::Boolean(ok);
+            }
+            else {
+                std::stringstream out;
+                out << "Server failed to listen at address " << addr << " and port " << port;
+                throw Py::RuntimeError(out.str());
+            }
         }
-        else {
-            std::stringstream out;
-            out << "Server failed to listen at address " << addr << " and port " << port;
-            throw Py::RuntimeError(out.str());
+        catch (const Base::SystemExitException& e) {
+            throw Py::RuntimeError(e.what());
         }
     }
 

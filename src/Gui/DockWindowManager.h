@@ -89,6 +89,7 @@ public:
     QList<QWidget*> getDockWindows() const;
 
     void saveState();
+    void loadState();
     void retranslate();
 
 private Q_SLOTS:

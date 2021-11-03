@@ -23,7 +23,7 @@
 
 from __future__ import print_function
 
-import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math, Draft
+import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math
 from datetime import datetime
 
 # This is roughly based on the no-fit polygon algorithm, used in
@@ -291,7 +291,6 @@ class Nester:
                     nofitpol = []
                     for placed in sheet:
                         pts = []
-                        pi = 0
                         for placedvert in self.order(placed[1],right=True):
                             fpts = []
                             for i,rotvert in enumerate(rotverts):

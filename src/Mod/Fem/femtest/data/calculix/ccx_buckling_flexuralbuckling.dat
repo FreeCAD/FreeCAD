@@ -1,0 +1,90 @@
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -1.815215E-14 -1.262879E-14  2.100000E+01
+
+     B U C K L I N G   F A C T O R   O U T P U T
+
+ MODE NO       BUCKLING
+                FACTOR
+
+      1   0.5353773E+02
+      2   0.1123524E+03
+      3   0.4429172E+03
+      4   0.8406785E+03
+      5   0.1066613E+04
+      6   0.1760440E+04
+      7   0.1781060E+04
+      8   0.2428616E+04
+      9   0.2625109E+04
+     10   0.3032522E+04
+
+                    E I G E N V A L U E    N U M B E R     1
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -7.458668E-01 -9.617507E-11  2.833724E-10
+
+                    E I G E N V A L U E    N U M B E R     2
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -6.275975E-10 -1.078238E+00 -3.371250E-10
+
+                    E I G E N V A L U E    N U M B E R     3
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -6.359838E+00  3.125551E-09 -1.362668E-09
+
+                    E I G E N V A L U E    N U M B E R     4
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -8.090844E-10 -8.650964E+00 -1.009010E-09
+
+                    E I G E N V A L U E    N U M B E R     5
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -1.618585E+01  7.626015E-10  1.475242E-09
+
+                    E I G E N V A L U E    N U M B E R     6
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -2.870193E+01  7.256488E-09  1.429106E-09
+
+                    E I G E N V A L U E    N U M B E R     7
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -6.840851E-09 -2.054158E+01 -1.383189E-09
+
+                    E I G E N V A L U E    N U M B E R     8
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -4.289022E+01 -1.387613E-08  5.972973E-10
+
+                    E I G E N V A L U E    N U M B E R     9
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -8.132224E-09  3.449459E+01 -1.246274E-10
+
+                    E I G E N V A L U E    N U M B E R    10
+
+
+ total force (fx,fy,fz) for set FEMCONSTRAINTDISPLACEMENT and time  0.0000000E+00
+
+       -5.817552E+01  2.440375E-09  1.449655E-09

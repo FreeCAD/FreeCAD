@@ -27,6 +27,7 @@
 #include <QPixmap>
 #include <string>
 #include <vector>
+#include <map>
 
 #define  putpix()
 
@@ -43,6 +44,7 @@ class MacroManager;
 class MDIView;
 class MainWindow;
 class MenuItem;
+class PreferencePackManager;
 class ViewProvider;
 class ViewProviderDocumentObject;
 enum  class HighlightMode;
@@ -144,6 +146,8 @@ public:
                                   bool,
                                   App::DocumentObject *parent, 
                                   const char *subname)> signalHighlightObject; 
+    /// signal on changing user edit mode
+    boost::signals2::signal<void (int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
@@ -232,6 +236,8 @@ public:
     void createStandardOperations();
     //@}
 
+    Gui::PreferencePackManager* prefPackManager(void);
+
     /** @name Init, Destruct an Access methods */
     //@{
     /// some kind of singelton
@@ -245,6 +251,28 @@ public:
     static bool isRestarting();
     static bool checkRestart();
     void tryClose( QCloseEvent * e );
+    //@}
+    
+    /** @name User edit mode */
+    //@{
+protected:
+    // the below std::map is a translation of 'EditMode' enum in ViewProvider.h
+    // to add a new edit mode, it should first be added there
+    // this is only used for GUI user interaction (menu, toolbar, Python API)
+    const std::map <int, std::string> userEditModes {
+        {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
+        {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
+        {2, QT_TRANSLATE_NOOP("EditMode", "Cutting")},
+        {3, QT_TRANSLATE_NOOP("EditMode", "Color")}
+    };
+    int userEditMode = userEditModes.begin()->first;
+
+public:
+    std::map <int, std::string> listUserEditModes() const { return userEditModes; }
+    int getUserEditMode(const std::string &mode = "") const;
+    std::string getUserEditModeName(int mode = -1) const;
+    bool setUserEditMode(int mode);
+    bool setUserEditMode(const std::string &mode);
     //@}
 
 public:
@@ -313,6 +341,10 @@ public:
 
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
+    
+    static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
+    static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
+    static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);
 
     static PyObject* sSetExecFile              (PyObject *self,PyObject *args);
 

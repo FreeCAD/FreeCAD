@@ -79,7 +79,7 @@
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path">
             <property name="enabled">
              <bool>false</bool>
             </property>

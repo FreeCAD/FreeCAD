@@ -63,6 +63,9 @@ protected:
 public:
     void recomputeFeature(bool recompute=true);
     QString getMessage() const {return diagMessage;}
+
+private:
+    void showRejectedShape(TopoDS_Shape shape);
 };
 
 

@@ -66,6 +66,14 @@ QuantityFormat::QuantityFormat()
 {
 }
 
+QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
+  : option(OmitGroupSeparator | RejectGroupSeparator)
+  , format(format)
+  , precision(decimals < 0 ? UnitsApi::getDecimals() : decimals)
+  , denominator(defaultDenominator)
+{
+}
+
 // ----------------------------------------------------------------------------
 
 Quantity::Quantity()
@@ -315,12 +323,17 @@ Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1));
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1));
 
-Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2)); // Newton  are ~= 0.22481 lbF
+Quantity Quantity::PoundForce       (4448.22       ,Unit(1,1,-2)); // lbf are ~= 4.44822 Newton
 
 Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2)); // Newton (kg*m/s^2)
 Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
+
+Quantity Quantity::NewtonPerMeter        (1.00         ,Unit(0,1,-2)); //Newton per meter (N/m or kg/s^2)
+Quantity Quantity::MilliNewtonPerMeter   (1e-3         ,Unit(0,1,-2));
+Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2)); 
+Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2)); 
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
@@ -347,6 +360,8 @@ Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (k
 Quantity Quantity::MilliVolt        (1e+3          ,Unit(2,1,-3,-1));
 Quantity Quantity::KiloVolt         (1e+9          ,Unit(2,1,-3,-1));
 
+Quantity Quantity::MegaSiemens      (1.0           ,Unit(-2,-1,3,2));
+Quantity Quantity::KiloSiemens      (1e-3          ,Unit(-2,-1,3,2));
 Quantity Quantity::Siemens          (1e-6          ,Unit(-2,-1,3,2)); // Siemens (A^2*s^3/kg/m^2)
 Quantity Quantity::MilliSiemens     (1e-9          ,Unit(-2,-1,3,2));
 Quantity Quantity::MicroSiemens     (1e-12         ,Unit(-2,-1,3,2));

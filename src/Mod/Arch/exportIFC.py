@@ -961,7 +961,7 @@ def export(exportList, filename, colors=None, preferences=None):
             for c in objs:
                 if c.Name in products and c.Name not in treated:
                     prod = products[c.Name]
-                    if prod.is_a()=='IfcSpace':
+                    if prod.is_a() == 'IfcSpace':
                         spaces.append(prod)
                     else:
                         buildingelements.append(prod)
@@ -1193,7 +1193,7 @@ def export(exportList, filename, colors=None, preferences=None):
         if defaulthost:
             spaces, buildingelements = [],[]
             for entity in untreated:
-                if entity.is_a()=="IfcSpace":
+                if entity.is_a() == "IfcSpace":
                     spaces.append(entity)
                 else:
                     buildingelements.append(entity)
@@ -1214,7 +1214,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     '',
                     buildingelements,
                     defaulthost
-            )
+                )
         else:
             # no default host: aggregate unassigned objects directly under the IfcProject - WARNING: NON STANDARD
             if preferences['DEBUG']: print("WARNING - Default building generation is disabled. You are producing a non-standard file.")
@@ -1258,7 +1258,7 @@ def export(exportList, filename, colors=None, preferences=None):
                                 rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
                                 break
             if rgb:
-                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2],ifc4=(preferences["SCHEMA"]=="IFC4"))
+                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2],ifc4=(preferences["SCHEMA"] == "IFC4"))
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
@@ -1648,7 +1648,7 @@ def getIfcTypeFromObj(obj):
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
 
-    if not "::" in ifctype:
+    if "::" not in ifctype:
         ifctype = "Ifc" + ifctype
     elif ifctype == "IfcApp::DocumentObjctGroup":
         ifctype = "IfcGroup"
@@ -1737,7 +1737,6 @@ def buildAddress(obj,ifcfile):
 
 
 def createCurve(ifcfile,wire,scaling=1.0):
-
     "creates an IfcCompositeCurve from a shape"
 
     segments = []
@@ -1810,7 +1809,6 @@ def createCurve(ifcfile,wire,scaling=1.0):
 
 
 def getEdgesAngle(edge1, edge2):
-
     """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
 
     vec1 = vec(edge1)
@@ -1821,7 +1819,6 @@ def getEdgesAngle(edge1, edge2):
 
 
 def checkRectangle(edges):
-
     """ checkRectangle(edges=[]): This function checks whether the given form is a rectangle
        or not. It will return True when edges form a rectangular shape or return False
        when edges do not form a rectangular shape."""
@@ -1841,7 +1838,6 @@ def checkRectangle(edges):
 
 
 def getProfile(ifcfile,p):
-
     """returns an IFC profile definition from a shape"""
 
     import Part
@@ -1905,8 +1901,18 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False,skipshape=False):
-
+def getRepresentation(
+    ifcfile,
+    context,
+    obj,
+    forcebrep=False,
+    subtraction=False,
+    tessellation=1,
+    colors=None,
+    preferences=None,
+    forceclone=False,
+    skipshape=False
+):
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
 
@@ -1924,7 +1930,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if ((not subtraction) and (not forcebrep)) or forceclone:
         if forceclone:
-            if not obj.Name in clones:
+            if obj.Name not in clones:
                 clones[obj.Name] = []
         for k,v in clones.items():
             if (obj.Name == k) or (obj.Name in v):
@@ -2050,7 +2056,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             shapes.append(shape)
             solidType = "SweptSolid"
             shapetype = "extrusion"
-
 
     if (not shapes) and (not skipshape):
 
@@ -2261,7 +2266,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 diffusecolor = obj.ViewObject.DiffuseColor
         if shapecolor and (shapetype != "clone"): # cloned objects are already colored
             key = None
-            rgbt = [shapecolor+(transparency,) for shape in shapes]
+            rgbt = [shapecolor+(transparency,)] * len(shapes)
             if diffusecolor \
                     and (len(diffusecolor) == len(obj.Shape.Faces)) \
                     and (len(obj.Shape.Solids) == len(colorshapes)):
@@ -2382,7 +2387,6 @@ def getText(field,obj):
 
 
 def getAxisContext(ifcfile):
-
     """gets or creates an axis context"""
 
     contexts = ifcfile.by_type("IfcGeometricRepresentationContext")
@@ -2393,12 +2397,11 @@ def getAxisContext(ifcfile):
         if ctx.ContextIdentifier == "Axis":
             return ctx
     ctx = contexts[0] # arbitrarily take the first one...
-    nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
+    nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None)
     return nctx
 
 
 def createAxis(ifcfile,obj,preferences):
-
     """Creates an axis for a given wall, if applicable"""
 
     if hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
@@ -2412,7 +2415,6 @@ def createAxis(ifcfile,obj,preferences):
 
 
 def writeJson(filename,ifcfile):
-
     """writes an .ifcjson file"""
 
     import json

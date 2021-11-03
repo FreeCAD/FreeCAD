@@ -159,6 +159,14 @@ static inline void printExpression(std::ostream &os, const App::Expression *expr
         if(p) ExpressionFastAlloc(_t)().deallocate(reinterpret_cast<_t*>(p),1);\
     }
 
+static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
+    if(expr) {
+        os << "\nin expression: ";
+        expr->toString(os);
+    }
+    return os;
+}
+
 template<typename T>
 void copy_vector(T &dst, const T& src) {
     dst.clear();
@@ -553,19 +561,10 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
         return Py::Float(cast<double>(value));
     else if (is_type(value,typeid(float)))
         return Py::Float(cast<float>(value));
-    else if (is_type(value,typeid(int))) 
-#if PY_MAJOR_VERSION < 3
-        return Py::Int(cast<int>(value));
-#else
+    else if (is_type(value,typeid(int)))
         return Py::Long(cast<int>(value));
-#endif
     else if (is_type(value,typeid(long))) {
-        long l = cast<long>(value);
-#if PY_MAJOR_VERSION < 3
-        if(std::abs(l)<=INT_MAX)
-            return Py::Int(int(l));
-#endif
-        return Py::Long(l);
+        return Py::Long(cast<long>(value));
     } else if (is_type(value,typeid(bool)))
         return Py::Boolean(cast<bool>(value));
     else if (is_type(value,typeid(std::string)))
@@ -600,31 +599,15 @@ App::any pyObjectToAny(Py::Object value, bool check) {
     }
     if (PyFloat_Check(pyvalue))
         return App::any(PyFloat_AsDouble(pyvalue));
-#if PY_MAJOR_VERSION < 3
-    if (PyInt_Check(pyvalue))
-        return App::any(PyInt_AsLong(pyvalue));
-#endif
     if (PyLong_Check(pyvalue))
         return App::any(PyLong_AsLong(pyvalue));
-#if PY_MAJOR_VERSION < 3
-    else if (PyString_Check(pyvalue))
-        return App::any(std::string(PyString_AsString(pyvalue)));
     else if (PyUnicode_Check(pyvalue)) {
-        PyObject * s = PyUnicode_AsUTF8String(pyvalue);
-        if(!s) 
-            FC_THROWM(Base::ValueError,"Invalid unicode string");
-        Py::Object o(s,true);
-        return App::any(std::string(PyString_AsString(s)));
-    }
-#else
-    else if (PyUnicode_Check(pyvalue)) {
-        const char* value = PyUnicode_AsUTF8(pyvalue);
-        if (!value) {
+        const char* utf8value = PyUnicode_AsUTF8(pyvalue);
+        if (!utf8value) {
             FC_THROWM(Base::ValueError, "Invalid unicode string");
         }
-        return App::any(std::string(value));
+        return App::any(std::string(utf8value));
     }
-#endif
     else {
         return App::any(pyObjectWrap(pyvalue));
     }
@@ -636,10 +619,6 @@ bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
         q = *static_cast<Base::QuantityPy*>(*pyobj)->getQuantityPtr();
     else if (PyFloat_Check(*pyobj))
         q = Quantity(PyFloat_AsDouble(*pyobj));
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(*pyobj))
-        q = Quantity(PyInt_AsLong(*pyobj));
-#endif
     else if (PyLong_Check(*pyobj))
         q = Quantity(PyLong_AsLong(*pyobj));
     else
@@ -696,9 +675,6 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     int i;
     switch(essentiallyInteger(v,l,i)) {
     case 1:
-#if PY_MAJOR_VERSION < 3
-        return Py::Int(i);
-#endif
     case 2:
         return Py::Long(l);
     default:
@@ -1209,11 +1185,7 @@ struct EvalFrame {
     static PyObject *getBuiltin(const std::string &name) {
         static std::unordered_map<std::string,PyObject*> builtins;
         if(builtins.empty()) {
-#if PY_MAJOR_VERSION < 3
-            PyObject *pymod = PyImport_ImportModule("__builtin__");
-#else
             PyObject *pymod = PyImport_ImportModule("builtins");
-#endif
             if(!pymod) 
                 Base::PyException::ThrowException();
             Py::Object mod(pymod,true);
@@ -2064,7 +2036,7 @@ static Py::Object calc(const Expression *expr, int op,
     RICH_COMPARE(EQ)
     RICH_COMPARE(NE)
 
-#define _BINARY_OP(_op,_pyop) \
+#define _BINARY_OP(_pyop) \
         res = inplace?PyNumber_InPlace##_pyop(l.ptr(),r.ptr()):\
                        PyNumber_##_pyop(l.ptr(),r.ptr());\
         if(!res) EXPR_PY_THROW(expr);\
@@ -2073,7 +2045,7 @@ static Py::Object calc(const Expression *expr, int op,
 #define BINARY_OP(_op,_pyop) \
     case OP_##_op: {\
         PyObject *res;\
-        _BINARY_OP(_op,_pyop);\
+        _BINARY_OP(_pyop);\
     }
 
     BINARY_OP(SUB,Subtract)
@@ -2084,30 +2056,6 @@ static Py::Object calc(const Expression *expr, int op,
     BINARY_OP(FDIV,FloorDivide)
     case OP_ADD: {
         PyObject *res;
-#if PY_MAJOR_VERSION < 3
-        if (PyString_CheckExact(*l) && PyString_CheckExact(*r)) {
-            Py_ssize_t v_len = PyString_GET_SIZE(*l);
-            Py_ssize_t w_len = PyString_GET_SIZE(*r);
-            Py_ssize_t new_len = v_len + w_len;
-            if (new_len < 0)
-                __EXPR_THROW(OverflowError, "strings are too large to concat", expr);
-
-            if (l.ptr()->ob_refcnt==1 && !PyString_CHECK_INTERNED(l.ptr())) {
-                res = Py::new_reference_to(l);
-                // Must make sure ob_refcnt is still 1
-                l = Py::Object();
-                if (_PyString_Resize(&res, new_len) != 0)
-                    EXPR_PY_THROW(expr);
-                memcpy(PyString_AS_STRING(res) + v_len, PyString_AS_STRING(*r), w_len);
-            }else{
-                res = Py::new_reference_to(l);
-                l = Py::Object();
-                PyString_Concat(&res,*r);
-                if(!res) EXPR_PY_THROW(expr);
-            }
-            return Py::asObject(res);
-        }
-#else
         if (PyUnicode_CheckExact(*l) && PyUnicode_CheckExact(*r)) {
             if(inplace) {
                 res = Py::new_reference_to(l);
@@ -2121,8 +2069,7 @@ static Py::Object calc(const Expression *expr, int op,
             if(!res) EXPR_PY_THROW(expr);
             return Py::asObject(res);
         }
-#endif
-        _BINARY_OP(ADD,Add);
+        _BINARY_OP(Add);
     }
     case OP_POW:
     case OP_POW2: {
@@ -2136,15 +2083,9 @@ static Py::Object calc(const Expression *expr, int op,
     }
     case OP_MOD: {
         PyObject *res;
-#if PY_MAJOR_VERSION < 3
-        if (PyString_CheckExact(l.ptr()) && 
-                (!PyString_Check(r.ptr()) || PyString_CheckExact(r.ptr()))) 
-            res = PyString_Format(l.ptr(), r.ptr());
-#else
-        if (PyUnicode_CheckExact(l.ptr()) && 
+        if (PyUnicode_CheckExact(l.ptr()) &&
                 (!PyUnicode_Check(r.ptr()) || PyUnicode_CheckExact(r.ptr())))
             res = PyUnicode_Format(l.ptr(), r.ptr());
-#endif
         else if(inplace)
             res = PyNumber_InPlaceRemainder(l.ptr(),r.ptr());
         else
@@ -2529,11 +2470,7 @@ class ImportModules: public ParameterGrp::ObserverType {
 public:
     ImportModules() {
         defModules = {
-#if PY_MAJOR_VERSION < 3
-            "__builtin__",
-#else
             "builtins",
-#endif
             "FreeCAD",
             "FreeCADGui",
             "App",
@@ -7248,14 +7185,14 @@ std::string Context::getErrorContext(const std::string &msg) {
     return ss.str();
 }
     
-std::vector<boost::tuple<int, int, std::string> > tokenize(const char *str)
+std::vector<std::tuple<int, int, std::string> > tokenize(const char *str)
 {
     Context ctx(str,0);
-    std::vector<boost::tuple<int, int, std::string> > result;
+    std::vector<std::tuple<int, int, std::string> > result;
     int token;
     try {
         while ( (token  = yylex(0,ctx)) != 0)
-            result.push_back(boost::make_tuple(token, ctx.last_column, yytext));
+            result.push_back(std::make_tuple(token, ctx.last_column, yytext));
     }
     catch (...) {
         // Ignore all exceptions

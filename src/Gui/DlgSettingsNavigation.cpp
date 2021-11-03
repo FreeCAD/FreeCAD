@@ -96,7 +96,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
     ui->spinBoxZoomStep->onSave();
-    ui->CheckBox_UseAutoRotation->onSave();
+    ui->checkBoxUseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
     ui->naviCubeToNearest->onSave();
@@ -123,7 +123,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
     ui->spinBoxZoomStep->onRestore();
-    ui->CheckBox_UseAutoRotation->onRestore();
+    ui->checkBoxUseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
     ui->naviCubeToNearest->onRestore();

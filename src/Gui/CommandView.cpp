@@ -61,6 +61,7 @@
 #include "SoFCBoundingBox.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoAxisCrossKit.h"
+#include "SoQTQuarterAdaptor.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
@@ -109,7 +110,7 @@ DEF_STD_CMD_AC(StdOrthographicCamera)
 StdOrthographicCamera::StdOrthographicCamera()
   : Command("Std_OrthographicCamera")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Orthographic view");
     sToolTipText  = QT_TR_NOOP("Switches to orthographic view mode");
     sWhatsThis    = "Std_OrthographicCamera";
@@ -159,7 +160,7 @@ DEF_STD_CMD_AC(StdPerspectiveCamera)
 StdPerspectiveCamera::StdPerspectiveCamera()
   : Command("Std_PerspectiveCamera")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Perspective view");
     sToolTipText  = QT_TR_NOOP("Switches to perspective view mode");
     sWhatsThis    = "Std_PerspectiveCamera";
@@ -219,7 +220,7 @@ DEF_3DV_CMD(StdCmdViewSaveCamera)
 StdCmdViewSaveCamera::StdCmdViewSaveCamera()
   : Command("Std_ViewSaveCamera")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Save current camera");
     sToolTipText  = QT_TR_NOOP("Save current camera settings");
     sStatusTip    = QT_TR_NOOP("Save current camera settings");
@@ -245,7 +246,7 @@ DEF_3DV_CMD(StdCmdViewRestoreCamera)
 StdCmdViewRestoreCamera::StdCmdViewRestoreCamera()
   : Command("Std_ViewRestoreCamera")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Restore saved camera");
     sToolTipText  = QT_TR_NOOP("Restore saved camera settings");
     sStatusTip    = QT_TR_NOOP("Restore saved camera settings");
@@ -304,7 +305,7 @@ StdCmdFreezeViews::StdCmdFreezeViews()
   , clearView(0)
   , separator(0)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Freeze display");
     sToolTipText  = QT_TR_NOOP("Freezes the current view position");
     sWhatsThis    = "Std_FreezeViews";
@@ -321,15 +322,15 @@ Action * StdCmdFreezeViews::createAction(void)
 
     // add the action items
     saveView = pcAction->addAction(QObject::tr("Save views..."));
-    saveView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("Load views..."));
-    loadView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("Freeze view"));
-    freezeView->setShortcut(QString::fromLatin1(sAccel));
-    freezeView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    freezeView->setShortcut(QString::fromLatin1(getAccel()));
+    freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("Clear views"));
-    clearView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     separator = pcAction->addAction(QString::fromLatin1(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
@@ -564,7 +565,7 @@ DEF_STD_CMD_AC(StdCmdToggleClipPlane)
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
   : Command("Std_ToggleClipPlane")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Clipping plane");
     sToolTipText  = QT_TR_NOOP("Toggles clipping plane for active view");
     sWhatsThis    = "Std_ToggleClipPlane";
@@ -633,7 +634,7 @@ StdCmdDrawStyleBase::StdCmdDrawStyleBase(const char *name, const char *title,
                                          const char *pixmap)
     :Command(name)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = title;
     sToolTipText  = doc;
     sStatusTip    = sToolTipText;
@@ -706,7 +707,7 @@ public:
 StdCmdDrawStyle::StdCmdDrawStyle()
   : GroupCommand("Std_DrawStyle")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Draw style");
     sToolTipText  = QT_TR_NOOP("Change the draw style of the objects");
     sStatusTip    = QT_TR_NOOP("Change the draw style of the objects");
@@ -716,7 +717,7 @@ StdCmdDrawStyle::StdCmdDrawStyle()
 
 #define DRAW_STYLE_CMD(_name, _title, _doc, _shortcut) \
     addCommand(new StdCmdDrawStyleBase(\
-        "Std_DrawStyle" #_name, _title, _doc, _shortcut, "DrawStyle" #_name));
+        "Std_DrawStyle" #_name, QT_TR_NOOP(_title), QT_TR_NOOP(_doc), _shortcut, "DrawStyle" #_name));
 
     DRAW_STYLE_CMD(AsIs,"As Is",
             "Draw style, normal display mode", "V,1")
@@ -795,7 +796,7 @@ DEF_STD_CMD_A(StdCmdToggleVisibility)
 StdCmdToggleVisibility::StdCmdToggleVisibility()
   : Command("Std_ToggleVisibility")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle visibility");
     sToolTipText  = QT_TR_NOOP("Toggles visibility");
     sStatusTip    = QT_TR_NOOP("Toggles visibility");
@@ -825,7 +826,7 @@ DEF_STD_CMD_A(StdCmdToggleGroupVisibility)
 StdCmdToggleGroupVisibility::StdCmdToggleGroupVisibility()
   : Command("Std_ToggleGroupVisibility")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle group visibility");
     sToolTipText  = QT_TR_NOOP("Toggles visibility of a group and all its nested children");
     sStatusTip    = sToolTipText;
@@ -877,7 +878,7 @@ DEF_STD_CMD_A(StdCmdToggleShowOnTop)
 StdCmdToggleShowOnTop::StdCmdToggleShowOnTop()
   : Command("Std_ToggleShowOnTop")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle show on top");
     sToolTipText  = QT_TR_NOOP("Toggles whether to show the object on top");
     sStatusTip    = sToolTipText;
@@ -925,7 +926,7 @@ DEF_STD_CMD_A(StdCmdToggleSelectability)
 StdCmdToggleSelectability::StdCmdToggleSelectability()
   : Command("Std_ToggleSelectability")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle selectability");
     sToolTipText  = QT_TR_NOOP("Toggles the property of the objects to get selected in the 3D-View");
     sStatusTip    = QT_TR_NOOP("Toggles the property of the objects to get selected in the 3D-View");
@@ -972,7 +973,7 @@ DEF_STD_CMD_A(StdCmdShowSelection)
 StdCmdShowSelection::StdCmdShowSelection()
   : Command("Std_ShowSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Show selection");
     sToolTipText  = QT_TR_NOOP("Show all selected objects");
     sStatusTip    = QT_TR_NOOP("Show all selected objects");
@@ -1000,7 +1001,7 @@ DEF_STD_CMD_A(StdCmdHideSelection)
 StdCmdHideSelection::StdCmdHideSelection()
   : Command("Std_HideSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Hide selection");
     sToolTipText  = QT_TR_NOOP("Hide all selected objects");
     sStatusTip    = QT_TR_NOOP("Hide all selected objects");
@@ -1028,7 +1029,7 @@ DEF_STD_CMD_A(StdCmdSelectVisibleObjects)
 StdCmdSelectVisibleObjects::StdCmdSelectVisibleObjects()
   : Command("Std_SelectVisibleObjects")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Select visible objects");
     sToolTipText  = QT_TR_NOOP("Select visible objects in the active document");
     sStatusTip    = QT_TR_NOOP("Select visible objects in the active document");
@@ -1070,7 +1071,7 @@ DEF_STD_CMD_A(StdCmdToggleObjects)
 StdCmdToggleObjects::StdCmdToggleObjects()
   : Command("Std_ToggleObjects")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle all objects");
     sToolTipText  = QT_TR_NOOP("Toggles visibility of all objects in the active document");
     sStatusTip    = QT_TR_NOOP("Toggles visibility of all objects in the active document");
@@ -1111,7 +1112,7 @@ DEF_STD_CMD_A(StdCmdShowObjects)
 StdCmdShowObjects::StdCmdShowObjects()
   : Command("Std_ShowObjects")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Show all objects");
     sToolTipText  = QT_TR_NOOP("Show all objects in the document");
     sStatusTip    = QT_TR_NOOP("Show all objects in the document");
@@ -1148,7 +1149,7 @@ DEF_STD_CMD_A(StdCmdHideObjects)
 StdCmdHideObjects::StdCmdHideObjects()
   : Command("Std_HideObjects")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Hide all objects");
     sToolTipText  = QT_TR_NOOP("Hide all objects in the document");
     sStatusTip    = QT_TR_NOOP("Hide all objects in the document");
@@ -1185,7 +1186,7 @@ DEF_STD_CMD_A(StdCmdSetAppearance)
 StdCmdSetAppearance::StdCmdSetAppearance()
   : Command("Std_SetAppearance")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Appearance...");
     sToolTipText  = QT_TR_NOOP("Sets the display properties of the selected object");
     sWhatsThis    = "Std_SetAppearance";
@@ -1228,7 +1229,7 @@ DEF_3DV_CMD(StdCmdViewHome)
 StdCmdViewHome::StdCmdViewHome()
   : Command("Std_ViewHome")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Home");
     sToolTipText  = QT_TR_NOOP("Set to default home view");
     sWhatsThis    = "Std_ViewHome";
@@ -1256,7 +1257,7 @@ DEF_3DV_CMD(StdCmdViewBottom)
 StdCmdViewBottom::StdCmdViewBottom()
   : Command("Std_ViewBottom")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Bottom");
     sToolTipText  = QT_TR_NOOP("Set to bottom view");
     sWhatsThis    = "Std_ViewBottom";
@@ -1280,7 +1281,7 @@ DEF_3DV_CMD(StdCmdViewFront)
 StdCmdViewFront::StdCmdViewFront()
   : Command("Std_ViewFront")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Front");
     sToolTipText  = QT_TR_NOOP("Set to front view");
     sWhatsThis    = "Std_ViewFront";
@@ -1304,7 +1305,7 @@ DEF_3DV_CMD(StdCmdViewLeft)
 StdCmdViewLeft::StdCmdViewLeft()
   : Command("Std_ViewLeft")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Left");
     sToolTipText  = QT_TR_NOOP("Set to left view");
     sWhatsThis    = "Std_ViewLeft";
@@ -1328,7 +1329,7 @@ DEF_3DV_CMD(StdCmdViewRear)
 StdCmdViewRear::StdCmdViewRear()
   : Command("Std_ViewRear")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Rear");
     sToolTipText  = QT_TR_NOOP("Set to rear view");
     sWhatsThis    = "Std_ViewRear";
@@ -1352,7 +1353,7 @@ DEF_3DV_CMD(StdCmdViewRight)
 StdCmdViewRight::StdCmdViewRight()
   : Command("Std_ViewRight")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Right");
     sToolTipText  = QT_TR_NOOP("Set to right view");
     sWhatsThis    = "Std_ViewRight";
@@ -1376,7 +1377,7 @@ DEF_3DV_CMD(StdCmdViewTop)
 StdCmdViewTop::StdCmdViewTop()
   : Command("Std_ViewTop")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Top");
     sToolTipText  = QT_TR_NOOP("Set to top view");
     sWhatsThis    = "Std_ViewTop";
@@ -1400,7 +1401,7 @@ DEF_3DV_CMD(StdCmdViewIsometric)
 StdCmdViewIsometric::StdCmdViewIsometric()
   : Command("Std_ViewIsometric")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
+    sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Isometric");
     sToolTipText= QT_TR_NOOP("Set to isometric view");
     sWhatsThis  = "Std_ViewIsometric";
@@ -1424,7 +1425,7 @@ DEF_3DV_CMD(StdCmdViewDimetric)
 StdCmdViewDimetric::StdCmdViewDimetric()
   : Command("Std_ViewDimetric")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
+    sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Dimetric");
     sToolTipText= QT_TR_NOOP("Set to dimetric view");
     sWhatsThis  = "Std_ViewDimetric";
@@ -1447,7 +1448,7 @@ DEF_3DV_CMD(StdCmdViewTrimetric)
 StdCmdViewTrimetric::StdCmdViewTrimetric()
   : Command("Std_ViewTrimetric")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
+    sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Trimetric");
     sToolTipText= QT_TR_NOOP("Set to trimetric view");
     sWhatsThis  = "Std_ViewTrimetric";
@@ -1470,7 +1471,7 @@ DEF_3DV_CMD(StdCmdViewRotateLeft)
 StdCmdViewRotateLeft::StdCmdViewRotateLeft()
   : Command("Std_ViewRotateLeft")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Rotate Left");
     sToolTipText  = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 counter-clockwise");
     sWhatsThis    = "Std_ViewRotateLeft";
@@ -1495,7 +1496,7 @@ DEF_3DV_CMD(StdCmdViewRotateRight)
 StdCmdViewRotateRight::StdCmdViewRotateRight()
   : Command("Std_ViewRotateRight")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Rotate Right");
     sToolTipText  = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 clockwise");
     sWhatsThis    = "Std_ViewRotateRight";
@@ -1520,7 +1521,7 @@ DEF_STD_CMD_A(StdCmdViewFitAll)
 StdCmdViewFitAll::StdCmdViewFitAll()
   : Command("Std_ViewFitAll")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Fit all");
     sToolTipText  = QT_TR_NOOP("Fits the whole content on the screen");
     sWhatsThis    = "Std_ViewFitAll";
@@ -1551,15 +1552,13 @@ DEF_STD_CMD_A(StdCmdViewFitSelection)
 StdCmdViewFitSelection::StdCmdViewFitSelection()
   : Command("Std_ViewFitSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Fit selection");
     sToolTipText  = QT_TR_NOOP("Fits the selected content on the screen");
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
     sAccel        = "V, S";
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
-#endif
     eType         = Alter3DView;
 }
 
@@ -1584,7 +1583,7 @@ DEF_STD_CMD_A(StdCmdViewSelectionExtend)
 StdCmdViewSelectionExtend::StdCmdViewSelectionExtend()
   : Command("Std_ViewSelectionExtend")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("View selection");
     sToolTipText  = QT_TR_NOOP("Adjust the camera view to include the selected contents on the screen.");
     sWhatsThis    = "Std_ViewSelectionExtend";
@@ -1614,7 +1613,7 @@ DEF_STD_CMD_A(StdCmdRotationCenterSelection)
 StdCmdRotationCenterSelection::StdCmdRotationCenterSelection()
   : Command("Std_RotationCenterSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Rotation center at selection");
     sToolTipText  = QT_TR_NOOP("Set rotation center at the center of current selection");
     sWhatsThis    = "Std_RotationCenterSelection";
@@ -1645,7 +1644,7 @@ public:
     StdCmdViewSelection()
         :GroupCommand("Std_ViewSelection")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("View selection");
         sToolTipText  = QT_TR_NOOP("Adjust camera to view selected contents on screen");
         sWhatsThis    = "Std_ViewSelection";
@@ -1680,7 +1679,7 @@ DEF_STD_CMD_A(StdViewDock)
 StdViewDock::StdViewDock()
   : Command("Std_ViewDock")
 {
-    sGroup       = QT_TR_NOOP("Standard-View");
+    sGroup       = "Standard-View";
     sMenuText    = QT_TR_NOOP("Docked");
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDock";
@@ -1709,7 +1708,7 @@ DEF_STD_CMD_A(StdViewUndock)
 StdViewUndock::StdViewUndock()
   : Command("Std_ViewUndock")
 {
-    sGroup       = QT_TR_NOOP("Standard-View");
+    sGroup       = "Standard-View";
     sMenuText    = QT_TR_NOOP("Undocked");
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewUndock";
@@ -1738,7 +1737,7 @@ DEF_STD_CMD(StdMainFullscreen)
 StdMainFullscreen::StdMainFullscreen()
   : Command("Std_MainFullscreen")
 {
-    sGroup       = QT_TR_NOOP("Standard-View");
+    sGroup       = "Standard-View";
     sMenuText    = QT_TR_NOOP("Fullscreen");
     sToolTipText = QT_TR_NOOP("Display the main window in fullscreen mode");
     sWhatsThis   = "Std_MainFullscreen";
@@ -1770,7 +1769,7 @@ DEF_STD_CMD_A(StdViewFullscreen)
 StdViewFullscreen::StdViewFullscreen()
   : Command("Std_ViewFullscreen")
 {
-    sGroup       = QT_TR_NOOP("Standard-View");
+    sGroup       = "Standard-View";
     sMenuText    = QT_TR_NOOP("Fullscreen");
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewFullscreen";
@@ -1800,7 +1799,7 @@ DEF_STD_CMD_AC(StdViewDockUndockFullscreen)
 StdViewDockUndockFullscreen::StdViewDockUndockFullscreen()
   : Command("Std_ViewDockUndockFullscreen")
 {
-    sGroup       = QT_TR_NOOP("Standard-View");
+    sGroup       = "Standard-View";
     sMenuText    = QT_TR_NOOP("Document window");
     sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
     sWhatsThis   = "Std_ViewDockUndockFullscreen";
@@ -1818,7 +1817,7 @@ Action * StdViewDockUndockFullscreen::createAction(void)
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setText(QCoreApplication::translate(
-        this->className(), sMenuText));
+        this->className(), getMenuText()));
 
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     Command* cmdD = rcCmdMgr.getCommandByName("Std_ViewDock");
@@ -1935,7 +1934,7 @@ DEF_STD_CMD_A(StdCmdViewVR)
 StdCmdViewVR::StdCmdViewVR()
   : Command("Std_ViewVR")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("FreeCAD-VR");
     sToolTipText  = QT_TR_NOOP("Extend the FreeCAD 3D Window to a Oculus Rift");
     sWhatsThis    = "Std_ViewVR";
@@ -1965,7 +1964,7 @@ DEF_STD_CMD_A(StdViewScreenShot)
 StdViewScreenShot::StdViewScreenShot()
   : Command("Std_ViewScreenShot")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
+    sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Save picture...");
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
@@ -2136,7 +2135,7 @@ DEF_STD_CMD_A(StdCmdViewCreate)
 StdCmdViewCreate::StdCmdViewCreate()
   : Command("Std_ViewCreate")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
+    sGroup      = "Standard-View";
     sMenuText   = QT_TR_NOOP("Create new view");
     sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
     sWhatsThis  = "Std_ViewCreate";
@@ -2165,7 +2164,7 @@ DEF_STD_CMD_A(StdCmdToggleNavigation)
 StdCmdToggleNavigation::StdCmdToggleNavigation()
   : Command("Std_ToggleNavigation")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle navigation/Edit mode");
     sToolTipText  = QT_TR_NOOP("Toggle between navigation and edit mode");
     sStatusTip    = QT_TR_NOOP("Toggle between navigation and edit mode");
@@ -2215,7 +2214,7 @@ private:
 public:
     StdCmdAxisCross() : Command("Std_AxisCross"), axisCross(0), axisGroup(0)
     {
-        sGroup        = QT_TR_NOOP("Standard-View");
+        sGroup        = "Standard-View";
         sMenuText     = QT_TR_NOOP("Toggle axis cross");
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
@@ -2302,7 +2301,7 @@ DEF_STD_CMD_A(StdCmdAxisCross)
 StdCmdAxisCross::StdCmdAxisCross()
   : Command("Std_AxisCross")
 {
-        sGroup        = QT_TR_NOOP("Standard-View");
+        sGroup        = "Standard-View";
         sMenuText     = QT_TR_NOOP("Toggle axis cross");
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
@@ -2349,7 +2348,7 @@ DEF_STD_CMD_A(StdCmdViewExample1)
 StdCmdViewExample1::StdCmdViewExample1()
   : Command("Std_ViewExample1")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Inventor example #1");
     sToolTipText  = QT_TR_NOOP("Shows a 3D texture with manipulator");
     sWhatsThis    = "Std_ViewExample1";
@@ -2377,7 +2376,7 @@ DEF_STD_CMD_A(StdCmdViewExample2)
 StdCmdViewExample2::StdCmdViewExample2()
   : Command("Std_ViewExample2")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Inventor example #2");
     sToolTipText  = QT_TR_NOOP("Shows spheres and drag-lights");
     sWhatsThis    = "Std_ViewExample2";
@@ -2405,7 +2404,7 @@ DEF_STD_CMD_A(StdCmdViewExample3)
 StdCmdViewExample3::StdCmdViewExample3()
   : Command("Std_ViewExample3")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Inventor example #3");
     sToolTipText  = QT_TR_NOOP("Shows a animated texture");
     sWhatsThis    = "Std_ViewExample3";
@@ -2434,7 +2433,7 @@ DEF_STD_CMD_A(StdCmdViewIvStereoOff)
 StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
   : Command("Std_ViewIvStereoOff")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Stereo Off");
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing off");
     sWhatsThis    = "Std_ViewIvStereoOff";
@@ -2463,7 +2462,7 @@ DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
 StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
   : Command("Std_ViewIvStereoRedGreen")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Stereo red/cyan");
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to red/cyan");
     sWhatsThis    = "Std_ViewIvStereoRedGreen";
@@ -2491,7 +2490,7 @@ DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
 StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
   : Command("Std_ViewIvStereoQuadBuff")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Stereo quad buffer");
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to quad buffer");
     sWhatsThis    = "Std_ViewIvStereoQuadBuff";
@@ -2519,7 +2518,7 @@ DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
 StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
   : Command("Std_ViewIvStereoInterleavedRows")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Stereo Interleaved Rows");
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Rows");
     sWhatsThis    = "Std_ViewIvStereoInterleavedRows";
@@ -2547,7 +2546,7 @@ DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
 StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
   : Command("Std_ViewIvStereoInterleavedColumns")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Stereo Interleaved Columns");
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Columns");
     sWhatsThis    = "Std_ViewIvStereoInterleavedColumns";
@@ -2576,7 +2575,7 @@ DEF_STD_CMD_A(StdCmdViewIvIssueCamPos)
 StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
   : Command("Std_ViewIvIssueCamPos")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Issue camera position");
     sToolTipText  = QT_TR_NOOP("Issue the camera position to the console and to a macro, to easily recall this position");
     sWhatsThis    = "Std_ViewIvIssueCamPos";
@@ -2626,14 +2625,12 @@ DEF_STD_CMD_A(StdViewZoomIn)
 StdViewZoomIn::StdViewZoomIn()
   : Command("Std_ViewZoomIn")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Zoom In");
     sToolTipText  = QT_TR_NOOP("Zoom In");
     sWhatsThis    = "Std_ViewZoomIn";
     sStatusTip    = QT_TR_NOOP("Zoom In");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-in";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomIn);
     eType         = Alter3DView;
 }
@@ -2661,14 +2658,12 @@ DEF_STD_CMD_A(StdViewZoomOut)
 StdViewZoomOut::StdViewZoomOut()
   : Command("Std_ViewZoomOut")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Zoom Out");
     sToolTipText  = QT_TR_NOOP("Zoom Out");
     sWhatsThis    = "Std_ViewZoomOut";
     sStatusTip    = QT_TR_NOOP("Zoom Out");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-out";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomOut);
     eType         = Alter3DView;
 }
@@ -2687,23 +2682,148 @@ bool StdViewZoomOut::isActive(void)
 {
     return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
 }
+class SelectionCallbackHandler {    
 
+private:
+    static std::unique_ptr<SelectionCallbackHandler> currentSelectionHandler;
+    QCursor* prevSelectionCursor;
+    typedef void (*FnCb)(void * userdata, SoEventCallback * node);
+    FnCb fnCb;
+    void* userData;
+    bool prevSelectionEn;
+
+public:
+    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
+    // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
+    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
+    // If there is still a selection handler active, this call will generate a message and returns.
+    static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode, const QCursor& cursor, FnCb doFunction= NULL, void* ud=NULL)
+    {
+        if (currentSelectionHandler)
+        {
+            Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
+            return;
+        }
+
+        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        if (viewer)
+        {
+            currentSelectionHandler->userData = ud;
+            currentSelectionHandler->fnCb = doFunction;
+            currentSelectionHandler->prevSelectionCursor = new QCursor(viewer->cursor());
+            viewer->setEditingCursor(cursor);
+            viewer->addEventCallback(SoEvent::getClassTypeId(),
+                SelectionCallbackHandler::selectionCallback, currentSelectionHandler.get());
+            currentSelectionHandler->prevSelectionEn = viewer->isSelectionEnabled();
+            viewer->setSelectionEnabled(false);
+            viewer->startSelection(selectionMode);
+        }
+    };
+
+    void* getUserData() { return userData; };
+
+    // Implements the event handler. In the normal case the provided function is called. 
+    // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
+    static void selectionCallback(void * ud, SoEventCallback * n)
+    {
+        SelectionCallbackHandler* selectionHandler = reinterpret_cast<SelectionCallbackHandler*>(ud);
+        Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        const SoEvent* ev = n->getEvent();
+        if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
+
+            n->setHandled();
+            n->getAction()->setHandled();
+
+            const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
+            const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
+            if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
+                              
+                if (!press) {                    
+                    view->abortSelection();
+                    restoreState(selectionHandler, view);
+                }                
+            }
+        }
+        else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+            const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+            // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
+            n->getAction()->setHandled();
+
+            if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP)
+            {
+                if (selectionHandler && selectionHandler->fnCb) selectionHandler->fnCb(selectionHandler->getUserData(), n);
+                restoreState(selectionHandler, view);
+            }
+            // No other mouse events available from Coin3D to implement right mouse up abort
+        }
+    }
+
+    static void restoreState(SelectionCallbackHandler * selectionHandler, View3DInventorViewer* view)
+    {
+        if(selectionHandler) selectionHandler->fnCb = NULL;
+        view->setEditingCursor(*selectionHandler->prevSelectionCursor);
+        view->removeEventCallback(SoEvent::getClassTypeId(), SelectionCallbackHandler::selectionCallback, selectionHandler);
+        view->setSelectionEnabled(selectionHandler->prevSelectionEn);
+        Application::Instance->commandManager().testActive();
+        currentSelectionHandler = NULL;
+    }
+};
+
+std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>();
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================
+/* XPM */
+static const char * cursor_box_zoom[] = {
+"32 32 3 1",
+" 	c None",
+".	c #FFFFFF",
+"@	c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .      @@@@@@@            ",
+"      .    @@@@@@@@@@@          ",
+"      .   @@         @@         ",
+"      .  @@. . . . . .@@        ",
+"      .  @             @        ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"         @             @        ",
+"         @@. . . . . .@@@       ",
+"          @@          @@@@      ",
+"           @@@@@@@@@@@@  @@     ",
+"             @@@@@@@ @@   @@    ",
+"                      @@   @@   ",
+"                       @@   @@  ",
+"                        @@   @@ ",
+"                         @@  @@ ",
+"                          @@@@  ",
+"                           @@   ",
+"                                " };
+
 DEF_3DV_CMD(StdViewBoxZoom)
 
 StdViewBoxZoom::StdViewBoxZoom()
   : Command("Std_ViewBoxZoom")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Box zoom");
     sToolTipText  = QT_TR_NOOP("Box zoom");
     sWhatsThis    = "Std_ViewBoxZoom";
     sStatusTip    = QT_TR_NOOP("Box zoom");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-border";
-#endif
     sAccel        = "Ctrl+B";
     eType         = Alter3DView;
 }
@@ -2714,8 +2834,9 @@ void StdViewBoxZoom::activated(int iMsg)
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if ( view ) {
         View3DInventorViewer* viewer = view->getViewer();
-        if (!viewer->isSelecting())
-            viewer->startSelection(View3DInventorViewer::BoxZoom);
+        if (!viewer->isSelecting()) {
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
+		}
     }
 }
 
@@ -2727,14 +2848,12 @@ DEF_3DV_CMD(StdBoxSelection)
 StdBoxSelection::StdBoxSelection()
   : Command("Std_BoxSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Box selection");
     sToolTipText  = QT_TR_NOOP("Box selection");
     sWhatsThis    = "Std_BoxSelection";
     sStatusTip    = QT_TR_NOOP("Box selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-select-box";
-#endif
     sAccel        = "Shift+B";
     eType         = AlterSelection;
 }
@@ -2860,19 +2979,18 @@ void StdBoxSelection::activated(int iMsg)
 //===========================================================================
 // Std_BoxElementSelection
 //===========================================================================
+
 DEF_3DV_CMD(StdBoxElementSelection)
 
 StdBoxElementSelection::StdBoxElementSelection()
   : Command("Std_BoxElementSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Box element selection");
     sToolTipText  = QT_TR_NOOP("Box element selection");
     sWhatsThis    = "Std_BoxElementSelection";
     sStatusTip    = QT_TR_NOOP("Box element selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-element-select-box";
-#endif
     sAccel        = "Ctrl+Shift+E";
     eType         = AlterSelection;
 }
@@ -2908,7 +3026,7 @@ DEF_3DV_CMD(StdLassoElementSelection)
 StdLassoElementSelection::StdLassoElementSelection()
   : Command("Std_LassoElementSelection")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Lasso element selection");
     sToolTipText  = QT_TR_NOOP("Lasso element selection");
     sWhatsThis    = "Std_LassoElementSelection";
@@ -2952,7 +3070,7 @@ DEF_STD_CMD(StdTreeSelection)
 StdTreeSelection::StdTreeSelection()
   : Command("Std_TreeSelection")
 {
-    sGroup        = QT_TR_NOOP("TreeView");
+    sGroup        = "TreeView";
     sMenuText     = QT_TR_NOOP("Go to selection");
     sToolTipText  = QT_TR_NOOP("Scroll to first selected item");
     sWhatsThis    = "Std_TreeSelection";
@@ -2977,7 +3095,7 @@ DEF_STD_CMD(StdCmdTreeCollapse)
 StdCmdTreeCollapse::StdCmdTreeCollapse()
   : Command("Std_TreeCollapse")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Collapse selected item");
     sToolTipText  = QT_TR_NOOP("Collapse currently selected tree items");
     sWhatsThis    = "Std_TreeCollapse";
@@ -3000,7 +3118,7 @@ DEF_STD_CMD(StdCmdTreeExpand)
 StdCmdTreeExpand::StdCmdTreeExpand()
   : Command("Std_TreeExpand")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Expand selected item");
     sToolTipText  = QT_TR_NOOP("Expand currently selected tree items");
     sWhatsThis    = "Std_TreeExpand";
@@ -3023,7 +3141,7 @@ DEF_STD_CMD_A(StdCmdTreeSelectAllInstances)
 StdCmdTreeSelectAllInstances::StdCmdTreeSelectAllInstances()
   : Command("Std_TreeSelectAllInstances")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Select all instances");
     sToolTipText  = QT_TR_NOOP("Select all instances of the current selected object");
     sWhatsThis    = "Std_TreeSelectAllInstances";
@@ -3072,7 +3190,7 @@ DEF_STD_CMD_A(StdCmdMeasureDistance)
 StdCmdMeasureDistance::StdCmdMeasureDistance()
   : Command("Std_MeasureDistance")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Measure distance");
     sToolTipText  = QT_TR_NOOP("Measure distance");
     sWhatsThis    = "Std_MeasureDistance";
@@ -3163,7 +3281,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
   : Command("Std_SceneInspector")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Scene inspector...");
     sToolTipText  = QT_TR_NOOP("Scene inspector");
     sWhatsThis    = "Std_SceneInspector";
@@ -3197,7 +3315,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
   : Command("Std_TextureMapping")
 {
     // setting the
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Texture mapping...");
     sToolTipText  = QT_TR_NOOP("Texture mapping");
     sWhatsThis    = "Std_TextureMapping";
@@ -3224,7 +3342,7 @@ DEF_STD_CMD(StdCmdDemoMode)
 StdCmdDemoMode::StdCmdDemoMode()
   : Command("Std_DemoMode")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("View turntable...");
     sToolTipText  = QT_TR_NOOP("View turntable");
     sWhatsThis    = "Std_DemoMode";
@@ -3252,7 +3370,7 @@ DEF_STD_CMD(CmdViewMeasureClearAll)
 CmdViewMeasureClearAll::CmdViewMeasureClearAll()
   : Command("View_Measure_Clear_All")
 {
-    sGroup        = QT_TR_NOOP("Measure");
+    sGroup        = "Measure";
     sMenuText     = QT_TR_NOOP("Clear measurement");
     sToolTipText  = QT_TR_NOOP("Clear measurement");
     sWhatsThis    = "View_Measure_Clear_All";
@@ -3282,7 +3400,7 @@ DEF_STD_CMD(CmdViewMeasureToggleAll)
 CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
   : Command("View_Measure_Toggle_All")
 {
-    sGroup        = QT_TR_NOOP("Measure");
+    sGroup        = "Measure";
     sMenuText     = QT_TR_NOOP("Toggle measurement");
     sToolTipText  = QT_TR_NOOP("Toggle measurement");
     sWhatsThis    = "View_Measure_Toggle_All";
@@ -3311,7 +3429,7 @@ DEF_STD_CMD_AC(StdCmdSelUp)
 StdCmdSelUp::StdCmdSelUp()
   :Command("Std_SelUp")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Up hierarchy");
   sToolTipText  = QT_TR_NOOP("Go up object hierarchy of the current selection");
   sWhatsThis    = "Std_SelUp";
@@ -3352,7 +3470,7 @@ DEF_STD_CMD_A(StdCmdSelBack)
 StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Back");
   sToolTipText  = QT_TR_NOOP("Go back to previous selection");
   sWhatsThis    = "Std_SelBack";
@@ -3383,7 +3501,7 @@ DEF_STD_CMD_A(StdCmdSelForward)
 StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Forward");
   sToolTipText  = QT_TR_NOOP("Repeat the backed selection");
   sWhatsThis    = "Std_SelForward";
@@ -3414,7 +3532,7 @@ DEF_STD_CMD_A(StdCmdPickGeometry)
 StdCmdPickGeometry::StdCmdPickGeometry()
   :Command("Std_PickGeometry")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Pick geometry");
   sToolTipText  = QT_TR_NOOP("Pick hidden geometires under the mouse cursor in 3D view.\n"
                              "This command is supposed to be activated by keyboard shortcut.");
@@ -3460,7 +3578,7 @@ DEF_STD_CMD_A(StdCmdItemMenu)
 StdCmdItemMenu::StdCmdItemMenu()
   :Command("Std_ItemMenu")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Item menu");
   sToolTipText  = QT_TR_NOOP("Bring up the context menu of either a document or\n"
                              "an object item under the mouse cursor.");
@@ -3515,7 +3633,7 @@ TREEVIEW_DOC_CMD_DEF(SingleDocument,0)
 StdTreeSingleDocument::StdTreeSingleDocument()
   : Command("Std_TreeSingleDocument")
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Single document");
     sToolTipText = QT_TR_NOOP("Only display the active document in the tree view");
     sWhatsThis   = "Std_TreeSingleDocument";
@@ -3532,7 +3650,7 @@ TREEVIEW_DOC_CMD_DEF(MultiDocument,1)
 StdTreeMultiDocument::StdTreeMultiDocument()
   : Command("Std_TreeMultiDocument")
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Multi document");
     sToolTipText = QT_TR_NOOP("Display all documents in the tree view");
     sWhatsThis   = "Std_TreeMultiDocument";
@@ -3549,7 +3667,7 @@ TREEVIEW_DOC_CMD_DEF(CollapseDocument,2)
 StdTreeCollapseDocument::StdTreeCollapseDocument()
   : Command("Std_TreeCollapseDocument")
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Collapse/Expand");
     sToolTipText = QT_TR_NOOP("Expand active document and collapse all others");
     sWhatsThis   = "Std_TreeCollapseDocument";
@@ -3583,7 +3701,7 @@ StdTree##_name::StdTree##_name():StdCmdCheckableOption("Std_Tree" #_name)
 
 TREEVIEW_CMD_DEF(SyncView)
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Sync view");
     sToolTipText = QT_TR_NOOP("Auto switch to the 3D view containing the selected item");
     sStatusTip   = sToolTipText;
@@ -3598,7 +3716,7 @@ TREEVIEW_CMD_DEF(SyncView)
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncSelection)
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Sync selection");
     sToolTipText = QT_TR_NOOP("Auto expand tree item when the corresponding object is selected in 3D view");
     sStatusTip   = sToolTipText;
@@ -3613,7 +3731,7 @@ TREEVIEW_CMD_DEF(SyncSelection)
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncPlacement)
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Sync placement");
     sToolTipText = QT_TR_NOOP("Auto adjust placement on drag and drop objects across coordinate systems");
     sStatusTip   = sToolTipText;
@@ -3628,7 +3746,7 @@ TREEVIEW_CMD_DEF(SyncPlacement)
 //===========================================================================
 TREEVIEW_CMD_DEF(PreSelection)
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Tree view pre-selection");
     sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when mouse over the tree item");
     sStatusTip   = sToolTipText;
@@ -3643,7 +3761,7 @@ TREEVIEW_CMD_DEF(PreSelection)
 //===========================================================================
 TREEVIEW_CMD_DEF(RecordSelection)
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Record selection");
     sToolTipText = QT_TR_NOOP("Record selection in tree view in order to go back/forward using navigation button");
     sStatusTip   = sToolTipText;
@@ -3661,7 +3779,7 @@ DEF_STD_CMD(StdTreeDrag)
 StdTreeDrag::StdTreeDrag()
   : Command("Std_TreeDrag")
 {
-    sGroup       = QT_TR_NOOP("TreeView");
+    sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Initiate dragging");
     sToolTipText = QT_TR_NOOP("Initiate dragging of current selected tree items");
     sStatusTip   = sToolTipText;
@@ -3693,7 +3811,7 @@ public:
     StdCmdTreeViewActions()
         :GroupCommand("Std_TreeViewActions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "TreeView";
         sMenuText     = QT_TR_NOOP("TreeView actions");
         sToolTipText  = QT_TR_NOOP("TreeView behavior options and actions");
         sWhatsThis    = "Std_TreeViewActions";
@@ -3744,7 +3862,7 @@ StdCmd##_name::StdCmd##_name():StdCmdCheckableOption("Std_" #_name)
 //======================================================================
 VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Bounding box");
   sToolTipText  = ViewParams::docShowSelectionBoundingBox();
   sWhatsThis    = "Std_SelBoundingBox";
@@ -3758,7 +3876,7 @@ VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 //======================================================================
 VIEW_CMD_DEF(TightBoundingBox, UseTightBoundingBox)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Tighten bounding box");
   sToolTipText  = ViewParams::docUseTightBoundingBox();
   sWhatsThis    = "Std_TightBoundingBox";
@@ -3771,7 +3889,7 @@ VIEW_CMD_DEF(TightBoundingBox, UseTightBoundingBox)
 //======================================================================
 VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Project bounding box");
   sToolTipText  = ViewParams::docRenderProjectedBBox();
   sWhatsThis    = "Std_ProjectBoundingBox";
@@ -3784,7 +3902,7 @@ VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
 //======================================================================
 VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Show selected face wires");
   sToolTipText  = ViewParams::docSelectionFaceWire();
   sWhatsThis    = "Std_SelectionFaceWire";
@@ -3797,7 +3915,7 @@ VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
 //======================================================================
 VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Selection on top");
   sToolTipText  = ViewParams::docShowSelectionOnTop();
   sWhatsThis    = "Std_SelOnTop";
@@ -3812,7 +3930,7 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 //======================================================================
 VIEW_CMD_DEF(PreSelFaceOnTop, ShowPreSelectedFaceOnTop)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Pre-selection on top");
   sToolTipText  = ViewParams::docShowPreSelectedFaceOnTop();
   sWhatsThis    = "Std_PreSelFaceOnTop";
@@ -3825,7 +3943,7 @@ VIEW_CMD_DEF(PreSelFaceOnTop, ShowPreSelectedFaceOnTop)
 //======================================================================
 VIEW_CMD_DEF(PreSelFaceOutline, ShowPreSelectedFaceOutline)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Draw pre-selection outline");
   sToolTipText  = ViewParams::docShowPreSelectedFaceOutline();
   sWhatsThis    = "Std_PreSelFaceOutline";
@@ -3838,7 +3956,7 @@ VIEW_CMD_DEF(PreSelFaceOutline, ShowPreSelectedFaceOutline)
 //======================================================================
 VIEW_CMD_DEF(SelHierarchyAscend, HierarchyAscend)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Hierarchy selection");
   sToolTipText  = ViewParams::docHierarchyAscend();
   sWhatsThis    = "Std_SelHierarhcyAscend";
@@ -3851,7 +3969,7 @@ VIEW_CMD_DEF(SelHierarchyAscend, HierarchyAscend)
 //======================================================================
 VIEW_CMD_DEF(PartialHighlightOnFullSelect, PartialHighlightOnFullSelect)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Partial highlight");
   sToolTipText  = ViewParams::docPartialHighlightOnFullSelect();
   sWhatsThis    = "Std_PartialHighlightOnFullSelect";
@@ -3864,7 +3982,7 @@ VIEW_CMD_DEF(PartialHighlightOnFullSelect, PartialHighlightOnFullSelect)
 //======================================================================
 VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("&Highlight edge only");
   sToolTipText  = ViewParams::docShowHighlightEdgeOnly();
   sWhatsThis    = "Std_PreselEdgeOnly";
@@ -3878,7 +3996,7 @@ VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
 //======================================================================
 VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Map children (Experimental!)");
   sToolTipText  = ViewParams::docMapChildrenPlacement();
   sWhatsThis    = "Std_MapChildrenPlacement";
@@ -3891,7 +4009,7 @@ VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
 //======================================================================
 VIEW_CMD_DEF(3DViewPreselection, EnablePreselection)
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("3D view pre-selection");
   sToolTipText  = QT_TR_NOOP("Enable pre-selection in 3D view");
   sWhatsThis    = "Std_3DViewPreselection";
@@ -3909,7 +4027,7 @@ public:
     StdCmdSelOptions()
         :GroupCommand("Std_SelOptions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Selection options");
         sToolTipText  = QT_TR_NOOP("Selection behavior options");
         sWhatsThis    = "Std_SelOptions";
@@ -3947,7 +4065,7 @@ DEF_STD_CMD(StdCmdDockOverlayAll)
 StdCmdDockOverlayAll::StdCmdDockOverlayAll()
   :Command("Std_DockOverlayAll")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Toggle overlay for all");
   sToolTipText  = QT_TR_NOOP("Toggle overlay mode for all docked windows");
   sWhatsThis    = "Std_DockOverlayAll";
@@ -3971,7 +4089,7 @@ DEF_STD_CMD(StdCmdDockOverlayTransparentAll)
 StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
   :Command("Std_DockOverlayTransparentAll")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Toggle transparent for all");
   sToolTipText  = QT_TR_NOOP("Toggle transparent for all overlay docked window.\n"
                              "This makes the docked widget stay transparent at al times.");
@@ -3996,7 +4114,7 @@ DEF_STD_CMD(StdCmdDockOverlayToggle)
 StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
   :Command("Std_DockOverlayToggle")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Toggle overlay");
   sToolTipText  = QT_TR_NOOP("Toggle overlay mode of the docked window under cursor");
   sWhatsThis    = "Std_DockOverlayToggle";
@@ -4020,7 +4138,7 @@ DEF_STD_CMD(StdCmdDockOverlayToggleTransparent)
 StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
   :Command("Std_DockOverlayToggleTransparent")
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Toggle transparent");
     sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked widget under cursor.\n"
                                "This makes the docked widget stay transparent at al times.");
@@ -4045,7 +4163,7 @@ DEF_STD_CMD(StdCmdDockOverlayIncrease)
 StdCmdDockOverlayIncrease::StdCmdDockOverlayIncrease()
   :Command("Std_DockOverlayIncrease")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Increase overlay size");
   sToolTipText  = QT_TR_NOOP("Increase the overlayed widget size under cursor");
   sWhatsThis    = "Std_DockOverlayIncrease";
@@ -4069,7 +4187,7 @@ DEF_STD_CMD(StdCmdDockOverlayDecrease)
 StdCmdDockOverlayDecrease::StdCmdDockOverlayDecrease()
   :Command("Std_DockOverlayDecrease")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Decrease overlay size");
   sToolTipText  = QT_TR_NOOP("Decrease the overlayed widget size under cursor");
   sWhatsThis    = "Std_DockOverlayDecrease";
@@ -4090,7 +4208,7 @@ void StdCmdDockOverlayDecrease::activated(int iMsg)
 
 VIEW_CMD_DEF(DockOverlayAutoView, DockOverlayAutoView)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Auto hide non 3D view");
     sToolTipText  = QT_TR_NOOP("Activate auto hide for non 3D view");
     sWhatsThis    = "Std_DockOverlayAutoView";
@@ -4104,7 +4222,7 @@ VIEW_CMD_DEF(DockOverlayAutoView, DockOverlayAutoView)
 
 VIEW_CMD_DEF(DockOverlayExtraState, DockOverlayExtraState)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("More hiding in overlay");
     sToolTipText  = QT_TR_NOOP("Hide more widgets when in overlay mode");
     sWhatsThis    = "Std_DockOverlayExtraState";
@@ -4118,7 +4236,7 @@ VIEW_CMD_DEF(DockOverlayExtraState, DockOverlayExtraState)
 
 VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Activate on hover");
     sToolTipText  = QT_TR_NOOP("Activate auto hidden overlay on mouse hover.\n"
                                "If disabled, then activate on mouse click");
@@ -4133,7 +4251,7 @@ VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
 
 VIEW_CMD_DEF(DockOverlayAutoMouseThrough, DockOverlayAutoMouseThrough)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Auto mouse event pass through");
     sToolTipText  = QT_TR_NOOP("Auto pass through mouse event on completely transparent background");
     sWhatsThis    = "Std_DockOverlayAutoMouseThrough";
@@ -4147,7 +4265,7 @@ VIEW_CMD_DEF(DockOverlayAutoMouseThrough, DockOverlayAutoMouseThrough)
 
 VIEW_CMD_DEF(DockOverlayCheckNaviCube, DockOverlayCheckNaviCube)
 {
-    sGroup        = QT_TR_NOOP("Standard-View");
+    sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Make space for NaviCube");
     sToolTipText  = QT_TR_NOOP("Adjust overlay size to make space for Navigation Cube\n"
                                "Note that it only respects the cube position setting in\n"
@@ -4167,7 +4285,7 @@ DEF_STD_CMD_AC(StdCmdDockOverlayMouseTransparent)
 StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
   :Command("Std_DockOverlayMouseTransparent")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Bypass mouse event in dock overlay");
   sToolTipText  = QT_TR_NOOP("Bypass all mouse event in dock overlay");
   sWhatsThis    = "Std_DockOverlayMouseTransparent";
@@ -4209,7 +4327,7 @@ public:
     StdCmdDockOverlay()
         :GroupCommand("Std_DockOverlay")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Dock window overlay");
         sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
         sWhatsThis    = "Std_DockOverlay";
@@ -4247,7 +4365,7 @@ DEF_STD_CMD_AC(StdCmdBindViewCamera)
 StdCmdBindViewCamera::StdCmdBindViewCamera()
   : Command("Std_BindViewCamera")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Bind view camera");
     sToolTipText  = QT_TR_NOOP("Bind the camera position of the active view to another view");
     sWhatsThis    = "Std_BindViewCamera";
@@ -4285,7 +4403,7 @@ DEF_STD_CMD_A(StdCmdCloseLinkedView)
 StdCmdCloseLinkedView::StdCmdCloseLinkedView()
   :Command("Std_CloseLinkedView")
 {
-  sGroup        = QT_TR_NOOP("View");
+  sGroup        = "View";
   sMenuText     = QT_TR_NOOP("Close all linked view");
   sToolTipText  = QT_TR_NOOP("Close all views of the linked documents.\n"
                              "The linked documents stayed open.");

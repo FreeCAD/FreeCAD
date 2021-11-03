@@ -2310,7 +2310,6 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
-    using namespace boost::tuples;
     std::string completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
@@ -2319,7 +2318,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     std::string expression = Base::Tools::toStdString(prefix.mid(start));
 
     // Tokenize prefix
-    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
+    std::vector<std::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
     // No tokens
     if (tokens.size() == 0) {

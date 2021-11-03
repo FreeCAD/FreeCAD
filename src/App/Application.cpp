@@ -30,6 +30,7 @@
 # include <sstream>
 # include <exception>
 # include <ios>
+# include <functional>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -38,13 +39,15 @@
 # define WINVER 0x502 // needed for SetDllDirectory
 # include <Windows.h>
 # endif
-# include <ctime>
 # include <csignal>
 # include <boost/program_options.hpp>
+# include <boost/filesystem.hpp>
+# include <boost/date_time/posix_time/posix_time.hpp>
 #endif
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
+# include <codecvt>
 #endif
 
 #if defined(FC_OS_BSD)
@@ -133,8 +136,6 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost_bind_bind.hpp>
-#include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -143,7 +144,7 @@ using namespace App;
 using namespace std;
 using namespace boost;
 using namespace boost::program_options;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 // scriptings (scripts are built-in but can be overridden by command line option)
@@ -204,7 +205,6 @@ PyDoc_STRVAR(Base_doc,
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
     );
 
-#if PY_MAJOR_VERSION >= 3
 // This is called via the PyImport_AppendInittab mechanism called
 // during initialization, to make the built-in __FreeCADBase__
 // module known to Python.
@@ -233,7 +233,6 @@ init_freecad_module(void)
     };
     return PyModule_Create(&FreeCADModuleDef);
 }
-#endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
@@ -248,7 +247,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     // setting up Python binding
     Base::PyGILStateLocker lock;
-#if PY_MAJOR_VERSION >= 3
     PyObject* modules = PyImport_GetModuleDict();
 
     __AppMethods = Application::Methods;
@@ -258,12 +256,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         pAppModule = init_freecad_module();
         PyDict_SetItemString(modules, "FreeCAD", pAppModule);
     }
-#else
-    PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
-#endif
     Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
 
-#if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
@@ -271,9 +265,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
-#else
-    PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
-#endif
 
     // introducing additional classes
 
@@ -292,16 +283,13 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // binding classes from the base module. At a later stage we should
     // remove these types from the FreeCAD module.
 
-#if PY_MAJOR_VERSION >= 3
     PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
     if (!pBaseModule) {
         PyErr_Clear();
         pBaseModule = init_freecad_base_module();
         PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
     }
-#else
-    PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
-#endif
+
     Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
     Py_INCREF(Base::BaseExceptionFreeCADError);
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
@@ -351,7 +339,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
-#if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef UnitsModuleDef = {
         PyModuleDef_HEAD_INIT,
         "Units", "The Unit API", -1,
@@ -359,14 +346,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
-#else
-    PyObject* pUnitsModule = Py_InitModule3("Units", Base::UnitsApi::Methods,"The Unit API");
-#endif
     Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
     // make sure to set the 'nb_true_divide' slot
-#if PY_MAJOR_VERSION < 3
-    Base::QuantityPy::Type.tp_as_number->nb_true_divide = Base::QuantityPy::Type.tp_as_number->nb_divide;
-#endif
     Base::Interpreter().addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
 
     Py_INCREF(pUnitsModule);
@@ -456,27 +437,27 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc = DocMap[name];
 
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, bp::_1));
-    _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, bp::_1));
-    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, bp::_1, bp::_2));
-    _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, bp::_1, bp::_2));
-    _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, bp::_1));
-    _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, bp::_1));
-    _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, bp::_1));
-    _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, bp::_1));
-    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, bp::_1));
-    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, bp::_1));
-    _pActiveDoc->signalSkipRecompute.connect(boost::bind(&App::Application::slotSkipRecompute, this, bp::_1, bp::_2));
-    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, bp::_1));
-    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, bp::_1, bp::_2));
-    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, bp::_1));
-    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, bp::_1));
-    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, bp::_1, bp::_2));
+    _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
+    _pActiveDoc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
+    _pActiveDoc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
+    _pActiveDoc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
+    _pActiveDoc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
+    _pActiveDoc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
+    _pActiveDoc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
+    _pActiveDoc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
+    _pActiveDoc->signalSkipRecompute.connect(std::bind(&App::Application::slotSkipRecompute, this, sp::_1, sp::_2));
+    _pActiveDoc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
+    _pActiveDoc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    _pActiveDoc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
+    _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
+    _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(
-            boost::bind(&App::Application::slotChangePropertyEditor, this, bp::_1, bp::_2));
+            std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1820,7 +1801,11 @@ void segmentation_fault_handler(int sig)
     (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
+#if defined(FC_DEBUG)
+    abort();
+#else
     exit(1);
+#endif
 #else
     switch (sig) {
         case SIGSEGV:
@@ -1904,10 +1889,6 @@ void Application::init(int argc, char ** argv)
         _set_se_translator(my_se_translator_filter);
 #endif
         initTypes();
-
-#if (BOOST_FILESYSTEM_VERSION == 2)
-        boost::filesystem::path::default_name_check(boost::filesystem::no_check);
-#endif
 
         initConfig(argc,argv);
         initApplication();
@@ -2003,6 +1984,7 @@ void Application::initTypes(void)
     App ::PropertyPlacement         ::init();
     App ::PropertyPlacementList     ::init();
     App ::PropertyPlacementLink     ::init();
+    App ::PropertyRotation          ::init();
     App ::PropertyGeometry          ::init();
     App ::PropertyComplexGeoData    ::init();
     App ::PropertyColor             ::init();
@@ -2185,10 +2167,8 @@ void Application::initConfig(int argc, char ** argv)
 #   endif
 
     // init python
-#if PY_MAJOR_VERSION >= 3
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-#endif
     const char* pythonpath = Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
@@ -2200,9 +2180,13 @@ void Application::initConfig(int argc, char ** argv)
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    if (mConfig["LoggingConsole"] == "1") {
-        _pConsoleObserverStd = new ConsoleObserverStd();
-        Console().AttachObserver(_pConsoleObserverStd);
+    _pConsoleObserverStd = new ConsoleObserverStd();
+    Console().AttachObserver(_pConsoleObserverStd);
+    if (mConfig["LoggingConsole"] != "1") {
+        _pConsoleObserverStd->bMsg = false;
+        _pConsoleObserverStd->bLog = false;
+        _pConsoleObserverStd->bWrn = false;
+        _pConsoleObserverStd->bErr = false;
     }
     if (mConfig["Verbose"] == "Strict")
         Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
@@ -2560,9 +2544,9 @@ void Application::runApplication()
 
 void Application::logStatus()
 {
-    time_t now;
-    time(&now);
-    Console().Log("Time = %s", ctime(&now));
+    std::string time_str = boost::posix_time::to_simple_string(
+        boost::posix_time::second_clock::local_time());
+    Console().Log("Time = %s\n", time_str.c_str());
 
     for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
         Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
@@ -3066,56 +3050,37 @@ void Application::ExtractUserPath()
         mConfig["UserHomePath"] = userHome.toUtf8().data();
     }
 
-    std::string path = pwd->pw_dir;
-    if (!userData.isEmpty()) {
-        path = userData.toUtf8().data();
-    }
+    boost::filesystem::path appData(pwd->pw_dir);
+    if (!userData.isEmpty())
+        appData = userData.toUtf8().data();
 
-    std::string appData(path);
-    Base::FileInfo fi(appData.c_str());
-    if (!fi.exists()) {
+    if (!boost::filesystem::exists(appData)) {
         // This should never ever happen
-        std::stringstream str;
-        str << "Application data directory " << appData << " does not exist!";
-        throw Base::FileSystemError(str.str());
+        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
     }
 
-    // In order to write into our data path, we must create some directories, first.
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
-    appData += PATHSEP;
-    appData += ".";
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData += mConfig["ExeVendor"];
-        fi.setFile(appData.c_str());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                std::string error = "Cannot create directory ";
-                error += appData;
-                // Want more details on console
-                std::cerr << error << std::endl;
-                throw Base::FileSystemError(error);
-            }
-        }
-        appData += PATHSEP;
-    }
-
-    appData += mConfig["ExeName"];
-    fi.setFile(appData.c_str());
-    if (!fi.exists() && !Py_IsInitialized()) {
-        if (!fi.createDirectory()) {
-            std::string error = "Cannot create directory ";
-            error += appData;
-            // Want more details on console
-            std::cerr << error << std::endl;
-            throw Base::FileSystemError(error);
-        }
+        appData /= "." + mConfig["ExeVendor"];
+        appData /= mConfig["ExeName"];
+    } else {
+        appData /= "." + mConfig["ExeName"];
     }
 
     // Actually the name of the directory where the parameters are stored should be the name of
     // the application due to branding reasons.
-    appData += PATHSEP;
-    mConfig["UserAppData"] = appData;
+        
+    // In order to write to our data path, we must create some directories, first.
+    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+        try {
+            boost::filesystem::create_directories(appData);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
+        }
+    }
+
+    mConfig["UserAppData"] = appData.string() + PATHSEP;
 
 #elif defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff on the platform
@@ -3127,67 +3092,47 @@ void Application::ExtractUserPath()
         mConfig["UserHomePath"] = userHome.toUtf8().data();
     }
 
-    std::string appData = pwd->pw_dir;
-    if (!userData.isEmpty()) {
+    boost::filesystem::path appData(pwd->pw_dir);
+    if (!userData.isEmpty())
         appData = userData.toUtf8().data();
-    }
-    appData += PATHSEP;
-    appData += "Library";
-    appData += PATHSEP;
-    appData += "Preferences";
-    Base::FileInfo fi(appData.c_str());
-    if (!fi.exists()) {
+
+    appData = appData / "Library" / "Preferences";
+
+    if (!boost::filesystem::exists(appData)) {
         // This should never ever happen
-        std::stringstream str;
-        str << "Application data directory " << appData << " does not exist!";
-        throw Base::FileSystemError(str.str());
+        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
     }
 
-    // In order to write to our data path, we must create some directories, first.
-    // If 'AppDataSkipVendor' is defined the value of 'ExeVendor' must not be part of
+    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
-    appData += PATHSEP;
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData += mConfig["ExeVendor"];
-        fi.setFile(appData.c_str());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                std::string error = "Cannot create directory ";
-                error += appData;
-                // Want more details on console
-                std::cerr << error << std::endl;
-                throw Base::FileSystemError(error);
-            }
-        }
-        appData += PATHSEP;
+        appData /= mConfig["ExeVendor"];
     }
+    appData /= mConfig["ExeName"];
 
-    appData += mConfig["ExeName"];
-    fi.setFile(appData.c_str());
-    if (!fi.exists() && !Py_IsInitialized()) {
-        if (!fi.createDirectory()) {
-            std::string error = "Cannot create directory ";
-            error += appData;
-            // Want more details on console
-            std::cerr << error << std::endl;
-            throw Base::FileSystemError(error);
-        }
-    }
 
     // Actually the name of the directory where the parameters are stored should be the name of
     // the application due to branding reasons.
-    appData += PATHSEP;
-    mConfig["UserAppData"] = appData;
+        
+    // In order to write to our data path, we must create some directories, first.
+    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+        try {
+            boost::filesystem::create_directories(appData);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
+        }
+    }
+
+    mConfig["UserAppData"] = appData.string() + PATHSEP;
 
 #elif defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
-    char dest[MAX_PATH*3];
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     // Get the default path where we can save our documents. It seems that
     // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
     // which does the same.
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
-        WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
-        mConfig["UserHomePath"] = dest;
+        mConfig["UserHomePath"] = converter.to_bytes(szPath);
     }
     else {
         mConfig["UserHomePath"] = mConfig["AppHomePath"];
@@ -3201,67 +3146,43 @@ void Application::ExtractUserPath()
     // kept. There we create a directory with name of the vendor and a sub-directory with name
     // of the application.
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
-        // convert to UTF8
-        WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
+        boost::filesystem::path appData(szPath);
+        if (!userData.isEmpty())
+            appData = userData.toStdWString();
 
-        std::string appData = dest;
-        if (!userData.isEmpty()) {
-            appData = userData.toUtf8().data();
-        }
-        Base::FileInfo fi(appData.c_str());
-        if (!fi.exists()) {
+        if (!boost::filesystem::exists(appData)) {
             // This should never ever happen
-            std::stringstream str;
-            str << "Application data directory " << appData << " does not exist!";
-            throw Base::FileSystemError(str.str());
+            throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
         }
 
-        // In order to write to our data path we must create some directories first.
-        // If 'AppDataSkipVendor' is defined the value of 'ExeVendor' must not be part of
+        // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
         // the path.
         if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-            appData += PATHSEP;
-            appData += mConfig["ExeVendor"];
-            fi.setFile(appData.c_str());
-            if (!fi.exists() && !Py_IsInitialized()) {
-                if (!fi.createDirectory()) {
-                    std::string error = "Cannot create directory ";
-                    error += appData;
-                    // Want more details on console
-                    std::cerr << error << std::endl;
-                    throw Base::FileSystemError(error);
-                }
-            }
+            appData /= mConfig["ExeVendor"];
         }
-
-        appData += PATHSEP;
-        appData += mConfig["ExeName"];
-        fi.setFile(appData.c_str());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                std::string error = "Cannot create directory ";
-                error += appData;
-                // Want more details on console
-                std::cerr << error << std::endl;
-                throw Base::FileSystemError(error);
-            }
-        }
+        appData /= mConfig["ExeName"];
 
         // Actually the name of the directory where the parameters are stored should be the name of
         // the application due to branding reasons.
-        appData += PATHSEP;
-        mConfig["UserAppData"] = appData;
+            
+        // In order to write to our data path, we must create some directories, first.
+        if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+            try {
+                boost::filesystem::create_directories(appData);
+            } catch (const boost::filesystem::filesystem_error& e) {
+                throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
+            }
+        }
+
+        mConfig["UserAppData"] = converter.to_bytes(appData.wstring()) + PATHSEP;
 
         // Create the default macro directory
-        fi.setFile(getUserMacroDir());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                // If the creation fails only write an error but do not raise an
-                // exception because it doesn't prevent FreeCAD from working
-                std::string error = "Cannot create directory ";
-                error += fi.fileName();
-                // Want more details on console
-                std::cerr << error << std::endl;
+        boost::filesystem::path macroDir = converter.from_bytes(getUserMacroDir());
+        if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
+            try {
+                boost::filesystem::create_directories(macroDir);
+            } catch (const boost::filesystem::filesystem_error& e) {
+                throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
             }
         }
     }

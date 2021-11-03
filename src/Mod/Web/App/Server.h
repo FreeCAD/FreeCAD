@@ -82,23 +82,24 @@ class AppServer : public QTcpServer
     Q_OBJECT
 
 public:
-    AppServer(QObject* parent = 0);
-    static std::string runPython(const QByteArray&);
-
-#if QT_VERSION >=0x050000
-    void incomingConnection(qintptr socket);
-#else
-    void incomingConnection(int socket);
-#endif
+    AppServer(bool direct = false, QObject* parent = nullptr);
 
 protected:
+    void incomingConnection(qintptr socket);
     void customEvent(QEvent* e);
+
+private:
+    std::string handleRequest(QByteArray);
+    static std::string runPython(const QByteArray&);
+    std::string getRequest(const std::string&) const;
 
 private Q_SLOTS:
     void readClient();
     void discardClient();
 
 private:
+    bool direct;
+    Py::Object module;
 };
 
 }

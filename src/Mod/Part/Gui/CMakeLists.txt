@@ -40,37 +40,6 @@ if (BUILD_QT5)
     )
 endif()
 
-set(PartGui_MOC_HDRS
-    CrossSections.h
-    Mirroring.h
-    DlgBooleanOperation.h
-    DlgExtrusion.h
-    DlgFilletEdges.h
-    DlgPartBoxImp.h
-    DlgPartCylinderImp.h
-    DlgPartImportIgesImp.h
-    DlgPartImportStepImp.h
-    DlgPrimitives.h
-    DlgRevolution.h
-    DlgSettings3DViewPartImp.h
-    DlgSettingsGeneral.h
-    DlgSettingsObjectColor.h
-    DlgProjectionOnSurface.h
-    PropertyEnumAttacherItem.h
-    # TaskFaceColors.h
-    TaskShapeBuilder.h
-    TaskLoft.h
-    TaskOffset.h
-    TaskSweep.h
-    TaskThickness.h
-    TaskDimension.h
-    TaskCheckGeometry.h
-    TaskAttacher.h
-    PartParams.h
-)
-fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
-
 if (BUILD_QT5)
     qt5_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
 else()
@@ -96,6 +65,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
+    ShapeFromMesh.ui
     # TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
@@ -244,6 +214,8 @@ SET(PartGui_SRCS
     ViewProviderSubShapeBinder.h
     Workbench.cpp
     Workbench.h
+    ShapeFromMesh.cpp
+    ShapeFromMesh.h
     # TaskFaceColors.cpp
     # TaskFaceColors.h
     # TaskFaceColors.ui

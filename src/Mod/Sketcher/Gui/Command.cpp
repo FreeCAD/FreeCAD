@@ -139,7 +139,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     :Command("Sketcher_NewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch.");
     sWhatsThis      = "Sketcher_NewSketch";
@@ -262,7 +262,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     :Command("Sketcher_EditSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Edit sketch");
     sToolTipText    = QT_TR_NOOP("Edit the selected sketch.");
     sWhatsThis      = "Sketcher_EditSketch";
@@ -292,7 +292,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
   : Command("Sketcher_LeaveSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Leave sketch");
     sToolTipText    = QT_TR_NOOP("Finish editing the active sketch.");
     sWhatsThis      = "Sketcher_LeaveSketch";
@@ -336,7 +336,7 @@ CmdSketcherStopOperation::CmdSketcherStopOperation()
   : Command("Sketcher_StopOperation")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Stop operation");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "stop the active operation "
@@ -377,7 +377,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     :Command("Sketcher_ReorientSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Reorient sketch...");
     sToolTipText    = QT_TR_NOOP("Place the selected sketch on one of the global coordinate planes.\n"
                                  "This will clear the 'Support' property, if any.");
@@ -504,7 +504,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
   : Command("Sketcher_MapSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Map sketch to face...");
     sToolTipText    = QT_TR_NOOP("Set the 'Support' of a sketch.\n"
                                  "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
@@ -621,7 +621,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                                      items,
                                      bCurIncompatible ? iSugg : iCurr,
                                      false,
-                                     &ok, 
+                                     &ok,
                                      Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
         if (!ok)
@@ -676,13 +676,14 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     : Command("Sketcher_ViewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View sketch");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "set the camera orientation perpendicular to the sketch plane.");
     sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
+    sAccel          = "Q, P";
     eType           = 0;
 }
 
@@ -715,7 +716,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
   : Command("Sketcher_ValidateSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Validate sketch...");
     sToolTipText    = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
                                  "invalid constraints, degenerated geometry, etc.");
@@ -753,7 +754,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
     : Command("Sketcher_MirrorSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Mirror sketch");
     sToolTipText    = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
                                  "by using the X or Y axes, or the origin point,\n"
@@ -860,7 +861,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 : Command("Sketcher_MergeSketches")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Merge sketches");
     sToolTipText    = QT_TR_NOOP("Create a new sketch from merging two or more selected sketches.");
     sWhatsThis      = "Sketcher_MergeSketches";
@@ -944,13 +945,14 @@ CmdSketcherViewSection::CmdSketcherViewSection()
 : Command("Sketcher_ViewSection")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View section");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "switch between section view and full view.");
     sWhatsThis      = "Sketcher_ViewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSection";
+    sAccel          = "Q, S";
     eType           = 0;
 }
 

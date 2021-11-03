@@ -32,10 +32,10 @@ namespace spirit {
 namespace traits
 {
 template <typename T1, typename T2, typename T3, typename T4>
-struct transform_attribute<boost::shared_ptr<dcm::ClusterGraph<T1,T2,T3,T4> > const, dcm::ClusterGraph<T1,T2,T3,T4>&, karma::domain>
+struct transform_attribute<std::shared_ptr<dcm::ClusterGraph<T1,T2,T3,T4> > const, dcm::ClusterGraph<T1,T2,T3,T4>&, karma::domain>
 {
     typedef dcm::ClusterGraph<T1,T2,T3,T4>& type;
-    static type pre(boost::shared_ptr<dcm::ClusterGraph<T1,T2,T3,T4> > const& val) {
+    static type pre(std::shared_ptr<dcm::ClusterGraph<T1,T2,T3,T4> > const& val) {
         return *val;
     }
 };
@@ -56,11 +56,11 @@ generator<Sys>::generator() : generator<Sys>::base_type(start) {
                << karma::lit("</Cluster>");
 
     cluster_pair %= karma::lit("<Cluster id=") << karma::int_ <<  ">#"
-                    << qi::attr_cast<boost::shared_ptr<graph>, graph&>(cluster);
+                    << qi::attr_cast<std::shared_ptr<graph>, graph&>(cluster);
 
     system %= system_prop << karma::lit("<Kernel>#") << kernel_prop
               << "$" << karma::eol << karma::lit("</Kernel>") << karma::eol
-	      << karma::lit("<Cluster id=0>#") << qi::attr_cast<boost::shared_ptr<graph>, graph&>(cluster);
+	      << karma::lit("<Cluster id=0>#") << qi::attr_cast<std::shared_ptr<graph>, graph&>(cluster);
 
     start %= karma::lit("<openDCM>#") << karma::eol << system << "$" << karma::eol << karma::lit("</openDCM>");
 };

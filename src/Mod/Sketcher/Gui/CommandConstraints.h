@@ -137,7 +137,14 @@ void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher::ConstraintType type, int geoid, Sketcher::PointPos pos);
 
 /// Does an endpoint-to-endpoint tangency
-void doEndpointTangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+void doEndpointTangency(Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+
+/// Does an endpoint-edge tangency
+void doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, Sketcher::PointPos PosId1, int GeoId2);
+
+/// shows constraint substitution information dialog box, enabling the user to forgo further notifications
+void notifyConstraintSubstitutions(const QString & message);
+
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 

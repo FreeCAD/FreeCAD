@@ -26,22 +26,22 @@
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>트리 보기에서 ViewProvider 사용</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation type="unfinished">If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>이 옵션을 선택하면 Multimatrix Object는 Parametric이 됩니다.</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
-      <translation type="unfinished">Use Multmatrix Feature</translation>
+      <translation>다중 매트릭스 기능 사용</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>다각형, 프리즘 또는 절두체의 최대 면 수입니다. fn이 이 값보다 크면 객체는 원형으로 간주됩니다. 제한이 없는 경우 0으로 설정</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="133"/>
@@ -56,12 +56,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
-      <translation type="unfinished">maximum fragment size</translation>
+      <translation>최대 조각 크기</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
-      <translation type="unfinished">angular (fa)</translation>
+      <translation>각(fa)</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="openscadprefs-base.ui" line="218"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
-      <translation type="unfinished">convexity</translation>
+      <translation>볼록</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="341"/>
@@ -91,12 +91,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
-      <translation type="unfinished">Deflection</translation>
+      <translation>편향</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
-      <translation type="unfinished">deflection</translation>
+      <translation>deflection</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="393"/>
@@ -106,27 +106,27 @@
     <message>
       <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>이 옵션을 선택하면 기능이 트리 보기에서 하위 항목을 요구합니다.</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>콘솔에서 디버그 정보 인쇄</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>OpenSCAD 실행 파일의 경로</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>조각의 최소 각도</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>프래그먼트의 최소 크기</translation>
     </message>
   </context>
   <context>
@@ -134,73 +134,88 @@
     <message>
       <location filename="OpenSCADCommands.py" line="149"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>모서리를 면으로 변환</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="309"/>
       <source>Please select 3 objects first</source>
-      <translation type="unfinished">Please select 3 objects first</translation>
+      <translation>먼저 3개의 개체를 선택하세요.</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>지원되지 않는 기능</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1226"/>
+      <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
       <translation type="unfinished">Press OK</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="347"/>
+      <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>추가</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="348"/>
+      <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="349"/>
+      <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>메시 처럼</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="350"/>
+      <location filename="OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>OpenSCAD 요소</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="423"/>
+      <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>실행</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="424"/>
+      <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>메쉬 부울</translation>
     </message>
     <message>
-      <location filename="OpenSCADUtils.py" line="623"/>
+      <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>오류 모든 모양은 2D이거나 둘 다 3D여야 합니다.</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>
       <source>Unable to explode %s</source>
       <translation type="unfinished">Unable to explode %s</translation>
     </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>새로 고침</translation>
+    </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="464"/>
+      <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
-      <translation type="unfinished">Add OpenSCAD Element...</translation>
+      <translation>OpenSCAD 요소 추가...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="468"/>
+      <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
     </message>
@@ -210,12 +225,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="126"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>색상 모양</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="129"/>
       <source>Color Shapes by validity and type</source>
-      <translation type="unfinished">Color Shapes by validity and type</translation>
+      <translation>유효성 및 유형별 색상 모양</translation>
     </message>
   </context>
   <context>
@@ -231,12 +246,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="291"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>게재위치 확장</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="294"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation type="unfinished">Expand all placements downwards the FeatureTree</translation>
+      <translation>FeatureTree 아래로 모든 배치를 확장합니다.</translation>
     </message>
   </context>
   <context>
@@ -255,12 +270,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="497"/>
+      <location filename="OpenSCADCommands.py" line="552"/>
       <source>Hull</source>
       <translation>선체</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="500"/>
+      <location filename="OpenSCADCommands.py" line="555"/>
       <source>Perform Hull</source>
       <translation type="unfinished">Perform Hull</translation>
     </message>
@@ -281,12 +296,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="477"/>
+      <location filename="OpenSCADCommands.py" line="532"/>
       <source>Mesh Boolean...</source>
       <translation type="unfinished">Mesh Boolean...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="481"/>
+      <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
     </message>
@@ -294,12 +309,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="516"/>
+      <location filename="OpenSCADCommands.py" line="571"/>
       <source>Minkowski</source>
       <translation>민코프스키</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="519"/>
+      <location filename="OpenSCADCommands.py" line="574"/>
       <source>Perform Minkowski</source>
       <translation>민코프스키 연산</translation>
     </message>
@@ -385,7 +400,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="83"/>
+      <location filename="InitGui.py" line="79"/>
       <source>OpenSCAD Part tools</source>
       <translation type="unfinished">OpenSCAD Part tools</translation>
     </message>
@@ -393,7 +408,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="81"/>
+      <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD도구</translation>
     </message>

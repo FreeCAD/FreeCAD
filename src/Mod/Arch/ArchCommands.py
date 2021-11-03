@@ -398,10 +398,11 @@ def closeHole(shape):
     else:
         return solid
 
-def getCutVolume(cutplane,shapes,clip=False):
-    """getCutVolume(cutplane,shapes,[clip]): returns a cut face and a cut volume
+def getCutVolume(cutplane,shapes,clip=False,depth=None):
+    """getCutVolume(cutplane,shapes,[clip,depth]): returns a cut face and a cut volume
     from the given shapes and the given cutting plane. If clip is True, the cutvolume will
-    also cut off everything outside the cutplane projection"""
+    also cut off everything outside the cutplane projection. If depth is non-zero, geometry
+    further than this distance will be clipped off"""
     if not shapes:
         return None,None,None
     if not cutplane.Faces:
@@ -415,7 +416,6 @@ def getCutVolume(cutplane,shapes,clip=False):
         bb.add(sh.BoundBox)
     bb.enlarge(1)
     # building cutplane space
-    placement = None
     um = vm = wm = 0
     try:
         if hasattr(cutplane,"Shape"):
@@ -470,6 +470,12 @@ def getCutVolume(cutplane,shapes,clip=False):
             cutvolume = cutvolume.removeSplitter()
             invcutvolume = extrudedplane
             cutface = p
+        if depth:
+            depthnormal = DraftVecUtils.scaleTo(cutnormal,depth)
+            depthvolume = cutface.extrude(depthnormal)
+            depthclipvolume = invcutvolume.cut(depthvolume)
+            cutvolume = cutvolume.fuse(depthclipvolume)
+            cutvolume = cutvolume.removeSplitter()
         return cutface,cutvolume,invcutvolume
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
@@ -571,9 +577,8 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
-        faces = []
         mesh = obj.Mesh
-        plac = obj.Placement
+        #plac = obj.Placement
         solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
         if solid:
             if solid.isClosed() and solid.isValid():
@@ -628,7 +633,7 @@ def removeShape(objs,mark=True):
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
-                    wal = ArchWall.makeWall(line,width=width,height=dims[3],name=name)
+                    ArchWall.makeWall(line,width=width,height=dims[3],name=name)
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
@@ -1347,14 +1352,14 @@ def printMessage( message ):
     if FreeCAD.GuiUp :
         if sys.version_info.major < 3:
             message = message.decode("utf8")
-        reply = QtGui.QMessageBox.information( None , "" , message )
+        QtGui.QMessageBox.information( None , "" , message )
 
 def printWarning( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
         if sys.version_info.major < 3:
             message = message.decode("utf8")
-        reply = QtGui.QMessageBox.warning( None , "" , message )
+        QtGui.QMessageBox.warning( None , "" , message )
 
 
 # command definitions ###############################################

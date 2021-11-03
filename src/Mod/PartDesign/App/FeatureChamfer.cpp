@@ -54,8 +54,8 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", NULL};
-const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
-const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,1.0};
+const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, FLT_MAX, 0.1};
+const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
 
 static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
 
@@ -116,7 +116,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
     baseShape.setTransform(Base::Matrix4D());
 
-    auto edges = getContiniusEdges(baseShape);
+    auto edges = getContinuousEdges(baseShape);
 
     if (edges.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
@@ -175,15 +175,16 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 }
 
-void Chamfer::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+void Chamfer::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-            strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) 
-    {
+        strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
         App::PropertyFloatConstraint p;
         p.Restore(reader);
         static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
+    }
+    else {
+        DressUp::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

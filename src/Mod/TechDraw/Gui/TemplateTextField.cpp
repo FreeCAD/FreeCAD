@@ -69,11 +69,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         //WF: why is this escaped?
         //    "<" is converted elsewhere and no other characters cause problems.
         //    escaping causes "&" to appear as "&amp;" etc
-//#if QT_VERSION >= 0x050000
 //            QString qsClean = ui.getFieldContent().toHtmlEscaped();
-//#else
-//            QString qsClean = Qt::escape( ui.getFieldContent() );
-//#endif
             QString qsClean = ui.getFieldContent();
             std::string utf8Content = qsClean.toUtf8().constData();
             tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);

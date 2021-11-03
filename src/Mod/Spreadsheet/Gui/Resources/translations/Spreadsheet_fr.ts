@@ -562,24 +562,64 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Insérer des lignes</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Supprimer des lignes</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Insérer des colonnes</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Supprimer des colonnes</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propriétés...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Insérer %n ligne au-dessus</numerusform>
+        <numerusform>Insérer %n lignes au-dessus</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Insérer %n lignes non contiguës</numerusform>
+        <numerusform>Insérer %n lignes non contiguës</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
+        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Insérer %n colonne(s) à droite</numerusform>
+        <numerusform>Insérer %n colonne(s) à droite</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Insérer %n colonnes non contiguës</numerusform>
+        <numerusform>Insérer %n colonnes non contiguës</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Supprimer une/des colonne</numerusform>
+        <numerusform>Supprimer une/des colonnes</numerusform>
+      </translation>
     </message>
   </context>
   <context>

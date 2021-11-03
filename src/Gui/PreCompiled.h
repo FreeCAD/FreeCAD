@@ -77,12 +77,12 @@
 #include <bitset>
 #include <unordered_set>
 #include <unordered_map>
+#include <tuple>
 
 // Boost
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/program_options.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/filesystem/path.hpp>

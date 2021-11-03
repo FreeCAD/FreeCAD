@@ -152,12 +152,12 @@ public:
     /// get the subelement by name
     virtual Data::Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
@@ -281,6 +281,9 @@ public:
     TopoDS_Shape makeLongHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
         Standard_Boolean left=Standard_False) const;
+    TopoDS_Shape makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+        Standard_Real height, Standard_Real nbturns=1, Standard_Real breakperiod=1,
+        Standard_Boolean left=Standard_False) const;
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,
@@ -316,7 +319,7 @@ public:
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
-    void sewShape();
+    void sewShape(double tolerance = 1.0e-06);
     bool fix(double, double, double);
     bool fixSolidOrientation();
     bool removeInternalWires(double);
@@ -355,7 +358,7 @@ public:
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
-                  const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+                  const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
     //@}
 

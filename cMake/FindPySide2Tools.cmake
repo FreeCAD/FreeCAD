@@ -55,10 +55,10 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     else()
         # Especially on Open Build Service we don't want changing date like
         # pyside2-uic generates in comments at beginning., which is why
-        # we follow the tool command with in-place sed.
+        # we follow the tool command with a POSIX-friendly sed.
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
           COMMAND "${PYSIDE2UICBINARY}" ${UICOPTIONS} "${infile}" -o "${outfile}"
-          COMMAND sed -i "/^# /d" "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
     endif()
@@ -85,7 +85,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         # we follow the tool command with in-place sed.
         ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
           COMMAND "${PYSIDE2RCCBINARY}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
-          COMMAND sed -i "/^# /d" "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
     endif()

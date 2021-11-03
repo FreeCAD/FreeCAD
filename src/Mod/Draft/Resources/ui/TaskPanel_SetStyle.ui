@@ -6,14 +6,51 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>245</width>
-    <height>531</height>
+    <width>246</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Style settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QComboBox" name="comboPresets">
+       <property name="toolTip">
+        <string>Fills the values below with a stored style preset</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Load preset</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="maximumSize">
+        <size>
+         <width>32</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Save current style as a preset...</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-save">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -162,7 +199,7 @@
       <string>Annotations</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0" columnminimumwidth="0,120">
-      <item row="3" column="1">
+      <item row="6" column="1">
        <widget class="QComboBox" name="ArrowStyle">
         <property name="toolTip">
          <string>The type of dimension arrows</string>
@@ -201,7 +238,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Text color</string>
@@ -228,7 +265,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="4" column="1">
        <widget class="Gui::ColorButton" name="TextColor">
         <property name="toolTip">
          <string>The color of texts and dimension texts</string>
@@ -245,14 +282,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Arrow style</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="8" column="1">
        <widget class="QCheckBox" name="ShowUnit">
         <property name="toolTip">
          <string>If the unit suffix is shown on dimension texts or not</string>
@@ -265,7 +302,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="7" column="1">
        <widget class="Gui::InputField" name="ArrowSize">
         <property name="toolTip">
          <string>The size of dimension arrows</string>
@@ -275,31 +312,62 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
          <string>Show unit</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Arrow size</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_14">
         <property name="text">
          <string>Unit override</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="9" column="1">
        <widget class="QLineEdit" name="UnitOverride">
         <property name="toolTip">
          <string>The unit to use for dimensions. Leave blank to use current FreeCAD unit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Text spacing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="TextSpacing">
+        <property name="toolTip">
+         <string>The space between the text and the dimension line</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Line spacing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="LineSpacing">
+        <property name="toolTip">
+         <string>The spacing between different lines of text</string>
         </property>
        </widget>
       </item>
@@ -307,11 +375,30 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="applyButton">
-     <property name="text">
-      <string>Apply to selected objects</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="toolTip">
+        <string>Apply above style to selected object(s)</string>
+       </property>
+       <property name="text">
+        <string>Selected</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-apply">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="dimButton">
+       <property name="text">
+        <string>Texts/dims</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

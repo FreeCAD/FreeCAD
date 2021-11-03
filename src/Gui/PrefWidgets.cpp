@@ -960,7 +960,7 @@ void PrefColorButton::restorePreferences()
   int g = (icol >> 16)&0xff;
   int b = (icol >>  8)&0xff;
   int a = (icol      )&0xff;
-  if (!this->allowChangeAlpha())
+  if (!this->allowTransparency())
       a = 0xff;
   setColor(QColor(r,g,b,a));
 }

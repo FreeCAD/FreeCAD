@@ -38,7 +38,6 @@ of the objects or the 3D view.
 # @{
 import math
 import os
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils
@@ -65,6 +64,10 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
+        # FIXME The following two imports were added as part of PR4926
+        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        import FreeCADGui as Gui
+        from pivy import coin
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):
@@ -112,6 +115,13 @@ def autogroup(obj):
     if Gui.draftToolBar.isConstructionMode():
         return
 
+    # check first for objects that do autogroup themselves
+    # at the moment only Arch_BuildingPart, which is an App::GeometryPython
+    for par in App.ActiveDocument.findObjects(Type="App::GeometryPython"):
+        if hasattr(par.Proxy,"autogroup"):
+            if par.Proxy.autogroup(par,obj):
+                return
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
@@ -129,13 +139,20 @@ def autogroup(obj):
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
-            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
+            active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            if obj in active_arch_obj.InListRecursive:
+                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+                return
+            active_arch_obj.addObject(obj)
 
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
             # if not scaled. Modified accordingly to realthunder suggestions
-            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            if obj in active_part.InListRecursive:
+                # do not autogroup if obj points to active_part to prevent cyclic references
+                return
             matrix = parent.getSubObject(sub, retType=4)
             if matrix.hasScale() == 1:
                 err = translate("Draft",
@@ -162,7 +179,8 @@ def autogroup(obj):
             elif hasattr(obj,"Placement"):
                 # every object that have a placement is processed here
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-            p.addObject(obj)
+
+            active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
@@ -176,7 +194,7 @@ def dim_symbol(symbol=None, invert=False):
 
         A numerical value defines different markers
          * 0, `SoSphere`
-         * 1, `SoMarkerSet` with a circle
+         * 1, `SoSeparator` with a `SoLineSet`, a circle (in fact a 24 sided polygon)
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
@@ -191,8 +209,7 @@ def dim_symbol(symbol=None, invert=False):
     Returns
     -------
     Coin.SoNode
-        A `Coin.SoSphere`, or `Coin.SoMarkerSet` (circle),
-        or `Coin.SoSeparator` (cone, face, line)
+        A `Coin.SoSphere`, or `Coin.SoSeparator` (circle, cone, face, line)
         that will be used as a dimension symbol.
     """
     if symbol is None:
@@ -208,10 +225,14 @@ def dim_symbol(symbol=None, invert=False):
         marker = coin.SoSphere()
         return marker
     elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        # Should be the same as
-        # marker.markerIndex = 10
-        marker.markerIndex = Gui.getMarkerIndex("circle", 9)
+        marker = coin.SoSeparator()
+        v = coin.SoVertexProperty()
+        for i in range(25):
+            ang = math.radians(i * 15)
+            v.vertex.set1Value(i, (math.sin(ang), math.cos(ang), 0))
+        p = coin.SoLineSet()
+        p.vertexProperty = v
+        marker.addChild(p)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -229,15 +250,19 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 3:
         marker = coin.SoSeparator()
+        # hints are required otherwise only the bottom of the face is colored
+        h = coin.SoShapeHints()
+        h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
         c.point.setValues([(-1, -2, 0), (0, 2, 0),
                            (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
+        marker.addChild(h)
         marker.addChild(c)
         marker.addChild(f)
         return marker
     elif symbol == 4:
-        return dimDash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+        return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
     else:
         _wrn(_tr("Symbol not implemented. Use a default symbol."))
         return coin.SoSphere()
@@ -382,7 +407,12 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = lcol
+                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
+                    # dimensions and other objects with text but no specific
+                    # TextColor property. TODO: Add TextColor property to dimensions
+                    obrep.LineColor = tcol
+                else:
+                    obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -601,63 +631,35 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             buffersize = p.byteCount()
             width = size[0]
             height = size[1]
-            numcomponents = int(float(buffersize) / (width * height))
+            numcomponents = int(buffersize / (width * height))
 
             img = coin.SoSFImage()
-            byteList = []
-            # isPy2 = sys.version_info.major < 3
-            isPy2 = six.PY2
+            byteList = bytearray()
 
             # The SoSFImage needs to be filled with bytes.
             # The pixel information is converted into a Qt color, gray,
             # red, green, blue, or transparency (alpha),
             # depending on the input image.
-            #
-            # If Python 2 is used, the color is turned into a character,
-            # which is of type 'byte', and added to the byte list.
-            # If Python 3 is used, characters are unicode strings,
-            # so they need to be encoded into 'latin-1'
-            # to produce the correct bytes for the list.
             for y in range(height):
                 # line = width*numcomponents*(height-(y));
                 for x in range(width):
-                    rgb = p.pixel(x, y)
-                    if numcomponents == 1 or numcomponents == 2:
-                        gray = chr(QtGui.qGray(rgb))
-                        if isPy2:
-                            byteList.append(gray)
-                        else:
-                            byteList.append(gray.encode('latin-1'))
+                    rgba = p.pixel(x, y)
+                    if numcomponents <= 2:
+                        byteList.append(QtGui.qGray(rgba))
 
                         if numcomponents == 2:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
-                    elif numcomponents == 3 or numcomponents == 4:
-                        red = chr(QtGui.qRed(rgb))
-                        green = chr(QtGui.qGreen(rgb))
-                        blue = chr(QtGui.qBlue(rgb))
+                            byteList.append(QtGui.qAlpha(rgba))
 
-                        if isPy2:
-                            byteList.append(red)
-                            byteList.append(green)
-                            byteList.append(blue)
-                        else:
-                            byteList.append(red.encode('latin-1'))
-                            byteList.append(green.encode('latin-1'))
-                            byteList.append(blue.encode('latin-1'))
+                    elif numcomponents <= 4:
+                        byteList.append(QtGui.qRed(rgba))
+                        byteList.append(QtGui.qGreen(rgba))
+                        byteList.append(QtGui.qBlue(rgba))
 
                         if numcomponents == 4:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
+                            byteList.append(QtGui.qAlpha(rgba))
                     # line += numcomponents
 
-            _bytes = b"".join(byteList)
+            _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
             _wrn("load_texture: {0}, {1}".format(exc.strerror,

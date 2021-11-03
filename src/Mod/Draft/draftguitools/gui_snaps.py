@@ -35,6 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 
+from draftutils.messages import _msg, _log
 from draftutils.translate import translate
 
 
@@ -56,21 +57,24 @@ def sync_snap_toolbar_button(button, status):
     snap_toolbar = Gui.Snapper.get_snap_toolbar()
     if not snap_toolbar:
         return
-    for a in snap_toolbar.actions():
-        if a.objectName() == button:
-            if button == "Draft_Snap_Lock_Button":
-                # for lock button
-                snap_toolbar.actions()[0].setChecked(status)
-                for a in snap_toolbar.actions()[1:]:
-                    if a.objectName()[:10] == "Draft_Snap":
-                        a.setEnabled(status)
-            else:
-                # for every other button
-                a.setChecked(status)
-                if a.isChecked():
-                    a.setToolTip(a.toolTip().replace("OFF","ON"))
+
+    # Setting the snap lock button enables or disables all of the other snap actions:
+    if button == "Draft_Snap_Lock_Button":
+        snap_toolbar.actions()[0].setChecked(status) # Snap lock must be the first button
+        for action in snap_toolbar.actions()[1:]:
+            if action.objectName()[:10] == "Draft_Snap":
+                action.setEnabled(status)
+
+    # All other buttons only affect themselves
+    else:
+        for action in snap_toolbar.actions():
+            if action.objectName() == button:
+                action.setChecked(status)
+                if action.isChecked():
+                    action.setToolTip(action.toolTip().replace("OFF","ON"))
                 else:
-                    a.setToolTip(a.toolTip().replace("ON","OFF"))
+                    action.setToolTip(action.toolTip().replace("ON","OFF"))
+                return
 
 
 def sync_snap_statusbar_button(button, status):
@@ -94,12 +98,25 @@ def sync_snap_statusbar_button(button, status):
         for a in actions:
             if a.objectName() == button:
                 a.setChecked(status)
+                return
 
 
 # SNAP GUI TOOLS ------------------------------------------------------------
 
+class Draft_Snap_Base():
+    def __init__(self, name="None"):
+        self.command_name = name
 
-class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        _log("GuiCommand: {}".format(self.command_name))
+        #_msg("{}".format(16*"-"))
+        #_msg("GuiCommand: {}".format(self.command_name))
+
+
+class Draft_Snap_Lock(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Lock tool.
 
     Activate or deactivate all snap methods at once.
@@ -130,7 +147,7 @@ class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
 
 
-class Draft_Snap_Midpoint(gui_base.GuiCommandSimplest):
+class Draft_Snap_Midpoint(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Midpoint tool.
 
     Set snapping to the midpoint of an edge.
@@ -160,7 +177,7 @@ class Draft_Snap_Midpoint(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
 
 
-class Draft_Snap_Perpendicular(gui_base.GuiCommandSimplest):
+class Draft_Snap_Perpendicular(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Perpendicular tool.
 
     Set snapping to a direction that is perpendicular to an edge.
@@ -190,7 +207,7 @@ class Draft_Snap_Perpendicular(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
 
 
-class Draft_Snap_Grid(gui_base.GuiCommandSimplest):
+class Draft_Snap_Grid(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Grid tool.
 
     Set snapping to the intersection of grid lines.
@@ -220,7 +237,7 @@ class Draft_Snap_Grid(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
 
 
-class Draft_Snap_Intersection(gui_base.GuiCommandSimplest):
+class Draft_Snap_Intersection(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Intersection tool.
 
     Set snapping to the intersection of edges.
@@ -250,7 +267,7 @@ class Draft_Snap_Intersection(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
 
 
-class Draft_Snap_Parallel(gui_base.GuiCommandSimplest):
+class Draft_Snap_Parallel(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Parallel tool.
 
     Set snapping to a direction that is parallel to an edge.
@@ -280,7 +297,7 @@ class Draft_Snap_Parallel(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
 
 
-class Draft_Snap_Endpoint(gui_base.GuiCommandSimplest):
+class Draft_Snap_Endpoint(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Endpoint tool.
 
     Set snapping to endpoints of an edge.
@@ -310,7 +327,7 @@ class Draft_Snap_Endpoint(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
 
 
-class Draft_Snap_Angle(gui_base.GuiCommandSimplest):
+class Draft_Snap_Angle(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Angle tool.
 
     Set snapping to points in a circular arc located at multiples
@@ -341,7 +358,7 @@ class Draft_Snap_Angle(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
 
 
-class Draft_Snap_Center(gui_base.GuiCommandSimplest):
+class Draft_Snap_Center(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Center tool.
 
     Set snapping to the center of a circular arc.
@@ -371,7 +388,7 @@ class Draft_Snap_Center(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
 
 
-class Draft_Snap_Extension(gui_base.GuiCommandSimplest):
+class Draft_Snap_Extension(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Extension tool.
 
     Set snapping to the extension of an edge.
@@ -401,7 +418,7 @@ class Draft_Snap_Extension(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
 
 
-class Draft_Snap_Near(gui_base.GuiCommandSimplest):
+class Draft_Snap_Near(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Near tool.
 
     Set snapping to the nearest point of an edge.
@@ -431,7 +448,7 @@ class Draft_Snap_Near(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
 
 
-class Draft_Snap_Ortho(gui_base.GuiCommandSimplest):
+class Draft_Snap_Ortho(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Ortho tool.
 
     Set snapping to a direction that is a multiple of 45 degrees
@@ -462,7 +479,7 @@ class Draft_Snap_Ortho(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
 
 
-class Draft_Snap_Special(gui_base.GuiCommandSimplest):
+class Draft_Snap_Special(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Special tool.
 
     Set snapping to the special points defined inside an object.
@@ -492,7 +509,7 @@ class Draft_Snap_Special(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
 
 
-class Draft_Snap_Dimensions(gui_base.GuiCommandSimplest):
+class Draft_Snap_Dimensions(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_Dimensions tool.
 
     Show temporary linear dimensions when editing an object
@@ -523,7 +540,7 @@ class Draft_Snap_Dimensions(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
 
 
-class Draft_Snap_WorkingPlane(gui_base.GuiCommandSimplest):
+class Draft_Snap_WorkingPlane(Draft_Snap_Base):
     """GuiCommand for the Draft_Snap_WorkingPlane tool.
 
     Restricts snapping to a point in the current working plane.
@@ -556,7 +573,7 @@ class Draft_Snap_WorkingPlane(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
 
 
-class ShowSnapBar(gui_base.GuiCommandSimplest):
+class ShowSnapBar(Draft_Snap_Base):
     """GuiCommand for the Draft_ShowSnapBar tool.
 
     Show the snap toolbar if it is hidden.

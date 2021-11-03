@@ -49,7 +49,7 @@ public:
 
     virtual bool doubleClicked(void) override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-
+    
     virtual std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
     virtual void setElementColors(const std::map<std::string, App::Color> &colors) override;
 

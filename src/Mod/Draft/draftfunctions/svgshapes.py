@@ -301,6 +301,7 @@ def get_circle(plane,
     svg += 'stroke-width:{};'.format(linewidth)
     svg += 'stroke-miterlimit:4;'
     svg += 'stroke-dasharray:{};'.format(lstyle)
+    svg += 'stroke-linecap:square;'
     svg += 'fill:{}'.format(fill) + '"'
     svg += '/>\n'
     return svg
@@ -330,6 +331,7 @@ def get_ellipse(plane,
     svg += 'stroke-width:{};'.format(linewidth)
     svg += 'stroke-miterlimit:4;'
     svg += 'stroke-dasharray:{};'.format(lstyle)
+    svg += 'stroke-linecap:square;'
     svg += 'fill:{}'.format(fill) + '"'
     svg += '/>\n'
     return svg
@@ -440,6 +442,7 @@ def get_path(obj, plane,
     svg += 'stroke-width:{};'.format(linewidth)
     svg += 'stroke-miterlimit:4;'
     svg += 'stroke-dasharray:{};'.format(lstyle)
+    svg += 'stroke-linecap:square;'
     svg += 'fill:{};'.format(fill)
     # fill_opacity must be a number, but if it's `None` it is omitted
     if fill_opacity is not None:

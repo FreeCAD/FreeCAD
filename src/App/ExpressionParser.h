@@ -25,6 +25,7 @@
 #ifndef EXPRESSION_PARSER_H
 #define EXPRESSION_PARSER_H
 
+#include <tuple>
 #include <Base/Interpreter.h>
 #include "Expression.h"
 
@@ -588,10 +589,10 @@ public:
         PRAGMA,
         LIST,
         TUPLE,
-        MSCALE,
-        MINVERT,
-        CREATE,
-        STR,
+        MSCALE, // matrix scale by vector
+        MINVERT, // invert matrix/placement/rotation
+        CREATE, // create new object of a given type
+        STR, // stringify
         HREF,
 
         // double binding, used by PropertyExpressionEngine to make a property both driving and driven
@@ -1279,9 +1280,9 @@ AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const cha
 AppExport bool isTokenAnIndentifier(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
 
-AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const char *str);
+AppExport std::vector<std::tuple<int, int, std::string> > tokenize(const char *str);
 
-inline std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str) {
+inline std::vector<std::tuple<int, int, std::string> > tokenize(const std::string & str) {
     return tokenize(str.c_str());
 }
 

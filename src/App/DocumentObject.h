@@ -469,7 +469,7 @@ public:
 
     /* Expression support */
 
-    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 

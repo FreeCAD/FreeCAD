@@ -135,9 +135,8 @@ public:
     virtual Part::Feature* getBaseObject(bool silent=false) const;
 
     //backwards compatibility: profile property was renamed and has different type now
-    virtual void handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName);
-    
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+
     virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
     // calculate the through all length

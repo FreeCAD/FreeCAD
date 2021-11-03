@@ -29,7 +29,6 @@
 
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_HCurve.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -47,6 +46,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -55,6 +55,9 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -67,6 +70,10 @@
 #include <Mod/Part/App/PartFeature.h>
 
 using namespace Import;
+
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
 
 
 //******************************************************************************
@@ -256,10 +263,10 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
 
     try {
         Handle(Geom_BSplineCurve) geom;
-        if (sd.fit_points > 0)
-            geom = getInterpolationSpline(sd);
-        else
+        if (sd.control_points > 0)
             geom = getSplineFromPolesAndKnots(sd);
+        else if (sd.fit_points > 0)
+            geom = getInterpolationSpline(sd);
 
         if (geom.IsNull())
             throw Standard_Failure();

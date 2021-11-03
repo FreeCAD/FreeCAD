@@ -311,6 +311,9 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
         floatProp.Restore(reader);
         static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
     }
+    else {
+        ViewProviderPart::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ViewProvider2DObjectGrid::attach(App::DocumentObject *pcFeat)

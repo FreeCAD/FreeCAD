@@ -403,9 +403,10 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
         writer.incInd();
         do {
             auto cell = getValue(*range);
-            if(cell)
+            if (cell) {
                 cell->save(writer);
-        }while(range.next());
+            }
+        } while (range.next());
         writer.decInd();
         writer.Stream() << writer.ind() << "</Range>\n";
     }
@@ -536,6 +537,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange, int type) {
     }
     signaller.tryInvoke();
 }
+
 
 Cell * PropertySheet::cellAt(CellAddress address)
 {
@@ -1117,6 +1119,14 @@ void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
     else {
         rows = cols = 1;
     }
+}
+
+App::CellAddress Spreadsheet::PropertySheet::getAnchor(App::CellAddress address) const
+{
+    if (auto anchor = mergedCells.find(address); anchor != mergedCells.end())
+        return anchor->second;
+    else
+        return address;
 }
 
 bool PropertySheet::isMergedCell(CellAddress address) const

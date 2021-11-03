@@ -61,9 +61,7 @@ class ViewProviderClone:
                 else:
                     c = o.ViewObject.ShapeColor
                     c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
-                    for f in o.Shape.Faces: # TODO: verify this line
-                        colors.append(c)
-
+                    colors += [c] * len(o.Shape.Faces) # TODO: verify this line
             elif o.hasExtension("App::GeoFeatureGroupExtension"):
                 for so in vobj.Object.Group:
                     if so.isDerivedFrom("Part::Feature"):
@@ -72,8 +70,7 @@ class ViewProviderClone:
                         else:
                             c = so.ViewObject.ShapeColor
                             c = (c[0],c[1],c[2],so.ViewObject.Transparency/100.0)
-                            for f in so.Shape.Faces:
-                                colors.append(c)
+                            colors += [c] * len(so.Shape.Faces)
         if colors:
             vobj.DiffuseColor = colors
 

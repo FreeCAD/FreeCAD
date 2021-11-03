@@ -128,16 +128,15 @@ void TaskRevolutionParameters::refresh()
         this->propReversed = &(rev->Reversed);
     }
 
-    double l = propAngle->getValue();
-    bool mirrored = propMidPlane->getValue();
-    bool reversed = propReversed->getValue();
+    ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
+    ui->checkBoxReversed->setChecked(propReversed->getValue());
 
-    ui->revolveAngle->setValue(l);
+    ui->revolveAngle->setValue(propAngle->getValue());
+    ui->revolveAngle->setMaximum(propAngle->getMaximum());
+    ui->revolveAngle->setMinimum(propAngle->getMinimum());
+
     blockUpdate = false;
     updateUI();
-
-    ui->checkBoxMidplane->setChecked(mirrored);
-    ui->checkBoxReversed->setChecked(reversed);
 
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);

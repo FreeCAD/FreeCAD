@@ -50,9 +50,7 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
   : QWidget(parent), ui(new Ui_TaskSketcherGeneral)
 {
     ui->setupUi(this);
-#if QT_VERSION >= 0x050200
     ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-#endif
     ui->checkBoxGridAutoScale->setChecked(PartGui::PartParams::AutoGridScale());
     connect(ui->checkBoxGridAutoScale, SIGNAL(toggled(bool)),
             this, SLOT(onToggleGridAutoScale(bool)));

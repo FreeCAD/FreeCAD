@@ -227,8 +227,8 @@ void CmdApproxCylinder::activated(int)
 
         // get normals
         {
-            std::vector<unsigned long> facets(kernel.CountFacets());
-            std::generate(facets.begin(), facets.end(), Base::iotaGen<unsigned long>(0));
+            std::vector<MeshCore::FacetIndex> facets(kernel.CountFacets());
+            std::generate(facets.begin(), facets.end(), Base::iotaGen<MeshCore::FacetIndex>(0));
             std::vector<Base::Vector3f> normals = kernel.GetFacetNormals(facets);
             Base::Vector3f base = fit.GetGravity();
             Base::Vector3f axis = fit.GetInitialAxisFromNormals(normals);
@@ -460,7 +460,7 @@ void CmdSegmentationFromComponents::activated(int)
         group->Label.setValue(labelname);
 
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
-        std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
+        std::vector<std::vector<MeshCore::FacetIndex> > comps = mesh.getComponents();
         for (auto jt : comps) {
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(jt));
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));

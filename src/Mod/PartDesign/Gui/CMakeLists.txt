@@ -29,40 +29,6 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-set(PartDesignGui_MOC_HDRS
-    TaskFeaturePick.h
-    TaskFeatureParameters.h
-    TaskSketchBasedParameters.h
-    TaskPadParameters.h
-    TaskPocketParameters.h
-    TaskChamferParameters.h
-    TaskFilletParameters.h
-    TaskDraftParameters.h
-    TaskThicknessParameters.h
-    TaskDressUpParameters.h
-    TaskHoleParameters.h
-    TaskRevolutionParameters.h
-    TaskTransformedMessages.h
-    TaskTransformedParameters.h
-    TaskMirroredParameters.h
-    TaskLinearPatternParameters.h
-    TaskGenericPatternParameters.h
-    TaskPolarPatternParameters.h
-    TaskScaledParameters.h
-    TaskMultiTransformParameters.h
-    TaskDatumParameters.h
-    TaskShapeBinder.h
-    TaskBooleanParameters.h
-    TaskPrimitiveParameters.h
-    TaskPipeParameters.h
-    TaskLoftParameters.h
-    TaskWrapParameters.h
-    TaskHelixParameters.h
-    Utils.h
-)
-fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
-
 if(BUILD_QT5)
     qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 else()
@@ -95,6 +61,7 @@ set(PartDesignGui_UIC_SRCS
     TaskLoftParameters.ui
     TaskWrapParameters.ui
     DlgReference.ui
+    DlgActiveBody.ui
     TaskHelixParameters.ui
 )
 
@@ -267,6 +234,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskHelixParameters.ui
     TaskHelixParameters.h
     TaskHelixParameters.cpp
+    DlgActiveBody.h
+    DlgActiveBody.cpp
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

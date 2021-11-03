@@ -149,7 +149,7 @@ QString checkStatusToString(const int &index)
     }
     if (index > 33 || index < 0)
     {
-        QString message(QObject::tr("Out Of Enum Range: "));
+        QString message(QObject::tr("Out Of Enum Range:") + QString::fromLatin1(" "));
         QString number;
         number.setNum(index);
         message += number;
@@ -356,17 +356,11 @@ QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int r
 
 void ResultModel::setResults(ResultEntry *resultsIn)
 {
-#if QT_VERSION >= 0x040600
     this->beginResetModel();
-#endif
     if (root)
         delete root;
     root = resultsIn;
-#if QT_VERSION >= 0x040600
     this->endResetModel();
-#else
-    this->reset();
-#endif
 }
 
 ResultEntry* ResultModel::getEntry(const QModelIndex &index)
@@ -717,8 +711,10 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #if OCC_VERSION_HEX >= 0x060900
 #if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#else
+#elif OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
+#else
+  Q_UNUSED(theScope)
 #endif // 0x070500
 #else
   Q_UNUSED(theProgress);
@@ -746,7 +742,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   Base::TimeInfo start_time;
 #endif
 
-BOPCheck.Perform();
+  BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
@@ -829,9 +825,9 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
     std::vector<FunctionMapType>::iterator mapIt;
     for (mapIt = functionMap.begin(); mapIt != functionMap.end(); ++mapIt)
     {
-        if ((*mapIt).get<0>() == entry->shape.ShapeType() && (*mapIt).get<1>() == stat)
+        if (std::get<0>(*mapIt) == entry->shape.ShapeType() && std::get<1>(*mapIt) == stat)
         {
-            ((*mapIt).get<2>())(entry);
+            (std::get<2>(*mapIt))(entry);
             return;
         }
     }

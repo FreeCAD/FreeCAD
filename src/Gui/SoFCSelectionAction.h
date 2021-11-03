@@ -34,6 +34,8 @@
 #include <Inventor/events/SoSubEvent.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
 
@@ -107,7 +109,7 @@ public:
     SoFCEnableSelectionAction (const SbBool& sel);
     ~SoFCEnableSelectionAction();
 
-    const SbBool& selection;
+    SbBool selection;
 
     static void initClass();
     static void finish(void);
@@ -132,7 +134,7 @@ public:
     SoFCEnableHighlightAction (const SbBool& sel);
     ~SoFCEnableHighlightAction();
 
-    const SbBool& highlight;
+    SbBool highlight;
 
     static void initClass();
     static void finish(void);
@@ -157,7 +159,7 @@ public:
     SoFCSelectionColorAction (const SoSFColor& col);
     ~SoFCSelectionColorAction();
 
-    const SoSFColor& selectionColor;
+    SoSFColor selectionColor;
 
     static void initClass();
     static void finish(void);
@@ -182,7 +184,7 @@ public:
     SoFCHighlightColorAction (const SoSFColor& col);
     ~SoFCHighlightColorAction();
 
-    const SoSFColor& highlightColor;
+    SoSFColor highlightColor;
 
     static void initClass();
     static void finish(void);
@@ -207,7 +209,7 @@ public:
     SoFCDocumentAction (const SoSFString& docName);
     ~SoFCDocumentAction();
 
-    const SoSFString& documentName;
+    SoSFString documentName;
 
     static void initClass();
     static void finish(void);

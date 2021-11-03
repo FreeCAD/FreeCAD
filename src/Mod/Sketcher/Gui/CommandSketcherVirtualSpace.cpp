@@ -89,13 +89,13 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
     : Command("Sketcher_SwitchVirtualSpace")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Switch virtual space");
     sToolTipText    = QT_TR_NOOP("Switches the selected constraints or the view to the other virtual space");
     sWhatsThis      = "Sketcher_SwitchVirtualSpace";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SwitchVirtualSpace";
-    sAccel          = "";
+    sAccel          = "Z, Z";
     eType           = ForEdit;
 }
 

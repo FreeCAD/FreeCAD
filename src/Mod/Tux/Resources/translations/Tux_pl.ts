@@ -21,7 +21,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="66"/>
       <source>Pan</source>
-      <translation>Przesunięcie</translation>
+      <translation>Panorama</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="67"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="70"/>
       <source>Rotation focus</source>
-      <translation>Ostrość obrotu</translation>
+      <translation>Tryb obrotu</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="73"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Skrócone</translation>
+      <translation>Kompaktowy</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="294"/>

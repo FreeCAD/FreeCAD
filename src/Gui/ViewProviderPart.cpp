@@ -89,13 +89,22 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
         if(prop == &OverrideColorList)
             applyColors();
     }
+
     inherited::onChanged(prop);
 }
 
 void ViewProviderPart::updateData(const App::Property *prop) {
     if(prop && !isRestoring() && !pcObject->isRestoring()) {
+        auto obj = Base::freecad_dynamic_cast<App::Part>(getObject());
         if(prop == getColoredElementsProperty()) 
             applyColors();
+        else if (obj && prop == &obj->Type) {
+            if (obj->Type.getStrValue() == "Assembly")
+                sPixmap = "Geofeaturegroup.svg";
+            else
+                sPixmap = "Geoassembly.svg";
+            signalChangeIcon();
+        }
     }
     inherited::updateData(prop);
 }

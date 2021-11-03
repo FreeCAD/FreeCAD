@@ -248,7 +248,9 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     if (title.isEmpty())
         title = QDockWidget::tr(name);
     dw->setWindowTitle(title);
-    dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
+    dw->setFeatures(QDockWidget::DockWidgetClosable
+                    | QDockWidget::DockWidgetMovable
+                    | QDockWidget::DockWidgetFloatable);
 
     d->_dockedWindows.push_back(dw);
 
@@ -454,6 +456,21 @@ void DockWindowManager::saveState()
         if (dw) {
             QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
             d->hPref->SetBool(dockName.constData(), dw->isVisible());
+        }
+    }
+}
+
+void DockWindowManager::loadState()
+{
+    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("MainWindow")->GetGroup("DockWindows");
+    const QList<DockWindowItem>& dockItems = d->_dockWindowItems.dockWidgets();
+    for (QList<DockWindowItem>::ConstIterator it = dockItems.begin(); it != dockItems.end(); ++it) {
+        QDockWidget* dw = findDockWidget(d->_dockedWindows, it->name);
+        if (dw) {
+            QByteArray dockName = it->name.toLatin1();
+            bool visible = hPref->GetBool(dockName.constData(), it->visibility);
+            dw->setVisible(visible);
         }
     }
 }

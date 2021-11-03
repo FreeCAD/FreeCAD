@@ -45,7 +45,9 @@ public:
     App::PropertyLength      Length2;
     App::PropertyBool        UseCustomVector;
     App::PropertyVector      Direction;
+    App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
+    App::PropertyLinkSub     ReferenceAxis;
     App::PropertyAngle       TaperAngle;
     App::PropertyAngle       TaperAngleRev;
     App::PropertyAngle       InnerTaperAngle;

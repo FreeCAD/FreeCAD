@@ -85,8 +85,10 @@ public:
     void updateHiddenColumns();
 
 protected Q_SLOTS:
-    void editingFinished();
+    void editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
+    void confirmAliasChanged(const QString& text);
     void aliasChanged(const QString& text);
+    void confirmContentChanged(const QString& text);
     void currentChanged( const QModelIndex & current, const QModelIndex & previous );
     void columnResized(int col, int oldSize, int newSize);
     void rowResized(int row, int oldSize, int newSize);
@@ -97,7 +99,6 @@ protected:
     void updateContentLine();
     void updateAliasLine();
     void setCurrentCell(QString str);
-    void keyPressEvent(QKeyEvent *event);
     void resizeColumn(int col, int newSize);
     void resizeRow(int col, int newSize);
 

@@ -9,6 +9,6 @@ Thank you for creating a pull request to contribute to FreeCAD! To ease integrat
 - [ ]  Commit messages include `issue #<id>` or `fixes #<id>` where `<id>` is the [FreeCAD bug tracker issue number](https://freecadweb.org/wiki/tracker#GitHub_and_MantisBT) in case a particular commit solves or is related to an existing issue on the tracker. Ex: `Draft: fix typos - fixes #0004805`
 
 And please remember to update the Wiki with the features added or changed once this PR is merged.  
-**Note**: If you don't have wiki access, then please mention your contribution on the [0.19 Changelog Forum Thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=34586).
+**Note**: If you don't have wiki access, then please mention your contribution on the [0.20 Changelog Forum Thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=56135).
 
 ---

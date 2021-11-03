@@ -145,7 +145,7 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,math,Draft,sys
+import FreeCAD,ArchComponent,ArchCommands,Draft,sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -609,7 +609,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 except (AttributeError, RuntimeError):
                     pos = FreeCAD.Vector()
             else:
-                pos = vobj.TextPosition
+                pos = vobj.Object.Placement.multVec(vobj.TextPosition)
         # placement's displacement will be already added by the coin node
         pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos

@@ -80,15 +80,9 @@ Py::Object PythonStdout::write(const Py::Tuple& args)
     try {
         Py::Object output(args[0]);
         if (PyUnicode_Check(output.ptr())) {
-#if PY_MAJOR_VERSION >= 3
             PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
-#else
-            PyObject* unicode = PyUnicode_AsEncodedObject(output.ptr(), "utf-8", "strict");
-            if (unicode) {
-                const char* string = PyString_AsString(unicode);
-#endif
                 int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
                 pyConsole->insertPythonOutput(QString::fromUtf8(string, maxlen));
                 Py_DECREF(unicode);
@@ -163,15 +157,9 @@ Py::Object PythonStderr::write(const Py::Tuple& args)
     try {
         Py::Object output(args[0]);
         if (PyUnicode_Check(output.ptr())) {
-#if PY_MAJOR_VERSION >= 3
             PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
-#else
-            PyObject* unicode = PyUnicode_AsEncodedObject(output.ptr(), "utf-8", "strict");
-            if (unicode) {
-                const char* string = PyString_AsString(unicode);
-#endif
                 int maxlen = qstrlen(string) > 10000 ? 10000 : -1;
                 pyConsole->insertPythonError(QString::fromUtf8(string, maxlen));
                 Py_DECREF(unicode);
@@ -245,15 +233,9 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
     try {
         Py::Object output(args[0]);
         if (PyUnicode_Check(output.ptr())) {
-#if PY_MAJOR_VERSION >= 3
             PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
-#else
-            PyObject* unicode = PyUnicode_AsEncodedObject(output.ptr(), "utf-8", "strict");
-            if (unicode) {
-                const char* string = PyString_AsString(unicode);
-#endif
                 Base::Console().Message("%s",string);
                 Py_DECREF(unicode);
             }
@@ -326,15 +308,9 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
     try {
         Py::Object output(args[0]);
         if (PyUnicode_Check(output.ptr())) {
-#if PY_MAJOR_VERSION >= 3
             PyObject* unicode = PyUnicode_AsEncodedString(output.ptr(), "utf-8", 0);
             if (unicode) {
                 const char* string = PyBytes_AsString(unicode);
-#else
-            PyObject* unicode = PyUnicode_AsEncodedObject(output.ptr(), "utf-8", "strict");
-            if (unicode) {
-                const char* string = PyString_AsString(unicode);
-#endif
                 Base::Console().Error("%s",string);
                 Py_DECREF(unicode);
             }

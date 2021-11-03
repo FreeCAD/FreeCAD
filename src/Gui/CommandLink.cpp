@@ -118,7 +118,7 @@ protected:
 StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
   : Command("Std_LinkMakeGroup")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link group");
     sToolTipText  = QT_TR_NOOP("Create a group of links");
     sWhatsThis    = "Std_LinkMakeGroup";
@@ -140,11 +140,11 @@ Action * StdCmdLinkMakeGroup::createAction(void)
     // add the action items
     QAction* action = nullptr;
     action = pcAction->addAction(QObject::tr("Simple group"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     action = pcAction->addAction(QObject::tr("Group with links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     action = pcAction->addAction(QObject::tr("Group with transform links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     return pcAction;
 }
 
@@ -286,7 +286,7 @@ DEF_STD_CMD_A(StdCmdLinkMake)
 StdCmdLinkMake::StdCmdLinkMake()
   : Command("Std_LinkMake")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link");
     sToolTipText  = QT_TR_NOOP("Create a link to the selected object(s)");
     sWhatsThis    = "Std_LinkMake";
@@ -405,7 +405,7 @@ StdCmdLink##_name::StdCmdLink##_name():CheckableCommand("Std_Link" #_name)
 
 LINK_CMD_DEF(CreateInPlace)
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link in place");
     sToolTipText  = QT_TR_NOOP("Enable this option to create a link with the same placement of the linked object");
     sWhatsThis    = "Std_LinkCreateInPlace";
@@ -416,7 +416,7 @@ LINK_CMD_DEF(CreateInPlace)
 
 LINK_CMD_DEF(CreateInContainer)
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link in container");
     sToolTipText  = QT_TR_NOOP("Enable this option to create a link inside the active container");
     sWhatsThis    = "Std_LinkCreateInContainer";
@@ -431,7 +431,7 @@ DEF_STD_CMD_A(StdCmdLinkMakeRelative)
 StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
   : Command("Std_LinkMakeRelative")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make sub-link");
     sToolTipText  = QT_TR_NOOP("Create a sub-object or sub-element link");
     sWhatsThis    = "Std_LinkMakeRelative";
@@ -685,7 +685,7 @@ DEF_STD_CMD_A(StdCmdLinkReplace)
 StdCmdLinkReplace::StdCmdLinkReplace()
   : Command("Std_LinkReplace")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Replace with link");
     sToolTipText  = QT_TR_NOOP("Replace the selected object(s) with link");
     sWhatsThis    = "Std_LinkReplace";
@@ -709,7 +709,7 @@ DEF_STD_CMD_A(StdCmdLinkUnlink)
 StdCmdLinkUnlink::StdCmdLinkUnlink()
   : Command("Std_LinkUnlink")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Unlink");
     sToolTipText  = QT_TR_NOOP("Strip on level of link");
     sWhatsThis    = "Std_LinkUnlink";
@@ -733,7 +733,7 @@ DEF_STD_CMD_A(StdCmdLinkImport)
 StdCmdLinkImport::StdCmdLinkImport()
   : Command("Std_LinkImport")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Import links");
     sToolTipText  = QT_TR_NOOP("Import selected external link(s)");
     sWhatsThis    = "Std_LinkImport";
@@ -799,7 +799,7 @@ DEF_STD_CMD_A(StdCmdLinkImportAll)
 StdCmdLinkImportAll::StdCmdLinkImportAll()
   : Command("Std_LinkImportAll")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Import all links");
     sToolTipText  = QT_TR_NOOP("Import all links of the active document");
     sWhatsThis    = "Std_LinkImportAll";
@@ -841,7 +841,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectLinked)
 StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
   : Command("Std_LinkSelectLinked")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Go to linked object");
     sToolTipText  = QT_TR_NOOP("Select the linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinked";
@@ -968,7 +968,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectLinkedFinal)
 StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Go to the deepest linked object");
     sToolTipText  = QT_TR_NOOP("Select the deepest linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
@@ -1007,7 +1007,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectAllLinks)
 StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
   : Command("Std_LinkSelectAllLinks")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Select all links");
     sToolTipText  = QT_TR_NOOP("Select all links to the current selected object");
     sWhatsThis    = "Std_LinkSelectAllLinks";
@@ -1045,7 +1045,7 @@ public:
     StdCmdLinkSelectActions()
         : GroupCommand("Std_LinkSelectActions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link navigation");
         sToolTipText  = QT_TR_NOOP("Link navigation actions");
         sWhatsThis    = "Std_LinkSelectActions";
@@ -1072,7 +1072,7 @@ public:
     StdCmdLinkActions()
         : GroupCommand("Std_LinkActions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link actions");
         sToolTipText  = QT_TR_NOOP("Link actions");
         sWhatsThis    = "Std_LinkActions";

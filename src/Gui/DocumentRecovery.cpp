@@ -60,6 +60,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 
 #include <QDomDocument>
 #include <boost/interprocess/sync/file_lock.hpp>
@@ -68,6 +69,7 @@ FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 using namespace Gui::Dialog;
+namespace sp = std::placeholders;
 
 // taken from the script doctools.py
 std::string DocumentRecovery::doctools =
@@ -178,11 +180,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
 {
     d_ptr->ui.setupUi(this);
     d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start Recovery"));
-#if QT_VERSION >= 0x050000
     d_ptr->ui.treeWidget->header()->setSectionResizeMode(QHeaderView::Stretch);
-#else
-    d_ptr->ui.treeWidget->header()->setResizeMode(QHeaderView::Stretch);
-#endif
 
     d_ptr->recovered = false;
 
@@ -561,6 +559,113 @@ void DocumentRecovery::on_buttonCleanup_clicked()
     d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     d_ptr->ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
 
+    DocumentRecoveryHandler handler;
+    handler.checkForPreviousCrashes(std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3));
+    QMessageBox::information(this, tr("Finished"), tr("Transient directories deleted."));
+}
+
+void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QString& lockFile)
+{
+    if (!dirs.isEmpty()) {
+        for (QList<QFileInfo>::const_iterator jt = dirs.cbegin(); jt != dirs.cend(); ++jt) {
+            clearDirectory(*jt);
+            tmp.rmdir(jt->fileName());
+        }
+    }
+    tmp.remove(lockFile);
+}
+
+void DocumentRecovery::clearDirectory(const QFileInfo& dir)
+{
+    QDir qThisDir(dir.absoluteFilePath());
+    if (!qThisDir.exists())
+        return;
+
+    // Remove all files in this directory
+    qThisDir.setFilter(QDir::Files);
+    QStringList files = qThisDir.entryList();
+    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+        QString file = *it;
+        qThisDir.remove(file);
+    }
+
+    // Clear this directory of any sub-directories
+    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfoList subdirs = qThisDir.entryInfoList();
+    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
+        clearDirectory(*it);
+        qThisDir.rmdir(it->fileName());
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+void DocumentRecoveryFinder::checkForPreviousCrashes()
+{
+    DocumentRecoveryHandler handler;
+    handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
+
+    showRecoveryDialogIfNeeded();
+}
+
+void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>& dirs, const QString& fn)
+{
+    if (dirs.isEmpty()) {
+        // delete the lock file immediately if no transient directories are related
+        tmp.remove(fn);
+    }
+    else {
+        int countDeletedDocs = 0;
+        QString recovery_files = QString::fromLatin1("fc_recovery_files");
+        for (QList<QFileInfo>::const_iterator it = dirs.cbegin(); it != dirs.cend(); ++it) {
+            QDir doc_dir(it->absoluteFilePath());
+            doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
+            uint entries = doc_dir.entryList().count();
+            if (entries == 0) {
+                // in this case we can delete the transient directory because
+                // we cannot do anything
+                if (tmp.rmdir(it->filePath()))
+                    countDeletedDocs++;
+            }
+            // search for the existence of a recovery file
+            else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
+                // store the transient directory in case it's not empty
+                restoreDocFiles << *it;
+            }
+            // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
+            else if (entries == 1 && doc_dir.exists(recovery_files)) {
+                // if the sub-directory is empty delete the transient directory
+                QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
+                rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
+                if (rec_dir.entryList().isEmpty()) {
+                    doc_dir.rmdir(recovery_files);
+                    if (tmp.rmdir(it->filePath()))
+                        countDeletedDocs++;
+                }
+            }
+        }
+
+        // all directories corresponding to the lock file have been deleted
+        // so delete the lock file, too
+        if (countDeletedDocs == dirs.size()) {
+            tmp.remove(fn);
+        }
+    }
+}
+
+void DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
+{
+    if (!restoreDocFiles.isEmpty()) {
+        Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
+        if (dlg.foundDocuments())
+            dlg.exec();
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const
+{
     QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
     tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
@@ -584,40 +689,10 @@ void DocumentRecovery::on_buttonCleanup_clicked()
                 tmp.setNameFilters(QStringList() << filter);
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();
-                if (!dirs.isEmpty()) {
-                    for (QList<QFileInfo>::iterator jt = dirs.begin(); jt != dirs.end(); ++jt) {
-                        clearDirectory(*jt);
-                        tmp.rmdir(jt->fileName());
-                    }
-                }
-                tmp.remove(it->fileName());
+
+                callableFunc(tmp, dirs, it->fileName());
             }
         }
-    }
-
-    QMessageBox::information(this, tr("Finished"), tr("Transient directories deleted."));
-}
-
-void DocumentRecovery::clearDirectory(const QFileInfo& dir)
-{
-    QDir qThisDir(dir.absoluteFilePath());
-    if (!qThisDir.exists())
-        return;
-
-    // Remove all files in this directory
-    qThisDir.setFilter(QDir::Files);
-    QStringList files = qThisDir.entryList();
-    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
-        QString file = *it;
-        qThisDir.remove(file);
-    }
-
-    // Clear this directory of any sub-directories
-    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-    QFileInfoList subdirs = qThisDir.entryInfoList();
-    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
-        clearDirectory(*it);
-        qThisDir.rmdir(it->fileName());
     }
 }
 

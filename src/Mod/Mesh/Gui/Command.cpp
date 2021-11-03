@@ -449,15 +449,15 @@ void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.ply)").arg(QObject::tr("All Mesh Files"));
+    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)").arg(QObject::tr("All Mesh Files"));
     filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
     filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
     filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
     filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
     filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
-    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii"));
+    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
     filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
-    //filter << "Nastran (*.nas *.bdf)";
+    filter << QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
     filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
@@ -524,6 +524,7 @@ void CmdMeshExport::activated(int)
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
     for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)
@@ -1845,7 +1846,7 @@ void CmdMeshSplitComponents::activated(int)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
-        std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
+        std::vector<std::vector<Mesh::FacetIndex> > comps = mesh.getComponents();
 
         for (const auto& comp : comps) {
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));

@@ -710,7 +710,7 @@ DEF_STD_CMD(CmdTestConsoleOutput)
 CmdTestConsoleOutput::CmdTestConsoleOutput()
   : Command("Std_TestConsoleOutput")
 {
-    sGroup      = QT_TR_NOOP("Standard-Test");
+    sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
     sToolTipText= QT_TR_NOOP("Test console output");
     sStatusTip  = QT_TR_NOOP("Test console output");

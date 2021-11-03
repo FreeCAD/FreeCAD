@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS>
+<TS version="2.1">
 <context>
     <name>NavigationIndicator</name>
     <message>
@@ -40,6 +41,11 @@
     <message>
         <location filename="NavigationIndicatorGui.py" line="70"/>
         <source>Rotation focus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="NavigationIndicatorGui.py" line="71"/>
+        <source>Middle mouse button or H key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -85,11 +91,6 @@
     <message>
         <location filename="NavigationIndicatorGui.py" line="297"/>
         <source>Undefined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="NavigationIndicatorGui.py" line="71"/>
-        <source>Middle mouse button or H key.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

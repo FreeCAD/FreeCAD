@@ -110,7 +110,7 @@ namespace dcm {
  * @{ */
 
 /**
- * @brief Exeption for property errors
+ * @brief Exception for property errors
  *
  * This exception is thrown when a property related error is detected, for example if a objects is ask for a
  * property which it does not own. This exceptions own the error-code range from 300-399.
@@ -386,10 +386,10 @@ public:
      *
      * @param g shared ptr of the cluster graph on which the algorithm is used
      **/
-    property_map(boost::shared_ptr<Graph> g)
+    property_map(std::shared_ptr<Graph> g)
         : m_graph(g) { }
 
-    boost::shared_ptr<Graph> m_graph;
+    std::shared_ptr<Graph> m_graph;
 };
 
 /**

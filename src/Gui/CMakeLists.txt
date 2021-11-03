@@ -1,5 +1,7 @@
 #add_subdirectory(Icons)
 add_subdirectory(Stylesheets)
+add_subdirectory(PreferencePacks)
+add_subdirectory(PreferencePackTemplates)
 
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
@@ -281,149 +283,23 @@ SET(FreeCADGui_SDK_MOC_HDRS
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
-set(Gui_MOC_HDRS
-    Action.h
-    ActionFunction.h
-    Assistant.h
-    AutoSaver.h
-    CallTips.h
-    ComboView.h
-    Control.h
-    Clipping.h
-    DemoMode.h
-    DownloadItem.h
-    DownloadManager.h
-    DlgActionsImp.h
-    DlgActivateWindowImp.h
-    DlgUnitsCalculatorImp.h
-    DlgCommandsImp.h
-    DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
-    DlgDisplayPropertiesImp.h
-    DlgEditorImp.h
-    DlgGeneralImp.h
-    DlgInputDialogImp.h
-    DlgKeyboardImp.h
-    DlgMacroExecuteImp.h
-    DlgMacroRecordImp.h
-    DlgRunExternal.h
-    DlgEditFileIncludePropertyExternal.h
-    DlgMaterialPropertiesImp.h
-    DlgOnlineHelpImp.h
-    DlgParameterImp.h
-    DlgParameterFind.h
-    DlgPreferencesImp.h
-    DlgProjectInformationImp.h
-    DlgProjectUtility.h
-    DlgPropertyLink.h
-    DlgReportViewImp.h
-    DlgSettings3DViewImp.h
-    DlgSettingsNavigation.h
-    DlgSettingsSelection.h
-    DlgSettingsViewColor.h
-    DlgSettingsDrawStyles.h
-    DlgSettingsUI.h
-    DlgSettingsColorGradientImp.h
-    DlgSettingsDocumentImp.h
-    DlgSettingsImageImp.h
-    DlgSettingsLazyLoadedImp.h
-    DlgSettingsMacroImp.h
-    DlgSettingsUnitsImp.h
-    DlgCheckableMessageBox.h
-    DlgToolbarsImp.h
-    DlgWorkbenchesImp.h
-    TaskDlgRelocation.h
-    TaskCSysDragger.h
-    DlgUndoRedo.h
-    DockWindow.h
-    DockWindowManager.h
-    ToolBarManager.h
-    OverlayWidgets.h
-    DocumentRecovery.h
-    EditorView.h
-    TextDocumentEditorView.h
-    ExpressionCompleter.h
-    DlgExpressionInput.h
-    FileDialog.h
-    Flag.h
-    GraphicsViewZoom.h
-    GraphvizView.h
-    GuiApplication.h
-    GuiApplicationNativeEventAware.h
-    InputVector.h
-    MainWindow.h
-    ManualAlignment.h
-    MDIView.h
-    NetworkRetriever.h
-    OnlineDocumentation.h
-    Placement.h
-    InputField.h
-    PrefWidgets.h
-    ProgressBar.h
-    ProgressDialog.h
-    PropertyPage.h
-    PropertyView.h
-    PythonConsole.h
-    PythonDebugger.h
-    PythonEditor.h
-    QuantitySpinBox.h
-    QListWidgetCustom.h
-    QuantitySpinBox_p.h
-    ReportView.h
-    SceneInspector.h
-    SelectionView.h
-    PieMenu.h
-    SpinBox.h
-    Splashscreen.h
-    TextEdit.h
-    TextureMapping.h
-    ToolBox.h
-    Transform.h
-    Tree.h
-    TreeParams.h
-    TreeView.h
-    ProjectView.h
-    View3DInventor.h
-    VectorListEditor.h
-    WidgetFactory.h
-    Widgets.h
-    Language/Translator.h
-    propertyeditor/PropertyEditor.h
-    propertyeditor/PropertyItem.h
-    propertyeditor/PropertyItemDelegate.h
-    propertyeditor/PropertyModel.h
-    TaskView/TaskAppearance.h
-    TaskView/TaskSelectLinkProperty.h
-    TaskView/TaskDialog.h
-    TaskView/TaskWatcher.h
-    TaskView/TaskEditControl.h
-    TaskView/TaskView.h
-    DAGView/DAGView.h
-    DAGView/DAGModel.h
-    TaskElementColors.h
-    DlgObjectSelection.h
-    DlgAddProperty.h
-    View3DInventorViewer.h
-    ${FreeCADGui_SDK_MOC_HDRS}
-)
-
-fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
-#SOURCE_GROUP("Moc" FILES ${Gui_MOC_SRCS})
-
 if (BUILD_QT5)
+    set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
 
-    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
+        COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h)
 else()
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
         COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
-
-    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 endif()
+
+set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
@@ -435,6 +311,7 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+    DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
     DlgEditor.ui
@@ -533,6 +410,7 @@ SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
+    DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
     DlgDisplayPropertiesImp.cpp
     DlgInputDialogImp.cpp
@@ -570,6 +448,7 @@ SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
+    DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
     DlgDisplayPropertiesImp.h
     DlgInputDialogImp.h
@@ -629,6 +508,7 @@ SET(Dialog_SRCS
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
+    DlgCreateNewPreferencePack.ui
     DownloadManager.ui
     DownloadItem.ui
     DocumentRecovery.ui
@@ -969,6 +849,7 @@ SET(View3D_CPP_SRCS
     BlenderNavigationStyle.cpp
     MayaGestureNavigationStyle.cpp
     OpenCascadeNavigationStyle.cpp
+    OpenSCADNavigationStyle.cpp
     TouchpadNavigationStyle.cpp
     GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
@@ -1199,6 +1080,8 @@ SET(Widget_CPP_SRCS
     QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
+    PythonWrapper.cpp
+    UiLoader.cpp
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
@@ -1216,6 +1099,8 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox_p.h
     SpinBox.h
     Splashscreen.h
+    PythonWrapper.h
+    UiLoader.h
     WidgetFactory.h
     Widgets.h
     Window.h
@@ -1310,12 +1195,12 @@ SET(FreeCADGui_CPP_SRCS
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp
+    PreferencePackManager.cpp
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
     ManualAlignment.cpp
     TransactionObject.cpp
-    WinNativeGestureRecognizers.cpp
 )
 SET(FreeCADGui_SRCS 
     Application.h
@@ -1343,12 +1228,12 @@ SET(FreeCADGui_SRCS
     Qt4All.h
     Control.h
     SpaceballEvent.h
+    PreferencePackManager.h
     Thumbnail.h
     Utilities.h
     WaitCursor.h
     ManualAlignment.h
     TransactionObject.h
-    WinNativeGestureRecognizers.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
@@ -1376,7 +1261,6 @@ SET(FreeCADGui_SRCS
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
-    ${Renderer_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
     ${View_SRCS}
@@ -1405,7 +1289,6 @@ if(MSVC)
         ${Help_CPP_SRCS}
         ${Inventor_CPP_SRCS}
         ${View3D_CPP_SRCS}
-        ${Renderer_CPP_SRCS}
         ${Viewprovider_CPP_SRCS}
         ${Widget_CPP_SRCS}
         ${Workbench_CPP_SRCS}

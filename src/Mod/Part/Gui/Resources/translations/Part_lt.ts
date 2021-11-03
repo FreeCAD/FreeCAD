@@ -261,6 +261,16 @@ It will create a 'Compound Filter' for each shape.</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation type="unfinished">Boolean Fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation type="unfinished">Split objects where they intersect</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
       <translation type="unfinished">Boolean fragments</translation>
@@ -322,6 +332,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
@@ -330,16 +358,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation type="unfinished">Slice to compound</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -377,24 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -568,7 +568,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
@@ -861,12 +861,12 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="276"/>
       <source>Edit fillet edges</source>
-      <translation type="unfinished">Edit fillet edges</translation>
+      <translation>Taisyti apvalinamas kraštines</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="379"/>
       <source>Edit chamfer edges</source>
-      <translation type="unfinished">Edit chamfer edges</translation>
+      <translation>Taisyti sklembiamas kraštines</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="520"/>
@@ -1702,7 +1702,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Padėtis sutapdinama su objekto padėtimi.</translation>
+      <translation>Išdėstymas sutapdinamas su susieto daikto išdėstymu.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -2349,12 +2349,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation type="unfinished">Chamfer...</translation>
+      <translation>Nusklembti...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation type="unfinished">Chamfer the selected edges of a shape</translation>
+      <translation>Nusklembia pasirinktas geometrinio kūno kraštines</translation>
     </message>
   </context>
   <context>
@@ -2880,7 +2880,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Sukurti tiesiškąjį paviršių iš dviejų kraštinių arba dviejų laužčių</translation>
+      <translation>Sukurti tiesiškąjį paviršių iš dviejų kraštinių arba dviejų rėmelių</translation>
     </message>
   </context>
   <context>
@@ -3300,7 +3300,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Nusklembti kraštus</translation>
     </message>
   </context>
   <context>
@@ -3511,12 +3511,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="14"/>
       <source>Fillet Edges</source>
-      <translation type="unfinished">Fillet Edges</translation>
+      <translation>Suapvalinti kraštus</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -3531,7 +3531,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <source>Fillet Parameter</source>
-      <translation type="unfinished">Fillet Parameter</translation>
+      <translation>Suapvalinimo dydžiai</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -3541,12 +3541,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation>Pasirinkti raštines</translation>
+      <translation>Pasirinkti kraštines</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation type="unfinished">Select faces</translation>
+      <translation>Pasirinkti sienas</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -3576,7 +3576,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Spindulys:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3596,7 +3596,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Sklembiamos kraštinės</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3629,7 +3629,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgFilletEdges.cpp" line="684"/>
       <location filename="../../DlgFilletEdges.cpp" line="744"/>
       <source>Edge%1</source>
-      <translation type="unfinished">Edge%1</translation>
+      <translation>Kraštinė%1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
@@ -3644,14 +3644,14 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="883"/>
       <source>No shape selected</source>
-      <translation type="unfinished">No shape selected</translation>
+      <translation>Nepasirinkta kraštinių</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="884"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation type="unfinished">No valid shape is selected.
-Please select a valid shape in the drop-down box first.</translation>
+      <translation>Nepasirinktos tinkamos kraštinės.
+Prašom prmiausia pasirinkti tinkamą kūną išplaukiančiame lange.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="935"/>
@@ -3662,8 +3662,8 @@ Please select a valid shape in the drop-down box first.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="936"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation type="unfinished">No edge entity is checked to fillet.
-Please check one or more edge entities first.</translation>
+      <translation>Nėra pasirinkta kraštinių apvalinimui.
+Prašome pažymėti bent vieną kraštinę.</translation>
     </message>
   </context>
   <context>
@@ -4127,7 +4127,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1429"/>
       <location filename="../../DlgPrimitives.ui" line="1494"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Spindulys:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="554"/>
@@ -4338,7 +4338,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="71"/>
@@ -4613,7 +4613,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Atsitiktinė pavidalo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4677,7 +4677,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Reikalingos bent dvi viršūnės, kraštinės, kontūrai ar sienos.</translation>
+      <translation>Būtinos bent dvi viršūnės, kraštinės, rėmeliai ar sienos.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4705,7 +4705,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="33"/>
       <source>Shapes</source>
-      <translation type="unfinished">Shapes</translation>
+      <translation>Pavidalai</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="41"/>
@@ -4735,22 +4735,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="96"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="119"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="124"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation type="unfinished">Select a shape for mirroring, first.</translation>
+      <translation>Veidrodinei kopijai sukurti pirmiausia pasirinkite pavidalą.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="131"/>
@@ -4807,22 +4807,22 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
       <location filename="../../TaskShapeBuilder.cpp" line="348"/>
       <source>Select one or more edges</source>
-      <translation type="unfinished">Select one or more edges</translation>
+      <translation>Pasirinkite bent vieną kraštinę</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
       <source>Select three or more vertices</source>
-      <translation type="unfinished">Select three or more vertices</translation>
+      <translation>Pasirinkite bent tris viršūnes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
       <source>Select two or more faces</source>
-      <translation type="unfinished">Select two or more faces</translation>
+      <translation>Pasirinkite bent dvi sienas</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="463"/>
       <source>Select only one part object</source>
-      <translation type="unfinished">Select only one part object</translation>
+      <translation>Pasirinkite tik vieną detalę</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="515"/>
@@ -4887,7 +4887,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
       <source>At least one edge or wire is required.</source>
-      <translation type="unfinished">At least one edge or wire is required.</translation>
+      <translation>Būtina bent viena kraštinė ar rėmelis.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
@@ -4907,7 +4907,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="388"/>
       <source>Done</source>
-      <translation type="unfinished">Done</translation>
+      <translation>Atlikta</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
@@ -5022,7 +5022,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>nežinoma klaida</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
@@ -5095,7 +5095,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="942"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>Pavidalo turinys</translation>
     </message>
   </context>
   <context>
@@ -5261,7 +5261,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
-      <translation>Briauna iš viršūnių</translation>
+      <translation>Kraštinė iš viršūnių</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
@@ -5271,12 +5271,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation>Pilnavidurį iš tuščiavidurio kevalo</translation>
+      <translation>Pilnaviduris iš tuščiavidurio kevalo</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
       <source>Planar</source>
-      <translation type="unfinished">Planar</translation>
+      <translation>Plokščias</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
@@ -5286,7 +5286,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
       <source>All faces</source>
-      <translation type="unfinished">All faces</translation>
+      <translation>Visos sienos</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="107"/>
@@ -5296,7 +5296,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Laužtė iš kraštinių</translation>
+      <translation>Rėmelis iš kraštinių</translation>
     </message>
   </context>
   <context>
@@ -5345,7 +5345,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="162"/>
       <source>Done</source>
-      <translation type="unfinished">Done</translation>
+      <translation>Atlikta</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="233"/>

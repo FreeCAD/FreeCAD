@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QColorDialog>
 # include <QDesktopWidget>
+# include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
 # include <QEventLoop>
@@ -603,6 +604,7 @@ struct ColorButtonP
     bool allowChange;
     bool autoChange;
     bool drawFrame;
+    bool allowTransparency;
     bool modal;
     bool dirty;
     bool allowAlpha;
@@ -612,6 +614,7 @@ struct ColorButtonP
         , allowChange(true)
         , autoChange(false)
         , drawFrame(true)
+        , allowTransparency(false)
         , modal(true)
         , dirty(true)
         , allowAlpha(false)
@@ -696,16 +699,6 @@ bool ColorButton::allowChangeColor() const
     return d->allowChange;
 }
 
-void ColorButton::setAllowChangeAlpha(bool ok)
-{
-    d->allowAlpha = ok;
-}
-
-bool ColorButton::allowChangeAlpha() const
-{
-    return d->allowAlpha;
-}
-
 void ColorButton::setDrawFrame(bool ok)
 {
     d->drawFrame = ok;
@@ -714,6 +707,21 @@ void ColorButton::setDrawFrame(bool ok)
 bool ColorButton::drawFrame() const
 {
     return d->drawFrame;
+}
+
+void Gui::ColorButton::setAllowTransparency(bool allow)
+{
+    d->allowTransparency = allow;
+    if (d->cd)
+        d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, allow);
+}
+
+bool Gui::ColorButton::allowTransparency() const
+{
+    if (d->cd)
+        return d->cd->testOption(QColorDialog::ColorDialogOption::ShowAlphaChannel);
+    else
+        return d->allowTransparency;
 }
 
 void ColorButton::setModal(bool b)
@@ -791,7 +799,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
         else {
             p.fillRect(0, 0, w, h, QBrush(c));
         }
-        if (allowChangeAlpha() && d->col.alpha() != 255) {
+        if (allowTransparency() && d->col.alpha() != 255) {
             p.setPen(QPen(Qt::white, 2));
             p.setBrush(QBrush());
             p.drawRect(4, 4, w-8, h-8);
@@ -813,16 +821,11 @@ void ColorButton::onChooseColor()
 {
     if (!d->allowChange)
         return;
-#if QT_VERSION >= 0x040500
     if (d->modal) {
-#endif
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-#if QT_VERSION >= 0x050000
         cd.setOptions(QColorDialog::DontUseNativeDialog);
-#endif
-        if (d->allowAlpha)
-            cd.setOption(QColorDialog::ShowAlphaChannel);
+        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -842,17 +845,13 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             changed();
         }
-#if QT_VERSION >= 0x040500
     }
     else {
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-#if QT_VERSION >= 0x050000
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-#endif
-            if (d->allowAlpha)
-                d->cd->setOption(QColorDialog::ShowAlphaChannel);
+            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -861,7 +860,6 @@ void ColorButton::onChooseColor()
         }
         d->cd->show();
     }
-#endif
 }
 
 void ColorButton::onColorChosen(const QColor& c)
@@ -881,54 +879,38 @@ void ColorButton::onRejected()
 TransparentColorButton::TransparentColorButton(QWidget *parent)
     :ColorButton(parent)
 {
-    setAllowChangeAlpha(true);
+    setAllowTransparency(true);
 }
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
-  : QLabel(parent, f)
+UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
+    : QLabel(parent, f)
+    , _url (QStringLiteral("http://localhost"))
+    , _launchExternal(true)
 {
-    _url = QString::fromLatin1("http://localhost");
-    setToolTip(this->_url);
+    setToolTip(this->_url);    
+    setCursor(Qt::PointingHandCursor);
+    if (qApp->styleSheet().isEmpty())
+        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel()
 {
 }
 
-void UrlLabel::enterEvent ( QEvent * )
+void Gui::UrlLabel::setLaunchExternal(bool l)
 {
-    setCursor(Qt::PointingHandCursor);
+    _launchExternal = l;
 }
 
-void UrlLabel::leaveEvent ( QEvent * )
+void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    setCursor(Qt::ArrowCursor);
-}
-
-void UrlLabel::mouseReleaseEvent (QMouseEvent *)
-{
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
-    Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("webbrowser");
-    if (module) {
-        // get the methods dictionary and search for the 'open' method
-        PyObject* dict = PyModule_GetDict(module);
-        PyObject* func = PyDict_GetItemString(dict, "open");
-        if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
-#if PY_VERSION_HEX < 0x03090000
-            PyObject* result = PyEval_CallObject(func,args);
-#else
-            PyObject* result = PyObject_CallObject(func,args);
-#endif
-            // decrement the args and module reference
-            Py_XDECREF(result);
-            Py_DECREF(args);
-            Py_DECREF(module);
-        }
-    }
+    if (_launchExternal)
+        QDesktopServices::openUrl(this->_url);
+    else
+        // Someone else will deal with it...
+        Q_EMIT linkClicked(_url);
 }
 
 QString UrlLabel::url() const
@@ -936,10 +918,166 @@ QString UrlLabel::url() const
     return this->_url;
 }
 
+bool Gui::UrlLabel::launchExternal() const
+{
+    return _launchExternal;
+}
+
 void UrlLabel::setUrl(const QString& u)
 {
     this->_url = u;
     setToolTip(this->_url);
+}
+
+// --------------------------------------------------------------------
+
+StatefulLabel::StatefulLabel(QWidget* parent)
+    : QLabel(parent)
+    , _overridePreference(false)
+{
+    // Always attach to the parameter group that stores the main FreeCAD stylesheet
+    _stylesheetGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    _stylesheetGroup->Attach(this);
+}
+
+StatefulLabel::~StatefulLabel()
+{
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+    _stylesheetGroup->Detach(this);
+}
+
+void StatefulLabel::setDefaultStyle(const QString& defaultStyle)
+{
+    _defaultStyle = defaultStyle;
+}
+
+void StatefulLabel::setParameterGroup(const std::string& groupName)
+{
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+        
+    // Attach to the Parametergroup so we know when it changes
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());    
+    if (_parameterGroup.isValid())
+        _parameterGroup->Attach(this);
+}
+
+void StatefulLabel::registerState(const QString& state, const QString& styleCSS,
+    const std::string& preferenceName)
+{
+    _availableStates[state] = { styleCSS, preferenceName };
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& color,
+    const std::string& preferenceName)
+{
+    QString css;
+    if (color.isValid())
+        css = QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    _availableStates[state] = { css, preferenceName };
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& fg, const QColor& bg,
+    const std::string& preferenceName)
+{
+    QString colorEntries;
+    if (fg.isValid())
+        colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+    if (bg.isValid())
+        colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries);
+    _availableStates[state] = { css, preferenceName };
+}
+
+/** Observes the parameter group and clears the cache if it changes */
+void StatefulLabel::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
+{
+    Q_UNUSED(rCaller);
+    auto changedItem = std::string(rcReason);
+    if (changedItem == "StyleSheet") {
+        _styleCache.clear();
+    }
+    else {
+        for (const auto& state : _availableStates) {
+            if (state.second.preferenceString == changedItem) {
+                _styleCache.erase(_styleCache.find(state.first));
+            }
+        }
+    }
+}
+
+void StatefulLabel::setOverridePreference(bool overridePreference)
+{
+    _overridePreference = overridePreference;
+}
+
+void StatefulLabel::setState(QString state)
+{
+    _state = state;
+    this->ensurePolished();
+
+    // If the stylesheet insists, ignore all other logic and let it do its thing. This
+    // property is *only* set by the stylesheet.
+    if (_overridePreference)
+        return;
+
+    // Check the cache first:
+    if (auto style = _styleCache.find(_state); style != _styleCache.end()) {
+        auto test = style->second.toStdString();
+        this->setStyleSheet(style->second);
+        return;
+    }
+
+    if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
+        // Order of precedence: first, check if the user has set this in their preferences:
+        if (!entry->second.preferenceString.empty()) {            
+            // First, try to see if it's just stored a color (as an unsigned int):
+            auto availableColorPrefs = _parameterGroup->GetUnsignedMap();
+            std::string lookingForGroup = entry->second.preferenceString;
+            for (const auto &unsignedEntry : availableColorPrefs) {
+                std::string foundGroup = unsignedEntry.first;
+                if (unsignedEntry.first == entry->second.preferenceString) {
+                    // Convert the stored Uint into usable color data:
+                    unsigned int col = unsignedEntry.second;
+                    QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+                    this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    _styleCache[state] = this->styleSheet();
+                    return;
+                }
+            }
+
+            // If not, try to see if there's an entire style string set as ASCII:
+            auto availableStringPrefs = _parameterGroup->GetASCIIMap();
+            for (const auto& stringEntry : availableStringPrefs) {
+                if (stringEntry.first == entry->second.preferenceString) {
+                    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
+                    this->setStyleSheet(css);
+                    _styleCache[state] = this->styleSheet();
+                    return;
+                }
+            }
+        }
+
+        // If there is no preferences entry for this label, allow the stylesheet to set it, and only set to the default
+        // formatting if there is no stylesheet entry
+        if (qApp->styleSheet().isEmpty()) {
+            this->setStyleSheet(entry->second.defaultCSS);
+            _styleCache[state] = this->styleSheet();
+            return;
+        }
+        // else the stylesheet sets our appearance: make sure it recalculates the appearance:
+        this->setStyleSheet(QString());
+        this->setStyle(qApp->style());
+        this->style()->unpolish(this);
+        this->style()->polish(this);
+    }
+    else {
+        if (styleSheet().isEmpty()) {
+            this->setStyleSheet(_defaultStyle);
+            _styleCache[state] = this->styleSheet();
+        }
+    }
 }
 
 // --------------------------------------------------------------------
@@ -1592,13 +1730,10 @@ void LabelEditor::setInputType(InputType t)
 ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     : QLineEdit(parent), autoClose(expressionOnly)
 {
-    defaultPalette = palette();
+    makeLabel(this);
 
-    LineEditStyle::setup(this);
-
-    iconLabel = new ExpressionLabel(this);
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly)
+    if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
@@ -1611,8 +1746,8 @@ bool ExpLineEdit::apply(const std::string& propName) {
         }
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
@@ -1620,7 +1755,7 @@ void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     ExpressionBinding::bind(_path);
 }
 
-void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
+void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -1710,7 +1845,7 @@ void ExpLineEdit::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 

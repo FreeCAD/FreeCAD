@@ -363,9 +363,9 @@ def SetupProperties():
     return ["Discretize"]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Vcarve operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    ObjectVcarve(obj, name)
+    obj.Proxy = ObjectVcarve(obj, name, parentJob)
     return obj

@@ -423,6 +423,9 @@ public:
      * you can handle most of the events in the viewer by yourself
      */
     //@{
+    // the below enum is reflected in 'userEditModes' std::map in Application.h
+    // so it is possible for the user to choose a default one through GUI
+    // if you add a mode here, consider to make it accessible there too
     enum EditMode {Default = 0,
                    Transform,
                    Cutting,

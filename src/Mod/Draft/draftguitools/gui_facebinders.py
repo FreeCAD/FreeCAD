@@ -63,11 +63,11 @@ class Facebinder(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Facebinder, self).Activated(name=translate("draft","Facebinder"))
+        super(Facebinder, self).Activated(name="Facebinder")
 
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select faces from existing objects"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

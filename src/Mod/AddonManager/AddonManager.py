@@ -72,8 +72,10 @@ class CommandAddonManager:
     def Activated(self):
 
         # display first use dialog if needed
-        readWarning = FreeCAD.ParamGet("User parameter:Plugins/addonsRepository").GetBool("readWarning",
-                                                                                          False)
+        readWarningParameter = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        readWarning = readWarningParameter.GetBool("readWarning", False)
+        newReadWarningParameter = FreeCAD.ParamGet("User parameter:Plugins/addonsRepository")
+        readWarning |= newReadWarningParameter.GetBool("readWarning", False)
         if not readWarning:
             if (QtGui.QMessageBox.warning(None,
                                           "FreeCAD",
@@ -85,8 +87,7 @@ class CommandAddonManager:
                                           QtGui.QMessageBox.Cancel |
                                           QtGui.QMessageBox.Ok) !=
                     QtGui.QMessageBox.StandardButton.Cancel):
-                FreeCAD.ParamGet("User parameter:Plugins/addonsRepository").SetBool("readWarning",
-                                                                                    True)
+                readWarningParameter.SetBool("readWarning", True)
                 readWarning = True
 
         if readWarning:
@@ -199,11 +200,14 @@ class CommandAddonManager:
                 m.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
                 m.setText(translate("AddonsInstaller",
                                     "You must restart FreeCAD for changes to take "
-                                    "effect. Press Ok to restart FreeCAD now, or "
-                                    "Cancel to restart later."))
+                                    "effect."))
                 m.setIcon(m.Warning)
                 m.setStandardButtons(m.Ok | m.Cancel)
                 m.setDefaultButton(m.Cancel)
+                okBtn = m.button(QtGui.QMessageBox.StandardButton.Ok)
+                cancelBtn = m.button(QtGui.QMessageBox.StandardButton.Cancel)
+                okBtn.setText(translate("AddonsInstaller","Restart now"))
+                cancelBtn.setText(translate("AddonsInstaller","Restart later"))
                 ret = m.exec_()
                 if ret == m.Ok:
                     shutil.rmtree(self.macro_repo_dir, onerror=self.remove_readonly)

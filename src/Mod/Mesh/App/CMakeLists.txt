@@ -28,12 +28,14 @@ if (BUILD_QT5)
     )
 endif()
 
+generate_from_xml(EdgePy)
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
 generate_from_xml(MeshPointPy)
 generate_from_xml(MeshPy)
 
 SET(Mesh_XML_SRCS
+    EdgePy.xml
     FacetPy.xml
     MeshFeaturePy.xml
     MeshPointPy.xml
@@ -329,6 +331,11 @@ SET(Mesh_SRCS
     AppMeshPy.cpp
     Exporter.cpp
     Exporter.h
+    Importer.cpp
+    Importer.h
+    Edge.cpp
+    Edge.h
+    EdgePyImp.cpp
     Facet.cpp
     Facet.h
     FacetPyImp.cpp
@@ -370,6 +377,15 @@ SET(Mesh_SRCS
     Segment.h
 )
 
+# Suppress -Wundefined-var-template
+if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif()
+endif()
+
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
@@ -388,6 +404,8 @@ endif ()
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
+set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
 
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)

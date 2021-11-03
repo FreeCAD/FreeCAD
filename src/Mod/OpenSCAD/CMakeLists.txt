@@ -41,6 +41,11 @@ SET(OpenSCADTestsFiles_SRCS
     OpenSCADTest/data/__init__.py
     OpenSCADTest/data/CSG.scad
     OpenSCADTest/data/CSG.csg
+    OpenSCADTest/data/Cube.stl
+    OpenSCADTest/data/Square.dxf
+    OpenSCADTest/data/Surface.dat
+    OpenSCADTest/data/Surface2.dat
+    OpenSCADTest/data/Surface.png
 )
 
 SET(OpenSCADTests_ALL

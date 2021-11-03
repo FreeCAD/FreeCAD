@@ -55,7 +55,6 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
-# include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
@@ -107,6 +106,9 @@
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
 # include <TopoDS.hxx>
+# if OCC_VERSION_HEX < 0x070600
+# include <GeomAdaptor_HCurve.hxx>
+# endif
 
 # include <memory>
 # include <ctime>
@@ -153,6 +155,9 @@
 
 #include "Geometry.h"
 
+#if OCC_VERSION_HEX >= 0x070600
+using GeomAdaptor_HCurve = GeomAdaptor_Curve;
+#endif
 
 using namespace Part;
 
@@ -809,7 +814,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
     return false;
 }
 
-bool GeomCurve::intersect(  GeomCurve * c,
+bool GeomCurve::intersect(  const GeomCurve *c,
                             std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                             double tol) const
 {
@@ -1684,6 +1689,37 @@ bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
     }
 }
 
+void GeomBSplineCurve::Trim(double u, double v)
+{
+    auto splitUnwrappedBSpline = [this](double u, double v) {
+        // it makes a copy internally (checked in the source code of OCCT)
+        auto handle = GeomConvert::SplitBSplineCurve (  myCurve,
+                                                            u,
+                                                            v,
+                                                            Precision::Confusion()
+                                                        );
+        setHandle(handle);
+    };
+
+    try {
+        if(!isPeriodic()) {
+            splitUnwrappedBSpline(u, v);
+        }
+        else { // periodic
+            if( v < u ) { // wraps over origin
+                v = v + 1.0; // v needs one extra lap (1.0)
+
+                splitUnwrappedBSpline(u, v);
+            }
+            else {
+                splitUnwrappedBSpline(u, v);
+            }
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
 
 // Persistence implementer
 unsigned int GeomBSplineCurve::getMemSize (void) const

@@ -41,7 +41,7 @@
 #include "PointsPy.h"
 
 #include <QtConcurrentMap>
-#ifdef _WIN32
+#ifdef _MSC_VER
 # include <ppl.h>
 #endif
 
@@ -107,7 +107,7 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     atomic_change guard(*this);
 
     // Rotate the normal vectors
-#ifdef _WIN32
+#ifdef _MSC_VER
     Concurrency::parallel_for_each(_lValueList.begin(), _lValueList.end(), [rot](Base::Vector3f& value) {
         value = rot * value;
     });

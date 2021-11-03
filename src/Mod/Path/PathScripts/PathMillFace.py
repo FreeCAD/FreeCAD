@@ -192,19 +192,22 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             else:
                 env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
         elif obj.BoundaryShape == 'Face Region':
-            import PathScripts.PathSurfaceSupport as PathSurfaceSupport
             baseShape = oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
-            ofstShape = PathUtils.getOffsetArea(planeshape,
-                                                self.tool.Diameter * 1.1,
-                                                plane=planeshape)
+            ofst = 0.0
+            if obj.ClearEdges:
+                ofst = self.tool.Diameter * 0.51
+            ofstShape = PathUtils.getOffsetArea(planeshape, ofst, plane=planeshape)
             ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
 
             # Calculate custom depth params for removal shape envelope, with start and final depth buffers
             custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1)  # only an envelope
             ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
-            env = ofstShapeEnv.cut(baseShape)
-            env.translate(FreeCAD.Vector(0.0, 0.0, -0.000001))  # lower removal shape into buffer zone
+            if obj.ExcludeRaisedAreas: 
+                env = ofstShapeEnv.cut(baseShape)
+                env.translate(FreeCAD.Vector(0.0, 0.0, -0.00001))  # lower removal shape into buffer zone
+            else:
+                env = ofstShapeEnv
 
         if holeShape:
             PathLog.debug("Processing holes and face ...")
@@ -257,6 +260,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         return False
 
     def getAllIncludedFaces(self, base, env, faceZ):
+        '''getAllIncludedFaces(base, env, faceZ)...
+        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox.'''
         included = []
 
         eXMin = env.BoundBox.XMin
@@ -265,20 +270,14 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         eYMax = env.BoundBox.YMax
         eZMin = faceZ
 
-        def isOverlap(fMn, fMx, eMn, eMx):
-            if fMx > eMn:
-                if fMx <= eMx:
-                    return True
-                elif fMx >= eMx and fMn <= eMx:
-                    return True
-            if fMn < eMx:
-                if fMn >= eMn:
-                    return True
-                elif fMn <= eMn and fMx >= eMn:
+        def isOverlap(faceMin, faceMax, envMin, envMax):
+            if faceMax > envMin:
+                if faceMin <= envMax or faceMin == envMin:
                     return True
             return False
 
         for fi in range(0, len(base.Shape.Faces)):
+            # Check all faces of `base` shape
             incl = False
             face = base.Shape.Faces[fi]
             fXMin = face.BoundBox.XMin
@@ -288,8 +287,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             fZMax = face.BoundBox.ZMax
 
             if fZMax > eZMin:
-                if isOverlap(fXMin, fXMax, eXMin, eXMax):
-                    if isOverlap(fYMin, fYMax, eYMin, eYMax):
+                # Include face if its boundbox overlaps envelope boundbox
+                if isOverlap(fXMin, fXMax, eXMin, eXMax):  # check X values
+                    if isOverlap(fYMin, fYMax, eYMin, eYMax):  # check Y values
                         incl = True
             if incl:
                 included.append(face)
@@ -304,9 +304,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectFace(obj, name)
+    obj.Proxy = ObjectFace(obj, name, parentJob)
     return obj

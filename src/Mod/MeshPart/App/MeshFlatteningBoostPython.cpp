@@ -86,13 +86,13 @@ Py::Object makeEdge(const TopoDS_Edge& edge)
     return Py::asObject(new Part::TopoShapeEdgePy(new Part::TopoShape(edge)));
 }
 
-boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_face(const py::object& face)
+std::shared_ptr<FaceUnwrapper> FaceUnwrapper_face(const py::object& face)
 {
     const TopoDS_Face& myFace = getTopoDSFace(face);
-    return boost::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(myFace));
+    return std::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(myFace));
 }
 
-boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
+std::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
                                                     const py::object& facets)
 {
     try {
@@ -122,7 +122,7 @@ boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
             }
         }
 
-        return boost::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(coords, triangles));
+        return std::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(coords, triangles));
     }
     catch (const Py::Exception&) {
         Base::PyException e;
