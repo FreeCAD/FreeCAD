@@ -271,7 +271,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
     //sWhatsThis    = "Std_MacroStepOver";
     sStatusTip    = QT_TR_NOOP("Step into");
     sPixmap       = 0;
-    sAccel        = "F10";
+    sAccel        = "Shift+F10";
     eType         = 0;
 }
 

@@ -218,7 +218,7 @@ void CreateFeatCommands(void)
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdFeatRecompute());
+    // rcCmdMgr.addCommand(new StdCmdFeatRecompute());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
     rcCmdMgr.addCommand(new StdCmdRenameActiveObject());
