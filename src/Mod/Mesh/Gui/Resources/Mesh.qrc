@@ -42,6 +42,8 @@
         <file>icons/RegularSolids/Mesh_Ellipsoid.svg</file>
         <file>icons/RegularSolids/Mesh_Sphere.svg</file>
         <file>icons/RegularSolids/Mesh_Torus.svg</file>
+    </qresource>
+    <qresource>
         <file>translations/Mesh_af.qm</file>
         <file>translations/Mesh_de.qm</file>
         <file>translations/Mesh_fi.qm</file>
