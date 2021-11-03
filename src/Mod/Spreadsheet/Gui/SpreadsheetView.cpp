@@ -312,7 +312,6 @@ void SheetView::editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
     QModelIndex i = ui->cells->currentIndex();
 
     if (i.isValid()) {
-        ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
         ui->cells->finishEditWithMove(key, modifiers);
     }
 }
