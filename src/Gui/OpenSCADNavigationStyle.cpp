@@ -69,7 +69,7 @@ const char* OpenSCADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press left mouse button and move mouse");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Press SHIFT and middle or right mouse button");
+        return QT_TR_NOOP("Press middle mouse button or SHIFT and right mouse button");
     default:
         return "No description";
     }
