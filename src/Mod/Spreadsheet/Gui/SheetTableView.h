@@ -123,7 +123,6 @@ protected:
 
     void _pasteClipboard(const char *name, int type);
 
-    QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
     int tabCounter;
 

@@ -100,9 +100,9 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
             this, SLOT(rowResized(int, int, int)));
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
-    connect(ui->cellContent, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellContent, &LineEdit::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellContent, &LineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
-    connect(ui->cellAlias, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellAlias, &LineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
@@ -331,23 +331,28 @@ void SheetView::confirmAliasChanged(const QString& text)
 
     QModelIndex i = ui->cells->currentIndex();
     if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
-        App::AutoTransaction guard("Edit cell alias");
+        std::string address = CellAddress(i.row(), i.column()).toString();
+        std::string current_alias;
+        (void)cell->getAlias(current_alias);
+        if (!aliasOkay) {
+            //do not show error message if failure to set new alias is because it is already the same string
+            if (text != QString::fromUtf8(current_alias.c_str())) {
+                Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(text).c_str());
+            }
+            return;
+        }
+        std::ostringstream ss;
+        ss << (text.size() ? tr("Edit alias") : tr("Remove alias")).toUtf8().constData() << " " << address;
+        if (current_alias.size())
+            ss << " (" << current_alias << ")";
+        if (text.size())
+            ss << " -> " << text.toUtf8().constData();
+        App::AutoTransaction guard(ss.str().c_str());
         try {
-            if (!aliasOkay) {
-                //do not show error message if failure to set new alias is because it is already the same string
-                std::string current_alias;
-                (void)cell->getAlias(current_alias);
-                if (text != QString::fromUtf8(current_alias.c_str())) {
-                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(text).c_str());
-                }
-            }
-            else {
-                std::string address = CellAddress(i.row(), i.column()).toString();
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
-                    address, text.toStdString());
-                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
-                ui->cells->setFocus();
-            }
+            Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                address, text.toStdString());
+            Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+            ui->cells->setFocus();
         } catch (Base::Exception & e) {
             e.ReportException();
             guard.close(true);
@@ -364,11 +369,19 @@ void SheetView::confirmContentChanged(const QString& text)
     if (!i.isValid())
         return;
 
-    App::AutoTransaction guard("Edit cell");
+    CellAddress addr(i.row(), i.column());
+    std::ostringstream ss;
+    ss << tr("Edit cell").toUtf8().constData() << " " << addr.toString();
+    if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+        std::string str;
+        if (cell->getAlias(str))
+            ss << " (" << str << ")";
+    }
+    App::AutoTransaction guard(ss.str().c_str());
     try {
         std::string str = text.toUtf8().constData();
-        CellAddress addr(i.row(), i.column());
-        sheet->setCell(addr, ui->cellContent->text().toUtf8().constData());
+        sheet->setCell(addr, str.c_str());
+        Gui::Command::updateActive();
         ui->cells->setFocus();
     } catch (Base::Exception & e) {
         e.ReportException();

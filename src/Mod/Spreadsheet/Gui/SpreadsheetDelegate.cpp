@@ -81,7 +81,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
             else
                 editor->setObjectName(QLatin1String("label"));
             editor->setContextMenuPolicy(Qt::NoContextMenu);
-            connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+            connect(editor, &SpreadsheetGui::TextEdit::finishedWithKey, this, &SpreadsheetDelegate::on_editorFinishedWithKey);
             lastEditor = editor;
             return editor;
         }
@@ -317,6 +317,7 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
 
 void SpreadsheetDelegate::on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
 {
+    commitAndCloseEditor();
     Q_EMIT finishedWithKey(key, modifiers);
 }
 

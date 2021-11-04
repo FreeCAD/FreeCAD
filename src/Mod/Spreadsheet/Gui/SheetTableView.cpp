@@ -262,6 +262,10 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionCut,SIGNAL(triggered()), this, SLOT(cutSelection()));
     actionDel = contextMenu->addAction(tr("Delete"));
     connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
+    actionCopy = contextMenu->addAction(tr("Copy"));
+    connect(actionCopy,SIGNAL(triggered()), this, SLOT(copySelection()));
+    actionPaste = contextMenu->addAction(tr("Paste"));
+    connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
 
     pasteMenu = new QMenu(tr("Paste special..."));
     contextMenu->addMenu(pasteMenu);
@@ -757,8 +761,6 @@ void SheetTableView::commitData(QWidget* editor)
 
 bool SheetTableView::edit(const QModelIndex& index, EditTrigger trigger, QEvent* event)
 {
-    // if (trigger & (QAbstractItemView::DoubleClicked | QAbstractItemView::AnyKeyPressed | QAbstractItemView::EditKeyPressed))
-    //     currentEditIndex = index;
     return QTableView::edit(index, trigger, event);
 }
 
@@ -1011,6 +1013,8 @@ void SheetTableView::_pasteClipboard(const char *name, int type)
 
 void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion)
 {
+    (void)handleTabMotion;
+
     // A utility lambda for finding the beginning and ending of data regions
     auto scanForRegionBoundary = [this](int& r, int& c, int dr, int dc) {
         auto startAddress = CellAddress(r, c);
@@ -1144,19 +1148,18 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
     case Qt::Key_Tab:
         if (modifiers == Qt::NoModifier) {
             tabCounter++;
-            if (handleTabMotion)
+            // if (handleTabMotion)
                 targetColumn += colSpan;
         }
         else if (modifiers == Qt::ShiftModifier) {
             tabCounter = 0;
-            if (handleTabMotion)
+            // if (handleTabMotion)
                 targetColumn--;
         }
         break;
     case Qt::Key_Backtab:
-        if (modifiers == Qt::NoModifier) {
-            targetColumn--;
-        }
+        modifiers.setFlag(Qt::ShiftModifier, false);
+        targetColumn--;
         tabCounter = 0;
         break;
     default:
@@ -1249,21 +1252,15 @@ void SheetTableView::mousePressEvent(QMouseEvent* event)
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
-    // currentEditIndex = QModelIndex();
-    // SpreadsheetGui::TextEdit * le = qobject_cast<SpreadsheetGui::TextEdit*>(editor);
-    // if(le) {
-    //     QTableView::closeEditor(editor, hint);
-    //     setCurrentIndex(le->next());
-    //     return;
-    // }
-    QPushButton *button = qobject_cast<QPushButton*>(editor);
-    if(!button)
+    if (qobject_cast<SpreadsheetGui::TextEdit*>(editor)
+            || !qobject_cast<QPushButton*>(editor))
+    {
         QTableView::closeEditor(editor, hint);
+    }
 }
 
 void SheetTableView::edit ( const QModelIndex & index )
 {
-    // currentEditIndex = index;
     QTableView::edit(index);
 }
 

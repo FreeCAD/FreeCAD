@@ -41,10 +41,6 @@ Q_SIGNALS:
     void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 
 private:
-    bool eventFilter(QObject* object, QEvent* event);
-
-
-private:
     int lastKeyPressed;
     Qt::KeyboardModifiers lastModifiers;
 };
@@ -56,16 +52,17 @@ public:
     explicit TextEdit(QWidget *parent = 0);
 
     bool event(QEvent *event);
+    void keyPressEvent(QKeyEvent *);
+    bool eventFilter(QObject *, QEvent *);
+    void finishEditing();
 
 Q_SIGNALS:
     void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 
 private:
-    bool eventFilter(QObject* object, QEvent* event);
-
-private:
     int lastKeyPressed;
     Qt::KeyboardModifiers lastModifiers;
+    bool filtering = false;
 };
 
 
