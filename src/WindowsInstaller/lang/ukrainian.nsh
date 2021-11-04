@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "За допомогою цього майстр�
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Обробка скриптів Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Створити значок на стільниці"
-${LangFileString} TEXT_FINISH_WEBSITE "Відвідати freecadweb.org, щоб ознайомитися з новинами, довідковими матеріалами та підказками"
+${LangFileString} TEXT_FINISH_WEBSITE "Відвідати freecad.org, щоб ознайомитися з новинами, довідковими матеріалами та підказками"
 
 #${LangFileString} FileTypeTitle "Документ FreeCAD"
 
