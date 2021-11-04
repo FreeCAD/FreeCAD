@@ -17,7 +17,7 @@ SetCompressor /SOLID lzma
 
 !define APP_VERSION_MAJOR 0
 !define APP_VERSION_MINOR 19
-!define APP_VERSION_REVISION 0
+!define APP_VERSION_REVISION 3
 !define APP_VERSION_EMERGENCY "" # use "1" for an emergency release of FreeCAD otherwise ""
 	# alternatively you can use APP_VERSION_EMERGENCY for a custom suffix of the version number
 !define APP_EMERGENCY_DOT "" # use "." for an emergency release of FreeCAD otherwise ""
@@ -29,7 +29,7 @@ SetCompressor /SOLID lzma
 
 #--------------------------------
 # Installer file name
-# Typical names for the release are "FreeCAD-018-Installer-1.exe" etc.
+# Typical names for the release are "FreeCAD-019-Installer-1.exe" etc.
 
 !define ExeFile "${APP_NAME}-${APP_VERSION_MAJOR}${APP_VERSION_MINOR}${APP_VERSION_REVISION}${APP_VERSION_EMERGENCY}-Installer-${APP_VERSION_BUILD}.exe"
 
