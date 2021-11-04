@@ -547,6 +547,16 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             QString str = value.toString();
+
+            // Check to see if this is already the value in the cell, and skip the update if so
+            auto cell = sheet->getCell(address);
+            if (cell) {
+                std::string oldContent;
+                cell->getStringContent(oldContent);
+                if (str == QString::fromStdString(oldContent))
+                    return true;
+            }
+
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command
