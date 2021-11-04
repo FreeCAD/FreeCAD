@@ -1955,13 +1955,13 @@ void Application::runApplication(void)
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
     }
     else {
-        mainApp.setApplicationName(QString::fromUtf8(App::GetApplication().getExecutableName()));
+        mainApp.setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
 #ifndef Q_OS_MACX
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
 #endif
     QString plugin;
-    plugin = QString::fromUtf8(App::GetApplication().getHomePath());
+    plugin = QString::fromStdString(App::Application::getHomePath());
     plugin += QLatin1String("/plugins");
     QCoreApplication::addLibraryPath(plugin);
 
@@ -2127,7 +2127,7 @@ void Application::runApplication(void)
     // init the Inventor subsystem
     initOpenInventor();
 
-    QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+    QString home = QString::fromStdString(App::Application::getHomePath());
 
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {
@@ -2267,7 +2267,7 @@ void Application::runApplication(void)
 
     try {
         std::stringstream s;
-        s << App::Application::getTempPath() << App::GetApplication().getExecutableName()
+        s << App::Application::getTempPath() << App::Application::getExecutableName()
           << "_" << QCoreApplication::applicationPid() << ".lock";
         // open a lock file with the PID
         Base::FileInfo fi(s.str());

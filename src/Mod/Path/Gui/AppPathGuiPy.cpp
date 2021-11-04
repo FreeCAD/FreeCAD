@@ -82,7 +82,7 @@ private:
         wc.restoreCursor();
 
         try {
-            std::string path = App::GetApplication().getHomePath();
+            std::string path = App::Application::getHomePath();
             path += "Mod/Path/PathScripts/post/";
             QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_pre.py"));
             std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
@@ -149,7 +149,7 @@ private:
         wc.restoreCursor();
 
         try {
-            std::string path = App::GetApplication().getHomePath();
+            std::string path = App::Application::getHomePath();
             path += "Mod/Path/PathScripts/post/";
             QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_pre.py"));
             std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
@@ -225,7 +225,7 @@ private:
             if (objlist.size() == 0)
                 throw Py::RuntimeError("No object to export");
 
-            std::string path = App::GetApplication().getHomePath();
+            std::string path = App::Application::getHomePath();
             path += "Mod/Path/PathScripts/post/";
             QDir dir1(QString::fromUtf8(path.c_str()), QString::fromLatin1("*_post.py"));
             std::string cMacroPath = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")

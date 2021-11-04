@@ -680,7 +680,7 @@ void AboutDialog::on_copyButton_clicked()
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string,std::string>::iterator it;
-    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
+    QString exe = QString::fromStdString(App::Application::getExecutableName());
 
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());

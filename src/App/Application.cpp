@@ -1040,14 +1040,14 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-const char* Application::getHomePath(void) const
+std::string Application::getHomePath()
 {
-    return _mConfig["AppHomePath"].c_str();
+    return mConfig["AppHomePath"];
 }
 
-const char* Application::getExecutableName(void) const
+std::string Application::getExecutableName()
 {
-    return _mConfig["ExeName"].c_str();
+    return mConfig["ExeName"];
 }
 
 std::string Application::getTempPath()

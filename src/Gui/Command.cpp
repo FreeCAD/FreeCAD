@@ -1117,7 +1117,7 @@ void MacroCommand::activated(int iMsg)
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
         d = QDir(dirstr);
     }
 
