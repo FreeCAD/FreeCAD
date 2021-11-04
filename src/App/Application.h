@@ -597,7 +597,7 @@ private:
     std::deque<std::string> _pendingDocsReopen;
     std::map<std::string,std::vector<std::string> > _pendingDocMap;
 
-    // To prevent infinite recursion of reloading a partial document due a truely
+    // To prevent infinite recursion of reloading a partial document due a truly
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
