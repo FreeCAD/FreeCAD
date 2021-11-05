@@ -37,6 +37,7 @@
 #include <QEvent>
 #include <Base/BaseClass.h>
 #include <Gui/Namespace.h>
+#include <FCGlobal.h>
 
 // forward declarations
 class SoEvent;
@@ -420,6 +421,23 @@ class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
 public:
     OpenSCADNavigationStyle();
     ~OpenSCADNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
+};
+
+class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    TinkerCADNavigationStyle();
+    ~TinkerCADNavigationStyle();
     const char* mouseButtons(ViewerMode);
 
 protected:
