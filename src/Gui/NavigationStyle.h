@@ -152,6 +152,7 @@ public:
     int getViewingMode() const;
     virtual SbBool processEvent(const SoEvent * const ev);
     virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
+    virtual SbBool processKeyboardEvent(const SoKeyboardEvent * const event);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled(void) const;
@@ -215,7 +216,6 @@ protected:
     void addToLog(const SbVec2s pos, const SbTime time);
 
     void syncModifierKeys(const SoEvent * const ev);
-    SbBool handleKeyboardEvent(const SoKeyboardEvent * const event, const SbVec2f & posn);
 
 protected:
     struct { // tracking mouse movement in a log

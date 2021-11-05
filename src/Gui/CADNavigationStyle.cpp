@@ -121,7 +121,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
         const SoKeyboardEvent * const event = static_cast<const SoKeyboardEvent *>(ev);
-        processed = handleKeyboardEvent(event, posn);
+        processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
