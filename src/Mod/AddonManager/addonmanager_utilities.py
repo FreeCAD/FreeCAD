@@ -254,7 +254,7 @@ def get_zip_url(baseurl):
     url = getserver(baseurl).strip("/")
     if url.endswith("github.com"):
         return baseurl+"/archive/master.zip"
-    elif url.endswith("framagit.org") or url.endswith("gitlab.com"):
+    elif url.endswith("framagit.org") or url.endswith("gitlab.com") or url.endswith("salsa.debian.org"):
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
         return baseurl+"/-/archive/master/"+reponame+"-master.zip"
@@ -266,8 +266,10 @@ def get_zip_url(baseurl):
 def get_readme_url(url):
     "Returns the location of a readme file"
 
-    if "github" in url or "framagit" in url or "gitlab" in url:
+    if "github" in url or "framagit" in url:
         return url+"/raw/master/README.md"
+    elif "gitlab" in url or "salsa.debian.org" in url:
+        return url+"/-/raw/master/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
     return None
@@ -279,7 +281,7 @@ def get_desc_regex(url):
 
     if "github" in url:
         return r'<meta property="og:description" content="(.*?)"'
-    elif "framagit" in url or "gitlab" in url:
+    elif "framagit" in url or "gitlab" in url or "salsa.debian.org" in url:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
     print("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", url)
     return None
