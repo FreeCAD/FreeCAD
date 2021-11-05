@@ -82,6 +82,8 @@ NOGIT = False  # for debugging purposes, set this to True to always use http dow
 
 NOMARKDOWN = False  # for debugging purposes, set this to True to disable Markdown lib
 
+url_to_branch_map = {} # Added to 0.19.3 to support branches with names other than "master"
+
 """Multithread workers for the Addon Manager"""
 
 
@@ -137,12 +139,13 @@ class UpdateWorker(QtCore.QThread):
         u.close()
         p = re.findall((r'(?m)\[submodule\s*"(?P<name>.*)"\]\s*'
                         r"path\s*=\s*(?P<path>.+)\s*"
-                        r"url\s*=\s*(?P<url>https?://.*)"), p)
+                        r"url\s*=\s*(?P<url>https?://.*)\s*"
+                        r"(branch\s*=\s*(?P<branch>.*)\s*)?"), p)
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
         # querying official addons
-        for name, path, url in p:
+        for name, path, url, _, branch in p:
             self.info_label.emit(name)
             url = url.split(".git")[0]
             addondir = moddir + os.sep + name
@@ -152,11 +155,20 @@ class UpdateWorker(QtCore.QThread):
             else:
                 state = 0
             repos.append([name, url, state])
+            if branch is None or len(branch) == 0:
+                 branch = "master"
+            url_to_branch_map[url] = branch
         # querying custom addons
         customaddons = (FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                         .GetString("CustomRepositories", "").split("\n"))
         for url in customaddons:
             if url:
+                if " " in url:
+                    addon_and_branch = addon.split(" ")
+                    url = addon_and_branch[0]
+                    branch = addon_and_branch[1]
+                else:
+                    branch = "master"
                 name = url.split("/")[-1]
                 if name.lower().endswith(".git"):
                     name = name[:-4]
@@ -166,6 +178,7 @@ class UpdateWorker(QtCore.QThread):
                 else:
                     state = 1
                 repos.append([name, url, state])
+                url_to_branch_map[url] = branch
         if not repos:
             self.info_label.emit(translate("AddonsInstaller", "Unable to download addon list."))
         else:
@@ -386,17 +399,22 @@ class ShowWorker(QtCore.QThread):
 
         self.progressbar_show.emit(True)
         self.info_label.emit(translate("AddonsInstaller", "Retrieving description..."))
+
         if len(self.repos[self.idx]) == 4:
             desc = self.repos[self.idx][3]
         else:
             u = None
             url = self.repos[self.idx][1]
+            if url in url_to_branch_map:
+                branch = url_to_branch_map[url]
+            else:
+                branch = "master"
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + " " + str(url))
             desc = ""
             regex = utils.get_readme_regex(url)
             if regex:
                 # extract readme from html via regex
-                readmeurl = utils.get_readme_html_url(url)
+                readmeurl = utils.get_readme_html_url(url,branch)
                 if not readmeurl:
                     print("Debug: README not found for", url)
                 u = utils.urlopen(readmeurl)
@@ -415,7 +433,7 @@ class ShowWorker(QtCore.QThread):
                     print("Debug: README not found at", readmeurl)
             else:
                 # convert raw markdown using lib
-                readmeurl = utils.get_readme_url(url)
+                readmeurl = utils.get_readme_url(url,branch)
                 if not readmeurl:
                     print("Debug: README not found for", url)
                 u = utils.urlopen(readmeurl)
@@ -867,7 +885,11 @@ class InstallWorker(QtCore.QThread):
                 shutil.rmtree(bakdir)
             os.rename(clonedir, bakdir)
         os.makedirs(clonedir)
-        zipurl = utils.get_zip_url(baseurl)
+        if baseurl in url_to_branch_map:
+            branch = url_to_branch_map[baseurl]
+        else:
+            branch = "master"
+        zipurl = utils.get_zip_url(baseurl, branch)
         if not zipurl:
             return translate("AddonsInstaller", "Error: Unable to locate zip from") + " " + baseurl
         try:

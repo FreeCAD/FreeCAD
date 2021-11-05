@@ -248,28 +248,28 @@ def restart_freecad():
         QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(), args)
 
 
-def get_zip_url(baseurl):
+def get_zip_url(baseurl, branch="master"):
     "Returns the location of a zip file from a repo, if available"
 
     url = getserver(baseurl).strip("/")
     if url.endswith("github.com"):
-        return baseurl+"/archive/master.zip"
+        return baseurl+"/archive/" + branch + ".zip"
     elif url.endswith("framagit.org") or url.endswith("gitlab.com") or url.endswith("salsa.debian.org"):
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
-        return baseurl+"/-/archive/master/"+reponame+"-master.zip"
+        return baseurl+"/-/archive/" + branch + "/"+reponame+"-" + branch + ".zip"
     else:
         print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", url)
         return None
 
 
-def get_readme_url(url):
+def get_readme_url(url, branch="master"):
     "Returns the location of a readme file"
 
     if "github" in url or "framagit" in url:
-        return url+"/raw/master/README.md"
+        return url+"/raw/" + branch + "/README.md"
     elif "gitlab" in url or "salsa.debian.org" in url:
-        return url+"/-/raw/master/README.md"
+        return url+"/-/raw/" + branch + "/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
     return None
@@ -287,11 +287,11 @@ def get_desc_regex(url):
     return None
 
 
-def get_readme_html_url(url):
+def get_readme_html_url(url, branch="master"):
     """Returns the location of a html file containing readme"""
 
     if "github" in url:
-        return url + "/blob/master/README.md"
+        return url + "/blob/" + branch + "/README.md"
     else:
         print("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", url)
         return None
