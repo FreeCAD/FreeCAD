@@ -273,7 +273,7 @@ void DownloadItem::init()
 
 QString DownloadItem::getDownloadDirectory() const
 {
-    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
+    QString exe = QString::fromStdString(App::Application::getExecutableName());
     QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     QString dirPath = QDir(path).filePath(exe);
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")

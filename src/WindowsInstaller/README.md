@@ -20,7 +20,7 @@ To build the installer you can do the following:
    (You can alternatively get nsProcess from https://nsis.sourceforge.io/NsProcess_plugin)
 7. Copy all FreeCAD files to the folder "~\FreeCAD"
    e.g. "C:\FreeCAD\Installer\FreeCAD"
-8. If you use a version of FreeCAD that was compiled using another MSVC version than MSVC 2017,
+8. If you use a version of FreeCAD that was compiled using another MSVC version than MSVC 2019,
    copy its distributable DLLs to the folder FILES_DEPS (see step 3).
 9. Right-click on the file FreeCAD-installer.nsi and choose "Compile NSIS script"
    to compile the installer.

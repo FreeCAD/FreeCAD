@@ -85,8 +85,8 @@ bool Assistant::startAssistant()
     if (proc->state() != QProcess::Running) {
 #ifdef Q_OS_WIN
         QString app;
-        app = QDir::toNativeSeparators(QString::fromUtf8
-            (App::GetApplication().getHomePath()) + QLatin1String("bin/"));
+        app = QDir::toNativeSeparators(QString::fromStdString
+            (App::Application::getHomePath()) + QLatin1String("bin/"));
 #elif defined(Q_OS_MAC)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
@@ -95,8 +95,8 @@ bool Assistant::startAssistant()
         app += QLatin1String("assistant");
 
         // get the name of the executable and the doc path
-        QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
-        QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
+        QString exe = QString::fromStdString(App::Application::getExecutableName());
+        QString doc = QString::fromStdString(App::Application::getHelpDir());
         QString qhc = doc + exe.toLower() + QLatin1String(".qhc");
 
 

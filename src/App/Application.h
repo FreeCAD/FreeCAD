@@ -395,8 +395,8 @@ public:
 
     /** @name Application directories */
     //@{
-    const char* getHomePath(void) const;
-    const char* getExecutableName(void) const;
+    static std::string getHomePath();
+    static std::string getExecutableName();
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -597,7 +597,7 @@ private:
     std::deque<std::string> _pendingDocsReopen;
     std::map<std::string,std::vector<std::string> > _pendingDocMap;
 
-    // To prevent infinite recursion of reloading a partial document due a truely
+    // To prevent infinite recursion of reloading a partial document due a truly
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 

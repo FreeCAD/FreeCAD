@@ -514,7 +514,7 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Deletes the ImpicitSurface instance
+     * Destructor. Deletes the ImpicitSurface instance
      * of the WildMagic library
      */
     ~FunctionContainer(){ delete pImplSurf; }

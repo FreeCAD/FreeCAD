@@ -666,7 +666,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
     tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 
-    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
+    QString exeName = QString::fromStdString(App::Application::getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
     for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
         QString bn = it->baseName();

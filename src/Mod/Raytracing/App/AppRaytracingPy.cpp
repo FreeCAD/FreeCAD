@@ -222,7 +222,7 @@ private:
         if (! PyArg_ParseTuple(args.ptr(), "ss",&FileName,&DestDir))
             throw Py::Exception();
 
-        std::string resName = App::GetApplication().getHomePath(); 
+        std::string resName = App::Application::getHomePath();
         resName += "Mod"; 
         resName += PATHSEP ;
         resName += "Raytracing"; 

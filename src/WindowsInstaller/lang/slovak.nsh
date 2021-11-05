@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Tento sprievodca Vám pomáha inštalovať FreeC
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Kompilácia Python skriptov..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Vytvoriť skratku pre pracovnú plochu"
-${LangFileString} TEXT_FINISH_WEBSITE "Navštívte freecadweb.org pre posledné novinky, podporu a tipy"
+${LangFileString} TEXT_FINISH_WEBSITE "Navštívte freecad.org pre posledné novinky, podporu a tipy"
 
 #${LangFileString} FileTypeTitle "FreeCAD dokument"
 

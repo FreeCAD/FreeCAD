@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Morroi honek $(^NameDA) aplikazioaren instalazio
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Python script-ak konpilatzen..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Sortu mahaigaineko lasterbidea"
-${LangFileString} TEXT_FINISH_WEBSITE "Bisitatu freecadweb.org azken berriak, aholkuak eta laguntza lortzeko"
+${LangFileString} TEXT_FINISH_WEBSITE "Bisitatu freecad.org azken berriak, aholkuak eta laguntza lortzeko"
 
 #${LangFileString} FileTypeTitle "FreeCAD-dokumentua"
 
