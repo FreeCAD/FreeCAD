@@ -153,6 +153,7 @@ public:
     virtual SbBool processEvent(const SoEvent * const ev);
     virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
     virtual SbBool processKeyboardEvent(const SoKeyboardEvent * const event);
+    virtual SbBool processClickEvent(const SoMouseButtonEvent * const event);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled(void) const;
@@ -227,6 +228,7 @@ protected:
 
     View3DInventorViewer* viewer;
     ViewerMode currentmode;
+    SoMouseButtonEvent mouseDownConsumedEvent;
     SbVec2f lastmouseposition;
     SbVec2s globalPos;
     SbVec2s localPos;
@@ -296,9 +298,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
@@ -316,7 +315,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport RevitNavigationStyle : public UserNavigationStyle {
@@ -334,7 +332,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
@@ -352,7 +349,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
@@ -391,9 +387,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
@@ -408,9 +401,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
@@ -425,9 +415,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
@@ -442,9 +429,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 } // namespace Gui

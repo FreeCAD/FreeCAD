@@ -1670,6 +1670,39 @@ SbBool NavigationStyle::processKeyboardEvent(const SoKeyboardEvent * const event
     return processed;
 }
 
+SbBool NavigationStyle::processClickEvent(const SoMouseButtonEvent * const event)
+{
+    // issue #0002433: avoid to swallow the UP event if down the
+    // scene graph somewhere a dialog gets opened
+    SbBool processed = false;
+    const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
+    if (press) {
+        SbTime tmp = (event->getTime() - mouseDownConsumedEvent.getTime());
+        float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+        // a double-click?
+        if (tmp.getValue() < dci) {
+            mouseDownConsumedEvent = *event;
+            mouseDownConsumedEvent.setTime(event->getTime());
+            processed = true;
+        }
+        else {
+            mouseDownConsumedEvent.setTime(event->getTime());
+            // 'ANY' is used to mark that we don't know yet if it will
+            // be a double-click event.
+            mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+        }
+    }
+    else if (!press) {
+        if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON1) {
+            // now handle the postponed event
+            NavigationStyle::processSoEvent(&mouseDownConsumedEvent);
+            mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+        }
+    }
+
+    return processed;
+}
+
 void NavigationStyle::setPopupMenuEnabled(const SbBool on)
 {
     this->menuenabled = on;
