@@ -26,6 +26,7 @@
 #define SPREADSHEETDELEGATE_H
 
 #include <QStyledItemDelegate>
+#include <QAbstractItemView>
 
 namespace Spreadsheet {
 class Sheet;
@@ -42,6 +43,9 @@ public:
     explicit SpreadsheetDelegate(Spreadsheet::Sheet * sheet, QWidget *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &,
                           const QModelIndex &index) const;
+
+    void setEditTrigger(QAbstractItemView::EditTrigger trigger);
+
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const;
@@ -61,6 +65,7 @@ private:
     mutable bool updating = false;
     mutable bool syncCombo = false;
     mutable QWidget *lastEditor = nullptr;
+    QAbstractItemView::EditTrigger editTrigger = QAbstractItemView::NoEditTriggers;
 
     friend class SheetTableView;
 };

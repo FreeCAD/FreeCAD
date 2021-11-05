@@ -56,6 +56,11 @@ SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet * _sheet, QWidget *p
 {
 }
 
+void SpreadsheetDelegate::setEditTrigger(QAbstractItemView::EditTrigger trigger)
+{
+    editTrigger = trigger;
+}
+
 QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
@@ -175,8 +180,12 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
         edit->setPlainText(data.toString());
         if (lastEditor == edit) {
             lastEditor = nullptr;
-            if (edit->blockCount() == 1)
-                edit->selectAll();
+            if (edit->blockCount() == 1) {
+                if (editTrigger == QAbstractItemView::EditKeyPressed)
+                    edit->moveCursor(QTextCursor::End);
+                else
+                    edit->selectAll();
+            }
         }
         return;
     }

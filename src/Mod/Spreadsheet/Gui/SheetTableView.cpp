@@ -761,6 +761,9 @@ void SheetTableView::commitData(QWidget* editor)
 
 bool SheetTableView::edit(const QModelIndex& index, EditTrigger trigger, QEvent* event)
 {
+    auto delegate = qobject_cast<SpreadsheetDelegate*>(itemDelegate());
+    if (delegate)
+        delegate->setEditTrigger(trigger);
     return QTableView::edit(index, trigger, event);
 }
 
