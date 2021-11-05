@@ -72,6 +72,7 @@
 #include "GestureNavigationStyle.h"
 
 #include <App/Application.h>
+#include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include "View3DInventorViewer.h"
 #include "Application.h"

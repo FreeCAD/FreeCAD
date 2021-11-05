@@ -41,6 +41,7 @@
 
 // forward declarations
 class SoEvent;
+class SoMouseWheelEvent;
 class SoMotion3Event;
 class SoQtViewer;
 class SoCamera;
@@ -154,6 +155,7 @@ public:
     virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
     virtual SbBool processKeyboardEvent(const SoKeyboardEvent * const event);
     virtual SbBool processClickEvent(const SoMouseButtonEvent * const event);
+    virtual SbBool processWheelEvent(const SoMouseWheelEvent * const event);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled() const;

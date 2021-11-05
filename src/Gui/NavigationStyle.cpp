@@ -1495,24 +1495,19 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
-    const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn = normalizePixelPos(pos);
     bool processed = false;
 
     //handle mouse wheel zoom
-    if(ev->isOfType(SoMouseWheelEvent::getClassTypeId())){
-        doZoom(
-            viewer->getSoRenderManager()->getCamera(),
-            static_cast<const SoMouseWheelEvent*>(ev)->getDelta(),
-            posn
-        );
-        processed = true;
+    if (ev->isOfType(SoMouseWheelEvent::getClassTypeId())) {
+        const SoMouseWheelEvent * const event = static_cast<const SoMouseWheelEvent *>(ev);
+        processed = processWheelEvent(event);
     }
 
-    if (! processed)
-        return viewer->processSoEventBase(ev);
-    else
-        return processed;
+    if (!processed) {
+        processed = viewer->processSoEventBase(ev);
+    }
+
+    return processed;
 }
 
 void NavigationStyle::syncWithEvent(const SoEvent * const ev)
@@ -1690,6 +1685,17 @@ SbBool NavigationStyle::processClickEvent(const SoMouseButtonEvent * const event
     }
 
     return processed;
+}
+
+SbBool NavigationStyle::processWheelEvent(const SoMouseWheelEvent * const event)
+{
+    const SbVec2s pos(event->getPosition());
+    const SbVec2f posn = normalizePixelPos(pos);
+
+    //handle mouse wheel zoom
+    doZoom(viewer->getSoRenderManager()->getCamera(),
+           event->getDelta(), posn);
+    return true;
 }
 
 void NavigationStyle::setPopupMenuEnabled(const SbBool on)
