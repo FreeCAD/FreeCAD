@@ -2069,7 +2069,12 @@ SpreadsheetGui--SheetTableView {
     qproperty-aliasForegroundColor: #202020;
 }
 
-QTableView::item:hover  {
+QTableView::item:focus  {
+    border: 1px solid #daa116;
+}
+
+QTableView::item:hover,
+QTableView::item:hover:focus {
     border: 2px solid #daa116;
 }
 
