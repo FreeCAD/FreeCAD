@@ -372,7 +372,7 @@ protected:
     short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
     bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
     int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
-    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    SoMouseButtonEvent mousedownConsumedEvents[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
     bool testMoveThreshold(const SbVec2s currentPos) const;
 
     bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
