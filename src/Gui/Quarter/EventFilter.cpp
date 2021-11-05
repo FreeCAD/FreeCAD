@@ -177,7 +177,7 @@ EventFilter::eventFilter(QObject * obj, QEvent * qevent)
   Returns mouse position in global coordinates
  */
 const QPoint &
-EventFilter::globalMousePosition(void) const
+EventFilter::globalMousePosition() const
 {
   return PRIVATE(this)->globalmousepos;
 }

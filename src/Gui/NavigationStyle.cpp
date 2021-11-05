@@ -64,7 +64,7 @@ struct NavigationStyleP {
     {
         this->animationsteps = 0;
         this->animationdelta = 0;
-        this->animsensor = 0;
+        this->animsensor = nullptr;
         this->sensitivity = 2.0f;
         this->resetcursorpos = false;
         this->rotationCenterFound = false;
@@ -173,7 +173,7 @@ const Base::Type& NavigationStyleEvent::style() const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
-NavigationStyle::NavigationStyle() : viewer(0), mouseSelection(0)
+NavigationStyle::NavigationStyle() : viewer(nullptr), mouseSelection(nullptr)
 {
     PRIVATE(this) = new NavigationStyleP();
     PRIVATE(this)->animsensor = new SoTimerSensor(NavigationStyleP::viewAnimationCB, this);
@@ -261,17 +261,17 @@ void NavigationStyle::finalize()
     delete[] this->log.time;
 }
 
-void NavigationStyle::interactiveCountInc(void)
+void NavigationStyle::interactiveCountInc()
 {
     viewer->interactiveCountInc();
 }
 
-void NavigationStyle::interactiveCountDec(void)
+void NavigationStyle::interactiveCountDec()
 {
     viewer->interactiveCountDec();
 }
 
-int NavigationStyle::getInteractiveCount(void) const
+int NavigationStyle::getInteractiveCount() const
 {
     return viewer->getInteractiveCount();
 }
@@ -288,7 +288,7 @@ NavigationStyle::OrbitStyle NavigationStyle::getOrbitStyle() const
     return NavigationStyle::OrbitStyle(projector->getOrbitStyle());
 }
 
-SbBool NavigationStyle::isViewing(void) const
+SbBool NavigationStyle::isViewing() const
 {
     return viewer->isViewing();
 }
@@ -298,7 +298,7 @@ void NavigationStyle::setViewing(SbBool enable)
     viewer->setViewing(enable);
 }
 
-SbBool NavigationStyle::isSeekMode(void) const
+SbBool NavigationStyle::isSeekMode() const
 {
     return viewer->isSeekMode();
 }
@@ -321,7 +321,7 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
 SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == 0) return false;
+    if (cam == nullptr) return false;
 
     SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
     rpaction.setPoint(screenpos);
@@ -343,7 +343,7 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == 0) return;
+    if (cam == nullptr) return;
     PRIVATE(this)->rotationCenterFound = false;
 
     // Find global coordinates of focal point.
@@ -401,7 +401,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToCenter)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == 0) return;
+    if (cam == nullptr) return;
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -611,7 +611,7 @@ void NavigationStyle::viewAll()
  */
 void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 {
-    if (cam == NULL) return;
+    if (cam == nullptr) return;
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -630,7 +630,7 @@ void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
                                 const SbVec2f & currpos, const SbVec2f & prevpos)
 {
-    if (cam == NULL) return; // can happen for empty scenegraph
+    if (cam == nullptr) return; // can happen for empty scenegraph
     if (currpos == prevpos) return; // useless invocation
 
 
@@ -659,7 +659,7 @@ void NavigationStyle::pan(SoCamera* camera)
     // The plane we're projecting the mouse coordinates to get 3D
     // coordinates should stay the same during the whole pan
     // operation, so we should calculate this value here.
-    if (camera == NULL) { // can happen for empty scenegraph
+    if (camera == nullptr) { // can happen for empty scenegraph
         this->panningplane = SbPlane(SbVec3f(0, 0, 1), 0);
     }
     else {
@@ -689,7 +689,7 @@ void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpo
  */
 void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
 {
-    if (cam == NULL) return; // can happen for empty scenegraph
+    if (cam == nullptr) return; // can happen for empty scenegraph
     SoType t = cam->getTypeId();
     SbName tname = t.getName();
 
@@ -870,7 +870,7 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == 0)
+    if (cam == nullptr)
         return SbVec3f(0,0,0);
 
     // Find global coordinates of focal point.
@@ -887,7 +887,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
 void NavigationStyle::spin(const SbVec2f & pointerpos)
 {
     if (this->log.historysize < 2) return;
-    assert(this->spinprojector != NULL);
+    assert(this->spinprojector != nullptr);
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s glsize(vp.getViewportSizePixels());
@@ -965,7 +965,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param prevpos  previous normalized position of mouse pointer
  */
 void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
-    assert(this->spinprojector != NULL);
+    assert(this->spinprojector != nullptr);
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -1163,7 +1163,7 @@ NavigationStyle::setAnimationEnabled(const SbBool enable)
 */
 
 SbBool
-NavigationStyle::isAnimationEnabled(void) const
+NavigationStyle::isAnimationEnabled() const
 {
     return this->spinanimatingallowed;
 }
@@ -1172,7 +1172,7 @@ NavigationStyle::isAnimationEnabled(void) const
   Query if the model in the viewer is currently in spinning mode after
   a user drag.
 */
-SbBool NavigationStyle::isAnimating(void) const
+SbBool NavigationStyle::isAnimating() const
 {
     return this->currentmode == NavigationStyle::SPINNING;
 }
@@ -1195,7 +1195,7 @@ void NavigationStyle::startAnimating(const SbVec3f& axis, float velocity)
     this->spinRotation = rot;
 }
 
-void NavigationStyle::stopAnimating(void)
+void NavigationStyle::stopAnimating()
 {
     if (this->currentmode != NavigationStyle::SPINNING) {
         return;
@@ -1321,7 +1321,7 @@ void NavigationStyle::stopSelection()
     if (mouseSelection) {
         mouseSelection->releaseMouseModel();
         delete mouseSelection;
-        mouseSelection = 0;
+        mouseSelection = nullptr;
     }
 }
 
@@ -1367,7 +1367,7 @@ void NavigationStyle::addToLog(const SbVec2s pos, const SbTime time)
 
 // This method "clears" the mouse location log, used for spin
 // animation calculations.
-void NavigationStyle::clearLog(void)
+void NavigationStyle::clearLog()
 {
     this->log.historysize = 0;
 }
@@ -1461,14 +1461,14 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
             pcPolygon = mouseSelection->getPositions();
             selectedRole = mouseSelection->selectedRole();
             delete mouseSelection;
-            mouseSelection = 0;
+            mouseSelection = nullptr;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
         else if (hd==AbstractMouseSelection::Cancel) {
             pcPolygon.clear();
             delete mouseSelection;
-            mouseSelection = 0;
+            mouseSelection = nullptr;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
@@ -1495,11 +1495,8 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
-    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2s size(vp.getViewportSizePixels());
     const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+    const SbVec2f posn = normalizePixelPos(pos);
     bool processed = false;
 
     //handle mouse wheel zoom
@@ -1529,15 +1526,7 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    if (this->ctrldown != ev->wasCtrlDown()) {
-        this->ctrldown = ev->wasCtrlDown();
-    }
-    if (this->shiftdown != ev->wasShiftDown()) {
-        this->shiftdown = ev->wasShiftDown();
-    }
-    if (this->altdown != ev->wasAltDown()) {
-        this->altdown = ev->wasAltDown();
-    }
+    syncModifierKeys(ev);
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
@@ -1708,7 +1697,7 @@ void NavigationStyle::setPopupMenuEnabled(const SbBool on)
     this->menuenabled = on;
 }
 
-SbBool NavigationStyle::isPopupMenuEnabled(void) const
+SbBool NavigationStyle::isPopupMenuEnabled() const
 {
     return this->menuenabled;
 }

@@ -116,11 +116,11 @@ public:
     void setViewer(View3DInventorViewer*);
 
     void setAnimationEnabled(const SbBool enable);
-    SbBool isAnimationEnabled(void) const;
+    SbBool isAnimationEnabled() const;
 
     void startAnimating(const SbVec3f& axis, float velocity);
-    void stopAnimating(void);
-    SbBool isAnimating(void) const;
+    void stopAnimating();
+    SbBool isAnimating() const;
 
     void setSensitivity(float);
     float getSensitivity() const;
@@ -156,14 +156,14 @@ public:
     virtual SbBool processClickEvent(const SoMouseButtonEvent * const event);
 
     void setPopupMenuEnabled(const SbBool on);
-    SbBool isPopupMenuEnabled(void) const;
+    SbBool isPopupMenuEnabled() const;
 
     void startSelection(AbstractMouseSelection*);
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
     SbBool isSelecting() const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -172,13 +172,13 @@ protected:
     void initialize();
     void finalize();
 
-    void interactiveCountInc(void);
-    void interactiveCountDec(void);
-    int getInteractiveCount(void) const;
+    void interactiveCountInc();
+    void interactiveCountDec();
+    int getInteractiveCount() const;
 
-    SbBool isViewing(void) const;
+    SbBool isViewing() const;
     void setViewing(SbBool);
-    SbBool isSeekMode(void) const;
+    SbBool isSeekMode() const;
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
@@ -213,7 +213,7 @@ protected:
     void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
-    void clearLog(void);
+    void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
 
     void syncModifierKeys(const SoEvent * const ev);

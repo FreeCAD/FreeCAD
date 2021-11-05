@@ -54,10 +54,10 @@ public:
   virtual ~InteractionMode();
 
   void setEnabled(bool yes);
-  bool enabled(void) const;
+  bool enabled() const;
 
   void setOn(bool on);
-  bool on(void) const;
+  bool on() const;
 
 protected:
   virtual bool eventFilter(QObject *, QEvent * event);
