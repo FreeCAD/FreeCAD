@@ -425,7 +425,7 @@ class ShowWorker(QtCore.QThread):
                         p = p.decode("utf-8")
                     u.close()
                     desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
-                    if NOMARKDOWN or not have_markdown:
+                    if have_markdown and not NOMARKDOWN:
                         desc = markdown.markdown(desc, extensions=["md_in_html"])
                     else:
                         message = """
