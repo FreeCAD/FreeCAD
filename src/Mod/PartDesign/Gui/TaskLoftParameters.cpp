@@ -69,7 +69,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
             this, SLOT(onRefButtonAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemvove(bool)));
+            this, SLOT(onRefButtonRemove(bool)));
     connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
@@ -324,7 +324,7 @@ void TaskLoftParameters::onRefButtonAdd(bool checked) {
     }
 }
 
-void TaskLoftParameters::onRefButtonRemvove(bool checked) {
+void TaskLoftParameters::onRefButtonRemove(bool checked) {
 
     if (checked) {
         Gui::Selection().clearSelection();
