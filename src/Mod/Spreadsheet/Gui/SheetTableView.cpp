@@ -125,8 +125,11 @@ SheetTableView::SheetTableView(QWidget *parent)
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-    horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-    verticalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+    horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    actionBind = new QAction(tr("Bind..."),this);
+    connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
 
     connect(verticalHeader(), &QWidget::customContextMenuRequested,
        [this](const QPoint &point){
@@ -151,8 +154,14 @@ SheetTableView::SheetTableView(QWidget *parent)
             auto remove = menu.addAction(tr("Remove row(s)", "", selection.size()));
             connect(remove, SIGNAL(triggered()), this, SLOT(removeRows()));
 
+            menu.addSeparator();
+
             menu.addAction(tr("Toggle row visibility"), [this](bool) {toggleRows();});
             menu.addAction(actionShowRows);
+
+            menu.addSeparator();
+
+            menu.addAction(actionBind);
 
             menu.exec(verticalHeader()->mapToGlobal(point));
        });
@@ -180,8 +189,14 @@ SheetTableView::SheetTableView(QWidget *parent)
             auto remove = menu.addAction(tr("Remove column(s)", "", selection.size()));
             connect(remove, SIGNAL(triggered()), this, SLOT(removeColumns()));
 
+            menu.addSeparator();
+
             menu.addAction(tr("Toggle column visibility"), [this](bool) {toggleColumns();});
             menu.addAction(actionShowColumns);
+
+            menu.addSeparator();
+
+            menu.addAction(actionBind);
 
             menu.exec(horizontalHeader()->mapToGlobal(point));
        });
@@ -241,16 +256,11 @@ SheetTableView::SheetTableView(QWidget *parent)
 
     contextMenu->addSeparator();
 
-    actionBind = new QAction(tr("Bind..."),this);
-    connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
     contextMenu->addAction(actionBind);
 
     QAction *actionConf = new QAction(tr("Configuration table..."),this);
     connect(actionConf, SIGNAL(triggered()), this, SLOT(onConfSetup()));
     contextMenu->addAction(actionConf);
-
-    horizontalHeader()->addAction(actionBind);
-    verticalHeader()->addAction(actionBind);
 
     contextMenu->addSeparator();
     actionMerge = contextMenu->addAction(tr("Merge cells"));
