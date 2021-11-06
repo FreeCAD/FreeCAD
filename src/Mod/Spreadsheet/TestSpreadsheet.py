@@ -686,7 +686,13 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A1, Units.Quantity('1 mm'))
         self.assertEqual(sheet.A2, 0.5)
         self.assertEqual(sheet.A3, Units.Quantity('2 mm'))
-        self.assertEqual(sheet.A4, Units.Quantity('2 1/mm'))
+        # To avoid ambiguity of unit and identifier, the parser has been changed
+        # to only recognize unit if it follows a number. So, 2/mm will no longer
+        # be parsed as 2/1mm, but only consider mm as an identifier (i.e.
+        # property reference). 
+        #
+        #  self.assertEqual(sheet.A4, Units.Quantity('2 1/mm'))
+        self.assertEqual(sheet.A4, '2/mm')
         self.assertEqual(sheet.A5, Units.Quantity('2 1/mm'))
         self.assertEqual(sheet.A6, Units.Quantity('2 mm/s'))
 
