@@ -4693,7 +4693,7 @@ void VariableExpression::assign(const ObjectIdentifier &path) const
 
 void VariableExpression::assign(Py::Object value) const
 {
-    assert(_ExpressionBlockerStack.size());
+    ExpressionBlocker blocker(this);
 
     if(components.empty()) {
         var.setPyValue(value);
