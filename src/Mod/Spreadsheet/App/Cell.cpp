@@ -273,16 +273,11 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
         auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
         if(sexpr) {
             s = sexpr->getText();
-            try {
-                auto expr = owner->parse(s.c_str(), 0, true);
-                // If the text is a valid expression, prepend a single quote to
-                // force it to be a string. It is not enough to just test if
-                // the text is an integer or not. Different user may have
-                // different local setting, which may enable auto parsing
-                // string content as expression.
+            if (tryParseExpression(s.c_str())) {
+                // If the text can be potentially auto parsed as an expression,
+                // prepend a single quote to force it to be a string.
                 s.insert(s.begin(), '\'');
             }
-            catch (...) {}
         }
         else if (SimpleStatement::cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
@@ -340,39 +335,8 @@ void Cell::setContent(const char * value, bool eval)
             else
                 newExpr = App::StringExpression::create(owner->sheet(), value + 1);
         }
-        else if (*value != '\0') {
-            // check if value is just a number
-            char * end;
-            errno = 0;
-            const double float_value = strtod(value, &end);
-            if (errno == 0) {
-                const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
-                if (isEndEmpty) {
-                    newExpr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
-                }
-            }
-
-            if (!newExpr && hGrp->GetBool("AutoParseContent", false)) {
-                try {
-                    newExpr = owner->parse(value);
-                    owner->eval(newExpr.get());
-                }
-                catch (Base::Exception &e) {
-                    newExpr.reset();
-                }
-            }
-
-            // if not a float and not auto parse, check if it is a quantity or compatible fraction
-            const bool isStartingWithNumber = value != end;
-            if (!newExpr && isStartingWithNumber) {
-                try {
-                    auto parsedExpr = owner->parse(value, 0, true);
-                    if (App::isSimpleExpression(parsedExpr.get()))
-                        newExpr = std::move(parsedExpr);
-                }
-                catch (...) {}
-            }
-        }
+        else
+            newExpr = tryParseExpression(value);
 
         if(!newExpr && *value != '\0')
             newExpr = StringExpression::create(owner->sheet(), value);
@@ -397,6 +361,35 @@ void Cell::setContent(const char * value, bool eval)
             setParseException(e.what());
         }
     }
+}
+
+App::ExpressionPtr Cell::tryParseExpression(const char *value) const
+{
+    App::ExpressionPtr expr;
+    if (!value || *value == '\0')
+        return expr;
+    // check if value is just a number
+    char * end;
+    errno = 0;
+    const double float_value = strtod(value, &end);
+    if (errno == 0) {
+        const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
+        if (isEndEmpty) {
+            expr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
+        }
+    }
+
+    // if not a float, check if it is a quantity or compatible fraction
+    const bool isStartingWithNumber = value != end;
+    if (!expr && isStartingWithNumber) {
+        try {
+            auto parsedExpr = owner->parse(value, 0, true);
+            if (App::isSimpleExpression(parsedExpr.get()))
+                expr = std::move(parsedExpr);
+        }
+        catch (...) {}
+    }
+    return expr;
 }
 
 /**

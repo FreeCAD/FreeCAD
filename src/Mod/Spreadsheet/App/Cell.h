@@ -131,6 +131,8 @@ public:
 
     void visit(App::ExpressionVisitor & v);
 
+    App::ExpressionPtr tryParseExpression(const char *) const;
+
     App::CellAddress getAddress() const { return address; }
 
 #define SHEET_CELL_MODES \
