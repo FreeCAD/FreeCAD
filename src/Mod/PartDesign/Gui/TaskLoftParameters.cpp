@@ -218,6 +218,9 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             }
 
             static_cast<PartDesign::Loft*>(vp->getObject())->Sections.setValues(refs);
+
+            vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
+
             return true;
         }
     }
