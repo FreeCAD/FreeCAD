@@ -31,6 +31,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/AutoTransaction.h>
 #include <Gui/Application.h>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Utils.h>
@@ -552,16 +553,20 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
     }
     else if (role == Qt::EditRole) {
         CellAddress address(index.row(), index.column());
-
+        std::ostringstream ss;
+        ss << tr("Edit cell").toUtf8().constData() << " " << address.toString();
+        if (const auto * cell = sheet->getCell(address)) {
+            std::string str;
+            if (cell->getAlias(str))
+                ss << " (" << str << ")";
+        }
+        App::AutoTransaction guard(ss.str().c_str());
         try {
-            Gui::Command::openCommand("Edit cell");
             if(sheet->editCell(address, value))
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            Gui::Command::commitCommand();
-        }
-        catch (const Base::Exception& e) {
+        } catch (Base::Exception & e) {
             e.ReportException();
-            Gui::Command::abortCommand();
+            guard.close(true);
             return false;
         }
     }

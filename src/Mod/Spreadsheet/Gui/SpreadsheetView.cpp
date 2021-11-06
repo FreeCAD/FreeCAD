@@ -366,29 +366,8 @@ void SheetView::confirmAliasChanged(const QString& text)
 void SheetView::confirmContentChanged(const QString& text)
 {
     QModelIndex i = ui->cells->currentIndex();
-    if (!i.isValid())
-        return;
-
-    CellAddress addr(i.row(), i.column());
-    std::ostringstream ss;
-    ss << tr("Edit cell").toUtf8().constData() << " " << addr.toString();
-    if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
-        std::string str;
-        if (cell->getAlias(str))
-            ss << " (" << str << ")";
-    }
-    App::AutoTransaction guard(ss.str().c_str());
-    try {
-        std::string str = text.toUtf8().constData();
-        sheet->setCell(addr, str.c_str());
-        Gui::Command::updateActive();
-        ui->cells->setFocus();
-    } catch (Base::Exception & e) {
-        e.ReportException();
-        guard.close(true);
-        QMessageBox::critical(getMainWindow(), tr("Edit cell"),
-                tr("Failed to edit cell: %1").arg(QString::fromUtf8(e.what())));
-    }
+    ui->cells->model()->setData(i, QVariant(text), Qt::EditRole);
+    ui->cells->setFocus();
 }
 
 void SheetView::aliasChanged(const QString& text)
