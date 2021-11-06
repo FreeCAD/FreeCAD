@@ -100,9 +100,9 @@ void ViewProviderPart::updateData(const App::Property *prop) {
             applyColors();
         else if (obj && prop == &obj->Type) {
             if (obj->Type.getStrValue() == "Assembly")
-                sPixmap = "Geofeaturegroup.svg";
-            else
                 sPixmap = "Geoassembly.svg";
+            else
+                sPixmap = "Geofeaturegroup.svg";
             signalChangeIcon();
         }
     }
