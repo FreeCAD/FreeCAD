@@ -61,6 +61,10 @@ protected:
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
     QString getFaceReference(const QString& obj, const QString& sub) const;
+    /// Create a label for the 2D feature: the objects name if it's already 2D,
+    /// or the subelement's name if the object is a solid.
+    QString make2DLabel(const App::DocumentObject* section,
+                        const std::vector<std::string>& subValues);
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters
