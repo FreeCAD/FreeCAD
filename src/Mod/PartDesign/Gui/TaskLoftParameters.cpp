@@ -103,14 +103,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);
 
-        QString label = QString::fromUtf8(profile->Label.getValue());
-        ui->profileBaseEdit->setText(label);
+        ui->profileBaseEdit->
+            setText(make2DLabel(profile, loft->Profile.getSubValues()));
     }
 
     for (auto obj : loft->Sections.getValues()) {
         Gui::Application::Instance->showViewProvider(obj);
 
-        QString label = QString::fromUtf8(obj->Label.getValue());
+        QString label = make2DLabel(obj, loft->Sections.getSubValues(obj));
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
@@ -151,7 +151,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             App::Document* document = App::GetApplication().getDocument(msg.pDocName);
             App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
             if (object) {
-                QString label = QString::fromUtf8(object->Label.getValue());
+                QString label = make2DLabel(object, {msg.pSubName});
                 if (selectionMode == refProfile) {
                     ui->profileBaseEdit->setText(label);
                 }
@@ -196,7 +196,7 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
         App::DocumentObject* obj = loft->getDocument()->getObject(msg.pObjectName);
 
         if (selectionMode == refProfile) {
-            loft->Profile.setValue(obj);
+            loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
         else if (selectionMode == refAdd || selectionMode == refRemove) {
@@ -206,20 +206,18 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
 
             if (selectionMode == refAdd) {
                 if (f == refs.end())
-                    refs.push_back(obj);
+                    loft->Sections.addValue(obj, {msg.pSubName});
                 else
                     return false; // duplicate selection
             }
             else if (selectionMode == refRemove) {
                 if (f != refs.end())
-                    refs.erase(f);
+                    loft->Sections.removeValue(obj);
                 else
                     return false;
             }
 
-            static_cast<PartDesign::Loft*>(vp->getObject())->Sections.setValues(refs);
-
-            vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
+            vp->makeTemporaryVisible(loft->Sections.getSize());
 
             return true;
         }
@@ -286,6 +284,7 @@ void TaskLoftParameters::indexesMoved()
 
 void TaskLoftParameters::clearButtons() {
 
+    ui->buttonProfileBase->setChecked(false);
     ui->buttonRefAdd->setChecked(false);
     ui->buttonRefRemove->setChecked(false);
 }
@@ -333,6 +332,20 @@ void TaskLoftParameters::onRefButtonRemove(bool checked) {
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
+    }
+}
+
+QString TaskLoftParameters::make2DLabel(const App::DocumentObject* section,
+                                        const std::vector<std::string>& subValues)
+{
+    if(section->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        return QString::fromUtf8(section->Label.getValue());
+    else {
+        if(subValues.empty())
+            throw Base::ValueError("No valid subelement linked in Part::Feature");
+
+        return QString::fromUtf8((std::string(section->getNameInDocument())
+                                  + ":" + subValues[0]).c_str());
     }
 }
 

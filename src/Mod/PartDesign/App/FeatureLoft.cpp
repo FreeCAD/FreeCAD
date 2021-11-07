@@ -55,7 +55,7 @@ PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections,(0),"Loft",App::Prop_None,"List of sections");
-    Sections.setSize(0);
+    Sections.setValue(0);
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Create ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
 }
@@ -110,13 +110,24 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         for(TopoDS_Wire& wire : wires)
             wiresections.emplace_back(1, wire);
 
-        for(App::DocumentObject* obj : multisections) {
+        for(auto obj : multisections) {
             if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return  new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
 
+            TopoDS_Shape shape;
+            if(obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+                shape = static_cast<Part::Part2DObject*>(obj)->Shape.getValue();
+            else {
+                auto subValues = Sections.getSubValues(obj);
+                if(subValues.empty())
+                    throw Base::ValueError("Loft: No valid subelement linked in Part::Feature");
+
+                shape = static_cast<Part::Feature*>(obj)->Shape.getShape(). getSubShape(subValues[0].c_str());
+            }
+
             TopExp_Explorer ex;
             size_t i=0;
-            for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
+            for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
                 if(i>=wiresections.size())
                     return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
                 wiresections[i].push_back(TopoDS::Wire(ex.Current()));

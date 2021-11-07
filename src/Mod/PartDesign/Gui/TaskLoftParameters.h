@@ -72,6 +72,8 @@ private:
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons();
     void exitSelectionMode();
+    QString make2DLabel(const App::DocumentObject* section,
+                        const std::vector<std::string>& subValues);
 
 private:
     QWidget* proxy;
