@@ -334,13 +334,13 @@ bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
         QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
-        QAbstractSpinBox *target = dynamic_cast<QAbstractSpinBox *>(obj);
-        if (kev->key() == Qt::Key_Period && target)
+        Qt::KeyboardModifiers mod = kev->modifiers();
+        int key = kev->key();
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
         {
-            QChar decimalPoint = QLocale().decimalPoint();
-            QChar groupSeparator = QLocale().groupSeparator();
-            if (decimalPoint != Qt::Key_Period && (groupSeparator != Qt::Key_Period || (kev->modifiers() & Qt::KeypadModifier))) {
-                QKeyEvent modifiedKeyEvent(kev->type(), decimalPoint.digitValue(), kev->modifiers(), QString(decimalPoint), kev->isAutoRepeat(), kev->count());
+            QChar dp = QLocale().decimalPoint();
+            if (key != dp) {
+                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
                 qApp->sendEvent(obj, &modifiedKeyEvent);
                 return true;
             }
