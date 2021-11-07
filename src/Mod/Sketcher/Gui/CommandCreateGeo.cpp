@@ -510,7 +510,8 @@ public:
                     "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
                     "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                     "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                    "%s.addConstraint(conList)\n",
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
                     EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
                     EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
                     EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
@@ -4254,6 +4255,7 @@ public:
                 }
 
                 cstream << Gui::Command::getObjectCmd(sketchgui->getObject()) << ".addConstraint(conList)\n";
+                cstream << "del conList\n";
 
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
@@ -6369,7 +6371,8 @@ public:
                     "conList.append(Sketcher.Constraint('Tangent',%i,2,%i,2))\n"
                     "conList.append(Sketcher.Constraint('%s',%i))\n"
                     "conList.append(Sketcher.Constraint('Equal',%i,%i))\n"
-                    "%s.addConstraint(conList)\n",
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
                     StartPos.x,StartPos.y,  // center of the  arc1
                     fabs(r),                  // radius arc1
                     start,end,                 // start and end angle of arc1

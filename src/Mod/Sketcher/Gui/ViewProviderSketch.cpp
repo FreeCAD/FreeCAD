@@ -6275,6 +6275,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
                         "del(tv)\n"
+                        "del(ActiveSketch)\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
                               QString::fromLatin1(getSketchObject()->getNameInDocument()),
                               QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
@@ -6790,6 +6791,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
                     "  tv.restore()\n"
                     "ActiveSketch.ViewObject.TempoVis = None\n"
                     "del(tv)\n"
+                    "del(ActiveSketch)\n"
                     ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
                           QString::fromLatin1(getSketchObject()->getNameInDocument()));
         QByteArray cmdstr_bytearray = cmdstr.toLatin1();
