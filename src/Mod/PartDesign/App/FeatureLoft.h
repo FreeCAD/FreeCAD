@@ -40,9 +40,9 @@ class PartDesignExport Loft : public ProfileBased
 public:
     Loft();
 
-    App::PropertyLinkList Sections;
-    App::PropertyBool     Ruled;
-    App::PropertyBool     Closed;    
+    App::PropertyXLinkSubList Sections;
+    App::PropertyBool Ruled;
+    App::PropertyBool Closed;
 
     /** @name methods override feature */
     //@{
@@ -60,14 +60,14 @@ private:
 };
 
 class PartDesignExport AdditiveLoft : public Loft {
-    
+
     PROPERTY_HEADER(PartDesign::AdditiveLoft);
 public:
     AdditiveLoft();
 };
 
 class PartDesignExport SubtractiveLoft : public Loft {
-    
+
     PROPERTY_HEADER(PartDesign::SubtractiveLoft);
 public:
     SubtractiveLoft();

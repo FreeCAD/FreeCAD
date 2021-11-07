@@ -39,16 +39,16 @@ public:
     Pipe();
 
 
-    App::PropertyLinkSub     Spine;
-    App::PropertyBool        SpineTangent;
-    App::PropertyLinkSub     AuxillerySpine;
-    App::PropertyBool        AuxillerySpineTangent;
-    App::PropertyBool        AuxilleryCurvelinear;
+    App::PropertyLinkSub Spine;
+    App::PropertyBool SpineTangent;
+    App::PropertyLinkSub AuxillerySpine;
+    App::PropertyBool AuxillerySpineTangent;
+    App::PropertyBool AuxilleryCurvelinear;
     App::PropertyEnumeration Mode;
-    App::PropertyVector      Binormal;
+    App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
     App::PropertyEnumeration Transformation;
-    App::PropertyLinkList    Sections;
+    App::PropertyXLinkSubList Sections;
 
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;

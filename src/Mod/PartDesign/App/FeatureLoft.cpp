@@ -55,7 +55,7 @@ PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections,(0),"Loft",App::Prop_None,"List of sections");
-    Sections.setSize(0);
+    Sections.setValue(0);
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Create ruled surface");
     ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
 }
@@ -95,44 +95,56 @@ App::DocumentObjectExecReturn *Loft::execute(void)
     }
 
     try {
-        //setup the location
+        // setup the location
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        if(!base.IsNull())
+        if (!base.IsNull())
             base.Move(invObjLoc);
 
-        //build up multisections
+        // build up multisections
         auto multisections = Sections.getValues();
-        if(multisections.empty())
+        if (multisections.empty())
             return new App::DocumentObjectExecReturn("Loft: At least one section is needed");
 
         std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for(TopoDS_Wire& wire : wires)
+        for (TopoDS_Wire& wire : wires)
             wiresections.emplace_back(1, wire);
 
-        for(App::DocumentObject* obj : multisections) {
-            if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        for (auto obj : multisections) {
+            if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return  new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
+
+            // if the section is an object's face then take just the face
+            TopoDS_Shape shape;
+            if (obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+                shape = static_cast<Part::Part2DObject*>(obj)->Shape.getValue();
+            else {
+                auto subValues = Sections.getSubValues(obj);
+                if (subValues.empty())
+                    throw Base::ValueError("Loft: No valid subelement linked in Part::Feature");
+
+                shape = static_cast<Part::Feature*>(obj)->Shape.getShape(). getSubShape(subValues[0].c_str());
+            }
 
             TopExp_Explorer ex;
             size_t i=0;
-            for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
-                if(i>=wiresections.size())
+            for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
+                if (i>=wiresections.size())
                     return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
                 wiresections[i].push_back(TopoDS::Wire(ex.Current()));
             }
-            if(i<wiresections.size())
+            if (i<wiresections.size())
                     return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
 
         }
 
-        //build all shells
+        // build all shells
         std::vector<TopoDS_Shape> shells;
-        for(std::vector<TopoDS_Wire>& wires : wiresections) {
+        for (std::vector<TopoDS_Wire>& wires : wiresections) {
 
             BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
 
-            for(TopoDS_Wire& wire : wires)   {
+            for (TopoDS_Wire& wire : wires)   {
                  wire.Move(invObjLoc);
                  mkTS.AddWire(wire);
             }
@@ -149,7 +161,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         TopoDS_Shape front = getVerifiedFace();
         front.Move(invObjLoc);
         std::vector<TopoDS_Wire> backwires;
-        for(std::vector<TopoDS_Wire>& wires : wiresections)
+        for (std::vector<TopoDS_Wire>& wires : wiresections)
             backwires.push_back(wires.back());
 
         TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
@@ -158,7 +170,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         sewer.SetTolerance(Precision::Confusion());
         sewer.Add(front);
         sewer.Add(back);
-        for(TopoDS_Shape& s : shells)
+        for (TopoDS_Shape& s : shells)
             sewer.Add(s);
 
         sewer.Perform();
@@ -166,7 +178,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         //build the solid
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        if(!mkSolid.IsDone())
+        if (!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Loft: Result is not a solid");
 
         TopoDS_Shape result = mkSolid.Shape();
@@ -178,7 +190,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         AddSubShape.setValue(result);
 
-        if(base.IsNull()) {
+        if (base.IsNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn("Loft: There is nothing to subtract from\n");
 
@@ -186,7 +198,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             return App::DocumentObject::StdReturn;
         }
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
+        if (getAddSubType() == FeatureAddSub::Additive) {
 
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
@@ -204,7 +216,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
+        else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
