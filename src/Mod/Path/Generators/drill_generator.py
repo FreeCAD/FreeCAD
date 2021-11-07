@@ -39,8 +39,6 @@ else:
 
 
 def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
-
-
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
