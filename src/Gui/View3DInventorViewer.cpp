@@ -444,7 +444,7 @@ struct View3DInventorViewer::Private
     void updateShadowGround(const SbBox3f &box);
     void redraw();
     void onRender();
-    void toggleDragger(int toggle);
+    bool toggleDragger(int toggle);
 
     SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp);
 
@@ -3660,11 +3660,17 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
-            if (QApplication::queryKeyboardModifiers() == Qt::ShiftModifier)
-                Selection().clearSelection();
-            else {
+            if (QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+                if (Selection().hasSelection()) {
+                    Selection().clearSelection();
+                    return true;
+                }
+            }
+            else if (_pimpl->toggleDragger(0))
+                return true;
+            else if (Selection().hasPreselection()) {
                 Selection().rmvPreselect();
-                toggleShadowLightManip(0);
+                return true;
             }
             //fall through
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
@@ -5409,11 +5415,11 @@ void View3DInventorViewer::toggleShadowLightManip(int toggle)
     _pimpl->toggleDragger(toggle);
 }
 
-void View3DInventorViewer::Private::toggleDragger(int toggle)
+bool View3DInventorViewer::Private::toggleDragger(int toggle)
 {
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
     if (!pcShadowGroup || !doc)
-        return;
+        return false;
 
     bool dirlight = pcShadowGroup->findChild(pcShadowDirectionalLight) >= 0;
     SoSFBool &showDragger = dirlight?pcShadowDirectionalLight->showDragger:pcShadowSpotLight->showDragger;
@@ -5441,6 +5447,7 @@ void View3DInventorViewer::Private::toggleDragger(int toggle)
                 Base::Vector3d(dir[0], dir[1], dir[2]));
 
         App::GetApplication().closeActiveTransaction();
+        return true;
 
     } else if (!showDragger.getValue() && toggle != 0) {
         pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;
@@ -5450,7 +5457,9 @@ void View3DInventorViewer::Private::toggleDragger(int toggle)
         this->getBoundingBox(bbox);
         if (!bbox.isEmpty())
             owner->viewBoundBox(bbox);
+        return true;
     }
+    return false;
 }
 
 static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
