@@ -67,7 +67,7 @@ protected:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+    void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons();
