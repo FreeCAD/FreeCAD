@@ -1164,6 +1164,29 @@ bool TopoShape::hasSubShape(const char *Type) const {
 }
 
 TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
+    if (!Type || !Type[0]) {
+        switch (shapeType(true)) {
+        case TopAbs_COMPOUND:
+        case TopAbs_COMPSOLID:
+            if (countSubShapes(TopAbs_SOLID) == 1)
+                return getSubTopoShape(TopAbs_SOLID, 1);
+            if (countSubShapes(TopAbs_SHELL) == 1)
+                return getSubTopoShape(TopAbs_SHELL, 1);
+            if (countSubShapes(TopAbs_FACE) == 1)
+                return getSubTopoShape(TopAbs_FACE, 1);
+            if (countSubShapes(TopAbs_WIRE) == 1)
+                return getSubTopoShape(TopAbs_WIRE, 1);
+            if (countSubShapes(TopAbs_EDGE) == 1)
+                return getSubTopoShape(TopAbs_EDGE, 1);
+            if (countSubShapes(TopAbs_VERTEX) == 1)
+                return getSubTopoShape(TopAbs_VERTEX, 1);
+            break;
+        default:
+            break;
+        }
+        return *this;
+    }
+
     Data::MappedElement mapped = getElementName(Type);
     if (!mapped.index && boost::starts_with(Type,elementMapPrefix())) {
         if(!silent)
