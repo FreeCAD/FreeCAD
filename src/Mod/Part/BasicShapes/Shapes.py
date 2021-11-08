@@ -141,7 +141,10 @@ def _setupDecimals():
 def showPreselectInfo():
     import FreeCADGui
     sel = FreeCADGui.Selection.getPreselection()
-    if not sel.Object or len(sel.SubElementNames) != 1:
+    try:
+        if not sel.Object or len(sel.SubElementNames) != 1:
+            return
+    except Exception:
         return
     shape, _, obj = Part.getShape(sel.Object, sel.SubElementNames[0], retType=1)
     if shape.isNull():
@@ -294,7 +297,10 @@ def showPreselectMeasure():
     except Exception:
         return
     presel = FreeCADGui.Selection.getPreselection()
-    if not presel.Object or len(presel.SubElementNames) != 1:
+    try:
+        if not presel.Object or len(presel.SubElementNames) != 1:
+            return
+    except Exception:
         return
     shape = Part.getShape(presel.Object, presel.SubElementNames[0], needSubElement=True)
     if shape.isNull():
