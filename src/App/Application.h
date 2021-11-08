@@ -555,8 +555,6 @@ private:
     static void logStatus(void);
     // the one and only pointer to the application object
     static Application *_pcSingleton;
-    /// argument helper function
-    static void ParseOptions(int argc, char ** argv);
     /// checks if the environment is alright
     //static void CheckEnv(void);
     /// Search for the FreeCAD home path based on argv[0]
