@@ -2807,82 +2807,86 @@ ostream& operator<<(ostream& os, const vector<T>& v)
     return os;
 }
 
-void Application::ExtractUserPath()
+namespace {
+
+boost::filesystem::path stringToPath(std::string str)
 {
-    // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    boost::filesystem::path path(converter.from_bytes(str));
+#else
+    boost::filesystem::path path(str);
+#endif
+    return path;
+}
 
-    // Set application tmp. directory
-    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+std::string pathToString(const boost::filesystem::path& p)
+{
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.to_bytes(p.wstring());
+#else
+    return p.string();
+#endif
+}
 
-    // this is to support a portable version of FreeCAD
-    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
-    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
-    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
-
-    // verify env. variables
-    if (!userHome.isEmpty()) {
-        QDir dir(userHome);
-        if (dir.exists())
-            userHome = QDir::toNativeSeparators(dir.canonicalPath());
-        else
-            userHome.clear();
-    }
-
-    if (!userData.isEmpty()) {
-        QDir dir(userData);
-        if (dir.exists())
-            userData = QDir::toNativeSeparators(dir.canonicalPath());
-        else
-            userData.clear();
-    }
-    else if (!userHome.isEmpty()) {
-        // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
-        userData = userHome;
-    }
-
-    // override temp directory if set by env. variable
-    if (!userTemp.isEmpty()) {
-        QDir dir(userTemp);
-        if (dir.exists()) {
-            userTemp = dir.canonicalPath();
-            userTemp += QDir::separator();
-            userTemp = QDir::toNativeSeparators(userTemp);
-            mConfig["AppTempPath"] = userTemp.toUtf8().data();
-        }
-    }
-    else if (!userHome.isEmpty()) {
-        // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
-        QDir dir(userHome);
-        dir.mkdir(QString::fromLatin1("temp"));
-        QFileInfo fi(dir, QString::fromLatin1("temp"));
-        QString tmp(fi.absoluteFilePath());
-        tmp += QDir::separator();
-        tmp = QDir::toNativeSeparators(tmp);
-        mConfig["AppTempPath"] = tmp.toUtf8().data();
-    }
-
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+QString getDefaultHome()
+{
+    QString path;
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
+    if (!pwd)
         throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    path = QString::fromUtf8(pwd->pw_dir);
+
+#elif defined(FC_OS_WIN32)
+    WCHAR szPath[MAX_PATH];
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    // Get the default path where we can save our documents. It seems that
+    // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
+    // which does the same.
+    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
+        path = QString::fromStdString(converter.to_bytes(szPath));
+    }
+    else {
+        throw Base::RuntimeError("Getting HOME path from system failed!");
     }
 
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
-        appData = userData.toUtf8().data();
+#else
+# error "Implement getDefaultHome() for your platform."
+#endif
 
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
+    return path;
+}
+
+QString getDefaultUserData(const QString& home)
+{
+#if defined(FC_OS_WIN32)
+    WCHAR szPath[MAX_PATH];
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
+        return QString::fromStdString(converter.to_bytes(szPath));
     }
+#endif
 
+    return home;
+}
+
+void getUserData(boost::filesystem::path& appData)
+{
+#if defined(FC_OS_MACOSX)
+    appData = appData / "Library" / "Preferences";
+#else
+    Q_UNUSED(appData)
+#endif
+}
+
+void getApplicationData(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+{
+    // Actually the name of the directory where the parameters are stored should be the name of
+    // the application due to branding reasons.
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
@@ -2892,52 +2896,83 @@ void Application::ExtractUserPath()
         appData /= "." + mConfig["ExeName"];
     }
 
-    // Actually the name of the directory where the parameters are stored should be the name of
-    // the application due to branding reasons.
-        
-    // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-        try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-        }
-    }
-
-    mConfig["UserAppData"] = appData.string() + PATHSEP;
-
-#elif defined(FC_OS_MACOSX)
-    // Default paths for the user specific stuff on the platform
-    struct passwd *pwd = getpwuid(getuid());
-    if (pwd == NULL)
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    mConfig["UserHomePath"] = pwd->pw_dir;
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
-    }
-
-    boost::filesystem::path appData(pwd->pw_dir);
-    if (!userData.isEmpty())
-        appData = userData.toUtf8().data();
-
-    appData = appData / "Library" / "Preferences";
-
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    }
-
+#elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
         appData /= mConfig["ExeVendor"];
     }
     appData /= mConfig["ExeName"];
+#endif
+}
+}
+
+void Application::ExtractUserPath()
+{
+    // std paths
+    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
+    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+
+    // this is to support a portable version of FreeCAD
+    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
+    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
+    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
+
+    auto toNativePath = [](QString& path) {
+        if (!path.isEmpty()) {
+            QDir dir(path);
+            if (dir.exists())
+                path = QDir::toNativeSeparators(dir.canonicalPath());
+            else
+                path.clear();
+        }
+    };
+
+    // verify env. variables
+    toNativePath(userHome);
+    toNativePath(userData);
+    toNativePath(userTemp);
+
+    // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
+    if (!userHome.isEmpty() && userData.isEmpty()) {
+        userData = userHome;
+    }
+
+    // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
+    if (!userHome.isEmpty() && userTemp.isEmpty()) {
+        QDir dir(userHome);
+        dir.mkdir(QString::fromLatin1("temp"));
+        QFileInfo fi(dir, QString::fromLatin1("temp"));
+        userTemp = fi.absoluteFilePath();
+    }
 
 
-    // Actually the name of the directory where the parameters are stored should be the name of
-    // the application due to branding reasons.
-        
+    // User home path
+    //
+    if (userHome.isEmpty()) {
+        userHome = getDefaultHome();
+    }
+    mConfig["UserHomePath"] = userHome.toUtf8().data();
+
+
+    // User data path
+    //
+    if (userData.isEmpty()) {
+        userData = getDefaultUserData(userHome);
+    }
+    boost::filesystem::path appData(stringToPath(userData.toStdString()));
+    getUserData(appData);
+    if (!boost::filesystem::exists(appData)) {
+        // This should never ever happen
+        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
+    }
+
+    // In the second step we want the directory where user settings of the application can be
+    // kept. There we create a directory with name of the vendor and a sub-directory with name
+    // of the application.
+    getApplicationData(mConfig, appData);
+
     // In order to write to our data path, we must create some directories, first.
     if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
         try {
@@ -2947,72 +2982,30 @@ void Application::ExtractUserPath()
         }
     }
 
-    mConfig["UserAppData"] = appData.string() + PATHSEP;
+    mConfig["UserAppData"] = pathToString(appData) + PATHSEP;
 
-#elif defined(FC_OS_WIN32)
-    WCHAR szPath[MAX_PATH];
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    // Get the default path where we can save our documents. It seems that
-    // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
-    // which does the same.
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
-        mConfig["UserHomePath"] = converter.to_bytes(szPath);
+
+    // Set application tmp. directory
+    //
+    if (!userTemp.isEmpty()) {
+        userTemp += QDir::separator();
+        mConfig["AppTempPath"] = userTemp.toUtf8().data();
     }
     else {
-        mConfig["UserHomePath"] = mConfig["AppHomePath"];
+        mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
     }
 
-    if (!userHome.isEmpty()) {
-        mConfig["UserHomePath"] = userHome.toUtf8().data();
-    }
 
-    // In the second step we want the directory where user settings of the application can be
-    // kept. There we create a directory with name of the vendor and a sub-directory with name
-    // of the application.
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
-        boost::filesystem::path appData(szPath);
-        if (!userData.isEmpty())
-            appData = userData.toStdWString();
-
-        if (!boost::filesystem::exists(appData)) {
-            // This should never ever happen
-            throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-        }
-
-        // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-        // the path.
-        if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-            appData /= mConfig["ExeVendor"];
-        }
-        appData /= mConfig["ExeName"];
-
-        // Actually the name of the directory where the parameters are stored should be the name of
-        // the application due to branding reasons.
-            
-        // In order to write to our data path, we must create some directories, first.
-        if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-            try {
-                boost::filesystem::create_directories(appData);
-            } catch (const boost::filesystem::filesystem_error& e) {
-                throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-            }
-        }
-
-        mConfig["UserAppData"] = converter.to_bytes(appData.wstring()) + PATHSEP;
-
-        // Create the default macro directory
-        boost::filesystem::path macroDir = converter.from_bytes(getUserMacroDir());
-        if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
-            try {
-                boost::filesystem::create_directories(macroDir);
-            } catch (const boost::filesystem::filesystem_error& e) {
-                throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
-            }
+    // Create the default macro directory
+    //
+    boost::filesystem::path macroDir = stringToPath(getUserMacroDir());
+    if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
+        try {
+            boost::filesystem::create_directories(macroDir);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
         }
     }
-#else
-# error "Implement ExtractUserPath() for your platform."
-#endif
 }
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
