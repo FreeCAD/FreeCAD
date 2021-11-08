@@ -81,9 +81,9 @@ class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
 
 
 public:
-  explicit QuarterWidget(QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(QtGLContext * context, QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = 0, const QtGLWidget * shareWidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~QuarterWidget();
 
   enum TransparencyType {
@@ -117,70 +117,70 @@ public:
     INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
   };
 
-  TransparencyType transparencyType(void) const;
-  RenderMode renderMode(void) const;
-  StereoMode stereoMode(void) const;
+  TransparencyType transparencyType() const;
+  RenderMode renderMode() const;
+  StereoMode stereoMode() const;
 
   void setBackgroundColor(const QColor & color);
-  QColor backgroundColor(void) const;
+  QColor backgroundColor() const;
 
-  qreal devicePixelRatio(void) const;
+  qreal devicePixelRatio() const;
 
-  void resetNavigationModeFile(void);
+  void resetNavigationModeFile();
   void setNavigationModeFile(const QUrl & url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
-  const QUrl & navigationModeFile(void) const;
+  const QUrl & navigationModeFile() const;
 
   void setContextMenuEnabled(bool yes);
-  bool contextMenuEnabled(void) const;
-  QMenu * getContextMenu(void) const;
+  bool contextMenuEnabled() const;
+  QMenu * getContextMenu() const;
 
-  bool headlightEnabled(void) const;
+  bool headlightEnabled() const;
   void setHeadlightEnabled(bool onoff);
-  SoDirectionalLight * getHeadlight(void) const;
+  SoDirectionalLight * getHeadlight() const;
 
-  bool clearZBuffer(void) const;
+  bool clearZBuffer() const;
   void setClearZBuffer(bool onoff);
 
-  bool clearWindow(void) const;
+  bool clearWindow() const;
   void setClearWindow(bool onoff);
 
-  bool interactionModeEnabled(void) const;
+  bool interactionModeEnabled() const;
   void setInteractionModeEnabled(bool onoff);
 
-  bool interactionModeOn(void) const;
+  bool interactionModeOn() const;
   void setInteractionModeOn(bool onoff);
 
   void setStateCursor(const SbName & state, const QCursor & cursor);
   QCursor stateCursor(const SbName & state);
 
-  uint32_t getCacheContextId(void) const;
+  uint32_t getCacheContextId() const;
 
   virtual void setSceneGraph(SoNode * root);
-  virtual SoNode * getSceneGraph(void) const;
+  virtual SoNode * getSceneGraph() const;
 
   void setSoEventManager(SoEventManager * manager);
-  SoEventManager * getSoEventManager(void) const;
+  SoEventManager * getSoEventManager() const;
 
   void setSoRenderManager(SoRenderManager * manager);
-  SoRenderManager * getSoRenderManager(void) const;
+  SoRenderManager * getSoRenderManager() const;
 
-  EventFilter * getEventFilter(void) const;
+  EventFilter * getEventFilter() const;
 
   void addStateMachine(SoScXMLStateMachine * statemachine);
   void removeStateMachine(SoScXMLStateMachine * statemachine);
 
   virtual bool processSoEvent(const SoEvent * event);
-  virtual QSize minimumSizeHint(void) const;
+  virtual QSize minimumSizeHint() const;
 
-  QList<QAction *> transparencyTypeActions(void) const;
-  QList<QAction *> stereoModeActions(void) const;
-  QList<QAction *> renderModeActions(void) const;
+  QList<QAction *> transparencyTypeActions() const;
+  QList<QAction *> stereoModeActions() const;
+  QList<QAction *> renderModeActions() const;
 
 public Q_SLOTS:
-  virtual void viewAll(void);
-  virtual void seek(void);
+  virtual void viewAll();
+  virtual void seek();
 
-  void redraw(void);
+  void redraw();
 
   void setRenderMode(RenderMode mode);
   void setStereoMode(StereoMode mode);
@@ -197,8 +197,8 @@ protected:
   virtual void paintEvent(QPaintEvent*);
   virtual void resizeEvent(QResizeEvent*);
   virtual bool viewportEvent(QEvent* event);
-  virtual void actualRedraw(void);
-  virtual bool updateDevicePixelRatio(void);
+  virtual void actualRedraw();
+  virtual bool updateDevicePixelRatio();
 
 private:
   void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);

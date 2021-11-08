@@ -15,7 +15,7 @@ ${LangFileString} TEXT_WELCOME "Dieser Assistent wird Sie durch die Installation
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Kompiliere Python Skripte..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Ein Symbol auf der Arbeitsoberfläche erzeugen"
-${LangFileString} TEXT_FINISH_WEBSITE "Besuchen Sie freecadweb.org für aktuelle Neuigkeiten"
+${LangFileString} TEXT_FINISH_WEBSITE "Besuchen Sie freecad.org für aktuelle Neuigkeiten"
 
 #${LangFileString} FileTypeTitle "FreeCAD-Dokument"
 

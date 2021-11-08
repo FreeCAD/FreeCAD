@@ -288,6 +288,42 @@ def retranslateUi():
      </tr>
     </table>"""
 
+    global t9
+    t9 = "<p align='center'><b>OpenSCAD</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationOpenSCAD_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenSCAD_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenSCAD_ZoomAlt.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenSCAD_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationOpenSCAD_Pan.svg'></td>
+     </tr>
+    </table>"""
+
+    global t10
+    t10 = "<p align='center'><b>TinkerCAD</b> " + text06 + """</p>
+    <table>
+     <tr>
+      <th><small>""" + text01 + """</small></th>
+      <th><small>""" + text02 + """</small></th>
+      <th><small>""" + text03 + """</small></th>
+      <th><small>""" + text04 + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/NavigationTinkerCAD_Select.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTinkerCAD_Zoom.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTinkerCAD_Rotate.svg'></td>
+      <td align='center'><img src=':/icons/NavigationTinkerCAD_Pan.svg'></td>
+     </tr>
+    </table>"""
+
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
@@ -384,6 +420,18 @@ a8.setText("OpenCascade")
 a8.setData("Gui::OpenCascadeNavigationStyle")
 a8.setObjectName("Indicator_NavigationOpenCascade")
 
+a9 = QtGui.QAction(gStyle)
+a9.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_dark.svg"))
+a9.setText("OpenSCAD")
+a9.setData("Gui::OpenSCADNavigationStyle")
+a9.setObjectName("Indicator_NavigationOpenSCAD")
+
+a10 = QtGui.QAction(gStyle)
+a10.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_dark.svg"))
+a10.setText("TinkerCAD")
+a10.setData("Gui::TinkerCADNavigationStyle")
+a10.setObjectName("Indicator_NavigationTinkerCAD")
+
 menu.addMenu(menuSettings)
 menu.addSeparator()
 menu.addAction(a0)
@@ -395,6 +443,8 @@ menu.addAction(a5)
 menu.addAction(a6)
 menu.addAction(a7)
 menu.addAction(a8)
+menu.addAction(a9)
+menu.addAction(a10)
 
 
 def onCompact():
@@ -430,6 +480,8 @@ def onTooltip():
         a6.setToolTip(t6)
         a7.setToolTip(t7)
         a8.setToolTip(t8)
+        a9.setToolTip(t9)
+        a10.setToolTip(t10)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():

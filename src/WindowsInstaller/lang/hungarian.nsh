@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "A varázsló segítségével tudja telepíteni a
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Python parancsfájlok fordítása..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Indítóikon létrehozása Asztalon"
-${LangFileString} TEXT_FINISH_WEBSITE "Látogasson el a freecadweb.org oldalra az aktuális hírekért, támogatásért és tippekért"
+${LangFileString} TEXT_FINISH_WEBSITE "Látogasson el a freecad.org oldalra az aktuális hírekért, támogatásért és tippekért"
 
 #${LangFileString} FileTypeTitle "FreeCAD-dokumentum"
 

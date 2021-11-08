@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,44 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCGlobal.h>
 
-#ifndef PARTGUI_ViewProviderLoft_H
-#define PARTGUI_ViewProviderLoft_H
-
-#include "ViewProviderAddSub.h"
-
-namespace PartDesignGui {
-
-class PartDesignGuiExport ViewProviderLoft : public ViewProviderAddSub
-{
-    PROPERTY_HEADER(PartDesignGui::ViewProviderLoft);
-
-public:
-    /// constructor
-    ViewProviderLoft();
-    /// destructor
-    virtual ~ViewProviderLoft();
-
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
-
-    virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(const bool on, bool auxiliary);
-    
-protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual TaskDlgFeatureParameters* getEditDialog();
-    
-    virtual QIcon getIcon(void) const;
-    
-private:
-    std::vector<App::Color> originalLineColors;
-};
+#ifndef PART_GLOBAL_H
+#define PART_GLOBAL_H
 
 
-} // namespace PartDesignGui
+// Part
+#ifndef PartExport
+#ifdef Part_EXPORTS
+#       define PartExport   FREECAD_DECL_EXPORT
+#else
+#       define PartExport   FREECAD_DECL_IMPORT
+#endif
+#endif
 
+// PartGui
+#ifndef PartGuiExport
+#ifdef PartGui_EXPORTS
+#  define PartGuiExport   FREECAD_DECL_EXPORT
+#else
+#  define PartGuiExport   FREECAD_DECL_IMPORT
+#endif
+#endif
 
-#endif // PARTGUI_ViewProviderLoft_H
+#endif //PART_GLOBAL_H

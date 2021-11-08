@@ -1490,7 +1490,7 @@ QPixmap MainWindow::aboutImage() const
     if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromUtf8(about_path.c_str());
         if (QDir(path).isRelative()) {
-            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            QString home = QString::fromStdString(App::Application::getHomePath());
             path = QFileInfo(QDir(home), path).absoluteFilePath();
         }
         about_image.load(path);
@@ -1517,7 +1517,7 @@ QPixmap MainWindow::splashImage() const
     if (splash_image.isNull()) {
         QString path = QString::fromUtf8(splash_path.c_str());
         if (QDir(path).isRelative()) {
-            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            QString home = QString::fromStdString(App::Application::getHomePath());
             path = QFileInfo(QDir(home), path).absoluteFilePath();
         }
 

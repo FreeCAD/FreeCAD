@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Este assistente de instalação irá guiá-lo at
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compilando os scripts de Python..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Criar um atalho no ambiente de trabalho"
-${LangFileString} TEXT_FINISH_WEBSITE "Visite freecadweb.org para as últimas notícias, suporte e dicas"
+${LangFileString} TEXT_FINISH_WEBSITE "Visite freecad.org para as últimas notícias, suporte e dicas"
 
 #${LangFileString} FileTypeTitle "Documento FreeCAD"
 

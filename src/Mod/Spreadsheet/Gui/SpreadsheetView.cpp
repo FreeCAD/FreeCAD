@@ -99,10 +99,8 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
             this, SLOT(rowResized(int, int, int)));
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
-    connect(ui->cellContent, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmContentChanged(ui->cellContent->text()); });
-    connect(ui->cellContent, &LineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
-    connect(ui->cellAlias, &LineEdit::finishedWithKey, this, [this](int, Qt::KeyboardModifiers) {confirmAliasChanged(ui->cellAlias->text()); });
-    connect(ui->cellAlias, &LineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellAlias, &ExpressionLineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
     connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
@@ -314,7 +312,6 @@ void SheetView::editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
     QModelIndex i = ui->cells->currentIndex();
 
     if (i.isValid()) {
-        ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
         ui->cells->finishEditWithMove(key, modifiers);
     }
 }

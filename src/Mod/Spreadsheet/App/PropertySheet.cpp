@@ -351,7 +351,7 @@ void PropertySheet::copyCells(Base::Writer& writer, const std::vector<Range>& ra
         writer.incInd();
         do {
             auto cell = getValue(*range);
-            if (cell) {
+            if (cell && cell->isUsed()) {
                 cell->save(writer);
             }
             else {

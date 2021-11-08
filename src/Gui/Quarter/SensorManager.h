@@ -45,14 +45,14 @@ class SensorManager : public QObject {
   Q_OBJECT
   typedef QObject inherited;
 public:
-  SensorManager(void);
+  SensorManager();
   ~SensorManager();
 
 public Q_SLOTS:
-  void idleTimeout(void);
-  void delayTimeout(void);
-  void timerQueueTimeout(void);
-  void sensorQueueChanged(void);
+  void idleTimeout();
+  void delayTimeout();
+  void timerQueueTimeout();
+  void sensorQueueChanged();
   void setTimerEpsilon(double sec);
 
 private:

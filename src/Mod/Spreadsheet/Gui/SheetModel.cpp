@@ -277,18 +277,34 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(f);
     }
 
-    if (!prop) {
+    auto dirtyCells = sheet->getCells()->getDirty();
+    auto dirty = (dirtyCells.find(CellAddress(row,col)) != dirtyCells.end());
+
+    if (!prop || dirty) {
         switch (role) {
         case  Qt::ForegroundRole: {
-            return QColor(0, 0, 255.0);
+            return QColor(0, 0, 255.0); // TODO: Remove this hardcoded color, replace with preference
         }
         case Qt::TextAlignmentRole: {
             qtAlignment = Qt::AlignHCenter | Qt::AlignVCenter;
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole:
-            if(cell->getExpression())
-                return QVariant(QLatin1String("#PENDING"));
+            if(cell->getExpression()) {
+                std::string str;
+                if (cell->getStringContent(str))
+                    if (str.size() > 0 && str[0] == '=')
+                        // If this is a real computed value, indicate that a recompute is
+                        // needed before we can display it
+                        return QVariant(QLatin1String("#PENDING"));
+                    else
+                        // If it's just a simple value, display the new value, but still
+                        // format it as a pending value to indicate to the user that
+                        // a recompute is needed
+                        return QVariant(QString::fromUtf8(str.c_str()));
+                else
+                    return QVariant();
+            } 
             else
                 return QVariant();
         default:
@@ -531,6 +547,16 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             QString str = value.toString();
+
+            // Check to see if this is already the value in the cell, and skip the update if so
+            auto cell = sheet->getCell(address);
+            if (cell) {
+                std::string oldContent;
+                cell->getStringContent(oldContent);
+                if (str == QString::fromStdString(oldContent))
+                    return true;
+            }
+
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command

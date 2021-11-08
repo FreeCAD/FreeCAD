@@ -30,6 +30,7 @@
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
+#include <Poly_Polygon3D.hxx>
 #include <Poly_Triangle.hxx>
 #include <Poly_Triangulation.hxx>
 #include <TColStd_ListOfTransient.hxx>
@@ -38,6 +39,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <vector>
+#include <Mod/Part/PartGlobal.h>
 
 class gp_Lin;
 class gp_Pln;
@@ -177,6 +179,22 @@ public:
      * \param normals
      */
     static void applyTransformationOnNormals(const TopLoc_Location& loc, std::vector<gp_Vec>& normals);
+    /*!
+     * \brief triangulationOfInfinite
+     * Returns the triangulation of the face of the tessellated shape. In case the face has infinite lengths
+     * the triangulation of a limited parameter range is computed.
+     * \param edge
+     * \param loc
+     */
+    static Handle (Poly_Triangulation) triangulationOfFace(const TopoDS_Face& face);
+    /*!
+     * \brief polygonOfEdge
+     * Returns the polygon of the edge of the tessellated shape. In case the edge has infinite length
+     * the polygon of a limited parameter range is computed.
+     * \param edge
+     * \param loc
+     */
+    static Handle(Poly_Polygon3D) polygonOfEdge(const TopoDS_Edge& edge, TopLoc_Location& loc);
 };
 
 } //namespace Part

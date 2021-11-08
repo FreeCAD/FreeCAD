@@ -177,7 +177,7 @@ public:
       , running(false)
     {
         timer->setSingleShot(true);
-        std::string exeName = App::GetApplication().getExecutableName();
+        std::string exeName = App::Application::getExecutableName();
         serverName = QString::fromStdString(exeName);
     }
 

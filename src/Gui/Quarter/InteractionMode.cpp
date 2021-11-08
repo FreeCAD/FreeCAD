@@ -34,7 +34,7 @@ InteractionMode::setEnabled(bool yes)
 }
 
 bool
-InteractionMode::enabled(void) const
+InteractionMode::enabled() const
 {
   return this->isenabled;
 }
@@ -62,7 +62,7 @@ InteractionMode::setOn(bool on)
 }
 
 bool
-InteractionMode::on(void) const
+InteractionMode::on() const
 {
   return this->altkeydown;
 }

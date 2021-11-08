@@ -100,13 +100,15 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         if isinstance(obj,Part.Shape):
             shape = obj
         elif not hasattr(obj,'Shape'):
-            App.Console.PrintError(translate("draft","No shape found\n"))
+            App.Console.PrintError(translate("draft",
+                                   "No shape found")+"\n")
             return None
         else:
             shape = obj.Shape
 
         if not DraftGeomUtils.is_planar(shape, tol):
-            App.Console.PrintError(translate("draft","All Shapes must be planar\n"))
+            App.Console.PrintError(translate("draft",
+                                   "All Shapes must be planar")+"\n")
             return None
 
         if DraftGeomUtils.get_normal(shape, tol):
@@ -121,7 +123,8 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     if len(shape_norm_yes) >= 1:
         for shape in shapes_list[1:]:
             if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
-                App.Console.PrintError(translate("draft","All Shapes must be coplanar\n"))
+                App.Console.PrintError(translate("draft",
+                                       "All Shapes must be coplanar")+"\n")
                 return None
         # define sketch normal
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
@@ -132,7 +135,8 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         if len(points) >= 2:
             poly = Part.makePolygon(points)
             if not DraftGeomUtils.is_planar(poly, tol):
-                App.Console.PrintError(translate("draft","All Shapes must be coplanar\n"))
+                App.Console.PrintError(translate("draft",
+                                       "All Shapes must be coplanar")+"\n")
                 return None
             normal = DraftGeomUtils.get_normal(poly, tol)
             if not normal:

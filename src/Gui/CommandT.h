@@ -279,11 +279,11 @@ inline void cmdAppObjectShow(const App::DocumentObject* obj) {
  * in-place editing an object, which may be brought in through linking to an
  * external group.
  */
-inline void cmdSetEdit(const App::DocumentObject* obj) {
+inline void cmdSetEdit(const App::DocumentObject* obj, int mod = 0) {
     if (obj && obj->getNameInDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",
-            obj->getDocument()->getName(), obj->getNameInDocument());
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %d)",
+            obj->getDocument()->getName(), obj->getNameInDocument(), mod);
     }
 }
 

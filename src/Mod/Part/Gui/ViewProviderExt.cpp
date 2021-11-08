@@ -104,6 +104,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/TimeInfo.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -396,6 +397,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         // if the object was invisible and has been changed, recreate the visual
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
             updateVisual();
+            // updateVisual() may not be triggered by any change (e.g.
+            // triggered by an external object through forceUpdate()). And
+            // since DiffuseColor is not changed here either, do not falsely set
+            // the document modified status
+            Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                    App::Property::NoModify, &DiffuseColor);
             // The material has to be checked again (#0001736)
             onChanged(&DiffuseColor);
         }
@@ -985,6 +992,9 @@ void ViewProviderPartExt::updateVisual()
         TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
         for (int i=1; i <= faceMap.Extent(); i++) {
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
+            if (mesh.IsNull()) {
+                mesh = Part::Tools::triangulationOfFace(TopoDS::Face(faceMap(i)));
+            }
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
@@ -1024,7 +1034,7 @@ void ViewProviderPartExt::updateVisual()
             // a free edge.
             int hash = aEdge.HashCode(INT_MAX);
             if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     int nbNodesInEdge = aPoly->NbNodes();
                     numNodes += nbNodesInEdge;
@@ -1058,6 +1068,9 @@ void ViewProviderPartExt::updateVisual()
             const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
+            if (mesh.IsNull()) {
+                mesh = Part::Tools::triangulationOfFace(actFace);
+            }
             if (mesh.IsNull()) {
                 parts[ii] = 0;
                 continue;
@@ -1220,7 +1233,7 @@ void ViewProviderPartExt::updateVisual()
             // handling of the free edge that are not associated to a face
             int hash = aEdge.HashCode(INT_MAX);
             if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     if (!aLoc.IsIdentity()) {
                         identity = false;
@@ -1292,8 +1305,8 @@ void ViewProviderPartExt::updateVisual()
 void ViewProviderPartExt::forceUpdate(bool enable) {
     if(enable) {
         if(++forceUpdateCount == 1) {
-            if(!isShow())
-                Visibility.touch();
+            if(!isShow() && VisualTouched)
+                updateVisual();
         }
     }else if(forceUpdateCount)
         --forceUpdateCount;
