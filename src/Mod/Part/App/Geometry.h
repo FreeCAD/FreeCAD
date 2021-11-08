@@ -183,8 +183,8 @@ public:
     GeomCurve();
     virtual ~GeomCurve();
 
-    static bool isLinear(const Handle(Geom_Curve) &c);
-    bool isLinear() const;
+    static bool isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr);
+    bool isLinear(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
 
     TopoDS_Shape toShape() const;
     /*!

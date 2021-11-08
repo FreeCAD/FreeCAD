@@ -4890,12 +4890,21 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
     return TopoShape();
 }
 
-bool TopoShape::isLinearEdge() const
+bool TopoShape::isLinearEdge(Base::Vector3d *dir, Base::Vector3d *base) const
 {
     if (isNull() || getShape().ShapeType() != TopAbs_EDGE)
         return false;
 
-    return GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve());
+    if (!GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve(), dir, base))
+        return false;
+    if (dir || base) {
+        auto pla = getPlacement();
+        if (dir)
+            pla.multVec(*dir, *dir);
+        if (base)
+            pla.multVec(*base, *base);
+    }
+    return true;
 }
 
 bool TopoShape::isPlanarFace(double tol) const

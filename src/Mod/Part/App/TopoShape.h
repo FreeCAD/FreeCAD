@@ -220,7 +220,7 @@ public:
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
-    bool isLinearEdge() const;
+    bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
     /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
     bool isPlanarFace(double tol=1e-7) const;
     //@}

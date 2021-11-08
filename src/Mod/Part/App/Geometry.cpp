@@ -673,15 +673,32 @@ static Standard_Boolean IsLinear(const Adaptor3d_Curve& theC)
     return Standard_False;
 }
 
-bool GeomCurve::isLinear() const
+bool GeomCurve::isLinear(Base::Vector3d *dir, Base::Vector3d *base) const
 {
     Handle(Geom_Curve) s = Handle(Geom_Curve)::DownCast(handle());
-    return isLinear(s);
+    return isLinear(s, dir, base);
 }
 
-bool GeomCurve::isLinear(const Handle(Geom_Curve) &s)
+bool GeomCurve::isLinear(const Handle(Geom_Curve) &s, Base::Vector3d *dir, Base::Vector3d *base)
 {
-    return IsLinear(GeomAdaptor_Curve(s));
+    if (!IsLinear(GeomAdaptor_Curve(s)))
+        return false;
+    if (dir || base) {
+        try {
+            GeomLProp_CLProps prop1(s,s->FirstParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop2(s,s->LastParameter(),0,Precision::Confusion());
+            const gp_Pnt &p1 = prop1.Value();
+            const gp_Pnt &p2 = prop2.Value();
+            if (base)
+                *base = Base::Vector3d(p1.X(), p1.Y(), p1.Z());
+            if (dir)
+                *dir = Base::Vector3d(p2.X() - p1.X(), p2.Y() - p1.Y(), p2.Z() - p1.Z());
+        }
+        catch (Standard_Failure& e) {
+            THROWM(Base::CADKernelError,e.GetMessageString())
+        }
+    }
+    return true;
 }
 
 GeomLine* GeomCurve::toLine(bool clone) const
