@@ -1124,7 +1124,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
     App::DocumentObject* profile = Profile.getValue();
     gp_Pln sketchplane;
 
-    if (profile->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (subReferenceAxis.size() && profile->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         Part::Part2DObject* sketch = getVerifiedSketch();
         Base::Placement SketchPlm = sketch->Placement.getValue();
         Base::Vector3d SketchVector = Base::Vector3d(0, 0, 1);
@@ -1164,7 +1164,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         }
 
     }
-    else if (profile->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else {
         Base::Placement SketchPlm = getVerifiedObject()->Placement.getValue();
         Base::Vector3d SketchVector = getProfileNormal();
         Base::Vector3d SketchPos = SketchPlm.getPosition();
@@ -1194,49 +1194,27 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         return;
     }
 
-    if (pcReferenceAxis->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        if (subReferenceAxis.empty())
-            throw Base::ValueError("No rotation axis reference specified");
-        const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
-        Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref;
-        try {
-            // if an exception is raised then convert it into a FreeCAD-specific exception
-            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
-        }
-        catch (const Standard_Failure& e) {
-            throw Base::RuntimeError(e.GetMessageString());
-        }
-
-        if (ref.ShapeType() == TopAbs_EDGE) {
-            TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
-                throw Base::ValueError("Failed to extract rotation edge");
-            BRepAdaptor_Curve adapt(refEdge);
-            gp_Pnt b;
-            gp_Dir d;
-            if (adapt.GetType() == GeomAbs_Line) {
-                b = adapt.Line().Location();
-                d = adapt.Line().Direction();
-            } else if (adapt.GetType() == GeomAbs_Circle) {
-                b = adapt.Circle().Location();
-                d = adapt.Circle().Axis().Direction();
-            } else {
-                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
-            }
-            base = Base::Vector3d(b.X(), b.Y(), b.Z());
-            dir = Base::Vector3d(d.X(), d.Y(), d.Z());
-            // Check that axis is co-planar with sketch plane!
-            // Check that axis is perpendicular with sketch plane!
-            if (sketchplane.Axis().Direction().IsParallel(d, Precision::Angular()))
-                throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
-            return;
-        } else {
-            throw Base::TypeError("Rotation reference must be an edge");
-        }
+    const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
+    auto refShape = Part::Feature::getTopoShape(refFeature,
+            subReferenceAxis.empty() ? "" : subReferenceAxis[0].c_str(), true);
+    gp_Pln pln;
+    if (refShape.findPlane(pln)) {
+        auto d = pln.Axis().Direction();
+        auto b = pln.Location();
+        dir = Base::Vector3d(d.X(), d.Y(), d.Z());
+        base = Base::Vector3d(b.X(), d.Y(), d.Z());
+    }
+    else {
+        refShape = refShape.getSubTopoShape(TopAbs_EDGE, 1, true);
+        if (!refShape.isLinearEdge(&dir, &base))
+            throw Base::TypeError("Axis reference must be a linear or circular edge");
     }
 
-    throw Base::TypeError("Rotation axis reference is invalid");
+    // Check that axis is co-planar with sketch plane!
+    // Check that axis is perpendicular with sketch plane!
+    if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(
+                gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+        throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
 }
 
 Base::Vector3d ProfileBased::getProfileNormal() const {

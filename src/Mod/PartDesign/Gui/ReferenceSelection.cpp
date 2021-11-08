@@ -30,6 +30,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <QDialog>
 # include <QLabel>
+# include <gp_Pln.hxx>
 #endif
 
 #include <App/OriginFeature.h>
@@ -151,9 +152,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
         if (!edgeShape.IsNull()) {
             if (planar) {
-                BRepAdaptor_Curve adapt(edgeShape);
-                if (adapt.GetType() == GeomAbs_Line)
-                    return true;
+                return Part::TopoShape(edgeShape).isLinearEdge();
             } else {
                 return true;
             }
@@ -165,9 +164,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         const TopoDS_Face& face = TopoDS::Face(sh);
         if (!face.IsNull()) {
             if (planar) {
-                BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() == GeomAbs_Plane)
-                    return true;
+                return Part::TopoShape(face).isPlanarFace();
             } else {
                 return true;
             }
@@ -178,6 +175,9 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
     if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
         const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+        gp_Pln pln;
+        if (planar)
+            return shape.findPlane(pln);
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
         const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
         BRepAdaptor_Curve adapt(edgeShape);
@@ -215,53 +215,20 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     if (!thisObj)
         return false;
 
-    if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
+    App::SubObjectT sel = msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object;
+    if (sel.getDocument() != thisObj->getDocument())
         return false;
 
-    selObj = thisObj->getDocument()->getObject(msg.pObjectName);
-    if (selObj == thisObj)
+    auto sobj = sel.getSubObject();
+    if (!sobj || sobj == thisObj)
         return false;
 
-    std::string subname = msg.pSubName;
+    if (PartDesign::Feature::isDatum(sobj->getLinkedObject()))
+        sel.setSubName(sel.getSubNameNoElement());
 
-    //check if the selection is an external reference and ask the user what to do
-    //of course only if thisObj is in a body, as otherwise the old workflow would not
-    //be supported
-    PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
-    if (!originfeature && body) {
-        PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if (!selBody || body != selBody) {
-            QDialog dia(Gui::getMainWindow());
-            Ui_DlgReference dlg;
-            dlg.setupUi(&dia);
-            dia.setModal(true);
-            int result = dia.exec();
-            if (result == QDialog::DialogCode::Rejected) {
-                selObj = nullptr;
-                return false;
-            }
-
-            if (!dlg.radioXRef->isChecked()) {
-                App::Document* document = thisObj->getDocument();
-                document->openTransaction("Make copy");
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                body->addObject(copy);
-
-                selObj = copy;
-                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                subname.append("1");
-            }
-        }
-    }
-
-    // Remove subname for planes and datum features
-    if (PartDesign::Feature::isDatum(selObj)) {
-        subname = "";
-    }
-
-    selSub = std::vector<std::string>(1,subname);
-
+    auto objT = PartDesignGui::importExternalObject(sel, false, false);
+    selObj = objT.getObject();
+    selSub.push_back(objT.getSubName());
     return true;
 }
 
