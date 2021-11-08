@@ -2958,11 +2958,16 @@ void Application::ExtractUserPath()
 
     // User data path
     //
-    if (userData.isEmpty()) {
-        userData = getDefaultUserData(userHome);
+    QString dataPath = userData;
+    if (dataPath.isEmpty()) {
+        dataPath = getDefaultUserData(userHome);
     }
-    boost::filesystem::path appData(stringToPath(userData.toStdString()));
-    getUserData(appData);
+    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
+
+    // If a custom user data path is given then don't modify it
+    if (userData.isEmpty())
+        getUserData(appData);
+
     if (!boost::filesystem::exists(appData)) {
         // This should never ever happen
         throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
@@ -2971,7 +2976,10 @@ void Application::ExtractUserPath()
     // In the second step we want the directory where user settings of the application can be
     // kept. There we create a directory with name of the vendor and a sub-directory with name
     // of the application.
-    getApplicationData(mConfig, appData);
+    //
+    // If a custom user data path is given then don't modify it
+    if (userData.isEmpty())
+        getApplicationData(mConfig, appData);
 
     // In order to write to our data path, we must create some directories, first.
     if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
