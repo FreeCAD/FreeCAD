@@ -151,34 +151,25 @@ def getTeighaConverter():
     -------
     str
         The full path of the converter executable
-        '/usr/bin/TeighaFileConverter'
+        '/usr/bin/ODAFileConverter'
     """
     import FreeCAD, os, platform
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    p = p.GetString("TeighaFileConverter")
-    if p:
+    path = p.GetString("TeighaFileConverter")
+    if path:
         # path set manually
-        teigha = p
-    else:
-        # try to find teigha
-        teigha = None
-        if platform.system() == "Linux":
-            teigha = "/usr/bin/TeighaFileConverter"
-            if not os.path.exists(teigha):
-                teigha = "/usr/bin/ODAFileConverter"
-        elif platform.system() == "Windows":
-            odadir = os.path.expandvars("%ProgramFiles%\ODA")
-            if os.path.exists(odadir):
-                subdirs = os.walk(odadir).next()[1]
-                for sub in subdirs:
-                    t = (odadir + os.sep + sub + os.sep
-                         + "TeighaFileConverter.exe")
-                    t = os.path.join(odadir, sub, "TeighaFileConverter.exe")
-                    if os.path.exists(t):
-                        teigha = t
-    if teigha:
-        if os.path.exists(teigha):
-            return teigha
+        return path
+    elif platform.system() == "Linux":
+        path = "/usr/bin/ODAFileConverter"
+        if os.path.exists(path):
+            return path
+    elif platform.system() == "Windows":
+        odadir = os.path.expandvars("%ProgramFiles%\ODA")
+        if os.path.exists(odadir):
+            for sub in os.listdir(odadir):
+                path = os.path.join(odadir, sub, "ODAFileConverter.exe")
+                if os.path.exists(path):
+                    return path
     return None
 
 
