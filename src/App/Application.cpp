@@ -2905,15 +2905,69 @@ void getApplicationData(std::map<std::string,std::string>& mConfig, boost::files
     appData /= mConfig["ExeName"];
 #endif
 }
+
+QString findUserHomePath(const QString& userHome)
+{
+    if (userHome.isEmpty()) {
+        return getDefaultHome();
+    }
+    else {
+        return userHome;
+    }
 }
 
-void Application::ExtractUserPath()
+boost::filesystem::path findUserDataPath(std::map<std::string,std::string>& mConfig, const QString& userHome, const QString& userData)
 {
-    // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+    QString dataPath = userData;
+    if (dataPath.isEmpty()) {
+        dataPath = getDefaultUserData(userHome);
+    }
+    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
 
-    // this is to support a portable version of FreeCAD
+    // If a custom user data path is given then don't modify it
+    if (userData.isEmpty())
+        getUserData(appData);
+
+    if (!boost::filesystem::exists(appData)) {
+        // This should never ever happen
+        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
+    }
+
+    // In the second step we want the directory where user settings of the application can be
+    // kept. There we create a directory with name of the vendor and a sub-directory with name
+    // of the application.
+    //
+    // If a custom user data path is given then don't modify it
+    if (userData.isEmpty())
+        getApplicationData(mConfig, appData);
+
+    // In order to write to our data path, we must create some directories, first.
+    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+        try {
+            boost::filesystem::create_directories(appData);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
+        }
+    }
+
+    return appData;
+}
+
+QString findUserTempPath(const QString& userTemp)
+{
+    QString path = userTemp;
+    if (!path.isEmpty()) {
+        path += QDir::separator();
+    }
+    else {
+        path = QString::fromStdString(Base::FileInfo::getTempPath());
+    }
+
+    return path;
+}
+
+std::tuple<QString, QString, QString> getCustomPaths()
+{
     QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
     QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
     QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
@@ -2947,61 +3001,39 @@ void Application::ExtractUserPath()
         userTemp = fi.absoluteFilePath();
     }
 
+    return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
+}
+}
+
+void Application::ExtractUserPath()
+{
+    // std paths
+    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
+    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+
+    // this is to support a portable version of FreeCAD
+    auto paths = getCustomPaths();
+    QString userHome = std::get<0>(paths);
+    QString userData = std::get<1>(paths);
+    QString userTemp = std::get<2>(paths);
+
 
     // User home path
     //
-    if (userHome.isEmpty()) {
-        userHome = getDefaultHome();
-    }
+    userHome = findUserHomePath(userHome);
     mConfig["UserHomePath"] = userHome.toUtf8().data();
 
 
     // User data path
     //
-    QString dataPath = userData;
-    if (dataPath.isEmpty()) {
-        dataPath = getDefaultUserData(userHome);
-    }
-    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
-
-    // If a custom user data path is given then don't modify it
-    if (userData.isEmpty())
-        getUserData(appData);
-
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    }
-
-    // In the second step we want the directory where user settings of the application can be
-    // kept. There we create a directory with name of the vendor and a sub-directory with name
-    // of the application.
-    //
-    // If a custom user data path is given then don't modify it
-    if (userData.isEmpty())
-        getApplicationData(mConfig, appData);
-
-    // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
-        try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-        }
-    }
-
+    boost::filesystem::path appData = findUserDataPath(mConfig, userHome, userData);
     mConfig["UserAppData"] = pathToString(appData) + PATHSEP;
 
 
     // Set application tmp. directory
     //
-    if (!userTemp.isEmpty()) {
-        userTemp += QDir::separator();
-        mConfig["AppTempPath"] = userTemp.toUtf8().data();
-    }
-    else {
-        mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
-    }
+    userTemp = findUserTempPath(userTemp);
+    mConfig["AppTempPath"] = userTemp.toUtf8().data();
 
 
     // Create the default macro directory
