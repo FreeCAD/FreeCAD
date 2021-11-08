@@ -79,7 +79,7 @@ def setColorRecursively(obj, color, transp):
                         "Part::Common", "Part::MultiCommon"]
     if obj.TypeId in boolean_features:
         for currentObject in obj.OutList:
-            print(f"Fixing up colors for: {currentObject.FullName}")
+            if printverbose: print(f"Fixing up colors for: {currentObject.FullName}")
             if currentObject not in hassetcolor:
                 setColorRecursively(currentObject, color, transp)
 
@@ -767,14 +767,15 @@ def p_linear_extrude_with_transform(p):
     'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Linear Extrude With Transform")
     h = float(p[3]['height'])
-    s = 1.0
+    if printverbose: print("Height : ",h)
+    s = [1.0,1.0]
     t = 0.0
-    if printverbose: print("Twist : ",p[3])
     if 'scale' in p[3]:
         s = [float(p[3]['scale'][0]), float(p[3]['scale'][1])]
-        print ("Scale: " + str(s))
+        if printverbose: print ("Scale: " + str(s))
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
+        if printverbose: print("Twist : ",t)
     # Test if null object like from null text
     if (len(p[6]) == 0) :
         p[0] = []
@@ -783,7 +784,7 @@ def p_linear_extrude_with_transform(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
-    if t != 0.0 or s != 1.0:
+    if t != 0.0 or s[0] != 1.0 or s[1] != 1.0:
         newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
@@ -1286,11 +1287,7 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
-        print("pp")
-        print(pp)
         w = Part.makePolygon(pp)
-        print("w")
-        print(w)
         try:
            f = Part.Face(w)
         except Exception:
@@ -1315,7 +1312,6 @@ def p_projection_action(p) :
     for shape in p[6]:
         shape.Shape.tessellate(0.05)
         bbox.add(shape.Shape.BoundBox)
-    print (bbox)
     plane = doc.addObject("Part::Plane","xy_plane_used_for_projection")
     plane.Length = bbox.XLength
     plane.Width = bbox.YLength
