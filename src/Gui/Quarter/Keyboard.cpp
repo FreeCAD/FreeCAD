@@ -55,7 +55,7 @@ using namespace SIM::Coin3D::Quarter;
 
 #define PRIVATE(obj) obj->pimpl
 
-Keyboard::Keyboard(void)
+Keyboard::Keyboard()
 {
   PRIVATE(this) = new KeyboardP(this);
 }
@@ -81,7 +81,7 @@ Keyboard::translateEvent(QEvent * event)
   case QEvent::KeyRelease:
     return PRIVATE(this)->keyEvent((QKeyEvent *) event);
   default:
-    return NULL;
+    return nullptr;
   }
 }
 

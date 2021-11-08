@@ -39,12 +39,12 @@
 
 using namespace SIM::Coin3D::Quarter;
 
-ImageReader::ImageReader(void)
+ImageReader::ImageReader()
 {
   SbImage::addReadImageCB(ImageReader::readImageCB, this);
 }
 
-ImageReader::~ImageReader(void)
+ImageReader::~ImageReader()
 {
   SbImage::removeReadImageCB(ImageReader::readImageCB, this);
 }

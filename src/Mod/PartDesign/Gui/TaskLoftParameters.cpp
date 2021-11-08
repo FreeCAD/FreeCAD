@@ -55,7 +55,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
-TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*/, QWidget *parent)
+TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj*/, QWidget *parent)
     : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
     , ui(new Ui_TaskLoftParameters)
 {
@@ -69,7 +69,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
             this, SLOT(onRefButtonAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemvove(bool)));
+            this, SLOT(onRefButtonRemove(bool)));
     connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
@@ -129,16 +129,15 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
 
-    updateUI(0);
+    updateUI();
 }
 
 TaskLoftParameters::~TaskLoftParameters()
 {
 }
 
-void TaskLoftParameters::updateUI(int index)
+void TaskLoftParameters::updateUI()
 {
-    Q_UNUSED(index);
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -324,7 +323,7 @@ void TaskLoftParameters::onRefButtonAdd(bool checked) {
     }
 }
 
-void TaskLoftParameters::onRefButtonRemvove(bool checked) {
+void TaskLoftParameters::onRefButtonRemove(bool checked) {
 
     if (checked) {
         Gui::Selection().clearSelection();
@@ -359,7 +358,7 @@ bool TaskDlgLoftParameters::accept()
     // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
 
-    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
         FCMD_OBJ_HIDE(obj);
     }
 

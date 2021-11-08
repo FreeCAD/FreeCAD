@@ -43,8 +43,8 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 
 class ImageReader {
 public:
-  ImageReader(void);
-  ~ImageReader(void);
+  ImageReader();
+  ~ImageReader();
 
   SbBool readImage(const SbString & filename, SbImage & image) const;
 
