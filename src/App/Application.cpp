@@ -2882,6 +2882,16 @@ void getUserData(boost::filesystem::path& appData)
 #endif
 }
 
+void getConfigOrChache(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+{
+    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
+    // the path.
+    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
+        appData /= mConfig["ExeVendor"];
+    }
+    appData /= mConfig["ExeName"];
+}
+
 void getApplicationData(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
 {
     // Actually the name of the directory where the parameters are stored should be the name of
@@ -2897,12 +2907,7 @@ void getApplicationData(std::map<std::string,std::string>& mConfig, boost::files
     }
 
 #elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
-    // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
-    // the path.
-    if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData /= mConfig["ExeVendor"];
-    }
-    appData /= mConfig["ExeName"];
+    getConfigOrChache(mConfig, appData);
 #endif
 }
 
@@ -2953,17 +2958,33 @@ boost::filesystem::path findUserDataPath(std::map<std::string,std::string>& mCon
     return appData;
 }
 
-QString findUserTempPath(const QString& userTemp)
+boost::filesystem::path findCachePath(std::map<std::string,std::string>& mConfig, const QString& cacheHome, const QString& userTemp)
 {
-    QString path = userTemp;
-    if (!path.isEmpty()) {
-        path += QDir::separator();
-    }
-    else {
-        path = QString::fromStdString(Base::FileInfo::getTempPath());
+    QString dataPath = userTemp;
+    if (dataPath.isEmpty()) {
+        dataPath = cacheHome;
     }
 
-    return path;
+    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
+
+#if !defined(FC_OS_WIN32)
+    // If a custom user temp path is given then don't modify it
+    if (userTemp.isEmpty()) {
+        getConfigOrChache(mConfig, appData);
+        appData /= "Cache";
+    }
+#endif
+
+    // In order to write to our data path, we must create some directories, first.
+    if (!boost::filesystem::exists(appData)) {
+        try {
+            boost::filesystem::create_directories(appData);
+        } catch (const boost::filesystem::filesystem_error& e) {
+            throw Base::FileSystemError("Could not create cache directories. Failed with: " + e.code().message());
+        }
+    }
+
+    return appData;
 }
 
 std::tuple<QString, QString, QString> getCustomPaths()
@@ -3003,6 +3024,48 @@ std::tuple<QString, QString, QString> getCustomPaths()
 
     return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
 }
+
+std::tuple<QString, QString> getXDGPaths()
+{
+    auto checkXdgPath = [](QString& path) {
+        if (!path.isEmpty()) {
+            QDir dir(path);
+            if (!dir.exists() || dir.isRelative())
+                path.clear();
+        }
+    };
+
+    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    QString configHome = env.value(QString::fromLatin1("XDG_CONFIG_HOME"));
+    QString cacheHome = env.value(QString::fromLatin1("XDG_CACHE_HOME"));
+
+    checkXdgPath(configHome);
+    checkXdgPath(cacheHome);
+
+    // If env. are not set or invalid
+    QDir home(getDefaultHome());
+    if (configHome.isEmpty()) {
+#if defined(FC_OS_MACOSX)
+        QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
+#else
+        QFileInfo fi(home, QString::fromLatin1(".config"));
+#endif
+        configHome = fi.absoluteFilePath();
+    }
+
+    if (cacheHome.isEmpty()) {
+#if defined(FC_OS_MACOSX)
+        QFileInfo fi(home, QString::fromLatin1("Library/Caches"));
+#elif defined(FC_OS_WIN32)
+        QFileInfo fi(QString::fromStdString(Base::FileInfo::getTempPath()));
+#else
+        QFileInfo fi(home, QString::fromLatin1(".cache"));
+#endif
+        cacheHome = fi.absoluteFilePath();
+    }
+
+    return std::make_tuple(configHome, cacheHome);
+}
 }
 
 void Application::ExtractUserPath()
@@ -3017,6 +3080,9 @@ void Application::ExtractUserPath()
     QString userData = std::get<1>(paths);
     QString userTemp = std::get<2>(paths);
 
+    auto xdgPaths = getXDGPaths();
+  //QString configHome = std::get<0>(xdgPaths);
+    QString cacheHome = std::get<1>(xdgPaths);
 
     // User home path
     //
@@ -3032,8 +3098,8 @@ void Application::ExtractUserPath()
 
     // Set application tmp. directory
     //
-    userTemp = findUserTempPath(userTemp);
-    mConfig["AppTempPath"] = userTemp.toUtf8().data();
+    boost::filesystem::path cache = findCachePath(mConfig, cacheHome, userTemp);
+    mConfig["AppTempPath"] = pathToString(cache) + PATHSEP;
 
 
     // Create the default macro directory
