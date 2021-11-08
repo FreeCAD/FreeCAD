@@ -207,6 +207,14 @@ void View3DInventorPy::init_type()
         "hasClippingPlane(): check whether this clipping plane is active");
     add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
         "graphicsView(): Access this view as QGraphicsView");
+    add_varargs_method("setCornerCrossVisible",&View3DInventorPy::setCornerCrossVisible,
+        "setCornerCrossVisible(bool): Defines corner axis cross visibility");
+    add_varargs_method("isCornerCrossVisible",&View3DInventorPy::isCornerCrossVisible,
+        "isCornerCrossVisible(): Returns current corner axis cross visibility");
+    add_varargs_method("setCornerCrossSize",&View3DInventorPy::setCornerCrossSize,
+        "setCornerCrossSize(int): Defines corner axis cross size");
+    add_varargs_method("getCornerCrossSize",&View3DInventorPy::getCornerCrossSize,
+        "getCornerCrossSize(): Returns current corner axis cross size");
     add_varargs_method("cast_to_base", &View3DInventorPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
@@ -2644,6 +2652,42 @@ Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
     return wrap.fromQWidget(getView3DIventorPtr()->getViewer(), "QGraphicsView");
+}
+
+Py::Object View3DInventorPy::setCornerCrossVisible(const Py::Tuple& args)
+{
+    int ok;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
+        throw Py::Exception();
+    getView3DIventorPtr()->getViewer()->setFeedbackVisibility(ok!=0);
+    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isCornerCrossVisible(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    bool ok = getView3DIventorPtr()->getViewer()->isFeedbackVisible();
+    return Py::Boolean(ok ? true : false);
+}
+
+Py::Object View3DInventorPy::setCornerCrossSize(const Py::Tuple& args)
+{
+    int size=0;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &size))
+        throw Py::Exception();
+    getView3DIventorPtr()->getViewer()->setFeedbackSize(size);
+    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::getCornerCrossSize(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    int size = getView3DIventorPtr()->getViewer()->getFeedbackSize();
+    return Py::Int(size);
 }
 
 Py::Object View3DInventorPy::cast_to_base(const Py::Tuple&)
