@@ -121,10 +121,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
-    if (!loft->Sections.getValues().empty()) {
-        LoftView->makeTemporaryVisible(true);
-    }
-
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
@@ -138,6 +134,10 @@ TaskLoftParameters::~TaskLoftParameters()
 
 void TaskLoftParameters::updateUI()
 {
+    // we must assure the changed loft is kept visible on section changes,
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -172,6 +172,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         clearButtons();
         exitSelectionMode();
+        updateUI();
     }
 }
 
@@ -255,6 +256,7 @@ void TaskLoftParameters::onDeleteSection()
 
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -278,6 +280,7 @@ void TaskLoftParameters::indexesMoved()
 
     loft->Sections.setValues(originals);
     recomputeFeature();
+    updateUI();
 }
 
 void TaskLoftParameters::clearButtons() {
