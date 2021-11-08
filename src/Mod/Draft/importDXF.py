@@ -328,7 +328,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
 
     See also
     --------
-    Draft.makeLayer
+    Draft.make_layer
 
     To do
     -----
@@ -341,9 +341,9 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         if wantedLayerName == l.Label:
             return l
     if dxfUseDraftVisGroups:
-        newLayer = Draft.makeLayer(name=wantedLayer,
-                                   linecolor=color,
-                                   drawstyle=drawstyle)
+        newLayer = Draft.make_layer(name=wantedLayer,
+                                    line_color=color,
+                                    draw_style=drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
     newLayer.Label = wantedLayerName
