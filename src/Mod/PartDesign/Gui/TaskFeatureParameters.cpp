@@ -129,12 +129,39 @@ void TaskFeatureParameters::addBlinkEditor(QLineEdit *edit)
         blinkTimerId = startTimer(500);
 }
 
+void TaskFeatureParameters::removeBlinkEditor(QLineEdit *edit)
+{
+    auto it = blinkEdits.find(edit);
+    if (it != blinkEdits.end()) {
+        edit->setPlaceholderText(it->second);
+        blinkEdits.erase(it);
+    }
+}
+
 void TaskFeatureParameters::timerEvent(QTimerEvent *ev)
 {
     if (ev->timerId() == blinkTimerId) {
         for (auto &v : blinkEdits)
             v.first->setPlaceholderText(blink ? QString() : v.second);
+        for (auto &v : blinkLabels)
+            v.first->setText(blink ? QString() : v.second);
         blink = !blink;
+    }
+}
+
+void TaskFeatureParameters::addBlinkLabel(QLabel *label)
+{
+    blinkLabels[label] = label->text();
+    if (blinkTimerId == 0)
+        blinkTimerId = startTimer(500);
+}
+
+void TaskFeatureParameters::removeBlinkLabel(QLabel *label)
+{
+    auto it = blinkLabels.find(label);
+    if (it != blinkLabels.end()) {
+        label->setText(it->second);
+        blinkLabels.erase(it);
     }
 }
 

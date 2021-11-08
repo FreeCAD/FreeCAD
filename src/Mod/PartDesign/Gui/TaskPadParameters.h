@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskPadParameters_H
 #define GUI_TASKVIEW_TaskPadParameters_H
 
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -59,10 +60,14 @@ public:
     virtual void saveHistory() override;
     virtual void apply() override;
 
+    void fillDirectionCombo();
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
-    void onGBDirectionChanged(bool);
+    void onDirectionCBChanged(int);
+    void onAlongSketchNormalChanged(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
@@ -83,11 +88,14 @@ protected:
     void changeEvent(QEvent *e) override;
     bool eventFilter(QObject*, QEvent*) override;
     void refresh() override;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
     double getLength(void) const;
     double getLength2(void) const;
+    bool   getAlongSketchNormal(void) const;
     bool   getCustom(void) const;
+    std::string getReferenceAxis(void) const;
     double getXDirection(void) const;
     double getYDirection(void) const;
     double getZDirection(void) const;
@@ -105,6 +113,9 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPadParameters> ui;
     bool useElement;
+    bool selectionFace;
+    App::PropertyLinkSub* propReferenceAxis = nullptr;
+    std::vector<App::SubObjectT> axesInList;
 };
 
 /// simulation dialog for the TaskView

@@ -94,6 +94,8 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->lineFaceName->installEventFilter(this);
     ui->lineFaceName->setMouseTracking(true);
 
+    ui->directionCB->installEventFilter(this);
+
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 
@@ -164,8 +166,17 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onInnerAngleChanged(double)));
     connect(ui->innerTaperAngleEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onInnerAngle2Changed(double)));
-    connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onGBDirectionChanged(bool)));
+    connect(ui->directionCB, SIGNAL(activated(int)),
+        this, SLOT(onDirectionCBChanged(int)));
+    QObject::connect(ui->directionCB, QOverload<int>::of(&QComboBox::highlighted),
+        [this](int index) {
+            if (index >= 3 && index < (int)axesInList.size())
+                PartDesignGui::highlightObjectOnTop(axesInList[index]);
+            else
+                Gui::Selection().rmvPreselect();
+        });
+    connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onAlongSketchNormalChanged(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
         this, SLOT(onXDirectionEditChanged(double)));
     connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
@@ -188,6 +199,7 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onButtonFace()));
     connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
             this, SLOT(onFaceName(QString)));
+    this->propReferenceAxis = &(pcPad->ReferenceAxis);
 
     refresh();
 
@@ -216,6 +228,9 @@ void TaskPadParameters::refresh()
     if (!vp || !vp->getObject())
         return;
 
+    // update direction combobox
+    fillDirectionCombo();
+
     // Get the feature data
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     Base::Quantity l = pcPad->Length.getQuantityValue();
@@ -240,7 +255,9 @@ void TaskPadParameters::refresh()
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
-    ui->groupBoxDirection->setChecked(useCustom);
+    ui->XDirectionEdit->setEnabled(useCustom);
+    ui->YDirectionEdit->setEnabled(useCustom);
+    ui->ZDirectionEdit->setEnabled(useCustom);
     ui->XDirectionEdit->setValue(xs);
     ui->YDirectionEdit->setValue(ys);
     ui->ZDirectionEdit->setValue(zs);
@@ -382,22 +399,37 @@ void TaskPadParameters::updateUI(int index)
 void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        QString refText = onAddSelection(msg);
-        if (refText.length() > 0) {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->setText(refText);
-            QStringList list(refText.split(QLatin1Char(':')));
-            ui->lineFaceName->setProperty("FeatureName", list[0].toLatin1());
-            ui->lineFaceName->setProperty("FaceName", list.size()>1 ? list[1].toLatin1() : QByteArray());
-            ui->lineFaceName->blockSignals(false);
-            // Turn off reference selection mode
-            onButtonFace(false);
-        } else {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->clear();
-            ui->lineFaceName->setProperty("FeatureName", QVariant());
-            ui->lineFaceName->setProperty("FaceName", QVariant());
-            ui->lineFaceName->blockSignals(false);
+        // if we have an edge selection for the pad direction
+        if (!selectionFace) {
+            removeBlinkLabel(ui->labelEdge);
+            std::vector<std::string> edge;
+            App::DocumentObject* selObj;
+            if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
+                exitSelectionMode();
+                propReferenceAxis->setValue(selObj, edge);
+                recomputeFeature();
+                // update direction combobox
+                fillDirectionCombo();
+            }
+        }
+        else {
+            QString refText = onAddSelection(msg);
+            if (refText.length() > 0) {
+                ui->lineFaceName->blockSignals(true);
+                ui->lineFaceName->setText(refText);
+                QStringList list(refText.split(QLatin1Char(':')));
+                ui->lineFaceName->setProperty("FeatureName", list[0].toLatin1());
+                ui->lineFaceName->setProperty("FaceName", list.size()>1 ? list[1].toLatin1() : QByteArray());
+                ui->lineFaceName->blockSignals(false);
+                // Turn off reference selection mode
+                onButtonFace(false);
+            } else {
+                ui->lineFaceName->blockSignals(true);
+                ui->lineFaceName->clear();
+                ui->lineFaceName->setProperty("FeatureName", QVariant());
+                ui->lineFaceName->setProperty("FaceName", QVariant());
+                ui->lineFaceName->blockSignals(false);
+            }
         }
     } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
@@ -420,6 +452,78 @@ void TaskPadParameters::onLength2Changed(double len)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length2.setValue(len);
     recomputeFeature();
+}
+
+void TaskPadParameters::fillDirectionCombo()
+{
+    bool oldVal_blockUpdate = blockUpdate;
+    blockUpdate = true;
+
+    QSignalBlocker blocker(ui->directionCB);
+
+    if (axesInList.empty()) {
+        ui->directionCB->clear();
+        // add sketch normal
+        addAxisToCombo(nullptr, "", QObject::tr("Profile normal"));
+        // add the other entries
+        addAxisToCombo(nullptr, "", tr("Select reference..."));
+        // we start with the sketch normal as proposal for the custom direction
+        addAxisToCombo(nullptr, "", QObject::tr("Custom direction"));
+    }
+
+    // add current link, if not in list
+    // first, figure out the item number for current axis
+    int indexOfCurrent = -1;
+    App::DocumentObject* ax = propReferenceAxis->getValue();
+    const std::vector<std::string>& subList = propReferenceAxis->getSubValues(false);
+    if (!ax)
+        indexOfCurrent = 0;
+    else {
+        int i = -1;
+        for (const auto &objT : axesInList) {
+            ++i;
+            if (ax != objT.getObject()) continue;
+            if (subList.empty()) {
+                if (objT.getSubName().size()) 
+                    continue;
+            }
+            else if (subList[0] != objT.getSubName())
+                continue;
+            indexOfCurrent = i;
+            break;
+        }
+    }
+    // if the axis is not yet listed in the combobox
+    if (indexOfCurrent == -1 && ax) {
+        assert(subList.size() <= 1);
+        std::string sub;
+        if (!subList.empty())
+            sub = subList[0];
+        addAxisToCombo(ax, sub, getRefStr(ax, subList));
+        indexOfCurrent = axesInList.size() - 1;
+    }
+
+    // highlight either current index or set custom direction
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    bool hasCustom = pcPad->UseCustomVector.getValue();
+    if (indexOfCurrent != -1 && !hasCustom)
+        ui->directionCB->setCurrentIndex(indexOfCurrent);
+    if (hasCustom)
+        ui->directionCB->setCurrentIndex(2);
+
+    ui->checkBoxAlongDirection->setEnabled(ui->directionCB->currentIndex() != 0);
+    ui->XDirectionEdit->setEnabled(hasCustom);
+    ui->YDirectionEdit->setEnabled(hasCustom);
+    ui->ZDirectionEdit->setEnabled(hasCustom);
+
+    blockUpdate = oldVal_blockUpdate;
+}
+
+void TaskPadParameters::addAxisToCombo(App::DocumentObject* linkObj,
+    std::string linkSubname, QString itemText)
+{
+    this->ui->directionCB->addItem(itemText);
+    this->axesInList.emplace_back(linkObj, linkSubname.c_str());
 }
 
 void TaskPadParameters::onAngleChanged(double angle)
@@ -450,10 +554,61 @@ void TaskPadParameters::onInnerAngle2Changed(double angle)
     recomputeFeature();
 }
 
-void TaskPadParameters::onGBDirectionChanged(bool on)
+void TaskPadParameters::onDirectionCBChanged(int num)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->UseCustomVector.setValue(on);
+
+    if (axesInList.empty() || !pcPad)
+        return;
+
+    removeBlinkLabel(ui->labelEdge);
+
+    if (num == 0 || num == 2)
+        propReferenceAxis->setValue(nullptr);
+    else if (num == 1) {
+        addBlinkLabel(ui->labelEdge);
+        // enter reference selection mode
+        this->blockConnection(false);
+        // to distinguish that this is the direction selection
+        selectionFace = false;
+        TaskSketchBasedParameters::onSelectReference(true, true, true, true, true);
+        return;
+    }
+    else {
+        const auto & objT = axesInList[num];
+        if (auto obj = objT.getObject()) {
+            if (objT.getSubName().empty())
+                propReferenceAxis->setValue(obj);
+            else
+                propReferenceAxis->setValue(obj, {objT.getSubName()});
+            // in case user is in selection mode, but changed his mind before selecting anything
+            exitSelectionMode();
+        }
+        else {
+            Base::Console().Error("Object was deleted\n");
+            return;
+        }
+    }
+
+    // disable AlongSketchNormal when the direction is already normal
+    ui->checkBoxAlongDirection->setEnabled(num!=0);
+
+    // if custom direction is used, show it
+    bool useCustom = num == 2;
+    pcPad->UseCustomVector.setValue(useCustom);
+    ui->XDirectionEdit->setEnabled(useCustom);
+    ui->YDirectionEdit->setEnabled(useCustom);
+    ui->ZDirectionEdit->setEnabled(useCustom);
+
+    // recompute and update the direction
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::onAlongSketchNormalChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->AlongSketchNormal.setValue(on);
     recomputeFeature();
 }
 
@@ -467,7 +622,6 @@ void TaskPadParameters::onXDirectionEditChanged(double len)
     // therefore the vector component edits must be updated
     updateDirectionEdits();
 }
-
 
 void TaskPadParameters::onYDirectionEditChanged(double len)
 {
@@ -488,9 +642,16 @@ void TaskPadParameters::onZDirectionEditChanged(double len)
 void TaskPadParameters::updateDirectionEdits(void)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    // we don't want to execute the onChanged edits, but just update their contents
+    ui->XDirectionEdit->blockSignals(true);
+    ui->YDirectionEdit->blockSignals(true);
+    ui->ZDirectionEdit->blockSignals(true);
     ui->XDirectionEdit->setValue(pcPad->Direction.getValue().x);
     ui->YDirectionEdit->setValue(pcPad->Direction.getValue().y);
     ui->ZDirectionEdit->setValue(pcPad->Direction.getValue().z);
+    ui->XDirectionEdit->blockSignals(false);
+    ui->YDirectionEdit->blockSignals(false);
+    ui->ZDirectionEdit->blockSignals(false);
 }
 
 void TaskPadParameters::onOffsetChanged(double len)
@@ -504,6 +665,7 @@ void TaskPadParameters::onMidplaneChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Midplane.setValue(on);
+    // reversed is not sensible when midplane
     ui->checkBoxReversed->setEnabled(!on);
     recomputeFeature();
 }
@@ -555,6 +717,9 @@ void TaskPadParameters::onModeChanged(int index)
 void TaskPadParameters::onButtonFace(const bool pressed)
 {
     this->blockConnection(!pressed);
+
+    // to distinguish that this is the direction selection
+    selectionFace = true;
 
     if (vp && vp->getObject()
            && vp->getObject()->isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
@@ -609,9 +774,22 @@ double TaskPadParameters::getLength2(void) const
     return ui->lengthEdit2->value().getValue();
 }
 
+bool   TaskPadParameters::getAlongSketchNormal(void) const
+{
+    return ui->checkBoxAlongDirection->isChecked();
+}
+
 bool   TaskPadParameters::getCustom(void) const
 {
-    return ui->groupBoxDirection->isChecked();
+    return ui->directionCB->currentIndex() == 2;
+}
+
+std::string TaskPadParameters::getReferenceAxis(void) const
+{
+    std::vector<std::string> sub;
+    App::DocumentObject* obj;
+    getReferenceAxis(obj, sub);
+    return buildLinkSingleSubPythonStr(obj, sub);
 }
 
 double TaskPadParameters::getXDirection(void) const
@@ -736,6 +914,34 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
+
+        axesInList.clear();
+        fillDirectionCombo();
+    }
+}
+
+void TaskPadParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+{
+    if (axesInList.empty())
+        throw Base::RuntimeError("Not initialized!");
+
+    int num = ui->directionCB->currentIndex();
+    const auto& objT = axesInList[num];
+    if (objT.getObjectName().empty()) {
+        // Note: It is possible that a face of an object is directly padded without defining a profile shape
+        obj = nullptr;
+        sub.clear();
+        //throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
+    }
+    else {
+        obj = objT.getObject();
+        if (!obj)
+            throw Base::RuntimeError("Object was deleted");
+
+        if (objT.getSubName().size()) {
+            sub.resize(1);
+            sub[0] = objT.getSubName();
+        }
     }
 }
 
@@ -762,6 +968,8 @@ void TaskPadParameters::apply()
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Direction = ("
         << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
+    FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
+    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());

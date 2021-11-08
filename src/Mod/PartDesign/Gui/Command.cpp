@@ -1149,11 +1149,6 @@ void CmdPartDesignPad::activated(int iMsg)
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
 
-        if (sketch) {
-            std::ostringstream str;
-            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
-        }
-
         finishProfileBased(cmd, sketch, Feat);
     };
 

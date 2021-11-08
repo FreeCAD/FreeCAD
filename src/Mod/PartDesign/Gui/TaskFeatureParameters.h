@@ -78,6 +78,9 @@ protected Q_SLOTS:
 protected:
     virtual void _refresh();
     void addBlinkEditor(QLineEdit *);
+    void removeBlinkEditor(QLineEdit *);
+    void addBlinkLabel(QLabel *);
+    void removeBlinkLabel(QLabel *);
     void timerEvent(QTimerEvent *);
 
 private:
@@ -101,6 +104,7 @@ protected:
     int blinkTimerId = 0;
     bool blink = false;
     std::map<QLineEdit*, QString> blinkEdits;
+    std::map<QLabel*, QString> blinkLabels;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
