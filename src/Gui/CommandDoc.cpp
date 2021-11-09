@@ -1590,7 +1590,7 @@ void StdCmdRefresh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getActiveGuiDocument()) {
-        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+        App::AutoTransaction trans(App::DocumentParams::TransactionOnRecompute() ? "Recompute" : nullptr);
         try {
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
         }
@@ -1610,9 +1610,9 @@ void StdCmdRefresh::activated(int iMsg)
 bool StdCmdRefresh::isActive(void)
 {
     if (App::DocumentParams::TransactionOnRecompute())
-        eType |= NoTransaction;
-    else
         eType &= ~NoTransaction;
+    else
+        eType |= NoTransaction;
     return this->getDocument() && this->getDocument()->mustExecute();
 }
 
