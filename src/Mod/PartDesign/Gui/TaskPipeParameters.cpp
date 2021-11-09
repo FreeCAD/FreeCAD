@@ -235,16 +235,16 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskPipeParameters::onTransitionChanged(int idx) {
-
+void TaskPipeParameters::onTransitionChanged(int idx)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
     recomputeFeature();
 }
 
-void TaskPipeParameters::onButtonRefAdd(bool checked) {
-
+void TaskPipeParameters::onButtonRefAdd(bool checked)
+{
     if (checked) {
-        //clearButtons(refAdd);
+        clearButtons(refAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
@@ -257,10 +257,10 @@ void TaskPipeParameters::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeParameters::onButtonRefRemove(bool checked) {
-
+void TaskPipeParameters::onButtonRefRemove(bool checked)
+{
     if (checked) {
-        //clearButtons(refRemove);
+        clearButtons(refRemove);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
@@ -273,10 +273,10 @@ void TaskPipeParameters::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeParameters::onBaseButton(bool checked) {
-
+void TaskPipeParameters::onBaseButton(bool checked)
+{
     if (checked) {
-        //clearButtons(refRemove);
+        clearButtons(refObjAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
@@ -300,7 +300,7 @@ void TaskPipeParameters::onProfileButton(bool checked)
             pvp->setVisible(true);
         }
 
-        //clearButtons(refRemove);
+        clearButtons(refProfile);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
@@ -313,14 +313,14 @@ void TaskPipeParameters::onProfileButton(bool checked)
     }
 }
 
-void TaskPipeParameters::onTangentChanged(bool checked) {
-
+void TaskPipeParameters::onTangentChanged(bool checked)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
     recomputeFeature();
 }
 
-void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr) {
-
+void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr)
+{
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -355,8 +355,8 @@ void TaskPipeParameters::onDeleteEdge()
     }
 }
 
-bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
+{
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -423,16 +423,21 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeParameters::clearButtons() {
-
-    ui->buttonProfileBase->setChecked(false);
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
-    ui->buttonSpineBase->setChecked(false);
+void TaskPipeParameters::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refProfile)
+        ui->buttonProfileBase->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refObjAdd)
+        ui->buttonSpineBase->setChecked(false);
 }
 
-void TaskPipeParameters::exitSelectionMode() {
-
+void TaskPipeParameters::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
@@ -491,7 +496,6 @@ bool TaskPipeParameters::accept()
             return false;
 
         if (!dlg.radioXRef->isChecked()) {
-
             if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
                 pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(spine, "",
                                        dlg.radioIndependent->isChecked()),
@@ -508,7 +512,6 @@ bool TaskPipeParameters::accept()
             std::vector<App::DocumentObject*> objs;
             int index = 0;
             for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-
                 if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, "", dlg.radioIndependent->isChecked()));
                     copies.push_back(objs.back());
@@ -654,28 +657,33 @@ TaskPipeOrientation::~TaskPipeOrientation()
     }
 }
 
-void TaskPipeOrientation::onOrientationChanged(int idx) {
-
+void TaskPipeOrientation::onOrientationChanged(int idx)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->Mode.setValue(idx);
     recomputeFeature();
 }
 
-void TaskPipeOrientation::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
-    ui->buttonProfileBase->setChecked(false);
+void TaskPipeOrientation::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refObjAdd)
+        ui->buttonProfileBase->setChecked(false);
 }
 
-void TaskPipeOrientation::exitSelectionMode() {
-
+void TaskPipeOrientation::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
-void TaskPipeOrientation::onButtonRefAdd(bool checked) {
-
+void TaskPipeOrientation::onButtonRefAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -687,9 +695,10 @@ void TaskPipeOrientation::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeOrientation::onButtonRefRemove(bool checked) {
-
+void TaskPipeOrientation::onButtonRefRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -704,6 +713,7 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
 void TaskPipeOrientation::onBaseButton(bool checked)
 {
     if (checked) {
+        clearButtons(refObjAdd);
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -740,8 +750,8 @@ void TaskPipeOrientation::onBinormalChanged(double)
     recomputeFeature();
 }
 
-void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
-
+void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
+{
     if (selectionMode == none)
         return;
 
@@ -792,8 +802,8 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
+{
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -832,8 +842,8 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name) {
-
+void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name)
+{
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -868,8 +878,8 @@ void TaskPipeOrientation::onDeleteItem()
     }
 }
 
-void TaskPipeOrientation::updateUI(int idx) {
-
+void TaskPipeOrientation::updateUI(int idx)
+{
     //make sure we resize to the size of the current page
     for (int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -932,25 +942,29 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
         QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
 }
 
-TaskPipeScaling::~TaskPipeScaling() {
-
+TaskPipeScaling::~TaskPipeScaling()
+{
 }
 
-void TaskPipeScaling::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
+void TaskPipeScaling::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
 }
 
-void TaskPipeScaling::exitSelectionMode() {
-
+void TaskPipeScaling::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
-void TaskPipeScaling::onButtonRefAdd(bool checked) {
-
+void TaskPipeScaling::onButtonRefAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
@@ -962,9 +976,10 @@ void TaskPipeScaling::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeScaling::onButtonRefRemove(bool checked) {
-
+void TaskPipeScaling::onButtonRefRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
@@ -976,14 +991,14 @@ void TaskPipeScaling::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeScaling::onScalingChanged(int idx) {
-
+void TaskPipeScaling::onScalingChanged(int idx)
+{
     updateUI(idx);
     static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
 }
 
-void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
-
+void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
+{
     if (selectionMode == none)
         return;
 
@@ -1012,11 +1027,10 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const
+{
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {
-
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
 
@@ -1056,8 +1070,8 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name) {
-
+void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name)
+{
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -1093,8 +1107,8 @@ void TaskPipeScaling::onDeleteSection()
     }
 }
 
-void TaskPipeScaling::updateUI(int idx) {
-
+void TaskPipeScaling::updateUI(int idx)
+{
     //make sure we resize to the size of the current page
     for (int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);

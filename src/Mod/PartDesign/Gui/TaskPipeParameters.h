@@ -41,7 +41,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 class Ui_TaskPipeParameters;
 class Ui_TaskPipeOrientation;
@@ -66,25 +66,25 @@ private Q_SLOTS:
     void onBaseButton(bool checked);
     void onProfileButton(bool checked);
     void onDeleteEdge();
-  
+
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };
     selectionModes selectionMode = none;
-    
+
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
-    void clearButtons();
+    void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
 
     ViewProviderPipe* getPipeView() const
     { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
-    
+
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
@@ -98,7 +98,7 @@ public:
     TaskPipeOrientation(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     virtual ~TaskPipeOrientation();
 
- 
+
 private Q_SLOTS:
     void onOrientationChanged(int);
     void onButtonRefAdd(bool checked);
@@ -109,19 +109,19 @@ private Q_SLOTS:
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
     void onDeleteItem();
-  
+
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
     selectionModes selectionMode = none;
-    
+
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons();
+    void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
-    
+
     bool auxSpineShow = false;
 
 private:
@@ -144,17 +144,17 @@ private Q_SLOTS:
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onDeleteSection();
-  
+
 protected:
     enum selectionModes { none, refAdd, refRemove };
     selectionModes selectionMode = none;
-    
+
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons();
+    void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
 
 private:

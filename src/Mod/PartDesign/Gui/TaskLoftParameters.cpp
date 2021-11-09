@@ -285,14 +285,18 @@ void TaskLoftParameters::indexesMoved()
     updateUI();
 }
 
-void TaskLoftParameters::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
+void TaskLoftParameters::clearButtons(const selectionModes notThis)
+{
+    if (notThis != refProfile)
+        ui->buttonProfileBase->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
 }
 
-void TaskLoftParameters::exitSelectionMode() {
-
+void TaskLoftParameters::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
@@ -314,23 +318,27 @@ void TaskLoftParameters::onRuled(bool val) {
 void TaskLoftParameters::onProfileButton(bool checked)
 {
     if (checked) {
+        clearButtons(refProfile);
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
 
-void TaskLoftParameters::onRefButtonAdd(bool checked) {
+void TaskLoftParameters::onRefButtonAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
 
-void TaskLoftParameters::onRefButtonRemove(bool checked) {
-
+void TaskLoftParameters::onRefButtonRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
