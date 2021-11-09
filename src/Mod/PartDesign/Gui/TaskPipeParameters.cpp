@@ -1042,6 +1042,8 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
         }
         else {
             if (f != refs.end())
+                // Removing just the object this way instead of `refs.erase` and
+                // `setValues(ref)` cleanly ensures subnames are preserved.
                 pipe->Sections.removeValue(obj);
             else
                 return false;
@@ -1082,8 +1084,9 @@ void TaskPipeScaling::onDeleteSection()
 
         // if something was found, delete it and update the section list
         if (f != refs.end()) {
-            refs.erase(f);
-            pipe->Sections.setValues(refs);
+            // Removing just the object this way instead of `refs.erase` and
+            // `setValues(ref)` cleanly ensures subnames are preserved.
+            pipe->Sections.removeValue(obj);
             clearButtons();
             recomputeFeature();
         }
