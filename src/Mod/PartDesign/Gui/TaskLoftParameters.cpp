@@ -212,6 +212,8 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             }
             else if (selectionMode == refRemove) {
                 if (f != refs.end())
+                    // Removing just the object this way instead of `refs.erase` and
+                    // `setValues(ref)` cleanly ensures subnames are preserved.
                     loft->Sections.removeValue(obj);
                 else
                     return false;
@@ -250,8 +252,9 @@ void TaskLoftParameters::onDeleteSection()
         App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
         std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
         if (f != refs.end()) {
-            refs.erase(f);
-            loft->Sections.setValues(refs);
+            // Removing just the object this way instead of `refs.erase` and
+            // `setValues(ref)` cleanly ensures subnames are preserved.
+            loft->Sections.removeValue(obj);
 
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
