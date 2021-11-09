@@ -514,6 +514,8 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Macro");
     qApp->translate("Workbench", "View");
     qApp->translate("Workbench", "Special Ops");
+    // needed for Structure toolbar
+    qApp->translate("Workbench", "Link actions");
 #endif
 
 #if 0 // needed for the application menu on OSX
