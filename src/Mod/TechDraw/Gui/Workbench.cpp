@@ -39,10 +39,12 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");    
     qApp->translate("Workbench", "TechDraw");
+    // Translations for View > Toolbars
     qApp->translate("Workbench", "TechDraw Pages");
     qApp->translate("Workbench", "TechDraw Views");
     qApp->translate("Workbench", "TechDraw Clips");
     qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw Tool Attributes");
     qApp->translate("Workbench", "TechDraw File Access");
     qApp->translate("Workbench", "TechDraw Decoration");
     qApp->translate("Workbench", "TechDraw Annotation");
@@ -198,7 +200,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *dims << "TechDraw_Dimension"
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
-    attribs->setCommand("TechDraw Toolattributes");
+    attribs->setCommand("TechDraw Tool Attributes");
     *attribs << "TechDraw_ExtensionCircleCenterLines";
     *attribs << "TechDraw_ExtensionThreadHoleSide";
     *attribs << "TechDraw_ExtensionThreadBoltSide";
@@ -280,7 +282,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *dims << "TechDraw_Dimension";
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
-    attribs->setCommand("TechDraw Toolattributes");
+    attribs->setCommand("TechDraw Tool Attributes");
     *attribs << "TechDraw_ExtensionCircleCenterLines";
     *attribs << "TechDraw_ExtensionThreadHoleSide";
     *attribs << "TechDraw_ExtensionThreadBoltSide";
