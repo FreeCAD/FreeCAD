@@ -49,6 +49,7 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "TechDraw Decoration");
     qApp->translate("Workbench", "TechDraw Annotation");
     qApp->translate("Workbench", "Views");
+    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
 #endif
 
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
@@ -84,7 +85,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // toolattributes
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: centerlines and threading");
+    toolattrib->setCommand("Extensions: Centerlines/Threading");
     *toolattrib << "TechDraw_ExtensionCircleCenterLines";
     *toolattrib << "TechDraw_ExtensionThreadHoleSide";
     *toolattrib << "TechDraw_ExtensionThreadBoltSide";
