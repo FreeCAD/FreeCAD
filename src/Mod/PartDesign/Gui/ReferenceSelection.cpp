@@ -140,45 +140,53 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
         return whole;
-    std::string subName(sSubName);
-    if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
-        if (!edgeShape.IsNull()) {
-            if (planar) {
-                BRepAdaptor_Curve adapt(edgeShape);
-                if (adapt.GetType() == GeomAbs_Line)
+
+    // resolve links if needed
+    if (!pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        pObj = Part::Feature::getShapeOwner(pObj, sSubName);
+    }
+
+    if (pObj && pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        std::string subName(sSubName);
+        if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+            if (!edgeShape.IsNull()) {
+                if (planar) {
+                    BRepAdaptor_Curve adapt(edgeShape);
+                    if (adapt.GetType() == GeomAbs_Line)
+                        return true;
+                } else {
                     return true;
-            } else {
-                return true;
+                }
             }
         }
-    }
-    if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Face& face = TopoDS::Face(sh);
-        if (!face.IsNull()) {
-            if (planar) {
-                BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() == GeomAbs_Plane)
+        if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Face& face = TopoDS::Face(sh);
+            if (!face.IsNull()) {
+                if (planar) {
+                    BRepAdaptor_Surface adapt(face);
+                    if (adapt.GetType() == GeomAbs_Plane)
+                        return true;
+                } else {
                     return true;
-            } else {
-                return true;
+                }
             }
         }
-    }
-    if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
-        return true;
-    }
-    if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
-        BRepAdaptor_Curve adapt(edgeShape);
-        if (adapt.GetType() == GeomAbs_Circle) {
+        if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
             return true;
+        }
+        if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+            BRepAdaptor_Curve adapt(edgeShape);
+            if (adapt.GetType() == GeomAbs_Circle) {
+                return true;
+            }
         }
     }
     return false;
