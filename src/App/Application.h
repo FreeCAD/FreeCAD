@@ -403,6 +403,7 @@ public:
      */
     static std::string getTempPath();
     static std::string getTempFileName(const char* FileName=0);
+    static std::string getUserConfigDir();
     static std::string getUserAppDataDir();
     static std::string getUserMacroDir();
     static std::string getResourceDir();
@@ -513,6 +514,7 @@ private:
     static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
+    static PyObject* sGetUserConfigDir  (PyObject *self,PyObject *args);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);
     static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args);
     static PyObject* sGetHelpDir        (PyObject *self,PyObject *args);

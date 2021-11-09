@@ -1060,6 +1060,11 @@ std::string Application::getTempFileName(const char* FileName)
     return Base::FileInfo::getTempFileName(FileName, getTempPath().c_str());
 }
 
+std::string Application::getUserConfigDir()
+{
+    return mConfig["UserConfigPath"];
+}
+
 std::string Application::getUserAppDataDir()
 {
     return mConfig["UserAppData"];
@@ -2724,9 +2729,9 @@ void Application::LoadParameters(void)
     // Init parameter sets ===========================================================
     //
     if (mConfig.find("UserParameter") == mConfig.end())
-        mConfig["UserParameter"]   = mConfig["UserAppData"] + "user.cfg";
+        mConfig["UserParameter"]   = mConfig["UserConfigPath"] + "user.cfg";
     if (mConfig.find("SystemParameter") == mConfig.end())
-        mConfig["SystemParameter"] = mConfig["UserAppData"] + "system.cfg";
+        mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
 
     // create standard parameter sets
     _pcSysParamMngr = new ParameterManager();
@@ -3094,6 +3099,11 @@ void Application::ExtractUserPath()
     //
     boost::filesystem::path appData = findUserDataPath(mConfig, userHome, userData);
     mConfig["UserAppData"] = pathToString(appData) + PATHSEP;
+
+
+    // User config path (for now equal to UserAppData but will be changed to be XDG compliant)
+    //
+    mConfig["UserConfigPath"] = mConfig["UserAppData"];
 
 
     // Set application tmp. directory
