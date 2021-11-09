@@ -1679,9 +1679,14 @@ static void freecadNewHandler ()
 #include <string>
 #include <sstream>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 // This function produces a stack backtrace with demangled function & method names.
 void printBacktrace(size_t skip=0)
 {
+#if defined HAVE_BACKTRACE_SYMBOLS
     void *callstack[128];
     size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
     size_t nFrames = backtrace(callstack, nMaxFrames);
@@ -1712,6 +1717,10 @@ void printBacktrace(size_t skip=0)
     }
 
     free(symbols);
+#else //HAVE_BACKTRACE_SYMBOLS
+    (void)skip;
+    std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
+#endif
 }
 #endif
 
