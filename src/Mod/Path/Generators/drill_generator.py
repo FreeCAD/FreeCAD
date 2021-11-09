@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2021 sliptonic shopinthewoods@gmail.com                 *
+# *   Copyright (c) 2021 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,7 +27,7 @@ import numpy
 
 __title__ = "Drilling Path Generator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Generates the drilling toolpath for a single spotshape"
 
 
