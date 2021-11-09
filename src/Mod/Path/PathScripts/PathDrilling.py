@@ -23,14 +23,18 @@
 
 from __future__ import print_function
 
+
+from Generators import drill_generator as generator
+from PySide import QtCore
 import FreeCAD
+import Part
 import Path
+import PathFeedRate
+import PathMachineState
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-
-from PySide import QtCore
 
 __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -39,8 +43,8 @@ __doc__ = "Path Drilling operation."
 __contributors__ = "IMBack!"
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -49,103 +53,202 @@ def translate(context, text, disambig=None):
 
 
 class ObjectDrilling(PathCircularHoleBase.ObjectOp):
-    '''Proxy object for Drilling operation.'''
+    """Proxy object for Drilling operation."""
 
     def circularHoleFeatures(self, obj):
-        '''circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations.'''
-        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
+        """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
+        return (
+            PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
+        )
 
     def initCircularHoleOperation(self, obj):
-        '''initCircularHoleOperation(obj) ... add drilling specific properties to obj.'''
-        obj.addProperty("App::PropertyLength", "PeckDepth", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Incremental Drill depth before retracting to clear chips"))
-        obj.addProperty("App::PropertyBool", "PeckEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"))
-        obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
-        obj.addProperty("App::PropertyBool", "DwellEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
-        obj.addProperty("App::PropertyBool", "AddTipLength", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
-        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G99"))
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
-        obj.addProperty("App::PropertyEnumeration", "ExtraOffset", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"))
+        """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
+        obj.addProperty(
+            "App::PropertyLength",
+            "PeckDepth",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Incremental Drill depth before retracting to clear chips",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "PeckEnabled",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "DwellTime",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property", "The time to dwell between peck cycles"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "DwellEnabled",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "AddTipLength",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Calculate the tip length and subtract from final depth",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ReturnLevel",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property", "Controls how tool retracts Default=G99"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "RetractHeight",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The height where feed starts and height during retract tool when path is finished while in a peck operation",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ExtraOffset",
+            "Drill",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property", "How far the drill depth is extended"
+            ),
+        )
 
-        obj.ReturnLevel = ['G99', 'G98']  # Canned Cycle Return Level
-        obj.ExtraOffset = ['None', 'Drill Tip', '2x Drill Tip']  # Canned Cycle Return Level
+        obj.ReturnLevel = ["G99", "G98"]  # Canned Cycle Return Level
+        obj.ExtraOffset = [
+            "None",
+            "Drill Tip",
+            "2x Drill Tip",
+        ]  # Canned Cycle Return Level
 
     def circularHoleExecute(self, obj, holes):
-        '''circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes.'''
+        """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
         PathLog.track()
+        machine = PathMachineState.MachineState()
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
         # rapid to clearance height
-        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+        command = Path.Command(
+            "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
+        )
+        machine.addCommand(command)
+        self.commandlist.append(command)
 
-        tiplength = 0.0
-        if obj.ExtraOffset == 'Drill Tip':
-            tiplength = PathUtils.drillTipLength(self.tool)
-        elif obj.ExtraOffset == '2x Drill Tip':
-            tiplength = PathUtils.drillTipLength(self.tool) * 2
+        self.commandlist.append(Path.Command("G90"))  # Absolute distance mode
 
-        holes = PathUtils.sort_jobs(holes, ['x', 'y'])
-        self.commandlist.append(Path.Command('G90'))
+        # Calculate offsets to add to target edge
+        endoffset = 0.0
+        if obj.ExtraOffset == "Drill Tip":
+            endoffset = PathUtils.drillTipLength(self.tool)
+        elif obj.ExtraOffset == "2x Drill Tip":
+            endoffset = PathUtils.drillTipLength(self.tool) * 2
+
+        # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
         self.commandlist.append(Path.Command(obj.ReturnLevel))
 
-        cmd = "G81"
-        cmdParams = {}
-        cmdParams['Z'] = obj.FinalDepth.Value - tiplength
-        cmdParams['F'] = self.vertFeed
-        cmdParams['R'] = obj.RetractHeight.Value
+        holes = PathUtils.sort_jobs(holes, ["x", "y"])
 
-        if obj.PeckEnabled and obj.PeckDepth.Value > 0:
-            cmd = "G83"
-            cmdParams['Q'] = obj.PeckDepth.Value
-        elif obj.DwellEnabled and obj.DwellTime > 0:
-            cmd = "G82"
-            cmdParams['P'] = obj.DwellTime
+        # This section is technical debt. The computation of the
+        # target shapes should be factored out for re-use.
+        # This will likely mean refactoring upstream CircularHoleBase to pass
+        # spotshapes instead of holes.
 
-        # parentJob = PathUtils.findParentJob(obj)
-        # startHeight = obj.StartDepth.Value + parentJob.SetupSheet.SafeHeightOffset.Value
         startHeight = obj.StartDepth.Value + self.job.SetupSheet.SafeHeightOffset.Value
 
-        for p in holes:
-            params = {}
-            params['X'] = p['x']
-            params['Y'] = p['y']
+        edgelist = []
+        for hole in holes:
+            v1 = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
+            v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
+            edgelist.append(Part.makeLine(v1, v2))
+
+        # iterate the edgelist and generate gcode
+        for edge in edgelist:
+
+            PathLog.debug(edge)
 
             # move to hole location
-            self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
-            self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertRapid}))
-            self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
-            # Update changes to parameters
-            params.update(cmdParams)
+            command = Path.Command(
+                "G0", {"X": hole["x"], "Y": hole["y"], "F": self.horizRapid}
+            )
+            self.commandlist.append(command)
+            machine.addCommand(command)
 
-            # Perform canned drilling cycle
-            self.commandlist.append(Path.Command(cmd, params))
+            command = Path.Command("G0", {"Z": startHeight, "F": self.vertRapid})
+            self.commandlist.append(command)
+            machine.addCommand(command)
 
-            # Cancel canned drilling cycle
-            self.commandlist.append(Path.Command('G80'))
-            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
+            command = Path.Command(
+                "G1", {"Z": obj.StartDepth.Value, "F": self.vertFeed}
+            )
+            self.commandlist.append(command)
+            machine.addCommand(command)
+
+            # Technical Debt:  We are assuming the edges are aligned.
+            # This assumption should be corrected and the necessary rotations
+            # performed to align the edge with the Z axis for drilling
+
+            # Perform drilling
+            dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
+            peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
+            repeat = 1  # technical debt:  Add a repeat property for user control
+
+            try:
+                drillcommands = generator.generate(edge, dwelltime, peckdepth, repeat)
+
+            except ValueError as e:  # any targets that fail the generator are ignored
+                PathLog.info(e)
+                continue
+
+            self.commandlist.extend(drillcommands)
+
+        # Cancel canned drilling cycle
+        self.commandlist.append(Path.Command("G80"))
+        command = Path.Command("G0", {"Z": obj.SafeHeight.Value})
+        self.commandlist.append(command)
+        machine.addCommand(command)
+
+        # Apply feedrates to commands
+        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
+        """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
         obj.ExtraOffset = "None"
 
-        if hasattr(job.SetupSheet, 'RetractHeight'):
+        if hasattr(job.SetupSheet, "RetractHeight"):
             obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, 'RetractHeight', 'StartDepth+SetupSheet.SafeHeightOffset'):
+        elif self.applyExpression(
+            obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"
+        ):
             if not job:
                 obj.RetractHeight = 10
             else:
                 obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
-        if hasattr(job.SetupSheet, 'PeckDepth'):
+        if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
-        elif self.applyExpression(obj, 'PeckDepth', 'OpToolDiameter*0.75'):
+        elif self.applyExpression(obj, "PeckDepth", "OpToolDiameter*0.75"):
             obj.PeckDepth = 1
 
-        if hasattr(job.SetupSheet, 'DwellTime'):
+        if hasattr(job.SetupSheet, "DwellTime"):
             obj.DwellTime = job.SetupSheet.DwellTime
         else:
             obj.DwellTime = 1
+
 
 def SetupProperties():
     setup = []
@@ -161,7 +264,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Drilling operation.'''
+    """Create(name) ... Creates and returns a Drilling operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
 
