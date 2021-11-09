@@ -63,6 +63,8 @@ private Q_SLOTS:
     void indexesMoved();
 
 protected:
+    enum selectionModes { none, refAdd, refRemove, refProfile };
+
     void changeEvent(QEvent *e);
 
 private:
@@ -70,14 +72,13 @@ private:
     void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
-    void clearButtons();
+    void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskLoftParameters> ui;
 
-    enum selectionModes { none, refAdd, refRemove, refProfile };
     selectionModes selectionMode = none;
 };
 
