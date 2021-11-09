@@ -687,7 +687,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *ev) {
             action->setVisible(checked);
         QSize size = menu.sizeHint();
         if (pos.y() + size.height() > rect.height()) {
-            QPoint p(pos.x(), std::max(0, rect.height()-size.height()));
+            QPoint p(pos.x(), rect.top() + std::max(0, rect.height()-size.height()));
             menu.move(p);
         }
     });
