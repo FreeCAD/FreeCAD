@@ -55,7 +55,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
-TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*/, QWidget *parent)
+TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj*/, QWidget *parent)
     : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
     , ui(new Ui_TaskLoftParameters)
 {
@@ -69,7 +69,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
             this, SLOT(onRefButtonAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemvove(bool)));
+            this, SLOT(onRefButtonRemove(bool)));
     connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
@@ -121,24 +121,23 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
-    if (!loft->Sections.getValues().empty()) {
-        LoftView->makeTemporaryVisible(true);
-    }
-
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
 
-    updateUI(0);
+    updateUI();
 }
 
 TaskLoftParameters::~TaskLoftParameters()
 {
 }
 
-void TaskLoftParameters::updateUI(int index)
+void TaskLoftParameters::updateUI()
 {
-    Q_UNUSED(index);
+    // we must assure the changed loft is kept visible on section changes,
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -173,6 +172,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         clearButtons();
         exitSelectionMode();
+        updateUI();
     }
 }
 
@@ -256,6 +256,7 @@ void TaskLoftParameters::onDeleteSection()
 
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -279,6 +280,7 @@ void TaskLoftParameters::indexesMoved()
 
     loft->Sections.setValues(originals);
     recomputeFeature();
+    updateUI();
 }
 
 void TaskLoftParameters::clearButtons() {
@@ -324,7 +326,7 @@ void TaskLoftParameters::onRefButtonAdd(bool checked) {
     }
 }
 
-void TaskLoftParameters::onRefButtonRemvove(bool checked) {
+void TaskLoftParameters::onRefButtonRemove(bool checked) {
 
     if (checked) {
         Gui::Selection().clearSelection();
@@ -359,7 +361,7 @@ bool TaskDlgLoftParameters::accept()
     // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
 
-    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
         FCMD_OBJ_HIDE(obj);
     }
 

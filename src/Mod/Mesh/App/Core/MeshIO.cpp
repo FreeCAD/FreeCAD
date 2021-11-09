@@ -41,6 +41,7 @@
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
+#include <zipios++/zipoutputstream.h>
 
 #include <cmath>
 #include <sstream>
@@ -1947,6 +1948,7 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("wrz");
     fmt.emplace_back("amf");
     fmt.emplace_back("asy");
+    fmt.emplace_back("3mf");
     return fmt;
 }
 
@@ -2003,6 +2005,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     }
     else if (file.hasExtension("amf")) {
         return MeshIO::AMF;
+    }
+    else if (file.hasExtension("3mf")) {
+        return MeshIO::ThreeMF;
     }
     else if (file.hasExtension("smf")) {
         return MeshIO::SMF;
@@ -2113,6 +2118,11 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         if (!SaveX3DOM(str))
             throw Base::FileException("Export of X3DOM failed",FileName);
     }
+    else if (fileformat == MeshIO::ThreeMF) {
+        // write file
+        if (!Save3MF(str))
+            throw Base::FileException("Export of 3MF failed",FileName);
+    }
     else if (fileformat == MeshIO::PY) {
         // write file
         if (!SavePython(str))
@@ -2183,6 +2193,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
     case MeshIO::WRZ:
         // it's up to the client to create the needed stream
         return SaveVRML(str);
+    case MeshIO::ThreeMF:
+        return Save3MF(str);
     case MeshIO::NAS:
         return SaveNastran(str);
     case MeshIO::PLY:
@@ -2972,6 +2984,99 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
 
     writer.Stream() << writer.ind() << "</Mesh>" << '\n';
     writer.decInd();
+}
+
+/** Saves the mesh object into a 3MF file. */
+bool MeshOutput::Save3MF(std::ostream &str) const
+{
+    zipios::ZipOutputStream zip(str);
+    zip.putNextEntry("/3D/3dmodel.model");
+    if (!Save3MFModel(zip))
+        return false;
+    zip.closeEntry();
+
+    zip.putNextEntry("_rels/.rels");
+    if (!Save3MFRels(zip))
+        return false;
+    zip.closeEntry();
+
+    zip.putNextEntry("[Content_Types].xml");
+    if (!Save3MFContent(zip))
+        return false;
+    zip.closeEntry();
+    return true;
+}
+
+bool MeshOutput::Save3MFRels(std::ostream &str) const
+{
+    str << "<?xml version='1.0' encoding='UTF-8'?>\n"
+        << "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">"
+           "<Relationship Id=\"rel0\" Target=\"/3D/3dmodel.model\" Type=\"http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel\" />"
+           "</Relationships>";
+    return true;
+}
+
+bool MeshOutput::Save3MFContent(std::ostream &str) const
+{
+    str << "<?xml version='1.0' encoding='UTF-8'?>\n"
+        << "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">"
+           "<Default ContentType=\"application/vnd.openxmlformats-package.relationships+xml\" Extension=\"rels\" />"
+           "<Default ContentType=\"application/vnd.ms-package.3dmanufacturing-3dmodel+xml\" Extension=\"model\" />"
+           "</Types>";
+    return true;
+}
+
+bool MeshOutput::Save3MFModel (std::ostream &str) const
+{
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
+
+    if (!str || str.bad() == true)
+        return false;
+
+    str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<model unit=\"millimeter\"\n"
+        << "       xml:lang=\"en-US\"\n"
+        << "       xmlns=\"http://schemas.microsoft.com/3dmanufacturing/core/2015/02\">\n"
+        << "<metadata name=\"Application\">FreeCAD</metadata>\n";
+    str << Base::blanks(2) << "<resources>\n";
+    str << Base::blanks(4) << "<object id=\"1\" type=\"model\">\n";
+    str << Base::blanks(6) << "<mesh>\n";
+
+    // vertices
+    str << Base::blanks(8) << "<vertices>\n";
+    Base::Vector3f pt;
+    std::size_t index = 0;
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
+        pt.Set(it->x, it->y, it->z);
+        if (this->apply_transform) {
+            this->_transform.multVec(pt, pt);
+        }
+        str << Base::blanks(10) << "<vertex x=\"" << pt.x
+                                     << "\" y=\"" << pt.y
+                                     << "\" z=\"" << pt.z
+                                     << "\" />\n";
+    }
+    str << Base::blanks(8) << "</vertices>\n";
+
+    // facet indices
+    str << Base::blanks(8) << "<triangles>\n";
+    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
+        str << Base::blanks(10) << "<triangle v1=\"" << it->_aulPoints[0]
+                                       << "\" v2=\"" << it->_aulPoints[1]
+                                       << "\" v3=\"" << it->_aulPoints[2]
+                                       << "\" />\n";
+    }
+    str << Base::blanks(8) << "</triangles>\n";
+
+    str << Base::blanks(6) << "</mesh>\n";
+    str << Base::blanks(4) << "</object>\n";
+    str << Base::blanks(2) << "</resources>\n";
+    str << Base::blanks(2) << "<build>\n";
+    str << Base::blanks(4) << "<item objectid=\"1\" />\n";
+    str << Base::blanks(2) << "</build>\n";
+    str << "</model>\n";
+    return true;
 }
 
 /** Writes an IDTF file. */

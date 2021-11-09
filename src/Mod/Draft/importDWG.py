@@ -249,7 +249,7 @@ def convertToDxf(dwgfilename):
             outdir = tempfile.mkdtemp()
             basename = os.path.basename(dwgfilename)
             result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
-            proc = subprocess.Popen((path, "-o", result, dwgfilename))
+            proc = subprocess.Popen((path, "-f", "-o", result, dwgfilename))
             proc.communicate()
             return result
         except Exception:

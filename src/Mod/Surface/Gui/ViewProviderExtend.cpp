@@ -35,7 +35,7 @@ namespace SurfaceGui {
 
 QIcon ViewProviderExtend::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Surface_Extend");
+    return Gui::BitmapFactory().pixmap("Surface_ExtendFace");
 }
 
 } //namespace SurfaceGui

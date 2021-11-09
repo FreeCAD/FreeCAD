@@ -190,9 +190,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
+    syncModifierKeys(ev);
     //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
     //track mouse button states
     if (evIsButton) {
@@ -380,11 +378,11 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mouseMoveThresholdBroken = false;
                         pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
+                        this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
                         assert(cnt<=2);
-                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
-                            cnt=sizeof(mousedownConsumedEvent);//we are in trouble
+                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvents))){
+                            cnt=sizeof(mousedownConsumedEvents);//we are in trouble
                         }
                         processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
                     }
@@ -398,7 +396,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                            inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -443,7 +441,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     //no, we are not entering navigation.
                     //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
                     for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                        inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                     }
                     this->mousedownConsumedCount = 0;
                     processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.

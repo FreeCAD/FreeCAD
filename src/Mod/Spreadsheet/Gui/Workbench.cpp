@@ -47,6 +47,9 @@ using namespace Spreadsheet;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Spreadsheet");
+    qApp->translate("Workbench", "&Spreadsheet");
+    qApp->translate("Workbench", "&Alignment");
+    qApp->translate("Workbench", "&Styles");
 #endif
 
 /// @namespace ImageGui @class Workbench

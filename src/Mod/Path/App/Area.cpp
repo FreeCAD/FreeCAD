@@ -1230,7 +1230,7 @@ int Area::project(TopoDS_Shape &shape_out,
         const TopoDS_Shape *work_plane)
 {
     FC_TIME_INIT2(t,t1);
-    Handle_HLRBRep_Algo brep_hlr = NULL;
+    Handle_HLRBRep_Algo brep_hlr;
     gp_Dir dir(0,0,1);
     try {
         brep_hlr = new HLRBRep_Algo();

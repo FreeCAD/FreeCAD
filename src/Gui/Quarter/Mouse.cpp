@@ -95,7 +95,7 @@ using namespace SIM::Coin3D::Quarter;
 #define PRIVATE(obj) obj->pimpl
 #define PUBLIC(obj) obj->publ
 
-Mouse::Mouse(void)
+Mouse::Mouse()
 {
   PRIVATE(this) = new MouseP(this);
 }
@@ -131,9 +131,9 @@ Mouse::translateEvent(QEvent * event)
     return PRIVATE(this)->mouseWheelEvent((QWheelEvent *) event);
   case QEvent::Resize:
     PRIVATE(this)->resizeEvent((QResizeEvent *) event);
-    return NULL;
+    return nullptr;
   default:
-    return NULL;
+    return nullptr;
   }
 }
 

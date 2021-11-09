@@ -683,7 +683,7 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
         // south pole
         y = 0.0;
         p = -D_PI/2.0;
-        r = -2.0 * atan2(quat[0],quat[3]);
+        r = 2.0 * atan2(quat[0],quat[3]);
     }
     else {
         y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));

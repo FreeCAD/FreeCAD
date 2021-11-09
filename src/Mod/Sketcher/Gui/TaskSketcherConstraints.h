@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstrains_H
-#define GUI_TASKVIEW_TaskSketcherConstrains_H
+#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
+#define GUI_TASKVIEW_TaskSketcherConstraints_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
@@ -40,7 +40,7 @@ class Property;
 namespace SketcherGui {
 
 class ViewProviderSketch;
-class Ui_TaskSketcherConstrains;
+class Ui_TaskSketcherConstraints;
 
 class ConstraintView : public QListWidget
 {
@@ -73,7 +73,7 @@ protected Q_SLOTS:
     void hideConstraints();
 };
 
-class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -83,8 +83,8 @@ class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::Select
     };
 
 public:
-    TaskSketcherConstrains(ViewProviderSketch *sketchView);
-    ~TaskSketcherConstrains();
+    TaskSketcherConstraints(ViewProviderSketch *sketchView);
+    ~TaskSketcherConstraints();
 
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg);
@@ -133,7 +133,7 @@ protected:
 private:
     QWidget* proxy;
     bool inEditMode;
-    std::unique_ptr<Ui_TaskSketcherConstrains> ui;
+    std::unique_ptr<Ui_TaskSketcherConstraints> ui;
     ConstraintFilter::FilterValueBitset multiFilterStatus; // Stores the filters to be aggregated to form the multifilter.
     std::vector<unsigned int> selectionFilter; // holds the constraint ids of the selected constraints
     std::vector<unsigned int> associatedConstraintsFilter; // holds the constraint ids of the constraints associated with the selected geometry

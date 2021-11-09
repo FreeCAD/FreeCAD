@@ -546,6 +546,10 @@ public:
   /** Apply a transformation on the triangle.
    */
   void Transform(const Base::Matrix4D&);
+  /**
+   * Checks if the two triangles are coplanar.
+   */
+  bool IsCoplanar(const MeshGeomFacet &facet) const;
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */

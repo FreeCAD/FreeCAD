@@ -166,7 +166,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
                     img.setText(QLatin1String("Description"), QString::fromUtf8(comment));
                 img.setText(QLatin1String("Creation Time"), QDateTime::currentDateTime().toString());
                 img.setText(QLatin1String("Software"),
-                    QString::fromUtf8(App::GetApplication().getExecutableName()));
+                    QString::fromStdString(App::Application::getExecutableName()));
             }
 
             QFile f(QString::fromUtf8(filename));
@@ -296,7 +296,7 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << " <Source>\n" ;
     com << "  <Creator>Unknown</Creator>\n" ;
     com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;
-    com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
+    com << "  <CreatingSystem>" << App::Application::getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
     com << " </Source>\n" ;

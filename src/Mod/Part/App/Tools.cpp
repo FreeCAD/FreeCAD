@@ -25,6 +25,11 @@
 # include <cassert>
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <Geom_Plane.hxx>
@@ -589,4 +594,65 @@ void Part::Tools::applyTransformationOnNormals(const TopLoc_Location& loc, std::
             it.Transform(myTransf);
         }
     }
+}
+
+Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& face)
+{
+    TopLoc_Location loc;
+    Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(face, loc);
+    if (!mesh.IsNull())
+        return mesh;
+
+    // If no triangulation exists then the shape is probably infinite
+    BRepAdaptor_Surface adapt(face);
+    double u1 = adapt.FirstUParameter();
+    double u2 = adapt.LastUParameter();
+    double v1 = adapt.FirstVParameter();
+    double v2 = adapt.LastVParameter();
+
+    // recreate a face with a clear boundary
+    u1 = std::max(-50.0, u1);
+    u2 = std::min( 50.0, u2);
+    v1 = std::max(-50.0, v1);
+    v2 = std::min( 50.0, v2);
+
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
+    BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2
+#if OCC_VERSION_HEX >= 0x060502
+      , Precision::Confusion()
+#endif
+    );
+
+    TopoDS_Shape shape = mkBuilder.Shape();
+    shape.Location(loc);
+
+    BRepMesh_IncrementalMesh(shape, 0.1);
+    return BRep_Tool::Triangulation(TopoDS::Face(shape), loc);
+}
+
+Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLoc_Location& loc)
+{
+    BRepAdaptor_Curve adapt(edge);
+    double u = adapt.FirstParameter();
+    double v = adapt.LastParameter();
+    Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(edge, loc);
+    if (!aPoly.IsNull() && !Precision::IsInfinite(u) && !Precision::IsInfinite(v))
+        return aPoly;
+
+    // recreate an edge with a clear range
+    u = std::max(-50.0, u);
+    v = std::min( 50.0, v);
+
+    double uv;
+    Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, uv, uv);
+
+    BRepBuilderAPI_MakeEdge mkBuilder(curve, u, v);
+    TopoDS_Shape shape = mkBuilder.Shape();
+    // why do we have to set the inverted location here?
+    TopLoc_Location inv = loc.Inverted();
+    shape.Location(inv);
+
+    BRepMesh_IncrementalMesh(shape, 0.1);
+    TopLoc_Location tmp;
+    return BRep_Tool::Polygon3D(TopoDS::Edge(shape), tmp);
 }

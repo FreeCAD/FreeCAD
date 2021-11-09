@@ -87,6 +87,8 @@ public:
     Py::Object stopAnimating(const Py::Tuple&);
     Py::Object setAnimationEnabled(const Py::Tuple&);
     Py::Object isAnimationEnabled(const Py::Tuple&);
+    Py::Object setPopupMenuEnabled(const Py::Tuple&);
+    Py::Object isPopupMenuEnabled(const Py::Tuple&);
     Py::Object dump(const Py::Tuple&);
     Py::Object dumpNode(const Py::Tuple&);
     Py::Object setStereoType(const Py::Tuple&);

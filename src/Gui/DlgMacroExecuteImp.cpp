@@ -121,7 +121,7 @@ void DlgMacroExecuteImp::fillUpList(void)
         item->setText(0, dir[i]);
     }
 
-    QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
     dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
 
     ui->systemMacroListBox->clear();
@@ -268,7 +268,7 @@ void DlgMacroExecuteImp::accept()
         dir =QDir(this->macroPath);
     }
     else {
-        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
         dir = QDir(dirstr);
     }
 
@@ -319,7 +319,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     else {
         //index == 1 system-wide
         item = ui->systemMacroListBox->currentItem();
-        dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
+        dir.setPath(QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro"));
     }
 
     if (!item)

@@ -338,6 +338,7 @@ public:
     static MeshObject* createTorus(float, float, int);
     static MeshObject* createCube(float, float, float);
     static MeshObject* createCube(float, float, float, float);
+    static MeshObject* createCube(const Base::BoundBox3d&);
     //@}
 
 public:

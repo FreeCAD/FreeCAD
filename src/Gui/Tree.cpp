@@ -472,6 +472,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
 
+    this->selectDependentsAction = new QAction(this);
+    connect(this->selectDependentsAction, SIGNAL(triggered()),
+        this, SLOT(onSelectDependents()));
+
     this->closeDocAction = new QAction(this);
     connect(this->closeDocAction, SIGNAL(triggered()),
             this, SLOT(onCloseDoc()));
@@ -843,6 +847,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
                     break;
                 }
             }
+            contextMenu.addAction(this->selectDependentsAction);
             this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
             contextMenu.addAction(this->skipRecomputeAction);
             this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
@@ -857,24 +862,43 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
 
+        // check that the selection is not across several documents
+        bool acrossDocuments = false;
+        auto SelectedObjectsList = Selection().getCompleteSelection();
+        // get the object's document as reference
         App::Document* doc = objitem->object()->getObject()->getDocument();
+        for (auto it = SelectedObjectsList.begin(); it != SelectedObjectsList.end(); ++it) {
+            if ((*it).pDoc != doc) {
+                acrossDocuments = true;
+                break;
+            }
+        }
+                
         showHiddenAction->setChecked(doc->ShowHidden.getValue());
         contextMenu.addAction(this->showHiddenAction);
 
         hideInTreeAction->setChecked(!objitem->object()->showInTree());
         contextMenu.addAction(this->hideInTreeAction);
 
-        if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
-            contextMenu.addAction(this->createGroupAction);
+        if (!acrossDocuments) { // is only sensible for selections within one document
+            if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+                contextMenu.addAction(this->createGroupAction);
+            // if there are dependent objects in the selection, add context menu to add them to selection
+            if (CheckForDependents())
+                contextMenu.addAction(this->selectDependentsAction);
+        }
 
         contextMenu.addSeparator();
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->recomputeObjectAction);
         contextMenu.addSeparator();
-        contextMenu.addAction(this->relabelObjectAction);
+
+        // relabeling is only possible for a single selected document
+        if (SelectedObjectsList.size() == 1)
+            contextMenu.addAction(this->relabelObjectAction);
 
         auto selItems = this->selectedItems();
-        // if only one item is selected setup the edit menu
+        // if only one item is selected, setup the edit menu
         if (selItems.size() == 1) {
             objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
             QList<QAction*> editAct = editMenu.actions();
@@ -1034,6 +1058,73 @@ void TreeWidget::onFinishEditing()
         doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
+    }
+}
+
+// check if selection has dependent objects
+bool TreeWidget::CheckForDependents()
+{
+    // if the selected object is a document
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        return true;
+    }
+    // it can be an object
+    else {
+        QList<QTreeWidgetItem*> items = this->selectedItems();
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            if ((*it)->type() == ObjectType) {
+                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                App::DocumentObject* obj = objitem->object()->getObject();
+                // get dependents
+                auto subObjectList = obj->getOutList();
+                if (subObjectList.size() > 0)
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+// adds an App::DocumentObject* and its dependent objects to the selection
+void TreeWidget::addDependentToSelection(App::Document* doc, App::DocumentObject* docObject)
+{
+    // add the docObject to the selection
+    Selection().addSelection(doc->getName(), docObject->getNameInDocument());
+    // get the dependent
+    auto subObjectList = docObject->getOutList();
+    // the dependent can in turn have dependents, thus add them recursively
+    for (auto itDepend = subObjectList.begin(); itDepend != subObjectList.end(); ++itDepend)
+        addDependentToSelection(doc, (*itDepend));
+}
+
+// add dependents of the selected tree object to selection
+void TreeWidget::onSelectDependents()
+{
+    // We only have this context menu entry if the selection is within one document but it
+    // might be not the active document. Therefore get the document not here but later by casting.
+    App::Document* doc;
+
+    // if the selected object is a document
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        doc = docitem->document()->getDocument();
+        std::vector<App::DocumentObject*> obj = doc->getObjects();
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+            Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+    }
+    // it can be an object
+    else {
+        QList<QTreeWidgetItem*> items = this->selectedItems();
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            if ((*it)->type() == ObjectType) {
+                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                doc = objitem->object()->getObject()->getDocument();
+                App::DocumentObject* obj = objitem->object()->getObject();
+                // the dependents can also have dependents, thus add them recursively via a separate void
+                addDependentToSelection(doc, obj);
+            }
+        }
     }
 }
 
@@ -2666,6 +2757,9 @@ void TreeWidget::setupText()
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
 
+    this->selectDependentsAction->setText(tr("Add dependent objects to selection"));
+    this->selectDependentsAction->setStatusTip(tr("Adds all dependent objects to the selection"));
+    
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
 

@@ -107,6 +107,9 @@ void SketcherValidation::changeEvent(QEvent *e)
 
 void SketcherValidation::on_findButton_clicked()
 {
+    if (sketch.expired())
+        return;
+
     double prec = Precision::Confusion();
     bool ok;
     double conv;
@@ -150,6 +153,9 @@ void SketcherValidation::on_findButton_clicked()
 
 void SketcherValidation::on_fixButton_clicked()
 {
+    if (sketch.expired())
+        return;
+
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("add coincident constraint");
@@ -167,6 +173,9 @@ void SketcherValidation::on_fixButton_clicked()
 
 void SketcherValidation::on_highlightButton_clicked()
 {
+    if (sketch.expired())
+        return;
+
     std::vector<Base::Vector3d> points;
 
     points = sketchAnalyser.getOpenVertices();
@@ -178,6 +187,9 @@ void SketcherValidation::on_highlightButton_clicked()
 
 void SketcherValidation::on_findConstraint_clicked()
 {
+    if (sketch.expired())
+        return;
+
     if (sketch->evaluateConstraints()) {
         QMessageBox::information(this, tr("No invalid constraints"),
             tr("No invalid constraints found"));
@@ -192,12 +204,18 @@ void SketcherValidation::on_findConstraint_clicked()
 
 void SketcherValidation::on_fixConstraint_clicked()
 {
+    if (sketch.expired())
+        return;
+
     sketch->validateConstraints();
     ui->fixConstraint->setEnabled(false);
 }
 
 void SketcherValidation::on_findReversed_clicked()
 {
+    if (sketch.expired())
+        return;
+
     std::vector<Base::Vector3d> points;
     const std::vector<Part::Geometry *>& geom = sketch->getExternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
@@ -241,6 +259,9 @@ void SketcherValidation::on_findReversed_clicked()
 
 void SketcherValidation::on_swapReversed_clicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Sketch porting");
 
@@ -255,6 +276,9 @@ void SketcherValidation::on_swapReversed_clicked()
 
 void SketcherValidation::on_orientLockEnable_clicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation lock");
 
@@ -269,6 +293,9 @@ void SketcherValidation::on_orientLockEnable_clicked()
 
 void SketcherValidation::on_orientLockDisable_clicked()
 {
+    if (sketch.expired())
+        return;
+
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation unlock");
 
@@ -284,6 +311,9 @@ void SketcherValidation::on_orientLockDisable_clicked()
 
 void SketcherValidation::on_delConstrExtr_clicked()
 {
+    if (sketch.expired())
+        return;
+
     int reply;
     reply =  QMessageBox::question(this,
                         tr("Delete constraints to external geom."),
@@ -337,21 +367,28 @@ void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
     }
     coords->point.finishEditing();
 
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
-    vp->getRoot()->addChild(coincidenceRoot);
+    if (!sketch.expired()) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch.get());
+        vp->getRoot()->addChild(coincidenceRoot);
+    }
 }
 
 void SketcherValidation::hidePoints()
 {
     if (coincidenceRoot) {
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
-        vp->getRoot()->removeChild(coincidenceRoot);
-        coincidenceRoot = 0;
+        if (!sketch.expired()) {
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch.get());
+            vp->getRoot()->removeChild(coincidenceRoot);
+        }
+        coincidenceRoot = nullptr;
     }
 }
 
 void SketcherValidation::on_findDegenerated_clicked()
 {
+    if (sketch.expired())
+        return;
+
     double prec = Precision::Confusion();
     int count = sketchAnalyser.detectDegeneratedGeometries(prec);
 
@@ -369,6 +406,9 @@ void SketcherValidation::on_findDegenerated_clicked()
 
 void SketcherValidation::on_fixDegenerated_clicked()
 {
+    if (sketch.expired())
+        return;
+
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Remove degenerated geometry");

@@ -277,7 +277,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // Some examples:
     // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
     // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
-    // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
+    // OverConstrained: a conflicting constraint when all other DoF are already constrained (it has more constraints than parameters and the extra constraints are not redundant)
 
     solverNeedsUpdate=false;
 

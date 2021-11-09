@@ -306,6 +306,8 @@ private:
 
     /// Check other documents for the same transaction ID
     bool checkTransactionID(bool undo, int iSteps);
+    /// Ask for user interaction if saving has failed
+    bool askIfSavingFailed(const QString&);
 
     struct DocumentP* d;
     static int _iDocCount;

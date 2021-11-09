@@ -161,6 +161,7 @@ void Gui::SoFCDB::init()
     PropertyDirectionItem           ::init();
     PropertyMatrixItem              ::init();
     PropertyPlacementItem           ::init();
+    PropertyRotationItem            ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();
     PropertyFloatListItem           ::init();
@@ -184,6 +185,8 @@ void Gui::SoFCDB::init()
     TouchpadNavigationStyle         ::init();
     GestureNavigationStyle          ::init();
     OpenCascadeNavigationStyle      ::init();
+    OpenSCADNavigationStyle         ::init();
+    TinkerCADNavigationStyle        ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();

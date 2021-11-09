@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Acest asistent vă va ghida în procesul de inst
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Compiling Python scripts..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Create desktop shortcut"
-${LangFileString} TEXT_FINISH_WEBSITE "Visit freecadweb.org for the latest news, support and tips"
+${LangFileString} TEXT_FINISH_WEBSITE "Visit freecad.org for the latest news, support and tips"
 
 #${LangFileString} FileTypeTitle "Document FreeCAD"
 

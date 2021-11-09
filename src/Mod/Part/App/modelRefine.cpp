@@ -1061,6 +1061,11 @@ bool FaceUniter::process()
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
                 if (!newFace.IsNull())
                 {
+                    // the created face should have the same orientation as the input faces
+                    const FaceVectorType& faces = adjacencySplitter.getGroup(adjacentIndex);
+                    if (!faces.empty() && newFace.Orientation() != faces[0].Orientation()) {
+                        newFace.Orientation(faces[0].Orientation());
+                    }
                     facesToSew.push_back(newFace);
                     if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());

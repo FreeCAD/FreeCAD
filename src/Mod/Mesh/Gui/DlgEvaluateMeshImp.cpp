@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QDockWidget>
 # include <QMessageBox>
+# include <QScrollArea>
 #endif
 
 #include "DlgEvaluateMeshImp.h"
@@ -1273,11 +1274,18 @@ bool DockEvaluateMeshImp::hasInstance()
 DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
   : DlgEvaluateMeshImp( parent, fl )
 {
+    scrollArea = new QScrollArea();
+    scrollArea->setObjectName(QLatin1String("scrollArea"));
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setFrameShadow(QFrame::Plain);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(this);
+
     // embed this dialog into a dockable widget container
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // use Qt macro for preparing for translation stuff (but not translating yet)
     QDockWidget* dw = pDockMgr->addDockWindow("Evaluate & Repair Mesh",
-        this, Qt::RightDockWidgetArea);
+        scrollArea, Qt::RightDockWidgetArea);
     //dw->setAttribute(Qt::WA_DeleteOnClose);
     dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     dw->show();
@@ -1298,7 +1306,11 @@ void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
 {
     // closes the dock window
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    pDockMgr->removeDockWindow(this);
+    pDockMgr->removeDockWindow(scrollArea);
+
+    // make sure to also delete the scroll area
+    scrollArea->setWidget(nullptr);
+    scrollArea->deleteLater();
 }
 
 /**

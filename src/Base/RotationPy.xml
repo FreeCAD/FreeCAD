@@ -83,15 +83,36 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="toEuler" Const="true">
+        <Methode Name="setYawPitchRoll">
+            <Documentation>
+                <UserDocu>
+                    setYawPitchRoll(angle1, angle2, angle3)
+                    Set the Euler angles of this rotation
+                    as yaw-pitch-roll in XY'Z'' convention.
+
+                    NOTE: The angles are in degree
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getYawPitchRoll" Const="true">
 			<Documentation>
 				<UserDocu>
-					toEuler() -> list
+                    getYawPitchRoll() -> list
 					Get the Euler angles of this rotation
 					as yaw-pitch-roll in XY'Z'' convention
-				</UserDocu>
+                    NOTE: The angles are in degree
+                </UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="setEulerAngles">
+            <Documentation>
+                <UserDocu>
+                setEulerAngles(seq, angle1, angle2, angle3)
+                Set the Euler angles in a given sequence for this rotation.
+                'seq' is the Euler sequence name. You get all possible values with toEulerAngles()
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="toEulerAngles" Const="true">
 			<Documentation>
 				<UserDocu>

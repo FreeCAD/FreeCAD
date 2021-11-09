@@ -732,11 +732,8 @@ std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
     DOMNode *pcElem2 = pcElem->getFirstChild();
     if (pcElem2)
         return std::string(StrXUTF8(pcElem2->getNodeValue()).c_str());
-    else if (pPreset==0)
-        return std::string("");
-
     else
-        return std::string(pPreset);
+        return std::string("");
 }
 
 std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const

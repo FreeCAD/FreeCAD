@@ -24,6 +24,7 @@
 
 #include "Translate.h"
 #include <QCoreApplication>
+#include <QFileInfo>
 
 using namespace Base;
 
@@ -62,6 +63,12 @@ Translate::Translate()
         &Translate::trNoop,
         "QT_TR_NOOP_UTF8(sourcetext)\n"
         "Same as QT_TR_NOOP");
+    add_varargs_method("installTranslator",
+        &Translate::installTranslator,
+        "Install a translator for testing purposes");
+    add_varargs_method("removeTranslators",
+        &Translate::removeTranslators,
+        "Remove test translators");
     initialize("This module is the Translate module"); // register with Python
 }
 
@@ -108,4 +115,38 @@ Py::Object Translate::trNoop(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "O", &arg1))
         throw Py::Exception();
     return Py::Object(arg1);
+}
+
+Py::Object Translate::installTranslator(const Py::Tuple& args)
+{
+    char* Name;
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
+        throw Py::Exception();
+    QString filename = QString::fromUtf8(Name);
+    PyMem_Free(Name);
+
+    bool ok = false;
+    QFileInfo fi(filename);
+    std::shared_ptr<QTranslator> translator(std::make_shared<QTranslator>(nullptr));
+    translator->setObjectName(fi.fileName());
+    if (translator->load(filename)) {
+        qApp->installTranslator(translator.get());
+        translators.push_back(translator);
+        ok = true;
+    }
+
+    return Py::Boolean(ok);
+}
+
+Py::Object Translate::removeTranslators(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    bool ok = true;
+    for (const auto& it : translators) {
+        ok &= QCoreApplication::removeTranslator(it.get());
+    }
+
+    translators.clear();
+    return Py::Boolean(ok);
 }

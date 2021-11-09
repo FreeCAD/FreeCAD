@@ -30,6 +30,7 @@
 #include <CXX/Objects.hxx>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -1831,6 +1832,37 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
     }
 
     return nullptr;
+}
+
+MeshObject* MeshObject::createCube(const Base::BoundBox3d& bbox)
+{
+    std::vector<MeshCore::MeshGeomFacet> facets;
+    auto createFacet = [&bbox](int i, int j, int k) {
+        MeshCore::MeshGeomFacet facet;
+        facet._aclPoints[0] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(i));
+        facet._aclPoints[1] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(j));
+        facet._aclPoints[2] = Base::convertTo<Base::Vector3f>(bbox.CalcPoint(k));
+        facet.CalcNormal();
+        return facet;
+    };
+
+    facets.push_back(createFacet(0, 1, 2));
+    facets.push_back(createFacet(0, 2, 3));
+    facets.push_back(createFacet(0, 5, 1));
+    facets.push_back(createFacet(0, 4, 5));
+    facets.push_back(createFacet(0, 3, 7));
+    facets.push_back(createFacet(0, 7, 4));
+    facets.push_back(createFacet(4, 6, 5));
+    facets.push_back(createFacet(4, 7, 6));
+    facets.push_back(createFacet(1, 6, 2));
+    facets.push_back(createFacet(1, 5, 6));
+    facets.push_back(createFacet(2, 7, 3));
+    facets.push_back(createFacet(2, 6, 7));
+
+    Base::EmptySequencer seq;
+    std::unique_ptr<MeshObject> mesh(new MeshObject);
+    mesh->getKernel() = facets;
+    return mesh.release();
 }
 
 void MeshObject::addSegment(const Segment& s)

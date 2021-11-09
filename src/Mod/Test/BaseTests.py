@@ -244,6 +244,58 @@ class ParameterTestCase(unittest.TestCase):
         r.invert()
         self.assertTrue(r.isSame(s))
 
+        # gimbal lock (north pole)
+        r=FreeCAD.Rotation()
+        r.setYawPitchRoll(20, 90, 10)
+        a=r.getYawPitchRoll()
+        s=FreeCAD.Rotation()
+        s.setYawPitchRoll(*a)
+        self.assertAlmostEqual(a[0], 0.0)
+        self.assertAlmostEqual(a[1], 90.0)
+        self.assertAlmostEqual(a[2], -10.0)
+        self.assertTrue(r.isSame(s, 1e-12))
+
+        # gimbal lock (south pole)
+        r=FreeCAD.Rotation()
+        r.setYawPitchRoll(20, -90, 10)
+        a=r.getYawPitchRoll()
+        s=FreeCAD.Rotation()
+        s.setYawPitchRoll(*a)
+        self.assertAlmostEqual(a[0], 0.0)
+        self.assertAlmostEqual(a[1], -90.0)
+        self.assertAlmostEqual(a[2], 30.0)
+        self.assertTrue(r.isSame(s, 1e-12))
+
+    def testYawPitchRoll(self):
+        def getYPR1(yaw, pitch, roll):
+            r = FreeCAD.Rotation()
+            r.setYawPitchRoll(yaw, pitch, roll)
+            return r
+        def getYPR2(yaw, pitch, roll):
+            rx = FreeCAD.Rotation()
+            ry = FreeCAD.Rotation()
+            rz = FreeCAD.Rotation()
+
+            rx.Axis = FreeCAD.Vector(1,0,0)
+            ry.Axis = FreeCAD.Vector(0,1,0)
+            rz.Axis = FreeCAD.Vector(0,0,1)
+
+            rx.Angle = math.radians(roll)
+            ry.Angle = math.radians(pitch)
+            rz.Angle = math.radians(yaw)
+
+            return rz.multiply(ry).multiply(rx)
+
+        angles = []
+        angles.append((10,10,10))
+        angles.append((13,45,-24))
+        angles.append((10,-90,20))
+
+        for i in angles:
+            r = getYPR1(*i)
+            s = getYPR2(*i)
+            self.assertTrue(r.isSame(s, 1e-12))
+
     def testBounding(self):
         b=FreeCAD.BoundBox()
         b.setVoid()

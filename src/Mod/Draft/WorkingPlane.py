@@ -521,7 +521,7 @@ class Plane:
         self.v = v2
         self.axis = v3
 
-    def alignToFace(self, shape, offset=0):
+    def alignToFace(self, shape, offset=0, parent=None):
         """Align the plane to a face.
 
         It uses the center of mass of the face as `position`,
@@ -542,6 +542,10 @@ class Plane:
             Defaults to zero. A value which will be used to offset
             the plane in the direction of its `axis`.
 
+        parent : object
+            Defaults to None. The ParentGeoFeatureGroup of the object
+            the face belongs to.
+
         Returns
         -------
         bool
@@ -554,17 +558,21 @@ class Plane:
         """
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass,
-                                     shape.Faces[0].normalAt(0, 0),
-                                     offset)
+            if parent:
+                place = parent.getGlobalPlacement()
+            else:
+                place = FreeCAD.Placement()
+            cen = place.multVec(shape.Faces[0].CenterOfMass)
+            place.Base = FreeCAD.Vector(0, 0, 0) # Reset the Base for the conversion of the normal.
+            nor = place.multVec(shape.Faces[0].normalAt(0, 0))
+            self.alignToPointAndAxis(cen, nor, offset)
             import DraftGeomUtils
             q = DraftGeomUtils.getQuad(shape)
             if q:
-                self.u = q[1]
-                self.v = q[2]
+                self.u = place.multVec(q[1])
+                self.v = place.multVec(q[2])
                 if not DraftVecUtils.equals(self.u.cross(self.v), self.axis):
-                    self.u = q[2]
-                    self.v = q[1]
+                    self.u, self.v = self.v, self.u
                 if DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
                     # the X axis is vertical: rotate 90 degrees
                     self.u, self.v = self.v.negative(), self.u
@@ -644,14 +652,14 @@ class Plane:
             if not geom_is_shape:
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object without Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object without Part.Shape geometry:'{}'".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object with null Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object with null Part.Shape geometry:'{}'".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if obj.HasSubObjects:
                 shapes.extend(obj.SubObjects)
@@ -664,7 +672,7 @@ class Plane:
         for n in range(len(shapes)):
             if not DraftGeomUtils.is_planar(shapes[n]):
                 FreeCAD.Console.PrintError(translate(
-                   "draft","'{}' object is not planar\n".format(names[n])))
+                   "draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
                 normal = DraftGeomUtils.get_normal(shapes[n])
@@ -675,8 +683,8 @@ class Plane:
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","{} and {} aren't coplanar\n".format(
-                        names[shape_ref],names[n])))
+                        "draft", "{} and {} aren't coplanar".format(
+                        names[shape_ref],names[n])) + "\n")
                     return False
         else:
             # suppose all geometries are straight lines or points
@@ -685,7 +693,7 @@ class Plane:
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","All Shapes must be coplanar\n"))
+                        "draft", "All Shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
             else:
@@ -693,7 +701,7 @@ class Plane:
 
         if not normal:
             FreeCAD.Console.PrintError(translate(
-                "draft","Selected Shapes must define a plane\n"))
+                "draft", "Selected Shapes must define a plane") + "\n")
             return False
 
         # set center of mass

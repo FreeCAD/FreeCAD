@@ -209,7 +209,9 @@ class Draft_SelectPlane:
                 if len(sel.SubElementNames) == 1:
                     # look for a face or a plane
                     if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
+                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0],
+                                                              self.getOffset(),
+                                                              sel.Object.getParentGeoFeatureGroup())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
                     elif sel.SubElementNames[0] == "Plane":

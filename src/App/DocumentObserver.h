@@ -62,6 +62,14 @@ public:
     /*! Assignment operator */
     void operator=(const std::string&);
 
+    bool operator==(const DocumentT &other) const {
+        return document == other.document;
+    }
+
+    bool operator<(const DocumentT &other) const {
+        return document < other.document;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
@@ -386,6 +394,11 @@ public:
      */
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
+    }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
     }
 
 private:

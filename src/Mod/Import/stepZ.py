@@ -22,7 +22,7 @@ from PySide import QtGui, QtCore
 import tempfile
 import shutil
 
-___stpZversion___ = "1.3.8"
+___stpZversion___ = "1.3.9"
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
@@ -162,25 +162,21 @@ def export(objs,filename):
 
 
     if os.path.exists(outfpathT_stp):
-        sayzw("File cannot be compressed because a file with the same name exists '"+ outfpathT_stp +"'")
-        QtGui.QApplication.restoreOverrideCursor()
-        reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ outfpath_stp + "'")
+        os.remove(outfpathT_stp)
+        sayzw("Old temp file with the same name removed '"+ outfpathT_stp +"'")
+    ImportGui.export(objs,outfpathT_stp)
+    with builtin.open(outfpathT_stp, 'rb') as f_in:
+        file_content = f_in.read()
+        new_f_content = file_content
+        f_in.close()
+    with gz.open(outfpathT_str, 'wb') as f_out:
+        f_out.write(new_f_content)
+        f_out.close()
+    if os.path.exists(outfpath):
+        shutil.move(outfpathT_str, outfpath)
+        #os.remove(outfpathT_stp)
     else:
-        ImportGui.export(objs,outfpathT_stp)
-        with builtin.open(outfpathT_stp, 'rb') as f_in:
-            file_content = f_in.read()
-            new_f_content = file_content
-            f_in.close()
-        with gz.open(outfpathT_str, 'wb') as f_out:
-            f_out.write(new_f_content)
-            f_out.close()
-        if os.path.exists(outfpath):
-            os.remove(outfpath)
-            shutil.move(outfpathT_str, outfpath)
-            #os.remove(outfpathT_stp)
-        else:
-            shutil.move(outfpathT_str, outfpath)
-            #os.remove(outfpathT_stp)
+        shutil.move(outfpathT_str, outfpath)
+        #os.remove(outfpathT_stp)
 
 ####
-

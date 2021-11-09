@@ -308,19 +308,32 @@ private:
     }
     Py::Object createBox(const Py::Tuple& args)
     {
-        float length = 10.0f;
-        float width = 10.0f;
-        float height = 10.0f;
-        float edgelen = -1.0f;
-        if (!PyArg_ParseTuple(args.ptr(), "|ffff",&length,&width,&height,&edgelen))
-            throw Py::Exception();
+        MeshObject* mesh = nullptr;
 
-        MeshObject* mesh;
-        if (edgelen < 0.0f)
-            mesh = MeshObject::createCube(length, width, height);
-        else
-            mesh = MeshObject::createCube(length, width, height, edgelen);
+        do {
+            float length = 10.0f;
+            float width = 10.0f;
+            float height = 10.0f;
+            float edgelen = -1.0f;
+            if (PyArg_ParseTuple(args.ptr(), "|ffff",&length,&width,&height,&edgelen)) {
+                if (edgelen < 0.0f)
+                    mesh = MeshObject::createCube(length, width, height);
+                else
+                    mesh = MeshObject::createCube(length, width, height, edgelen);
+                break;
+            }
 
+            PyErr_Clear();
+            PyObject* box;
+            if (PyArg_ParseTuple(args.ptr(), "O!",&Base::BoundBoxPy::Type, &box)) {
+                Py::BoundingBox bbox(box, false);
+                mesh = MeshObject::createCube(bbox.getValue());
+                break;
+            }
+
+            throw Py::TypeError("Must be real numbers or BoundBox");
+        }
+        while (false);
         if (!mesh) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of box failed");
         }

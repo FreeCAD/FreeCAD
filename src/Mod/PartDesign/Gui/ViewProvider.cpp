@@ -31,6 +31,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
+#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/MDIView.h>
 #include <Gui/Control.h>
@@ -64,32 +65,35 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-#if 0
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-#endif
-
     try {
-	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-        std::string Msg("Edit ");
-        Msg += this->pcObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        Gui::Command::openCommand(text.toUtf8());
         PartDesignGui::setEdit(pcObject,body);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
     }
     return true;
+}
+
+void ViewProvider::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
+void ViewProvider::addDefaultAction(QMenu* menu, const QString& text)
+{
+    QAction* act = menu->addAction(text);
+    act->setData(QVariant((int)ViewProvider::Default));
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    func->trigger(act, boost::bind(&ViewProvider::startDefaultEditMode, this));
 }
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

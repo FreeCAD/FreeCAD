@@ -76,6 +76,8 @@ protected:
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
+    void startDefaultEditMode();
+    void addDefaultAction(QMenu*, const QString&);
 
     virtual bool onDelete(const std::vector<std::string> &) override;
 

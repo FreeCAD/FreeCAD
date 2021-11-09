@@ -3193,7 +3193,7 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
     // place. Otherwise, display units.
-    if( iHideUnits )
+    if( iHideUnits && constraint->Type != Sketcher::Angle )
     {
         // Only hide the default length unit. Right now there is not an easy way
         // to get that from the Unit system so we have to manually add it here.
@@ -5766,7 +5766,7 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string    = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+                        asciiText->string    = SbString( getPresentationString(Constr).toUtf8().constData() );
                         asciiText->datumtype = SoDatumLabel::ANGLE;
                         asciiText->param1    = Constr->LabelDistance;
                         asciiText->param2    = startangle;
@@ -6376,6 +6376,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
                         "tv.hide(ActiveSketch)\n"
                         "del(tv)\n"
+                        "del(ActiveSketch)\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
                               QString::fromLatin1(getSketchObject()->getNameInDocument()),
                               QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
@@ -6907,6 +6908,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
                     "  tv.restore()\n"
                     "ActiveSketch.ViewObject.TempoVis = None\n"
                     "del(tv)\n"
+                    "del(ActiveSketch)\n"
                     ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
                           QString::fromLatin1(getSketchObject()->getNameInDocument()));
         QByteArray cmdstr_bytearray = cmdstr.toLatin1();

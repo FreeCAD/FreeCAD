@@ -50,13 +50,13 @@ class TaskLoftParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj=false,QWidget *parent = 0);
+    TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = 0);
     ~TaskLoftParameters();
 
 private Q_SLOTS:
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
-    void onRefButtonRemvove(bool);
+    void onRefButtonRemove(bool);
     void onClosed(bool);
     void onRuled(bool);
     void onDeleteSection();
@@ -67,7 +67,7 @@ protected:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+    void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons();
