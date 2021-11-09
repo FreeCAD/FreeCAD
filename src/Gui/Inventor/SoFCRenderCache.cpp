@@ -1396,6 +1396,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
   };
 
   for (auto & entry : PRIVATE(this)->caches) {
+    bool identity = entry.identity;
     if (entry.vcache) {
       if (!selfkey && PRIVATE(this)->selnode) {
         selfkey = std::allocate_shared<CacheKey>(SoFCAllocator<CacheKey>());
@@ -1439,7 +1440,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
-                                         entry.identity,
+                                         identity,
                                          entry.resetmatrix,
                                          selfkey);
         PRIVATE(this)->facecount += vcache->getNumFaceParts();
@@ -1456,7 +1457,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
-                                         entry.identity,
+                                         identity,
                                          entry.resetmatrix,
                                          selfkey);
       }
@@ -1472,7 +1473,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
         vcachemap[material].emplace_back(vcache,
                                          entry.matrix,
-                                         entry.identity,
+                                         identity,
                                          entry.resetmatrix,
                                          selfkey);
       }
@@ -1482,7 +1483,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
     const auto & childvcaches = entry.cache->getVertexCaches(canmerge, depth+1); 
     for (const auto & child : childvcaches) {
       Material material = PRIVATE(this)->mergeMaterial(
-            entry.matrix, entry.identity, entry.material, child.first);
+            entry.matrix, identity, entry.material, child.first);
 
       if (depth == 0)
         PRIVATE(this)->finalizeMaterial(material);
@@ -1534,7 +1535,7 @@ SoFCRenderCache::getVertexCaches(bool canmerge, int depth)
         }
 
         ventries->emplace_back(vcache, childentry, key);
-        if (!entry.identity && !childentry.resetmatrix) {
+        if (!identity && !childentry.resetmatrix) {
           if (!childentry.identity)
             ventries->back().matrix.multRight(entry.matrix);
           else {
