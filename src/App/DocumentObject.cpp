@@ -898,8 +898,11 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
-std::vector<DocumentObject*> DocumentObject::getSubObjectList(
-        const char *subname, std::vector<int> *sublist) const {
+std::vector<DocumentObject*>
+DocumentObject::getSubObjectList(const char *subname,
+                                 std::vector<int> *sublist,
+                                 bool flatten) const
+{
     std::vector<DocumentObject*> res;
     res.push_back(const_cast<DocumentObject*>(this));
     if (sublist) sublist->push_back(0);
@@ -907,6 +910,8 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(
         return res;
     auto element = Data::ComplexGeoData::findElementName(subname);
     std::string sub(subname,element-subname);
+    App::DocumentObject *container = nullptr;
+    bool lastChild = false;
     for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
         char c = sub[pos+1];
         sub[pos+1] = 0;
@@ -914,6 +919,24 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(
         if(!sobj || !sobj->getNameInDocument())
             continue;
         res.push_back(sobj);
+        if (flatten) {
+            if (auto linked = sobj->getLinkedObject()) {
+                auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked);
+                if (!grp) {
+                    container = nullptr;
+                    lastChild = false;
+                }
+                else {
+                    if (grp == container && lastChild && res.size()) {
+                        res.pop_back();
+                        if (sublist)
+                            sublist->pop_back();
+                    }
+                    lastChild = true;
+                    container = grp;
+                }
+            }
+        }
         if (sublist)
             sublist->push_back(pos+1);
         sub[pos+1] = c;
@@ -1284,16 +1307,19 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     return obj;
 }
 
-DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
-        DocumentObject *&link, std::string &linkSub) const
+DocumentObject *
+DocumentObject::resolveRelativeLink(std::string &subname,
+                                    DocumentObject *&link,
+                                    std::string &linkSub,
+                                    bool flatten) const
 {
     if(!link || !link->getNameInDocument() || !getNameInDocument())
         return 0;
 
     std::vector<int> mysubs;
     std::vector<int> linksubs;
-    auto myobjs = getSubObjectList(subname.c_str(), &mysubs);
-    auto linkobjs = link->getSubObjectList(linkSub.c_str(), &linksubs);
+    auto myobjs = getSubObjectList(subname.c_str(), &mysubs, flatten);
+    auto linkobjs = link->getSubObjectList(linkSub.c_str(), &linksubs, flatten);
 
     auto itself = myobjs.begin();
     auto itlink = linkobjs.begin();

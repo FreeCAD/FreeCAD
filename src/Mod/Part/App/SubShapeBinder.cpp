@@ -1185,7 +1185,7 @@ SubShapeBinder::import(const App::SubObjectT &feature,
         resolved = feature;
     else {
         std::string linkSub = feature.getSubName();
-        topParent->resolveRelativeLink(subname, link, linkSub);
+        topParent->resolveRelativeLink(subname, link, linkSub, true);
         if (!link)
             FC_THROWM(Base::RuntimeError,
                     "Failed to resolve relative link: "

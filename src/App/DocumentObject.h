@@ -386,11 +386,14 @@ public:
      * @param subname: the sub name path
      * @param subsizes: optional sub name sizes for each returned object, that is,
      *                  ret[i] = getSubObject(std::string(subname, subsizes[i]).c_str());
+     * @param flatten: whether to flatten the object hierarchies that belong to
+     *                 the same geo feature group, e.g. (Part.Fusion.Box -> Part.Box)
      *
      * @return Return a list of object along the path.
      */
     std::vector<DocumentObject*> getSubObjectList(const char *subname,
-                                                  std::vector<int> *subsizes = nullptr) const;
+                                                  std::vector<int> *subsizes = nullptr,
+                                                  bool flatten = false) const;
 
     /// reason of calling getSubObjects()
     enum GSReason {
@@ -514,6 +517,9 @@ public:
      * parent.
      * @param linkSub: on input, this the subname of the link reference. On
      * output, it may be offset to be rid off any common parent.
+     * @param flatten: whether to flatten the object hierarchies that belong to
+     *                 the same geo feature group before resolving.
+     *                 e.g. (Part.Fusion.Box -> Part.Box)
      *
      * @return The corrected top parent of the object that is to be assigned the
      * link. If the output 'subname' is empty, then return the object itself.
@@ -549,7 +555,7 @@ public:
      * The common parent 'Group' is removed.
      */
     App::DocumentObject *resolveRelativeLink(std::string &subname,
-            App::DocumentObject *&link, std::string &linkSub) const;
+            App::DocumentObject *&link, std::string &linkSub, bool flatten = false) const;
 
     /** Called to adjust link properties to avoid cyclic links
      *
