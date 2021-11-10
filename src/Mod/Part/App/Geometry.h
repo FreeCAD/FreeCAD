@@ -197,6 +197,7 @@ public:
     double curvatureAt(double u) const;
     double length(double u, double v) const;
     bool normalAt(double u, Base::Vector3d& dir) const;
+    bool normalAt(const Base::Vector3d & curvepoint, Base::Vector3d& dir) const;
     bool intersect(const GeomCurve *c,
                    std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                    double tol = Precision::Confusion()) const;
