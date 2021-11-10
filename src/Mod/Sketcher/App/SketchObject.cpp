@@ -9945,6 +9945,10 @@ SketchExport::SketchExport() {
 
     ADD_PROPERTY_TYPE(SyncPlacement,(true),"",
             App::Prop_None,"Synchronize placement with parent sketch if not attached");
+
+    ADD_PROPERTY_TYPE(ScaleVector,    (1, 1, 1)  ,"", App::Prop_None,
+            "Scale vector intended for mirror. Note that using the scale vector for\n"
+            "non-uniform scaling transformed the geometries into BSpline curves");
 }
 
 SketchExport::~SketchExport()
@@ -9974,7 +9978,7 @@ App::DocumentObjectExecReturn *SketchExport::execute(void) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    auto base = dynamic_cast<SketchObject*>(getBase());
+    auto base = Base::freecad_dynamic_cast<SketchObject>(getBase());
     if(!base)
         return new App::DocumentObjectExecReturn("Missing parent sketch");
     if(update() && SyncPlacement.getValue() && !positionBySupport())
@@ -10051,6 +10055,20 @@ bool SketchExport::update() {
         return false;
     else
         res.makECompound(points,0,false);
+
+    const auto &scale = ScaleVector.getValue();
+    if ((fabs(scale.x - 1.0) > Precision::Confusion()
+            || fabs(scale.y - 1.0) > Precision::Confusion()
+            || fabs(scale.z - 1.0) > Precision::Confusion())
+            && fabs(scale.x) > Precision::Confusion()
+            && fabs(scale.y) > Precision::Confusion()
+            && fabs(scale.z) > Precision::Confusion())
+    {
+        Base::Matrix4D mat;
+        mat.scale(scale);
+        res.transformShape(mat, false, true);
+    }
+
     Shape.setValue(res);
     return true;
 }
@@ -10069,5 +10087,3 @@ void SketchExport::handleChangedPropertyType(Base::XMLReader &reader,
         Base.setValue(obj);
     }
 }
-
-
