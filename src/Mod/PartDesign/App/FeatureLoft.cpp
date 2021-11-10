@@ -256,3 +256,14 @@ PROPERTY_SOURCE(PartDesign::SubtractiveLoft, PartDesign::Loft)
 SubtractiveLoft::SubtractiveLoft() {
     addSubType = Subtractive;
 }
+
+void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+{
+    // property Sections had the App::PropertyLinkList and was changed to App::PropertyXLinkSubList
+    if (prop == &Sections && strcmp(TypeName, "App::PropertyLinkList") == 0) {
+        Sections.upgrade(reader, TypeName);
+    }
+    else {
+        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
