@@ -54,6 +54,10 @@ public:
     }
     //@}
 
+protected:
+    // handle changed property
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+
 private:
     //static const char* TypeEnums[];
     //static const char* SideEnums[];

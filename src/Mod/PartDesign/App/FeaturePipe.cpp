@@ -518,8 +518,6 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
     }
 }
 
-
-
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe() {
     addSubType = Additive;
@@ -528,4 +526,15 @@ AdditivePipe::AdditivePipe() {
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe() {
     addSubType = Subtractive;
+}
+
+void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+{
+    // property Sections had the App::PropertyLinkList and was changed to App::PropertyXLinkSubList
+    if (prop == &Sections && strcmp(TypeName, "App::PropertyLinkList") == 0) {
+        Sections.upgrade(reader, TypeName);
+    }
+    else {
+        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
