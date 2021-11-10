@@ -137,6 +137,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
+#include <QStandardPaths>
 
 using namespace App;
 using namespace std;
@@ -2844,7 +2845,11 @@ std::string pathToString(const boost::filesystem::path& p)
 #endif
 }
 
-QString getDefaultHome()
+/*!
+ * \brief getUserHome
+ * Returns the user's home directory.
+ */
+QString getUserHome()
 {
     QString path;
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
@@ -2853,28 +2858,19 @@ QString getDefaultHome()
     if (!pwd)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     path = QString::fromUtf8(pwd->pw_dir);
-
-#elif defined(FC_OS_WIN32)
-    WCHAR szPath[MAX_PATH];
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    // Get the default path where we can save our documents. It seems that
-    // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
-    // which does the same.
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
-        path = QString::fromStdString(converter.to_bytes(szPath));
-    }
-    else {
-        throw Base::RuntimeError("Getting HOME path from system failed!");
-    }
-
 #else
-# error "Implement getDefaultHome() for your platform."
+    path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif
 
     return path;
 }
 
-QString getDefaultUserData(const QString& home)
+/*!
+ * \brief getOldGenericDataLocation
+ * Returns a directory location where persistent data shared across applications can be stored.
+ * This method returns the old non-XDG-compliant root path where to store config files and application data.
+ */
+QString getOldGenericDataLocation(QString home)
 {
 #if defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
@@ -2882,21 +2878,19 @@ QString getDefaultUserData(const QString& home)
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
         return QString::fromStdString(converter.to_bytes(szPath));
     }
+#elif defined(FC_OS_MACOSX)
+    QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
+    home = fi.absoluteFilePath();
 #endif
 
     return home;
 }
 
-void getUserData(boost::filesystem::path& appData)
-{
-#if defined(FC_OS_MACOSX)
-    appData = appData / "Library" / "Preferences";
-#else
-    Q_UNUSED(appData)
-#endif
-}
-
-void getConfigOrChache(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+/*!
+ * \brief getNewDataLocation
+ * To a given path it adds the sub-directories where to store application specific files.
+ */
+void getNewDataLocation(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
 {
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
@@ -2906,7 +2900,12 @@ void getConfigOrChache(std::map<std::string,std::string>& mConfig, boost::filesy
     appData /= mConfig["ExeName"];
 }
 
-void getApplicationData(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+/*!
+ * \brief getOldDataLocation
+ * To a given path it adds the sub-directories where to store application specific files.
+ * On Linux or BSD a hidden directory (i.e. starting with a dot) is added.
+ */
+void getOldDataLocation(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
 {
     // Actually the name of the directory where the parameters are stored should be the name of
     // the application due to branding reasons.
@@ -2921,31 +2920,37 @@ void getApplicationData(std::map<std::string,std::string>& mConfig, boost::files
     }
 
 #elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
-    getConfigOrChache(mConfig, appData);
+    getNewDataLocation(mConfig, appData);
 #endif
 }
 
+/*!
+ * \brief findUserHomePath
+ * If the passed path name is not empty it will be returned, otherwise
+ * the user home path of the system will be returned.
+ */
 QString findUserHomePath(const QString& userHome)
 {
     if (userHome.isEmpty()) {
-        return getDefaultHome();
+        return getUserHome();
     }
     else {
         return userHome;
     }
 }
 
-boost::filesystem::path findUserDataPath(std::map<std::string,std::string>& mConfig, const QString& userHome, const QString& userData)
+/*!
+ * \brief findOldUserDataPath
+ * Returns the path where to store application specific files to.
+ * If \a userDate is not empty it will be used, otherwise a path starting from \a userHome will be used.
+ */
+boost::filesystem::path findOldUserDataPath(std::map<std::string,std::string>& mConfig, const QString& userHome, const QString& userData)
 {
     QString dataPath = userData;
     if (dataPath.isEmpty()) {
-        dataPath = getDefaultUserData(userHome);
+        dataPath = getOldGenericDataLocation(userHome);
     }
     boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
-
-    // If a custom user data path is given then don't modify it
-    if (userData.isEmpty())
-        getUserData(appData);
 
     if (!boost::filesystem::exists(appData)) {
         // This should never ever happen
@@ -2958,7 +2963,7 @@ boost::filesystem::path findUserDataPath(std::map<std::string,std::string>& mCon
     //
     // If a custom user data path is given then don't modify it
     if (userData.isEmpty())
-        getApplicationData(mConfig, appData);
+        getOldDataLocation(mConfig, appData);
 
     // In order to write to our data path, we must create some directories, first.
     if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
@@ -2972,6 +2977,11 @@ boost::filesystem::path findUserDataPath(std::map<std::string,std::string>& mCon
     return appData;
 }
 
+/*!
+ * \brief findCachePath
+ * Returns the path where to store application specific cached files to.
+ * If \a userTemp is not empty it will be used, otherwise a path starting from \a cacheHome will be used.
+ */
 boost::filesystem::path findCachePath(std::map<std::string,std::string>& mConfig, const QString& cacheHome, const QString& userTemp)
 {
     QString dataPath = userTemp;
@@ -2984,7 +2994,7 @@ boost::filesystem::path findCachePath(std::map<std::string,std::string>& mConfig
 #if !defined(FC_OS_WIN32)
     // If a custom user temp path is given then don't modify it
     if (userTemp.isEmpty()) {
-        getConfigOrChache(mConfig, appData);
+        getNewDataLocation(mConfig, appData);
         appData /= "Cache";
     }
 #endif
@@ -3001,6 +3011,16 @@ boost::filesystem::path findCachePath(std::map<std::string,std::string>& mConfig
     return appData;
 }
 
+/*!
+ * \brief getCustomPaths
+ * Returns a tripel of path names where to store config, data and temp. files.
+ * The method therefore reads the environment variables:
+ * \list
+ * \li FREECAD_USER_HOME
+ * \li FREECAD_USER_DATA
+ * \li FREECAD_USER_TEMP
+ * \endlist
+ */
 std::tuple<QString, QString, QString> getCustomPaths()
 {
     QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
@@ -3039,46 +3059,29 @@ std::tuple<QString, QString, QString> getCustomPaths()
     return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
 }
 
-std::tuple<QString, QString> getXDGPaths()
+/*!
+ * \brief getCustomPaths
+ * Returns a tripel of XDG-compliant standard paths names where to store config, data and cached files.
+ * The method therefore reads the environment variables:
+ * \list
+ * \li XDG_CONFIG_HOME
+ * \li XDG_DATA_HOME
+ * \li XDG_CACHE_HOME
+ * \endlist
+ */
+std::tuple<QString, QString, QString> getStandardPaths()
 {
-    auto checkXdgPath = [](QString& path) {
-        if (!path.isEmpty()) {
-            QDir dir(path);
-            if (!dir.exists() || dir.isRelative())
-                path.clear();
-        }
-    };
+    QString configHome = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    QString dataHome = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+    QString cacheHome = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
 
-    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    QString configHome = env.value(QString::fromLatin1("XDG_CONFIG_HOME"));
-    QString cacheHome = env.value(QString::fromLatin1("XDG_CACHE_HOME"));
-
-    checkXdgPath(configHome);
-    checkXdgPath(cacheHome);
-
-    // If env. are not set or invalid
-    QDir home(getDefaultHome());
-    if (configHome.isEmpty()) {
-#if defined(FC_OS_MACOSX)
-        QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
-#else
-        QFileInfo fi(home, QString::fromLatin1(".config"));
+    // Keep the old behaviour
+#if defined(FC_OS_WIN32)
+    dataHome = getOldGenericDataLocation(QString());
+    cacheHome = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 #endif
-        configHome = fi.absoluteFilePath();
-    }
 
-    if (cacheHome.isEmpty()) {
-#if defined(FC_OS_MACOSX)
-        QFileInfo fi(home, QString::fromLatin1("Library/Caches"));
-#elif defined(FC_OS_WIN32)
-        QFileInfo fi(QString::fromStdString(Base::FileInfo::getTempPath()));
-#else
-        QFileInfo fi(home, QString::fromLatin1(".cache"));
-#endif
-        cacheHome = fi.absoluteFilePath();
-    }
-
-    return std::make_tuple(configHome, cacheHome);
+    return std::make_tuple(configHome, dataHome, cacheHome);
 }
 }
 
@@ -3094,9 +3097,11 @@ void Application::ExtractUserPath()
     QString userData = std::get<1>(paths);
     QString userTemp = std::get<2>(paths);
 
-    auto xdgPaths = getXDGPaths();
+    // get the system standard paths
+    auto xdgPaths = getStandardPaths();
   //QString configHome = std::get<0>(xdgPaths);
-    QString cacheHome = std::get<1>(xdgPaths);
+  //QString dataHome = std::get<1>(xdgPaths);
+    QString cacheHome = std::get<2>(xdgPaths);
 
     // User home path
     //
@@ -3106,7 +3111,7 @@ void Application::ExtractUserPath()
 
     // User data path
     //
-    boost::filesystem::path appData = findUserDataPath(mConfig, userHome, userData);
+    boost::filesystem::path appData = findOldUserDataPath(mConfig, userHome, userData);
     mConfig["UserAppData"] = pathToString(appData) + PATHSEP;
 
 
