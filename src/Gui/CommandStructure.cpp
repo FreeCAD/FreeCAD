@@ -172,7 +172,7 @@ static App::SubObjectT addGroup(const char *type, const char *name, const QStrin
                     cmdAppObjectArgs(geogroup, "removeObject(%s)", child->getFullName(true));
                 ss << child->getFullName(true) << ", ";
             }
-            cmdAppObjectArgs(newgrp, "Group = [%s]", ss.str());
+            cmdAppObjectArgs(newgrp, "addObjects([%s])", ss.str());
         } else
             ctx = App::SubObjectT();
         
