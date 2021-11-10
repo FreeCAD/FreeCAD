@@ -235,7 +235,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
 
-    if(strcmp(p->getName(), "AddSubShape")==0)
+    if(p->getName() && strcmp(p->getName(), "AddSubShape")==0)
         updateAddSubShapeIndicator();
 
     PartDesignGui::ViewProvider::updateData(p);
