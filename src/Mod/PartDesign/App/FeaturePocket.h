@@ -37,10 +37,14 @@ class PartDesignExport Pocket : public ProfileBased
 public:
     Pocket();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    App::PropertyLength         Length2;
-    App::PropertyLength         Offset;
+    App::PropertyEnumeration Type;
+    App::PropertyLength      Length;
+    App::PropertyLength      Length2;
+    App::PropertyLength      Offset;
+    App::PropertyBool        UseCustomVector;
+    App::PropertyVector      Direction;
+    App::PropertyBool        AlongSketchNormal;
+    App::PropertyLinkSub     ReferenceAxis;
 
     /** @name methods override feature */
     //@{

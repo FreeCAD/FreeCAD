@@ -35,6 +35,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -76,6 +77,11 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     Base::Quantity l = pcPocket->Length.getQuantityValue();
     Base::Quantity l2 = pcPocket->Length2.getQuantityValue();
     Base::Quantity off = pcPocket->Offset.getQuantityValue();
+    bool alongNormal = pcPocket->AlongSketchNormal.getValue();
+    bool useCustom = pcPocket->UseCustomVector.getValue();
+    double xs = pcPocket->Direction.getValue().x;
+    double ys = pcPocket->Direction.getValue().y;
+    double zs = pcPocket->Direction.getValue().z;
     bool midplane = pcPocket->Midplane.getValue();
     bool reversed = pcPocket->Reversed.getValue();
     int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
@@ -89,10 +95,30 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             faceId = std::atoi(&upToFace[4]);
     }
 
+    // set decimals for the direction edits
+    // do this here before the edits are filed to avoid rounding mistakes
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->XDirectionEdit->setDecimals(UserDecimals);
+    ui->YDirectionEdit->setDecimals(UserDecimals);
+    ui->ZDirectionEdit->setDecimals(UserDecimals);
+
     // Fill data into dialog elements
+    // the direction combobox is later filled in updateUI()
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     ui->offsetEdit->setValue(off);
+    ui->checkBoxAlongDirection->setChecked(alongNormal);
+    ui->checkBoxDirection->setChecked(useCustom);
+    onDirectionToggled(useCustom);
+    // disable to change the direction if not custom
+    if (!useCustom) {
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
+    ui->XDirectionEdit->setValue(xs);
+    ui->YDirectionEdit->setValue(ys);
+    ui->ZDirectionEdit->setValue(zs);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
 
@@ -127,6 +153,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lengthEdit->bind(pcPocket->Length);
     ui->lengthEdit2->bind(pcPocket->Length2);
     ui->offsetEdit->bind(pcPocket->Offset);
+    ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(pcPocket, std::string("Direction.x")));
+    ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(pcPocket, std::string("Direction.y")));
+    ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(pcPocket, std::string("Direction.z")));
 
     QMetaObject::connectSlotsByName(this);
 
@@ -136,6 +165,18 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onLength2Changed(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
+    connect(ui->directionCB, SIGNAL(activated(int)),
+        this, SLOT(onDirectionCBChanged(int)));
+    connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onAlongSketchNormalChanged(bool)));
+    connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onDirectionToggled(bool)));
+    connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onXDirectionEditChanged(double)));
+    connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onYDirectionEditChanged(double)));
+    connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onZDirectionEditChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
             this, SLOT(onMidplaneChanged(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
@@ -148,6 +189,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onFaceName(QString)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+
+    this->propReferenceAxis = &(pcPocket->ReferenceAxis);
 
     // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
@@ -166,6 +209,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
 void TaskPocketParameters::updateUI(int index)
 {
+    // update direction combobox
+    fillDirectionCombo();
+
     // disable/hide everything unless we are sure we don't need it
     bool isLengthEditVisible  = false;
     bool isLengthEdit2Visible = false;    
@@ -222,6 +268,7 @@ void TaskPocketParameters::updateUI(int index)
     ui->lengthEdit->setVisible( isLengthEditVisible );
     ui->lengthEdit->setEnabled( isLengthEditVisible );
     ui->labelLength->setVisible( isLengthEditVisible );
+    ui->checkBoxAlongDirection->setVisible(isLengthEditVisible);
 
     ui->lengthEdit2->setVisible( isLengthEdit2Visible );
     ui->lengthEdit2->setEnabled( isLengthEdit2Visible );
@@ -245,21 +292,36 @@ void TaskPocketParameters::updateUI(int index)
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        QString refText = onAddSelection(msg);
-        if (refText.length() > 0) {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->setText(refText);
-            ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
-            ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
-            ui->lineFaceName->blockSignals(false);
-            // Turn off reference selection mode
-            onButtonFace(false);
-        } else {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->clear();
-            ui->lineFaceName->setProperty("FeatureName", QVariant());
-            ui->lineFaceName->setProperty("FaceName", QVariant());
-            ui->lineFaceName->blockSignals(false);
+        // if we have an edge selection for the pocket direction
+        if (!selectionFace) {
+            std::vector<std::string> edge;
+            App::DocumentObject* selObj;
+            if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
+                exitSelectionMode();
+                propReferenceAxis->setValue(selObj, edge);
+                recomputeFeature();
+                // update direction combobox
+                fillDirectionCombo();
+            }
+        }
+        else { // if we have a selection of a face
+            QString refText = onAddSelection(msg);
+            if (refText.length() > 0) {
+                ui->lineFaceName->blockSignals(true);
+                ui->lineFaceName->setText(refText);
+                ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
+                ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+                ui->lineFaceName->blockSignals(false);
+                // Turn off reference selection mode
+                onButtonFace(false);
+            }
+            else {
+                ui->lineFaceName->blockSignals(true);
+                ui->lineFaceName->clear();
+                ui->lineFaceName->setProperty("FeatureName", QVariant());
+                ui->lineFaceName->setProperty("FaceName", QVariant());
+                ui->lineFaceName->blockSignals(false);
+            }
         }
     } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
@@ -289,6 +351,193 @@ void TaskPocketParameters::onOffsetChanged(double len)
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Offset.setValue(len);
     recomputeFeature();
+}
+
+void TaskPocketParameters::fillDirectionCombo()
+{
+    bool oldVal_blockUpdate = blockUpdate;
+    blockUpdate = true;
+
+    if (axesInList.empty()) {
+        ui->directionCB->clear();
+        // add sketch normal
+        PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
+        if (pcSketch)
+            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Sketch normal"));
+        // add the other entries
+        addAxisToCombo(0, std::string(), tr("Select reference..."));
+        // we start with the sketch normal as proposal for the custom direction
+        if (pcSketch)
+            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Custom direction"));
+    }
+
+    // add current link, if not in list
+    // first, figure out the item number for current axis
+    int indexOfCurrent = -1;
+    App::DocumentObject* ax = propReferenceAxis->getValue();
+    const std::vector<std::string>& subList = propReferenceAxis->getSubValues();
+    for (size_t i = 0; i < axesInList.size(); i++) {
+        if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
+            indexOfCurrent = i;
+            break;
+        }
+    }
+    // if the axis is not yet listed in the combobox
+    if (indexOfCurrent == -1 && ax) {
+        assert(subList.size() <= 1);
+        std::string sub;
+        if (!subList.empty())
+            sub = subList[0];
+        addAxisToCombo(ax, sub, getRefStr(ax, subList));
+        indexOfCurrent = axesInList.size() - 1;
+        // the axis is not the normal, thus enable along direction
+        ui->checkBoxAlongDirection->setEnabled(true);
+        // we don't have custom direction thus disable its settings
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
+
+    // highlight either current index or set custom direction
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    bool hasCustom = pcPocket->UseCustomVector.getValue();
+    if (indexOfCurrent != -1 && !hasCustom)
+        ui->directionCB->setCurrentIndex(indexOfCurrent);
+    if (hasCustom)
+        ui->directionCB->setCurrentIndex(2);
+
+    blockUpdate = oldVal_blockUpdate;
+}
+
+void TaskPocketParameters::addAxisToCombo(App::DocumentObject* linkObj,
+    std::string linkSubname, QString itemText)
+{
+    this->ui->directionCB->addItem(itemText);
+    this->axesInList.emplace_back(new App::PropertyLinkSub);
+    App::PropertyLinkSub& lnk = *(axesInList.back());
+    lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
+}
+
+void TaskPocketParameters::onDirectionCBChanged(int num)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+
+    if (axesInList.empty() || !pcPocket)
+        return;
+
+    App::PropertyLinkSub& lnk = *(axesInList[num]);
+    if (lnk.getValue() == 0) {
+        // enter reference selection mode
+        this->blockConnection(false);
+        // to distinguish that this is the direction selection
+        selectionFace = false;
+        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        return;
+    }
+    else {
+        if (!pcPocket->getDocument()->isIn(lnk.getValue())) {
+            Base::Console().Error("Object was deleted\n");
+            return;
+        }
+        propReferenceAxis->Paste(lnk);
+        // in case user is in selection mode, but changed his mind before selecting anything
+        exitSelectionMode();
+    }
+
+    try {
+        recomputeFeature();
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+
+    // disable AlongSketchNormal when the direction is already normal
+    if (num == 0)
+        ui->checkBoxAlongDirection->setEnabled(false);
+    else
+        ui->checkBoxAlongDirection->setEnabled(true);
+    // if custom direction is used, show it
+    if (num == 2) {
+        ui->checkBoxDirection->setChecked(true);
+        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+        pcPocket->UseCustomVector.setValue(true);
+    }
+    else {
+        ui->checkBoxDirection->setChecked(false);
+        pcPocket->UseCustomVector.setValue(false);
+    }
+    // if we dont use custom direction, only allow to show its direction
+    if (num != 2) {
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
+    else {
+        ui->XDirectionEdit->setEnabled(true);
+        ui->YDirectionEdit->setEnabled(true);
+        ui->ZDirectionEdit->setEnabled(true);
+    }
+    // recompute and update the direction
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPocketParameters::onAlongSketchNormalChanged(bool on)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->AlongSketchNormal.setValue(on);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onDirectionToggled(bool on)
+{
+    if (on)
+        ui->groupBoxDirection->show();
+    else
+        ui->groupBoxDirection->hide();
+}
+
+void TaskPocketParameters::onXDirectionEditChanged(double len)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->Direction.setValue(len, pcPocket->Direction.getValue().y, pcPocket->Direction.getValue().z);
+    recomputeFeature();
+    // checking for case of a null vector is done in FeaturePocket.cpp
+    // if there was a null vector, the normal vector of the sketch is used.
+    // therefore the vector component edits must be updated
+    updateDirectionEdits();
+}
+
+void TaskPocketParameters::onYDirectionEditChanged(double len)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->Direction.setValue(pcPocket->Direction.getValue().x, len, pcPocket->Direction.getValue().z);
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPocketParameters::onZDirectionEditChanged(double len)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->Direction.setValue(pcPocket->Direction.getValue().x, pcPocket->Direction.getValue().y, len);
+    recomputeFeature();
+    updateDirectionEdits();
+}
+
+void TaskPocketParameters::updateDirectionEdits(void)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    // we don't want to execute the onChanged edits, but just update their contents
+    ui->XDirectionEdit->blockSignals(true);
+    ui->YDirectionEdit->blockSignals(true);
+    ui->ZDirectionEdit->blockSignals(true);
+    ui->XDirectionEdit->setValue(pcPocket->Direction.getValue().x);
+    ui->YDirectionEdit->setValue(pcPocket->Direction.getValue().y);
+    ui->ZDirectionEdit->setValue(pcPocket->Direction.getValue().z);
+    ui->XDirectionEdit->blockSignals(false);
+    ui->YDirectionEdit->blockSignals(false);
+    ui->ZDirectionEdit->blockSignals(false);
 }
 
 void TaskPocketParameters::onMidplaneChanged(bool on)
@@ -394,6 +643,39 @@ double TaskPocketParameters::getOffset(void) const
     return ui->offsetEdit->value().getValue();
 }
 
+bool   TaskPocketParameters::getAlongSketchNormal(void) const
+{
+    return ui->checkBoxAlongDirection->isChecked();
+}
+
+bool   TaskPocketParameters::getCustom(void) const
+{
+    return ui->checkBoxDirection->isChecked();
+}
+
+std::string TaskPocketParameters::getReferenceAxis(void) const
+{
+    std::vector<std::string> sub;
+    App::DocumentObject* obj;
+    getReferenceAxis(obj, sub);
+    return buildLinkSingleSubPythonStr(obj, sub);
+}
+
+double TaskPocketParameters::getXDirection(void) const
+{
+    return ui->XDirectionEdit->value();
+}
+
+double TaskPocketParameters::getYDirection(void) const
+{
+    return ui->YDirectionEdit->value();
+}
+
+double TaskPocketParameters::getZDirection(void) const
+{
+    return ui->ZDirectionEdit->value();
+}
+
 bool   TaskPocketParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
@@ -433,9 +715,19 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->lengthEdit->blockSignals(true);
         ui->lengthEdit2->blockSignals(true);
         ui->offsetEdit->blockSignals(true);
+        ui->XDirectionEdit->blockSignals(true);
+        ui->YDirectionEdit->blockSignals(true);
+        ui->ZDirectionEdit->blockSignals(true);
+        ui->directionCB->blockSignals(true);
+        int index = ui->directionCB->currentIndex();
+        ui->directionCB->clear();
+        ui->directionCB->addItem(tr("Sketch normal"));
+        ui->directionCB->addItem(tr("Select reference..."));
+        ui->directionCB->addItem(tr("Custom direction"));
+        ui->directionCB->setCurrentIndex(index);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
-        int index = ui->changeMode->currentIndex();
+        index = ui->changeMode->currentIndex();
         ui->retranslateUi(proxy);
         ui->changeMode->clear();
         ui->changeMode->addItem(tr("Dimension"));
@@ -474,6 +766,29 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
+    }
+}
+
+void TaskPocketParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+{
+    if (axesInList.empty())
+        throw Base::RuntimeError("Not initialized!");
+
+    int num = ui->directionCB->currentIndex();
+    const App::PropertyLinkSub& lnk = *(axesInList[num]);
+    if (lnk.getValue() == 0) {
+        // Note: Is is possible that a face of an object is directly pocketed without defining a profile shape
+        obj = nullptr;
+        sub.clear();
+        //throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
+    }
+    else {
+        PartDesign::ProfileBased* pcDirection = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        if (!pcDirection->getDocument()->isIn(lnk.getValue()))
+            throw Base::RuntimeError("Object was deleted");
+
+        obj = lnk.getValue();
+        sub = lnk.getSubValues();
     }
 }
 
