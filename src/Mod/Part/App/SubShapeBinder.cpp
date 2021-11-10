@@ -870,7 +870,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
                     boost::bind(&SubShapeBinder::slotRecomputedObject, this, bp::_1));
         }
-    }else if(!isRestoring() && !getDocument()->isPerformingTransaction()) {
+    }else if(!App::GetApplication().isRestoring() && !getDocument()->isPerformingTransaction()) {
         if(prop == &Support) {
             if (!Support.testStatus(App::Property::User3)) {
                 collapseGeoChildren();
