@@ -160,17 +160,13 @@ def InitApplications():
                                 GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
                             except Exception:
                                 Log(f"Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
-                                Log("Available workbenches at calltime were:\n")
-                                all_workbenches = FreeCAD.Gui.listWorkbenches()
-                                for wb in all_workbenches:
-                                    Log(f"    * {wb}\n")
                 else:
                     continue # The package content says there are no workbenches here, so just skip
             else:
                 RunInitGuiPy(Dir)
+    Log("All modules with GUIs using InitGui.py are now initialized\n")
 
     extension_modules = []
-
     try:
         import pkgutil
         import importlib
@@ -197,6 +193,8 @@ def InitApplications():
                     Log('-'*80+'\n')
     except ImportError as inst:
         Err('During initialization the error "' + str(inst) + '" occurred\n')
+
+    Log("All modules with GUIs initialized using pkgutil are now initialized\n")
 
 def GeneratePackageIcon(dir:str, subdirectory:str, workbench_metadata:FreeCAD.Metadata, wb_handle:Workbench) -> None:
     relative_filename = workbench_metadata.Icon
