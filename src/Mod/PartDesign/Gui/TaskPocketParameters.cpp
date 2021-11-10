@@ -34,14 +34,14 @@
 #include "TaskPocketParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePocket.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
@@ -154,7 +154,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     // if it is a newly created object use the last value of the history
     // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
-    if(newObj){
+    if (newObj){
         ui->lengthEdit->setToLastUsedValue();
         ui->lengthEdit->selectNumber();
         ui->lengthEdit2->setToLastUsedValue();
@@ -167,9 +167,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 void TaskPocketParameters::updateUI(int index)
 {
     // disable/hide everything unless we are sure we don't need it
-    bool isLengthEditVisable  = false;
-    bool isLengthEdit2Visable = false;    
-    bool isOffsetEditVisable  = false;
+    bool isLengthEditVisible  = false;
+    bool isLengthEdit2Visible = false;    
+    bool isOffsetEditVisible  = false;
     bool isOffsetEditEnabled  = true;
     bool isMidplateEnabled    = false;
     bool isReversedEnabled    = false;
@@ -177,7 +177,7 @@ void TaskPocketParameters::updateUI(int index)
 
     // dimension
     if (index == 0) {
-        isLengthEditVisable = true;
+        isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
@@ -189,14 +189,14 @@ void TaskPocketParameters::updateUI(int index)
     }
     // through all
     else if (index == 1) {
-        isOffsetEditVisable = true;
+        isOffsetEditVisible = true;
         isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
         isMidplateEnabled = true;
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
     // up to first
     else if (index == 2) {
-        isOffsetEditVisable = true;
+        isOffsetEditVisible = true;
         isReversedEnabled = true;       // Will change the direction it seeks for its first face?
             // It may work not quite as expected but useful if sketch oriented upside-down.
             // (may happen in bodies)
@@ -204,7 +204,7 @@ void TaskPocketParameters::updateUI(int index)
     }
     // up to face
     else if (index == 3) {
-        isOffsetEditVisable = true;
+        isOffsetEditVisible = true;
         isReversedEnabled = true;
         isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
@@ -214,22 +214,22 @@ void TaskPocketParameters::updateUI(int index)
     }
     // two dimensions
     else {
-        isLengthEditVisable = true;
-        isLengthEdit2Visable = true;
+        isLengthEditVisible = true;
+        isLengthEdit2Visible = true;
         isReversedEnabled = true;
     }    
 
-    ui->lengthEdit->setVisible( isLengthEditVisable );
-    ui->lengthEdit->setEnabled( isLengthEditVisable );
-    ui->labelLength->setVisible( isLengthEditVisable );
+    ui->lengthEdit->setVisible( isLengthEditVisible );
+    ui->lengthEdit->setEnabled( isLengthEditVisible );
+    ui->labelLength->setVisible( isLengthEditVisible );
 
-    ui->lengthEdit2->setVisible( isLengthEdit2Visable );
-    ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
-    ui->labelLength2->setVisible( isLengthEdit2Visable );
+    ui->lengthEdit2->setVisible( isLengthEdit2Visible );
+    ui->lengthEdit2->setEnabled( isLengthEdit2Visible );
+    ui->labelLength2->setVisible( isLengthEdit2Visible );
 
-    ui->offsetEdit->setVisible( isOffsetEditVisable );
-    ui->offsetEdit->setEnabled( isOffsetEditVisable && isOffsetEditEnabled );
-    ui->labelOffset->setVisible( isOffsetEditVisable );
+    ui->offsetEdit->setVisible( isOffsetEditVisible );
+    ui->offsetEdit->setEnabled( isOffsetEditVisible && isOffsetEditEnabled );
+    ui->labelOffset->setVisible( isOffsetEditVisible );
 
     ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
 
