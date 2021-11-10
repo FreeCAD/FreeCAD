@@ -164,36 +164,11 @@ def invert(shape):
 
 
 def findMidpoint(edge):
-    """Return the midpoint of a straight line or circular edge."""
-    first = edge.Vertexes[0].Point
-    last = edge.Vertexes[-1].Point
-
-    if geomType(edge) == "Circle":
-        center = edge.Curve.Center
-        radius = edge.Curve.Radius
-        if len(edge.Vertexes) == 1:
-            # Circle
-            dv = first.sub(center)
-            dv = dv.negative()
-            return center.add(dv)
-
-        axis = edge.Curve.Axis
-        chord = last.sub(first)
-        perp = chord.cross(axis)
-        perp.normalize()
-        ray = first.sub(center)
-        apothem = ray.dot(perp)
-        sagitta = radius - apothem
-        startpoint = App.Vector.add(first, chord.multiply(0.5))
-        endpoint = DraftVecUtils.scaleTo(perp, sagitta)
-        return App.Vector.add(startpoint, endpoint)
-
-    elif geomType(edge) == "Line":
-        halfedge = (last.sub(first)).multiply(0.5)
-        return App.Vector.add(first, halfedge)
-
-    else:
+    """Return the midpoint of an edge."""
+    if edge.Length == 0:
         return None
+    else:
+        return edge.valueAt(edge.Curve.parameterAtDistance(edge.Length/2, edge.FirstParameter))
 
 
 def getTangent(edge, from_point=None):
