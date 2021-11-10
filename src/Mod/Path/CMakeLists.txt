@@ -142,7 +142,7 @@ SET(PathScripts_SRCS
     PathScripts/__init__.py
 )
 
-SET(PathScripts_generator_SRCS
+SET(Generator_SRCS
     Generators/drill_generator.py
 )
 
@@ -264,6 +264,7 @@ SET(Path_Data
 
 SET(all_files
     ${PathScripts_SRCS}
+    ${Generator_SRCS}
     ${PathScripts_post_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -294,6 +295,13 @@ INSTALL(
         ${PathScripts_SRCS}
     DESTINATION
         Mod/Path/PathScripts
+)
+
+INSTALL(
+    FILES
+        ${Generator_SRCS}
+    DESTINATION
+        Mod/Path/Generators
 )
 
 INSTALL(
