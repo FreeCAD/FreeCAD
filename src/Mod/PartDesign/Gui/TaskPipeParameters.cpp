@@ -109,7 +109,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     Gui::Document* doc = PipeView->getDocument();
 
     // make sure the user sees all important things and load the values
-    // also save visibility state to reset it later when pipe is closes
+    // also save visibility state to reset it later when pipe is closed
     // first the spine
     if (pipe->Spine.getValue()) {
         auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
@@ -124,15 +124,12 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
         profileVP->setVisible(true);
         ui->profileBaseEdit->setText(make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
     }
-
-    //make sure the user sees an important things: the base feature to select edges and the
-    //spine/auxiliary spine he already selected
+    // the auxiliary spine
     if (pipe->AuxillerySpine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
         auxSpineShow = svp->isShow();
         svp->show();
     }
-
     // the spine edges
     std::vector<std::string> strings = pipe->Spine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
@@ -468,8 +465,6 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
             profileVP->setVisible(profileShow);
             profileShow = false;
         }
-        //make sure the user sees al important things: the base feature to select edges and the
-        //spine/auxiliary spine he already selected
         if (pipe->AuxillerySpine.getValue()) {
             auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
             svp->setVisible(auxSpineShow);
