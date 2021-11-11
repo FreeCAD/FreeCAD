@@ -161,6 +161,7 @@ TaskPipeParameters::~TaskPipeParameters()
             // setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
         }
     }
     catch (const Base::Exception& e) {
@@ -956,6 +957,9 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
 TaskPipeScaling::~TaskPipeScaling()
 {
+    if (vp) {
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
+    }
 }
 
 void TaskPipeScaling::clearButtons(const selectionModes notThis)
