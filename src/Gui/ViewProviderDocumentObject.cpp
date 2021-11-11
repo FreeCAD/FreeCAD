@@ -66,6 +66,8 @@ FC_LOG_LEVEL_INIT("Gui",true,true)
 using namespace Gui;
 
 
+int ViewProviderDocumentObject::lastTreeRank = 0;
+
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
@@ -89,6 +91,8 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
             "Object: On top only if the whole object is selected\n"
             "Element: On top only if some sub-element of the object is selected");
     OnTopWhenSelected.setEnums(OnTopEnum);
+
+    ADD_PROPERTY_TYPE(TreeRank, (0), dogroup, App::PropertyType(App::Prop_Hidden|App::Prop_NoPersist), "Tree view item ordering key");
 
     sPixmap = "Feature";
 }
@@ -219,6 +223,14 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
             static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
                 ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+        }
+    }
+    else if (prop == &TreeRank) {
+        if (this->TreeRank.getValue() <= 0) {
+            this->TreeRank.setValue(++ViewProviderDocumentObject::lastTreeRank);
+        }
+        else if (this->TreeRank.getValue() > ViewProviderDocumentObject::lastTreeRank) {
+            ViewProviderDocumentObject::lastTreeRank = this->TreeRank.getValue();
         }
     }
 
@@ -676,4 +688,16 @@ std::string ViewProviderDocumentObject::getFullName() const {
     if(pcObject)
         return pcObject->getFullName() + ".ViewObject";
     return std::string();
+}
+
+bool ViewProviderDocumentObject::allowTreeOrderSwap(const App::DocumentObject *child1, const App::DocumentObject *child2) const
+{
+    std::vector<ViewProviderExtension *> extensions = getExtensionsDerivedFromType<ViewProviderExtension>();
+    for (ViewProviderExtension *ext : extensions) {
+        if (!ext->extensionAllowTreeOrderSwap(child1, child2)) {
+            return false;
+        }
+    }
+
+    return true;
 }

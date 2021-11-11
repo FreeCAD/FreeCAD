@@ -110,6 +110,8 @@ public:
     virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const {return false;}
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
 
+    virtual bool extensionAllowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return true; }
+
 private:
     bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;

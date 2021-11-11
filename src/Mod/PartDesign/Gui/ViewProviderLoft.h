@@ -44,7 +44,9 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
     void highlightReferences(const bool on, bool auxiliary);
-    
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
