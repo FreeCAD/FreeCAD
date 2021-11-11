@@ -53,7 +53,7 @@ class TaskPipeParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
+    TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = 0);
     ~TaskPipeParameters();
 
     bool accept();
@@ -84,7 +84,8 @@ private:
     { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
-
+    bool profileShow = false;
+    
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
@@ -95,7 +96,7 @@ class TaskPipeOrientation : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeOrientation(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
+    TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = 0);
     virtual ~TaskPipeOrientation();
 
 

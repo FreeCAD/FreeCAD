@@ -108,20 +108,23 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     Gui::Document* doc = PipeView->getDocument();
 
-    //make sure the user sees all important things: the
-    //spine/auxiliary spine he already selected
+    // make sure the user sees all important things and load the values
+    // also save visibility state to reset it later when pipe is closes
+    // first the spine
     if (pipe->Spine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-        spineShow = svp->isShow();
-        svp->setVisible(true);
-    }
-
-    //add initial values
-    if (pipe->Profile.getValue())
-        ui->profileBaseEdit->setText(make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
-    if (pipe->Spine.getValue())
+        auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
+        spineShow = spineVP->isShow();
+        spineVP->setVisible(true);
         ui->spineBaseEdit->setText(QString::fromUtf8(pipe->Spine.getValue()->Label.getValue()));
-
+    }
+    // the profile
+    if (pipe->Profile.getValue()) {
+        auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
+        profileShow = profileVP->isShow();
+        profileVP->setVisible(true);
+        ui->profileBaseEdit->setText(make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
+    }
+    // the spine edges
     std::vector<std::string> strings = pipe->Spine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
         QString label = QString::fromStdString(*it);
@@ -147,15 +150,19 @@ TaskPipeParameters::~TaskPipeParameters()
             PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
             Gui::Document* doc = vp->getDocument();
 
-            //make sure the user sees all important things: the
-            //spine/auxiliary spine he already selected
+            // set visibility to the state when the pipe was opened
             if (pipe->Spine.getValue()) {
-                auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-                svp->setVisible(spineShow);
+                auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
+                spineVP->setVisible(spineShow);
                 spineShow = false;
             }
+            if (pipe->Profile.getValue()) {
+                auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
+                profileVP->setVisible(profileShow);
+                profileShow = false;
+            }
 
-            //setting visibility to true is needed when preselecting profile and path prior to invoking sweep
+            // setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
         }
@@ -387,7 +394,8 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
 
                 // hide the old or new profile again
                 auto* pvp = doc->getViewProvider(pipe->Profile.getValue());
-                if (pvp) pvp->setVisible(false);
+                if (pvp)
+                    pvp->setVisible(false);
             }
             return success;
         }
@@ -944,6 +952,12 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
 TaskPipeScaling::~TaskPipeScaling()
 {
+    if (vp) {
+        // hide all sections on closing to be consistent with the spine and profile
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        for (auto obj : pipe->Sections.getValues())
+            Gui::Application::Instance->hideViewProvider(obj);
+    }
 }
 
 void TaskPipeScaling::clearButtons(const selectionModes notThis)
