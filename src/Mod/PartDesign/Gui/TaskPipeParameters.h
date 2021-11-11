@@ -79,13 +79,15 @@ private:
     void updateUI();
     void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
+    void setVisibilityOfSpineAndProfile();
 
     ViewProviderPipe* getPipeView() const
     { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
     bool profileShow = false;
-    
+    bool auxSpineShow = false;
+
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
@@ -122,8 +124,6 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
-
-    bool auxSpineShow = false;
 
 private:
     QWidget* proxy;

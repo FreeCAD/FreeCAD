@@ -124,6 +124,15 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
         profileVP->setVisible(true);
         ui->profileBaseEdit->setText(make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
     }
+
+    //make sure the user sees an important things: the base feature to select edges and the
+    //spine/auxiliary spine he already selected
+    if (pipe->AuxillerySpine.getValue()) {
+        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+        auxSpineShow = svp->isShow();
+        svp->show();
+    }
+
     // the spine edges
     std::vector<std::string> strings = pipe->Spine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
@@ -148,19 +157,6 @@ TaskPipeParameters::~TaskPipeParameters()
     try {
         if (vp) {
             PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-            Gui::Document* doc = vp->getDocument();
-
-            // set visibility to the state when the pipe was opened
-            if (pipe->Spine.getValue()) {
-                auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
-                spineVP->setVisible(spineShow);
-                spineShow = false;
-            }
-            if (pipe->Profile.getValue()) {
-                auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
-                profileVP->setVisible(profileShow);
-                profileShow = false;
-            }
 
             // setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
@@ -450,6 +446,37 @@ void TaskPipeParameters::exitSelectionMode()
     Gui::Selection().clearSelection();
 }
 
+void TaskPipeParameters::setVisibilityOfSpineAndProfile()
+{
+    if (vp) {
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        Gui::Document* doc = vp->getDocument();
+
+        // set visibility to the state when the pipe was opened
+        for (auto obj : pipe->Sections.getValues()) {
+            auto* sectionVP = doc->getViewProvider(obj);
+            sectionVP->setVisible(profileShow);
+        }
+        if (pipe->Spine.getValue()) {
+            auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
+            spineVP->setVisible(spineShow);
+            spineShow = false;
+        }
+        if (pipe->Profile.getValue()) {
+            auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
+            profileVP->setVisible(profileShow);
+            profileShow = false;
+        }
+        //make sure the user sees al important things: the base feature to select edges and the
+        //spine/auxiliary spine he already selected
+        if (pipe->AuxillerySpine.getValue()) {
+            auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+            svp->setVisible(auxSpineShow);
+            auxSpineShow = false;
+        }
+    }
+}
+
 bool TaskPipeParameters::accept()
 {
     //see what to do with external references
@@ -536,6 +563,8 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        setVisibilityOfSpineAndProfile();
+
         App::DocumentObject* spine = pcPipe->Spine.getValue();
         std::vector<std::string> subNames = pcPipe->Spine.getSubValues();
         App::PropertyLinkT propT(spine, subNames);
@@ -611,15 +640,6 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    Gui::Document* doc = Gui::Application::Instance->getDocument(pipe->getDocument());
-
-    //make sure the user sees an important things: the base feature to select edges and the
-    //spine/auxiliary spine he already selected
-    if (pipe->AuxillerySpine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
-        auxSpineShow = svp->isShow();
-        svp->show();
-    }
 
     //add initial values
     if (pipe->AuxillerySpine.getValue())
@@ -644,24 +664,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
 TaskPipeOrientation::~TaskPipeOrientation()
 {
-    try {
-        if (vp) {
-            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-            Gui::Document* doc = vp->getDocument();
-
-            //make sure the user sees al important things: the base feature to select edges and the
-            //spine/auxiliary spine he already selected
-            if (pipe->AuxillerySpine.getValue()) {
-                auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
-                svp->setVisible(auxSpineShow);
-                auxSpineShow = false;
-            }
-
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
-        }
-    }
-    catch (const Base::RuntimeError&) {
-        // getDocument() may raise an exception
+    if (vp) {
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
 
@@ -952,12 +956,6 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
 TaskPipeScaling::~TaskPipeScaling()
 {
-    if (vp) {
-        // hide all sections on closing to be consistent with the spine and profile
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        for (auto obj : pipe->Sections.getValues())
-            Gui::Application::Instance->hideViewProvider(obj);
-    }
 }
 
 void TaskPipeScaling::clearButtons(const selectionModes notThis)
