@@ -2084,6 +2084,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("response-file", value<string>(),"Can be specified with '@name', too")
     ("dump-config", "Dumps configuration")
     ("get-config", value<string>(), "Prints the value of the requested configuration key")
+    ("keep-deprecated-paths", "If set then config files are kept on the old location")
     ;
 
     // Declare a group of options that will be
@@ -2389,6 +2390,10 @@ void Application::initConfig(int argc, char ** argv)
 
     variables_map vm;
     parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+
+    if (vm.count("keep-deprecated-paths")) {
+        mConfig["KeepDeprecatedPaths"] = "1";
+    }
 
     // extract home paths
     ExtractUserPath();
@@ -3053,7 +3058,7 @@ std::tuple<QString, QString, QString> getStandardPaths()
 
 void Application::ExtractUserPath()
 {
-    bool keepDeprecatedPaths = false;
+    bool keepDeprecatedPaths = mConfig.count("KeepDeprecatedPaths") > 0;
 
     // std paths
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
