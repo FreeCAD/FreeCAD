@@ -1073,8 +1073,7 @@ std::string Application::getUserAppDataDir()
 
 std::string Application::getUserMacroDir()
 {
-    std::string path("Macro/");
-    return mConfig["UserAppData"] + path;
+    return mConfig["UserMacroPath"];
 }
 
 std::string Application::getResourceDir()
@@ -2887,17 +2886,17 @@ QString getOldGenericDataLocation(QString home)
 }
 
 /*!
- * \brief getNewDataLocation
+ * \brief getSubDirectories
  * To a given path it adds the sub-directories where to store application specific files.
  */
-void getNewDataLocation(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+void getSubDirectories(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
 {
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData /= mConfig["ExeVendor"];
+        appData.push_back(mConfig["ExeVendor"]);
     }
-    appData /= mConfig["ExeName"];
+    appData.push_back(mConfig["ExeName"]);
 }
 
 /*!
@@ -2905,7 +2904,7 @@ void getNewDataLocation(std::map<std::string,std::string>& mConfig, boost::files
  * To a given path it adds the sub-directories where to store application specific files.
  * On Linux or BSD a hidden directory (i.e. starting with a dot) is added.
  */
-void getOldDataLocation(std::map<std::string,std::string>& mConfig, boost::filesystem::path& appData)
+void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<std::string>& appData)
 {
     // Actually the name of the directory where the parameters are stored should be the name of
     // the application due to branding reasons.
@@ -2913,14 +2912,14 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, boost::files
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-        appData /= "." + mConfig["ExeVendor"];
-        appData /= mConfig["ExeName"];
+        appData.push_back(std::string(".") + mConfig["ExeVendor"]);
+        appData.push_back(mConfig["ExeName"]);
     } else {
-        appData /= "." + mConfig["ExeName"];
+        appData.push_back(std::string(".") + mConfig["ExeName"]);
     }
 
 #elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
-    getNewDataLocation(mConfig, appData);
+    getSubDirectories(mConfig, appData);
 #endif
 }
 
@@ -2940,16 +2939,18 @@ QString findUserHomePath(const QString& userHome)
 }
 
 /*!
- * \brief findOldUserDataPath
- * Returns the path where to store application specific files to.
- * If \a userDate is not empty it will be used, otherwise a path starting from \a userHome will be used.
+ * \brief findPath
+ * Returns the path where to store application files to.
+ * If \a customHome is not empty it will be used, otherwise a path starting from \a stdHome will be used.
  */
-boost::filesystem::path findOldUserDataPath(std::map<std::string,std::string>& mConfig, const QString& userHome, const QString& userData)
+boost::filesystem::path findPath(const QString& stdHome, const QString& customHome,
+                                 const std::vector<std::string>& paths, bool create)
 {
-    QString dataPath = userData;
+    QString dataPath = customHome;
     if (dataPath.isEmpty()) {
-        dataPath = getOldGenericDataLocation(userHome);
+        dataPath = stdHome;
     }
+
     boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
 
     if (!boost::filesystem::exists(appData)) {
@@ -2957,54 +2958,18 @@ boost::filesystem::path findOldUserDataPath(std::map<std::string,std::string>& m
         throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
     }
 
-    // In the second step we want the directory where user settings of the application can be
-    // kept. There we create a directory with name of the vendor and a sub-directory with name
-    // of the application.
-    //
-    // If a custom user data path is given then don't modify it
-    if (userData.isEmpty())
-        getOldDataLocation(mConfig, appData);
+    // If a custom user home path is given then don't modify it
+    if (customHome.isEmpty()) {
+        for (const auto& it : paths)
+            appData = appData / it;
+    }
 
     // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+    if (create && !boost::filesystem::exists(appData) && !Py_IsInitialized()) {
         try {
             boost::filesystem::create_directories(appData);
         } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
-        }
-    }
-
-    return appData;
-}
-
-/*!
- * \brief findCachePath
- * Returns the path where to store application specific cached files to.
- * If \a userTemp is not empty it will be used, otherwise a path starting from \a cacheHome will be used.
- */
-boost::filesystem::path findCachePath(std::map<std::string,std::string>& mConfig, const QString& cacheHome, const QString& userTemp)
-{
-    QString dataPath = userTemp;
-    if (dataPath.isEmpty()) {
-        dataPath = cacheHome;
-    }
-
-    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
-
-#if !defined(FC_OS_WIN32)
-    // If a custom user temp path is given then don't modify it
-    if (userTemp.isEmpty()) {
-        getNewDataLocation(mConfig, appData);
-        appData /= "Cache";
-    }
-#endif
-
-    // In order to write to our data path, we must create some directories, first.
-    if (!boost::filesystem::exists(appData)) {
-        try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create cache directories. Failed with: " + e.code().message());
+            throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
         }
     }
 
@@ -3077,7 +3042,8 @@ std::tuple<QString, QString, QString> getStandardPaths()
 
     // Keep the old behaviour
 #if defined(FC_OS_WIN32)
-    dataHome = getOldGenericDataLocation(QString());
+    configHome = getOldGenericDataLocation(QString());
+    dataHome = configHome;
     cacheHome = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 #endif
 
@@ -3087,55 +3053,78 @@ std::tuple<QString, QString, QString> getStandardPaths()
 
 void Application::ExtractUserPath()
 {
+    bool keepDeprecatedPaths = false;
+
     // std paths
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
 
     // this is to support a portable version of FreeCAD
     auto paths = getCustomPaths();
-    QString userHome = std::get<0>(paths);
-    QString userData = std::get<1>(paths);
-    QString userTemp = std::get<2>(paths);
+    QString customHome = std::get<0>(paths);
+    QString customData = std::get<1>(paths);
+    QString customTemp = std::get<2>(paths);
 
     // get the system standard paths
-    auto xdgPaths = getStandardPaths();
-  //QString configHome = std::get<0>(xdgPaths);
-  //QString dataHome = std::get<1>(xdgPaths);
-    QString cacheHome = std::get<2>(xdgPaths);
+    auto stdPaths = getStandardPaths();
+    QString configHome = std::get<0>(stdPaths);
+    QString dataHome = std::get<1>(stdPaths);
+    QString cacheHome = std::get<2>(stdPaths);
 
     // User home path
     //
-    userHome = findUserHomePath(userHome);
-    mConfig["UserHomePath"] = userHome.toUtf8().data();
+    QString homePath = findUserHomePath(customHome);
+    mConfig["UserHomePath"] = homePath.toUtf8().data();
 
+    // the old path name to save config and data files
+    std::vector<std::string> subdirs;
+    if (keepDeprecatedPaths) {
+        configHome = homePath;
+        dataHome = homePath;
+        cacheHome = homePath;
+        getOldDataLocation(mConfig, subdirs);
+    }
+    else {
+        getSubDirectories(mConfig, subdirs);
+    }
 
     // User data path
     //
-    boost::filesystem::path appData = findOldUserDataPath(mConfig, userHome, userData);
-    mConfig["UserAppData"] = pathToString(appData) + PATHSEP;
+    boost::filesystem::path data = findPath(dataHome, customData, subdirs, true);
+    mConfig["UserAppData"] = pathToString(data) + PATHSEP;
 
 
-    // User config path (for now equal to UserAppData but will be changed to be XDG compliant)
+    // User config path
     //
-    mConfig["UserConfigPath"] = mConfig["UserAppData"];
+    boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
+    mConfig["UserConfigPath"] = pathToString(config) + PATHSEP;
+
+    std::vector<std::string> oldsubdirs;
+    getOldDataLocation(mConfig, oldsubdirs);
+    boost::filesystem::path appData = findPath(getOldGenericDataLocation(homePath), customData, oldsubdirs, false);
+
+    // If in new location user.cfg doesn't exist but in the old location then copy it
+    boost::filesystem::path oldUsercfg = appData / "user.cfg";
+    boost::filesystem::path newUsercfg = config / "user.cfg";
+    if (boost::filesystem::exists(oldUsercfg) && !boost::filesystem::exists(newUsercfg)) {
+        boost::filesystem::copy(oldUsercfg, newUsercfg);
+    }
 
 
     // Set application tmp. directory
     //
-    boost::filesystem::path cache = findCachePath(mConfig, cacheHome, userTemp);
+    std::vector<std::string> cachedirs = subdirs;
+    cachedirs.emplace_back("Cache");
+    boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
     mConfig["AppTempPath"] = pathToString(cache) + PATHSEP;
 
 
-    // Create the default macro directory
+    // Set the default macro directory
     //
-    boost::filesystem::path macroDir = stringToPath(getUserMacroDir());
-    if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
-        try {
-            boost::filesystem::create_directories(macroDir);
-        } catch (const boost::filesystem::filesystem_error& e) {
-            throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
-        }
-    }
+    std::vector<std::string> macrodirs = subdirs;
+    macrodirs.emplace_back("Macro");
+    boost::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
+    mConfig["UserMacroPath"] = pathToString(macro) + PATHSEP;
 }
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
