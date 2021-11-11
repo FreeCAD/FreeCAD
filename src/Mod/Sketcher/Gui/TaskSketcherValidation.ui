@@ -129,7 +129,7 @@ This is done by analyzing the sketch geometries and constraints</string>
       <item row="1" column="0" colspan="2">
        <widget class="QPushButton" name="delConstrExtr">
         <property name="toolTip">
-         <string>Deletes constrains refering to external geometry</string>
+         <string>Deletes constrains referring to external geometry</string>
         </property>
         <property name="text">
          <string>Delete constraints to external geom.</string>
