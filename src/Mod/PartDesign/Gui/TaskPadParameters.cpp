@@ -361,12 +361,12 @@ void TaskPadParameters::fillDirectionCombo()
         PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch)
-            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Sketch normal"));
+            addAxisToCombo(pcSketch, "N_Axis", tr("Sketch normal"));
         // add the other entries
         addAxisToCombo(0, std::string(), tr("Select reference..."));
         // we start with the sketch normal as proposal for the custom direction
         if (pcSketch)
-            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Custom direction"));
+            addAxisToCombo(pcSketch, "N_Axis", tr("Custom direction"));
     }
 
     // add current link, if not in list
@@ -420,7 +420,7 @@ void TaskPadParameters::onDirectionCBChanged(int num)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
 
-    if (axesInList.empty() || !pcPad)
+    if (axesInList.empty())
         return;
 
     App::PropertyLinkSub& lnk = *(axesInList[num]);
@@ -457,7 +457,6 @@ void TaskPadParameters::onDirectionCBChanged(int num)
     // if custom direction is used, show it
     if (num == 2) {
         ui->checkBoxDirection->setChecked(true);
-        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
         pcPad->UseCustomVector.setValue(true);
     }
     else {
