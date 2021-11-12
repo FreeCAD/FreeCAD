@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+            Father="ViewProviderDocumentObjectPy"
+            Name="ViewProviderSpreadsheetPy"
+            Twin="ViewProviderSheet"
+            TwinPointer="ViewProviderSheet"
+            Include="Mod/Spreadsheet/Gui/ViewProviderSpreadsheet.h"
+            Namespace="SpreadsheetGui"
+            FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+            FatherNamespace="Gui"
+            Constructor="false"
+            Delete="false">
+        <Documentation>
+            <Author Licence="LGPL" Name="Jose Luis Cercos Pita" EMail="jlcercos@gmail.com" />
+            <UserDocu>ViewProviderSheet class</UserDocu>
+        </Documentation>
+        <Methode Name="selectedRanges">
+            <Documentation>
+                <UserDocu>returns a list with the selected ranges of cells</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="selectedCells">
+            <Documentation>
+                <UserDocu>returns a list with the selected cells</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>
