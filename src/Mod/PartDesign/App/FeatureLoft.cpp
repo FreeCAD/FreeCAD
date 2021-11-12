@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 if (subValues.empty())
                     throw Base::ValueError("Loft: No valid subelement linked in Part::Feature");
 
-                shape = static_cast<Part::Feature*>(obj)->Shape.getShape(). getSubShape(subValues[0].c_str());
+                shape = static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(subValues[0].c_str());
             }
 
             TopExp_Explorer ex;
