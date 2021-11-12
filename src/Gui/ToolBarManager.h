@@ -114,6 +114,7 @@ protected:
 
     bool addToolbarToStatusBar(QObject *, QMouseEvent*);
     void showStatusBarContextMenu();
+    void onToggleStatusBarWidget(QWidget *, bool);
 
     ToolBarManager();
     ~ToolBarManager();

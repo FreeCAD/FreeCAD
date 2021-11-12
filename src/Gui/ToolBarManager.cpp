@@ -696,16 +696,8 @@ void ToolBarManager::saveState() const
         return;
     for (int i = 0, c = layout->count(); i < c; ++i) {
         auto w = layout->itemAt(i)->widget();
-        if (!w)
+        if (w != statusBarArea)
             continue;
-        if (w != statusBarArea) {
-            if (w->windowTitle().isEmpty()
-                    || w->objectName().isEmpty()
-                    || w->objectName().startsWith(QStringLiteral("*")))
-                continue;
-            hStatusBar->SetBool(w->objectName().toUtf8().constData(), w->isVisible());
-            continue;
-        }
         for (auto &v : hStatusBar->GetIntMap())
             hStatusBar->RemoveInt(v.first.c_str());
 
@@ -856,6 +848,13 @@ void ToolBarManager::onToggleToolBar(bool visible)
     hPref->SetBool(toolbar->objectName().toUtf8(), enabled);
 }
 
+void ToolBarManager::onToggleStatusBarWidget(QWidget *w, bool visible)
+{
+    Base::ConnectionBlocker block(connParam);
+    w->setVisible(visible);
+    hStatusBar->SetBool(w->objectName().toUtf8().constData(), w->isVisible());
+}
+
 void ToolBarManager::onMovableChanged(bool movable)
 {
     if (!restored)
@@ -975,6 +974,7 @@ void ToolBarManager::showStatusBarContextMenu()
     auto tooltip = QObject::tr("Toggles visibility");
     auto ltooltip = QObject::tr("Undock from status bar");
     QCheckBox *checkbox;
+
     for (int i = 0, c = layout->count(); i < c; ++i) {
         auto w = layout->itemAt(i)->widget();
         if (!w)
@@ -991,8 +991,9 @@ void ToolBarManager::showStatusBarContextMenu()
             }
             auto wa = Action::addCheckBox(&menu, name,
                     tooltip, QIcon(), w->isVisible(), &checkbox);
-            QObject::connect(checkbox, SIGNAL(toggled(bool)), w, SLOT(setVisible(bool)));
-            QObject::connect(wa, SIGNAL(triggered(bool)), w, SLOT(setVisible(bool)));
+            auto onToggle = [w, this](bool visible) {onToggleStatusBarWidget(w, visible);};
+            QObject::connect(checkbox, &QCheckBox::toggled, onToggle);
+            QObject::connect(wa, &QAction::triggered, onToggle);
             continue;
         }
 
