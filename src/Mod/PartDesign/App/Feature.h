@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 class gp_Pnt;
 class gp_Pln;
