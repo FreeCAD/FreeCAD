@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,63 +21,28 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Loft_H
-#define PARTDESIGN_Loft_H
+#ifndef PARTDESIGN_GLOBAL_H
+#define PARTDESIGN_GLOBAL_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
-#include "FeatureSketchBased.h"
-
-namespace PartDesign
-{
-
-class PartDesignExport Loft : public ProfileBased
-{
-    PROPERTY_HEADER(PartDesign::Loft);
-
-public:
-    Loft();
-
-    App::PropertyXLinkSubList Sections;
-    App::PropertyBool Ruled;
-    App::PropertyBool Closed;
-
-    /** @name methods override feature */
-    //@{
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderLoft";
-    }
-    //@}
-
-protected:
-    // handle changed property
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
-
-private:
-    //static const char* TypeEnums[];
-    //static const char* SideEnums[];
-};
-
-class PartDesignExport AdditiveLoft : public Loft {
-
-    PROPERTY_HEADER(PartDesign::AdditiveLoft);
-public:
-    AdditiveLoft();
-};
-
-class PartDesignExport SubtractiveLoft : public Loft {
-
-    PROPERTY_HEADER(PartDesign::SubtractiveLoft);
-public:
-    SubtractiveLoft();
-};
-
-} //namespace PartDesign
+#include <FCGlobal.h>
 
 
-#endif // PART_Loft_H
+// PartDesign
+#ifndef PartDesignExport
+#ifdef PartDesign_EXPORTS
+#  define PartDesignExport   FREECAD_DECL_EXPORT
+#else
+#  define PartDesignExport   FREECAD_DECL_IMPORT
+#endif
+#endif
+
+// PartDesignGui
+#ifndef PartDesignGuiExport
+#ifdef PartDesignGui_EXPORTS
+#  define PartDesignGuiExport   FREECAD_DECL_EXPORT
+#else
+#  define PartDesignGuiExport   FREECAD_DECL_IMPORT
+#endif
+#endif
+
+#endif //PARTDESIGN_GLOBAL_H

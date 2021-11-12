@@ -103,14 +103,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);
 
-        QString label = QString::fromUtf8(profile->Label.getValue());
+        QString label = make2DLabel(profile, loft->Profile.getSubValues());
         ui->profileBaseEdit->setText(label);
     }
 
     for (auto obj : loft->Sections.getValues()) {
         Gui::Application::Instance->showViewProvider(obj);
 
-        QString label = QString::fromUtf8(obj->Label.getValue());
+        QString label = make2DLabel(obj, loft->Sections.getSubValues(obj));
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
@@ -120,10 +120,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     // get options
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
-
-    if (!loft->Sections.getValues().empty()) {
-        LoftView->makeTemporaryVisible(true);
-    }
 
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : proxy->findChildren<QWidget*>())
@@ -138,6 +134,10 @@ TaskLoftParameters::~TaskLoftParameters()
 
 void TaskLoftParameters::updateUI()
 {
+    // we must assure the changed loft is kept visible on section changes,
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -150,7 +150,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             App::Document* document = App::GetApplication().getDocument(msg.pDocName);
             App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
             if (object) {
-                QString label = QString::fromUtf8(object->Label.getValue());
+                QString label = make2DLabel(object, {msg.pSubName});
                 if (selectionMode == refProfile) {
                     ui->profileBaseEdit->setText(label);
                 }
@@ -172,6 +172,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         clearButtons();
         exitSelectionMode();
+        updateUI();
     }
 }
 
@@ -195,7 +196,7 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
         App::DocumentObject* obj = loft->getDocument()->getObject(msg.pObjectName);
 
         if (selectionMode == refProfile) {
-            loft->Profile.setValue(obj);
+            loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
         else if (selectionMode == refAdd || selectionMode == refRemove) {
@@ -205,18 +206,19 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
 
             if (selectionMode == refAdd) {
                 if (f == refs.end())
-                    refs.push_back(obj);
+                    loft->Sections.addValue(obj, {msg.pSubName});
                 else
                     return false; // duplicate selection
             }
             else if (selectionMode == refRemove) {
                 if (f != refs.end())
-                    refs.erase(f);
+                    // Removing just the object this way instead of `refs.erase` and
+                    // `setValues(ref)` cleanly ensures subnames are preserved.
+                    loft->Sections.removeValue(obj);
                 else
                     return false;
             }
 
-            static_cast<PartDesign::Loft*>(vp->getObject())->Sections.setValues(refs);
             return true;
         }
     }
@@ -250,11 +252,13 @@ void TaskLoftParameters::onDeleteSection()
         App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
         std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
         if (f != refs.end()) {
-            refs.erase(f);
-            loft->Sections.setValues(refs);
+            // Removing just the object this way instead of `refs.erase` and
+            // `setValues(ref)` cleanly ensures subnames are preserved.
+            loft->Sections.removeValue(obj);
 
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -278,16 +282,21 @@ void TaskLoftParameters::indexesMoved()
 
     loft->Sections.setValues(originals);
     recomputeFeature();
+    updateUI();
 }
 
-void TaskLoftParameters::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
+void TaskLoftParameters::clearButtons(const selectionModes notThis)
+{
+    if (notThis != refProfile)
+        ui->buttonProfileBase->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
 }
 
-void TaskLoftParameters::exitSelectionMode() {
-
+void TaskLoftParameters::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
@@ -309,23 +318,27 @@ void TaskLoftParameters::onRuled(bool val) {
 void TaskLoftParameters::onProfileButton(bool checked)
 {
     if (checked) {
+        clearButtons(refProfile);
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
 
-void TaskLoftParameters::onRefButtonAdd(bool checked) {
+void TaskLoftParameters::onRefButtonAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
 
-void TaskLoftParameters::onRefButtonRemove(bool checked) {
-
+void TaskLoftParameters::onRefButtonRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);

@@ -48,6 +48,8 @@ public:
 
     void updateOriginSize();
 
+    virtual bool extensionAllowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const override { return false; }
+    
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj );
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );

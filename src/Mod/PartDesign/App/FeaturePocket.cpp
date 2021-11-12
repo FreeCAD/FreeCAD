@@ -67,6 +67,10 @@ Pocket::Pocket()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
+    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pocket", App::Prop_None, "Use custom vector for pocket direction");
+    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pocket", App::Prop_None, "Reference axis of direction");
+    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -84,6 +88,10 @@ short Pocket::mustExecute() const
         Length.isTouched() ||
         Length2.isTouched() ||
         Offset.isTouched() ||
+        UseCustomVector.isTouched() ||
+        Direction.isTouched() ||
+        ReferenceAxis.isTouched() ||
+        AlongSketchNormal.isTouched() ||
         UpToFace.isTouched())
         return 1;
     return ProfileBased::mustExecute();
@@ -130,6 +138,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
     // get the Sketch plane
     Base::Placement SketchPos    = obj->Placement.getValue();
+    // get the normal vector of the sketch
     Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
@@ -141,7 +150,78 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         base.Move(invObjLoc);
 
-        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        Base::Vector3d pocketDirection;
+
+        if (!UseCustomVector.getValue()) {
+            if (!ReferenceAxis.getValue()) {
+                // use sketch's normal vector for direction
+                pocketDirection = SketchVector;
+                AlongSketchNormal.setReadOnly(true);
+            }
+            else {
+                // update Direction from ReferenceAxis
+                try {
+                    App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
+                    const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
+                    Base::Vector3d base;
+                    Base::Vector3d dir;
+                    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
+                    pocketDirection = dir;
+                }
+                catch (const Base::Exception& e) {
+                    return new App::DocumentObjectExecReturn(e.what());
+                }
+            }
+        }
+        else {
+            // use the given vector
+            // if null vector, use SketchVector
+            if ((fabs(Direction.getValue().x) < Precision::Confusion())
+                && (fabs(Direction.getValue().y) < Precision::Confusion())
+                && (fabs(Direction.getValue().z) < Precision::Confusion())) {
+                Direction.setValue(SketchVector);
+            }
+            pocketDirection = Direction.getValue();
+        }
+
+        // disable options of UseCustomVector  
+        Direction.setReadOnly(!UseCustomVector.getValue());
+        ReferenceAxis.setReadOnly(UseCustomVector.getValue());
+        // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
+        if (UseCustomVector.getValue())
+            AlongSketchNormal.setReadOnly(false);
+
+        // create vector in pocketing direction with length 1
+        gp_Dir dir(pocketDirection.x, pocketDirection.y, pocketDirection.z);
+
+        // store the finally used direction to display it in the dialog
+        Direction.setValue(dir.X(), dir.Y(), dir.Z());
+
+        // The length of a gp_Dir is 1 so the resulting pocket would have
+        // the length L in the direction of dir. But we want to have its height in the
+        // direction of the normal vector.
+        // Therefore we must multiply L by the factor that is necessary
+        // to make dir as long that its projection to the SketchVector
+        // equals the SketchVector.
+        // This is the scalar product of both vectors.
+        // Since the pocket length cannot be negative, the factor must not be negative.
+
+        double factor = fabs(dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
+
+        // factor would be zero if vectors are orthogonal
+        if (factor < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Pocket: Creation failed because direction is orthogonal to sketch's normal vector");
+
+        // perform the length correction if not along custom vector
+        if (AlongSketchNormal.getValue()) {
+            L = L / factor;
+            L2 = L2 / factor;
+        }
+
+        // explicitly set the Direction so that the dialog shows also the used direction
+        // if the sketch's normal vector was used
+        Direction.setValue(pocketDirection);
+
         dir.Transform(invObjLoc.Transformation());
 
         if (profileshape.IsNull())

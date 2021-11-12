@@ -52,7 +52,9 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
     void highlightReferences(Reference mode, bool on);
-    
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
+
 protected:
     virtual QIcon getIcon(void) const;
     virtual bool setEdit(int ModNum);

@@ -39,14 +39,17 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");    
     qApp->translate("Workbench", "TechDraw");
+    // Translations for View > Toolbars
     qApp->translate("Workbench", "TechDraw Pages");
     qApp->translate("Workbench", "TechDraw Views");
     qApp->translate("Workbench", "TechDraw Clips");
     qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw Tool Attributes");
     qApp->translate("Workbench", "TechDraw File Access");
     qApp->translate("Workbench", "TechDraw Decoration");
     qApp->translate("Workbench", "TechDraw Annotation");
     qApp->translate("Workbench", "Views");
+    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
 #endif
 
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
@@ -82,7 +85,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // toolattributes
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: centerlines and threading");
+    toolattrib->setCommand("Extensions: Centerlines/Threading");
     *toolattrib << "TechDraw_ExtensionCircleCenterLines";
     *toolattrib << "TechDraw_ExtensionThreadHoleSide";
     *toolattrib << "TechDraw_ExtensionThreadBoltSide";
@@ -198,7 +201,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *dims << "TechDraw_Dimension"
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
-    attribs->setCommand("TechDraw Toolattributes");
+    attribs->setCommand("TechDraw Tool Attributes");
     *attribs << "TechDraw_ExtensionCircleCenterLines";
     *attribs << "TechDraw_ExtensionThreadHoleSide";
     *attribs << "TechDraw_ExtensionThreadBoltSide";
@@ -280,7 +283,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *dims << "TechDraw_Dimension";
 
     Gui::ToolBarItem *attribs = new Gui::ToolBarItem(root);
-    attribs->setCommand("TechDraw Toolattributes");
+    attribs->setCommand("TechDraw Tool Attributes");
     *attribs << "TechDraw_ExtensionCircleCenterLines";
     *attribs << "TechDraw_ExtensionThreadHoleSide";
     *attribs << "TechDraw_ExtensionThreadBoltSide";

@@ -162,9 +162,22 @@ def getPreferences():
         'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][p.GetInt("ifcExportModel", 0)]
     }
 
+    # get ifcopenshell version
+    ifcos_version = 0.0
+    if hasattr(ifcopenshell, "version"):
+        if ifcopenshell.version.startswith("0"):
+            ifcos_version = float(ifcopenshell.version[:3])  # < 0.6
+        elif ifcopenshell.version.startswith("v"):
+            ifcos_version = float(ifcopenshell.version[1:4])  # 0.7
+        else:
+            print("Could not retrieve IfcOpenShell version. Version is set to {}".format(ifcos_version))
+    else:
+        print("Could not retrieve IfcOpenShell version. Version is set to {}".format(ifcos_version))
+
+    # set schema
     if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
-    elif hasattr(ifcopenshell, "version") and (float(ifcopenshell.version[:3]) >= 0.6):
+    elif ifcos_version >= 0.6:
         # v0.6 onwards allows to set our own schema
         schema = ["IFC4", "IFC2X3"][p.GetInt("IfcVersion", 0)]
     else:

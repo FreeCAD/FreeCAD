@@ -126,6 +126,8 @@ public:
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
 };
 
 class ViewProviderSweep : public ViewProviderPart
@@ -141,6 +143,8 @@ public:
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
     bool onDelete(const std::vector<std::string> &);
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
 };
 
 class ViewProviderOffset : public ViewProviderPart
@@ -187,6 +191,8 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     bool onDelete(const std::vector<std::string> &);
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
 
 protected:
     virtual bool setEdit(int ModNum);

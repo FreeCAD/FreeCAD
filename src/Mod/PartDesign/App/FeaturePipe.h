@@ -38,17 +38,16 @@ class PartDesignExport Pipe : public ProfileBased
 public:
     Pipe();
 
-
-    App::PropertyLinkSub     Spine;
-    App::PropertyBool        SpineTangent;
-    App::PropertyLinkSub     AuxillerySpine;
-    App::PropertyBool        AuxillerySpineTangent;
-    App::PropertyBool        AuxilleryCurvelinear;
+    App::PropertyLinkSub Spine;
+    App::PropertyBool SpineTangent;
+    App::PropertyLinkSub AuxillerySpine;
+    App::PropertyBool AuxillerySpineTangent;
+    App::PropertyBool AuxilleryCurvelinear;
     App::PropertyEnumeration Mode;
-    App::PropertyVector      Binormal;
+    App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
     App::PropertyEnumeration Transformation;
-    App::PropertyLinkList    Sections;
+    App::PropertyXLinkSubList Sections;
 
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
@@ -56,13 +55,14 @@ public:
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderPipe";
     }
-    //@}
 
 protected:
-    ///get the given edges and all their tangent ones
+    /// get the given edges and all their tangent ones
     void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
+    /// handle changed property
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 
 private:
     static const char* TypeEnums[];

@@ -74,6 +74,8 @@ public:
         return false;
     }
 
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
+
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 protected:

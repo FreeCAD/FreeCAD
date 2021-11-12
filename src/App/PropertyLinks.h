@@ -973,6 +973,7 @@ public:
 
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
+    bool upgrade(Base::XMLReader &reader, const char *typeName);
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;

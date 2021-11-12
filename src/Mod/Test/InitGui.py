@@ -77,4 +77,5 @@ Gui.addWorkbench(TestWorkbench())
 FreeCAD.__unit_test__ += [ "Workbench",
                            "Menu",
                            "Menu.MenuDeleteCases",
-                           "Menu.MenuCreateCases" ]
+                           "Menu.MenuCreateCases",
+                           "TreeView"]

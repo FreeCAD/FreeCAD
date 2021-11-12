@@ -28,6 +28,7 @@
 #include <QTreeWidget>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
+#include <QDockWidget>
 
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
@@ -131,6 +132,13 @@ public:
 
     void synchronizeSelectionCheckBoxes();
 
+    bool getSelectedSiblingObjectItems(std::vector<DocumentObjectItem *> &items) const;
+
+    bool allowMoveUpInGroup(const std::vector<DocumentObjectItem *> &items, DocumentObjectItem **preceding = 0) const;
+    bool allowMoveDownInGroup(const std::vector<DocumentObjectItem *> &items, DocumentObjectItem **succeeding = 0) const;
+
+    static bool moveSiblings(const std::vector<DocumentObjectItem *> &items, DocumentObjectItem *pivot, int direction);
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -155,6 +163,7 @@ protected:
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
+    void focusInEvent(QFocusEvent *event) override;
     void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=true);
 
@@ -183,6 +192,7 @@ private Q_SLOTS:
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
+    void onTabifiedDockWidgetActivated(QDockWidget *dockWidget);
     void onUpdateStatus(void);
 
 Q_SIGNALS:
@@ -211,6 +221,9 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+
+    typedef bool (*DocumentObjectItemComparator)(const DocumentObjectItem *a, const DocumentObjectItem *b);
+    bool sortObjectItems(QTreeWidgetItem *node, DocumentObjectItemComparator comparator);
 
 private:
     QAction* createGroupAction;
@@ -249,6 +262,8 @@ private:
     std::unordered_map<App::DocumentObject*,std::bitset<32> > ChangedObjects;
 
     std::unordered_map<std::string,std::vector<long> > NewObjects;
+
+    std::set<App::DocumentObject *> ReorderedObjects;
 
     static std::set<TreeWidget*> Instances;
 
@@ -341,7 +356,7 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
-    int findRootIndex(App::DocumentObject *childObj);
+    int findRootIndex(const ViewProviderDocumentObject *childObj) const;
 
     DocumentObjectItem *findItemByObject(bool sync,
             App::DocumentObject *obj, const char *subname, bool select=false);
@@ -441,7 +456,13 @@ public:
     int isParentGroup() const;
 
     DocumentObjectItem *getParentItem() const;
+    DocumentObjectItem *getNextSibling() const;
+    DocumentObjectItem *getPreviousSibling() const;
+
     TreeWidget *getTree() const;
+
+    void getExpandedSnapshot(std::vector<bool> &snapshot) const;
+    void applyExpandedSnapshot(const std::vector<bool> &snapshot, std::vector<bool>::const_iterator &from);
 
 private:
     void setCheckState(bool checked);

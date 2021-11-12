@@ -88,8 +88,10 @@ PyMethodDef Application::Methods[] = {
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourceDir, METH_VARARGS,
      "Get the root directory of all resources"},
+    {"getUserConfigDir", (PyCFunction) Application::sGetUserConfigDir, METH_VARARGS,
+     "Get the root directory of user config files"},
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir, METH_VARARGS,
-     "Get the root directory of user settings"},
+     "Get the root directory of application data"},
     {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir, METH_VARARGS,
      "getUserMacroDir(bool=False) -> string"
      "Get the directory of the user's macro directory\n"
@@ -648,6 +650,15 @@ PyObject* Application::sGetResourceDir(PyObject * /*self*/, PyObject *args)
         return NULL;                       // NULL triggers exception
 
     Py::String datadir(Application::getResourceDir(),"utf-8");
+    return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetUserConfigDir(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::String datadir(Application::getUserConfigDir(),"utf-8");
     return Py::new_reference_to(datadir);
 }
 

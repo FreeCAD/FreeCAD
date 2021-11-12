@@ -108,20 +108,29 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     Gui::Document* doc = PipeView->getDocument();
 
-    //make sure the user sees all important things: the
-    //spine/auxiliary spine he already selected
+    // make sure the user sees all important things and load the values
+    // also save visibility state to reset it later when pipe is closed
+    // first the spine
     if (pipe->Spine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-        spineShow = svp->isShow();
-        svp->setVisible(true);
-    }
-
-    //add initial values
-    if (pipe->Profile.getValue())
-        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
-    if (pipe->Spine.getValue())
+        auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
+        spineShow = spineVP->isShow();
+        spineVP->setVisible(true);
         ui->spineBaseEdit->setText(QString::fromUtf8(pipe->Spine.getValue()->Label.getValue()));
-
+    }
+    // the profile
+    if (pipe->Profile.getValue()) {
+        auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
+        profileShow = profileVP->isShow();
+        profileVP->setVisible(true);
+        ui->profileBaseEdit->setText(make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
+    }
+    // the auxiliary spine
+    if (pipe->AuxillerySpine.getValue()) {
+        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+        auxSpineShow = svp->isShow();
+        svp->show();
+    }
+    // the spine edges
     std::vector<std::string> strings = pipe->Spine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
         QString label = QString::fromStdString(*it);
@@ -145,19 +154,11 @@ TaskPipeParameters::~TaskPipeParameters()
     try {
         if (vp) {
             PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-            Gui::Document* doc = vp->getDocument();
 
-            //make sure the user sees all important things: the
-            //spine/auxiliary spine he already selected
-            if (pipe->Spine.getValue()) {
-                auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-                svp->setVisible(spineShow);
-                spineShow = false;
-            }
-
-            //setting visibility to true is needed when preselecting profile and path prior to invoking sweep
+            // setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
         }
     }
     catch (const Base::Exception& e) {
@@ -186,7 +187,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
                 if (object) {
-                    QString label = QString::fromUtf8(object->Label.getValue());
+                    QString label = make2DLabel(object, {msg.pSubName});
                     ui->profileBaseEdit->setText(label);
                 }
             }
@@ -215,7 +216,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->clear();
                 }
             }
-            else if(selectionMode == refObjAdd) {
+            else if (selectionMode == refObjAdd) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -235,16 +236,16 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskPipeParameters::onTransitionChanged(int idx) {
-
+void TaskPipeParameters::onTransitionChanged(int idx)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
     recomputeFeature();
 }
 
-void TaskPipeParameters::onButtonRefAdd(bool checked) {
-
+void TaskPipeParameters::onButtonRefAdd(bool checked)
+{
     if (checked) {
-        //clearButtons(refAdd);
+        clearButtons(refAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
@@ -257,10 +258,10 @@ void TaskPipeParameters::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeParameters::onButtonRefRemove(bool checked) {
-
+void TaskPipeParameters::onButtonRefRemove(bool checked)
+{
     if (checked) {
-        //clearButtons(refRemove);
+        clearButtons(refRemove);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
@@ -273,10 +274,10 @@ void TaskPipeParameters::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeParameters::onBaseButton(bool checked) {
-
+void TaskPipeParameters::onBaseButton(bool checked)
+{
     if (checked) {
-        //clearButtons(refRemove);
+        clearButtons(refObjAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
@@ -300,7 +301,7 @@ void TaskPipeParameters::onProfileButton(bool checked)
             pvp->setVisible(true);
         }
 
-        //clearButtons(refRemove);
+        clearButtons(refProfile);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
@@ -313,14 +314,14 @@ void TaskPipeParameters::onProfileButton(bool checked)
     }
 }
 
-void TaskPipeParameters::onTangentChanged(bool checked) {
-
+void TaskPipeParameters::onTangentChanged(bool checked)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
     recomputeFeature();
 }
 
-void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr) {
-
+void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr)
+{
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -355,8 +356,8 @@ void TaskPipeParameters::onDeleteEdge()
     }
 }
 
-bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
+{
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -382,12 +383,13 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
                     success = false;
                 }
                 else {
-                    pipe->Profile.setValue(profile);
+                    pipe->Profile.setValue(profile, {msg.pSubName});
                 }
 
                 // hide the old or new profile again
                 auto* pvp = doc->getViewProvider(pipe->Profile.getValue());
-                if(pvp) pvp->setVisible(false);
+                if (pvp)
+                    pvp->setVisible(false);
             }
             return success;
         }
@@ -423,18 +425,52 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeParameters::clearButtons() {
-
-    ui->buttonProfileBase->setChecked(false);
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
-    ui->buttonSpineBase->setChecked(false);
+void TaskPipeParameters::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refProfile)
+        ui->buttonProfileBase->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refObjAdd)
+        ui->buttonSpineBase->setChecked(false);
 }
 
-void TaskPipeParameters::exitSelectionMode() {
-
+void TaskPipeParameters::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
+}
+
+void TaskPipeParameters::setVisibilityOfSpineAndProfile()
+{
+    if (vp) {
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        Gui::Document* doc = vp->getDocument();
+
+        // set visibility to the state when the pipe was opened
+        for (auto obj : pipe->Sections.getValues()) {
+            auto* sectionVP = doc->getViewProvider(obj);
+            sectionVP->setVisible(profileShow);
+        }
+        if (pipe->Spine.getValue()) {
+            auto* spineVP = doc->getViewProvider(pipe->Spine.getValue());
+            spineVP->setVisible(spineShow);
+            spineShow = false;
+        }
+        if (pipe->Profile.getValue()) {
+            auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
+            profileVP->setVisible(profileShow);
+            profileShow = false;
+        }
+        if (pipe->AuxillerySpine.getValue()) {
+            auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+            svp->setVisible(auxSpineShow);
+            auxSpineShow = false;
+        }
+    }
 }
 
 bool TaskPipeParameters::accept()
@@ -443,12 +479,12 @@ bool TaskPipeParameters::accept()
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
-    auto pcActiveBody = PartDesignGui::getBodyFor(pcPipe, false);
+    auto pcActiveBody = PartDesignGui::getBodyFor (pcPipe, false);
     if (!pcActiveBody) {
         QMessageBox::warning(this, tr("Input error"), tr("No active body"));
         return false;
     }
-  //auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+  //auto pcActivePart = PartDesignGui::getPartFor (pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
     bool extReference = false;
@@ -473,7 +509,7 @@ bool TaskPipeParameters::accept()
         extReference = true;
     }
     else {
-        for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
             if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                 extReference = true;
                 break;
@@ -491,7 +527,6 @@ bool TaskPipeParameters::accept()
             return false;
 
         if (!dlg.radioXRef->isChecked()) {
-
             if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
                 pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(spine, "",
                                        dlg.radioIndependent->isChecked()),
@@ -507,9 +542,8 @@ bool TaskPipeParameters::accept()
 
             std::vector<App::DocumentObject*> objs;
             int index = 0;
-            for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-
-                if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+            for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, "", dlg.radioIndependent->isChecked()));
                     copies.push_back(objs.back());
                 }
@@ -525,6 +559,8 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        setVisibilityOfSpineAndProfile();
+
         App::DocumentObject* spine = pcPipe->Spine.getValue();
         std::vector<std::string> subNames = pcPipe->Spine.getSubValues();
         App::PropertyLinkT propT(spine, subNames);
@@ -600,15 +636,6 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    Gui::Document* doc = Gui::Application::Instance->getDocument(pipe->getDocument());
-
-    //make sure the user sees an important things: the base feature to select edges and the
-    //spine/auxiliary spine he already selected
-    if(pipe->AuxillerySpine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
-        auxSpineShow = svp->isShow();
-        svp->show();
-    }
 
     //add initial values
     if (pipe->AuxillerySpine.getValue())
@@ -633,49 +660,38 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
 TaskPipeOrientation::~TaskPipeOrientation()
 {
-    try {
-        if (vp) {
-            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-            Gui::Document* doc = vp->getDocument();
-
-            //make sure the user sees al important things: the base feature to select edges and the
-            //spine/auxiliary spine he already selected
-            if (pipe->AuxillerySpine.getValue()) {
-                auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
-                svp->setVisible(auxSpineShow);
-                auxSpineShow = false;
-            }
-
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
-        }
-    }
-    catch (const Base::RuntimeError&) {
-        // getDocument() may raise an exception
+    if (vp) {
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
 
-void TaskPipeOrientation::onOrientationChanged(int idx) {
-
+void TaskPipeOrientation::onOrientationChanged(int idx)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->Mode.setValue(idx);
     recomputeFeature();
 }
 
-void TaskPipeOrientation::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
-    ui->buttonProfileBase->setChecked(false);
+void TaskPipeOrientation::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refObjAdd)
+        ui->buttonProfileBase->setChecked(false);
 }
 
-void TaskPipeOrientation::exitSelectionMode() {
-
+void TaskPipeOrientation::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
-void TaskPipeOrientation::onButtonRefAdd(bool checked) {
-
+void TaskPipeOrientation::onButtonRefAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -687,9 +703,10 @@ void TaskPipeOrientation::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeOrientation::onButtonRefRemove(bool checked) {
-
+void TaskPipeOrientation::onButtonRefRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -704,6 +721,7 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
 void TaskPipeOrientation::onBaseButton(bool checked)
 {
     if (checked) {
+        clearButtons(refObjAdd);
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
@@ -740,8 +758,8 @@ void TaskPipeOrientation::onBinormalChanged(double)
     recomputeFeature();
 }
 
-void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
-
+void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
+{
     if (selectionMode == none)
         return;
 
@@ -771,7 +789,7 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
                     ui->profileBaseEdit->clear();
                 }
             }
-            else if(selectionMode == refObjAdd) {
+            else if (selectionMode == refObjAdd) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -792,8 +810,8 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
+{
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -832,8 +850,8 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name) {
-
+void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name)
+{
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -868,8 +886,8 @@ void TaskPipeOrientation::onDeleteItem()
     }
 }
 
-void TaskPipeOrientation::updateUI(int idx) {
-
+void TaskPipeOrientation::updateUI(int idx)
+{
     //make sure we resize to the size of the current page
     for (int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -918,7 +936,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     for (auto obj : pipe->Sections.getValues()) {
         Gui::Application::Instance->showViewProvider(obj);
-        QString label = QString::fromUtf8(obj->Label.getValue());
+        QString label = make2DLabel(obj, pipe->Sections.getSubValues(obj));
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
@@ -932,25 +950,32 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
         QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
 }
 
-TaskPipeScaling::~TaskPipeScaling() {
-
+TaskPipeScaling::~TaskPipeScaling()
+{
+    if (vp) {
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
+    }
 }
 
-void TaskPipeScaling::clearButtons() {
-
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
+void TaskPipeScaling::clearButtons(const selectionModes notThis)
+{
+    // TODO: Clear buttons in the other pipe taskboxes as well
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
 }
 
-void TaskPipeScaling::exitSelectionMode() {
-
+void TaskPipeScaling::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
-void TaskPipeScaling::onButtonRefAdd(bool checked) {
-
+void TaskPipeScaling::onButtonRefAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
@@ -962,9 +987,10 @@ void TaskPipeScaling::onButtonRefAdd(bool checked) {
     }
 }
 
-void TaskPipeScaling::onButtonRefRemove(bool checked) {
-
+void TaskPipeScaling::onButtonRefRemove(bool checked)
+{
     if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
@@ -976,14 +1002,14 @@ void TaskPipeScaling::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeScaling::onScalingChanged(int idx) {
-
+void TaskPipeScaling::onScalingChanged(int idx)
+{
     updateUI(idx);
     static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
 }
 
-void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
-
+void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
+{
     if (selectionMode == none)
         return;
 
@@ -992,7 +1018,7 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
             App::Document* document = App::GetApplication().getDocument(msg.pDocName);
             App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
             if (object) {
-                QString label = QString::fromUtf8(object->Label.getValue());
+                QString label = make2DLabel(object, {msg.pSubName});
                 if (selectionMode == refAdd) {
                     QListWidgetItem* item = new QListWidgetItem();
                     item->setText(label);
@@ -1012,11 +1038,10 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
-
+bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const
+{
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {
-
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
 
@@ -1029,33 +1054,35 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
         //supported, not individual edges of a part
 
         //change the references
-        std::vector<App::DocumentObject*> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.getValues();
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
         App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
         std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
         if (selectionMode == refAdd) {
             if (f == refs.end())
-                refs.push_back(obj);
+                pipe->Sections.addValue(obj, {msg.pSubName});
             else
                 return false; // duplicate selection
         }
         else {
             if (f != refs.end())
-                refs.erase(f);
+                // Removing just the object this way instead of `refs.erase` and
+                // `setValues(ref)` cleanly ensures subnames are preserved.
+                pipe->Sections.removeValue(obj);
             else
                 return false;
         }
 
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
-        static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.setValues(refs);
         return true;
     }
 
     return false;
 }
 
-void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name) {
-
+void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name)
+{
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
@@ -1082,18 +1109,19 @@ void TaskPipeScaling::onDeleteSection()
 
         // if something was found, delete it and update the section list
         if (f != refs.end()) {
-            refs.erase(f);
-            pipe->Sections.setValues(refs);
+            // Removing just the object this way instead of `refs.erase` and
+            // `setValues(ref)` cleanly ensures subnames are preserved.
+            pipe->Sections.removeValue(obj);
             clearButtons();
             recomputeFeature();
         }
     }
 }
 
-void TaskPipeScaling::updateUI(int idx) {
-
+void TaskPipeScaling::updateUI(int idx)
+{
     //make sure we resize to the size of the current page
-    for(int i=0; i<ui->stackedWidget->count(); ++i)
+    for (int i=0; i<ui->stackedWidget->count(); ++i)
         ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     if (idx < ui->stackedWidget->count())
