@@ -726,6 +726,16 @@ void DlgExpressionInput::setupColors()
         this->ui->checkBoxEvalFunc->setStyleSheet(checkboxStyle);
     }
 
+    // Wrap stylesheet to apply only to the specific type of widget. This fixes
+    // wrong color when showing child widgets (e.g. context menu)
+    auto wrapStylesheet = [](QString &text) {
+        text = QStringLiteral("QPlainTextEdit {") + text + QStringLiteral("}");
+    };
+    wrapStylesheet(this->textColorStyle);
+    wrapStylesheet(this->logColorStyle);
+    wrapStylesheet(this->warningColorStyle);
+    wrapStylesheet(this->errorColorStyle);
+
     //Sets the intial styles on launch and without bound data
     this->ui->msg->setStyleSheet(this->textColorStyle);
     this->ui->expression->setStyleSheet(this->textColorStyle);

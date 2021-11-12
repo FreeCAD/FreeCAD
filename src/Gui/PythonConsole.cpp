@@ -526,7 +526,7 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
             if (it.key() != QStringLiteral("Background"))
                 pythonSyntax->setColor(QString::fromLatin1(sReason), color);
             else if (value)
-                setStyleSheet(QStringLiteral("background: %1").arg(
+                setStyleSheet(QStringLiteral("Gui--PythonConsole {background: %1}").arg(
                             color.name(QColor::HexRgb)));
             else
                 setStyleSheet(QString());
