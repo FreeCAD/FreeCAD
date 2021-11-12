@@ -118,6 +118,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     CreateSpreadsheetCommands();
 
     SpreadsheetGui::ViewProviderSheet::init();
+    SpreadsheetGui::ViewProviderSheetPython::init();
     SpreadsheetGui::Workbench::init();
     SpreadsheetGui::SheetView::init();
 
