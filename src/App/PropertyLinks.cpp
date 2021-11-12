@@ -2180,6 +2180,36 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     _mapped.swap(mapped);
 }
 
+bool PropertyLinkSubList::upgrade(Base::XMLReader &reader, const char *typeName)
+{
+    Base::Type type = Base::Type::fromName(typeName);
+    if (type.isDerivedFrom(PropertyLink::getClassTypeId())) {
+        PropertyLink prop;
+        prop.setContainer(getContainer());
+        prop.Restore(reader);
+        setValue(prop.getValue());
+        return true;
+    }
+    else if (type.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+        PropertyLinkList prop;
+        prop.setContainer(getContainer());
+        prop.Restore(reader);
+        std::vector<std::string> subnames;
+        subnames.resize(prop.getSize());
+        setValues(prop.getValues(), subnames);
+        return true;
+    }
+    else if (type.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+        PropertyLinkSub prop;
+        prop.setContainer(getContainer());
+        prop.Restore(reader);
+        setValue(prop.getValue(), prop.getSubValues());
+        return true;
+    }
+
+    return false;
+}
+
 Property *PropertyLinkSubList::CopyOnImportExternal(
         const std::map<std::string,std::string> &nameMap) const
 {
