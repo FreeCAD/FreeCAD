@@ -25,5 +25,12 @@
                 <UserDocu>returns a list with the selected cells</UserDocu>
             </Documentation>
         </Methode>
+      <Methode Name="select">
+        <Documentation>
+          <UserDocu>
+select(index, flags): Select the specified cell using the given QItemSelectionModel.SelectionFlag set
+select(topLeft, bottomRight, flags): Select the specified range using the given QItemSelectionModel.SelectionFlag set</UserDocu>
+        </Documentation>
+      </Methode>
     </PythonExport>
 </GenerateModel>

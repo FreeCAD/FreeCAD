@@ -44,6 +44,35 @@ PyObject* ViewProviderSpreadsheetPy::selectedCells(PyObject* /*obj*/)
     return out;
 }
 
+PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
+{
+    ViewProviderSheet* vp = this->getViewProviderSheetPtr();
+    SheetView* sheetView = vp->getView();
+    Spreadsheet::Sheet* sheet = sheetView->getSheet();
+
+    Py::Sequence args(_args);
+
+    const char* cell;
+    const char* topLeft;
+    const char* bottomRight;
+    int flags = 0;
+    if (args.size() == 2 && PyArg_ParseTuple(_args, "si", &cell, &flags)) {
+        sheetView->select(App::CellAddress(cell), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else if (args.size() == 3 && PyArg_ParseTuple(_args, "ssi", &topLeft, &bottomRight, &flags)) {
+        sheetView->select(App::CellAddress(topLeft), App::CellAddress(bottomRight), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else {
+        if (args.size() == 2)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1') and QItemSelectionModel.SelectionFlags");
+        else if (args.size() == 3)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1'), a second cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags");
+        else
+            throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
+    }
+    return Py_None;
+}
+
 PyObject *ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;

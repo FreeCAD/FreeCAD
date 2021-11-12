@@ -73,6 +73,10 @@ public:
 
     QModelIndexList selectedIndexes() const;
 
+    void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
+
+    void select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags);
+
     QModelIndex currentIndex() const;
 
     void deleteSelection();

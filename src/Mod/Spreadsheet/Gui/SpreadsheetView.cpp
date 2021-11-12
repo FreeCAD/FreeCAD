@@ -419,6 +419,16 @@ QModelIndexList SheetView::selectedIndexes() const
     return ui->cells->selectionModel()->selectedIndexes();
 }
 
+void SpreadsheetGui::SheetView::select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(model->index(cell.row(), cell.col()), flags);
+}
+
+void SpreadsheetGui::SheetView::select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(QItemSelection(model->index(topLeft.row(), topLeft.col()), model->index(bottomRight.row(), bottomRight.col())), flags);
+}
+
 void SheetView::deleteSelection()
 {
     ui->cells->deleteSelection();
