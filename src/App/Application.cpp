@@ -2958,10 +2958,10 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
 
     boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
 
-    if (!boost::filesystem::exists(appData)) {
-        // This should never ever happen
-        throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    }
+    //if (!boost::filesystem::exists(appData)) {
+    //    // This should never ever happen
+    //    throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
+    //}
 
     // If a custom user home path is given then don't modify it
     if (customHome.isEmpty()) {
