@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # *****************************************************************************
-# *                                                                           *
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                           *
-# *   (c) Gauthier Briere - 2018, 2019                                        *
-# *   (c) Schildkroet - 2019-2020                                             *
-# *   (c) Gary L Hasson - 2020                                                *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>                 *
+# *   Copyright (c) 2018-2019 Gauthier Briere                                 *
+# *   Copyright (c) 2019-2020 Schildkroet                                     *
+# *   Copyright (c) 2020 Gary L Hasson                                        *
 # *                                                                           *
 # *   This file is part of the FreeCAD CAx development system.                *
 # *                                                                           *
