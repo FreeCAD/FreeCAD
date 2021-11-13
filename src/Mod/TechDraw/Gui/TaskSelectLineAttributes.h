@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 edi                *
+ *   Copyright (c) 2021 edi                                                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
