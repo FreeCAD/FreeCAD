@@ -70,7 +70,7 @@ public:
 
     inline SheetView* getView() const { return view; }
 
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
 protected:
     SheetView* showSpreadsheetView();
