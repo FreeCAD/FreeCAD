@@ -121,6 +121,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     SpreadsheetGui::ViewProviderSheetPython::init();
     SpreadsheetGui::Workbench::init();
     SpreadsheetGui::SheetView::init();
+    SpreadsheetGui::SheetViewPy::init_type();
 
     // register preference page
     new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");

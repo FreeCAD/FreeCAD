@@ -54,7 +54,9 @@ void MDIViewPy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
 
-    add_varargs_method("message",&MDIViewPy::message,"message()");
+    add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
+    add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
+    add_varargs_method("supportMessage",&MDIViewPy::supportMessage,"supportMessage(str)");
     add_varargs_method("fitAll",&MDIViewPy::fitAll,"fitAll()");
     add_varargs_method("setActiveObject", &MDIViewPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &MDIViewPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
@@ -67,6 +69,8 @@ MDIViewPy::MDIViewPy(MDIView *mdi)
 
 MDIViewPy::~MDIViewPy()
 {
+    // in case the class is instantiated on the stack
+    ob_refcnt = 0;
 }
 
 Py::Object MDIViewPy::repr()
@@ -79,16 +83,18 @@ Py::Object MDIViewPy::repr()
     return Py::String(s_out.str());
 }
 
-Py::Object MDIViewPy::message(const Py::Tuple& args)
+Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 {
     const char **ppReturn = 0;
     char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
         throw Py::Exception();
 
     try {
+        bool ok = false;
         if (_view)
-            _view->onMsg(psMsgStr,ppReturn);
+            ok = _view->onMsg(psMsgStr,ppReturn);
+        return Py::Boolean(ok);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -99,7 +105,29 @@ Py::Object MDIViewPy::message(const Py::Tuple& args)
     catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
-    return Py::None();
+}
+
+Py::Object MDIViewPy::supportMessage(const Py::Tuple& args)
+{
+    char *psMsgStr;
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
+        throw Py::Exception();
+
+    try {
+        bool ok = false;
+        if (_view)
+            _view->onHasMsg(psMsgStr);
+        return Py::Boolean(ok);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
 }
 
 Py::Object MDIViewPy::fitAll(const Py::Tuple& args)
