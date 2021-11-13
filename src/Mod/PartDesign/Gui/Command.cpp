@@ -1004,18 +1004,32 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         auto objCmd = Gui::Command::getObjectCmd(feature);
-        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
-            FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
-        }
-        else {
-            std::ostringstream ss;
-            for (auto &s : subs)
-                ss << "'" << s << "',";
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
-        }
 
-        //for additive and subtractive lofts allow the user to preselect the sections
+        auto runProfileCmd =
+            [=]() {
+                FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
+            };
+
+        auto runProfileCmdWithSubs =
+            [=]() {
+                std::ostringstream ss;
+                for (auto &s : subs)
+                    ss << "'" << s << "',";
+                FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
+            };
+
         if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
+            // for additive and subtractive lofts set subvalues even for sketches
+            // when a vertex is first selected
+            auto subName = subs.empty() ? "" : subs.front();
+
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+                !(subName.size() > 6 && subName.substr(0,6) == "Vertex"))
+                runProfileCmd();
+            else
+                runProfileCmdWithSubs();
+
+            // for additive and subtractive lofts allow the user to preselect the sections
             std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
             if (selection.size() > 1) { //treat additional selected objects as sections
                 for (std::vector<Gui::SelectionObject>::size_type ii = 1; ii < selection.size(); ii++) {
@@ -1027,6 +1041,12 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                     FCMD_OBJ_CMD(Feat, "Sections += [(" << objCmdSection << ", [" << ss.str() << "])]");
                 }
             }
+        }
+        else {
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty())
+                runProfileCmd();
+            else
+                runProfileCmdWithSubs();
         }
 
         // for additive and subtractive pipes allow the user to preselect the spines

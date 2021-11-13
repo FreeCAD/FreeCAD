@@ -105,6 +105,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);
 
+        // TODO: if it is a single vertex of a sketch, use that subshape's name
         QString label = make2DLabel(profile, loft->Profile.getSubValues());
         ui->profileBaseEdit->setText(label);
     }
@@ -112,6 +113,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     for (auto &subSet : loft->Sections.getSubListValues()) {
         Gui::Application::Instance->showViewProvider(subSet.first);
 
+        // TODO: if it is a single vertex of a sketch, use that subshape's name
         QString label = make2DLabel(subSet.first, subSet.second);
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
@@ -152,6 +154,7 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             App::Document* document = App::GetApplication().getDocument(msg.pDocName);
             App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
             if (object) {
+                // TODO: if it is a single vertex of a sketch, use that subshape's name
                 QString label = make2DLabel(object, {msg.pSubName});
                 if (selectionMode == refProfile) {
                     ui->profileBaseEdit->setText(label);
