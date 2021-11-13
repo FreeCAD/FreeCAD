@@ -35,6 +35,9 @@ using namespace TechDrawGui;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
+    qApp->translate("Workbench", "Extensions: Attributes/Modifications");
+    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
+    qApp->translate("Workbench", "Extensions: Dimensions");
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");    
@@ -85,7 +88,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: attributes and modifications");
+    toolattrib->setCommand("Extensions: Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionExtendLine";
     *toolattrib << "TechDraw_ExtensionShortenLine";
@@ -101,7 +104,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
-    toolcenter->setCommand("Extensions: centerlines and threading");
+    toolcenter->setCommand("Extensions: Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
@@ -116,7 +119,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
-    tooldimensions->setCommand("Extensions: dimensions");
+    tooldimensions->setCommand("Extensions: Dimensions");
     *tooldimensions << "TechDraw_ExtensionInsertDiameter";
     *tooldimensions << "TechDraw_ExtensionInsertSquare";
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
