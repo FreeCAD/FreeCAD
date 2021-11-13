@@ -650,7 +650,8 @@ bool   TaskPocketParameters::getAlongSketchNormal(void) const
 
 bool   TaskPocketParameters::getCustom(void) const
 {
-    return ui->checkBoxDirection->isChecked();
+    // index 2 is hardcoded to custom vector
+    return ui->directionCB->currentIndex() == 2 ? true : false;
 }
 
 std::string TaskPocketParameters::getReferenceAxis(void) const
