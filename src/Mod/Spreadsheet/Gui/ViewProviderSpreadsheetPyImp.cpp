@@ -72,7 +72,7 @@ PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
     return Py_None;
 }
 
-PyObject* ViewProviderSpreadsheetPy::currentIndex(PyObject* _args)
+PyObject* ViewProviderSpreadsheetPy::currentIndex(PyObject* /*_args*/)
 {
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView* sheetView = vp->getView();
