@@ -1252,10 +1252,11 @@ void CmdPartDesignPad::activated(int iMsg)
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
 
-        if (!Feat) return;
+        if (!Feat)
+            return;
 
         // specific parameters for Pad
-        FCMD_OBJ_CMD(Feat,"Length = 10.0");
+        FCMD_OBJ_CMD(Feat, "Length = 10.0");
         Gui::Command::updateActive();
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
@@ -1307,11 +1308,21 @@ void CmdPartDesignPocket::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, App::DocumentObject *Feat) {
+    auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
 
-        if (!Feat) return;
+        if (!Feat)
+            return;
 
-        FCMD_OBJ_CMD(Feat,"Length = 5.0");
+        FCMD_OBJ_CMD(Feat, "Length = 10.0");
+        Gui::Command::updateActive();
+
+        Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
+
+        if (sketch) {
+            std::ostringstream str;
+            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
+        }
+
         finishProfileBased(cmd, sketch, Feat);
         cmd->adjustCameraPosition();
     };
