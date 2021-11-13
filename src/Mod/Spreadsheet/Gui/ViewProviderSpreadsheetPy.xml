@@ -41,5 +41,10 @@ select(topLeft, bottomRight, flags): Select the specified range using the given 
           <UserDocu>Set the current active cell</UserDocu>
         </Documentation>
       </Methode>
+      <Methode Name="getView">
+        <Documentation>
+          <UserDocu>Get access to the sheet view</UserDocu>
+        </Documentation>
+      </Methode>
     </PythonExport>
 </GenerateModel>

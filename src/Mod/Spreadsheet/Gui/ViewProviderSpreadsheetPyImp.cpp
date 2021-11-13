@@ -94,6 +94,18 @@ PyObject* ViewProviderSpreadsheetPy::setCurrentIndex(PyObject* args)
     return Py_None;
 }
 
+PyObject* ViewProviderSpreadsheetPy::getView(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    ViewProviderSheet* vp = this->getViewProviderSheetPtr();
+    SheetView* sheetView = vp->getView();
+    if (sheetView)
+        return sheetView->getPyObject();
+    Py_RETURN_NONE;
+}
+
 PyObject *ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
