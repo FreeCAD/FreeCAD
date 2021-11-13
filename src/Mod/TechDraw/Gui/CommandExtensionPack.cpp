@@ -129,6 +129,7 @@ void execHoleCircle(Gui::Command* cmd){
                              QObject::tr("Less then three circles selected"));
         return;
     }
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Draw bolt circle centerlines"));
     double scale = objFeat->getScale();
     Base::Vector3d bigCenter = _circleCenter(Circles[0]->center,
                                              Circles[1]->center,
@@ -153,6 +154,7 @@ void execHoleCircle(Gui::Command* cmd){
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionHoleCircle)
@@ -196,6 +198,7 @@ void execCircleCenterLines(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Circle Centerlines"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Draw Circle Centerlines"));
     double scale = objFeat->getScale();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
@@ -225,6 +228,7 @@ void execCircleCenterLines(Gui::Command* cmd){
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCircleCenterLines)
@@ -369,6 +373,7 @@ void execThreadHoleSide(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Thread Hole Side"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Thread Hole Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         _createThreadLines(SubNames, objFeat, 1.176f);
@@ -376,6 +381,7 @@ void execThreadHoleSide(Gui::Command* cmd){
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleSide)
@@ -418,6 +424,7 @@ void execThreadBoltSide(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Thread Bolt Side"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Thread Bolt Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         _createThreadLines(SubNames, objFeat, 0.85f);
@@ -425,6 +432,7 @@ void execThreadBoltSide(Gui::Command* cmd){
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltSide)
@@ -467,13 +475,15 @@ void execThreadHoleBottom(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Thread Hole Bottom"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Thread Hole Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
         _createThreadCircle(Name, objFeat, 1.177f);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
-    objFeat->requestPaint();    
+    objFeat->requestPaint();
+    Gui::Command::commitCommand();  
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleBottom)
@@ -516,13 +526,15 @@ void execThreadBoltBottom(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Thread Bolt Bottom"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Thread Bolt Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
         _createThreadCircle(Name, objFeat, 0.85f);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
-    objFeat->requestPaint();    
+    objFeat->requestPaint();
+    Gui::Command::commitCommand();  
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltBottom)
@@ -749,6 +761,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(this,selection,objFeat,"TechDraw Change Line Attributes"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (std::string name : subNames){
         int num = DrawUtil::getIndexFromName(name);
@@ -768,6 +781,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg){
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand(); 
 }
 
 bool CmdTechDrawExtensionChangeLineAttributes::isActive(void)
@@ -800,11 +814,12 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
 void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("VertexAtIntersection gestartet\n");
+    //Base::Console().Message("VertexAtIntersection started\n");
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(this,selection,objFeat,"TechDraw Create Vertex at Intersection"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Vertex at Intersection"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> interPoints;
     if (SubNames.size() >=2){
@@ -830,6 +845,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
+    Gui::Command::commitCommand();
 }
 
 bool CmdTechDrawExtensionVertexAtIntersection::isActive(void)
@@ -849,6 +865,7 @@ void execDrawCosmArc(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Draw Cosmetic Arc of Circle"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Draw Cosmetic Arc"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames,objFeat);
@@ -864,6 +881,7 @@ void execDrawCosmArc(Gui::Command* cmd){
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
+        Gui::Command::commitCommand();
     }
 }
 
@@ -909,6 +927,7 @@ void execDrawCosmCircle(Gui::Command* cmd){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Draw Cosmetic Circle"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Draw Cosmetic Circle"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames,objFeat);
@@ -922,6 +941,7 @@ void execDrawCosmCircle(Gui::Command* cmd){
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
+        Gui::Command::commitCommand();
     }
 }
 
@@ -1070,6 +1090,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Create Line Parallel/Perpendicular"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Line Parallel/Perpendicular"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2){
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
@@ -1102,6 +1123,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel){
             cmd->getSelection().clearSelection();
         }
     }
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionLineParallel)
@@ -1304,12 +1326,14 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg){
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(this,selection,objFeat,"TechDraw Lock/Unlock View"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
     if (objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())){
         auto objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         bool lockPosition = objFeat->LockPosition.getValue();
         lockPosition = !lockPosition;
         objFeat->LockPosition.setValue(lockPosition);
     }
+    Gui::Command::commitCommand();
 }
 
 bool CmdTechDrawExtensionLockUnlockView::isActive(void)
@@ -1342,7 +1366,7 @@ CmdTechDrawExtensionPositionSectionView::CmdTechDrawExtensionPositionSectionView
 void CmdTechDrawExtensionPositionSectionView::activated(int iMsg){
     // position a section view
     Q_UNUSED(iMsg);
-    Base::Console().Message("PositionSectionView started\n");
+    //Base::Console().Message("PositionSectionView started\n");
     auto selection = getSelection().getSelectionEx();
     if( selection.empty() ) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -1391,8 +1415,9 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend){
     // extend or shorten a cosmetic or a center line
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd,selection,objFeat,"TechDraw Create Line Parallel/Perpendicular"))
+    if (!_checkSel(cmd,selection,objFeat,"TechDraw Extend/shorten a Line"))
         return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/shorten a Line"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()){
         std::string name = subNames[0];
@@ -1451,6 +1476,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend){
             }
         }
     }
+    Gui::Command::commitCommand();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionExtendLine)
@@ -1680,7 +1706,6 @@ void _intersection(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::ve
     #define unknown 0
     #define isLine 1
     #define isCircle 2
-    Base::Console().Message("_intersection gestartet\n");
     int edge1(unknown), edge2(unknown);
     if (geom1->geomType == TechDraw::CIRCLE ||
         geom1->geomType == TechDraw::ARCOFCIRCLE)
