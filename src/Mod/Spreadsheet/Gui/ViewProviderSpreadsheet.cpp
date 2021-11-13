@@ -185,11 +185,10 @@ void ViewProviderSheet::updateData(const App::Property* prop)
 
 PyObject *ViewProviderSheet::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderSpreadsheetPy(this), true);
-    }
-    return Py::new_reference_to(PythonObject);
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderSpreadsheetPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 // Python feature -----------------------------------------------------------------------

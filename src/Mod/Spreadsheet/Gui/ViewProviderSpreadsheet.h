@@ -77,8 +77,6 @@ protected:
     void updateData(const App::Property *prop) override;
 private:
     QPointer<SheetView> view;
-
-    Py::Object PythonObject;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSheet> ViewProviderSheetPython;
