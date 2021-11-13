@@ -2,6 +2,7 @@
 
 #include "ViewProviderSpreadsheetPy.h"
 #include "ViewProviderSpreadsheetPy.cpp"
+#include <CXX/Objects.hxx>
 
 #include "SpreadsheetView.h"
 
@@ -19,14 +20,13 @@ PyObject* ViewProviderSpreadsheetPy::selectedRanges(PyObject* /*obj*/)
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView *sheetView = vp->getView();
     std::vector<App::Range> ranges = sheetView->selectedRanges();
-    PyObject *out = PyList_New(0);
+    Py::List list;
     for (const auto &range : ranges)
     {
-        PyObject *py_str = PyUnicode_FromString(range.rangeString().c_str());
-        PyList_Append(out, py_str);
+        list.append(Py::String(range.rangeString()));
     }
     
-    return out;
+    return Py::new_reference_to(list);
 }
 
 PyObject* ViewProviderSpreadsheetPy::selectedCells(PyObject* /*obj*/)
@@ -34,14 +34,12 @@ PyObject* ViewProviderSpreadsheetPy::selectedCells(PyObject* /*obj*/)
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView *sheetView = vp->getView();
     QModelIndexList cells = sheetView->selectedIndexes();
-    PyObject *out = PyList_New(0);
+    Py::List list;
     for (const auto &cell : cells) {
-        PyObject *py_str = PyUnicode_FromString(
-            App::CellAddress(cell.row(), cell.column()).toString().c_str());
-        PyList_Append(out, py_str);
-    }    
+        list.append(Py::String(App::CellAddress(cell.row(), cell.column()).toString()));
+    }
 
-    return out;
+    return Py::new_reference_to(list);
 }
 
 PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
@@ -69,7 +67,7 @@ PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
         else
             throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
     }
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 PyObject* ViewProviderSpreadsheetPy::currentIndex(PyObject* /*_args*/)
@@ -77,9 +75,8 @@ PyObject* ViewProviderSpreadsheetPy::currentIndex(PyObject* /*_args*/)
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView* sheetView = vp->getView();
     auto index = sheetView->currentIndex();
-    PyObject* py_str = PyUnicode_FromString(
-        App::CellAddress(index.row(), index.column()).toString().c_str());
-    return py_str;
+    Py::String str(App::CellAddress(index.row(), index.column()).toString());
+    return Py::new_reference_to(str);
 }
 
 PyObject* ViewProviderSpreadsheetPy::setCurrentIndex(PyObject* args)
@@ -91,7 +88,7 @@ PyObject* ViewProviderSpreadsheetPy::setCurrentIndex(PyObject* args)
     if (PyArg_ParseTuple(args, "s", &cell)) {
         sheetView->setCurrentIndex(App::CellAddress(cell));
     }
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 PyObject* ViewProviderSpreadsheetPy::getView(PyObject* args)
