@@ -27,9 +27,18 @@
         </Methode>
       <Methode Name="select">
         <Documentation>
-          <UserDocu>
-select(index, flags): Select the specified cell using the given QItemSelectionModel.SelectionFlag set
+          <UserDocu>select(index, flags): Select the specified cell using the given QItemSelectionModel.SelectionFlag set
 select(topLeft, bottomRight, flags): Select the specified range using the given QItemSelectionModel.SelectionFlag set</UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="currentIndex">
+        <Documentation>
+          <UserDocu>Get the current active cell</UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="setCurrentIndex">
+        <Documentation>
+          <UserDocu>Set the current active cell</UserDocu>
         </Documentation>
       </Methode>
     </PythonExport>

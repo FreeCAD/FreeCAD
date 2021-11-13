@@ -439,6 +439,11 @@ QModelIndex SheetView::currentIndex() const
     return ui->cells->currentIndex();
 }
 
+void SpreadsheetGui::SheetView::setCurrentIndex(App::CellAddress cell) const
+{
+    ui->cells->setCurrentIndex(model->index(cell.row(), cell.col()));
+}
+
 PyObject *SheetView::getPyObject()
 {
     if (!pythonObject)

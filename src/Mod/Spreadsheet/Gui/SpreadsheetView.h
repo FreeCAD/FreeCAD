@@ -79,6 +79,8 @@ public:
 
     QModelIndex currentIndex() const;
 
+    void setCurrentIndex(App::CellAddress cell) const;
+
     void deleteSelection();
 
     PyObject *getPyObject(void);

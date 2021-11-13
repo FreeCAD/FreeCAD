@@ -48,7 +48,6 @@ PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
 {
     ViewProviderSheet* vp = this->getViewProviderSheetPtr();
     SheetView* sheetView = vp->getView();
-    Spreadsheet::Sheet* sheet = sheetView->getSheet();
 
     Py::Sequence args(_args);
 
@@ -69,6 +68,28 @@ PyObject* ViewProviderSpreadsheetPy::select(PyObject* _args)
             throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1'), a second cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags");
         else
             throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
+    }
+    return Py_None;
+}
+
+PyObject* ViewProviderSpreadsheetPy::currentIndex(PyObject* _args)
+{
+    ViewProviderSheet* vp = this->getViewProviderSheetPtr();
+    SheetView* sheetView = vp->getView();
+    auto index = sheetView->currentIndex();
+    PyObject* py_str = PyUnicode_FromString(
+        App::CellAddress(index.row(), index.column()).toString().c_str());
+    return py_str;
+}
+
+PyObject* ViewProviderSpreadsheetPy::setCurrentIndex(PyObject* args)
+{
+    ViewProviderSheet* vp = this->getViewProviderSheetPtr();
+    SheetView* sheetView = vp->getView();
+
+    const char* cell;
+    if (PyArg_ParseTuple(args, "s", &cell)) {
+        sheetView->setCurrentIndex(App::CellAddress(cell));
     }
     return Py_None;
 }
