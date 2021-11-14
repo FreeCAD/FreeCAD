@@ -126,13 +126,7 @@ Py::Object Line2dPy::getLocation(void) const
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Pnt2d pnt = this_curve->Location();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dPy::setLocation(Py::Object arg)
@@ -180,13 +174,7 @@ Py::Object Line2dPy::getDirection(void) const
     Handle(Geom2d_Line) this_curve = Handle(Geom2d_Line)::DownCast
         (this->getGeom2dLinePtr()->handle());
     gp_Dir2d dir = this_curve->Direction();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(dir.X()));
-    arg.setItem(1, Py::Float(dir.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(dir.X(), dir.Y());
 }
 
 void Line2dPy::setDirection(Py::Object arg)
