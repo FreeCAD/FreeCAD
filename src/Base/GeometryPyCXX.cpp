@@ -90,6 +90,21 @@ Base::Vector3d Py::Vector::toVector() const
 
 namespace Base {
 
+Py::PythonClassObject<Vector2dPy> Vector2dPy::create(const Vector2d& v)
+{
+    return create(v.x, v.y);
+}
+
+Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double x, double y)
+{
+    Py::Callable class_type(type());
+    Py::Tuple arg(2);
+    arg.setItem(0, Py::Float(x));
+    arg.setItem(1, Py::Float(y));
+    Py::PythonClassObject<Vector2dPy> o = Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
+    return o;
+}
+
 Vector2dPy::Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds)
     : Py::PythonClass<Vector2dPy>::PythonClass(self, args, kwds)
 {
