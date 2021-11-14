@@ -26,6 +26,7 @@
 
 #include <CXX/Objects.hxx>
 #include <CXX/Extensions.hxx>
+#include <FCGlobal.h>
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
@@ -69,6 +70,28 @@ public:
         v.x = x;
         v.y = y;
     }
+
+    /** @name methods for group handling */
+    //@{
+    virtual Py::Object number_negative();
+    virtual Py::Object number_positive();
+    virtual Py::Object number_absolute();
+    virtual Py::Object number_invert();
+    virtual Py::Object number_int();
+    virtual Py::Object number_float();
+    virtual Py::Object number_long();
+    virtual Py::Object number_add( const Py::Object & );
+    virtual Py::Object number_subtract( const Py::Object & );
+    virtual Py::Object number_multiply( const Py::Object & );
+    virtual Py::Object number_remainder( const Py::Object & );
+    virtual Py::Object number_divmod( const Py::Object & );
+    virtual Py::Object number_lshift( const Py::Object & );
+    virtual Py::Object number_rshift( const Py::Object & );
+    virtual Py::Object number_and( const Py::Object & );
+    virtual Py::Object number_xor( const Py::Object & );
+    virtual Py::Object number_or( const Py::Object & );
+    virtual Py::Object number_power( const Py::Object &, const Py::Object & );
+    //@}
 
 private:
     Vector2d v;

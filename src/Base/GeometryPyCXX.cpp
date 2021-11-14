@@ -121,17 +121,6 @@ Vector2dPy::~Vector2dPy()
 {
 }
 
-void Vector2dPy::init_type(void)
-{
-    behaviors().name( "Vector2d" );
-    behaviors().doc( "Vector2d class" );
-    behaviors().supportGetattro();
-    behaviors().supportSetattro();
-    behaviors().supportRepr();
-    // Call to make the type ready for use
-    behaviors().readyType();
-}
-
 Py::Object Vector2dPy::repr()
 {
     Py::Float x(v.x);
@@ -189,6 +178,123 @@ int Vector2dPy::setattro(const Py::String &name_, const Py::Object &value)
     else {
         return genericSetAttro( name_, value );
     }
+}
+
+Py::Object Vector2dPy::number_negative()
+{
+    return create(-v.x, -v.y);
+}
+
+Py::Object Vector2dPy::number_positive()
+{
+    return create(v.x, v.y);
+}
+
+Py::Object Vector2dPy::number_absolute()
+{
+    return create(fabs(v.x), fabs(v.y));
+}
+
+Py::Object Vector2dPy::number_invert()
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_int()
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_float()
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_long()
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_add( const Py::Object & py)
+{
+    Vector2d u(Py::toVector2d(py));
+    u = v + u;
+    return create(u);
+}
+
+Py::Object Vector2dPy::number_subtract( const Py::Object & py)
+{
+    Vector2d u(Py::toVector2d(py));
+    u = v - u;
+    return create(u);
+}
+
+Py::Object Vector2dPy::number_multiply( const Py::Object & py)
+{
+    if (PyObject_TypeCheck(py.ptr(), Vector2dPy::type_object())) {
+        Vector2d u(Py::toVector2d(py));
+        double d = v * u;
+        return Py::Float(d);
+    }
+    else if (py.isNumeric()) {
+        double d = static_cast<double>(Py::Float(py));
+        return create(v * d);
+    }
+    else {
+        throw Py::TypeError("Argument must be Vector2d or Float");
+    }
+}
+
+Py::Object Vector2dPy::number_remainder( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_divmod( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_lshift( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_rshift( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_and( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_xor( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_or( const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+Py::Object Vector2dPy::number_power( const Py::Object &, const Py::Object & )
+{
+    throw Py::TypeError("Not defined");
+}
+
+void Vector2dPy::init_type(void)
+{
+    behaviors().name( "Vector2d" );
+    behaviors().doc( "Vector2d class" );
+    behaviors().supportGetattro();
+    behaviors().supportSetattro();
+    behaviors().supportRepr();
+    behaviors().supportNumberType();
+    // Call to make the type ready for use
+    behaviors().readyType();
 }
 
 }
