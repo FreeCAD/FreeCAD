@@ -285,6 +285,96 @@ Py::Object Vector2dPy::number_power( const Py::Object &, const Py::Object & )
     throw Py::TypeError("Not defined");
 }
 
+Py::Object Vector2dPy::isNull(const Py::Tuple& args)
+{
+    double tol = 0.0;
+    if (args.size() > 0) {
+        tol = static_cast<double>(Py::Float(args[0]));
+    }
+    return Py::Boolean(v.IsNull(tol));
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isNull)
+
+Py::Object Vector2dPy::length(const Py::Tuple&)
+{
+    return Py::Float(v.Length());
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, length)
+
+Py::Object Vector2dPy::atan2(const Py::Tuple&)
+{
+    return Py::Float(v.Angle());
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, atan2)
+
+Py::Object Vector2dPy::square(const Py::Tuple&)
+{
+    return Py::Float(v.Sqr());
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, square)
+
+Py::Object Vector2dPy::scale(const Py::Tuple& args)
+{
+    double f = static_cast<double>(Py::Float(args[0]));
+    v.Scale(f);
+    return Py::None();
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, scale)
+
+Py::Object Vector2dPy::rotate(const Py::Tuple& args)
+{
+    double f = static_cast<double>(Py::Float(args[0]));
+    v.Rotate(f);
+    return Py::None();
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, rotate)
+
+Py::Object Vector2dPy::normalize(const Py::Tuple&)
+{
+    v.Normalize();
+    return Py::None();
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, normalize)
+
+Py::Object Vector2dPy::perpendicular(const Py::Tuple& args)
+{
+    bool f = static_cast<bool>(Py::Boolean(args[0]));
+    Base::Vector2d p = v.Perpendicular(f);
+    return create(p);
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, perpendicular)
+
+Py::Object Vector2dPy::distance(const Py::Tuple& args)
+{
+    Base::Vector2d p = Py::toVector2d(args[0]);
+    return Py::Float(p.Distance(v));
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, distance)
+
+Py::Object Vector2dPy::isEqual(const Py::Tuple& args)
+{
+    Base::Vector2d p = Py::toVector2d(args[0]);
+    double f = static_cast<double>(Py::Float(args[1]));
+    return Py::Boolean(v.IsEqual(p, f));
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isEqual)
+
+Py::Object Vector2dPy::getAngle(const Py::Tuple& args)
+{
+    Base::Vector2d p = Py::toVector2d(args[0]);
+    return Py::Float(v.GetAngle(p));
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, getAngle)
+
+Py::Object Vector2dPy::projectToLine(const Py::Tuple& args)
+{
+    Base::Vector2d p = Py::toVector2d(args[0]);
+    Base::Vector2d d = Py::toVector2d(args[1]);
+    v.ProjectToLine(p, d);
+    return Py::None();
+}
+PYCXX_VARARGS_METHOD_DECL(Vector2dPy, projectToLine)
+
 void Vector2dPy::init_type(void)
 {
     behaviors().name( "Vector2d" );
@@ -293,6 +383,20 @@ void Vector2dPy::init_type(void)
     behaviors().supportSetattro();
     behaviors().supportRepr();
     behaviors().supportNumberType();
+
+    PYCXX_ADD_VARARGS_METHOD(isNull, isNull, "isNull()");
+    PYCXX_ADD_VARARGS_METHOD(length, length, "length()");
+    PYCXX_ADD_VARARGS_METHOD(atan2, atan2, "atan2()");
+    PYCXX_ADD_VARARGS_METHOD(square, square, "square()");
+    PYCXX_ADD_VARARGS_METHOD(scale, scale, "scale()");
+    PYCXX_ADD_VARARGS_METHOD(rotate, rotate, "rotate()");
+    PYCXX_ADD_VARARGS_METHOD(normalize, normalize, "normalize()");
+    PYCXX_ADD_VARARGS_METHOD(perpendicular, perpendicular, "perpendicular()");
+    PYCXX_ADD_VARARGS_METHOD(distance, distance, "distance()");
+    PYCXX_ADD_VARARGS_METHOD(isEqual, isEqual, "isEqual()");
+    PYCXX_ADD_VARARGS_METHOD(getAngle, getAngle, "getAngle()");
+    PYCXX_ADD_VARARGS_METHOD(projectToLine, projectToLine, "projectToLine()");
+
     // Call to make the type ready for use
     behaviors().readyType();
 }

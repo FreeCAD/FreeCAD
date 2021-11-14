@@ -93,6 +93,19 @@ public:
     virtual Py::Object number_power( const Py::Object &, const Py::Object & );
     //@}
 
+    Py::Object isNull(const Py::Tuple&);
+    Py::Object length(const Py::Tuple&);
+    Py::Object atan2(const Py::Tuple&);
+    Py::Object square(const Py::Tuple&);
+    Py::Object scale(const Py::Tuple&);
+    Py::Object rotate(const Py::Tuple&);
+    Py::Object normalize(const Py::Tuple&);
+    Py::Object perpendicular(const Py::Tuple&);
+    Py::Object distance(const Py::Tuple&);
+    Py::Object isEqual(const Py::Tuple&);
+    Py::Object getAngle(const Py::Tuple&);
+    Py::Object projectToLine(const Py::Tuple&);
+
 private:
     Vector2d v;
 };
