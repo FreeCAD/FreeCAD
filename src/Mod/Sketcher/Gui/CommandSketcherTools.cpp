@@ -29,6 +29,8 @@
 # include <Precision.hxx>
 # include <QApplication>
 # include <QMessageBox>
+
+# include <Inventor/SbString.h>
 #endif
 
 #include <Base/Console.h>
