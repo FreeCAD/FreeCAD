@@ -53,7 +53,6 @@
 #include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
-#include "SpreadsheetViewPy.h"
 #include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
@@ -469,7 +468,13 @@ void SheetViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-
+    
+    add_varargs_method("selectedRanges", &SheetViewPy::selectedRanges, "selectedRanges(): Get a list of all selected ranges");
+    add_varargs_method("selectedCells", &SheetViewPy::selectedCells, "selectedCells(): Get a list of all selected cells");
+    add_varargs_method("select", &SheetViewPy::select, "select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags\nselect(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags");
+    add_varargs_method("currentIndex", &SheetViewPy::currentIndex, "currentIndex(): Get the current index");
+    add_varargs_method("setCurrentIndex", &SheetViewPy::setCurrentIndex, "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')");
+    
     add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
     add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
     behaviors().readyType();
@@ -536,5 +541,83 @@ Py::Object SheetViewPy::cast_to_base(const Py::Tuple&)
 {
     return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
+
+Py::Object SheetViewPy::selectedRanges(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    std::vector<App::Range> ranges = sheetView->selectedRanges();
+    Py::List list;
+    for (const auto& range : ranges)
+    {
+        list.append(Py::String(range.rangeString()));
+    }
+
+    return list;
+}
+
+Py::Object SheetViewPy::selectedCells(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    QModelIndexList cells = sheetView->selectedIndexes();
+    Py::List list;
+    for (const auto& cell : cells) {
+        list.append(Py::String(App::CellAddress(cell.row(), cell.column()).toString()));
+    }
+
+    return list;
+}
+
+Py::Object SheetViewPy::select(const Py::Tuple& _args)
+{
+    SheetView* sheetView = getSheetViewPtr();
+
+    Py::Sequence args(_args.ptr());
+
+    const char* cell;
+    const char* topLeft;
+    const char* bottomRight;
+    int flags = 0;
+    if (args.size() == 2 && PyArg_ParseTuple(_args.ptr(), "si", &cell, &flags)) {
+        sheetView->select(App::CellAddress(cell), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+        sheetView->select(App::CellAddress(topLeft), App::CellAddress(bottomRight), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else {
+        if (args.size() == 2)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1') and QItemSelectionModel.SelectionFlags");
+        else if (args.size() == 3)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1'), a second cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags");
+        else
+            throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
+    }
+    return Py::Object();
+}
+
+Py::Object SheetViewPy::currentIndex(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    auto index = sheetView->currentIndex();
+    Py::String str(App::CellAddress(index.row(), index.column()).toString());
+    return str;
+}
+
+Py::Object SheetViewPy::setCurrentIndex(const Py::Tuple& args)
+{
+    SheetView* sheetView = getSheetViewPtr();
+
+    const char* cell;
+    if (PyArg_ParseTuple(args.ptr(), "s", &cell)) {
+        sheetView->setCurrentIndex(App::CellAddress(cell));
+    }
+    return Py::Object();
+}
+
 
 #include "moc_SpreadsheetView.cpp"

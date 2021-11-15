@@ -131,6 +131,12 @@ public:
     Py::Object getattr(const char *);
     Py::Object getSheet(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
+    
+    Py::Object selectedRanges(const Py::Tuple&);
+    Py::Object selectedCells(const Py::Tuple&);
+    Py::Object select(const Py::Tuple&);
+    Py::Object currentIndex(const Py::Tuple&);
+    Py::Object setCurrentIndex(const Py::Tuple&);
 
     SheetView* getSheetViewPtr();
 
