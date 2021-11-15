@@ -1801,6 +1801,70 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     hasSetValue();
 }
 
+void PropertyLinkSubList::addValue(App::DocumentObject *obj, const std::vector<std::string> &subs, bool reset)
+{
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    verifyObject(obj, parent);
+
+#ifndef USE_OLD_DAG
+    //maintain backlinks.
+    if (parent) {
+        // before accessing internals make sure the object is not about to be destroyed
+        // otherwise the backlink contains dangling pointers
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+            //_lValueList can contain items multiple times, but we trust the document
+            //object to ensure that this works
+            if (reset) {
+                for(auto* value : _lValueList) {
+                    if (value && value == obj)
+                        value->_removeBackLink(parent);
+                }
+            }
+
+            //maintain backlinks. lValue can contain items multiple times, but we trust the document
+            //object to ensure that the backlink is only added once
+            if (obj)
+                obj->_addBackLink(parent);
+        }
+    }
+#endif
+
+    std::vector<DocumentObject*> valueList;
+    std::vector<std::string>     subList;
+
+    if (reset) {
+        for (std::size_t i=0; i<_lValueList.size(); i++) {
+            if (_lValueList[i] != obj) {
+                valueList.push_back(_lValueList[i]);
+                subList.push_back(_lSubList[i]);
+            }
+        }
+    }
+    else {
+        valueList = _lValueList;
+        subList = _lSubList;
+    }
+
+    std::size_t size = subs.size();
+    if (size == 0) {
+        if (obj) {
+            valueList.push_back(obj);
+            subList.emplace_back();
+        }
+    }
+    else if (obj) {
+        subList.insert(subList.end(), subs.begin(), subs.end());
+        valueList.insert(valueList.end(), size, obj);
+    }
+
+    aboutToSetValue();
+    _lValueList = valueList;
+    _lSubList = subList;
+    updateElementReference(nullptr);
+    checkLabelReferences(_lSubList);
+    hasSetValue();
+}
+
 const string PropertyLinkSubList::getPyReprString() const
 {
     assert(this->_lValueList.size() == this->_lSubList.size());

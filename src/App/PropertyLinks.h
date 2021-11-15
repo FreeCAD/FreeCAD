@@ -935,6 +935,8 @@ public:
      */
     void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
+    void addValue(App::DocumentObject *obj, const std::vector<std::string> &SubList={}, bool reset = false);
+
     const std::vector<DocumentObject*> &getValues(void) const {
         return _lValueList;
     }
