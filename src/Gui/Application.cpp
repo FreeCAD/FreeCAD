@@ -2418,7 +2418,15 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 void Application::checkForPreviousCrashes()
 {
     Gui::Dialog::DocumentRecoveryFinder finder;
-    finder.checkForPreviousCrashes();
+    if (!finder.checkForPreviousCrashes()) {
+
+        // If the recovery dialog wasn't shown check the cache size periodically
+        Gui::Dialog::ApplicationCache cache;
+        if (cache.periodicCheckOfSize()) {
+            qint64 total = cache.size();
+            cache.performAction(total);
+        }
+    }
 }
 
 App::Document *Application::reopen(App::Document *doc) {
