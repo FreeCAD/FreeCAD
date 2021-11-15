@@ -8,12 +8,10 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-generate_from_xml(SpreadsheetViewPy)
 generate_from_xml(ViewProviderSpreadsheetPy)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS
-    SpreadsheetViewPy.xml
     ViewProviderSpreadsheetPy.xml
 )
 
@@ -77,7 +75,6 @@ SET(SpreadsheetGui_SRCS
     Resources/Spreadsheet.qrc
     SpreadsheetView.cpp
     SpreadsheetView.h
-    SpreadsheetViewPyImp.cpp
     SpreadsheetDelegate.h
     SpreadsheetDelegate.cpp
     SheetTableView.cpp

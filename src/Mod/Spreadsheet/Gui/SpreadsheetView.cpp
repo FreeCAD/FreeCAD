@@ -53,7 +53,6 @@
 #include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
-#include "SpreadsheetViewPy.h"
 #include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
