@@ -117,7 +117,6 @@ PyObject* BSplineCurve2dPy::increaseDegree(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -144,7 +143,6 @@ PyObject* BSplineCurve2dPy::increaseMultiplicity(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -162,7 +160,6 @@ PyObject* BSplineCurve2dPy::incrementMultiplicity(PyObject * args)
         curve->IncrementMultiplicity(start, end, mult);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -183,7 +180,6 @@ PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
         curve->InsertKnot(U,M,tol);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -224,7 +220,6 @@ PyObject* BSplineCurve2dPy::insertKnots(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -246,7 +241,6 @@ PyObject* BSplineCurve2dPy::removeKnot(PyObject * args)
         return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -264,7 +258,6 @@ PyObject* BSplineCurve2dPy::segment(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -322,7 +315,6 @@ PyObject* BSplineCurve2dPy::setKnots(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -344,7 +336,6 @@ PyObject* BSplineCurve2dPy::getKnots(PyObject * args)
         return Py::new_reference_to(knots);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -369,7 +360,6 @@ PyObject* BSplineCurve2dPy::setPole(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -386,16 +376,9 @@ PyObject* BSplineCurve2dPy::getPole(PyObject * args)
         Standard_OutOfRange_Raise_if
             (index < 1 || index > curve->NbPoles(), "Pole index out of range");
         gp_Pnt2d pnt = curve->Pole(index);
-
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
-        arg.setItem(0, Py::Float(pnt.X()));
-        arg.setItem(1, Py::Float(pnt.Y()));
-        return Py::new_reference_to(method.apply(arg));
+        return Py::new_reference_to(Base::Vector2dPy::create(pnt.X(), pnt.Y()));
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -412,20 +395,13 @@ PyObject* BSplineCurve2dPy::getPoles(PyObject * args)
         curve->Poles(p);
 
         Py::List poles;
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
         for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
             gp_Pnt2d pnt = p(i);
-
-            arg.setItem(0, Py::Float(pnt.X()));
-            arg.setItem(1, Py::Float(pnt.Y()));
-            poles.append(method.apply(arg));
+            poles.append(Base::Vector2dPy::create(pnt.X(), pnt.Y()));
         }
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -456,7 +432,6 @@ PyObject* BSplineCurve2dPy::getPolesAndWeights(PyObject * args)
         return Py::new_reference_to(poles);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -475,7 +450,6 @@ PyObject* BSplineCurve2dPy::setWeight(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -495,7 +469,6 @@ PyObject* BSplineCurve2dPy::getWeight(PyObject * args)
         return Py_BuildValue("d", weight);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -517,7 +490,6 @@ PyObject* BSplineCurve2dPy::getWeights(PyObject * args)
         return Py::new_reference_to(weights);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -536,7 +508,6 @@ PyObject* BSplineCurve2dPy::getResolution(PyObject * args)
         return Py_BuildValue("d",utol);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -558,7 +529,6 @@ PyObject* BSplineCurve2dPy::movePoint(PyObject * args)
         return Py_BuildValue("(ii)",first, last);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -575,7 +545,6 @@ PyObject* BSplineCurve2dPy::setNotPeriodic(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -592,7 +561,6 @@ PyObject* BSplineCurve2dPy::setPeriodic(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -610,7 +578,6 @@ PyObject* BSplineCurve2dPy::setOrigin(PyObject * args)
         Py_Return;
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -650,7 +617,6 @@ PyObject* BSplineCurve2dPy::getMultiplicities(PyObject * args)
         return Py::new_reference_to(mults);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -689,13 +655,7 @@ Py::Object BSplineCurve2dPy::getStartPoint(void) const
     Handle(Geom2d_BSplineCurve) c = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->StartPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 Py::Object BSplineCurve2dPy::getEndPoint(void) const
@@ -703,13 +663,7 @@ Py::Object BSplineCurve2dPy::getEndPoint(void) const
     Handle(Geom2d_BSplineCurve) c = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
     gp_Pnt2d pnt = c->EndPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 Py::Object BSplineCurve2dPy::getFirstUKnotIndex(void) const
@@ -769,7 +723,6 @@ PyObject* BSplineCurve2dPy::toBiArcs(PyObject * args)
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -890,7 +843,6 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -917,13 +869,8 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
         bspline->getCardinalSplineTangents(interpPoints, parameter, tangents);
 
         Py::List vec;
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
         for (gp_Vec2d it : tangents) {
-            arg.setItem(0, Py::Float(it.X()));
-            arg.setItem(1, Py::Float(it.Y()));
-            vec.append(method.apply(arg));
+            vec.append(Base::Vector2dPy::create(it.X(), it.Y()));
         }
         return Py::new_reference_to(vec);
     }
@@ -952,18 +899,13 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
         bspline->getCardinalSplineTangents(interpPoints, parameters, tangents);
 
         Py::List vec;
-        Py::Module module("__FreeCADBase__");
-        Py::Callable method(module.getAttr("Vector2d"));
-        Py::Tuple arg(2);
         for (gp_Vec2d it : tangents) {
-            arg.setItem(0, Py::Float(it.X()));
-            arg.setItem(1, Py::Float(it.Y()));
-            vec.append(method.apply(arg));
+            vec.append(Base::Vector2dPy::create(it.X(), it.Y()));
         }
         return Py::new_reference_to(vec);
     }
 
-    return 0;
+    return nullptr;
 }
 
 PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
@@ -1057,7 +999,6 @@ PyObject* BSplineCurve2dPy::interpolate(PyObject *args, PyObject *kwds)
         }
     }
     catch (Standard_Failure& e) {
-
         std::string err = e.GetMessageString();
         if (err.empty()) err = e.DynamicType()->Name();
         PyErr_SetString(PartExceptionOCCError, err.c_str());
@@ -1137,7 +1078,6 @@ PyObject* BSplineCurve2dPy::buildFromPoles(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }

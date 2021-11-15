@@ -444,13 +444,14 @@ void Document::exportGraphviz(std::ostream& out) const
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
                 auto i = expressions.begin();
                 while (i != expressions.end()) {
-                    std::set<ObjectIdentifier> deps;
+                    std::map<ObjectIdentifier,bool> deps;
 
                     i->second->getIdentifiers(deps);
 
-                    std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-                    while (j != deps.end()) {
-                        DocumentObject * o = j->getDocumentObject();
+                    for(auto j=deps.begin(); j!=deps.end(); ++j) {
+                        if(j->second)
+                            continue;
+                        DocumentObject * o = j->first.getDocumentObject();
 
                         // Doesn't exist already?
                         if (o && !GraphList[o]) {
@@ -469,7 +470,6 @@ void Document::exportGraphviz(std::ostream& out) const
                             }
 
                         }
-                        ++j;
                     }
                     ++i;
                 }
@@ -554,24 +554,23 @@ void Document::exportGraphviz(std::ostream& out) const
             while (i != expressions.end()) {
 
                 // Get dependencies
-                std::set<ObjectIdentifier> deps;
+                std::map<ObjectIdentifier,bool> deps;
                 i->second->getIdentifiers(deps);
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                std::set<ObjectIdentifier>::const_iterator j = deps.begin();
-                while (j != deps.end()) {
-                    DocumentObject * depObjDoc = j->getDocumentObject();
-                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(*j));
+                for(auto j=deps.begin(); j!=deps.end(); ++j) {
+                    if(j->second)
+                        continue;
+                    DocumentObject * depObjDoc = j->first.getDocumentObject();
+                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(j->first));
 
                     if (k == GlobalVertexList.end()) {
                         Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
 
-                        LocalVertexList[getId(*j)] = add_vertex(*depSgraph);
-                        GlobalVertexList[getId(*j)] = vertex_no++;
-                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(*j)], j->getPropertyName() + j->getSubPathStr());
+                        LocalVertexList[getId(j->first)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(j->first)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(j->first)], j->first.getPropertyName() + j->first.getSubPathStr());
                     }
-
-                    ++j;
                 }
                 ++i;
             }
@@ -703,17 +702,18 @@ void Document::exportGraphviz(std::ostream& out) const
                 auto i = expressions.begin();
 
                 while (i != expressions.end()) {
-                    std::set<ObjectIdentifier> deps;
+                    std::map<ObjectIdentifier,bool> deps;
                     i->second->getIdentifiers(deps);
 
                     // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                    std::set<ObjectIdentifier>::const_iterator k = deps.begin();
-                    while (k != deps.end()) {
-                        DocumentObject * depObjDoc = k->getDocumentObject();
+                    for(auto k=deps.begin(); k!=deps.end(); ++k) {
+                        if(k->second)
+                            continue;
+                        DocumentObject * depObjDoc = k->first.getDocumentObject();
                         Edge edge;
                         bool inserted;
 
-                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(*k)], DepList);
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(k->first)], DepList);
 
                         // Add this edge to the set of all expression generated edges
                         existingEdges.insert(std::make_pair(docObj, depObjDoc));
@@ -721,7 +721,6 @@ void Document::exportGraphviz(std::ostream& out) const
                         // Edges between properties should be a bit smaller, and dashed
                         edgeAttrMap[edge]["arrowsize"] = "0.5";
                         edgeAttrMap[edge]["style"] = "dashed";
-                        ++k;
                     }
                     ++i;
                 }

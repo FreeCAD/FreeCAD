@@ -89,7 +89,7 @@ public:
 
     /**
      * Verifies the linked Object and returns the shape used as profile
-     * @param silent if profirle property is malformed and the parameter is true
+     * @param silent if profile property is malformed and the parameter is true
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */

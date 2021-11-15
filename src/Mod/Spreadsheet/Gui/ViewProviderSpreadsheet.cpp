@@ -36,6 +36,7 @@
 
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheetPy.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/Range.h>
@@ -180,4 +181,23 @@ void ViewProviderSheet::updateData(const App::Property* prop)
 {
     if (view)
         view->updateCell(prop);
+}
+
+PyObject *ViewProviderSheet::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderSpreadsheetPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui::ViewProviderSheet)
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
 }

@@ -26,6 +26,7 @@
 #define SPREADSHEET_ViewProviderImagePlane_H
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProviderPythonFeature.h>
 #include <QPointer>
 
 namespace Spreadsheet {
@@ -67,12 +68,18 @@ public:
 
     virtual Gui::MDIView *getMDIView() const override;
 
+    inline SheetView* getView() const { return view; }
+
+    PyObject *getPyObject() override;
+
 protected:
     SheetView* showSpreadsheetView();
     void updateData(const App::Property *prop) override;
 private:
     QPointer<SheetView> view;
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderSheet> ViewProviderSheetPython;
 
 } //namespace Spreadsheet
 

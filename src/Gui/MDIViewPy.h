@@ -27,11 +27,12 @@
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
 #include <QPointer>
+#include <FCGlobal.h>
 
 namespace Gui {
 class MDIView;
 
-class MDIViewPy : public Py::PythonExtension<MDIViewPy>
+class GuiExport MDIViewPy : public Py::PythonExtension<MDIViewPy>
 {
 public:
     static void init_type(void);    // announce properties and methods
@@ -41,7 +42,8 @@ public:
 
     Py::Object repr();
 
-    Py::Object message(const Py::Tuple&);
+    Py::Object sendMessage(const Py::Tuple&);
+    Py::Object supportMessage(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
     Py::Object setActiveObject(const Py::Tuple&);
     Py::Object getActiveObject(const Py::Tuple&);

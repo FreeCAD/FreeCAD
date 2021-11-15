@@ -52,12 +52,15 @@
      <item row="2" column="0">
       <widget class="QLabel" name="labelOffset">
        <property name="text">
-        <string>Offset</string>
+        <string>Offset to face</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
+       <property name="toolTip">
+        <string>Offset from face at which pocket will end</string>
+       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -327,12 +330,18 @@ measured along the specified direction</string>
   <tabstop>changeMode</tabstop>
   <tabstop>lengthEdit</tabstop>
   <tabstop>offsetEdit</tabstop>
+  <tabstop>directionCB</tabstop>
+  <tabstop>checkBoxAlongDirection</tabstop>
   <tabstop>checkBoxMidplane</tabstop>
   <tabstop>checkBoxReversed</tabstop>
   <tabstop>lengthEdit2</tabstop>
   <tabstop>buttonFace</tabstop>
   <tabstop>lineFaceName</tabstop>
   <tabstop>checkBoxUpdateView</tabstop>
+  <tabstop>checkBoxDirection</tabstop>
+  <tabstop>XDirectionEdit</tabstop>
+  <tabstop>YDirectionEdit</tabstop>
+  <tabstop>ZDirectionEdit</tabstop>
  </tabstops>
  <resources/>
  <connections/>

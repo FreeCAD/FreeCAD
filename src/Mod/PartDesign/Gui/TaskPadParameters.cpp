@@ -640,7 +640,8 @@ bool   TaskPadParameters::getAlongSketchNormal(void) const
 
 bool   TaskPadParameters::getCustom(void) const
 {
-    return ui->checkBoxDirection->isChecked();
+    // index 2 is hardcoded to custom vector
+    return ui->directionCB->currentIndex() == 2 ? true : false;
 }
 
 std::string TaskPadParameters::getReferenceAxis(void) const

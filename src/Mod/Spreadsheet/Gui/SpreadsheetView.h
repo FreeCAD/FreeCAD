@@ -24,6 +24,7 @@
 #define SpreadsheetView_H
 
 #include <Gui/MDIView.h>
+#include <Gui/MDIViewPy.h>
 #include <QHeaderView>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
@@ -73,7 +74,13 @@ public:
 
     QModelIndexList selectedIndexes() const;
 
+    void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
+
+    void select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags);
+
     QModelIndex currentIndex() const;
+
+    void setCurrentIndex(App::CellAddress cell) const;
 
     void deleteSelection();
 
@@ -109,6 +116,25 @@ protected:
 
     std::map<int, int> newColumnSizes;
     std::map<int, int> newRowSizes;
+};
+
+class SheetViewPy : public Py::PythonExtension<SheetViewPy>
+{
+public:
+    using BaseType = Py::PythonExtension<SheetViewPy>;
+    static void init_type();
+
+    SheetViewPy(SheetView *mdi);
+    ~SheetViewPy();
+
+    Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object getSheet(const Py::Tuple&);
+
+    SheetView* getSheetViewPtr();
+
+protected:
+    Gui::MDIViewPy base;
 };
 
 } // namespace SpreadsheetModGui

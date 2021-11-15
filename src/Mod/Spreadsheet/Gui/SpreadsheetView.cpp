@@ -48,6 +48,7 @@
 #include <Gui/ExpressionCompleter.h>
 #include <LineEdit.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/SheetPy.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
 
@@ -419,6 +420,16 @@ QModelIndexList SheetView::selectedIndexes() const
     return ui->cells->selectionModel()->selectedIndexes();
 }
 
+void SpreadsheetGui::SheetView::select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(model->index(cell.row(), cell.col()), flags);
+}
+
+void SpreadsheetGui::SheetView::select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(QItemSelection(model->index(topLeft.row(), topLeft.col()), model->index(bottomRight.row(), bottomRight.col())), flags);
+}
+
 void SheetView::deleteSelection()
 {
     ui->cells->deleteSelection();
@@ -429,10 +440,15 @@ QModelIndex SheetView::currentIndex() const
     return ui->cells->currentIndex();
 }
 
+void SpreadsheetGui::SheetView::setCurrentIndex(App::CellAddress cell) const
+{
+    ui->cells->setCurrentIndex(model->index(cell.row(), cell.col()));
+}
+
 PyObject *SheetView::getPyObject()
 {
     if (!pythonObject)
-        pythonObject = new SpreadsheetViewPy(this);
+        pythonObject = new SheetViewPy(this);
 
     Py_INCREF(pythonObject);
     return pythonObject;
@@ -441,6 +457,78 @@ PyObject *SheetView::getPyObject()
 void SheetView::deleteSelf()
 {
     Gui::MDIView::deleteSelf();
+}
+
+// ----------------------------------------------------------
+
+void SheetViewPy::init_type()
+{
+    behaviors().name("SheetViewPy");
+    behaviors().doc("Python binding class for the Sheet view class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+
+    add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
+    behaviors().readyType();
+}
+
+SheetViewPy::SheetViewPy(SheetView *mdi)
+  : base(mdi)
+{
+}
+
+SheetViewPy::~SheetViewPy()
+{
+}
+
+Py::Object SheetViewPy::repr()
+{
+    std::ostringstream s_out;
+    if (!getSheetViewPtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "SheetView";
+    return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object SheetViewPy::getattr(const char * attr)
+{
+    if (!getSheetViewPtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+SheetView* SheetViewPy::getSheetViewPtr()
+{
+    return qobject_cast<SheetView*>(base.getMDIViewPtr());
+}
+
+Py::Object SheetViewPy::getSheet(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::asObject(new Spreadsheet::SheetPy(getSheetViewPtr()->getSheet()));
 }
 
 #include "moc_SpreadsheetView.cpp"

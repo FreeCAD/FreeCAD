@@ -2,6 +2,7 @@
 
 #include "SpreadsheetViewPy.h"
 #include "SpreadsheetViewPy.cpp"
+#include "ui_Sheet.h"
 
 #include <Mod/Spreadsheet/App/SheetPy.h>
 

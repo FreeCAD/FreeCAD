@@ -100,6 +100,7 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
 ViewProviderDocumentObject::~ViewProviderDocumentObject()
 {
     // Make sure that the property class does not destruct our string list
+    DisplayMode.setContainer(nullptr);
     DisplayMode.setEnums(0);
 }
 
@@ -687,7 +688,7 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
 std::string ViewProviderDocumentObject::getFullName() const {
     if(pcObject)
         return pcObject->getFullName() + ".ViewObject";
-    return std::string();
+    return std::string("?");
 }
 
 bool ViewProviderDocumentObject::allowTreeOrderSwap(const App::DocumentObject *child1, const App::DocumentObject *child2) const

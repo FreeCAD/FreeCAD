@@ -124,6 +124,7 @@ private:
     bool committing;
     bool delaybuild;
     bool binding;
+    bool checkDocument;
 
     int transactionID = 0;
 

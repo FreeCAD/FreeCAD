@@ -201,13 +201,7 @@ Py::Object Line2dSegmentPy::getStartPoint(void) const
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->StartPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setStartPoint(Py::Object arg)
@@ -261,13 +255,7 @@ Py::Object Line2dSegmentPy::getEndPoint(void) const
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->EndPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setEndPoint(Py::Object arg)

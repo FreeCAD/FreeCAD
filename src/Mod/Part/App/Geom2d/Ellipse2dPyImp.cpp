@@ -160,26 +160,14 @@ Py::Object Ellipse2dPy::getFocus1(void) const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus1();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Object Ellipse2dPy::getFocus2(void) const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus2();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 PyObject *Ellipse2dPy::getCustomAttributes(const char* /*attr*/) const

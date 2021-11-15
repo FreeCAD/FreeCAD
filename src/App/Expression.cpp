@@ -240,17 +240,7 @@ std::string unquote(const std::string & input)
 //
 // ExpressionVistor
 //
-void ExpressionVisitor::getDeps(Expression &e, ExpressionDeps &deps) {
-    e._getDeps(deps);
-}
-
-void ExpressionVisitor::getDepObjects(Expression &e,
-        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)
-{
-    e._getDepObjects(deps,labels);
-}
-
-void ExpressionVisitor::getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &ids) {
+void ExpressionVisitor::getIdentifiers(Expression &e, std::map<App::ObjectIdentifier,bool> &ids) {
     e._getIdentifiers(ids);
 }
 
@@ -905,58 +895,52 @@ Expression * Expression::parse(const DocumentObject *owner, const std::string &b
     return ExpressionParser::parse(owner, buffer.c_str());
 }
 
-class GetDepsExpressionVisitor : public ExpressionVisitor {
-public:
-    GetDepsExpressionVisitor(ExpressionDeps &deps)
-        :deps(deps)
-    {}
-
-    virtual void visit(Expression &e) {
-        this->getDeps(e,deps);
+void Expression::getDeps(ExpressionDeps &deps, int option)  const {
+    for(auto &v : getIdentifiers()) {
+        bool hidden = v.second;
+        const ObjectIdentifier &var = v.first;
+        if((hidden && option==DepNormal)
+                || (!hidden && option==DepHidden))
+            continue;
+        for(auto &dep : var.getDep(true)) {
+            DocumentObject *obj = dep.first;
+            for(auto &propName : dep.second) {
+                deps[obj][propName].push_back(var);
+            }
+        }
     }
-
-    ExpressionDeps &deps;
-};
-
-void Expression::getDeps(ExpressionDeps &deps)  const {
-    GetDepsExpressionVisitor v(deps);
-    const_cast<Expression*>(this)->visit(v);
 }
 
-ExpressionDeps Expression::getDeps()  const {
+ExpressionDeps Expression::getDeps(int option)  const {
     ExpressionDeps deps;
-    getDeps(deps);
+    getDeps(deps, option);
     return deps;
 }
 
-class GetDepObjsExpressionVisitor : public ExpressionVisitor {
-public:
-    GetDepObjsExpressionVisitor(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)
-        :deps(deps),labels(labels)
-    {}
-
-    virtual void visit(Expression &e) {
-        this->getDepObjects(e,deps,labels);
+void Expression::getDepObjects(
+        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels)  const 
+{
+    for(auto &v : getIdentifiers()) {
+        bool hidden = v.second;
+        const ObjectIdentifier &var = v.first;
+        for(auto &dep : var.getDep(false,labels)) {
+            DocumentObject *obj = dep.first;
+            auto res = deps.insert(std::make_pair(obj,hidden));
+            if(!hidden || res.second)
+                res.first->second = hidden;
+        }
     }
-
-    std::set<App::DocumentObject*> &deps;
-    std::vector<std::string> *labels;
-};
-
-void Expression::getDepObjects(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)  const {
-    GetDepObjsExpressionVisitor v(deps,labels);
-    const_cast<Expression *>(this)->visit(v);
 }
 
-std::set<App::DocumentObject*> Expression::getDepObjects(std::vector<std::string> *labels)  const {
-    std::set<App::DocumentObject*> deps;
+std::map<App::DocumentObject*,bool> Expression::getDepObjects(std::vector<std::string> *labels)  const {
+    std::map<App::DocumentObject*,bool> deps;
     getDepObjects(deps,labels);
     return deps;
 }
 
 class GetIdentifiersExpressionVisitor : public ExpressionVisitor {
 public:
-    GetIdentifiersExpressionVisitor(std::set<App::ObjectIdentifier> &deps)
+    GetIdentifiersExpressionVisitor(std::map<App::ObjectIdentifier,bool> &deps)
         :deps(deps)
     {}
 
@@ -964,16 +948,16 @@ public:
         this->getIdentifiers(e,deps);
     }
 
-    std::set<App::ObjectIdentifier> &deps;
+    std::map<App::ObjectIdentifier,bool> &deps;
 };
 
-void Expression::getIdentifiers(std::set<App::ObjectIdentifier> &deps)  const {
+void Expression::getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps)  const {
     GetIdentifiersExpressionVisitor v(deps);
     const_cast<Expression*>(this)->visit(v);
 }
 
-std::set<App::ObjectIdentifier> Expression::getIdentifiers()  const {
-    std::set<App::ObjectIdentifier> deps;
+std::map<App::ObjectIdentifier,bool> Expression::getIdentifiers()  const {
+    std::map<App::ObjectIdentifier,bool> deps;
     getIdentifiers(deps);
     return deps;
 }
@@ -1016,7 +1000,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
     if(!owner || !owner->getDocument())
         return 0;
     ObjectIdentifier::SubNameMap subNameMap;
-    for(auto &dep : getDeps()) {
+    for(auto &dep : getDeps(DepAll)) {
         for(auto &info : dep.second) {
             for(auto &path : info.second) {
                 auto obj = path.getDocumentObject();
@@ -1064,7 +1048,8 @@ ExpressionPtr Expression::updateLabelReference(
     if(ref.size()<=2)
         return ExpressionPtr();
     std::vector<std::string> labels;
-    getDepObjects(&labels);
+    for(auto &v : getIdentifiers())
+        v.first.getDepLabels(labels);
     for(auto &label : labels) {
         // ref contains something like $label. and we need to strip '$' and '.'
         if(ref.compare(1,ref.size()-2,label)==0) {
@@ -1709,6 +1694,32 @@ bool OperatorExpression::isRightAssociative() const
 
 TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
+static int _HiddenReference;
+
+struct HiddenReference {
+    HiddenReference(bool cond)
+        :cond(cond)
+    {
+        if(cond)
+            ++_HiddenReference;
+    }
+    ~HiddenReference() {
+        if(cond)
+            --_HiddenReference;
+    }
+
+    static bool check(int option) {
+        return (option==Expression::DepNormal && _HiddenReference)
+            || (option==Expression::DepHidden && !_HiddenReference);
+    }
+
+    static bool isHidden() {
+        return _HiddenReference!=0;
+    }
+
+    bool cond;
+};
+
 FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::string &&name, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
@@ -1736,6 +1747,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case FLOOR:
     case MINVERT:
     case STR:
+    case HIDDENREF:
         if (args.size() != 1)
             EXPR_THROW("Invalid number of arguments: exactly one required.");
         break;
@@ -2087,6 +2099,8 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         return res;
     } else if (f == STR) {
         return Py::String(args[0]->getPyValue().as_string());
+    } else if (f == HIDDENREF) {
+        return args[0]->getPyValue();
     }
 
     Py::Object e1 = args[0]->getPyValue();
@@ -2219,7 +2233,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         unit = v1.getUnit();
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,expr);
+        _EXPR_THROW("Unknown function: " << f,0);
     }
 
     /* Compute result */
@@ -2299,7 +2313,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         output = floor(value);
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,expr);
+        _EXPR_THROW("Unknown function: " << f,0);
     }
 
     return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
@@ -2421,6 +2435,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "create("; break;;
     case STR:
         ss << "str("; break;;
+    case HIDDENREF:
+        ss << "hiddenref("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -2454,6 +2470,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 {
     std::vector<Expression*>::const_iterator i = args.begin();
 
+    HiddenReference ref(f == HIDDENREF);
     while (i != args.end()) {
         (*i)->visit(v);
         ++i;
@@ -2592,24 +2609,12 @@ Expression *VariableExpression::_copy() const
     return new VariableExpression(owner, var);
 }
 
-void VariableExpression::_getDeps(ExpressionDeps &deps) const
+void VariableExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const
 {
-    auto dep = var.getDep();
-    if(dep.first)
-        deps[dep.first][dep.second].push_back(var);
-}
-
-void VariableExpression::_getDepObjects(
-        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) const
-{
-    auto dep = var.getDep(labels);
-    if(dep.first)
-        deps.insert(dep.first);
-}
-
-void VariableExpression::_getIdentifiers(std::set<App::ObjectIdentifier> &deps) const
-{
-    deps.insert(var);
+    bool hidden = HiddenReference::isHidden();
+    auto res = deps.insert(std::make_pair(var,hidden));
+    if(!hidden || res.second)
+        res.first->second = hidden;
 }
 
 bool VariableExpression::_relabeledDocument(const std::string &oldName,
@@ -2977,16 +2982,19 @@ Expression *RangeExpression::simplify() const
     return copy();
 }
 
-void RangeExpression::_getDeps(ExpressionDeps &deps) const
+void RangeExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const
 {
+    bool hidden = HiddenReference::isHidden();
+
     assert(owner);
 
     Range i(getRange());
 
-    auto &dep = deps[owner];
     do {
-        std::string address = i.address();
-        dep[address].push_back(ObjectIdentifier(owner,address));
+        ObjectIdentifier var(owner,i.address());
+        auto res = deps.insert(std::make_pair(var,hidden));
+        if(!hidden || res.second)
+            res.first->second = hidden;
     } while (i.next());
 }
 
@@ -3243,6 +3251,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["create"] = FunctionExpression::CREATE;
         registered_functions["str"] = FunctionExpression::STR;
+        registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;

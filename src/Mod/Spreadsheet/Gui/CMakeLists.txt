@@ -9,10 +9,12 @@ include_directories(
 )
 
 generate_from_xml(SpreadsheetViewPy)
+generate_from_xml(ViewProviderSpreadsheetPy)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS
     SpreadsheetViewPy.xml
+    ViewProviderSpreadsheetPy.xml
 )
 
 set(SpreadsheetGui_LIBS
@@ -71,6 +73,7 @@ SET(SpreadsheetGui_SRCS
     LineEdit.cpp
     ViewProviderSpreadsheet.cpp
     ViewProviderSpreadsheet.h
+    ViewProviderSpreadsheetPyImp.cpp
     Resources/Spreadsheet.qrc
     SpreadsheetView.cpp
     SpreadsheetView.h

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+            Father="ViewProviderDocumentObjectPy"
+            Name="ViewProviderSpreadsheetPy"
+            Twin="ViewProviderSheet"
+            TwinPointer="ViewProviderSheet"
+            Include="Mod/Spreadsheet/Gui/ViewProviderSpreadsheet.h"
+            Namespace="SpreadsheetGui"
+            FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+            FatherNamespace="Gui"
+            Constructor="false"
+            Delete="false">
+        <Documentation>
+            <Author Licence="LGPL" Name="Jose Luis Cercos Pita" EMail="jlcercos@gmail.com" />
+            <UserDocu>ViewProviderSheet class</UserDocu>
+        </Documentation>
+        <Methode Name="selectedRanges">
+            <Documentation>
+                <UserDocu>returns a list with the selected ranges of cells</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="selectedCells">
+            <Documentation>
+                <UserDocu>returns a list with the selected cells</UserDocu>
+            </Documentation>
+        </Methode>
+      <Methode Name="select">
+        <Documentation>
+          <UserDocu>select(index, flags): Select the specified cell using the given QItemSelectionModel.SelectionFlag set
+select(topLeft, bottomRight, flags): Select the specified range using the given QItemSelectionModel.SelectionFlag set</UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="currentIndex">
+        <Documentation>
+          <UserDocu>Get the current active cell</UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="setCurrentIndex">
+        <Documentation>
+          <UserDocu>Set the current active cell</UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="getView">
+        <Documentation>
+          <UserDocu>Get access to the sheet view</UserDocu>
+        </Documentation>
+      </Methode>
+    </PythonExport>
+</GenerateModel>
