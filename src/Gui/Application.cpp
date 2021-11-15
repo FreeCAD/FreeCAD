@@ -2267,7 +2267,7 @@ void Application::runApplication(void)
 
     try {
         std::stringstream s;
-        s << App::Application::getTempPath() << App::Application::getExecutableName()
+        s << App::Application::getUserCachePath() << App::Application::getExecutableName()
           << "_" << QCoreApplication::applicationPid() << ".lock";
         // open a lock file with the PID
         Base::FileInfo fi(s.str());

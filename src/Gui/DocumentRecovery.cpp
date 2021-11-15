@@ -519,7 +519,7 @@ void DocumentRecovery::onDeleteSection()
         return;
 
     QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
     for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
         int index = d_ptr->ui.treeWidget->indexOfTopLevelItem(*it);
         QTreeWidgetItem* item = d_ptr->ui.treeWidget->takeTopLevelItem(index);
@@ -662,7 +662,7 @@ void DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
 
 void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const
 {
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
     tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 

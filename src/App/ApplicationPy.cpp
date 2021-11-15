@@ -86,18 +86,22 @@ PyMethodDef Application::Methods[] = {
      "Change the export module name of a registered filetype"},
     {"getExportType",  (PyCFunction) Application::sGetExportType, METH_VARARGS,
      "Get the name of the module that can export the filetype"},
-    {"getResourceDir", (PyCFunction) Application::sGetResourceDir, METH_VARARGS,
+    {"getResourceDir", (PyCFunction) Application::sGetResourcePath, METH_VARARGS,
      "Get the root directory of all resources"},
-    {"getUserConfigDir", (PyCFunction) Application::sGetUserConfigDir, METH_VARARGS,
-     "Get the root directory of user config files"},
-    {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir, METH_VARARGS,
+    {"getTempPath", (PyCFunction) Application::sGetTempPath, METH_VARARGS,
+     "Get the root directory of cached files"},
+    {"getUserCachePath", (PyCFunction) Application::sGetUserCachePath, METH_VARARGS,
+     "Get the root path of cached files"},
+    {"getUserConfigDir", (PyCFunction) Application::sGetUserConfigPath, METH_VARARGS,
+     "Get the root path of user config files"},
+    {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataPath, METH_VARARGS,
      "Get the root directory of application data"},
-    {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir, METH_VARARGS,
+    {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroPath, METH_VARARGS,
      "getUserMacroDir(bool=False) -> string"
      "Get the directory of the user's macro directory\n"
      "If parameter is False (the default) it returns the standard path in the"
      "user's home directory, otherwise it returns the user-defined path."},
-    {"getHelpDir", (PyCFunction) Application::sGetHelpDir, METH_VARARGS,
+    {"getHelpDir", (PyCFunction) Application::sGetHelpPath, METH_VARARGS,
      "Get the directory of the documentation"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath, METH_VARARGS,
      "Get the home path, i.e. the parent directory of the executable"},
@@ -644,38 +648,56 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     }
 }
 
-PyObject* Application::sGetResourceDir(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sGetResourcePath(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     Py::String datadir(Application::getResourceDir(),"utf-8");
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetUserConfigDir(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sGetTempPath(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    Py::String datadir(Application::getUserConfigDir(),"utf-8");
+    Py::String datadir(Application::getTempPath(),"utf-8");
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sGetUserCachePath(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::String datadir(Application::getUserCachePath(),"utf-8");
+    return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetUserConfigPath(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::String datadir(Application::getUserConfigPath(),"utf-8");
+    return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetUserAppDataPath(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     Py::String user_data_dir(Application::getUserAppDataDir(),"utf-8");
     return Py::new_reference_to(user_data_dir);
 }
 
-PyObject* Application::sGetUserMacroDir(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sGetUserMacroPath(PyObject * /*self*/, PyObject *args)
 {
     PyObject *actual = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &actual))
-        return NULL;
+        return nullptr;
 
     std::string macroDir = Application::getUserMacroDir();
     if (PyObject_IsTrue(actual)) {
@@ -688,10 +710,10 @@ PyObject* Application::sGetUserMacroDir(PyObject * /*self*/, PyObject *args)
     return Py::new_reference_to(user_macro_dir);
 }
 
-PyObject* Application::sGetHelpDir(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sGetHelpPath(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     Py::String user_macro_dir(Application::getHelpDir(),"utf-8");
     return Py::new_reference_to(user_macro_dir);
@@ -699,8 +721,8 @@ PyObject* Application::sGetHelpDir(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     Py::String homedir(Application::getHomePath(),"utf-8");
     return Py::new_reference_to(homedir);

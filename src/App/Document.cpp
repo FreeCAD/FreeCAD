@@ -1684,7 +1684,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
     hash.addData(filename.c_str(), filename.size());
-    s << App::Application::getTempPath() << App::Application::getExecutableName()
+    s << App::Application::getUserCachePath() << App::Application::getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
       << "_" << QCoreApplication::applicationPid();
