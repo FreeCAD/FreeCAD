@@ -595,12 +595,12 @@ def parse(pathobj):
                     out += linenumber() + '(Begin toolchange)\n'
 
                 if OUTPUT_TOOL_CHANGE:
+                    for line in TOOL_CHANGE.splitlines(True):
+                        out += linenumber() + line + '\n'
                     outlist[0] = ' '
                     outlist[-1] =('T' + str(int(c.Parameters['T'])))
 
                 if not OUTPUT_TOOL_CHANGE and OUTPUT_COMMENTS:
-                    for line in TOOL_CHANGE.splitlines(True):
-                        out += linenumber() + line + '\n'
 # next 2 lines could also be replaced by a single line as "outlist = []"                   
                     outlist[0] = ' ' 
                     outlist[-1] = ' '
