@@ -50,6 +50,8 @@
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 
+Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet);
+
 using namespace PartDesignGui;
 using namespace Gui;
 
@@ -107,13 +109,13 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
         ui->profileBaseEdit->setText(label);
     }
 
-    for (auto obj : loft->Sections.getValues()) {
-        Gui::Application::Instance->showViewProvider(obj);
+    for (auto &subSet : loft->Sections.getSubListValues()) {
+        Gui::Application::Instance->showViewProvider(subSet.first);
 
-        QString label = make2DLabel(obj, loft->Sections.getSubValues(obj));
+        QString label = make2DLabel(subSet.first, subSet.second);
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
-        item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
+        item->setData(Qt::UserRole, QVariant::fromValue(subSet));
         ui->listWidgetReferences->addItem(item);
     }
 
@@ -157,7 +159,8 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 else if (selectionMode == refAdd) {
                     QListWidgetItem* item = new QListWidgetItem();
                     item->setText(label);
-                    item->setData(Qt::UserRole, QByteArray(msg.pObjectName));
+                    item->setData(Qt::UserRole,
+                                  QVariant::fromValue(std::make_pair(object, std::vector<std::string>(1, msg.pSubName))));
                     ui->listWidgetReferences->addItem(item);
                 }
                 else if (selectionMode == refRemove) {
@@ -243,7 +246,7 @@ void TaskLoftParameters::onDeleteSection()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument());
         delete item;
 
         // search inside the list of sections
@@ -270,17 +273,16 @@ void TaskLoftParameters::indexesMoved()
         return;
 
     PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
-    std::vector<App::DocumentObject*> originals = loft->Sections.getValues();
+    auto originals = loft->Sections.getSubListValues();
 
     QByteArray name;
     int rows = model->rowCount();
     for (int i = 0; i < rows; i++) {
         QModelIndex index = model->index(i, 0);
-        name = index.data(Qt::UserRole).toByteArray().constData();
-        originals[i] = loft->getDocument()->getObject(name.constData());
+        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
     }
 
-    loft->Sections.setValues(originals);
+    loft->Sections.setSubListValues(originals);
     recomputeFeature();
     updateUI();
 }

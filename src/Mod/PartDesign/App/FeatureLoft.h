@@ -40,7 +40,7 @@ class PartDesignExport Loft : public ProfileBased
 public:
     Loft();
 
-    App::PropertyXLinkSubList Sections;
+    App::PropertyLinkSubList Sections;
     App::PropertyBool Ruled;
     App::PropertyBool Closed;
 
