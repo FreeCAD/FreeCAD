@@ -55,7 +55,7 @@
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>

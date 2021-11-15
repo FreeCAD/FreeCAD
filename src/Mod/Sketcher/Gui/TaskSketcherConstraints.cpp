@@ -57,6 +57,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
 
+#include "Utils.h"
+
 #include "ConstraintMultiFilterDialog.h"
 #include "ConstraintSettingsDialog.h"
 

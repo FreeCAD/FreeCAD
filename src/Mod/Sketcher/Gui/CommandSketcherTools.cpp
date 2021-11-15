@@ -54,7 +54,7 @@
 
 #include "ViewProviderSketch.h"
 #include "SketchRectangularArrayDialog.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;

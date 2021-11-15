@@ -40,7 +40,7 @@
 
 #include "ViewProviderSketch.h"
 #include "GeometryCreationMode.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;

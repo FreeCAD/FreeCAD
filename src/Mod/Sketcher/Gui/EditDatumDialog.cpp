@@ -43,7 +43,7 @@
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
 #include "EditDatumDialog.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 
 using namespace SketcherGui;

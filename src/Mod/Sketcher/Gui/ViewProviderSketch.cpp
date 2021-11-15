@@ -116,7 +116,7 @@
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 

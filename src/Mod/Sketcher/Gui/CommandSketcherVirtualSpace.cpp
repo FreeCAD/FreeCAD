@@ -49,7 +49,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;
