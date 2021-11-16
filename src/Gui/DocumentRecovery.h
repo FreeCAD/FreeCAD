@@ -28,6 +28,7 @@
 #include <QScopedPointer>
 #include <QList>
 #include <QFileInfo>
+#include <QFileInfoList>
 #include <string>
 #include <functional>
 
@@ -85,35 +86,17 @@ public:
 
 class DocumentRecoveryCleaner {
 public:
-    static void clearDirectory(const QFileInfo& dir);
-};
-
-class ApplicationCache : public QObject {
-    Q_OBJECT
-
-public:
-    enum class Period {
-        Always,
-        Daily,
-        Weekly,
-        Monthly,
-        Yearly,
-        Never
-    };
-
-    ApplicationCache();
-    void setPeriod(Period);
-    void setLimit(qint64);
-    bool periodicCheckOfSize() const;
-    qint64 size() const;
-    void performAction(qint64);
+    void clearDirectory(const QFileInfo& dir);
+    void setIgnoreFiles(const QStringList&);
+    void setIgnoreDirectories(const QFileInfoList&);
 
 private:
-    qint64 dirSize(QString dirPath) const;
+    void subtractFiles(QStringList&);
+    void subtractDirs(QFileInfoList&);
 
 private:
-    qint64 limit;
-    int numDays;
+    QStringList ignoreFiles;
+    QFileInfoList ignoreDirs;
 };
 
 } //namespace Dialog

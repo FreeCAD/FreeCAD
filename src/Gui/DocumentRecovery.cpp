@@ -30,10 +30,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QCloseEvent>
-# include <QDate>
 # include <QDateTime>
 # include <QDebug>
-# include <QDesktopServices>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
@@ -41,14 +39,12 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QSettings>
 # include <QTextStream>
 # include <QTreeWidgetItem>
 # include <QMap>
+# include <QSet>
 # include <QList>
 # include <QVector>
-# include <climits>
-# include <cmath>
 # include <sstream>
 #endif
 
@@ -341,7 +337,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    DocumentRecoveryCleaner::clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -531,7 +527,7 @@ void DocumentRecovery::onDeleteSection()
         QTreeWidgetItem* item = d_ptr->ui.treeWidget->takeTopLevelItem(index);
 
         QString projectFile = item->toolTip(0);
-        DocumentRecoveryCleaner::clearDirectory(QFileInfo(tmp.filePath(projectFile)));
+        DocumentRecoveryCleaner().clearDirectory(QFileInfo(tmp.filePath(projectFile)));
         tmp.rmdir(projectFile);
         delete item;
     }
@@ -570,7 +566,7 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 {
     if (!dirs.isEmpty()) {
         for (QList<QFileInfo>::const_iterator jt = dirs.cbegin(); jt != dirs.cend(); ++jt) {
-            DocumentRecoveryCleaner::clearDirectory(*jt);
+            DocumentRecoveryCleaner().clearDirectory(*jt);
             tmp.rmdir(jt->fileName());
         }
     }
@@ -691,6 +687,7 @@ void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
     // Remove all files in this directory
     qThisDir.setFilter(QDir::Files);
     QStringList files = qThisDir.entryList();
+    subtractFiles(files);
     for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
         QString file = *it;
         qThisDir.remove(file);
@@ -699,164 +696,40 @@ void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
     // Clear this directory of any sub-directories
     qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
     QFileInfoList subdirs = qThisDir.entryInfoList();
+    subtractDirs(subdirs);
     for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
         clearDirectory(*it);
         qThisDir.rmdir(it->fileName());
     }
 }
 
-// ----------------------------------------------------------------------------
-
-ApplicationCache::ApplicationCache()
+void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 {
-    limit = std::pow(1024, 3);
-    setPeriod(Period::Weekly);
-}
-
-/*!
- * \brief ApplicationCache::setPeriod
- * Set the period to check for the cache size
- * \param period
- */
-void ApplicationCache::setPeriod(ApplicationCache::Period period)
-{
-    switch (period) {
-    case Period::Always:
-        numDays = -1;
-        break;
-    case Period::Daily:
-        numDays = 1;
-        break;
-    case Period::Weekly:
-        numDays = 7;
-        break;
-    case Period::Monthly:
-        numDays = 31;
-        break;
-    case Period::Yearly:
-        numDays = 365;
-        break;
-    case Period::Never:
-        numDays = INT_MAX;
-        break;
+    if (!ignoreFiles.isEmpty() && !files.isEmpty()) {
+        QSet<QString> set1 = files.toSet();
+        QSet<QString> set2 = ignoreFiles.toSet();
+        set1.subtract(set2);
+        files = set1.toList();
     }
 }
 
-/*!
- * \brief ApplicationCache::setLimit
- * Set the limit in bytes to perform a check
- * \param value
- */
-void ApplicationCache::setLimit(qint64 value)
+void DocumentRecoveryCleaner::subtractDirs(QFileInfoList& dirs)
 {
-    limit = value;
-}
-
-/*!
- * \brief ApplicationCache::periodicCheckOfSize
- * Checks if the periodic check should be performed now
- * \return
- */
-bool ApplicationCache::periodicCheckOfSize() const
-{
-    QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
-    QString application = QString::fromStdString(App::Application::getExecutableName());
-
-    QSettings settings(vendor, application);
-    QString key = QString::fromLatin1("LastCacheCheck");
-    QDate date = settings.value(key).toDate();
-    QDate now = QDate::currentDate();
-
-    // get the days since the last check
-    int days = date.daysTo(now);
-    if (date.isNull()) {
-        days = 1000;
-    }
-
-    if (days >= numDays) {
-        settings.setValue(key, now);
-        return true;
-    }
-
-    return false;
-}
-
-/*!
- * \brief ApplicationCache::performAction
- * If the cache size \a total is higher than the limit then show a dialog to the user
- * \param total
- */
-void ApplicationCache::performAction(qint64 total)
-{
-    if (total > limit) {
-        QString path = QString::fromStdString(App::Application::getUserCachePath());
-        QMessageBox msgBox(Gui::getMainWindow());
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Cache directory"));
-        msgBox.setText(tr("The cache directory %1 exceeds the size of %2 GB.\n"
-                          "Do you want to clear it now?").arg(path).arg(1));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Open);
-        msgBox.setDefaultButton(QMessageBox::No);
-
-        while (true) {
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Open) {
-                QUrl url = QUrl::fromLocalFile(path);
-                QDesktopServices::openUrl(url);
-            }
-            else {
-                if (ret == QMessageBox::Yes) {
-                    DocumentRecoveryCleaner::clearDirectory(QFileInfo(path));
-                }
-                break;
-            }
+    if (!ignoreDirs.isEmpty() && !dirs.isEmpty()) {
+        for (const auto& it : ignoreDirs) {
+            dirs.removeOne(it);
         }
     }
 }
 
-/*!
- * \brief ApplicationCache::size
- * Determines the size of the cache.
- * \return
- */
-qint64 ApplicationCache::size() const
+void DocumentRecoveryCleaner::setIgnoreFiles(const QStringList& list)
 {
-    // QDirIterator lists some directories twice
-#if 0
-    QDir cache = QString::fromStdString(App::Application::getUserCachePath());
-    QDirIterator it(cache, QDirIterator::Subdirectories);
-    qint64 total = 0;
-    while (it.hasNext()) {
-        it.next();
-        total += it.fileInfo().size();
-    }
-
-    return total;
-#else
-    qint64 total = dirSize(QString::fromStdString(App::Application::getUserCachePath()));
-    return total;
-#endif
+    ignoreFiles = list;
 }
 
-/*!
- * \internal
- */
-qint64 ApplicationCache::dirSize(QString dirPath) const
+void DocumentRecoveryCleaner::setIgnoreDirectories(const QFileInfoList& list)
 {
-    qint64 total = 0;
-    QDir dir(dirPath);
-
-    QDir::Filters fileFilters = QDir::Files;
-    for (QString filePath : dir.entryList(fileFilters)) {
-        QFileInfo fi(dir, filePath);
-        total += fi.size();
-    }
-
-    // traverse sub-directories recursively
-    QDir::Filters dirFilters = QDir::Dirs | QDir::NoDotAndDotDot;
-    for (QString subDirPath : dir.entryList(dirFilters))
-        total += dirSize(dirPath + QDir::separator() + subDirPath);
-    return total;
+    ignoreDirs = list;
 }
 
 #include "moc_DocumentRecovery.cpp"

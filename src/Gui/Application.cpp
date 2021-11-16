@@ -93,6 +93,7 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
+#include "DlgSettingsCacheDirectory.h"
 #include "TransactionObject.h"
 #include "FileDialog.h"
 #include "ExpressionBindingPy.h"
@@ -2422,6 +2423,7 @@ void Application::checkForPreviousCrashes()
 
         // If the recovery dialog wasn't shown check the cache size periodically
         Gui::Dialog::ApplicationCache cache;
+        cache.applyUserSettings();
         if (cache.periodicCheckOfSize()) {
             qint64 total = cache.size();
             cache.performAction(total);
