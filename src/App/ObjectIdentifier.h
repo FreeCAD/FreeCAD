@@ -368,7 +368,7 @@ public:
 
     /** Get dependencies of this object identifier
      *
-     * @param deps: returns the depdenencies.
+     * @param deps: returns the dependencies.
      * @param needProps: whether need property dependencies.
      * @param labels: optional return of any label references.
      *
