@@ -48,7 +48,11 @@ __doc__ = (
 )
 __contributors__ = "Schildkroet"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -73,7 +77,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def initAreaOpProperties(self, obj, warn=False):
         """initAreaOpProperties(obj) ... create operation specific properties"""
-        self.addNewProps = list()
+        self.addNewProps = []
 
         for (prtyp, nm, grp, tt) in self.areaOpProperties():
             if not hasattr(obj, nm):
@@ -342,10 +346,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... returns envelope for all base shapes or wires"""
-        PathLog.track()
 
         shapes = []
-        remainingObjBaseFeatures = list()
+        remainingObjBaseFeatures = []
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.inaccessibleMsg = translate(
             "PathProfile",
@@ -383,10 +386,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             obj.Base and len(obj.Base) > 0
         ):  # The user has selected subobjects from the base.  Process each.
             shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
+            PathLog.track("returned {} shapes".format(len(shapes)))
 
+        PathLog.track(remainingObjBaseFeatures)
         if obj.Base and len(obj.Base) > 0 and not remainingObjBaseFeatures:
             # Edges were already processed, or whole model targeted.
-            PathLog.debug("remainingObjBaseFeatures is False")
+            PathLog.track("remainingObjBaseFeatures is False")
         elif (
             remainingObjBaseFeatures and len(remainingObjBaseFeatures) > 0
         ):  # Process remaining features after edges processed above.
@@ -403,12 +408,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         if numpy.isclose(
                             abs(shape.normalAt(0, 0).z), 1
                         ):  # horizontal face
-                            for wire in shape.Wires[1:]:
+                            for wire in shape.Wires:
+                                if wire.hashCode() == shape.OuterWire.hashCode():
+                                    continue
                                 holes.append((base.Shape, wire))
 
                         # Add face depth to list
                         faceDepths.append(shape.BoundBox.ZMin)
                     else:
+                        PathLog.track()
                         ignoreSub = base.Name + "." + sub
                         msg = translate(
                             "PathProfile",
@@ -475,6 +483,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         else:  # Try to build targets from the job models
             # No base geometry selected, so treating operation like a exterior contour operation
+            PathLog.track()
             self.opUpdateDepths(obj)
 
             if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
@@ -498,7 +507,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     # Method to handle each model as a whole, when no faces are selected
     def _processEachModel(self, obj):
-        shapeTups = list()
+        shapeTups = []
         for base in self.model:
             if hasattr(base, "Shape"):
                 env = PathUtils.getEnvelope(
@@ -510,22 +519,22 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     # Edges pre-processing
     def _processEdges(self, obj, remainingObjBaseFeatures):
-        shapes = list()
-        basewires = list()
+        PathLog.track("remainingObjBaseFeatures: {}".format(remainingObjBaseFeatures))
+        shapes = []
+        basewires = []
         ezMin = None
         self.cutOut = self.tool.Diameter
 
-        for p in range(0, len(obj.Base)):
-            (base, subsList) = obj.Base[p]
-            keepFaces = list()
-            edgelist = list()
+        for base, subsList in obj.Base:
+            keepFaces = []
+            edgelist = []
             for sub in subsList:
                 shape = getattr(base.Shape, sub)
                 # extract and process edges
                 if isinstance(shape, Part.Edge):
                     edgelist.append(getattr(base.Shape, sub))
                 # save faces for regular processing
-                if isinstance(shape, Part.Face):
+                elif isinstance(shape, Part.Face):
                     keepFaces.append(sub)
             if len(edgelist) > 0:
                 basewires.append((base, DraftGeomUtils.findWires(edgelist)))
@@ -535,6 +544,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if len(keepFaces) > 0:  # save faces for returning and processing
                 remainingObjBaseFeatures.append((base, keepFaces))
 
+        PathLog.track(basewires)
         for base, wires in basewires:
             for wire in wires:
                 if wire.isClosed():
@@ -569,7 +579,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         zDiff = math.fabs(wire.BoundBox.ZMin - obj.FinalDepth.Value)
                         if flattened and zDiff >= self.JOB.GeometryTolerance.Value:
                             cutWireObjs = False
-                            openEdges = list()
+                            openEdges = []
                             passOffsets = [self.ofstRadius]
                             (origWire, flatWire) = flattened
 
@@ -708,8 +718,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self._addDebugObject("CutArea", cutArea)
 
         # Get top and bottom faces of cut area (CA), and combine faces when necessary
-        topFc = list()
-        botFc = list()
+        topFc = []
+        botFc = []
         bbZMax = cutArea.BoundBox.ZMax
         bbZMin = cutArea.BoundBox.ZMin
         for f in range(0, len(cutArea.Faces)):
@@ -872,9 +882,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _extractPathWire(self, obj, base, flatWire, cutShp):
         PathLog.debug("_extractPathWire()")
 
-        subLoops = list()
-        rtnWIRES = list()
-        osWrIdxs = list()
+        subLoops = []
+        rtnWIRES = []
+        osWrIdxs = []
         subDistFactor = (
             1.0  # Raise to include sub wires at greater distance from original
         )
@@ -897,10 +907,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     pass
             else:
                 PathLog.error("No area to offset shape returned.")
-                return list()
+                return []
         except Exception as ee:
             PathLog.error("No area to offset shape returned.\n{}".format(ee))
-            return list()
+            return []
 
         self._addDebugObject("OffsetShape", ofstShp)
 
@@ -909,7 +919,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             osWrIdxs.append(w)
 
         # Identify two vertexes for dividing offset loop
-        NEAR0 = self._findNearestVertex(ofstShp,  cent0)
+        NEAR0 = self._findNearestVertex(ofstShp, cent0)
         # min0i = 0
         min0 = NEAR0[0][4]
         for n in range(0, len(NEAR0)):
@@ -921,7 +931,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject("Near0", near0Shp)
 
-        NEAR1 = self._findNearestVertex(ofstShp,  cent1)
+        NEAR1 = self._findNearestVertex(ofstShp, cent1)
         # min1i = 0
         min1 = NEAR1[0][4]
         for n in range(0, len(NEAR1)):
@@ -941,7 +951,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             )
 
         # Debugging
-        '''
+        """
         if self.isDebug:
             PathLog.debug('min0i is {}.'.format(min0i))
             PathLog.debug('min1i is {}.'.format(min1i))
@@ -949,14 +959,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             PathLog.debug('NEAR1[{}] is {}.'.format(w1, NEAR1[w1]))
             PathLog.debug('NEAR0 is {}.'.format(NEAR0))
             PathLog.debug('NEAR1 is {}.'.format(NEAR1))
-        '''
+        """
 
         mainWire = ofstShp.Wires[w0]
 
         # Check for additional closed loops in offset wire by checking distance to iTAG or eTAG elements
         if numOSWires > 1:
             # check all wires for proximity(children) to intersection tags
-            tagsComList = list()
+            tagsComList = []
             for T in self.cutSideTags.Faces:
                 tcom = T.CenterOfMass
                 tv = FreeCAD.Vector(tcom.x, tcom.y, 0.0)
@@ -987,8 +997,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         except Exception as ee:
             PathLog.error("Failed to identify offset edge.\n{}".format(ee))
             return False
-        edgs0 = list()
-        edgs1 = list()
+        edgs0 = []
+        edgs1 = []
         for e in edgeIdxs0:
             edgs0.append(mainWire.Edges[e])
         for e in edgeIdxs1:
@@ -1030,7 +1040,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         def sortDist(tup):
             return tup[4]
 
-        PNTS = list()
+        PNTS = []
         for w in range(0, len(shape.Wires)):
             WR = shape.Wires[w]
             V = WR.Vertexes[0]
@@ -1061,7 +1071,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         V2 = FreeCAD.Vector(VV2.X, VV2.Y, VV2.Z)
 
         lenE = len(wire.Edges)
-        FLGS = list()
+        FLGS = []
         for e in range(0, lenE):
             FLGS.append(0)
 
@@ -1098,11 +1108,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # PathLog.debug('_separateWireAtVertexes() FLGS: {}'.format(FLGS))
 
-        PRE = list()
-        POST = list()
-        IDXS = list()
-        IDX1 = list()
-        IDX2 = list()
+        PRE = []
+        POST = []
+        IDXS = []
+        IDX1 = []
+        IDX2 = []
         for e in range(0, lenE):
             f = FLGS[e]
             PRE.append(f)
@@ -1174,7 +1184,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # Eif
 
         # Debugging
-        '''
+        """
         if self.isDebug:
             PathLog.debug('grps[0]: {}'.format(grps[0]))
             PathLog.debug('grps[1]: {}'.format(grps[1]))
@@ -1182,7 +1192,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             PathLog.debug('wireIdxs[1]: {}'.format(wireIdxs[1]))
             PathLog.debug('PRE: {}'.format(PRE))
             PathLog.debug('IDXS: {}'.format(IDXS))
-        '''
+        """
         return (wireIdxs[0], wireIdxs[1])
 
     def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):
@@ -1191,7 +1201,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         Makes face shape from cross-section object. Returns face shape at zHghtTrgt."""
         PathLog.debug("_makeCrossSection()")
         # Create cross-section of shape and translate
-        wires = list()
+        wires = []
         slcs = shape.slice(FreeCAD.Vector(0, 0, 1), sliceZ)
         if len(slcs) > 0:
             for i in slcs:
@@ -1220,8 +1230,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _makeIntersectionTags(self, useWire, numOrigEdges, fdv):
         PathLog.debug("_makeIntersectionTags()")
         # Create circular probe tags around perimiter of wire
-        extTags = list()
-        intTags = list()
+        extTags = []
+        intTags = []
         tagRad = self.radius / 2
         tagCnt = 0
         begInt = False
