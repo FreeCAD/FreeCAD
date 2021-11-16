@@ -124,46 +124,11 @@ class UpdateWorker(QtCore.QThread):
         else:
             FreeCAD.Console.PrintWarning("Debug: addon_flags.json not found\n")
 
-        # Check the local package cache:
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
-        cache_path = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata")
         package_names = []
-        if os.path.isdir(cache_path):
-            for dir in os.listdir(cache_path):
-                if self.current_thread.isInterruptionRequested():
-                    return
-                dir_path = os.path.join(cache_path, dir)
-                if not os.path.isdir(dir_path):
-                    continue
-                xml_cache = os.path.join(dir_path, "package.xml")
-                try:
-                    meta = FreeCAD.Metadata(xml_cache)
-                except Exception:
-                    FreeCAD.Console.PrintWarning(f"Failed to create Metadata from {xml_cache}\n")
-                    continue
-                name = dir # Do not use metadata name here, we want to match the legacy fetch code below
-                url = None
-                branch = None
-                for meta_url in meta.Urls:
-                    if meta_url["type"] == "repository":
-                        url = meta_url["location"]
-                        branch = meta_url["branch"]
-                        break
-                addondir = moddir + os.sep + name
-                if os.path.exists(addondir) and os.listdir(addondir):
-                    state = AddonManagerRepo.UpdateStatus.UNCHECKED
-                else:
-                    state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-                cached_package = AddonManagerRepo(name, url, state, branch)
-                cached_package.metadata = meta
-                cached_package.icon = QtGui.QIcon(cached_package.get_cached_icon_filename())
-                cached_package.repo_type = AddonManagerRepo.RepoType.PACKAGE
-                cached_package.description = meta.Description
-                self.addon_repo.emit(cached_package)
-                package_names.append(name)
 
-        # querying custom addons
+        # querying custom addons first
         addon_list = (FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                         .GetString("CustomRepositories", "").split("\n"))
         custom_addons = []
@@ -205,7 +170,7 @@ class UpdateWorker(QtCore.QThread):
         p = re.findall((r'(?m)\[submodule\s*"(?P<name>.*)"\]\s*'
                         r"path\s*=\s*(?P<path>.+)\s*"
                         r"url\s*=\s*(?P<url>https?://.*)\s*"
-                        r"(branch\s*=\s*(?P<branch>.*)\s*)?"), p)
+                        r"(branch\s*=\s*(?P<branch>[^\s]*)\s*)?"), p)
         for name, path, url, _, branch in p:
             if self.current_thread.isInterruptionRequested():
                 return
@@ -228,6 +193,87 @@ class UpdateWorker(QtCore.QThread):
         if not self.current_thread.isInterruptionRequested():
             self.done.emit()
             self.stop = True
+
+class LoadPackagesFromCacheWorker(QtCore.QThread):
+    addon_repo = QtCore.Signal(object)
+    done = QtCore.Signal()
+
+    def __init__(self, cache_file:str):
+        QtCore.QThread.__init__(self)
+        self.cache_file = cache_file
+
+    def run(self):
+        with open(self.cache_file,"r") as f:
+            data = f.read()
+            dict_data = json.loads(data)
+            for item in dict_data:
+                if QtCore.QThread.currentThread().isInterruptionRequested():
+                    return
+                self.addon_repo.emit(AddonManagerRepo.from_cache(item))
+        self.done.emit()
+
+class LoadMacrosFromCacheWorker(QtCore.QThread):
+    add_macro_signal = QtCore.Signal(object)
+    done = QtCore.Signal()
+
+    def __init__(self, cache_file:str):
+        QtCore.QThread.__init__(self)
+        self.cache_file = cache_file
+
+    def run(self):
+        with open(self.cache_file,"r") as f:
+            data = f.read()
+            dict_data = json.loads(data)
+            for item in dict_data:
+                if QtCore.QThread.currentThread().isInterruptionRequested():
+                    return
+                new_macro = Macro.from_cache(item)
+                self.add_macro_signal.emit(AddonManagerRepo.from_macro(new_macro))
+        self.done.emit()
+
+class LoadMetadataFromCacheWorker(QtCore.QThread):
+    
+    done = QtCore.Signal()
+    package_updated = QtCore.Signal(AddonManagerRepo)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def run(self):
+        cache_path = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
+        package_names = []
+        if os.path.isdir(cache_path):
+            for dir in os.listdir(cache_path):
+                if QtCore.QThread.currentThread().isInterruptionRequested():
+                    return
+                dir_path = os.path.join(cache_path, dir)
+                if not os.path.isdir(dir_path):
+                    continue
+                xml_cache = os.path.join(dir_path, "package.xml")
+                try:
+                    meta = FreeCAD.Metadata(xml_cache)
+                except Exception:
+                    FreeCAD.Console.PrintWarning(f"Failed to create Metadata from {xml_cache}\n")
+                    continue
+                name = dir # Do not use metadata name here, we want to match the legacy fetch code
+                url = None
+                branch = None
+                for meta_url in meta.Urls:
+                    if meta_url["type"] == "repository":
+                        url = meta_url["location"]
+                        branch = meta_url["branch"]
+                        break
+                addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
+                if os.path.exists(addondir) and os.listdir(addondir):
+                    state = AddonManagerRepo.UpdateStatus.UNCHECKED
+                else:
+                    state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+                cached_package = AddonManagerRepo(name, url, state, branch)
+                cached_package.metadata = meta
+                cached_package.repo_type = AddonManagerRepo.RepoType.PACKAGE
+                cached_package.description = meta.Description
+                self.package_updated.emit(cached_package)
+        self.done.emit()
 
 class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     """This worker checks for available updates for all workbenches"""
@@ -480,70 +526,68 @@ class ShowWorker(QtCore.QThread):
     """This worker retrieves info of a given workbench"""
 
     status_message = QtCore.Signal(str)
-    description_updated = QtCore.Signal(str)
+    readme_updated = QtCore.Signal(str)
     addon_repos = QtCore.Signal(object)
     done = QtCore.Signal()
 
-    def __init__(self, repo):
+    def __init__(self, repo, cache_path):
 
         QtCore.QThread.__init__(self)
         self.repo = repo
+        self.cache_path = cache_path
 
     def run(self):
         self.status_message.emit(translate("AddonsInstaller", "Retrieving description..."))
-        if self.repo.description is not None:
-            desc = self.repo.description
-        else:
-            u = None
-            url = self.repo.url
-            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from") + " " + str(url))
-            desc = ""
-            regex = utils.get_readme_regex(self.repo)
-            if regex:
-                # extract readme from html via regex
-                readmeurl = utils.get_readme_html_url(self.repo)
-                if not readmeurl:
-                    FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
-                u = utils.urlopen(readmeurl)
-                if not u:
-                    FreeCAD.Console.PrintWarning(f"Debug: README not found at {readmeurl}\n")
-                u = utils.urlopen(readmeurl)
-                if u:
-                    p = u.read()
-                    if isinstance(p, bytes):
-                        p = p.decode("utf-8")
-                    u.close()
-                    readme = re.findall(regex, p, flags=re.MULTILINE | re.DOTALL)
-                    if readme:
-                        desc = readme[0]
-                else:
-                    FreeCAD.Console.PrintWarning(f"Debug: README not found at {readmeurl}\n")
+        u = None
+        url = self.repo.url
+        self.status_message.emit(translate("AddonsInstaller", "Retrieving info from") + " " + str(url))
+        desc = ""
+        regex = utils.get_readme_regex(self.repo)
+        if regex:
+            # extract readme from html via regex
+            readmeurl = utils.get_readme_html_url(self.repo)
+            if not readmeurl:
+                FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
+            u = utils.urlopen(readmeurl)
+            if not u:
+                FreeCAD.Console.PrintWarning(f"Debug: README not found at {readmeurl}\n")
+            u = utils.urlopen(readmeurl)
+            if u:
+                p = u.read()
+                if isinstance(p, bytes):
+                    p = p.decode("utf-8")
+                u.close()
+                readme = re.findall(regex, p, flags=re.MULTILINE | re.DOTALL)
+                if readme:
+                    desc = readme[0]
             else:
-                # convert raw markdown using lib
-                readmeurl = utils.get_readme_url(self.repo)
-                if not readmeurl:
-                    FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
-                u = utils.urlopen(readmeurl)
-                if u:
-                    p = u.read()
-                    if isinstance(p, bytes):
-                        p = p.decode("utf-8")
-                    u.close()
-                    desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
-                    if not NOMARKDOWN and have_markdown:
-                        desc = markdown.markdown(desc, extensions=["md_in_html"])
-                    else:
-                        message = """
-<div style="width: 100%; text-align:center;background: #91bbe0;">
-    <strong style="color: #FFFFFF;">
-"""
-                        message += translate("AddonsInstaller", "Raw markdown displayed")
-                        message += "</strong><br/><br/>"
-                        message += translate("AddonsInstaller", "Python Markdown library is missing.")
-                        message += "<br/></div><hr/><pre>" + desc + "</pre>"
-                        desc = message
+                FreeCAD.Console.PrintWarning(f"Debug: README not found at {readmeurl}\n")
+        else:
+            # convert raw markdown using lib
+            readmeurl = utils.get_readme_url(self.repo)
+            if not readmeurl:
+                FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
+            u = utils.urlopen(readmeurl)
+            if u:
+                p = u.read()
+                if isinstance(p, bytes):
+                    p = p.decode("utf-8")
+                u.close()
+                desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
+                if not NOMARKDOWN and have_markdown:
+                    desc = markdown.markdown(desc, extensions=["md_in_html"])
                 else:
-                    FreeCAD.Console.PrintWarning("Debug: README not found at {readmeurl}\n")
+                    message = """
+<div style="width: 100%; text-align:center;background: #91bbe0;">
+<strong style="color: #FFFFFF;">
+"""
+                    message += translate("AddonsInstaller", "Raw markdown displayed")
+                    message += "</strong><br/><br/>"
+                    message += translate("AddonsInstaller", "Python Markdown library is missing.")
+                    message += "<br/></div><hr/><pre>" + desc + "</pre>"
+                    desc = message
+            else:
+                FreeCAD.Console.PrintWarning("Debug: README not found at {readmeurl}\n")
             if desc == "":
                 # fall back to the description text
                 u = utils.urlopen(url)
@@ -686,11 +730,11 @@ class ShowWorker(QtCore.QThread):
 
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
-        self.description_updated.emit(message)
+        self.readme_updated.emit(message)
         self.mustLoadImages = True
         label = self.loadImages(message, self.repo.url, self.repo.name)
         if label:
-            self.description_updated.emit(label)
+            self.readme_updated.emit(label)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         self.done.emit()
@@ -711,12 +755,12 @@ class ShowWorker(QtCore.QThread):
         imagepaths = re.findall("<img.*?src=\"(.*?)\"", message)
         if imagepaths:
             storedimages = []
-            store = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "Images")
+            store = os.path.join(self.cache_path, "Images")
             if not os.path.exists(store):
                 os.makedirs(store)
+            with open(os.path.join(store,"download_in_progress"),"w") as f:
+                f.write("If this file still exists, it's because a download was interrupted. It can be safely ignored.")
             for path in imagepaths:
-                if QtCore.QThread.currentThread().isInterruptionRequested():
-                    return
                 if QtCore.QThread.currentThread().isInterruptionRequested():
                     return message
                 if not self.mustLoadImages:
@@ -759,6 +803,7 @@ class ShowWorker(QtCore.QThread):
                                                                QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg", 100)
                     message = message.replace("src=\"" + origpath, "src=\"file:///" + storename.replace("\\", "/"))
+            os.remove(os.path.join(store,"download_in_progress"))
             return message
         return None
 
@@ -767,7 +812,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
     """Retrieve the macro details for a macro"""
 
     status_message = QtCore.Signal(str)
-    description_updated = QtCore.Signal(str)
+    readme_updated = QtCore.Signal(str)
     done = QtCore.Signal()
 
     def __init__(self, repo):
@@ -795,7 +840,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
         message = (already_installed_msg + "<h1>" + self.macro.name + "</h1>" + self.macro.desc + "<br/><br/>Macro location: <a href=\"" + self.macro.url + "\">" + self.macro.url + "</a>")
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
-        self.description_updated.emit(message)
+        self.readme_updated.emit(message)
         self.done.emit()
         self.stop = True
 
@@ -1124,7 +1169,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.num_downloads_required = len(self.repos)
         self.progress_made.emit(0, self.num_downloads_required)
         self.status_message.emit(translate("AddonsInstaller", "Retrieving package metadata..."))
-        store = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata")
+        store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         index_file = os.path.join(store,"index.json")
         self.index = {}
         if os.path.isfile(index_file):
@@ -1286,10 +1331,11 @@ class UpdateSingleWorker(QtCore.QThread):
     def update_macro(self, repo:AddonManagerRepo):
         """ Updating a macro happens in this function, in the current thread """
         
-        with tempfile.TemporaryDirectory() as dir:
-            temp_install_succeeded = macro.install(dir)
-            if not temp_install_succeeded:
-                failed = True
+        cache_path = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "MacroCache")
+        os.makedirs(cache_path, exist_ok=True)
+        temp_install_succeeded = macro.install(cache_path)
+        if not temp_install_succeeded:
+            failed = True
 
         if not failed:
             failed = macro.install(self.macro_repo_dir)
