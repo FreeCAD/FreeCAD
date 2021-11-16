@@ -52,7 +52,7 @@ class MetadataDownloadWorker(QObject):
         super().__init__(parent)
         self.repo = repo
         self.index = index
-        self.store = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata")
+        self.store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         self.last_sha1 = ""
         self.url = self.repo.metadata_url
 

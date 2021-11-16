@@ -23,15 +23,16 @@
 import FreeCAD
 
 import os
+from typing import Dict
 
 from addonmanager_macro import Macro
 
 class AddonManagerRepo:
     "Encapsulate information about a FreeCAD addon"
 
-    from enum import Enum
+    from enum import IntEnum
 
-    class RepoType(Enum):
+    class RepoType(IntEnum):
         WORKBENCH = 1
         MACRO = 2
         PACKAGE = 3
@@ -44,10 +45,7 @@ class AddonManagerRepo:
             elif self.value == 3:
                 return "Package"
 
-        def __int__(self) -> int :
-            return self.value
-
-    class UpdateStatus(Enum):
+    class UpdateStatus(IntEnum):
         NOT_INSTALLED = 0
         UNCHECKED = 1
         NO_UPDATE_AVAILABLE = 2
@@ -72,9 +70,9 @@ class AddonManagerRepo:
                 return "Restart required"
 
     def __init__ (self, name:str, url:str, status:UpdateStatus, branch:str):
-        self.name = name
-        self.url = url
-        self.branch = branch
+        self.name = name.strip()
+        self.url = url.strip()
+        self.branch = branch.strip()
         self.update_status = status
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
@@ -105,6 +103,31 @@ class AddonManagerRepo:
         instance.repo_type = AddonManagerRepo.RepoType.MACRO
         instance.description = macro.desc
         return instance
+
+    @classmethod
+    def from_cache (self, data:Dict):
+        """ Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately. """
+
+        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",data["name"])
+        if os.path.isdir(mod_dir):
+            status = AddonManagerRepo.UpdateStatus.UNCHECKED
+        else:
+            status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+        instance = AddonManagerRepo(data["name"], data["url"], status, data["branch"])
+        instance.repo_type = AddonManagerRepo.RepoType(data["repo_type"])
+        instance.description = data["description"]
+        instance.cached_icon_filename = data["cached_icon_filename"]
+        return instance
+
+    def to_cache (self) -> Dict:
+        """ Returns a dictionary with cache information that can be used later with from_cache to recreate this object. """
+
+        return {"name":self.name,
+                "url":self.url,
+                "branch":self.branch,
+                "repo_type":int(self.repo_type),
+                "description":self.description,
+                "cached_icon_filename":self.cached_icon_filename}
         
     def contains_workbench(self) -> bool:
         """ Determine if this package contains (or is) a workbench """
@@ -160,7 +183,7 @@ class AddonManagerRepo:
         real_icon = real_icon.replace("/", os.path.sep) # Required path separator in the metadata.xml file to local separator
 
         _, file_extension = os.path.splitext(real_icon)
-        store = os.path.join(FreeCAD.getUserAppDataDir(), "AddonManager", "PackageMetadata")
+        store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         self.cached_icon_filename = os.path.join(store, self.name, "cached_icon"+file_extension)
 
         return self.cached_icon_filename

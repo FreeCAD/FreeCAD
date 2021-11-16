@@ -26,6 +26,7 @@ import re
 import sys
 import codecs
 import shutil
+from typing import Dict, Union
 
 import FreeCAD
 
@@ -62,6 +63,18 @@ class Macro(object):
 
     def __eq__(self, other):
         return self.filename == other.filename
+
+    @classmethod
+    def from_cache (self, cache_dict:Dict):
+        instance = Macro(cache_dict["name"])
+        for key,value in cache_dict.items():
+            instance.__dict__[key] = value
+        return instance
+
+    def to_cache (self) -> Dict:
+        """ For cache purposes this entire class is dumped directly """
+
+        return self.__dict__
 
     @property
     def filename(self):

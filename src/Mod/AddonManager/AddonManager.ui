@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,282 +15,98 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <widget class="QSplitter" name="splitter">
+    <widget class="QWidget" name="contentPlaceholder" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QWidget" name="verticalLayoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="layoutUpdateInProgress">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Show packages containing:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboPackageType">
-           <item>
-            <property name="text">
-             <string>All</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Workbenches</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Macros</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Preference Packs</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QToolButton" name="buttonShowDetails">
+         <property name="toolTip">
+          <string>Show details</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="arrowType">
+          <enum>Qt::RightArrow</enum>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLineEdit" name="lineEditFilter">
-           <property name="placeholderText">
-            <string>Filter</string>
-           </property>
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelFilterValidity">
-           <property name="text">
-            <string>OK</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QLabel" name="labelUpdateInProgress">
+         <property name="text">
+          <string>Loading...</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QTableView" name="tablePackages">
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="showDropIndicator" stdset="0">
-          <bool>false</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <property name="iconSize">
+         <property name="minimumSize">
           <size>
-           <width>16</width>
-           <height>16</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
-         <property name="showGrid">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>12</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="textVisible">
           <bool>false</bool>
          </property>
-         <property name="sortingEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-         <attribute name="horizontalHeaderMinimumSectionSize">
-          <number>16</number>
-         </attribute>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderMinimumSectionSize">
-          <number>12</number>
-         </attribute>
-         <attribute name="verticalHeaderDefaultSectionSize">
-          <number>16</number>
-         </attribute>
-         <attribute name="verticalHeaderStretchLastSection">
-          <bool>false</bool>
-         </attribute>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="verticalLayoutWidget_2">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonConfigure">
-           <property name="toolTip">
-            <string>Sets configuration options for the Addon Manager</string>
-           </property>
-           <property name="text">
-            <string>Configure...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLabel" name="labelIcon">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>64</width>
-             <height>64</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Icon</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="sizeConstraint">
-            <enum>QLayout::SetDefaultConstraint</enum>
-           </property>
-           <item>
-            <widget class="QLabel" name="labelPackageName">
-             <property name="text">
-              <string>&lt;h1&gt;Package Name&lt;/h1&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelVersion">
-             <property name="text">
-              <string>&lt;em&gt;Version&lt;/em&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelMaintainer">
-             <property name="text">
-              <string>Maintainer</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelDescription">
-         <property name="text">
-          <string>Description</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
+         <property name="format">
+          <string>Downloading info...</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="urlGrid">
-         <item row="0" column="0">
-          <widget class="QLabel" name="labelUrlType">
-           <property name="text">
-            <string>URL Type</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="labelUrl">
-           <property name="text">
-            <string>Url</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelContents">
-         <property name="text">
-          <string>Package contents:</string>
+        <widget class="QToolButton" name="buttonPauseUpdate">
+         <property name="toolTip">
+          <string>Pause cache update</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="description"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonExecute">
          <property name="text">
-          <string>Run Macro</string>
+          <string/>
          </property>
         </widget>
        </item>
       </layout>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelStatusInfo">
-     <property name="text">
-      <string>labelStatusInfo</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     </item>
      <item>
-      <widget class="QProgressBar" name="progressBar">
-       <property name="value">
-        <number>24</number>
+      <widget class="QLabel" name="labelStatusInfo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="textVisible">
-        <bool>false</bool>
-       </property>
-       <property name="format">
-        <string>Downloading info...</string>
+       <property name="text">
+        <string>labelStatusInfo</string>
        </property>
       </widget>
      </item>
@@ -302,22 +118,9 @@
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QPushButton" name="buttonUninstall">
-       <property name="toolTip">
-        <string>Uninstalls a selected macro or workbench</string>
-       </property>
+      <widget class="QPushButton" name="buttonUpdateCache">
        <property name="text">
-        <string>Uninstall selected</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonInstall">
-       <property name="toolTip">
-        <string>Installs or updates the selected macro or workbench</string>
-       </property>
-       <property name="text">
-        <string>Install/update selected</string>
+        <string>Refresh local cache</string>
        </property>
       </widget>
      </item>
@@ -327,9 +130,22 @@
         <string>Download and apply all available updates</string>
        </property>
        <property name="text">
-        <string>Update all</string>
+        <string>Update all packages</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="buttonClose">
