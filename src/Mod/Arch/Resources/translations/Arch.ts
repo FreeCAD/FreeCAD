@@ -184,6 +184,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="ArchBuildingPart.py" line="621"/>
+        <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchBuildingPart.py" line="623"/>
+        <source>Turns auto group box on/off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchBuildingPart.py" line="625"/>
+        <source>Automatically set size from contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchBuildingPart.py" line="627"/>
+        <source>A margin to use when autosize is turned on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="ArchComponent.py" line="192"/>
         <source>The base object this component is built upon</source>
         <translation type="unfinished"></translation>
@@ -1605,7 +1625,17 @@
     </message>
     <message>
         <location filename="ArchStructure.py" line="680"/>
+        <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchStructure.py" line="680"/>
         <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchStructure.py" line="682"/>
+        <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3045,8 +3075,63 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="InitGui.py" line="71"/>
+        <source>Structure tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="85"/>
+        <source>Axis tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="91"/>
+        <source>Panel tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="99"/>
+        <source>Material tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="103"/>
+        <source>Pipe tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="InitGui.py" line="94"/>
         <source>Rebar tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="177"/>
+        <source>&amp;Arch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="193"/>
+        <source>Utilities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="192"/>
+        <source>&amp;Draft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="181"/>
+        <source>Creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="185"/>
+        <source>Annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="189"/>
+        <source>Modification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4640,16 +4725,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="133"/>
-        <source>Utilities</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="132"/>
-        <source>&amp;Draft</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="InitGui.py" line="124"/>
         <source>Creation</source>
         <translation type="unfinished"></translation>
@@ -4662,6 +4737,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
         <location filename="InitGui.py" line="130"/>
         <source>Modification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="132"/>
+        <source>&amp;Draft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="133"/>
+        <source>Utilities</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
