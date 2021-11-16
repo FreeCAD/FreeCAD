@@ -3311,7 +3311,7 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Lan-mahai erabilgarriak</translation>
     </message>
   </context>
   <context>
@@ -3939,7 +3939,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
       <translation>Erabilitako azken kalkuluen zerrenda.
-Kalkulu bat gehitzeko, sakatu ⏎</translation>
+Kalkulu bat gehitzeko, sakatu ⏎ balioen sarrera-eremuan</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -4512,31 +4512,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Buruzkatzea (Y ardatzaren inguruan):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Kulunkada (X ardatzaren inguruan):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Keinada (Z ardatzaren inguruan):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Keinada (Z ardatzaren inguruan)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Buruzkatzea (Y ardatzaren inguruan)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Kulunkada (X ardatzaren inguruan)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Euler angeluak (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6065,7 +6065,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgariera</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6073,7 +6073,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Espainiera, Argentina</translation>
     </message>
   </context>
   <context>
@@ -7041,7 +7041,7 @@ Bide-izen fisikoa: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Ezin da dokumentua gorde</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7049,27 +7049,27 @@ Bide-izen fisikoa: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Arazo bat dago fitxategia gordetzen saiatzean. Beharbada karpeta gurasoak ez dira existitzen edo ez duzu aski baimenik. Errorearen xehetasunak:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Fitxategia beste izen batekin gorde nahi al duzu?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokumentua ez da gorde</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>%1 dokumentua ezin izan da gorde. Hura ixtea bertan behera utzi nahi duzu?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 dokumentu ez dira gorde</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Zenbait dokumentu ezin izan dira gorde. Ixtea bertan behera utzi nahi duzu?</translation>
     </message>
   </context>
   <context>

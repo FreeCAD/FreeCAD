@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Če je označno, bodo zadnje objave s FreeCAD foruma prikazane v zavihku aktivnosti</translation>
+      <translation>Če je označno, bodo zadnje objave s FreeCAD foruma prikazane v zavihku dogajanja</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>

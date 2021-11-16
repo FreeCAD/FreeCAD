@@ -2291,11 +2291,11 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Preusmeri notranje napake Pythona na poročilni pogled</translation>
+      <translation>Preusmeri notranje napake Pythona na poročevalni pogled</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Preusmeri notranji izpis Pythona na poročilni pogled</translation>
+      <translation>Preusmeri notranji izpis Pythona na poročevalni pogled</translation>
     </message>
     <message>
       <source>Python interpreter</source>
@@ -3310,7 +3310,7 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Razpoložljiva delovna okolja</translation>
     </message>
   </context>
   <context>
@@ -4509,31 +4509,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Naklon (okoli osi y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Nagib (okoli osi x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Odklon (okoli osi z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Odklon (okoli osi z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Naklon (okoli osi y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Nagib (okoli osi x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Eulerjevi koti (zy'x")</translation>
     </message>
   </context>
   <context>
@@ -6061,7 +6061,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>bolgarščina</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6069,7 +6069,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>španščina, Argentina</translation>
     </message>
   </context>
   <context>
@@ -6406,7 +6406,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Pogled poročil</translation>
+      <translation>Poročevalni pogled</translation>
     </message>
     <message>
       <source>Combo View</source>
@@ -6855,7 +6855,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation>Nekaterh izrazov ni bilo mogoče razčleniti.
-Za več podrobnosti poglejte Poročilni pogled.</translation>
+Za več podrobnosti poglejte Poročevalni pogled.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
@@ -6993,7 +6993,7 @@ Izberite "Prekini" za prekinitev</translation>
 Please check report view for more...</source>
       <translation>
 
-Za več informacij poglejte poročilni pogled ...</translation>
+Za več informacij poglejte poročevalni pogled ...</translation>
     </message>
     <message>
       <source>
@@ -7037,7 +7037,7 @@ Tvarna pot: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Dokumenta ni bilo mogoče shraniti</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7045,27 +7045,27 @@ Tvarna pot: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Pri shranjevanju te datoteke je prišlo do težave. Razlog za to je lahko, da določene nadrejene mape ne obstajajo, nimate zadostnih dovoljenj ali pa drugi razlogi. Podrobnosti o napaki:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokument ni shranjen</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Dokumenta%1 ni bilo mogoče shraniti. Ali želite preklicati zapiranje?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Dokumenti niso shranjeni</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Določenih dokumentov se ni dalo zapreti. Ali želite preklicati zapiranje?</translation>
     </message>
   </context>
   <context>

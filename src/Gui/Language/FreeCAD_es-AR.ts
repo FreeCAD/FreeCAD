@@ -117,7 +117,7 @@
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Activar medición</translation>
+      <translation>Activa/desactiva la medición</translation>
     </message>
   </context>
   <context>
@@ -132,7 +132,7 @@
     </message>
     <message>
       <source>Delete</source>
-      <translation>Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <source>Paste expressions</source>
@@ -1099,7 +1099,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Delete</source>
-      <translation>Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -1203,7 +1203,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Display</source>
-      <translation>Pantalla</translation>
+      <translation>Mostrar</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -1251,7 +1251,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Color Matplot:</translation>
+      <translation>Color del trazado:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -1496,7 +1496,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation>Habilitar ajuste de palabras</translation>
+      <translation>Habilitar ajuste de líneas de texto</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1554,7 +1554,7 @@ después de que FreeCAD inicie</translation>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation>Las palabras serán envueltas cuando excedan
+      <translation>Las palabras serán ajustadas cuando excedan
 espacio horizontal disponible en la consola de Python</translation>
     </message>
   </context>
@@ -1586,7 +1586,7 @@ espacio horizontal disponible en la consola de Python</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combo</translation>
+      <translation>Vista Combinada</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
@@ -1639,7 +1639,7 @@ espacio horizontal disponible en la consola de Python</translation>
     </message>
     <message>
       <source>Delete</source>
-      <translation>Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <source>Edit</source>
@@ -1700,7 +1700,7 @@ Este archivo ya existe.</translation>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Borrar macro</translation>
+      <translation>Eliminar macro</translation>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
@@ -1819,7 +1819,7 @@ Nota: tus cambios se aplicarán cuando cambies de banco de trabajo
     </message>
     <message>
       <source>Macro path:</source>
-      <translation>Trayectoria de macro:</translation>
+      <translation>Ruta de la macro:</translation>
     </message>
     <message>
       <source>...</source>
@@ -1881,7 +1881,7 @@ Nota: tus cambios se aplicarán cuando cambies de banco de trabajo
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Luminosidad:</translation>
+      <translation>Brillo:</translation>
     </message>
     <message>
       <source>%</source>
@@ -2239,7 +2239,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation>Si está activado, entonces la selección de vista 3D se sincronizará con la jerarquía completa de objetos.</translation>
+      <translation>Si se activa, la selección de vista 3D se sincronizará con la jerarquía completa de objetos.</translation>
     </message>
   </context>
   <context>
@@ -3168,7 +3168,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>Cotas de imagen</translation>
+      <translation>Dimensión de la imagen</translation>
     </message>
     <message>
       <source>Pixel</source>
@@ -3279,7 +3279,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation>Framebuffer (tal cual)</translation>
+      <translation>Framebuffer (como es)</translation>
     </message>
   </context>
   <context>
@@ -3302,7 +3302,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Bancos de trabajo disponibles</translation>
     </message>
   </context>
   <context>
@@ -3589,7 +3589,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Front</source>
-      <translation>Frontal</translation>
+      <translation>Anterior</translation>
     </message>
     <message>
       <source>Left</source>
@@ -3666,11 +3666,11 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Cambiar automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expandir el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -3678,7 +3678,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Grabar selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
@@ -3785,7 +3785,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperial para Ing Civil (pie, pie/seg)</translation>
+      <translation>Imperial para Ing. Civil (pie, pie/seg)</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
@@ -3958,7 +3958,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation>Categoría de unidad para la cantidad</translation>
+      <translation>Categoría de unidad para la Cantidad</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
@@ -4016,7 +4016,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Clasificar escenarios habilitados</translation>
+      <translation>Ordenar los entornos de trabajo habilitados</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -4028,7 +4028,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Agregar todos a escenarios habilitados</translation>
+      <translation>Añadir todos a los entornos de trabajo habilitados</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
@@ -4094,7 +4094,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     </message>
     <message>
       <source>Delete</source>
-      <translation>Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <source>Cleanup</source>
@@ -4501,31 +4501,31 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Elevación (alrededor del eje y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Balanceo (alrededor del eje x-):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Rumbo (alrededor del eje z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Rumbo (alrededor del eje z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Elevación (alrededor del eje y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Balanceo (alrededor del eje x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Ángulos de Euler (xy'z'')</translation>
     </message>
   </context>
   <context>
@@ -4582,7 +4582,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Refresh</source>
-      <translation>Refrescar</translation>
+      <translation>Actualizar</translation>
     </message>
   </context>
   <context>
@@ -4717,7 +4717,7 @@ originally selected prior to opening this dialog</source>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combo</translation>
+      <translation>Vista Combinada</translation>
     </message>
     <message>
       <source>Model</source>
@@ -5081,7 +5081,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation>Graphviz no pudo encontrarse en su sistema.</translation>
+      <translation>No se pudo encontrar Graphviz en su sistema.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
@@ -5101,7 +5101,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>No se pudo crear un archivo de imagen de Graphviz</translation>
+      <translation>Graphviz falló al crear un archivo de imagen</translation>
     </message>
   </context>
   <context>
@@ -5218,7 +5218,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Alterna esta ventana acopla-ble</translation>
+      <translation>Alterna esta ventana acoplable</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -5520,7 +5520,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>&amp;Copy history</source>
-      <translation>&amp;Copiar historia</translation>
+      <translation>&amp;Copiar historial</translation>
     </message>
     <message>
       <source>Save history as...</source>
@@ -5544,7 +5544,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Word wrap</source>
-      <translation>Ajuste de texto</translation>
+      <translation>Ajuste de línea de texto</translation>
     </message>
     <message>
       <source>&amp;Copy</source>
@@ -6049,7 +6049,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Búlgaro</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6057,7 +6057,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Español, Argentina</translation>
     </message>
   </context>
   <context>
@@ -6398,7 +6398,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combo</translation>
+      <translation>Vista Combinada</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6425,7 +6425,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Display</source>
-      <translation>Pantalla</translation>
+      <translation>Mostrar</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -6763,7 +6763,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete macro</source>
-      <translation>Borrar macro</translation>
+      <translation>Eliminar macro</translation>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
@@ -7022,7 +7022,7 @@ Trayectoria física: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>No se pudo guardar el documento</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7030,27 +7030,27 @@ Trayectoria física: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Hubo un problema al intentar guardar el archivo. Esto puede deberse a que algunas de las carpetas matriz no existen, o no posee permisos suficientes, o por otras razones. Detalles del error:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+¿Desea guardar el archivo con un nombre diferente?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Documento no guardado</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>El documento%1 no se pudo guardar. ¿Desea cancelar cerrando?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Documento(s) no guardados</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Algunos documentos no se han podido guardar. ¿Desea cancelar el cierre?</translation>
     </message>
   </context>
   <context>
@@ -7072,7 +7072,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation>Selección de elemento de cuadro</translation>
+      <translation>Cuadro de selección de elementos</translation>
     </message>
   </context>
   <context>
@@ -7128,7 +7128,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Activate next window</source>
-      <translation>Activar ventana siguiente</translation>
+      <translation>Activa la siguiente ventana</translation>
     </message>
   </context>
   <context>
@@ -7143,7 +7143,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Activar ventana previa</translation>
+      <translation>Activa ventana anterior</translation>
     </message>
   </context>
   <context>
@@ -7158,7 +7158,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Alinear los objetos seleccionados</translation>
+      <translation>Alinea los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -7169,11 +7169,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>Organizar &amp;Iconos</translation>
+      <translation>Ordenar &amp;iconos</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Organizar iconos</translation>
+      <translation>Ordena iconos</translation>
     </message>
   </context>
   <context>
@@ -7184,7 +7184,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Activar o desactivar cruz de los ejes</translation>
+      <translation>Activa/desactiva los ejes de coordenadas</translation>
     </message>
   </context>
   <context>
@@ -7199,7 +7199,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Mosaico pragmático</translation>
+      <translation>Ordena las ventanas en cascada</translation>
     </message>
   </context>
   <context>
@@ -7214,7 +7214,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Cerrar ventana activa</translation>
+      <translation>Cierra la ventana activa</translation>
     </message>
   </context>
   <context>
@@ -7229,7 +7229,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Cerrar todas las ventanas</translation>
+      <translation>Cierra todas las ventanas</translation>
     </message>
   </context>
   <context>
@@ -7255,7 +7255,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>C&amp;opiar</translation>
+      <translation>Copiar</translation>
     </message>
     <message>
       <source>Copy operation</source>
@@ -7274,7 +7274,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Recortar</translation>
+      <translation>Recorta</translation>
     </message>
   </context>
   <context>
@@ -7285,11 +7285,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>&amp;Borrar</translation>
+      <translation>Eliminar</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
-      <translation>Borra los elementos seleccionados</translation>
+      <translation>Elimina los elementos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -7300,11 +7300,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>Ver torno...</translation>
+      <translation>Ver mesa giratoria...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>Ver torno</translation>
+      <translation>Vista de mesa giratoria</translation>
     </message>
   </context>
   <context>
@@ -7319,7 +7319,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Mostrar el gráfico de dependencia de los objetos en el documento activo</translation>
+      <translation>Muestra el gráfico de dependencia de los objetos en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -7334,7 +7334,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Personalizar barras de herramientas y comandos</translation>
+      <translation>Personaliza barras de herramientas y barras de comandos</translation>
     </message>
   </context>
   <context>
@@ -7364,14 +7364,14 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
-      <translation>Ejecutar macro en el editor</translation>
+      <translation>Ejecuta la macro en el editor</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Grabación de macro...</translation>
+      <translation>&amp;Grabando macro ...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -7454,7 +7454,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Ponga los duplicados de los objetos seleccionados en el documento activo</translation>
+      <translation>Pone los duplicados de los objetos seleccionados en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -7465,7 +7465,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
-      <translation>Activar &amp;Modo de edición</translation>
+      <translation>Alternar &amp;modo de Edición</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
@@ -7488,7 +7488,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Exportar un objeto en el documento activo</translation>
+      <translation>Exporta un objeto en el documento activo</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -7639,7 +7639,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation>Congelar la posición de la vista actual</translation>
+      <translation>Congela la posición de la vista actual</translation>
     </message>
   </context>
   <context>
@@ -7654,7 +7654,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation>Crear un nuevo grupo para ordenar objetos</translation>
+      <translation>Crea un nuevo grupo para ordenar objetos</translation>
     </message>
   </context>
   <context>
@@ -7669,7 +7669,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Ocultar todos los objetos en el documento</translation>
+      <translation>Oculta todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
@@ -7684,7 +7684,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
-      <translation>Ocultar todos los objetos seleccionados</translation>
+      <translation>Oculta todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -7699,7 +7699,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Importar un archivo en el documento activo</translation>
+      <translation>Importa un archivo en el documento activo</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -7898,7 +7898,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation>Adjuntar a un depurador de ejecución remota</translation>
+      <translation>Adjunta a un depurador de ejecución remota</translation>
     </message>
   </context>
   <context>
@@ -7913,7 +7913,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Iniciar depuración de macro</translation>
+      <translation>Comienza la depuración de la macro</translation>
     </message>
   </context>
   <context>
@@ -7950,7 +7950,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Parar depuración de macro</translation>
+      <translation>Detiene la depuración de la macro</translation>
     </message>
   </context>
   <context>
@@ -7961,11 +7961,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>&amp;Detener la grabaciṕon de la macro</translation>
+      <translation>D&amp;etener grabación de macro</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
-      <translation>Detener la sesión de grabación de la macro</translation>
+      <translation>Detiene la sesión de grabación de la macro</translation>
     </message>
   </context>
   <context>
@@ -7987,7 +7987,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Medir distancias entre dos objetos seleccionados</translation>
+      <translation>Medida de distancia entre dos objetos seleccionados</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -8006,7 +8006,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Fusionar proyecto</translation>
+      <translation>Fusiona el proyecto</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
@@ -8029,7 +8029,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Crear un nuevo documento vacío</translation>
+      <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -8074,7 +8074,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Abrir un documento o importar archivos</translation>
+      <translation>Abre un documento o importa archivos</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -8105,7 +8105,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>Crea una nueva pieza y hacerla activa</translation>
+      <translation>Crea una nueva pieza y la hace activa</translation>
     </message>
   </context>
   <context>
@@ -8135,7 +8135,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>Sitúe los objetos seleccionados</translation>
+      <translation>Ubica los elementos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -8150,7 +8150,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
   </context>
   <context>
@@ -8165,7 +8165,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Exportar el documento como PDF</translation>
+      <translation>Exporta el documento como PDF</translation>
     </message>
   </context>
   <context>
@@ -8176,11 +8176,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>Vista previa de impresión...</translation>
+      <translation>&amp;Vista previa de impresión...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
     <message>
       <source>Print preview</source>
@@ -8199,7 +8199,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Mostrar detalles del proyecto activo actual</translation>
+      <translation>Muestra detalles del proyecto activo actual</translation>
     </message>
   </context>
   <context>
@@ -8214,7 +8214,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Herramienta para extraer o crear archivos de proyectos</translation>
+      <translation>Utilidad para extraer o crear archivos de proyecto</translation>
     </message>
   </context>
   <context>
@@ -8311,7 +8311,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>&amp;Refrescar</translation>
+      <translation>&amp;Actualizar</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
@@ -8326,7 +8326,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Revert</source>
-      <translation>Deshacer</translation>
+      <translation>Revertir</translation>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
@@ -8345,7 +8345,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save the active document</source>
-      <translation>Guardar el documento activo</translation>
+      <translation>Guarda el documento activo</translation>
     </message>
   </context>
   <context>
@@ -8360,7 +8360,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation>Guardar todos los documentos abiertos</translation>
+      <translation>Guarda todos los documentos abiertos</translation>
     </message>
   </context>
   <context>
@@ -8405,7 +8405,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Scene inspector</source>
-      <translation>Inspector de escena</translation>
+      <translation>Inspecciona la escena</translation>
     </message>
   </context>
   <context>
@@ -8435,7 +8435,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation>Mostrar cuadro delimitador de selección</translation>
+      <translation>Muestra el cuadro delimitador de selección</translation>
     </message>
   </context>
   <context>
@@ -8446,7 +8446,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation>&amp;Adelante</translation>
+      <translation>Avanzar</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
@@ -8465,7 +8465,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Seleccionar todo</translation>
+      <translation>Selecciona todo</translation>
     </message>
   </context>
   <context>
@@ -8480,7 +8480,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation>Seleccionar objetos visibles en el documento activo</translation>
+      <translation>Selecciona objetos visibles en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -8510,7 +8510,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
-      <translation>Establece las propiedades de visualización del objeto seleccionado.</translation>
+      <translation>Establece las propiedades de visualización del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -8525,7 +8525,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Show all objects in the document</source>
-      <translation>Mostrar todos los objetos en el documento</translation>
+      <translation>Muestra todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
@@ -8540,7 +8540,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
-      <translation>Mostrar todos los objetos seleccionados</translation>
+      <translation>Muestra todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -8555,7 +8555,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Conmutar la barra de estado</translation>
+      <translation>Activa/desactiva la barra de estado</translation>
     </message>
   </context>
   <context>
@@ -8570,7 +8570,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation>Añadir documento de texto al documento activo</translation>
+      <translation>Añade documento de texto al documento activo</translation>
     </message>
   </context>
   <context>
@@ -8600,7 +8600,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Poner las ventanas en mosaico</translation>
+      <translation>Pone las ventanas en mosaico</translation>
     </message>
   </context>
   <context>
@@ -8622,11 +8622,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Plano de recorte</translation>
+      <translation>Plano de corte</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Conmuta el plano de recorte para la vista activa</translation>
+      <translation>Alterna el plano de corte para la vista activa</translation>
     </message>
   </context>
   <context>
@@ -8641,7 +8641,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Alternar entre el modo de navegación y edición</translation>
+      <translation>Alterna entre el modo de navegación y edición</translation>
     </message>
   </context>
   <context>
@@ -8656,7 +8656,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Conmuta la visibilidad de todos los objetos en el documento activo</translation>
+      <translation>Alterna la visibilidad de todos los objetos en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -8686,7 +8686,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Conmuta la visibilidad</translation>
+      <translation>Alterna visibilidad</translation>
     </message>
   </context>
   <context>
@@ -8701,7 +8701,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Conmutar esta ventana</translation>
+      <translation>Alterna esta ventana</translation>
     </message>
   </context>
   <context>
@@ -8731,7 +8731,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Transformar el objeto seleccionado en la vista 3D</translation>
+      <translation>Transforma el objeto seleccionado en la vista 3d</translation>
     </message>
   </context>
   <context>
@@ -8787,7 +8787,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation>Acciones del vista de árbol</translation>
+      <translation>Acciones de la vista de árbol</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
@@ -8806,7 +8806,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Deshacer exactamente una acción</translation>
+      <translation>Deshace exactamente una acción</translation>
     </message>
   </context>
   <context>
@@ -8821,14 +8821,14 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation>Iniciar calculadora de unidades</translation>
+      <translation>Inicia la calculadora de unidades</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation>Modo edición</translation>
+      <translation>Modo de edición</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
@@ -8892,7 +8892,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation>Establecer vista dimétrica</translation>
+      <translation>Establece vista dimétrica</translation>
     </message>
   </context>
   <context>
@@ -8952,7 +8952,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Ajustar el contenido completo a la pantalla</translation>
+      <translation>Ajusta el contenido completo a la pantalla</translation>
     </message>
   </context>
   <context>
@@ -8967,7 +8967,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Ajustar el contenido seleccionado a la pantalla</translation>
+      <translation>Ajusta el contenido seleccionado a la pantalla</translation>
     </message>
   </context>
   <context>
@@ -8978,11 +8978,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Frontal</translation>
+      <translation>Anterior</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Establecer vista alzado</translation>
+      <translation>Establece vista anterior</translation>
     </message>
   </context>
   <context>
@@ -8997,7 +8997,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation>Establecer como vista de inicio por defecto</translation>
+      <translation>Establece por defecto la vista de inicio</translation>
     </message>
   </context>
   <context>
@@ -9012,7 +9012,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
-      <translation>Establecer vista isométrica</translation>
+      <translation>Establece vista isométrica</translation>
     </message>
   </context>
   <context>
@@ -9027,7 +9027,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Publicar la posición de la cámara a la consola y a una macro, para rellamar fácilmente a esta posición</translation>
+      <translation>Publica la posición de la cámara a la consola y a una macro, para reutilizar fácilmente esta posición</translation>
     </message>
   </context>
   <context>
@@ -9042,7 +9042,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Cambiar la visualización estéreo a columnas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a Columnas Intercaladas</translation>
     </message>
   </context>
   <context>
@@ -9057,7 +9057,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Cambiar la visualización estéreo a filas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a Filas Intercaladas</translation>
     </message>
   </context>
   <context>
@@ -9072,7 +9072,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Cambiar la visualización estereo a apagado</translation>
+      <translation>Apaga la visualización estéreo</translation>
     </message>
   </context>
   <context>
@@ -9083,11 +9083,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Estereo cuádruple buffer</translation>
+      <translation>Estéreo cuádruple buffer</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Cambiar la visualización estereo a cuádruple buffer</translation>
+      <translation>Cambia la visualización estéreo a cuádruple buffer</translation>
     </message>
   </context>
   <context>
@@ -9098,11 +9098,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Stereo red/cyan</source>
-      <translation>Estereo rojo/cian</translation>
+      <translation>Estéreo rojo/cian</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation>Cambiar a visualización estereo rojo/cian</translation>
+      <translation>Cambia a visualización estéreo rojo/cian</translation>
     </message>
   </context>
   <context>
@@ -9117,7 +9117,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Establecer a la vista izquierda</translation>
+      <translation>Establece vista lateral izquierda</translation>
     </message>
   </context>
   <context>
@@ -9132,7 +9132,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Establecer a la vista posterior</translation>
+      <translation>Establece vista posterior</translation>
     </message>
   </context>
   <context>
@@ -9162,7 +9162,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Establecer a la vista derecha</translation>
+      <translation>Establece vista lateral derecha</translation>
     </message>
   </context>
   <context>
@@ -9177,7 +9177,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation>Girar la vista a 90° en sentido antihorario</translation>
+      <translation>Gira la vista a 90° en sentido antihorario</translation>
     </message>
   </context>
   <context>
@@ -9192,7 +9192,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation>Girar la vista a 90° en sentido horario</translation>
+      <translation>Gira la vista a 90° en sentido horario</translation>
     </message>
   </context>
   <context>
@@ -9222,7 +9222,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Establecer vista en planta</translation>
+      <translation>Establece vista superior</translation>
     </message>
   </context>
   <context>
@@ -9237,7 +9237,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation>Establecer vista trimétrica</translation>
+      <translation>Establece vista trimétrica</translation>
     </message>
   </context>
   <context>
@@ -9308,7 +9308,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Cambiar entre bancos de trabajo</translation>
+      <translation>Cambia entre bancos de trabajo</translation>
     </message>
   </context>
   <context>
@@ -9323,7 +9323,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation>Mostrar la ventana principal en modo de pantalla completa</translation>
+      <translation>Muestra la ventana principal en modo de pantalla completa</translation>
     </message>
   </context>
   <context>
@@ -9349,22 +9349,22 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Vista perspectiva</translation>
+      <translation>Vista en perspectiva</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Cambiar a modo de vista perspectiva</translation>
+      <translation>Cambia a modo de vista perspectiva</translation>
     </message>
   </context>
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
       <source>Collapse/Expand</source>
-      <translation>Contraer/expandir</translation>
+      <translation>Contraer/Expandir</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Expandir documento activo y colapsar todos los demás</translation>
+      <translation>Expande el documento activo y contrae todos los demás</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9383,14 +9383,14 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation>Iniciar el arrastre de los elementos del árbol seleccionados</translation>
+      <translation>Inicia el arrastre de los elementos del árbol seleccionados</translation>
     </message>
   </context>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation>Mostrar todos los documentos en la vista de árbol</translation>
+      <translation>Muestra todos los documentos en la vista de árbol</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9428,7 +9428,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Grabar selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
     </message>
   </context>
   <context>
@@ -9469,11 +9469,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation>Colocación de sincronización</translation>
+      <translation>Sincronizar ubicación</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation>Ajustar automáticamente la colocación al arrastrar y soltar objetos a través de los sistemas de coordenadas</translation>
+      <translation>Ajusta automáticamente la posición al arrastrar y soltar objetos a través de los sistemas de coordenadas</translation>
     </message>
   </context>
   <context>
@@ -9488,7 +9488,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expandir el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
   </context>
   <context>
@@ -9499,11 +9499,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation>Sincronizar vista</translation>
+      <translation>Vista sincronizada</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Cambiar automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
     </message>
   </context>
   <context>
@@ -9514,7 +9514,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Zona de zoom</translation>
+      <translation>Encuadre de zoom</translation>
     </message>
   </context>
   <context>
@@ -9529,7 +9529,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
@@ -9544,7 +9544,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
@@ -9559,7 +9559,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
@@ -9589,7 +9589,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
@@ -9813,7 +9813,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Ampliar</translation>
+      <translation>&amp;Zoom</translation>
     </message>
     <message>
       <source>Visibility</source>

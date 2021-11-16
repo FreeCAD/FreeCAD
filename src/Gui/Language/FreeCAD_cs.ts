@@ -2619,11 +2619,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
+      <translation>Objekty budou promítnuty v ortografické projekci</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+      <translation>Objekty se objeví v perspektivní projekci</translation>
     </message>
     <message>
       <source>Axis cross will be shown by default at file
@@ -2642,17 +2642,17 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Oblast pro výběr prvků ve 3D zobrazení.
+Větší hodnota usnadňuje výběr věcí, ale znemožňuje výběr malých prvků.
                </translation>
     </message>
     <message>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Tato volba je užitečná pro řešení problémů s grafickou kartou a s ovladačem.
 
-Changing this option requires a restart of the application.</translation>
+Změna této volby vyžaduje restart aplikace.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
@@ -2660,7 +2660,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Jaký se používá druh vícenásobného antaliasování</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2953,7 +2953,7 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>Jak často se zapisuje obnovovací soubor</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
@@ -3009,15 +3009,15 @@ icon in the tree view to fully reload it.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
-      <translation type="unfinished">Disable partial loading of external linked objects</translation>
+      <translation>Zakázat částečné načítání externích propojených objektů</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
-      <translation type="unfinished">All documents that will be created will get the specified author name.
-Keep blank for anonymous.
-You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
+      <translation>Všechny dokumenty, které budou vytvořeny, budou mít zadané jméno autora
+Pro anonymní jméno ponechte prázdné.
+Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
@@ -3292,7 +3292,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Automaticky načíst?</translation>
     </message>
     <message>
       <source>Load Now</source>
@@ -3860,7 +3860,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Dolní barva</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
@@ -3868,7 +3868,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Horní barva</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3876,11 +3876,11 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+      <translation>Barva pozadí pro objekty ve stromovém zobrazení, které jsou aktuálně editovány</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation type="unfinished">Background color for active containers in tree view</translation>
+      <translation>Barva pozadí pro aktivní kontejnery ve stromovém zobrazení</translation>
     </message>
   </context>
   <context>
@@ -4505,31 +4505,31 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Sklon (kolem osy Y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Stáčení (kolem osy x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Zatáčení (kolem osy z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Zatáčení (kolem osy z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Sklon (kolem osy Y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Stáčení (kolem osy x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Eulerovy úhly (xy'z")</translation>
     </message>
   </context>
   <context>
@@ -4694,7 +4694,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Použít původní výběr</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
@@ -5438,7 +5438,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
       <source>Object not found</source>
-      <translation type="unfinished">Object not found</translation>
+      <translation>Objekt nenalezen</translation>
     </message>
   </context>
   <context>
@@ -5772,7 +5772,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Přepočítat po odevzdání</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -6053,7 +6053,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulharština</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6061,7 +6061,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Španělština, Argentina</translation>
     </message>
   </context>
   <context>
@@ -6866,7 +6866,7 @@ Další podrobnosti najdete v zobrazení Přehledu.</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Vytvoření skupiny odkazů selhalo</translation>
     </message>
     <message>
       <source>Create link failed</source>
@@ -6899,8 +6899,8 @@ Další podrobnosti najdete v zobrazení Přehledu.</translation>
     <message>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>Název vlastnosti nebo název skupiny musí obsahovat pouze alfanumerické znaky,
+podtržítko a nesmí začínat číslicí.</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
@@ -6940,15 +6940,15 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+      <translation>V následujících dokumentech jsou seskupeny transakce s jinými předcházejícími transakcemi</translation>
     </message>
     <message>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
-      <translation type="unfinished">Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</translation>
+      <translation>Zvolte 'Ano' pro vrácení všech předchozích transakcí.
+Zvolte 'Ne' pro vrácení pouze v aktivním dokumentu.
+Zvolte 'Přerušit' pro zrušení</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
@@ -7028,7 +7028,7 @@ Fyzická cesta: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Dokument nelze uložit</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7036,27 +7036,27 @@ Fyzická cesta: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Vyskytl se problém při ukládání souboru. Může to být proto, že některé nadřazené složky neexistují, nebo nemáte dostatečná oprávnění, nebo z jiných důvodů. Podrobnosti o chybě:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Chcete uložit soubor s jiným názvem?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokument nebyl uložen</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Dokument%1 nelze uložit. Chcete zrušit jeho zavírání?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 dokument(y) nebyl(y) uložen(y)</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Některé dokumenty nelze uložit. Chcete zrušit uzavření?</translation>
     </message>
   </context>
   <context>
@@ -7445,7 +7445,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Změnit styl kreslení objektů</translation>
     </message>
   </context>
   <context>
@@ -7513,7 +7513,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Akce výrazu</translation>
     </message>
   </context>
   <context>
@@ -7769,7 +7769,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Vytvořit odkaz na vybraný(é) objekt(y)</translation>
     </message>
   </context>
   <context>
@@ -7784,7 +7784,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Vytvořit skupinu odkazů</translation>
     </message>
   </context>
   <context>
@@ -7799,7 +7799,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Vytvořit odkaz na dílčí objekt nebo dílčí prvek</translation>
     </message>
   </context>
   <context>
@@ -7814,7 +7814,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Nahradit vybraný(é) objekt(y) odkazem</translation>
     </message>
   </context>
   <context>
@@ -7840,11 +7840,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Vybrat všechny odkazy</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>Vybrat všechny odkazy na aktuálně vybraný objekt</translation>
     </message>
   </context>
   <context>
@@ -7855,11 +7855,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Přejít na propojený objekt</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>Vyberte propojený objekt a přepněte na vlastnický dokument</translation>
     </message>
   </context>
   <context>
@@ -7870,7 +7870,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Přejít na nejhlubší propojený objekt</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
@@ -7904,7 +7904,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation type="unfinished">Attach to a remotely running debugger</translation>
+      <translation>Připojit k vzdálenému debuggeru</translation>
     </message>
   </context>
   <context>
@@ -8437,11 +8437,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Ohraničující kvádr</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Zobrazit výběrový ohraničující kvádr</translation>
     </message>
   </context>
   <context>
@@ -8834,11 +8834,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Režim úprav</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Definuje chování při úpravách objektu ze stromu</translation>
     </message>
   </context>
   <context>
@@ -9734,10 +9734,10 @@ Chcete dokument nyní uložit?</translation>
 Please check the Report View for more details.
 
 Do you still want to proceed?</source>
-      <translation type="unfinished">The document contains dependency cycles.
-Please check the Report View for more details.
+      <translation>Dokument obsahuje cykly závislostí.
+Prosím zkontrolujte zobrazení Zprávy více podrobností.
 
-Do you still want to proceed?</translation>
+Chcete pokračovat?</translation>
     </message>
   </context>
   <context>

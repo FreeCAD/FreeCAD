@@ -4,68 +4,30 @@
   <context>
     <name>Image_Scaling</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <location filename="_CommandImageScaling.py" line="62"/>
       <source>Scale image plane</source>
       <translation>Eskalatu irudi-planoa</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <location filename="_CommandImageScaling.py" line="66"/>
       <source>Scales an image plane by defining a distance between two points</source>
       <translation>Irudi-plano bat eskalatzen du bi punturen arteko distantzia definituta</translation>
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
-      <source>Scale image plane</source>
-      <translation>Eskalatu irudi-planoa</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance [mm]</source>
-      <translation>Distantzia [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
-      <source>Select first point</source>
-      <translation>Hautatu lehen puntua</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Sartu distantzia&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Hautatu irudi-planoa&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
-      <source>Select second point</source>
-      <translation>Hautatu bigarren puntua</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>Hautatu irudi-planoa eta idatzi distantzia</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Create image plane...</source>
       <translation>Sortu irudi-planoa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create a planar image in the 3D space</source>
       <translation>Sortu 3D espazioaren irudi planarra</translation>
     </message>
@@ -73,17 +35,17 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="54"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Open...</source>
       <translation>Ireki...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
       <translation>Ireki irudi-bista</translation>
     </message>
@@ -91,32 +53,40 @@
   <context>
     <name>CmdImageScaling</name>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Scale...</source>
       <translation>Eskala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Image Scaling</source>
       <translation>Irudia eskalatzea</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Create ImagePlane</source>
+      <translation>Sortu irudi-planoa</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="332"/>
-      <location filename="../../OpenGLImageBox.cpp" line="384"/>
+      <location filename="../../GLImageBox.cpp" line="334"/>
+      <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>Irudiaren pixel-formatua</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="333"/>
-      <location filename="../../OpenGLImageBox.cpp" line="385"/>
+      <location filename="../../GLImageBox.cpp" line="335"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Kolore-espazioaren definitu gabeko mota irudia bistaratzeko</translation>
     </message>
@@ -192,30 +162,30 @@
       <translation>Prest...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="551"/>
       <source>grey</source>
       <translation>grisa</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="552"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="570"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="585"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="601"/>
+      <location filename="../../ImageView.cpp" line="612"/>
+      <location filename="../../ImageView.cpp" line="617"/>
       <source>zoom</source>
       <translation>zoom-a</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="612"/>
       <source>outside image</source>
       <translation>kanpo-irudia</translation>
     </message>
@@ -223,30 +193,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Images</source>
       <translation>Irudiak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="118"/>
       <source>All files</source>
       <translation>Fitxategi guztiak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Choose an image file to open</source>
       <translation>Aukeratu irekiko den irudi-fitxategia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Error opening image</source>
       <translation>Errorea irudia irekitzean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Could not load the chosen image</source>
       <translation>Ezin izan da hautatutako irudia kargatu</translation>
     </message>

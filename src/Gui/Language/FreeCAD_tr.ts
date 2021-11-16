@@ -6054,7 +6054,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgarca</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6062,7 +6062,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>İspanyolca, Arjantin</translation>
     </message>
   </context>
   <context>

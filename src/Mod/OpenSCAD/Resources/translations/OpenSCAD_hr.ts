@@ -1,145 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="hr" sourcelanguage="en">
-  <context>
-    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
-    <message>
-      <location filename="openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Glavne postavke</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="26"/>
-      <source>General OpenSCAD Settings</source>
-      <translation>Generalne OpenSCAD Opcije</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="34"/>
-      <source>OpenSCAD executable</source>
-      <translation>OpenSCAD izvršna datoteka</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="65"/>
-      <source>OpenSCAD import</source>
-      <translation>OpenSCAD uvoz</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>koristi view provider u prikazu stabla</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="110"/>
-      <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ako je označeno, Multimatrix objekt će biti parametarski</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="113"/>
-      <source>Use Multmatrix Feature</source>
-      <translation>Koristi Multimatrix opcije</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="153"/>
-      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Maksimalni broj ploha na poligonu, prizmi i slično. Ako je fn veći od ove vrijednosti, smatra se da je objekt obli. O označava da nema limita</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="133"/>
-      <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maksimalni broj ploha za poligone (fn)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="177"/>
-      <source>OpenSCAD export</source>
-      <translation>OpenSCAD izvoz</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="185"/>
-      <source>maximum fragment size</source>
-      <translation>Maksimalna veličina fragmenta</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="208"/>
-      <source>angular (fa)</source>
-      <translation>kutni (fa)</translation>
-    </message>
-    <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="218"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="250"/>
-      <source>size (fs)</source>
-      <translation>veličina (fn)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="278"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="304"/>
-      <source>convexity</source>
-      <translation>konveksnost</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="341"/>
-      <source>Mesh fallback</source>
-      <translation>Mesh rezervni plan</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="383"/>
-      <source>Deflection</source>
-      <translation>Defleksija</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="386"/>
-      <source>deflection</source>
-      <translation>defleksija</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="393"/>
-      <source>Triangulation settings</source>
-      <translation>Opcije stvaranja Mesh-a</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="90"/>
-      <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Ako je označeno, svojstva će sadržavati njihove potomke u prikazu stabla</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
-      <source>Print debug information in the Console</source>
-      <translation>Prikaži debug informacije u konzoli</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="47"/>
-      <source>The path to the OpenSCAD executable</source>
-      <translation>Putanja do OpenSCAD izvršne datoteke</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="215"/>
-      <source>Minimum angle for a fragment</source>
-      <translation>Minimalni kut fragmenta</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="272"/>
-      <source>Minimum size of a fragment</source>
-      <translation>Minimalna veličina fragmenta</translation>
-    </message>
-  </context>
+<TS version="2.1" language="hr" sourcelanguage="en">
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="149"/>
-      <source>Convert Edges to Faces</source>
-      <translation>Pretvori rubove u površine</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="309"/>
-      <source>Please select 3 objects first</source>
-      <translation>Molim odaberite tri oblika</translation>
+      <location filename="OpenSCADUtils.py" line="622"/>
+      <source>Error all shapes must be either 2D or both must be 3D</source>
+      <translation>Greška, svi oblici moraju biti 2D ili oba moraju biti 3D</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
@@ -152,6 +19,21 @@
       <translation>Pritisnite OK</translation>
     </message>
     <message>
+      <location filename="OpenSCADCommands.py" line="102"/>
+      <source>Unable to explode %s</source>
+      <translation>Nije moguće razdijeliti %s</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="149"/>
+      <source>Convert Edges to Faces</source>
+      <translation>Pretvori rubove u površine</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="309"/>
+      <source>Please select 3 objects first</source>
+      <translation>Molim odaberite tri oblika</translation>
+    </message>
+    <message>
       <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Dodaj</translation>
@@ -160,6 +42,21 @@
       <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Brisanje</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation>Učitaj</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation>Spremi</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>Osvježi</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="369"/>
@@ -180,31 +77,6 @@
       <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>Booleova mreža</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADUtils.py" line="622"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Greška, svi oblici moraju biti 2D ili oba moraju biti 3D</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="102"/>
-      <source>Unable to explode %s</source>
-      <translation>Nije moguće razdijeliti %s</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="365"/>
-      <source>Load</source>
-      <translation type="unfinished">Load</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="366"/>
-      <source>Save</source>
-      <translation type="unfinished">Save</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refresh</source>
-      <translation>Osvježi</translation>
     </message>
   </context>
   <context>
@@ -413,6 +285,138 @@
       <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD Alati</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General settings</source>
+      <translation>Glavne postavke</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="26"/>
+      <source>General OpenSCAD Settings</source>
+      <translation>Generalne OpenSCAD Opcije</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="34"/>
+      <source>OpenSCAD executable</source>
+      <translation>OpenSCAD izvršna datoteka</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="47"/>
+      <source>The path to the OpenSCAD executable</source>
+      <translation>Putanja do OpenSCAD izvršne datoteke</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="65"/>
+      <source>OpenSCAD import</source>
+      <translation>OpenSCAD uvoz</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>Prikaži debug informacije u konzoli</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="90"/>
+      <source>If this is checked, Features will claim their children in the tree view</source>
+      <translation>Ako je označeno, svojstva će sadržavati njihove potomke u prikazu stabla</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="93"/>
+      <source>Use ViewProvider in Tree View</source>
+      <translation>koristi view provider u prikazu stabla</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="110"/>
+      <source>If this is checked, Multmatrix Object will be Parametric</source>
+      <translation>Ako je označeno, Multimatrix objekt će biti parametarski</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="113"/>
+      <source>Use Multmatrix Feature</source>
+      <translation>Koristi Multimatrix opcije</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="130"/>
+      <location filename="../ui/openscadprefs-base.ui" line="153"/>
+      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
+      <translation>Maksimalni broj ploha na poligonu, prizmi i slično. Ako je fn veći od ove vrijednosti, smatra se da je objekt obli. O označava da nema limita</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="133"/>
+      <source>Maximum number of faces for polygons (fn)</source>
+      <translation>Maksimalni broj ploha za poligone (fn)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="177"/>
+      <source>OpenSCAD export</source>
+      <translation>OpenSCAD izvoz</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="185"/>
+      <source>maximum fragment size</source>
+      <translation>Maksimalna veličina fragmenta</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="205"/>
+      <location filename="../ui/openscadprefs-base.ui" line="215"/>
+      <source>Minimum angle for a fragment</source>
+      <translation>Minimalni kut fragmenta</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="208"/>
+      <source>angular (fa)</source>
+      <translation>kutni (fa)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="218"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="247"/>
+      <location filename="../ui/openscadprefs-base.ui" line="272"/>
+      <source>Minimum size of a fragment</source>
+      <translation>Minimalna veličina fragmenta</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="250"/>
+      <source>size (fs)</source>
+      <translation>veličina (fn)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="278"/>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="304"/>
+      <source>convexity</source>
+      <translation>konveksnost</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="341"/>
+      <source>Mesh fallback</source>
+      <translation>Mesh rezervni plan</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="361"/>
+      <location filename="../ui/openscadprefs-base.ui" line="383"/>
+      <source>Deflection</source>
+      <translation>Defleksija</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="386"/>
+      <source>deflection</source>
+      <translation>defleksija</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="393"/>
+      <source>Triangulation settings</source>
+      <translation>Opcije stvaranja Mesh-a</translation>
     </message>
   </context>
 </TS>

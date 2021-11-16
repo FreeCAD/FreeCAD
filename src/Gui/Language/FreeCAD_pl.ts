@@ -223,7 +223,7 @@
     </message>
     <message>
       <source>Default</source>
-      <translation>Domyślne</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Enable</source>
@@ -280,7 +280,7 @@
     <name>EditMode</name>
     <message>
       <source>Default</source>
-      <translation>Domyślne</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -747,11 +747,11 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation>Przedrostek nazwy własności z nazwą grupy w formie "Group_Name", aby uniknąć konfliktów z istniejącą własnością.
+      <translation>Przedrostek nazwy własności z nazwą grupy w formie "Group_Name", aby uniknąć konfliktów z istniejącą właściwością.
 W tym przypadku przedrostek zostanie automatycznie obcięty podczas wyświetlania w edytorze właściwości.
-Jednak własność jest nadal używana w skrypcie z pełną nazwą, na przykład 'obj.Group_Name'.
+Jednak właściwość jest nadal używana w skrypcie z pełną nazwą, na przykład "obj.Group_Name".
 
-Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana i jest dostępna jako 'obj.Name'.</translation>
+Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazwana i jest dostępna jako "obj.Name".</translation>
     </message>
     <message>
       <source>Prefix group name</source>
@@ -1263,7 +1263,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
       <source>Default</source>
-      <translation>Domyślne</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Aluminium</source>
@@ -2860,7 +2860,7 @@ rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</trans
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Zezwala na umieszczanie duplikatów etykiet obiektów w obrębie jednego dokumentu</translation>
+      <translation>Zezwalaj na umieszczanie duplikatów etykiet obiektów w obrębie jednego dokumentu</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
@@ -3070,7 +3070,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     </message>
     <message>
       <source>Default</source>
-      <translation>Domyślne</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Format</source>
@@ -3306,7 +3306,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Dostępne środowiska pracy</translation>
     </message>
   </context>
   <context>
@@ -4508,31 +4508,31 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Skok (względem osi y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Obrót (wokół osi x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Odchylenie (względem osi z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Odchylenie (względem osi z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Skok (względem osi y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Obrót (wokół osi x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Kąty Eulera (zy'x')</translation>
     </message>
   </context>
   <context>
@@ -6054,7 +6054,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bułgarski</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6062,7 +6062,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Hiszpański, Argentyna</translation>
     </message>
   </context>
   <context>
@@ -7027,7 +7027,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7035,27 +7035,27 @@ Physical path: </source>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Wystąpił błąd podczas próby zapisania pliku. Może tak być dlatego, że niektóre foldery nadrzędne nie istnieją, nie masz wystarczających uprawnień lub z innych powodów. Szczegóły błędu:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokument nie zapisany</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Nie można zapisać dokumentu %1. Czy chcesz przerwać zamykanie dokumentu?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>Dokument %1 nie został zapisany</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Niektóre dokumenty nie mogły zostać zapisane. Czy chcesz przerwać zamykanie dokumentów?</translation>
     </message>
   </context>
   <context>
@@ -8968,7 +8968,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Dopasuj wybór</translation>
+      <translation>Dopasuj do wyboru</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
@@ -9092,7 +9092,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Przełączanie wyświetlania podglądu stereoskopowego na bufor poczwórny</translation>
+      <translation>Przełącz widok stereo na bufor poczwórny</translation>
     </message>
   </context>
   <context>
@@ -9695,7 +9695,7 @@ Czy na pewno kontynuować?
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation>Tryb ukrytej linii</translation>
+      <translation>Tryb cieniowany z ukrytymi krawędziami</translation>
     </message>
     <message>
       <source>No shading</source>
@@ -9899,7 +9899,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <source>Default</source>
-      <translation>Domyślne</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Windows XP</source>

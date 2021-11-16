@@ -2,10 +2,107 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr" sourcelanguage="en">
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Cellule</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Appliquer</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Appliquer les modifications à la cellule active</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Supprimer</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Supprime le contenu de la cellule active</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Calculer</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Mise à jour des valeurs gérées par les contrôleurs</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Créer une feuille de calcul</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Ajouter un contrôleur</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Ajouter un contrôleur de propriété</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Ajouter un contrôleur</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Ajoute un contrôleur de cellule à une feuille de calcul sélectionnée</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Ajoute un objet feuille de calcul au document actif</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Ajouter un contrôleur de propriété</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Ajoute un contrôleur de propriété à une feuille de calcul sélectionnée</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
@@ -20,7 +117,7 @@
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -35,7 +132,7 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -50,7 +147,7 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -65,7 +162,7 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -80,7 +177,7 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Align top</source>
@@ -95,7 +192,7 @@
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
@@ -110,7 +207,7 @@
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
@@ -125,7 +222,7 @@
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
@@ -140,7 +237,7 @@
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Merge cells</source>
@@ -155,7 +252,7 @@
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -170,7 +267,7 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Split cell</source>
@@ -185,7 +282,7 @@
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Bold text</source>
@@ -200,7 +297,7 @@
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Italic text</source>
@@ -215,7 +312,7 @@
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Underline text</source>
@@ -435,7 +532,7 @@
     </message>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
     <message>
       <source>Spreadsheet does not support range selection when pasting.
@@ -553,6 +650,61 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
   </context>
   <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Paramètres d'importation/exportation</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère utilisé pour délimiter les chaînes de caractères, en général est un simple guillemet (') ou un double guillemet (&amp;quot;). Ce doit être un seul caractère.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>»</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Caractère de délimitation: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère d'échappement, généralement l'antislash (\), utilisé pour indiquer des caractères non imprimables spéciaux, par exemple \t = tab. Doit être un caractère unique.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Caractère d’échappement : </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère à utiliser comme délimiteur de champ. La valeur par défaut est la tabulation, mais la virgule (,) et le point-virgule (;) sont également couramment utiilsés. Sélectionnez la valeur dans la liste ou entrez la vôtre dans le champ. Doit être un caractère unique ou les mots &lt;span style=" font-style:italic;"&gt;onglet&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgule&lt;/span&gt;, ou &lt;span style=" font-style:italic;"&gt;point-virgule&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>onglet</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Caractère guillemet :</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
@@ -626,7 +778,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+      <translation>Tableur</translation>
     </message>
   </context>
 </TS>

@@ -86,17 +86,17 @@
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1692"/>
+      <location filename="../../Command.cpp" line="1699"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Additive helix</source>
       <translation>Helize gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation>Ekortu hautatutako krokis bat helize batean zehar</translation>
     </message>
@@ -104,17 +104,17 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Additive loft</source>
       <translation>Goratze gehigarria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>Goratu hautatutako profil bat beste profil-sekzio batzuen artetik</translation>
     </message>
@@ -122,17 +122,17 @@
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Additive pipe</source>
       <translation>Hodi gehigarria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>Ekortu hautatutako krokis bat bide batean zehar edo beste profil batzuetara</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2559"/>
       <source>Boolean operation</source>
       <translation>Eragiketa boolearra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2560"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>Eragiketa boolearra bi gorputz edo gehiagorekin</translation>
     </message>
@@ -176,17 +176,17 @@
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="249"/>
+      <location filename="../../Command.cpp" line="250"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="250"/>
+      <location filename="../../Command.cpp" line="251"/>
       <source>Create a local coordinate system</source>
       <translation>Sortu koordenatuen sistema lokala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="251"/>
+      <location filename="../../Command.cpp" line="252"/>
       <source>Create a new local coordinate system</source>
       <translation>Sortu koordenatuen sistema lokal berria</translation>
     </message>
@@ -194,17 +194,17 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1954"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1955"/>
+      <location filename="../../Command.cpp" line="1962"/>
       <source>Chamfer</source>
       <translation>Alaka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1956"/>
+      <location filename="../../Command.cpp" line="1963"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Alakatu forma batean hautatutako ertzak</translation>
     </message>
@@ -212,17 +212,17 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>Create a clone</source>
       <translation>Sortu klon bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Create a new clone</source>
       <translation>Sortu klon berria</translation>
     </message>
@@ -230,17 +230,17 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="1983"/>
+      <location filename="../../Command.cpp" line="1990"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1984"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Draft</source>
       <translation>Zirriborroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1985"/>
+      <location filename="../../Command.cpp" line="1992"/>
       <source>Make a draft on a face</source>
       <translation>Egin zirriborro bat aurpegi batean</translation>
     </message>
@@ -266,17 +266,17 @@
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1933"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1934"/>
       <source>Fillet</source>
       <translation>Biribiltzea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1935"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Biribildu ertz, aurpegi edo gorputz bat</translation>
     </message>
@@ -284,17 +284,17 @@
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1427"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Groove</source>
       <translation>Arteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="1436"/>
       <source>Groove a selected sketch</source>
       <translation>Artekatu hautatutako krokis bat</translation>
     </message>
@@ -302,17 +302,17 @@
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Hole</source>
       <translation>Zuloa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Create a hole with the selected sketch</source>
       <translation>Sortu zulo bat hautatutako krokisarekin</translation>
     </message>
@@ -320,17 +320,17 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Create a datum line</source>
       <translation>Sortu zero lerro bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="196"/>
       <source>Create a new datum line</source>
       <translation>Sortu zero lerro berri bat</translation>
     </message>
@@ -338,17 +338,17 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2250"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2251"/>
+      <location filename="../../Command.cpp" line="2258"/>
       <source>LinearPattern</source>
       <translation>Eredu lineala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2259"/>
       <source>Create a linear pattern feature</source>
       <translation>Sortu eredu linealaren elementu bat</translation>
     </message>
@@ -374,17 +374,17 @@
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2188"/>
+      <location filename="../../Command.cpp" line="2195"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2189"/>
+      <location filename="../../Command.cpp" line="2196"/>
       <source>Mirrored</source>
       <translation>Ispilatua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2190"/>
+      <location filename="../../Command.cpp" line="2197"/>
       <source>Create a mirrored feature</source>
       <translation>Sortu elementu ispilatu bat</translation>
     </message>
@@ -446,17 +446,17 @@
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2435"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2429"/>
+      <location filename="../../Command.cpp" line="2436"/>
       <source>Create MultiTransform</source>
       <translation>Sortu transformazio anitza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2430"/>
+      <location filename="../../Command.cpp" line="2437"/>
       <source>Create a multitransform feature</source>
       <translation>Sortu transformazio anitzeko elementua</translation>
     </message>
@@ -464,17 +464,17 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="489"/>
       <source>Create sketch</source>
       <translation>Sortu krokisa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
+      <location filename="../../Command.cpp" line="490"/>
       <source>Create a new sketch</source>
       <translation>Sortu krokis berria</translation>
     </message>
@@ -482,17 +482,17 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1230"/>
       <source>Pad</source>
       <translation>Estruitu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../Command.cpp" line="1231"/>
       <source>Pad a selected sketch</source>
       <translation>Estruitu hautatutako krokisa</translation>
     </message>
@@ -500,17 +500,17 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="167"/>
       <source>Create a datum plane</source>
       <translation>Sortu zero plano bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Create a new datum plane</source>
       <translation>Sortu zero plano berria</translation>
     </message>
@@ -518,17 +518,17 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1277"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>Pocket</source>
       <translation>Poltsa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1285"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>Sortu poltsa bat hautatutako krokisarekin</translation>
     </message>
@@ -536,17 +536,17 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="221"/>
+      <location filename="../../Command.cpp" line="222"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Create a datum point</source>
       <translation>Sortu zero puntu bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Create a new datum point</source>
       <translation>Sortu zero puntu berria</translation>
     </message>
@@ -554,17 +554,17 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2314"/>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2322"/>
       <source>PolarPattern</source>
       <translation>Eredu polarra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2323"/>
       <source>Create a polar pattern feature</source>
       <translation>Sortu eredu polarreko elementu bat</translation>
     </message>
@@ -572,17 +572,17 @@
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolution</source>
       <translation>Erreboluzioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolve a selected sketch</source>
       <translation>Erreboluzionatu hautatutako krokis bat</translation>
     </message>
@@ -590,17 +590,17 @@
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2380"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Scaled</source>
       <translation>Eskalatua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2381"/>
+      <location filename="../../Command.cpp" line="2388"/>
       <source>Create a scaled feature</source>
       <translation>Sortu elementu eskalatu bat</translation>
     </message>
@@ -608,17 +608,17 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Create a shape binder</source>
       <translation>Sortu forma-zorroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Create a new shape binder</source>
       <translation>Sortu forma-zorro berria</translation>
     </message>
@@ -626,13 +626,13 @@
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Create a sub-object(s) shape binder</source>
       <translation>Sortu azpiobjektu baten forma-zorroa</translation>
     </message>
@@ -640,17 +640,17 @@
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1769"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1770"/>
       <source>Subtractive helix</source>
       <translation>Helize kentzailea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1764"/>
+      <location filename="../../Command.cpp" line="1771"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation>Ekortu hautatutako krokisa helize batean zehar eta kendu gorputzetik</translation>
     </message>
@@ -658,17 +658,17 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1643"/>
+      <location filename="../../Command.cpp" line="1650"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1651"/>
       <source>Subtractive loft</source>
       <translation>Goratze kentzailea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>Goratu hautatutako profil bat beste profil-sekzio batzuen artetik eta kendu hura gorputzetik</translation>
     </message>
@@ -676,17 +676,17 @@
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Subtractive pipe</source>
       <translation>Hodi kentzailea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1545"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
       <translation>Ekortu hautatutako krokisa bide batean zehar edo beste profil batzuetara eta kendu gorputzetik</translation>
     </message>
@@ -694,17 +694,17 @@
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2047"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2048"/>
       <source>Thickness</source>
       <translation>Lodiera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2042"/>
+      <location filename="../../Command.cpp" line="2049"/>
       <source>Make a thick solid</source>
       <translation>Sortu solido lodi bat</translation>
     </message>
@@ -712,53 +712,53 @@
   <context>
     <name>CmdPrimtiveCompAdditive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="68"/>
+      <location filename="../../CommandPrimitive.cpp" line="69"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
+      <location filename="../../CommandPrimitive.cpp" line="71"/>
       <source>Create an additive primitive</source>
       <translation>Sortu jatorrizko gehitzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="195"/>
+      <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Box</source>
       <translation>Kutxa gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="199"/>
+      <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
       <translation>Zilindro gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="203"/>
+      <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
       <translation>Esfera gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="207"/>
+      <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
       <translation>Kono gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="211"/>
+      <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Ellipsoid</source>
       <translation>Elipsoide gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="215"/>
+      <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Torus</source>
       <translation>Toru gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="219"/>
+      <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Prism</source>
       <translation>Prisma gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="223"/>
+      <location filename="../../CommandPrimitive.cpp" line="227"/>
       <source>Additive Wedge</source>
       <translation>Falka gehitzailea</translation>
     </message>
@@ -766,53 +766,53 @@
   <context>
     <name>CmdPrimtiveCompSubtractive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="239"/>
+      <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="240"/>
-      <location filename="../../CommandPrimitive.cpp" line="241"/>
+      <location filename="../../CommandPrimitive.cpp" line="244"/>
+      <location filename="../../CommandPrimitive.cpp" line="245"/>
       <source>Create a subtractive primitive</source>
       <translation>Sortu jatorrizko kentzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="351"/>
+      <location filename="../../CommandPrimitive.cpp" line="355"/>
       <source>Subtractive Box</source>
       <translation>Kutxa kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="355"/>
+      <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
       <translation>Zilindro kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="359"/>
+      <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
       <translation>Esfera kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="363"/>
+      <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
       <translation>Kono kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="367"/>
+      <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Ellipsoid</source>
       <translation>Elipsoide kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="371"/>
+      <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Torus</source>
       <translation>Toru kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="375"/>
+      <location filename="../../CommandPrimitive.cpp" line="379"/>
       <source>Subtractive Prism</source>
       <translation>Prisma kentzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="379"/>
+      <location filename="../../CommandPrimitive.cpp" line="383"/>
       <source>Subtractive Wedge</source>
       <translation>Falka kentzailea</translation>
     </message>
@@ -820,48 +820,48 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Edit ShapeBinder</source>
       <translation>Editatu forma-zorroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Create ShapeBinder</source>
       <translation>Sortu forma-zorroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="393"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Create SubShapeBinder</source>
       <translation>Sortu forma-azpizorroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="448"/>
       <source>Create Clone</source>
       <translation>Sortu klona</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="641"/>
-      <location filename="../../Command.cpp" line="1155"/>
+      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="1159"/>
       <source>Make copy</source>
       <translation>Egin kopia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="669"/>
       <source>Create a Sketch on Face</source>
       <translation>Sortu krokis bat aurpegi batean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Create a new Sketch</source>
       <translation>Sortu krokis berria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2477"/>
+      <location filename="../../Command.cpp" line="2484"/>
       <source>Convert to MultiTransform feature</source>
       <translation>Bihurtu transformazio anitzeko elementu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2568"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Create Boolean</source>
       <translation>Sortu boolearra</translation>
     </message>
@@ -1034,7 +1034,7 @@
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1607"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1608"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1057,6 +1057,28 @@
   - gorputz aktiboak ez du oinarri-formarik,
   beraz ez dago kentzeko materialik;
    - hautatutako krokisa ez da gorputz aktiboarena.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::DlgActiveBody</name>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="14"/>
+      <source>Active Body Required</source>
+      <translation>Gorputz aktiboa behar da</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="20"/>
+      <source>To create a new PartDesign object, there must be an active Body object in the document.
+
+Please select a body from below, or create a new body.</source>
+      <translation>PartDesign objektu berria sortzeko, gorputz-objektu aktibo bat egon behar du dokumentuan.
+
+Hautatu gorputz bat behean edo sortu gorputz berria.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="36"/>
+      <source>Create new body</source>
+      <translation>Sortu gorputz berria</translation>
     </message>
   </context>
   <context>
@@ -1984,12 +2006,12 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
+      <translation>Buru abeilanatuko torlojua (zaharkitua)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
+      <translation>Torloju-burua (zaharkitua)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="60"/>
@@ -2293,8 +2315,8 @@ sakatu berriro hautapena amaitzeko</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="30"/>
-      <location filename="../../TaskPadParameters.cpp" line="146"/>
-      <location filename="../../TaskPadParameters.cpp" line="546"/>
+      <location filename="../../TaskPadParameters.cpp" line="154"/>
+      <location filename="../../TaskPadParameters.cpp" line="708"/>
       <source>Dimension</source>
       <translation>Kota</translation>
     </message>
@@ -2304,138 +2326,168 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Luzera</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="60"/>
-      <source>Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</source>
-      <translation>Erabili bektore pertsonalizatua estrusioaren norabiderako,
-bestela krokisaren planoren bektore normala erabiliko da</translation>
+      <location filename="../../TaskPadParameters.ui" line="57"/>
+      <source>Direction</source>
+      <translation>Norabidea</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="64"/>
+      <location filename="../../TaskPadParameters.ui" line="65"/>
+      <source>Direction/edge:</source>
+      <translation>Norabidea/ertza:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="72"/>
+      <source>Either along the sketch normal
+or select an edge as reference</source>
+      <translation>Krokisaren normalaren luzeran edo
+hautatu ertz bat erreferentzia gisa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="77"/>
+      <location filename="../../TaskPadParameters.cpp" line="698"/>
+      <source>Sketch normal</source>
+      <translation>Krokisaren normala</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="82"/>
+      <location filename="../../TaskPadParameters.cpp" line="364"/>
+      <location filename="../../TaskPadParameters.cpp" line="699"/>
+      <source>Select reference...</source>
+      <translation>Hautatu erreferentzia...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="92"/>
       <source>Use custom direction</source>
       <translation>Erabili norabide pertsonalizatua</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="73"/>
-      <source>x</source>
-      <translation>x</translation>
+      <location filename="../../TaskPadParameters.ui" line="102"/>
+      <source>Use custom vector for pad direction, otherwise
+the sketch plane's normal vector will be used</source>
+      <translation>Erabili bektore pertsonalizatua estrusioaren norabiderako,
+bestela krokisaren planoaren bektore normala erabiliko da</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="80"/>
+      <location filename="../../TaskPadParameters.ui" line="115"/>
       <source>x-component of direction vector</source>
       <translation>Norabide-bektorearen X osagaia</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="102"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadParameters.ui" line="109"/>
-      <source>y-component of direction vector</source>
-      <translation>Norabide-bektorearen Y osagaia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadParameters.ui" line="131"/>
+      <location filename="../../TaskPadParameters.ui" line="137"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="138"/>
+      <location filename="../../TaskPadParameters.ui" line="144"/>
+      <source>y-component of direction vector</source>
+      <translation>Norabide-bektorearen Y osagaia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="166"/>
+      <source>y</source>
+      <translation>y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="173"/>
       <source>z-component of direction vector</source>
       <translation>Norabide-bektorearen Z osagaia</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="166"/>
+      <location filename="../../TaskPadParameters.ui" line="198"/>
+      <source>x</source>
+      <translation>x</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="211"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Markatu ez bada, luzera neurtuko da
 zehaztutako norabidean</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="170"/>
+      <location filename="../../TaskPadParameters.ui" line="215"/>
       <source>Length along sketch normal</source>
       <translation>Luzera krokisaren normalaren luzeran</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="185"/>
+      <location filename="../../TaskPadParameters.ui" line="227"/>
       <source>Offset to face</source>
       <translation>Desplazamendua aurpegiarekiko</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="192"/>
+      <location filename="../../TaskPadParameters.ui" line="234"/>
       <source>Offset from face in which pad will end</source>
       <translation>Estrusioa amaituko den aurpegitik dagoen desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="207"/>
+      <location filename="../../TaskPadParameters.ui" line="249"/>
       <source>Applies length symmetrically to sketch plane</source>
       <translation>Luzera simetrikoki aplikatzen dio krokisaren planoari</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="210"/>
+      <location filename="../../TaskPadParameters.ui" line="252"/>
       <source>Symmetric to plane</source>
       <translation>Planoarekiko simetrikoa</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="217"/>
+      <location filename="../../TaskPadParameters.ui" line="259"/>
       <source>Reverses pad direction</source>
       <translation>Estrusioaren norabidea alderantzikatzen du</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="220"/>
+      <location filename="../../TaskPadParameters.ui" line="262"/>
       <source>Reversed</source>
       <translation>Alderantzikatua</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="229"/>
+      <location filename="../../TaskPadParameters.ui" line="271"/>
       <source>2nd length</source>
       <translation>2. luzera</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="247"/>
-      <location filename="../../TaskPadParameters.cpp" line="135"/>
-      <location filename="../../TaskPadParameters.cpp" line="569"/>
+      <location filename="../../TaskPadParameters.ui" line="289"/>
+      <location filename="../../TaskPadParameters.cpp" line="143"/>
+      <location filename="../../TaskPadParameters.cpp" line="729"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="266"/>
+      <location filename="../../TaskPadParameters.ui" line="308"/>
       <source>Update view</source>
       <translation>Eguneratu bista</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="57"/>
+      <location filename="../../TaskPadParameters.cpp" line="59"/>
       <source>Pad parameters</source>
       <translation>Estrusio-parametroak</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="64"/>
-      <location filename="../../TaskPadParameters.cpp" line="554"/>
+      <location filename="../../TaskPadParameters.cpp" line="66"/>
+      <location filename="../../TaskPadParameters.cpp" line="715"/>
       <source>No face selected</source>
       <translation>Ez da aurpegirik hautatu</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="147"/>
-      <location filename="../../TaskPadParameters.cpp" line="547"/>
+      <location filename="../../TaskPadParameters.cpp" line="155"/>
+      <location filename="../../TaskPadParameters.cpp" line="709"/>
       <source>To last</source>
       <translation>Azkenera</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="148"/>
-      <location filename="../../TaskPadParameters.cpp" line="548"/>
+      <location filename="../../TaskPadParameters.cpp" line="156"/>
+      <location filename="../../TaskPadParameters.cpp" line="710"/>
       <source>To first</source>
       <translation>Lehenera</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="149"/>
-      <location filename="../../TaskPadParameters.cpp" line="549"/>
+      <location filename="../../TaskPadParameters.cpp" line="157"/>
+      <location filename="../../TaskPadParameters.cpp" line="711"/>
       <source>Up to face</source>
       <translation>Aurpegira</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="150"/>
-      <location filename="../../TaskPadParameters.cpp" line="550"/>
+      <location filename="../../TaskPadParameters.cpp" line="158"/>
+      <location filename="../../TaskPadParameters.cpp" line="712"/>
       <source>Two dimensions</source>
       <translation>Bi kota</translation>
     </message>
@@ -2666,7 +2718,7 @@ zehaztutako norabidean</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="30"/>
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
-      <location filename="../../TaskPocketParameters.cpp" line="439"/>
+      <location filename="../../TaskPocketParameters.cpp" line="441"/>
       <source>Dimension</source>
       <translation>Kota</translation>
     </message>
@@ -2698,7 +2750,7 @@ zehaztutako norabidean</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="108"/>
       <location filename="../../TaskPocketParameters.cpp" line="107"/>
-      <location filename="../../TaskPocketParameters.cpp" line="462"/>
+      <location filename="../../TaskPocketParameters.cpp" line="464"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
@@ -2714,31 +2766,31 @@ zehaztutako norabidean</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
-      <location filename="../../TaskPocketParameters.cpp" line="447"/>
+      <location filename="../../TaskPocketParameters.cpp" line="449"/>
       <source>No face selected</source>
       <translation>Ez da aurpegirik hautatu</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="120"/>
-      <location filename="../../TaskPocketParameters.cpp" line="440"/>
+      <location filename="../../TaskPocketParameters.cpp" line="442"/>
       <source>Through all</source>
       <translation>Guztien zehar</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="121"/>
-      <location filename="../../TaskPocketParameters.cpp" line="441"/>
+      <location filename="../../TaskPocketParameters.cpp" line="443"/>
       <source>To first</source>
       <translation>Lehenera</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="122"/>
-      <location filename="../../TaskPocketParameters.cpp" line="442"/>
+      <location filename="../../TaskPocketParameters.cpp" line="444"/>
       <source>Up to face</source>
       <translation>Aurpegira</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="123"/>
-      <location filename="../../TaskPocketParameters.cpp" line="443"/>
+      <location filename="../../TaskPocketParameters.cpp" line="445"/>
       <source>Two dimensions</source>
       <translation>Bi kota</translation>
     </message>
@@ -3142,42 +3194,42 @@ sakatu berriro hautapena amaitzeko</translation>
   <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="196"/>
+      <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
       <translation>Sortu kutxa gehitzaile bat bere zabalera, altuera eta luzera erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="200"/>
+      <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
       <translation>Sortu zilindro gehitzaile bat bere erradioa, altuera eta angelua erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="204"/>
+      <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
       <translation>Sortu esfera gehitzaile bat bere erradioa eta hainbat angelu erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="208"/>
+      <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
       <translation>Sortu kono gehitzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="212"/>
+      <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive ellipsoid</source>
       <translation>Sortu elipsoide gehitzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="216"/>
+      <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
       <translation>Sortu toru gehitzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="220"/>
+      <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
       <translation>Sortu prisma gehitzailea</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="224"/>
+      <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
       <translation>Sortu falka gehitzaile bat</translation>
     </message>
@@ -3185,42 +3237,42 @@ sakatu berriro hautapena amaitzeko</translation>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="352"/>
+      <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
       <translation>Sortu kutxa kentzaile bat bere zabalera, altuera eta luzera erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="356"/>
+      <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
       <translation>Sortu zilindro kentzaile bat bere erradioa, altuera eta angelua erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="360"/>
+      <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
       <translation>Sortu esfera kentzaile bat bere erradioa eta zenbait angelu erabiliz</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="364"/>
+      <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
       <translation>Sortu kono kentzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="368"/>
+      <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
       <translation>Sortu elipsoide kentzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="372"/>
+      <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
       <translation>Sortu toru kentzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="376"/>
+      <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
       <translation>Sortu prima kentzaile bat</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="380"/>
+      <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
       <translation>Sortu falka kentzaile bat</translation>
     </message>
@@ -3269,76 +3321,76 @@ sakatu berriro hautapena amaitzeko</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>Invalid selection</source>
       <translation>Baliogabeko hautapena</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Ez dago hautatutako objektuei doitzen zaion eranste modurik. Hautatu beste zerbait.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="151"/>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
       <translation>Ez dago gorputz aktiborik. Aktibatu gorputz bat zero puntuaren entitate bat txertatu baino lehen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
       <translation>Azpiformaren zorroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Several sub-elements selected</source>
       <translation>Azpielementu bat baino gehiago hautatu da</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>You have to select a single face as support for a sketch!</source>
       <translation>Aurpegi bakarra hautatu behar duzu krokis baten euskarri izateko!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>No support face selected</source>
       <translation>Ez da euskarri-aurpegirik hautatu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>You have to select a face as support for a sketch!</source>
       <translation>Aurpegi bat hautatu behar duzu krokis baten euskarri izateko!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="610"/>
+      <location filename="../../Command.cpp" line="614"/>
       <source>No planar support</source>
       <translation>Ez dago euskarri planarrik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="611"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>You need a planar face as support for a sketch!</source>
       <translation>Aurpegi planarra behar duzu krokisaren euskarri izateko!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="796"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>No valid planes in this document</source>
       <translation>Ez dago baliozko planorik dokumentu honetan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Please create a plane first or select a face to sketch on</source>
       <translation>Krokisa sortzeko, lehenengo sortu plano bat edo hautatu aurpegi bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="810"/>
-      <location filename="../../Command.cpp" line="1176"/>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="814"/>
+      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <location filename="../../ViewProvider.cpp" line="117"/>
       <location filename="../../ViewProviderBoolean.cpp" line="86"/>
       <location filename="../../ViewProviderDatum.cpp" line="256"/>
@@ -3349,9 +3401,9 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="811"/>
-      <location filename="../../Command.cpp" line="1177"/>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="815"/>
+      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="2147"/>
       <location filename="../../ViewProvider.cpp" line="118"/>
       <location filename="../../ViewProviderBoolean.cpp" line="87"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
@@ -3362,96 +3414,96 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Elkarrizketa-koadro hau itxi nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1056"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Ezin da komando hau erabili, ez baitago solidorik kenketa egiteko.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Ziurtatu gorputzak elementu bat duela kenketako komandoa erabiltzen saiatu baino lehen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Ezin da erabili hautatutako objektua. Hautatutako objektuak gorputz aktibokoa izan behar du</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1079"/>
+      <location filename="../../Command.cpp" line="1083"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>Beharbada forma-zorro bat edo oinarri-objektu bat erabili daiteke gorputz baten kanpoko geometriari erreferentzia egiteko.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1105"/>
       <source>No sketch to work on</source>
       <translation>Ez dago krokisik lanerako</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1102"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>No sketch is available in the document</source>
       <translation>Ez dago krokisik erabilgarri dokumentuan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1829"/>
-      <location filename="../../Command.cpp" line="1833"/>
-      <location filename="../../Command.cpp" line="1859"/>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1840"/>
+      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1837"/>
       <source>Select an edge, face, or body.</source>
       <translation>Hautatu ertz, aurpegi edo gorputz bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Hautatu gorputz bakar bateko ertz, aurpegi edo beste gorputz bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1838"/>
-      <location filename="../../Command.cpp" line="2166"/>
+      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="2173"/>
       <source>Selection is not in Active Body</source>
       <translation>Hautapena ez da gorputz aktiboa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Hautatu gorputz aktibo bateko ertz, aurpegi edo beste gorputz bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Wrong object type</source>
       <translation>Objektu mota okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>%1 works only on parts.</source>
       <translation>%1 piezetan soilik dabil.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Shape of the selected Part is empty</source>
       <translation>Hautatutako piezaren forma hutsik dago</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1872"/>
+      <location filename="../../Command.cpp" line="1879"/>
       <source> not possible on selected faces/edges.</source>
       <translation> ez da posible hautatutako aurpegitetan/ertzetan.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
+      <location filename="../../Command.cpp" line="2164"/>
       <source>No valid features in this document</source>
       <translation>Ez dago baliozko elementurik dokumentu honetan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2158"/>
+      <location filename="../../Command.cpp" line="2165"/>
       <source>Please create a feature first.</source>
       <translation>Mesedez, sortu lehenengo elementu bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Please select only one feature in an active body.</source>
       <translation>Hautatu gorputz aktibo bateko elementu bakar bat.</translation>
     </message>
@@ -3620,12 +3672,12 @@ Espero ez diren emaitzak gerta daitezke.</translation>
       <translation>Elementu goiztiar batek ezin du izan elementu berantiar baten mendekoa.</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="265"/>
+      <location filename="../../CommandPrimitive.cpp" line="269"/>
       <source>No previous feature found</source>
       <translation>Ez da aurreko elementurik aurkitu</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="266"/>
+      <location filename="../../CommandPrimitive.cpp" line="270"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
       <translation>Ezin da elementu kentzaile bat sortu oinarri-elementu bat erabilgarri ez badago</translation>
     </message>
@@ -3655,12 +3707,7 @@ Espero ez diren emaitzak gerta daitezke.</translation>
       <translation>Aurpegia</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="143"/>
-      <source>No active Body</source>
-      <translation>Ez dago gorputz aktiborik</translation>
-    </message>
-    <message>
-      <location filename="../../Utils.cpp" line="144"/>
+      <location filename="../../Utils.cpp" line="130"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3669,32 +3716,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 Bertsio zaharragoan dagoen dokumentu bat baduzu eta gorputzik gabeko PartDesign objektuak baditu, erabili PartDesign-en migrazio-funtzioa haiek gorputz batean sartzeko.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="159"/>
+      <location filename="../../Utils.cpp" line="177"/>
       <source>Active Body Required</source>
       <translation>Gorputz aktiboa behar da</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="160"/>
+      <location filename="../../Utils.cpp" line="178"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>PartDesign objektu berria sortzeko, gorputz-objektu aktibo bat egon behar du dokumentuan. Aktibatu gorputz bat (klik bikoitza) edo sortu gorputz berria.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="200"/>
+      <location filename="../../Utils.cpp" line="213"/>
       <source>Feature is not in a body</source>
       <translation>Elementua ez dago gorputz batean</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="201"/>
+      <location filename="../../Utils.cpp" line="214"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Ezaugarri hau erabili ahal izateko, dokumentuko groputz-objektu batekoa izan behar du.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="233"/>
+      <location filename="../../Utils.cpp" line="246"/>
       <source>Feature is not in a part</source>
       <translation>Elementua ez dago pieza batean</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="234"/>
+      <location filename="../../Utils.cpp" line="247"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Ezaugarri hau erabili ahal izateko, dokumentuko pieza-objektu batekoa izan behar du.</translation>
     </message>
@@ -3862,6 +3909,16 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
       <translation>Editatu helizea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.cpp" line="55"/>
+      <source>Please select</source>
+      <translation>Hautatu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.cpp" line="362"/>
+      <source>Sketch normal</source>
+      <translation>Krokisaren normala</translation>
     </message>
   </context>
   <context>
@@ -4034,7 +4091,7 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Kate-buruzkatzea:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
@@ -4044,7 +4101,7 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Arrabol-diametroa:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4222,8 +4279,8 @@ Geroago ere egin dezakezu migrazioa, 'Part Design -&gt; Migratu' erabilita.</tra
       <location filename="../../TaskHoleParameters.ui" line="97"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation type="unfinished">Live update of changes to the thread
-Note that the calculation can take some time</translation>
+      <translation>Hariari egindako aldaketen eguneratze dinamikoa
+Kontuan izan kalkuluek denbora behar dutela</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="101"/>
@@ -4305,7 +4362,7 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation type="unfinished">Tolerance class for threaded holes according to hole profile</translation>
+      <translation>Haridun zuloen tolerantzia-klasea, zuloaren profilaren arabera</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="331"/>
@@ -4348,7 +4405,7 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
       <source>Tapped (DIN76)</source>
-      <translation type="unfinished">Tapped (DIN76)</translation>
+      <translation>Hariztatua (DIN76)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
@@ -4364,12 +4421,12 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="507"/>
       <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
+      <translation>Mozte mota torloju-buruetarako</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+      <translation>Markatu hau 'Mota' atalean aurredefinitutako balioak gainidazteko</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
@@ -4400,8 +4457,8 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
       <location filename="../../TaskHoleParameters.ui" line="730"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation type="unfinished">The size of the drill point will be taken into
-account for the depth of blind holes</translation>
+      <translation>Zulatze-puntuaren tamaina kontuan hartuko da
+zulo itsuen sakonera zehazteko</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="734"/>
@@ -4424,10 +4481,10 @@ account for the depth of blind holes</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
+      <translation>Zuloaren kono-angelua
+90 gradu: zulo zuzena
+90 azpitik: zulo-erradio txikiagoa beheko aldean
+90 gainetik: zulo-erradio handiagoa beheko aldean</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>

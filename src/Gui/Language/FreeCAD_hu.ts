@@ -3303,7 +3303,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Elérhető munkafelületek</translation>
     </message>
   </context>
   <context>
@@ -4504,31 +4504,31 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Emelkedés (y-tengely körül):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Görgetés (x-tengely körül):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Forgatás (z-tengely körül):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Forgatás (z-tengely körül)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Emelkedés (y-tengely körül)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Görgetés (az x-tengely körül)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Euler-szögek (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6056,7 +6056,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bolgár</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6064,7 +6064,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Spanyol, Argentína</translation>
     </message>
   </context>
   <context>
@@ -7031,7 +7031,7 @@ Fizikai útvonal: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Nem lehet menteni a dokumentumot</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7039,27 +7039,27 @@ Fizikai útvonal: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Volt egy probléma a fájl mentésekor. Ennek az lehet az oka, hogy a szülőmappák némelyike nem létezik, vagy nem rendelkezik elegendő engedéllyel, vagy más okból. Hiba részletei:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Szeretné menteni a fájlt egy másik névvel?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokumentum nincs mentve</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>A dokumentum%1 nem menthető. Nem szeretné bezárni?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Dokumentum(ok) nincsen(ek) mentve</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Egyes dokumentumok nem menthetők. Nem szeretné bezárni?</translation>
     </message>
   </context>
   <context>

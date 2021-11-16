@@ -3307,7 +3307,7 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Доступные верстаки</translation>
     </message>
   </context>
   <context>
@@ -4509,31 +4509,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Тангаж (вокруг y-оси):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Крен (вокруг y-оси):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Рыскание (вокруг z-оси):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Рыскание (вокруг z-оси)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Тангаж (вокруг y-оси)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Крен (вокруг x-оси)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Углы Эйлера (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6057,7 +6057,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Болгарский</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6065,7 +6065,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Испанский, Аргенитна</translation>
     </message>
   </context>
   <context>
@@ -7029,7 +7029,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Невозможно сохранить документ</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7045,15 +7045,15 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Документ не сохранен</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Документ %1 не может быть сохранен. Вы хотите отменить его закрытие?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Документ(ы) не сохранены</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
@@ -8835,7 +8835,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Режим редактирования</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>

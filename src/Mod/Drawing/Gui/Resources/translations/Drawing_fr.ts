@@ -4,18 +4,14 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Annotation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
-      <location filename="../../Command.cpp" line="481"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Insère une annotation sur la feuille active</translation>
     </message>
@@ -23,18 +19,14 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
       <source>&amp;Clip</source>
       <translation>&amp;Masque</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
-      <location filename="../../Command.cpp" line="529"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Insère un groupe de masquage sur la feuille active</translation>
     </message>
@@ -42,18 +34,14 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
       <source>&amp;Draft View</source>
       <translation>Vue &amp;Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
-      <location filename="../../Command.cpp" line="720"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Insère une vue brouillon des objets sélectionnés dans le dessin actif</translation>
     </message>
@@ -61,18 +49,14 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
       <source>File</source>
       <translation>Fichier</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Exporter la page...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
-      <location filename="../../Command.cpp" line="631"/>
       <source>Export a page to an SVG file</source>
       <translation>Exporter une page vers un fichier SVG</translation>
     </message>
@@ -80,13 +64,10 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../Command.cpp" line="273"/>
       <source>Insert new A3 landscape drawing</source>
       <translation>Insère une nouvelle feuille A3 paysage</translation>
     </message>
@@ -94,13 +75,10 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="93"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
-      <location filename="../../Command.cpp" line="95"/>
       <source>Insert new drawing</source>
       <translation>Insérer une nouvelle feuille</translation>
     </message>
@@ -108,17 +86,14 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
       <source>Insert view in drawing</source>
       <translation>Insérer une vue dans la page</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Insérer une nouvelle vue de la pièce dans la page active</translation>
     </message>
@@ -126,17 +101,14 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
       <translation>Ouvrir SVG...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="62"/>
       <source>Open a scalable vector graphic</source>
       <translation>Ouvrir un fichier vectoriel SVG</translation>
     </message>
@@ -144,18 +116,14 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
       <source>Open &amp;browser view</source>
       <translation>Vue &amp;web</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
-      <location filename="../../Command.cpp" line="443"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Ouvre la feuille sélectionnée dans le navigateur web</translation>
     </message>
@@ -163,17 +131,14 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
       <source>Insert orthographic views</source>
       <translation>Insérer des vues orthogonales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Insérer une projection orthogonale d'une forme sur la feuille active</translation>
     </message>
@@ -181,18 +146,14 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
       <source>Project shape...</source>
       <translation>Projeter la forme...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
-      <location filename="../../Command.cpp" line="683"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Projeter une forme sur un plan défini par l'utilisateur</translation>
     </message>
@@ -200,18 +161,14 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="747"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="748"/>
       <source>&amp;Spreadsheet View</source>
       <translation>Vue &amp;feuille de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="751"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Insère une vue d'une feuille de calcul sélectionnée sur le dessin actif</translation>
     </message>
@@ -219,18 +176,14 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Symbole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
-      <location filename="../../Command.cpp" line="574"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>Insère un symbole à partir d'un fichier svg dans la mise en plan active</translation>
     </message>
@@ -238,126 +191,100 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
       <source>&amp;Background</source>
       <translation>&amp;Arrière-plan</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Outline</source>
       <translation>&amp;Contour</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
       <source>&amp;Native</source>
       <translation>&amp;Natif</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
       <source>&amp;Image</source>
       <translation>&amp;Image</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>Anticrénelage &amp;haute qualité</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="275"/>
       <source>Open SVG File</source>
       <translation>Ouvrir un fichier SVG</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
       <source>Could not open file '%1'.</source>
       <translation>Impossible d'ouvrir le fichier '%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="363"/>
       <source>&amp;Renderer</source>
       <translation>Moteur de &amp;rendu</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="468"/>
       <source>Export PDF</source>
       <translation>Exporter vers PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="469"/>
       <source>PDF file</source>
       <translation>Fichier PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Page sizes</source>
       <translation>Formats de papier</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="488"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="490"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="492"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="494"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="496"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="579"/>
       <source>Different orientation</source>
       <translation>Orientation différente</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="580"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise une orientation différente que celle du dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="587"/>
-      <location filename="../../DrawingView.cpp" line="595"/>
       <source>Different paper size</source>
       <translation>Format de papier différent</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="588"/>
-      <location filename="../../DrawingView.cpp" line="596"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="607"/>
       <source>Opening file failed</source>
       <translation>L'ouverture du fichier a échoué</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="608"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Le fichier '%1' n'accepte pas l'écriture.</translation>
     </message>
@@ -365,189 +292,134 @@ Do you want to continue?</source>
   <context>
     <name>DrawingGui::TaskOrthoViews</name>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="26"/>
       <source>Orthographic Projection</source>
       <translation>Projection orthogonale</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="46"/>
-      <location filename="../../TaskOrthoViews.ui" line="71"/>
-      <location filename="../../TaskOrthoViews.ui" line="96"/>
-      <location filename="../../TaskOrthoViews.ui" line="121"/>
-      <location filename="../../TaskOrthoViews.ui" line="146"/>
-      <location filename="../../TaskOrthoViews.ui" line="177"/>
-      <location filename="../../TaskOrthoViews.ui" line="202"/>
-      <location filename="../../TaskOrthoViews.ui" line="227"/>
-      <location filename="../../TaskOrthoViews.ui" line="252"/>
-      <location filename="../../TaskOrthoViews.ui" line="277"/>
-      <location filename="../../TaskOrthoViews.ui" line="302"/>
-      <location filename="../../TaskOrthoViews.ui" line="362"/>
       <source>Right click for axonometric settings</source>
       <translation>Faites un clic droit pour les paramètres d'axonométrie</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="324"/>
       <source>Primary view</source>
       <translation>Vue principale</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="340"/>
       <source>Secondary Views</source>
       <translation>Vues secondaires</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="412"/>
       <source>General</source>
       <translation>Général</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="421"/>
       <source>Auto scale / position</source>
       <translation>Échelle / position auto</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="436"/>
       <source>Scale</source>
       <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="468"/>
       <source>Top left x / y</source>
       <translation>En haut à gauche x / y</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="516"/>
       <source>Spacing dx / dy</source>
       <translation>Espacement dx / dy</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
       <translation>Afficher les lignes masquées</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="568"/>
       <source>Show smooth lines</source>
       <translation>Afficher les arêtes tangentes</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="579"/>
       <source>Axonometric</source>
       <translation>Axonométrique</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
       <translation>Axe orienté vers l'extérieur et la droite</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="594"/>
       <source>Vertical tilt</source>
       <translation>Retournement vertical</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="605"/>
-      <location filename="../../TaskOrthoViews.ui" line="805"/>
       <source>X +ve</source>
       <translation>X +ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="610"/>
-      <location filename="../../TaskOrthoViews.ui" line="685"/>
-      <location filename="../../TaskOrthoViews.ui" line="810"/>
       <source>Y +ve</source>
       <translation>Y +ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="615"/>
-      <location filename="../../TaskOrthoViews.ui" line="690"/>
-      <location filename="../../TaskOrthoViews.ui" line="815"/>
       <source>Z +ve</source>
       <translation>Z +ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="620"/>
-      <location filename="../../TaskOrthoViews.ui" line="820"/>
       <source>X -ve</source>
       <translation>X -ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="625"/>
-      <location filename="../../TaskOrthoViews.ui" line="695"/>
-      <location filename="../../TaskOrthoViews.ui" line="825"/>
       <source>Y -ve</source>
       <translation>Y -ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="630"/>
-      <location filename="../../TaskOrthoViews.ui" line="700"/>
-      <location filename="../../TaskOrthoViews.ui" line="830"/>
       <source>Z -ve</source>
       <translation>Z -ve</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="642"/>
       <source>Isometric</source>
       <translation>Isométrique</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="647"/>
       <source>Dimetric</source>
       <translation>Dimétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="652"/>
       <source>Trimetric</source>
       <translation>Trimétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="660"/>
       <source> Scale</source>
       <translation> Échelle</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
       <translation>Vue projection</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="674"/>
       <source> Axis aligned up</source>
       <translation> Axe aligné vers le haut</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="715"/>
-      <location filename="../../TaskOrthoViews.ui" line="738"/>
       <source>Flip</source>
       <translation>Retourner</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="728"/>
       <source> Trimetric</source>
       <translation> Trimétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="756"/>
       <source>Projection</source>
       <translation>Projection</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="767"/>
       <source>Third Angle</source>
       <translation>américaine</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="772"/>
       <source>First Angle</source>
       <translation>européenne</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="791"/>
       <source>View from:</source>
       <translation>Vue de :</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
       <translation>Axe aligné à droite :</translation>
     </message>
@@ -555,77 +427,62 @@ Do you want to continue?</source>
   <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-      <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Visible sharp edges</source>
       <translation>Arêtes vives visibles</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Visible smooth edges</source>
       <translation>Arêtes de tangence visibles</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Visible sewn edges</source>
       <translation>Arêtes cousues visibles</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
       <translation>Arêtes de contour visibles</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="55"/>
       <source>Visible isoparameters</source>
       <translation>Isoparamètres visibles</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="56"/>
       <source>Hidden sharp edges</source>
       <translation>Arêtes vives masquées</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="57"/>
       <source>Hidden smooth edges</source>
       <translation>Arêtes de tangence masquées</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="58"/>
       <source>Hidden sewn edges</source>
       <translation>Arêtes cousues masquées</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
       <translation>Arêtes de contour masquées</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="60"/>
       <source>Hidden isoparameters</source>
       <translation>Isoparamètres masqués</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="77"/>
       <source>Project shapes</source>
       <translation>Projeter les formes</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="91"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>Il n'y a actuellement aucun document actif pour terminer l'opération</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="97"/>
       <source>No active view</source>
       <translation>Pas de vue active</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>Il n'y a actuellement aucune vue active pour terminer l'opération</translation>
     </message>
@@ -633,32 +490,26 @@ Do you want to continue?</source>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
       <source>Landscape</source>
       <translation>Paysage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="221"/>
       <source>Portrait</source>
       <translation>Portrait</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
       <source>%1%2 %3</source>
       <translation>%1 %2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Insérer le nouveau %1 %2 %3 dessin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Insérer le nouveau dessin %1 %2 %3 (%4)</translation>
     </message>
@@ -666,98 +517,62 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="591"/>
       <source>Choose an SVG file to open</source>
       <translation>Choisir un fichier SVG à ouvrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="592"/>
-      <location filename="../../Command.cpp" line="646"/>
       <source>Scalable Vector Graphic</source>
       <translation>Graphique Vectoriel Adaptable (Svg)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="323"/>
-      <location filename="../../Command.cpp" line="402"/>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="760"/>
       <source>Wrong selection</source>
       <translation>Mauvaise sélection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
       <source>Select a Part object.</source>
       <translation>Sélectionnez un objet pièce.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="332"/>
-      <location filename="../../Command.cpp" line="411"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="540"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="766"/>
       <source>No page found</source>
       <translation>Aucune page trouvée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="412"/>
-      <location filename="../../Command.cpp" line="493"/>
-      <location filename="../../Command.cpp" line="541"/>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="767"/>
       <source>Create a page first.</source>
       <translation>Créez d'abord une page.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
       <source>Select exactly one Part object.</source>
       <translation>Sélectionnez exactement un seul objet Pièce.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="641"/>
       <source>Select one Page object.</source>
       <translation>Sélectionnez un objet Page.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
       <source>All Files</source>
       <translation>Tous les fichiers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="649"/>
       <source>Export page</source>
       <translation>Exporter la page</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="761"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Merci de sélectionner un seul objet Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation>Rendre axonométrique...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation>Editer les paramètres axonométriques...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="56"/>
-      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation>Rendre orthographique</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="152"/>
       <source>Show drawing</source>
       <translation>Afficher la mise en plan</translation>
     </message>
@@ -765,7 +580,6 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
       <source>Drawing</source>
       <translation>Mise en plan</translation>
     </message>

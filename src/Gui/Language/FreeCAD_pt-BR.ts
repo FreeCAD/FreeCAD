@@ -3294,11 +3294,11 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar os recursos, o FreeCAD não carrega bancadas até que sejam usadas. Carregá-las pode fornecer acesso a preferências adicionais relacionadas à sua funcionalidade.&lt;/p&gt;&lt;p&gt;As seguintes bancadas estão disponíveis em sua instalação:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Bancadas de trabalho disponíveis</translation>
     </message>
   </context>
   <context>
@@ -3321,7 +3321,7 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Este é o módulo de inicialização atual e ele deve ser carregado automaticamente. Veja preferências/Gerais/Carregamento automático para mudar.</translation>
     </message>
     <message>
       <source>Loaded</source>
@@ -4497,31 +4497,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Passo do dente (em torno do eixo-Y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Rolagem (em torno do eixo-x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Guinada (em torno do eixo-z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Guinada (em torno do eixo-z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Passo do dente (em torno do eixo-Y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Rolagem (em torno do eixo-x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Ângulos de Euler (zy'x)</translation>
     </message>
   </context>
   <context>
@@ -4686,13 +4686,13 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Usar seleções originais</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ignorar dependências e prosseguir com objetos
+originalmente selecionados antes de abrir esta caixa de diálogo</translation>
     </message>
   </context>
   <context>
@@ -6043,7 +6043,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Búlgaro</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6051,7 +6051,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Espanhol, Argentina</translation>
     </message>
   </context>
   <context>
@@ -7013,7 +7013,7 @@ Caminho físico: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Não foi possível salvar o documento</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7021,27 +7021,27 @@ Caminho físico: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Houve um problema ao tentar salvar o arquivo. Isso pode ser devido ao fato de algumas das pastas de origem não existirem ou não possui as permissões necessárias ou por outras razões. Detalhes do erro:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Salvar o arquivo com um nome diferente?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Documento não salvo</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>O documento%1 não pode ser salvo. Cancelar o fechamento?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Documento(s) não foram salvos</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Alguns documentos não puderam ser salvos. Cancelar o fechamento?</translation>
     </message>
   </context>
   <context>
@@ -8819,11 +8819,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Modo de edição</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Define o comportamento ao editar um objeto da arborescência</translation>
     </message>
   </context>
   <context>

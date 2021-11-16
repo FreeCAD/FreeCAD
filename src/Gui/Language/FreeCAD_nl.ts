@@ -524,7 +524,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD zou niet mogelijk zijn met het werk van</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -1441,7 +1441,7 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Code-regels worden genummerd</translation>
     </message>
   </context>
   <context>
@@ -2662,15 +2662,15 @@ Het wijzigen van deze optie vereist een herstart van de toepassing.</translation
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Wat voor soort multisample anti-aliasing wordt gebruikt</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Oog-naar-oog afstand wordt gebruikt voor stereo projecties.
+De opgegeven waarde is een factor die zal worden vermenigvuldigd met
+de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.</translation>
     </message>
   </context>
   <context>
@@ -3290,23 +3290,23 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Werkbank Naam</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Automatisch laden?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Laad nu</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om hulpbronnen te behouden, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Beschikbare werkbanken</translation>
     </message>
   </context>
   <context>
@@ -3317,27 +3317,27 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Automatisch laden</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Indien aangevinkt</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>wordt automatisch geladen wanneer FreeCAD opstart</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Dit is de huidige opstartmodule, en moet automatisch geladen worden. Zie Voorkeuren/General/Autoload om te wijzigen.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Geladen</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Laad nu</translation>
     </message>
   </context>
   <context>
@@ -3643,7 +3643,7 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Draait naar dichtstbijzijnde mogelijke status bij het klikken op een kubus</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
@@ -3651,17 +3651,17 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kubus grootte</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Grootte van de navigatie kubus</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Hoeveel zal er worden ingezoomd.
+Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap.</translation>
     </message>
   </context>
   <context>
@@ -4505,31 +4505,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Pitch (rond y-as):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Rol (rond x-as):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Rol (rond z-as):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Rol (rond z-as)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Pitch (rond y-as)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Rol (rond x-as)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Euler hoeken (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4694,13 +4694,13 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Originele selecties gebruiken</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Afhankelijkheden negeren en doorgaan met objecten
+oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</translation>
     </message>
   </context>
   <context>
@@ -6051,7 +6051,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgaars</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6059,7 +6059,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Spaans, Argentinië</translation>
     </message>
   </context>
   <context>
@@ -7025,7 +7025,7 @@ Fysiek pad: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Kan verzending niet opslaan</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7033,27 +7033,27 @@ Fysiek pad: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Er is een probleem opgetreden bij het opslaan van het bestand. Dit kan komen doordat sommige van de bovenliggende mappen niet bestaan, of omdat je niet voldoende rechten hebt, of om andere redenen. Foutdetails:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Wilt u het bestand met een andere naam opslaan?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Document niet opgeslagen</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Document(en) niet opgeslagen</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
   </context>
   <context>
@@ -8831,11 +8831,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Bewerk modus</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Definieert gedrag bij het bewerken van een object vanaf de boom</translation>
     </message>
   </context>
   <context>
