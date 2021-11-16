@@ -30,8 +30,10 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QCloseEvent>
+# include <QDate>
 # include <QDateTime>
 # include <QDebug>
+# include <QDesktopServices>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
@@ -39,11 +41,14 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QPushButton>
+# include <QSettings>
 # include <QTextStream>
 # include <QTreeWidgetItem>
 # include <QMap>
 # include <QList>
 # include <QVector>
+# include <climits>
+# include <cmath>
 # include <sstream>
 #endif
 
@@ -63,6 +68,7 @@
 #include <Gui/MainWindow.h>
 
 #include <QDomDocument>
+#include <QDirIterator>
 #include <boost/interprocess/sync/file_lock.hpp>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
@@ -335,7 +341,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner::clearDirectory(xfi.absolutePath());
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -525,7 +531,7 @@ void DocumentRecovery::onDeleteSection()
         QTreeWidgetItem* item = d_ptr->ui.treeWidget->takeTopLevelItem(index);
 
         QString projectFile = item->toolTip(0);
-        clearDirectory(QFileInfo(tmp.filePath(projectFile)));
+        DocumentRecoveryCleaner::clearDirectory(QFileInfo(tmp.filePath(projectFile)));
         tmp.rmdir(projectFile);
         delete item;
     }
@@ -564,44 +570,21 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 {
     if (!dirs.isEmpty()) {
         for (QList<QFileInfo>::const_iterator jt = dirs.cbegin(); jt != dirs.cend(); ++jt) {
-            clearDirectory(*jt);
+            DocumentRecoveryCleaner::clearDirectory(*jt);
             tmp.rmdir(jt->fileName());
         }
     }
     tmp.remove(lockFile);
 }
 
-void DocumentRecovery::clearDirectory(const QFileInfo& dir)
-{
-    QDir qThisDir(dir.absoluteFilePath());
-    if (!qThisDir.exists())
-        return;
-
-    // Remove all files in this directory
-    qThisDir.setFilter(QDir::Files);
-    QStringList files = qThisDir.entryList();
-    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
-        QString file = *it;
-        qThisDir.remove(file);
-    }
-
-    // Clear this directory of any sub-directories
-    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-    QFileInfoList subdirs = qThisDir.entryInfoList();
-    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
-        clearDirectory(*it);
-        qThisDir.rmdir(it->fileName());
-    }
-}
-
 // ----------------------------------------------------------------------------
 
-void DocumentRecoveryFinder::checkForPreviousCrashes()
+bool DocumentRecoveryFinder::checkForPreviousCrashes()
 {
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
 
-    showRecoveryDialogIfNeeded();
+    return showRecoveryDialogIfNeeded();
 }
 
 void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>& dirs, const QString& fn)
@@ -649,13 +632,18 @@ void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>
     }
 }
 
-void DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
+bool DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
 {
+    bool foundRecoveryFiles = false;
     if (!restoreDocFiles.isEmpty()) {
         Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
-        if (dlg.foundDocuments())
+        if (dlg.foundDocuments()) {
+            foundRecoveryFiles = true;
             dlg.exec();
+        }
     }
+
+    return foundRecoveryFiles;
 }
 
 // ----------------------------------------------------------------------------
@@ -690,6 +678,185 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
             }
         }
     }
+}
+
+// ----------------------------------------------------------------------------
+
+void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
+{
+    QDir qThisDir(dir.absoluteFilePath());
+    if (!qThisDir.exists())
+        return;
+
+    // Remove all files in this directory
+    qThisDir.setFilter(QDir::Files);
+    QStringList files = qThisDir.entryList();
+    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+        QString file = *it;
+        qThisDir.remove(file);
+    }
+
+    // Clear this directory of any sub-directories
+    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfoList subdirs = qThisDir.entryInfoList();
+    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
+        clearDirectory(*it);
+        qThisDir.rmdir(it->fileName());
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+ApplicationCache::ApplicationCache()
+{
+    limit = std::pow(1024, 3);
+    setPeriod(Period::Weekly);
+}
+
+/*!
+ * \brief ApplicationCache::setPeriod
+ * Set the period to check for the cache size
+ * \param period
+ */
+void ApplicationCache::setPeriod(ApplicationCache::Period period)
+{
+    switch (period) {
+    case Period::Always:
+        numDays = -1;
+        break;
+    case Period::Daily:
+        numDays = 1;
+        break;
+    case Period::Weekly:
+        numDays = 7;
+        break;
+    case Period::Monthly:
+        numDays = 31;
+        break;
+    case Period::Yearly:
+        numDays = 365;
+        break;
+    case Period::Never:
+        numDays = INT_MAX;
+        break;
+    }
+}
+
+/*!
+ * \brief ApplicationCache::setLimit
+ * Set the limit in bytes to perform a check
+ * \param value
+ */
+void ApplicationCache::setLimit(qint64 value)
+{
+    limit = value;
+}
+
+/*!
+ * \brief ApplicationCache::periodicCheckOfSize
+ * Checks if the periodic check should be performed now
+ * \return
+ */
+bool ApplicationCache::periodicCheckOfSize() const
+{
+    QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
+    QString application = QString::fromStdString(App::Application::getExecutableName());
+
+    QSettings settings(vendor, application);
+    QString key = QString::fromLatin1("LastCacheCheck");
+    QDate date = settings.value(key).toDate();
+    QDate now = QDate::currentDate();
+
+    // get the days since the last check
+    int days = date.daysTo(now);
+    if (date.isNull()) {
+        days = 1000;
+    }
+
+    if (days >= numDays) {
+        settings.setValue(key, now);
+        return true;
+    }
+
+    return false;
+}
+
+/*!
+ * \brief ApplicationCache::performAction
+ * If the cache size \a total is higher than the limit then show a dialog to the user
+ * \param total
+ */
+void ApplicationCache::performAction(qint64 total)
+{
+    if (total > limit) {
+        QString path = QString::fromStdString(App::Application::getUserCachePath());
+        QMessageBox msgBox(Gui::getMainWindow());
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setWindowTitle(tr("Cache directory"));
+        msgBox.setText(tr("The cache directory %1 exceeds the size of %2 GB.\n"
+                          "Do you want to clear it now?").arg(path).arg(1));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Open);
+        msgBox.setDefaultButton(QMessageBox::No);
+
+        while (true) {
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Open) {
+                QUrl url = QUrl::fromLocalFile(path);
+                QDesktopServices::openUrl(url);
+            }
+            else {
+                if (ret == QMessageBox::Yes) {
+                    DocumentRecoveryCleaner::clearDirectory(QFileInfo(path));
+                }
+                break;
+            }
+        }
+    }
+}
+
+/*!
+ * \brief ApplicationCache::size
+ * Determines the size of the cache.
+ * \return
+ */
+qint64 ApplicationCache::size() const
+{
+    // QDirIterator lists some directories twice
+#if 0
+    QDir cache = QString::fromStdString(App::Application::getUserCachePath());
+    QDirIterator it(cache, QDirIterator::Subdirectories);
+    qint64 total = 0;
+    while (it.hasNext()) {
+        it.next();
+        total += it.fileInfo().size();
+    }
+
+    return total;
+#else
+    qint64 total = dirSize(QString::fromStdString(App::Application::getUserCachePath()));
+    return total;
+#endif
+}
+
+/*!
+ * \internal
+ */
+qint64 ApplicationCache::dirSize(QString dirPath) const
+{
+    qint64 total = 0;
+    QDir dir(dirPath);
+
+    QDir::Filters fileFilters = QDir::Files;
+    for (QString filePath : dir.entryList(fileFilters)) {
+        QFileInfo fi(dir, filePath);
+        total += fi.size();
+    }
+
+    // traverse sub-directories recursively
+    QDir::Filters dirFilters = QDir::Dirs | QDir::NoDotAndDotDot;
+    for (QString subDirPath : dir.entryList(dirFilters))
+        total += dirSize(dirPath + QDir::separator() + subDirPath);
+    return total;
 }
 
 #include "moc_DocumentRecovery.cpp"

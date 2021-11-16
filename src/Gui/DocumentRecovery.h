@@ -53,7 +53,6 @@ protected:
     void closeEvent(QCloseEvent*);
     void contextMenuEvent(QContextMenuEvent*);
     QString createProjectFile(const QString&);
-    void clearDirectory(const QFileInfo&);
     void cleanup(QDir&, const QList<QFileInfo>&, const QString&);
 
 protected Q_SLOTS:
@@ -69,11 +68,11 @@ private:
 
 class DocumentRecoveryFinder {
 public:
-    void checkForPreviousCrashes();
+    bool checkForPreviousCrashes();
 
 private:
     void checkDocumentDirs(QDir&, const QList<QFileInfo>&, const QString&);
-    void showRecoveryDialogIfNeeded();
+    bool showRecoveryDialogIfNeeded();
 
 private:
     QList<QFileInfo> restoreDocFiles;
@@ -82,6 +81,39 @@ private:
 class DocumentRecoveryHandler {
 public:
     void checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const;
+};
+
+class DocumentRecoveryCleaner {
+public:
+    static void clearDirectory(const QFileInfo& dir);
+};
+
+class ApplicationCache : public QObject {
+    Q_OBJECT
+
+public:
+    enum class Period {
+        Always,
+        Daily,
+        Weekly,
+        Monthly,
+        Yearly,
+        Never
+    };
+
+    ApplicationCache();
+    void setPeriod(Period);
+    void setLimit(qint64);
+    bool periodicCheckOfSize() const;
+    qint64 size() const;
+    void performAction(qint64);
+
+private:
+    qint64 dirSize(QString dirPath) const;
+
+private:
+    qint64 limit;
+    int numDays;
 };
 
 } //namespace Dialog

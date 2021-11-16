@@ -108,6 +108,7 @@
 #include <QPixmapCache>
 #include <QPlainTextEdit>
 #include <QPrinter>
+#include <QPrinterInfo>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrintPreviewWidget>

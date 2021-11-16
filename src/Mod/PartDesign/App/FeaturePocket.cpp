@@ -166,7 +166,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                     Base::Vector3d base;
                     Base::Vector3d dir;
                     getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
-                    pocketDirection = dir;
+                    pocketDirection = -dir;
                 }
                 catch (const Base::Exception& e) {
                     return new App::DocumentObjectExecReturn(e.what());

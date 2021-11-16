@@ -1220,6 +1220,36 @@ void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, Ap
     finishFeature(cmd, Feat);
 }
 
+void prepareProfileBased(Gui::Command* cmd, const std::string& which, double length)
+{
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    auto worker = [cmd, length](Part::Feature* profile, App::DocumentObject *Feat) {
+
+        if (!Feat)
+            return;
+
+        // specific parameters for Pad/Pocket
+        FCMD_OBJ_CMD(Feat, "Length = " << length);
+        Gui::Command::updateActive();
+
+        Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
+
+        if (sketch) {
+            std::ostringstream str;
+            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, cmd, which, worker);
+}
+
 //===========================================================================
 // PartDesign_Pad
 //===========================================================================
@@ -1244,33 +1274,7 @@ void CmdPartDesignPad::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
-
-    if (!pcActiveBody)
-        return;
-
-    Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
-
-        if (!Feat)
-            return;
-
-        // specific parameters for Pad
-        FCMD_OBJ_CMD(Feat, "Length = 10.0");
-        Gui::Command::updateActive();
-
-        Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
-
-        if (sketch) {
-            std::ostringstream str;
-            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
-        }
-
-        finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
-    };
-
-    prepareProfileBased(pcActiveBody, this, "Pad", worker);
+    prepareProfileBased(this, "Pad", 10.0);
 }
 
 bool CmdPartDesignPad::isActive(void)
@@ -1302,32 +1306,7 @@ void CmdPartDesignPocket::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
-
-    if (!pcActiveBody)
-        return;
-
-    Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
-
-        if (!Feat)
-            return;
-
-        FCMD_OBJ_CMD(Feat, "Length = 10.0");
-        Gui::Command::updateActive();
-
-        Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
-
-        if (sketch) {
-            std::ostringstream str;
-            Gui::cmdAppObject(Feat, str << "ReferenceAxis = (" << getObjectCmd(sketch) << ",['N_Axis'])");
-        }
-
-        finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
-    };
-
-    prepareProfileBased(pcActiveBody, this, "Pocket", worker);
+    prepareProfileBased(this, "Pocket", 5.0);
 }
 
 bool CmdPartDesignPocket::isActive(void)
