@@ -162,6 +162,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
+    OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
@@ -377,6 +378,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+    }
+    else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
+        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
     }
     else if (strcmp(Reason,"ShowAxisCross") == 0) {
         _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));

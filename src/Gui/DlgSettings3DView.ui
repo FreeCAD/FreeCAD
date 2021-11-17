@@ -24,24 +24,76 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
-        <property name="toolTip">
-         <string>Main coordinate system will always be shown in
+       <layout class="QHBoxLayout" name="horizontalLayoutCoord">
+      <item>
+         <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
+          <property name="toolTip">
+           <string>Main coordinate system will always be shown in
 lower right corner within opened files</string>
-        </property>
-        <property name="text">
-         <string>Show coordinate system in the corner</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CornerCoordSystem</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>Show coordinate system in the corner</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CornerCoordSystem</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacerCoord">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelCoordSize">
+          <property name="text">
+           <string>Relative size :   </string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="SpinBox_CornerCoordSystemSize">
+          <property name="toolTip">
+           <string>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</string>
+          </property>
+          <property name="minimum">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CornerCoordSystemSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowAxisCross">
@@ -626,6 +678,11 @@ bounding box size of the 3D object that is currently displayed.</string>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -676,6 +733,12 @@ bounding box size of the 3D object that is currently displayed.</string>
      <y>507</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+   <sender>CheckBox_CornerCoordSystem</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>SpinBox_CornerCoordSystemSize</receiver>
+   <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
 </ui>
