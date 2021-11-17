@@ -3451,11 +3451,33 @@ void View3DInventorViewer::drawAxisCross(void)
 // Draw an arrow for the axis representation directly through OpenGL.
 void View3DInventorViewer::drawArrow(void)
 {
-    glBegin(GL_LINES);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 0.0f);
-    glEnd();
     glDisable(GL_CULL_FACE);
+    glBegin(GL_QUADS);
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, 0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, 0.02f);
+
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, -0.02f);
+
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, 0.02f);
+
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, 0.02f);
+
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glEnd();
     glBegin(GL_TRIANGLES);
     glVertex3f(1.0f, 0.0f, 0.0f);
     glVertex3f(1.0f - 1.0f / 3.0f, +0.5f / 4.0f, 0.0f);
