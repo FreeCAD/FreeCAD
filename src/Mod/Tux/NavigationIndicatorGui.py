@@ -53,7 +53,7 @@ class IndicatorButton(QtGui.QPushButton):
         if event.type() == QtCore.QEvent.LanguageChange:
             retranslateUi()
             onTooltip()
-            adjustSize()
+            self.adjustSize()
         return super(IndicatorButton, self).changeEvent(event)
 
 
