@@ -150,6 +150,8 @@
 
 #include "ViewProviderLink.h"
 
+#include "CornerCrossLetters.h"
+
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
 //#define FC_LOGGING_CB
@@ -3266,51 +3268,6 @@ void View3DInventorViewer::setViewing(SbBool enable)
     inherited::setViewing(enable);
 }
 
-//****************************************************************************
-
-// Pixel map representations of an "X", a "Y" and a "Z" for the axis cross.
-#define O {0,255} // black pixel
-#define I {255,0} // transparent pixel
-
-static uchar xPM[9][7][2] = {
-    {I,I,I,I,I,I,I},
-    {I,O,I,I,I,O,I},
-    {I,O,I,I,I,O,I},
-    {I,I,O,I,O,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,O,I,O,I,I},
-    {I,O,I,I,I,O,I},
-    {I,O,I,I,I,O,I},
-    {I,I,I,I,I,I,I}
-};
-
-static uchar yPM[9][7][2] = {
-    {I,I,I,I,I,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,O,I,O,I,I},
-    {I,O,I,I,I,O,I},
-    {I,O,I,I,I,O,I},
-    {I,I,I,I,I,I,I}
-};
-
-static uchar zPM[9][7][2] = {
-    {I,I,I,I,I,I,I},
-    {I,O,O,O,O,O,I},
-    {I,O,I,I,I,I,I},
-    {I,I,O,I,I,I,I},
-    {I,I,I,O,I,I,I},
-    {I,I,I,I,O,I,I},
-    {I,I,I,I,I,O,I},
-    {I,O,O,O,O,O,I},
-    {I,I,I,I,I,I,I}
-};
-
-#undef O
-#undef I
-
 void View3DInventorViewer::drawAxisCross(void)
 {
     // FIXME: convert this to a superimposition scenegraph instead of
@@ -3467,17 +3424,15 @@ void View3DInventorViewer::drawAxisCross(void)
     else
         glColor3fv(SbVec3f(0.0f, 0.0f, 0.0f).getValue());
 
-    //glEnable(GL_ALPHA_TEST);
-    //glAlphaFunc(GL_GREATER, 0.5);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelZoom((float)axiscrossSize/10, (float)axiscrossSize/10);
+    glPixelZoom((float)axiscrossSize/30, (float)axiscrossSize/30); // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
     glRasterPos2d(xpos[0], xpos[1]);
-    glDrawPixels(7, 9, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, xPM);
+    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_PIXEL_DATA);
     glRasterPos2d(ypos[0], ypos[1]);
-    glDrawPixels(7, 9, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, yPM);
+    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_PIXEL_DATA);
     glRasterPos2d(zpos[0], zpos[1]);
-    glDrawPixels(7, 9, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, zPM);
+    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_PIXEL_DATA);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
     glPopMatrix();
