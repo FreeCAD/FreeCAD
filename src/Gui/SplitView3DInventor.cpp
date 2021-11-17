@@ -98,6 +98,7 @@ void AbstractSplitView::setupSettings()
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
+    OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -247,6 +248,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+    }
+    else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
