@@ -367,6 +367,8 @@ void TaskPadParameters::fillDirectionCombo()
             try {
                 Part::Feature* pcFeature = pcFeat->getVerifiedObject();
                 Base::Vector3d SketchVector = pcFeat->getProfileNormal();
+                Q_UNUSED(pcFeature)
+                Q_UNUSED(SketchVector)
                 hasFace = true;
             }
             catch (const Base::Exception& e) {
