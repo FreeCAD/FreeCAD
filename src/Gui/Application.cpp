@@ -93,6 +93,7 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
+#include "DlgSettingsCacheDirectory.h"
 #include "TransactionObject.h"
 #include "FileDialog.h"
 #include "ExpressionBindingPy.h"
@@ -2267,7 +2268,7 @@ void Application::runApplication(void)
 
     try {
         std::stringstream s;
-        s << App::Application::getTempPath() << App::Application::getExecutableName()
+        s << App::Application::getUserCachePath() << App::Application::getExecutableName()
           << "_" << QCoreApplication::applicationPid() << ".lock";
         // open a lock file with the PID
         Base::FileInfo fi(s.str());
@@ -2418,7 +2419,16 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 void Application::checkForPreviousCrashes()
 {
     Gui::Dialog::DocumentRecoveryFinder finder;
-    finder.checkForPreviousCrashes();
+    if (!finder.checkForPreviousCrashes()) {
+
+        // If the recovery dialog wasn't shown check the cache size periodically
+        Gui::Dialog::ApplicationCache cache;
+        cache.applyUserSettings();
+        if (cache.periodicCheckOfSize()) {
+            qint64 total = cache.size();
+            cache.performAction(total);
+        }
+    }
 }
 
 App::Document *Application::reopen(App::Document *doc) {

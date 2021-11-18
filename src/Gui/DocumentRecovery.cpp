@@ -42,6 +42,7 @@
 # include <QTextStream>
 # include <QTreeWidgetItem>
 # include <QMap>
+# include <QSet>
 # include <QList>
 # include <QVector>
 # include <sstream>
@@ -63,6 +64,7 @@
 #include <Gui/MainWindow.h>
 
 #include <QDomDocument>
+#include <QDirIterator>
 #include <boost/interprocess/sync/file_lock.hpp>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
@@ -335,7 +337,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -519,13 +521,13 @@ void DocumentRecovery::onDeleteSection()
         return;
 
     QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
     for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
         int index = d_ptr->ui.treeWidget->indexOfTopLevelItem(*it);
         QTreeWidgetItem* item = d_ptr->ui.treeWidget->takeTopLevelItem(index);
 
         QString projectFile = item->toolTip(0);
-        clearDirectory(QFileInfo(tmp.filePath(projectFile)));
+        DocumentRecoveryCleaner().clearDirectory(QFileInfo(tmp.filePath(projectFile)));
         tmp.rmdir(projectFile);
         delete item;
     }
@@ -564,44 +566,21 @@ void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QS
 {
     if (!dirs.isEmpty()) {
         for (QList<QFileInfo>::const_iterator jt = dirs.cbegin(); jt != dirs.cend(); ++jt) {
-            clearDirectory(*jt);
+            DocumentRecoveryCleaner().clearDirectory(*jt);
             tmp.rmdir(jt->fileName());
         }
     }
     tmp.remove(lockFile);
 }
 
-void DocumentRecovery::clearDirectory(const QFileInfo& dir)
-{
-    QDir qThisDir(dir.absoluteFilePath());
-    if (!qThisDir.exists())
-        return;
-
-    // Remove all files in this directory
-    qThisDir.setFilter(QDir::Files);
-    QStringList files = qThisDir.entryList();
-    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
-        QString file = *it;
-        qThisDir.remove(file);
-    }
-
-    // Clear this directory of any sub-directories
-    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-    QFileInfoList subdirs = qThisDir.entryInfoList();
-    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
-        clearDirectory(*it);
-        qThisDir.rmdir(it->fileName());
-    }
-}
-
 // ----------------------------------------------------------------------------
 
-void DocumentRecoveryFinder::checkForPreviousCrashes()
+bool DocumentRecoveryFinder::checkForPreviousCrashes()
 {
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecoveryFinder::checkDocumentDirs, this, sp::_1, sp::_2, sp::_3));
 
-    showRecoveryDialogIfNeeded();
+    return showRecoveryDialogIfNeeded();
 }
 
 void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>& dirs, const QString& fn)
@@ -649,20 +628,25 @@ void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>
     }
 }
 
-void DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
+bool DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
 {
+    bool foundRecoveryFiles = false;
     if (!restoreDocFiles.isEmpty()) {
         Gui::Dialog::DocumentRecovery dlg(restoreDocFiles, Gui::getMainWindow());
-        if (dlg.foundDocuments())
+        if (dlg.foundDocuments()) {
+            foundRecoveryFiles = true;
             dlg.exec();
+        }
     }
+
+    return foundRecoveryFiles;
 }
 
 // ----------------------------------------------------------------------------
 
 void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const
 {
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
     tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 
@@ -690,6 +674,62 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
             }
         }
     }
+}
+
+// ----------------------------------------------------------------------------
+
+void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
+{
+    QDir qThisDir(dir.absoluteFilePath());
+    if (!qThisDir.exists())
+        return;
+
+    // Remove all files in this directory
+    qThisDir.setFilter(QDir::Files);
+    QStringList files = qThisDir.entryList();
+    subtractFiles(files);
+    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+        QString file = *it;
+        qThisDir.remove(file);
+    }
+
+    // Clear this directory of any sub-directories
+    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfoList subdirs = qThisDir.entryInfoList();
+    subtractDirs(subdirs);
+    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
+        clearDirectory(*it);
+        qThisDir.rmdir(it->fileName());
+    }
+}
+
+void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
+{
+    if (!ignoreFiles.isEmpty() && !files.isEmpty()) {
+        QSet<QString> set1 = files.toSet();
+        QSet<QString> set2 = ignoreFiles.toSet();
+        set1.subtract(set2);
+        files = set1.toList();
+    }
+}
+
+void DocumentRecoveryCleaner::subtractDirs(QFileInfoList& dirs)
+{
+    if (!ignoreDirs.isEmpty() && !dirs.isEmpty()) {
+        for (const auto& it : ignoreDirs) {
+            dirs.removeOne(it);
+        }
+    }
+}
+
+void DocumentRecoveryCleaner::setIgnoreFiles(const QStringList& list)
+{
+    ignoreFiles = list;
+}
+
+void DocumentRecoveryCleaner::setIgnoreDirectories(const QFileInfoList& list)
+{
+    ignoreDirs = list;
 }
 
 #include "moc_DocumentRecovery.cpp"

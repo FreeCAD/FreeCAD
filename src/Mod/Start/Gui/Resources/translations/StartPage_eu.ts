@@ -291,8 +291,8 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Lehen orriaren beheko aldean bistaratuko den A¡aukerako karpeta pertsonalizatu bat.
+Karpeta anitz gehitu daitezke hemen bideak bereizteko ";;" erabilita.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -312,7 +312,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Laguntza-oharrak erakusten ditu hasierako lan-mahaiaren dokumentuen fitxan</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Hau hautatuta badago, 'Fitxategi berria' ikonoak gradiente-ikono bat erakutsiko du ikono normalaren ordez</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>

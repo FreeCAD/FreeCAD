@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>App::Property</name>
     <message>
@@ -127,6 +127,11 @@ Laat deze eigenschap leeg om 'Axis' en 'Center' handmatig in te stellen.</transl
     </message>
     <message>
       <location filename="array.py" line="291"/>
+      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
+      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+    </message>
+    <message>
+      <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
       <translation>Een parameter die bepaalt hoeveel symmetrie vlakken de ronde array zal hebben.</translation>
     </message>
@@ -193,6 +198,26 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de parameter
       <translation>Het oppervlak van dit object</translation>
     </message>
     <message>
+      <location filename="pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation type="unfinished">The base object that will be duplicated.</translation>
+    </message>
+    <message>
+      <location filename="patharray.py" line="177"/>
+      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
+      <translation>Het object waarlangs de kopieën worden verdeeld. Het moet 'Randen' bevatten.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation type="unfinished">Number of copies to create.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+    </message>
+    <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>De normaal richting van de tekst de afmeting</translation>
@@ -201,6 +226,23 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de parameter
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
       <translation>Het object gemeten door dit maatobject</translation>
+    </message>
+    <message>
+      <location filename="dimension.py" line="167"/>
+      <source>The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</source>
+      <translation type="unfinished">The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -516,6 +558,11 @@ of vanaf de subelement 'VertexN', 'EdgeN', respectievelijk 'FaceN', als deze is 
       <translation>Tussentekenafstand</translation>
     </message>
     <message>
+      <location filename="shapestring.py" line="59"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Toon de afzonderlijke array elementen</translation>
@@ -600,6 +647,45 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <translation>Ellipsen en B-splines in lijnsegmenten opsplitsen</translation>
     </message>
     <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation>Voor snijvlak- en kniplijn-modi, 
+                laat dit de vlakken achter op de snijlocatie</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation>Lengte van lijnsegmenten bij betegelen van Ellipsen of B-splines 
+                naar lijnsegmenten</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>Als dit Waar is, wordt alleen ruimtelijke geometrie gebruikt. Dit is overschrijft over de Alleen Ruimtelijke Geometrie-eigenschap van het basisobject</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>Als dit Waar is, wordt de inhoud afgesneden aan de randen van het sectievlak, indien van toepassing. Dit overschrijft de Uitgeknipt eigenschap van het basisobject</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+    </message>
+    <message>
       <location filename="ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
       <translation>Starthoek van de elliptische boog</translation>
@@ -627,6 +713,41 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
       <translation>Het oppervlak van dit object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>De vorm van dit object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
@@ -657,11 +778,6 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
       <translation>De lengte van dit object</translation>
-    </message>
-    <message>
-      <location filename="patharray.py" line="177"/>
-      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation>Het object waarlangs de kopieën worden verdeeld. Het moet 'Randen' bevatten.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
@@ -921,6 +1037,15 @@ Schrijf '$dim' om het te vervangen door de lengte van de maat.</translation>
       <translation>Eenheid-achtervoegsel tonen</translation>
     </message>
     <message>
+      <location filename="view_dimension.py" line="216"/>
+      <source>A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</source>
+      <translation type="unfinished">A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
       <location filename="view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>Pijl grootte</translation>
@@ -963,6 +1088,11 @@ buiten de maatlijn</translation>
       <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Als het waar is, zullen de objecten die in deze laag zitten de lijnkleur van de laag aannemen</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1059,373 +1189,28 @@ buiten de maatlijn</translation>
       <source>Display a leader line or not</source>
       <translation>Toon een leiderslijn of niet</translation>
     </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="86"/>
-      <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
-    </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="100"/>
-      <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
-    </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="107"/>
-      <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
-    </message>
-    <message>
-      <location filename="shapestring.py" line="59"/>
-      <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
-    </message>
-    <message>
-      <location filename="view_dimension.py" line="216"/>
-      <source>A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="117"/>
-      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="98"/>
-      <source>For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</source>
-      <translation>Voor snijvlak- en kniplijn-modi, 
-                laat dit de vlakken achter op de snijlocatie</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="105"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</source>
-      <translation>Lengte van lijnsegmenten bij betegelen van Ellipsen of B-splines 
-                naar lijnsegmenten</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="122"/>
-      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation>Als dit Waar is, wordt alleen ruimtelijke geometrie gebruikt. Dit is overschrijft over de Alleen Ruimtelijke Geometrie-eigenschap van het basisobject</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="127"/>
-      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation>Als dit Waar is, wordt de inhoud afgesneden aan de randen van het sectievlak, indien van toepassing. Dit overschrijft de Uitgeknipt eigenschap van het basisobject</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="111"/>
-      <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="132"/>
-      <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>De vorm van dit object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="52"/>
-      <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="55"/>
-      <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="58"/>
-      <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="61"/>
-      <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="64"/>
-      <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="67"/>
-      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="77"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
-    </message>
-  </context>
-  <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="14"/>
-      <source>Annotation Styles Editor</source>
-      <translation>Stijlen van aantekening editor</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="20"/>
-      <source>Style name</source>
-      <translation>Stijl naam</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="50"/>
-      <source>Add new...</source>
-      <translation>Nieuwe toevoegen...</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="79"/>
-      <source>Renames the selected style</source>
-      <translation>Wijzigt de naam van de geselecteerde stijl</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="82"/>
-      <source>Rename</source>
-      <translation>Hernoemen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="110"/>
-      <source>Deletes the selected style</source>
-      <translation>Verwijder de geselecteerde stijl</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="113"/>
-      <source>Delete</source>
-      <translation>Verwijderen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="164"/>
-      <source>Text</source>
-      <translation>Tekst</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="173"/>
-      <source>Font size</source>
-      <translation>Lettergrootte</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="183"/>
-      <source>Line spacing</source>
-      <translation>Regelafstand</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="193"/>
-      <source>Font name</source>
-      <translation>Font naam</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="212"/>
-      <source>The font to use for texts and dimensions</source>
-      <translation>Het lettertype voor teksten en afmetingen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="239"/>
-      <source>Units</source>
-      <translation>Eenheden</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="248"/>
-      <source>Scale multiplier</source>
-      <translation>Schaal vermenigvuldiger</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="258"/>
-      <source>Decimals</source>
-      <translation>Decimalen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="268"/>
-      <source>Unit override</source>
-      <translation>Eenheid overschrijven</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="278"/>
-      <source>Show unit</source>
-      <translation>Toon eenheid</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="331"/>
-      <source>Line and arrows</source>
-      <translation>Lijn en pijlen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="340"/>
-      <source>Line width</source>
-      <translation>Lijndikte</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="350"/>
-      <source>Extension overshoot</source>
-      <translation>Uitbreiding overschrijding</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="360"/>
-      <source>Arrow size</source>
-      <translation>Pijl grootte</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="370"/>
-      <source>Show lines</source>
-      <translation>Laat lijnen zien</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="380"/>
-      <source>Dimension overshoot</source>
-      <translation>Afmetingslijnoverschrijding</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="390"/>
-      <source>Extension lines</source>
-      <translation>Verlengingslijnen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="400"/>
-      <source>Arrow type</source>
-      <translation>Pijl type</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="410"/>
-      <source>Line / text color</source>
-      <translation>Lijn / tekstkleur</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="433"/>
-      <source>The width of the dimension lines</source>
-      <translation>De breedte van de maatlijnen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="436"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="446"/>
-      <source>The color of dimension lines, arrows and texts</source>
-      <translation>De kleur van afmetingslijnen, pijlen en teksten</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="476"/>
-      <source>Dot</source>
-      <translation>punt</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="486"/>
-      <source>Arrow</source>
-      <translation>Pijl</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="491"/>
-      <source>Tick</source>
-      <translation>Vink</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="38"/>
-      <source>The name of your style. Existing style names can be edited.</source>
-      <translation>De naam van uw stijl. Bestaande stijlnamen kunnen worden bewerkt.</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="219"/>
-      <source>Font size in the system units</source>
-      <translation>Tekengrootte in de systeem eenheden</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="180"/>
-      <source>Line spacing in system units</source>
-      <translation>Regelafstand in systeemeenheden</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="285"/>
-      <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Een vermenigvuldigings factor die invloed heeft op de grootte van teksten en markeringen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="305"/>
-      <source>The number of decimals to show for dimension values</source>
-      <translation>Het aantal decimalen te tonen voor de maatgetallen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="298"/>
-      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Specificeer een geldige lengteeenheid zoals mm, m, m, in, ft, om het maatgetal in deze eenheid te forceren</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="315"/>
-      <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Als dit aangevinkt is, wordt de eenheid naast het maatgetal weergegeven</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="534"/>
-      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation>De afstand die de verlengingslijnen nog verder worden uitgebreid dan de afmetingslijn</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="504"/>
-      <source>The size of the dimension arrows or markers in system units</source>
-      <translation>De grootte van de afmetingspijlen of markeringen in de systeemeenheden</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="417"/>
-      <source>If it is checked it will display the dimension line</source>
-      <translation>Als dit is aangevinkt, wordt de maatlijn weergegeven</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="514"/>
-      <source>The distance that the dimension line is additionally extended</source>
-      <translation>De afstand die de maatlijn nog verder wordt verlengd</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="524"/>
-      <source>The length of the extension lines</source>
-      <translation>Lengte van de verlengingslijnen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="472"/>
-      <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation>Het type pijlen of markeringen dat gebruikt moet worden aan het einde van de afmetingslijnen</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="481"/>
-      <source>Circle</source>
-      <translation>Cirkel</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="496"/>
-      <source>Tick-2</source>
-      <translation>Schuine streep-2</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="120"/>
-      <source>Import styles from json file</source>
-      <translation>Importeer stijlen van json bestand</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="130"/>
-      <source>Export styles to json file</source>
-      <translation>Exporteer stijlen naar json bestand</translation>
-    </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="importDXF.py" line="129"/>
-      <source>Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</source>
-      <translation>Download van dxf-bibliotheken mislukt.
-Download en installeer ze handmatig
-vanuit het menu Tools -&gt; Addon Manager</translation>
+      <location filename="pointarray.py" line="305"/>
+      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
+      <translation>Punt object heeft geen discreet punt, het kan niet worden gebruikt voor een reeks.</translation>
+    </message>
+    <message>
+      <location filename="bspline.py" line="106"/>
+      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
+      <translation>_BSpline.createGeometry: Gesloten met hetzelfde eerste/laatste punt. Geometrie niet bijgewerkt.</translation>
+    </message>
+    <message>
+      <location filename="view_wpproxy.py" line="102"/>
+      <source>Writing camera position</source>
+      <translation>Camerapositie schrijven</translation>
+    </message>
+    <message>
+      <location filename="view_wpproxy.py" line="119"/>
+      <source>Writing objects shown/hidden state</source>
+      <translation>Objecten die worden getoond/verborgen status schrijven</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="145"/>
@@ -1478,36 +1263,6 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Importeren-Exporteren</translation>
     </message>
     <message>
-      <location filename="pointarray.py" line="305"/>
-      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation>Punt object heeft geen discreet punt, het kan niet worden gebruikt voor een reeks.</translation>
-    </message>
-    <message>
-      <location filename="bspline.py" line="106"/>
-      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation>_BSpline.createGeometry: Gesloten met hetzelfde eerste/laatste punt. Geometrie niet bijgewerkt.</translation>
-    </message>
-    <message>
-      <location filename="view_wpproxy.py" line="102"/>
-      <source>Writing camera position</source>
-      <translation>Camerapositie schrijven</translation>
-    </message>
-    <message>
-      <location filename="view_wpproxy.py" line="119"/>
-      <source>Writing objects shown/hidden state</source>
-      <translation>Objecten die worden getoond/verborgen status schrijven</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="402"/>
-      <source>Merge layer duplicates</source>
-      <translation>Dubbele laag samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="407"/>
-      <source>Add new layer</source>
-      <translation>Nieuwe laag toevoegen</translation>
-    </message>
-    <message>
       <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Schakelt raster aan/uit</translation>
@@ -1531,6 +1286,21 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Schakelt beperkingen aan naar werkvlak aan/uit</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="48"/>
+      <source>Arc tools</source>
+      <translation>Booggereedschappen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="56"/>
+      <source>Bezier tools</source>
+      <translation>Bézier-gereedschappen</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Reeks gereedschappen</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="154"/>
@@ -1598,6 +1368,15 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Een kloon maken</translation>
     </message>
     <message>
+      <location filename="importDXF.py" line="129"/>
+      <source>Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -&gt; Addon Manager</source>
+      <translation>Download van dxf-bibliotheken mislukt.
+Download en installeer ze handmatig
+vanuit het menu Tools -&gt; Addon Manager</translation>
+    </message>
+    <message>
       <location filename="gui_clone.py" line="91"/>
       <source>Clone</source>
       <translation>Kopieer</translation>
@@ -1624,6 +1403,31 @@ waarbij verschillende cirkellagen worden gemaakt.
 De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te veranderen.</translation>
     </message>
     <message>
+      <location filename="gui_setstyle.py" line="273"/>
+      <source>Save style</source>
+      <translation type="unfinished">Save style</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="274"/>
+      <source>Name of this new style:</source>
+      <translation type="unfinished">Name of this new style:</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="281"/>
+      <source>Warning</source>
+      <translation>Waarschuwing</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="282"/>
+      <source>Name exists. Overwrite?</source>
+      <translation type="unfinished">Name exists. Overwrite?</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="317"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
       <location filename="gui_polararray.py" line="66"/>
       <source>Polar array</source>
       <translation>Polair matrix</translation>
@@ -1640,9 +1444,9 @@ gedefinieerd door een rotatiescherm en de hoek.
 De reeks kan worden omgezet in een orthogonaal of een cirkel reeks door het type te veranderen.</translation>
     </message>
     <message>
-      <location filename="gui_arrays.py" line="65"/>
-      <source>Array tools</source>
-      <translation>Reeks gereedschappen</translation>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
@@ -1691,441 +1495,14 @@ De reeks kan worden omgezet in een polair of een circulaire reeks door het type 
       <translation>Offset richting is niet gedefinieerd. Beweeg de muis aan een van de zijden van het object eerst om een richting aan te geven</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="273"/>
-      <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <location filename="view_layer.py" line="402"/>
+      <source>Merge layer duplicates</source>
+      <translation>Dubbele laag samenvoegen</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="274"/>
-      <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="282"/>
-      <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="317"/>
-      <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="281"/>
-      <source>Warning</source>
-      <translation>Waarschuwing</translation>
-    </message>
-    <message>
-      <location filename="gui_hatch.py" line="48"/>
-      <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftCircularArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="26"/>
-      <source>Circular array</source>
-      <translation>Cirkelvormig patroon</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>De coördinaten van het punt waar de rotatieas doorheen gaat.
-Wijzig de richting van de as zelf in de eigenschapbewerker.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="61"/>
-      <source>Center of rotation</source>
-      <translation>Middenpunt van rotatie</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="69"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="76"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="83"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="131"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Herstel de coördinaten van het rotatie-middenpunt.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="134"/>
-      <source>Reset point</source>
-      <translation>Herstelpunt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="146"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
-Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="150"/>
-      <source>Fuse</source>
-      <translation>Samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="157"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
-Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="161"/>
-      <source>Link array</source>
-      <translation>Linkreeks</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="186"/>
-      <source>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</source>
-      <translation>Afstand van een element in een ring van de reeks tot het volgende element in dezelfde ring.
-Het kan niet nul zijn.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="179"/>
-      <source>Tangential distance</source>
-      <translation>Tangentiële afstand</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="210"/>
-      <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation>Afstand van één laag van objecten tot de volgende laag van objecten.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="203"/>
-      <source>Radial distance</source>
-      <translation>Radiale afstand</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="261"/>
-      <source>The number of symmetry lines in the circular array.</source>
-      <translation>Het aantal symmetrielijnen in de cirkelvormige reeks.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="250"/>
-      <source>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Aantal cirkelvormige lagen of ringen om te maken, inclusief een kopie van het originele object.
-Het moet ten minste 2 zijn.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="254"/>
-      <source>Number of circular layers</source>
-      <translation>Aantal circulaire lagen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="264"/>
-      <source>Symmetry</source>
-      <translation>Symmetrie</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="273"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Plaats reservering voor het pictogram)</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftOrthoArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="26"/>
-      <source>Orthogonal array</source>
-      <translation>Orthogonale matrix</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="44"/>
-      <source>Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Afstand tussen de elementen in de Z-richting.
-Normaal gesproken is alleen de Z-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
-Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="49"/>
-      <source>Z intervals</source>
-      <translation>Z intervallen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="385"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="392"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="378"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="353"/>
-      <source>Reset the distances.</source>
-      <translation>Herstel de afstanden.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="125"/>
-      <source>Reset Z</source>
-      <translation>Herstel Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="137"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
-Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="141"/>
-      <source>Fuse</source>
-      <translation>Samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="148"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
-Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="152"/>
-      <source>Link array</source>
-      <translation>Linkreeks</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="177"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Plaats reservering voor het pictogram)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="184"/>
-      <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Afstand tussen de elementen in de X-richting.
-Normaal gesproken is alleen de X-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
-Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="189"/>
-      <source>X intervals</source>
-      <translation>X intervallen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="265"/>
-      <source>Reset X</source>
-      <translation>Herstel X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="275"/>
-      <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Afstand tussen de elementen in de Y-richting.
-Normaal gesproken is alleen de Y-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
-Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="280"/>
-      <source>Y intervals</source>
-      <translation>Y intervallen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="356"/>
-      <source>Reset Y</source>
-      <translation>Herstel Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="366"/>
-      <source>Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</source>
-      <translation>Aantal elementen in de reeks in de opgegeven richting, inclusief een kopie van het originele object.
-Het aantal moet minimaal 1 in elke richting zijn.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="370"/>
-      <source>Number of elements</source>
-      <translation>Aantal elementen</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftPolarArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="26"/>
-      <source>Polar array</source>
-      <translation>Polair matrix</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>De coördinaten van het punt waar de rotatieas doorheen gaat.
-Wijzig de richting van de as zelf in de eigenschapbewerker.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="61"/>
-      <source>Center of rotation</source>
-      <translation>Middenpunt van rotatie</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="69"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="115"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="122"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="131"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Herstel de coördinaten van het rotatie-middenpunt.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="134"/>
-      <source>Reset point</source>
-      <translation>Herstelpunt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="146"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
-Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="150"/>
-      <source>Fuse</source>
-      <translation>Samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="157"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
-Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="161"/>
-      <source>Link array</source>
-      <translation>Linkreeks</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="187"/>
-      <source>Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</source>
-      <translation>Sweephoek van de poolverdeling.
-Een negatieve hoek produceert een poolpatroon in de tegenovergestelde richting.
-De maximale absolute waarde is 360 graden.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="180"/>
-      <source>Polar angle</source>
-      <translation>Pool hoek</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="219"/>
-      <source>Number of elements in the array, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Aantal elementen in de reeks, inclusief een kopie van het oorspronkelijke object. 
-Het moet ten minste 2 zijn.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="212"/>
-      <source>Number of elements</source>
-      <translation>Aantal elementen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="235"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Plaats reservering voor het pictogram)</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftShapeStringGui</name>
-    <message>
-      <location filename="TaskShapeString.ui" line="26"/>
-      <source>ShapeString</source>
-      <translation>Tekenreeksvorm</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="115"/>
-      <source>Text to be made into ShapeString</source>
-      <translation>Tekst die omgezet moet worden in ShapeString</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="122"/>
-      <source>String</source>
-      <translation>Tekenreeks</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="133"/>
-      <source>Height</source>
-      <translation>Hoogte</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="140"/>
-      <source>Height of the result</source>
-      <translation>Hoogte van het resultaat</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="66"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="83"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="90"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="101"/>
-      <source>Font file</source>
-      <translation>Lettertypebestand</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="73"/>
-      <source>Enter coordinates or select point with mouse.</source>
-      <translation>Voer de coördinaten in of selecteer het punt met de muis.</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="186"/>
-      <source>Reset 3d point selection</source>
-      <translation>Herstel 3D-puntselectie</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="192"/>
-      <source>Reset Point</source>
-      <translation>Herstel punt</translation>
+      <location filename="view_layer.py" line="407"/>
+      <source>Add new layer</source>
+      <translation>Nieuwe laag toevoegen</translation>
     </message>
   </context>
   <context>
@@ -2331,19 +1708,6 @@ De resulterende kloon kan in elk van zijn drie richtingen worden geschaald.</tra
     </message>
   </context>
   <context>
-    <name>Draft_CloseLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="124"/>
-      <source>Close Line</source>
-      <translation>Lijn sluiten</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="125"/>
-      <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation>Sluit de lijn die getekend wordt, en beëindigt de bewerking.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -2503,19 +1867,6 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
     </message>
   </context>
   <context>
-    <name>Draft_FinishLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="98"/>
-      <source>Finish line</source>
-      <translation>Eind regel</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="99"/>
-      <source>Finishes a line without closing it.</source>
-      <translation>Beëindigt een lijn zonder deze te sluiten.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_FlipDimension</name>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
@@ -2541,6 +1892,11 @@ Als andere objecten zijn geselecteerd worden ze genegeerd.</translation>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
       <translation type="unfinished">Create hatches on selected faces</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="42"/>
+      <source>Creates hatches on the faces of a selected object</source>
+      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
     </message>
   </context>
   <context>
@@ -3335,19 +2691,6 @@ CTRL voor uitlijnen, SHIFT beperkt tot het huidige segment of tot normaal, ALT i
     </message>
   </context>
   <context>
-    <name>Draft_UndoLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="151"/>
-      <source>Undo last segment</source>
-      <translation>Maak laatste segment ongedaan</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="152"/>
-      <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation>Maakt het laatst getekende segment van de getrokken lijn ongedaan.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Upgrade</name>
     <message>
       <location filename="gui_upgrade.py" line="58"/>
@@ -3410,487 +2753,6 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
     </message>
   </context>
   <context>
-    <name>Form</name>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="14"/>
-      <source>Working plane setup</source>
-      <translation>Instelling van het werkvlak</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="20"/>
-      <source>Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</source>
-      <translation>Selecteer een vlak of werkvlakproxy of 3 eindpunten, of kies een van de onderstaande opties</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="31"/>
-      <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation>Stelt het werkvlak in op het XY-vlak (grondvlak)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="34"/>
-      <source>Top (XY)</source>
-      <translation>Bovenkant (XY)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="41"/>
-      <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation>Stelt het werkvlak in op het XZ-vlak (voorzijde)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="44"/>
-      <source>Front (XZ)</source>
-      <translation>Voorkant (XZ)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="51"/>
-      <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation>Stelt het werkvlak in op het YZ-vlak (zijkant)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="54"/>
-      <source>Side (YZ)</source>
-      <translation>Zijkant (YZ)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="61"/>
-      <source>Sets the working plane facing the current view</source>
-      <translation>Zet het werkvlak in de richting van de huidige schermweergave</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="64"/>
-      <source>Align to view</source>
-      <translation>Uitlijnen met weergave</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="71"/>
-      <source>The working plane will align to the current
-view each time a command is started</source>
-      <translation>Het werkvlak zal uitlijnen naar de huidige
-weergave telkens wanneer een opdracht wordt gestart</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="78"/>
-      <source>Automatic</source>
-      <translation>Automatisch</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="87"/>
-      <source>An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</source>
-      <translation>Een optionele verschuiving om aan het werkvlak
-bovenop zijn basispositie. Gebruik dit samen met één
-van de knoppen hierboven</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="99"/>
-      <source>Offset</source>
-      <translation>Verschuiving</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="118"/>
-      <source>If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</source>
-      <translation>Als dit is geselecteerd, wordt het werkvlak
-gecentreerd op de huidige weergave wanneer op een
-van de knoppen hierboven wordt geklikt</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="111"/>
-      <source>Center plane on view</source>
-      <translation>Middenvlak op zicht</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="135"/>
-      <source>Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</source>
-      <translation>Of selecteer een enkel knooppunt om het huidige
-werkvlak te verplaatsen zonder de oriëntatie aan te passen.
-Druk vervolgens op de knop hieronder</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="147"/>
-      <source>Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</source>
-      <translation>Beweegt het werkvlak zonder de oriëntatie
-te veranderen. Als geen punt is geselecteerd, wordt het vlak
-verplaatst naar het centrum van de weergave</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="152"/>
-      <source>Move working plane</source>
-      <translation>Werkvlak verplaatsen</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="171"/>
-      <source>The spacing between the smaller grid lines</source>
-      <translation>De afstand tussen de kleinere rasterlijnen</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="164"/>
-      <source>Grid spacing</source>
-      <translation>Rasterafstand</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="191"/>
-      <source>The number of squares between each main line of the grid</source>
-      <translation>Het aantal vierkantjes tussen elke hoofdlijn van het raster</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="184"/>
-      <source>Main line every</source>
-      <translation>Hoofdlijn elk</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="207"/>
-      <source>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</source>
-      <translation>De afstand waarop een punt magnetisch uitgelijnd kan worden
-wanneer de muis nadert. U kunt deze
-waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="212"/>
-      <source>Snapping radius</source>
-      <translation>Straal van de magnetische uitlijning</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="241"/>
-      <source>Centers the view on the current working plane</source>
-      <translation>Centreer de weergave op het huidige werkvlak</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="244"/>
-      <source>Center view</source>
-      <translation>Centreer beeld</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="251"/>
-      <source>Resets the working plane to its previous position</source>
-      <translation>Herstel het werkvlak naar de vorige positie</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="254"/>
-      <source>Previous</source>
-      <translation>Vorige</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="219"/>
-      <source>Grid extension</source>
-      <translation>Raster extensie</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="226"/>
-      <source> lines</source>
-      <translation> lijnen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="14"/>
-      <source>Style settings</source>
-      <translation>Stijl instellingen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="244"/>
-      <source>Text color</source>
-      <translation>Tekst kleur</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="169"/>
-      <source>Shape color</source>
-      <translation>Vorm kleur</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="87"/>
-      <source>Line width</source>
-      <translation>Lijndikte</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="66"/>
-      <source>The color of faces</source>
-      <translation>De kleur van de vlakken</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="205"/>
-      <source>The type of dimension arrows</source>
-      <translation>De soort van maat-pijlen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="209"/>
-      <source>Dot</source>
-      <translation>punt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="214"/>
-      <source>Circle</source>
-      <translation>Cirkel</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="219"/>
-      <source>Arrow</source>
-      <translation>Pijl</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="224"/>
-      <source>Tick</source>
-      <translation>Vink</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="229"/>
-      <source>Tick-2</source>
-      <translation>Schuine streep-2</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="271"/>
-      <source>The color of texts and dimension texts</source>
-      <translation>De kleur van teksten en dimensie teksten</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="278"/>
-      <source>The size of texts and dimension texts</source>
-      <translation>De afmetingen van teksten en dimensie teksten</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="318"/>
-      <source>Show unit</source>
-      <translation>Toon eenheid</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="80"/>
-      <source>Line color</source>
-      <translation>Lijnkleur</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="308"/>
-      <source>The size of dimension arrows</source>
-      <translation>De grootte van maatpijlen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="257"/>
-      <source>The font to use for texts and dimensions</source>
-      <translation>Het lettertype voor teksten en afmetingen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="101"/>
-      <source>The line style</source>
-      <translation>De lijnstijl</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="105"/>
-      <source>Solid</source>
-      <translation>Volumemodel</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="110"/>
-      <source>Dashed</source>
-      <translation>Gestreept</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="115"/>
-      <source>Dotted</source>
-      <translation>Gestippeld</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="120"/>
-      <source>DashDot</source>
-      <translation>Streepstip</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="264"/>
-      <source>Text size</source>
-      <translation>Tekstgrootte</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="332"/>
-      <source>Unit override</source>
-      <translation>Eenheid overschrijven</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="339"/>
-      <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation>De te gebruiken eenheid voor afmetingen. Laat leeg om de huidige FreeCAD eenheid te gebruiken</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="183"/>
-      <source>The transparency of faces</source>
-      <translation>Transparantie van de vlakken</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="176"/>
-      <source>Transparency</source>
-      <translation>Transparantie</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="135"/>
-      <source>Display mode</source>
-      <translation>Weergavemodus</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="237"/>
-      <source>Text font</source>
-      <translation>Lettertype</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="325"/>
-      <source>Arrow size</source>
-      <translation>Pijl grootte</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="142"/>
-      <source>The display mode for faces</source>
-      <translation>De weergavemodus voor vlakken</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="146"/>
-      <source>Flat Lines</source>
-      <translation>Platte lijn</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="151"/>
-      <source>Wireframe</source>
-      <translation>Draadmodel</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="156"/>
-      <source>Shaded</source>
-      <translation>Schaduw</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="161"/>
-      <source>Points</source>
-      <translation>Punten</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="73"/>
-      <source>Draw style</source>
-      <translation>Tekenstijl</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="94"/>
-      <source>The color of lines</source>
-      <translation>Kleur van de lijnen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="288"/>
-      <source>Arrow style</source>
-      <translation>Pijl type</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="128"/>
-      <source> px</source>
-      <translation> px</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="57"/>
-      <source>Lines and faces</source>
-      <translation>Regels en vlakken</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="199"/>
-      <source>Annotations</source>
-      <translation>Aantekeningen</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="295"/>
-      <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation>Als het achtervoegsel van de unit al dan niet op de maatteksten wordt weergegeven</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="22"/>
-      <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="26"/>
-      <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="40"/>
-      <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="382"/>
-      <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="385"/>
-      <source>Selected</source>
-      <translation>Geselecteerd</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="397"/>
-      <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="346"/>
-      <source>Text spacing</source>
-      <translation>Tekstafstand</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="353"/>
-      <source>The space between the text and the dimension line</source>
-      <translation>De afstand tussen de tekst en de maatlijn</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="363"/>
-      <source>Line spacing</source>
-      <translation>Regelafstand</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="370"/>
-      <source>The spacing between different lines of text</source>
-      <translation>De afstand tussen twee regels tekst</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="14"/>
-      <source>Form</source>
-      <translation>Vorm</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="23"/>
-      <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="30"/>
-      <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="37"/>
-      <source>Scale</source>
-      <translation>Schalen</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="44"/>
-      <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="64"/>
-      <source>Rotation:</source>
-      <translation>Rotatie:</translation>
-    </message>
-    <message encoding="UTF-8">
-      <location filename="dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="gui_groups.py" line="452"/>
@@ -3899,1431 +2761,11 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgSettingsDraft</name>
-    <message>
-      <location filename="preferences-draft.ui" line="32"/>
-      <source>General Draft Settings</source>
-      <translation>Algemene ontwerpinstellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="427"/>
-      <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation>Dit is de gekozen kleur voor objecten getekend in constructie-modus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="387"/>
-      <source>This is the default group name for construction geometry</source>
-      <translation>Dit is de standaard groepsnaam voor de constructie geometrie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="390"/>
-      <source>Construction</source>
-      <translation>Constructie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="114"/>
-      <source>Save current color and linewidth across sessions</source>
-      <translation>Sla de huidige kleur en lijnbreedte op voor alle sessies</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="304"/>
-      <source>Global copy mode</source>
-      <translation>Globale kopieermodus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="40"/>
-      <source>Default working plane</source>
-      <translation>Standaard werkvlak</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="67"/>
-      <source>None</source>
-      <translation>Geen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="72"/>
-      <source>XY (Top)</source>
-      <translation>XY (Bovenkant)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="77"/>
-      <source>XZ (Front)</source>
-      <translation>XZ (voorkant)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="82"/>
-      <source>YZ (Side)</source>
-      <translation>YZ (zijkant)</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="89"/>
-      <source>Default height for texts and dimensions</source>
-      <translation>Standaardhoogte voor teksten en afmetingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="47"/>
-      <source>This is the default font name for all Draft texts and dimensions.
-It can be a font name such as "Arial", a default style such as "sans", "serif"
-or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
-such as "Arial:Bold"</source>
-      <translation>Dit is de standaard naam van het lettertype voor alle Draft teksten en afmetingen. Het kan een font naam zijn, zoals "Arial", een standaard stijl, zoals "sans", "serif" of "mono", of een familie, zoals "Arial, Helvetica, sans" of een naam met een stijl zoals "Arial: Bold"</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="151"/>
-      <source>Default template sheet</source>
-      <translation>Standaard sjabloonvel</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="177"/>
-      <source>The default template to use when creating a new drawing sheet</source>
-      <translation>De standaardsjabloon om te gebruiken bij het maken van een nieuwe tekenplaat</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="40"/>
-      <source>Import style</source>
-      <translation>Import stijl</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="60"/>
-      <source>None (fastest)</source>
-      <translation>Geen (snelste)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="65"/>
-      <source>Use default color and linewidth</source>
-      <translation>Gebruik standaard kleur en lijndikte</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="70"/>
-      <source>Original color and linewidth</source>
-      <translation>Originele kleur en lijndikte</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="46"/>
-      <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Schakel dit als u wilt de gebieden (3D oppervlakken) te importeren.</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="49"/>
-      <source>Import OCA areas</source>
-      <translation>OCA gebieden importeren</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Algemene instellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="380"/>
-      <source>Construction group name</source>
-      <translation>Bouwgroepsnaam</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="143"/>
-      <source>Tolerance</source>
-      <translation>Tolerantie</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="363"/>
-      <source>Join geometry</source>
-      <translation>Geometrie koppelen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="194"/>
-      <source>Alternate SVG Patterns location</source>
-      <translation>Alternatieve SVG patronen locatie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="220"/>
-      <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation>Hier kunt u een map aanduiden met SVG bestanden die &lt;pattern&gt; definities bevat die toegevoegd aan de standaard Draft hatch patronen zullen zijn</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="57"/>
-      <source>Constrain mod</source>
-      <translation>Beperken modus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="77"/>
-      <source>The Constraining modifier key</source>
-      <translation>De Beperken wijzigingstoets</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="109"/>
-      <source>Snap mod</source>
-      <translation>Uitlijn modus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="129"/>
-      <source>The snap modifier key</source>
-      <translation>De uitlijn-wijzigingstoets</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="164"/>
-      <source>Alt mod</source>
-      <translation>ALT modus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="287"/>
-      <source>Select base objects after copying</source>
-      <translation>Selecteer basisobjecten na het kopiëren</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="269"/>
-      <source>If checked, a grid will appear when drawing</source>
-      <translation>Indien aangevinkt, zal een raster worden weergegeven bij het tekenen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="272"/>
-      <source>Use grid</source>
-      <translation>Gebruik raster</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="402"/>
-      <source>Grid spacing</source>
-      <translation>Rasterafstand</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="425"/>
-      <source>The spacing between each grid line</source>
-      <translation>De afstand tussen elke rasterlijn</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="353"/>
-      <source>Main lines every</source>
-      <translation>Hoofdlijnen elke</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="376"/>
-      <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation>Hoofdlijnen worden dikker getrokken. Geef hier aan hoeveel ruitjes tussen de hoofdlijnen.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="94"/>
-      <source>Internal precision level</source>
-      <translation>Interne precisie-niveau</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="395"/>
-      <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation>Dit is de plaats van de dimensie-teksten wanneer deze dimensies verticaal staan. Standaard is links, dat is de ISO-norm.</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="405"/>
-      <source>Left (ISO standard)</source>
-      <translation>Links (ISO-norm)</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="410"/>
-      <source>Right</source>
-      <translation>Rechts</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="384"/>
-      <source>Group layers into blocks</source>
-      <translation>Lagen groeperen in blokken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="570"/>
-      <source>Export 3D objects as polyface meshes</source>
-      <translation>3D-objecten exporteren als polyface netten</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="219"/>
-      <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Indien aangevinkt, de module werkbalk toond wanneer u het magnetisch uitlijnen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="222"/>
-      <source>Show Draft Snap toolbar</source>
-      <translation>Toon Draft uitlijn werkbalk</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="242"/>
-      <source>Hide Draft snap toolbar after use</source>
-      <translation>Verberg de Draft uitlijn werkbalk na gebruik</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="134"/>
-      <source>Show Working Plane tracker</source>
-      <translation>Toon werkbalktracker</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="291"/>
-      <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Indien aangevinkt, zal het schetsraster altijd zichtbaar zijn wanneer de schetswerkbank actief is. Anders alleen bij gebruik van een commando</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="405"/>
-      <source>Use standard font size for texts</source>
-      <translation>Standaardlettergrootte gebruiken voor teksten</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="448"/>
-      <source>Import hatch boundaries as wires</source>
-      <translation>Arceergrenzen als draden importeren</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="469"/>
-      <source>Render polylines with width</source>
-      <translation>Geef polylijnen met breedte weer</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="141"/>
-      <source>Translated (for print &amp; display)</source>
-      <translation>Vertaald (voor publicatie en weergave)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="146"/>
-      <source>Raw (for CAM)</source>
-      <translation>Ruw (voor CAM)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="161"/>
-      <source>Translate white line color to black</source>
-      <translation>Vertaal witte lijnkleur naar zwart</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="324"/>
-      <source>Use Part Primitives when available</source>
-      <translation>Gebruik deelbasisvormen indien beschikbaar</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="26"/>
-      <source>Snapping</source>
-      <translation>Magnetisch uitlijnen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="34"/>
-      <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation>Als u dit selectievakje aanvinkt, wordt het magnetisch uitlijnen geactiveerd zonder dat u op de uitlijnmodustoets hoeft te drukken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="37"/>
-      <source>Always snap (disable snap mod)</source>
-      <translation>Altijd uitlijnen (schakel de uitlijnmodus uit)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="407"/>
-      <source>Construction geometry color</source>
-      <translation>Kleur van de bouwgeometrie</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="149"/>
-      <source>Import</source>
-      <translation>Importeren</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="159"/>
-      <source>texts and dimensions</source>
-      <translation>teksten en afmetingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="175"/>
-      <source>points</source>
-      <translation>punten</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="191"/>
-      <source>layouts</source>
-      <translation>lay-outs</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="207"/>
-      <source>*blocks</source>
-      <translation>*blokken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="614"/>
-      <source>Project exported objects along current view direction</source>
-      <translation>Projecteer de geëxporteerde objecten langs de huidige kijkrichting</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="14"/>
-      <source>Visual settings</source>
-      <translation>Visuele instellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="26"/>
-      <source>Visual Settings</source>
-      <translation>Visuele instellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="34"/>
-      <source>Snap symbols style</source>
-      <translation>Stijl van de uitlijnsymbolen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="54"/>
-      <source>Draft classic style</source>
-      <translation>Klassieke schetsstijl</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="59"/>
-      <source>Bitsnpieces style</source>
-      <translation>Flardenstijl</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="80"/>
-      <source>Color</source>
-      <translation>Kleur</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="237"/>
-      <source>Hatch patterns resolution</source>
-      <translation>Resolutie van de arceerpatronen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="263"/>
-      <source>Grid</source>
-      <translation>Raster</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="294"/>
-      <source>Always show the grid</source>
-      <translation>Altijd de raster tonen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="14"/>
-      <source>Texts and dimensions</source>
-      <translation>Teksten en afmetingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="59"/>
-      <source>Internal font</source>
-      <translation>Intern lettertype</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="323"/>
-      <source>Dot</source>
-      <translation>punt</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="328"/>
-      <source>Circle</source>
-      <translation>Cirkel</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="333"/>
-      <source>Arrow</source>
-      <translation>Pijl</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="362"/>
-      <source>The default size of arrows</source>
-      <translation>De standaardgrootte van pijlen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="208"/>
-      <source>The default size of dimensions extension lines</source>
-      <translation>De standaardgrootte van verlengingslijnen voor de afmetingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="429"/>
-      <source>The space between the dimension line and the dimension text</source>
-      <translation>De afstand tussen de afmetingslijn en de afmetingstekst</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="534"/>
-      <source>Select a font file</source>
-      <translation>Kies een lettertypebestand</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="267"/>
-      <source>Fill objects with faces whenever possible</source>
-      <translation>Vul, waar mogelijk, de objecten op met vlakken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="224"/>
-      <source>Create</source>
-      <translation>Aanmaken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="234"/>
-      <source>simple Part shapes</source>
-      <translation>eenvoudige deelvormen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="253"/>
-      <source>Draft objects</source>
-      <translation>Schetsobjecten</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="269"/>
-      <source>Sketches</source>
-      <translation>Schetsen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="342"/>
-      <source>Get original colors from the DXF file</source>
-      <translation>De originele kleuren uit het DXF-bestand verkrijgen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="489"/>
-      <source>Treat ellipses and splines as polylines</source>
-      <translation>Behandel ellipsen en splines als polylijnen</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="121"/>
-      <source>Export style</source>
-      <translation>Exportstijl</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="455"/>
-      <source>Show the unit suffix in dimensions</source>
-      <translation>Toon het eenheidachtervoegsel in de afmetingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="101"/>
-      <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Sta FreeCAD toe om de DXF-bibliotheken automatisch te downloaden en bij te werken</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="209"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="457"/>
-      <source>Grid size</source>
-      <translation>Rastergrootte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="483"/>
-      <source> lines</source>
-      <translation> lijnen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="144"/>
-      <source>text above (2D)</source>
-      <translation>tekst bovenaan (2D)</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="149"/>
-      <source> text inside (3D)</source>
-      <translation> tekst binnen (3D)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="375"/>
-      <source>Dashed line definition</source>
-      <translation>Streepjeslijndefinitie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="418"/>
-      <source>Dashdot line definition</source>
-      <translation>Streepstiplijndefinitie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="461"/>
-      <source>Dotted line definition</source>
-      <translation>Stippelijndefinitie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="14"/>
-      <source>Grid and snapping</source>
-      <translation>Raster en magnetisch uitlijnen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="26"/>
-      <source>Text settings</source>
-      <translation>Tekstinstellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="34"/>
-      <source>Font family</source>
-      <translation>Lettertypefamilie</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="76"/>
-      <source>Font size</source>
-      <translation>Lettergrootte</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="116"/>
-      <source>Dimension settings</source>
-      <translation>Afmetingsinstellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="124"/>
-      <source>Display mode</source>
-      <translation>Weergavemodus</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="309"/>
-      <source>Arrows style</source>
-      <translation>Pijltype</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="355"/>
-      <source>Arrows size</source>
-      <translation>Pijlgrootte</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="388"/>
-      <source>Text orientation</source>
-      <translation>Tekstoriëntatie</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="422"/>
-      <source>Text spacing</source>
-      <translation>Tekstafstand</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="513"/>
-      <source>ShapeString settings</source>
-      <translation>ShapeString-instellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="521"/>
-      <source>Default ShapeString font file</source>
-      <translation>Standaard ShapeString-lettertypebestand</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="367"/>
-      <source>Drawing view line definitions</source>
-      <translation>Kijklijndefinities tekenen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="14"/>
-      <source>DWG</source>
-      <translation>DWG</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="26"/>
-      <source>DWG conversion</source>
-      <translation>DWG conversie</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="56"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opmerking:&lt;/span&gt; DXF-opties zijn ook van toepassing op de DWG-bestanden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="14"/>
-      <source>DXF</source>
-      <translation>DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="26"/>
-      <source>Import options</source>
-      <translation>Importeeropties</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="55"/>
-      <source>Use legacy python importer</source>
-      <translation>Gebruik het legacy python-importeerprogramma</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="107"/>
-      <source>Export options</source>
-      <translation>Exportopties</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="14"/>
-      <source>OCA</source>
-      <translation>OCA</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="14"/>
-      <source>SVG</source>
-      <translation>SVG</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="86"/>
-      <source>Disable units scaling</source>
-      <translation>Schakel eenheidsschalen uit</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="591"/>
-      <source>Export Drawing Views as blocks</source>
-      <translation>Tekenweergaven als blokken exporteren</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="140"/>
-      <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Opmerking: niet alle onderstaande opties worden door het nieuwe importeerprogramma al gebruikt</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="38"/>
-      <source>Show this dialog when importing and exporting</source>
-      <translation>Toon dit dialoogvenster bij het importeren en exporteren</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
-      <source>Automatic update (legacy importer only)</source>
-      <translation>Automatische update (alleen oud importeerprogramma)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="341"/>
-      <source>Prefix labels of Clones with:</source>
-      <translation>Voorvoegsellabels van klonen met:</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="289"/>
-      <source>Scale factor to apply to imported files</source>
-      <translation>Toe te passen schaalfactor op geïmporteerde bestanden</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="181"/>
-      <source>Max segment length for discretized arcs</source>
-      <translation>Max. Segmentlengte voor gediscretiseerde bogen</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="161"/>
-      <source>Number of decimals</source>
-      <translation>Aantal decimalen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="197"/>
-      <source>Shift</source>
-      <translation>Shift</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="202"/>
-      <source>Ctrl</source>
-      <translation>Ctrl</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="207"/>
-      <source>Alt</source>
-      <translation>Alt</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="184"/>
-      <source>The Alt modifier key</source>
-      <translation>De Alt-wijzigingstoets</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="477"/>
-      <source>The number of horizontal or vertical lines of the grid</source>
-      <translation>Het aantal horizontale of verticale lijnen van het raster</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="87"/>
-      <source>The default color for snap symbols</source>
-      <translation>De standaardkleur voor uitlijnsymbolen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="111"/>
-      <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation>Vink dit aan als u de kleur/lijnbreedte van de werkbalk standaard wilt gebruiken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="131"/>
-      <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation>Indien aangevinkt verschijnt tijdens het tekenen een widget die de huidige werkvlakoriëntatie aangeeft</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="481"/>
-      <source>An SVG linestyle definition</source>
-      <translation>Een SVG-lijnstijldefinitie</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="201"/>
-      <source>Extension lines size</source>
-      <translation>Verlengingslijngrootte</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="237"/>
-      <source>Extension line overshoot</source>
-      <translation>Extensielijnoverschrijding</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="244"/>
-      <source>The default length of extension line above dimension line</source>
-      <translation>De standaardlengte van de verlengingslijn boven de afmetingslijn</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="273"/>
-      <source>Dimension line overshoot</source>
-      <translation>Afmetingslijnoverschrijding</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="280"/>
-      <source>The default distance the dimension line is extended past extension lines</source>
-      <translation>De standaardafstand waar de afmetingslijn voorbij de verlengingslijnen verlengd is</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="338"/>
-      <source>Tick</source>
-      <translation>Vink</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="343"/>
-      <source>Tick-2</source>
-      <translation>Schuine streep-2</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="326"/>
-      <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation>Vink dit aan als u de kleuren van de vlakken wilt behouden tijdens het downgraden en upgraden (alleen splitFaces en makeShell)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="329"/>
-      <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation>Behoud de kleuren van de vlakken tijdens het downgraden/upgraden</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="346"/>
-      <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation>Vink dit aan als u wilt dat de vlaknamen afgeleid worden van de oorspronkelijke objectnaam en andersom terwijl u downgradet/upgradet (alleen splitFaces en makeShell)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="349"/>
-      <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation>Behoud de namen van de vlakken tijdens het downgraden/upgraden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="41"/>
-      <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation>Het pad naar uw uitvoerbare ODA-bestandsconverter (voorheen Teigha)</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="486"/>
-      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Het exporteren van ellipsen wordt slecht ondersteund. Gebruik dit om ze als polylijnen te exporteren.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="518"/>
-      <source>Max Spline Segment:</source>
-      <translation>Max. Splinesegment:</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="120"/>
-      <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
-      <translation>Het aantal decimalen in interne coördinatenoperaties (bijv. 3 = 0,001). Waarden tussen 6 en 8 worden meestal beschouwd als de beste uitruil onder FreeCAD gebruikers.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="169"/>
-      <source>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
-      <translation>Dit is de waarde die gebruikt wordt door functies die een tolerantie gebruiken.
-Waarden met verschillen onder deze waarde zullen als dezelfde behandeld worden. Deze waarde zal binnenkort verouderd worden zodat het nauwkeurigheidsniveau hierboven beide controleert.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="75"/>
-      <source>Use legacy python exporter</source>
-      <translation>Gebruik het legacy python-exporteerprogramma</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="247"/>
-      <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation>Indien deze optie ingesteld is, bij het maken van schetsobjecten bovenop een bestaand vlak van een ander object, zal de "Ondersteuningseigenschap" van het schetsobject ingesteld worden op het basisobject. Dit was het standaardgedrag voor FreeCAD 0.19</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="372"/>
-      <source>Construction Geometry</source>
-      <translation>Bouwgeometrie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="26"/>
-      <source>In-Command Shortcuts</source>
-      <translation>Commandosnelkoppelingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="118"/>
-      <source>Relative</source>
-      <translation>Relatief</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="140"/>
-      <source>R</source>
-      <translation>R</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="236"/>
-      <source>Continue</source>
-      <translation>Doorgaan</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="214"/>
-      <source>T</source>
-      <translation>T</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="111"/>
-      <source>Close</source>
-      <translation>Sluiten</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="177"/>
-      <source>O</source>
-      <translation>O</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="243"/>
-      <source>Copy</source>
-      <translation>Kopie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="469"/>
-      <source>P</source>
-      <translation>P</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="498"/>
-      <source>Subelement Mode</source>
-      <translation>Subelementmodus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="381"/>
-      <source>D</source>
-      <translation>D</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="491"/>
-      <source>Fill</source>
-      <translation>Vullen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="425"/>
-      <source>L</source>
-      <translation>L</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="447"/>
-      <source>Exit</source>
-      <translation>Afsluiten</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="638"/>
-      <source>A</source>
-      <translation>A</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="579"/>
-      <source>Select Edge</source>
-      <translation>Selecteer rand</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="520"/>
-      <source>E</source>
-      <translation>E</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="403"/>
-      <source>Add Hold</source>
-      <translation>Voeg een hulppunt toe</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="675"/>
-      <source>Q</source>
-      <translation>Q</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="352"/>
-      <source>Length</source>
-      <translation>Lengte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="557"/>
-      <source>H</source>
-      <translation>H</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="359"/>
-      <source>Wipe</source>
-      <translation>Wissen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="601"/>
-      <source>W</source>
-      <translation>W</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="697"/>
-      <source>Set WP</source>
-      <translation>WV instellen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="719"/>
-      <source>U</source>
-      <translation>U</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="257"/>
-      <source>Cycle Snap</source>
-      <translation>Cyclisch vastklikken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="52"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="338"/>
-      <source>Snap</source>
-      <translation>Vastklikken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="89"/>
-      <source>S</source>
-      <translation>S</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="250"/>
-      <source>Increase Radius</source>
-      <translation>Straal vergroten</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="279"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="345"/>
-      <source>Decrease Radius</source>
-      <translation>Straal verkleinen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="316"/>
-      <source>]</source>
-      <translation>]</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="741"/>
-      <source>Restrict X</source>
-      <translation>X beperken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="763"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="785"/>
-      <source>Restrict Y</source>
-      <translation>Y beperken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="807"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="829"/>
-      <source>Restrict Z</source>
-      <translation>Z beperken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="851"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="194"/>
-      <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation>Als deze optie aangevinkt is, zal de uitklaplijst met lagen ook groepen tonen, waardoor u ook objecten automatisch aan groepen kunt toevoegen.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="197"/>
-      <source>Show groups in layers list drop-down button</source>
-      <translation>Toon groepen in de uitklapknop van de lagenlijst</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="216"/>
-      <source>Draft tools options</source>
-      <translation>Opties voor ontwerpgereedschappen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="230"/>
-      <source>When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</source>
-      <translation>Bij het tekenen van lijnen, focus instellen op Lengte in plaats van X-coördinaat.
-Dit maakt het mogelijk om de richting te wijzen en de afstand in te typen.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="234"/>
-      <source>Set focus on Length instead of X coordinate</source>
-      <translation>Stel de focus in op de lengte in plaats van X-coördinaat</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="250"/>
-      <source>Set the Support property when possible</source>
-      <translation>Stel de ondersteuningseigenschappen in indien mogelijk</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="263"/>
-      <source>If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</source>
-      <translation>Als u dit selectievakje aanvinkt, verschijnen de objecten als standaard gevuld. 
-Anders verschijnen ze als draadmodel</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="283"/>
-      <source>Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</source>
-      <translation>Normaal gesproken worden na het kopiëren van objecten de kopieën geselecteerd.
-Als deze optie aangevinkt is, worden de basisobjecten geselecteerd.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="300"/>
-      <source>If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</source>
-      <translation>Als u dit selectievakje aanvinkt, zal de kopieermodus over de commando's worden bewaard.
-Anders zullen de commando's altijd beginnen in geen kopie-modus</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="320"/>
-      <source>Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation>Dwing ontwerpgereedschappen af om deelbasisvormen te maken in plaats van schetsobjecten.
-Let op dat dit niet volledig ondersteund wordt en veel objecten niet bewerkt kunnen worden met schetswijzigers.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="14"/>
-      <source>User interface settings</source>
-      <translation>Gebruikersinterface instellingen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="928"/>
-      <source>Enable draft statusbar customization</source>
-      <translation>Aanpassing van de schetsstatusbalk inschakelen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="931"/>
-      <source>Draft Statusbar</source>
-      <translation>Schetsstatusbalk</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="951"/>
-      <source>Enable snap statusbar widget</source>
-      <translation>Uitlijn-statusbalkwidget inschakelen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="954"/>
-      <source>Draft snap widget</source>
-      <translation>Draft Uitlijn widget</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="970"/>
-      <source>Enable draft statusbar annotation scale widget</source>
-      <translation>Annotatieschaalwidget in de statusbalk inschakelen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="973"/>
-      <source>Annotation scale widget</source>
-      <translation>Annotatieschaalwidget</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="567"/>
-      <source>Draft Edit preferences</source>
-      <translation>Schetsbewerkingsvoorkeuren</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="570"/>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="584"/>
-      <source>Maximum number of contemporary edited objects</source>
-      <translation>Maximaal aantal actuele bewerkte objecten</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="607"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stelt het maximale aantal objecten in voor Schetsbewerking&lt;/p&gt;&lt;p&gt;kan tegelijkertijd verwerken&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="645"/>
-      <source>Draft edit pick radius</source>
-      <translation>Straalkeuze voor de schetsbewerking</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="668"/>
-      <source>Controls pick radius of edit nodes</source>
-      <translation>Bepaalt de straalkeuze van knooppuntbewerking</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="34"/>
-      <source>Path to ODA file converter</source>
-      <translation>Pad naar ODA-bestandsconverter</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="35"/>
-      <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation>Deze voorkeurendialoogvenster wordt getoond bij het importeren/exporteren van DXF-bestanden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="51"/>
-      <source>Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>Pythonimporter wordt gebruikt, anders wordt de nieuwere C++ gebruikt.
-Opmerking: C++ importer is sneller, maar is nog niet even functioneel</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="96"/>
-      <source>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</source>
-      <translation>Sta FreeCAD toe om de Pythonconverter te downloaden voor DXF-import en -export.
-U kunt dit ook handmatig doen door de "dxf_library" werkbank
-te installeren vanuit de Uitbreidingsmanager.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="156"/>
-      <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Als dit niet aangevinkt is, zullen de teksten en mteksten niet geïmporteerd worden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="172"/>
-      <source>If unchecked, points won't be imported</source>
-      <translation>Als dit niet aangevinkt is, zullen de punten niet geïmporteerd worden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="188"/>
-      <source>If checked, paper space objects will be imported too</source>
-      <translation>Als dit aangevinkt is, zullen de papieren ruimteobjecten ook geïmporteerd worden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="204"/>
-      <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Als u wilt dat de niet genoemde blokken (beginnend met een *) ook worden geïmporteerd</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="231"/>
-      <source>Only standard Part objects will be created (fastest)</source>
-      <translation>Alleen standaard deelobjecten worden aangemaakt (snelste)</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="250"/>
-      <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>Parametrische schetsobjecten worden waar mogelijk aangemaakt</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="266"/>
-      <source>Sketches will be created whenever possible</source>
-      <translation>Schetsen worden waar mogelijk gemaakt</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="309"/>
-      <source>Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation>Schaalfactor die toegepast moet worden op DXF-bestanden bij het importeren.
-De factor is de conversie tussen de eenheid van uw DXF-bestand en millimeters.
-Bijv: voor bestanden in millimeters: 1, in centimeters: 10, 
-                             in meters: 1000, in duimen: 25,4, in voeten: 304,8</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="338"/>
-      <source>Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </source>
-      <translation>Kleuren worden waar mogelijk uit de DXF-objecten opgehaald.
-Anders worden standaardkleuren toegepast. </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="359"/>
-      <source>FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</source>
-      <translation>FreeCAD zal proberen samenvallende objecten samen te voegen tot draden. 
-Pas op, dit kan een tijdje duren!</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="380"/>
-      <source>Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </source>
-      <translation>Objecten van dezelfde lagen zullen samengevoegd worden in ontwerpblokken,
-zetten het scherm sneller, maar maken ze minder makkelijk te bewerken </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="401"/>
-      <source>Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</source>
-      <translation>Geïmporteerde teksten krijgen de standaard ontwerptekstgrootte,
-in plaats van de grootte die ze hebben in het DXF-document</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="422"/>
-      <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Als u dit selectievakje aanvinkt, worden de DXF-lagen als ontwerplagen geïmporteerd</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="425"/>
-      <source>Use Layers</source>
-      <translation>Lagen gebruiken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="445"/>
-      <source>Hatches will be converted into simple wires</source>
-      <translation>Arceringen worden omgezet in eenvoudige draden</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="465"/>
-      <source>If polylines have a width defined, they will be rendered
-as closed wires with correct width</source>
-      <translation>Als polylijnen een gedefinieerde breedte hebben, zullen ze
-worden weergegeven als gesloten draden met de juiste breedte</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="528"/>
-      <source>Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation>Maximale lengte van elk polylijnsegmenten.
-Als het is ingesteld op '0' wordt de hele spline behandeld als een recht segment.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="567"/>
-      <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation>Alle objecten met vlakken worden geëxporteerd als 3D-veelvlakken</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="587"/>
-      <source>Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</source>
-      <translation>Tekenweergaven worden geëxporteerd als blokken.
-Dit kan mislukken voor post DXF R12-sjablonen.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="611"/>
-      <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>Geëxporteerde objecten zullen worden geprojecteerd om de huidige weergaverichting weer te geven</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="47"/>
-      <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation>Methode gekozen voor het importeren van SVG-objectkleur naar FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="82"/>
-      <source>If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </source>
-      <translation>Indien aangevinkt, zal er geen eenheidsconversie plaatsvinden.
-Een eenheid in het SVG-bestand vertaalt zich als een millimeter. </translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="128"/>
-      <source>Style of SVG file to write when exporting a sketch</source>
-      <translation>Stijl van SVG-bestand om te schrijven bij het exporteren van een schets</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="158"/>
-      <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation>Alle witte lijnen zullen in de SVG in het zwart verschijnen voor een betere leesbaarheid tegen witte achtergronden</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="204"/>
-      <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </source>
-      <translation>Versies van Open CASCADE ouder dan versie 6.8 ondersteunen geen boogprojectie.
-In dit geval zullen bogen gediscretiseerd worden in kleine lijnsegmenten.
-Deze waarde is de maximale segmentlengte. </translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="310"/>
-      <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation>Indien aangevinkt, wordt er een extra rand weergegeven rond het raster, waarbij het hoofdformaat van het vierkant in de linkeronderrand wordt getoond</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="313"/>
-      <source>Show grid border</source>
-      <translation>Rasterrand weergeven</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="475"/>
-      <source>Override unit</source>
-      <translation>Eenheid overschrijven</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="495"/>
-      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation>Door dit veld leeg te laten, worden de afmetingen weergegeven in de huidige eenheid die is gedefinieerd in FreeCAD. Door hier een eenheid zoals m of cm aan te geven, kun je de nieuwe afmetingen in die eenheid afdwingen.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="257"/>
-      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation>De resolutie om patronen in te tekenen. Standaardwaarde is 128. Hogere waarden geven betere resoluties, lagere waarden maken sneller tekenen mogelijk</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="280"/>
-      <source>Hatch Pattern default size</source>
-      <translation>Invul patroon standaard grootte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="300"/>
-      <source>The default size of hatch patterns</source>
-      <translation>De standaard grootte van invulpatroon</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="329"/>
-      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation>Indien ingesteld, zal het raster zijn twee hoofdassen in rood, groen of blauw hebben als ze overeenkomen met globale assen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="332"/>
-      <source>Use colored axes</source>
-      <translation>Gebruik gekleurde assen</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="506"/>
-      <source>Grid color and transparency</source>
-      <translation>Rasterkleur en transparantie</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="526"/>
-      <source>The color of the grid</source>
-      <translation>De kleur van het raster</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="546"/>
-      <source>The overall transparency of the grid</source>
-      <translation>De algehele transparantie van het raster</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="873"/>
-      <source>Global</source>
-      <translation>Overal</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="895"/>
-      <source>G</source>
-      <translation type="unfinished">G</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="71"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
-    </message>
-  </context>
-  <context>
     <name>ImportAirfoilDAT</name>
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
       <translation type="unfinished">Did not find enough coordinates</translation>
-    </message>
-  </context>
-  <context>
-    <name>ImportDWG</name>
-    <message>
-      <location filename="importDWG.py" line="233"/>
-      <source>Conversion successful</source>
-      <translation>Conversie succesvol</translation>
-    </message>
-    <message>
-      <location filename="importDWG.py" line="277"/>
-      <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
     </message>
   </context>
   <context>
@@ -5350,19 +2792,134 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>draft</name>
     <message>
+      <location filename="DraftGui.py" line="745"/>
+      <source>Relative</source>
+      <translation>Relatief</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="750"/>
+      <source>Global</source>
+      <translation>Overal</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="768"/>
+      <source>Continue</source>
+      <translation>Doorgaan</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="784"/>
+      <source>Close</source>
+      <translation>Sluiten</translation>
+    </message>
+    <message>
+      <location filename="gui_rotate.py" line="276"/>
+      <source>Copy</source>
+      <translation>Kopie</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="81"/>
+      <source>Subelement mode</source>
+      <translation>Subelementmodus</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="86"/>
+      <source>Fill</source>
+      <translation>Vullen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="91"/>
+      <source>Exit</source>
+      <translation>Afsluiten</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="96"/>
+      <source>Snap On/Off</source>
+      <translation>Uitlijning Aan/Uit</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="101"/>
+      <source>Increase snap radius</source>
+      <translation>Verhoog de uitlijn straal</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="106"/>
+      <source>Decrease snap radius</source>
+      <translation>Verlaag de uitlijn straal</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="111"/>
+      <source>Restrict X</source>
+      <translation>X beperken</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="116"/>
+      <source>Restrict Y</source>
+      <translation>Y beperken</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="121"/>
+      <source>Restrict Z</source>
+      <translation>Z beperken</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="790"/>
+      <source>Select edge</source>
+      <translation>Selecteer rand</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="131"/>
+      <source>Add custom snap point</source>
+      <translation>Voeg een aangepast uitlijn punt toe</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="136"/>
+      <source>Length mode</source>
+      <translation>Lengtemodus</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="786"/>
+      <source>Wipe</source>
+      <translation>Wissen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="146"/>
+      <source>Set Working Plane</source>
+      <translation>Werkvlak instellen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="151"/>
+      <source>Cycle snap object</source>
+      <translation>Cyclisch klikobject</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="156"/>
+      <source>Toggle near snap on/off</source>
+      <translation>Zet nabijheid aan of uit</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>Ontwerpopdrachtbalk</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="832"/>
-      <source>Toggle construction mode</source>
-      <translation>Constructiemodus omschakelen</translation>
+      <location filename="gui_selectplane.py" line="369"/>
+      <source>Top</source>
+      <translation>Boven</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2054"/>
-      <source>Autogroup off</source>
-      <translation>Autogroup uit</translation>
+      <location filename="gui_selectplane.py" line="381"/>
+      <source>Front</source>
+      <translation>Voorkant</translation>
+    </message>
+    <message>
+      <location filename="gui_selectplane.py" line="393"/>
+      <source>Side</source>
+      <translation>Zijde</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="659"/>
+      <source>Auto</source>
+      <translation>Automatisch</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="722"/>
@@ -5440,6 +2997,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Hoek van het huidige segment</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="741"/>
+      <source>Check this to lock the current angle</source>
+      <translation>Vink dit aan om de huidige hoek te vergrendelen</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Straal</translation>
@@ -5450,14 +3012,90 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Straal van de cirkel </translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="748"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
+if is the first point to set</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="753"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation type="unfinished">Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="755"/>
+      <source>Filled</source>
+      <translation>Gevuld</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="759"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="761"/>
+      <source>Finish</source>
+      <translation>Voltooien</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="763"/>
+      <source>Finishes the current drawing or editing operation</source>
+      <translation>Beëindigt de huidige tekening of bewerking</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Indien ingeschakeld, zal de huidige opdracht niet beëindigen totdat u opnieuw op de command-toets druk</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="771"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>&amp;OCC-stijl verschuiving</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="782"/>
+      <source>&amp;Undo (CTRL+Z)</source>
+      <translation>&amp;Ongedaan maken (CTRL+Z)</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="783"/>
+      <source>Undo the last segment</source>
+      <translation>Maak het laatste segment ongedaan</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="785"/>
+      <source>Finishes and closes the current line</source>
+      <translation>Eindigt en sluit de huidige lijn</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="787"/>
+      <source>Wipes the existing segments of this line and starts again from the last point</source>
+      <translation>Wist de bestaande segmenten van deze lijn en begint opnieuw vanaf het laatste punt</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="788"/>
+      <source>Set WP</source>
+      <translation>WV instellen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="789"/>
+      <source>Reorients the working plane on the last segment</source>
+      <translation>Heroriënteert het werkvlak op het laatste segment</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="791"/>
+      <source>Selects an existing edge to be measured by this dimension</source>
+      <translation>Selecteert een bestaande rand die door deze afmeting gemeten moet worden</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -5470,14 +3108,19 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Aantal zijden</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="324"/>
-      <source>Offset</source>
-      <translation>Verschuiving</translation>
+      <location filename="DraftGui.py" line="796"/>
+      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
+      <translation>Indien aangevinkt, zullen de objecten gekopieerd worden in plaats van verplaatst. Voorkeuren -&gt; Ontwerp -&gt; Globale kopieermodus om deze modus in de volgende opdrachten te behouden</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
-      <source>Auto</source>
-      <translation>Automatisch</translation>
+      <location filename="DraftGui.py" line="797"/>
+      <source>Modify subelements</source>
+      <translation>Subelementen wijzigen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="798"/>
+      <source>If checked, subelements will be modified instead of entire objects</source>
+      <translation>Indien aangevinkt, worden subelementen gewijzigd in plaats van hele objecten</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="799"/>
@@ -5520,6 +3163,36 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Open een Bestandkiezer voor het lettertypebestand</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="807"/>
+      <source>Create text</source>
+      <translation>Tekst aanmaken</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="808"/>
+      <source>Press this button to create the text object, or finish your text with two blank lines</source>
+      <translation>Druk op deze knop om het tekstobject aan te maken of eindig uw tekst met twee lege regels</translation>
+    </message>
+    <message>
+      <location filename="gui_selectplane.py" line="536"/>
+      <source>Current working plane</source>
+      <translation>Huidig werkvlak</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="831"/>
+      <source>Change default style for new objects</source>
+      <translation>Standaardstijl voor nieuwe objecten wijzigen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="832"/>
+      <source>Toggle construction mode</source>
+      <translation>Constructiemodus omschakelen</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="2054"/>
+      <source>Autogroup off</source>
+      <translation>Autogroup uit</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Lijn</translation>
@@ -5540,6 +3213,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Boog</translation>
     </message>
     <message>
+      <location filename="gui_rotate.py" line="279"/>
+      <source>Rotate</source>
+      <translation>Draaien</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Punt</translation>
@@ -5550,9 +3228,24 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Label</translation>
     </message>
     <message>
+      <location filename="gui_offset.py" line="324"/>
+      <source>Offset</source>
+      <translation>Verschuiving</translation>
+    </message>
+    <message>
       <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation>Afstand</translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="217"/>
+      <source>Offset distance</source>
+      <translation>Verschuiving afstand</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1094"/>
+      <source>Trimex</source>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1192"/>
@@ -5565,19 +3258,19 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1261"/>
-      <source>Global X</source>
-      <translation>Globale X</translation>
+      <location filename="DraftGui.py" line="1249"/>
+      <source>Local u0394X</source>
+      <translation type="unfinished">Local u0394X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1262"/>
-      <source>Global Y</source>
-      <translation>Globale Y</translation>
+      <location filename="DraftGui.py" line="1250"/>
+      <source>Local u0394Y</source>
+      <translation type="unfinished">Local u0394Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1263"/>
-      <source>Global Z</source>
-      <translation>Globale Z</translation>
+      <location filename="DraftGui.py" line="1251"/>
+      <source>Local u0394Z</source>
+      <translation type="unfinished">Local u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
@@ -5593,6 +3286,36 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Lokale Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1257"/>
+      <source>Global u0394X</source>
+      <translation type="unfinished">Global u0394X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1258"/>
+      <source>Global u0394Y</source>
+      <translation type="unfinished">Global u0394Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1259"/>
+      <source>Global u0394Z</source>
+      <translation type="unfinished">Global u0394Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1261"/>
+      <source>Global X</source>
+      <translation>Globale X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1262"/>
+      <source>Global Y</source>
+      <translation>Globale Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1263"/>
+      <source>Global Z</source>
+      <translation>Globale Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1496"/>
@@ -5620,6 +3343,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Voer een lettertypebestand in.</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="2047"/>
+      <source>Autogroup:</source>
+      <translation type="unfinished">Autogroup:</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Vlakken</translation>
@@ -5640,238 +3368,51 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Vlakenbinderelementen</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="276"/>
-      <source>Copy</source>
-      <translation>Kopie</translation>
+      <location filename="importDWG.py" line="286"/>
+      <source>LibreDWG error</source>
+      <translation type="unfinished">LibreDWG error</translation>
     </message>
     <message>
-      <location filename="importDXF.py" line="146"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
-het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
-Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
-  1 - Laad de ontwerpwerkbank op
-  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
-Of installeer de bibliotheken handmatig zoals uitgelegd op 
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
+      <location filename="importDWG.py" line="295"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="745"/>
-      <source>Relative</source>
-      <translation>Relatief</translation>
+      <location filename="importDWG.py" line="228"/>
+      <source>Conversion successful</source>
+      <translation>Conversie succesvol</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="768"/>
-      <source>Continue</source>
-      <translation>Doorgaan</translation>
+      <location filename="importDWG.py" line="231"/>
+      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
+      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="784"/>
-      <source>Close</source>
-      <translation>Sluiten</translation>
+      <location filename="importDWG.py" line="300"/>
+      <source>ODA File Converter not found</source>
+      <translation type="unfinished">ODA File Converter not found</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="86"/>
-      <source>Fill</source>
-      <translation>Vullen</translation>
+      <location filename="importDWG.py" line="310"/>
+      <source>QCAD error</source>
+      <translation type="unfinished">QCAD error</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="91"/>
-      <source>Exit</source>
-      <translation>Afsluiten</translation>
+      <location filename="make_sketch.py" line="139"/>
+      <source>All Shapes must be coplanar</source>
+      <translation type="unfinished">All Shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="96"/>
-      <source>Snap On/Off</source>
-      <translation>Uitlijning Aan/Uit</translation>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="101"/>
-      <source>Increase snap radius</source>
-      <translation>Verhoog de uitlijn straal</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="106"/>
-      <source>Decrease snap radius</source>
-      <translation>Verlaag de uitlijn straal</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="111"/>
-      <source>Restrict X</source>
-      <translation>X beperken</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="116"/>
-      <source>Restrict Y</source>
-      <translation>Y beperken</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="121"/>
-      <source>Restrict Z</source>
-      <translation>Z beperken</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="790"/>
-      <source>Select edge</source>
-      <translation>Selecteer rand</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="131"/>
-      <source>Add custom snap point</source>
-      <translation>Voeg een aangepast uitlijn punt toe</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="136"/>
-      <source>Length mode</source>
-      <translation>Lengtemodus</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="786"/>
-      <source>Wipe</source>
-      <translation>Wissen</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="146"/>
-      <source>Set Working Plane</source>
-      <translation>Werkvlak instellen</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="151"/>
-      <source>Cycle snap object</source>
-      <translation>Cyclisch klikobject</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="741"/>
-      <source>Check this to lock the current angle</source>
-      <translation>Vink dit aan om de huidige hoek te vergrendelen</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="755"/>
-      <source>Filled</source>
-      <translation>Gevuld</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="761"/>
-      <source>Finish</source>
-      <translation>Voltooien</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="763"/>
-      <source>Finishes the current drawing or editing operation</source>
-      <translation>Beëindigt de huidige tekening of bewerking</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="782"/>
-      <source>&amp;Undo (CTRL+Z)</source>
-      <translation>&amp;Ongedaan maken (CTRL+Z)</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="783"/>
-      <source>Undo the last segment</source>
-      <translation>Maak het laatste segment ongedaan</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="785"/>
-      <source>Finishes and closes the current line</source>
-      <translation>Eindigt en sluit de huidige lijn</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="787"/>
-      <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation>Wist de bestaande segmenten van deze lijn en begint opnieuw vanaf het laatste punt</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="788"/>
-      <source>Set WP</source>
-      <translation>WV instellen</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="789"/>
-      <source>Reorients the working plane on the last segment</source>
-      <translation>Heroriënteert het werkvlak op het laatste segment</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="791"/>
-      <source>Selects an existing edge to be measured by this dimension</source>
-      <translation>Selecteert een bestaande rand die door deze afmeting gemeten moet worden</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="796"/>
-      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Indien aangevinkt, zullen de objecten gekopieerd worden in plaats van verplaatst. Voorkeuren -&gt; Ontwerp -&gt; Globale kopieermodus om deze modus in de volgende opdrachten te behouden</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="81"/>
-      <source>Subelement mode</source>
-      <translation>Subelementmodus</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="797"/>
-      <source>Modify subelements</source>
-      <translation>Subelementen wijzigen</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="798"/>
-      <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Indien aangevinkt, worden subelementen gewijzigd in plaats van hele objecten</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="369"/>
-      <source>Top</source>
-      <translation>Boven</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="381"/>
-      <source>Front</source>
-      <translation>Voorkant</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="393"/>
-      <source>Side</source>
-      <translation>Zijde</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="536"/>
-      <source>Current working plane</source>
-      <translation>Huidig werkvlak</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="46"/>
-      <source>Draft</source>
-      <translation>Schets</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="156"/>
-      <source>Toggle near snap on/off</source>
-      <translation>Zet nabijheid aan of uit</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="807"/>
-      <source>Create text</source>
-      <translation>Tekst aanmaken</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="808"/>
-      <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation>Druk op deze knop om het tekstobject aan te maken of eindig uw tekst met twee lege regels</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="217"/>
-      <source>Offset distance</source>
-      <translation>Verschuiving afstand</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="831"/>
-      <source>Change default style for new objects</source>
-      <translation>Standaardstijl voor nieuwe objecten wijzigen</translation>
+      <location filename="WorkingPlane.py" line="704"/>
+      <source>Selected Shapes must define a plane</source>
+      <translation type="unfinished">Selected Shapes must define a plane</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -5984,6 +3525,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>De twee punten vallen samen</translation>
     </message>
     <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>1 blok gevonden: pakt uit</translation>
@@ -6044,9 +3590,19 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Verkeerde invoer: moet een plaatsing, een vector, of een rotatie zijn.</translation>
     </message>
     <message>
+      <location filename="make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation type="unfinished">Points:</translation>
+    </message>
+    <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
       <translation>Verkeerde invoer: moet exact een lijst van drie punten zijn.</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation type="unfinished">Placement:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
@@ -6057,6 +3613,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Verkeerde invoer: onjuist punt type.</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -6276,11 +3837,21 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
 </translation>
     </message>
     <message>
+      <location filename="make_sketch.py" line="104"/>
+      <source>No shape found</source>
+      <translation type="unfinished">No shape found</translation>
+    </message>
+    <message>
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
       <translation>Alle vormen moeten plat zijn
 </translation>
+    </message>
+    <message>
+      <location filename="make_sketch.py" line="111"/>
+      <source>All Shapes must be planar</source>
+      <translation type="unfinished">All Shapes must be planar</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -6415,14 +3986,9 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>'DraftText' type gemigreerd naar 'Tekst'</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Activeer deze laag</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Selecteer inhoud laag</translation>
+      <location filename="InitGui.py" line="46"/>
+      <source>Draft</source>
+      <translation>Schets</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
@@ -6625,14 +4191,33 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>ShapeString aanmaken</translation>
     </message>
     <message>
-      <location filename="gui_downgrade.py" line="85"/>
-      <source>Downgrade</source>
-      <translation>Downgraden</translation>
+      <location filename="importDXF.py" line="146"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
+het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
+Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
+  1 - Laad de ontwerpwerkbank op
+  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
+Of installeer de bibliotheken handmatig zoals uitgelegd op 
+https://github.com/yorikvanhavre/Draft-dxf-importer
+Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
       <translation>Selecteer een object om te upgraden</translation>
+    </message>
+    <message>
+      <location filename="gui_downgrade.py" line="85"/>
+      <source>Downgrade</source>
+      <translation>Downgraden</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="79"/>
@@ -6730,6 +4315,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Maak dimensie (radiaal)</translation>
     </message>
     <message>
+      <location filename="gui_dimensions.py" line="508"/>
+      <source>Edge too short!</source>
+      <translation type="unfinished">Edge too short!</translation>
+    </message>
+    <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
       <translation>Randen doorsnijden elkaar niet!</translation>
@@ -6770,11 +4360,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Upgraden</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="205"/>
-      <source>Move</source>
-      <translation>Verplaatsen</translation>
-    </message>
-    <message>
       <location filename="gui_move.py" line="81"/>
       <source>Select an object to move</source>
       <translation>Selecteer een object om te verplaatsen</translation>
@@ -6790,19 +4375,24 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Kies eindpunt</translation>
     </message>
     <message>
+      <location filename="gui_move.py" line="205"/>
+      <source>Move</source>
+      <translation>Verplaatsen</translation>
+    </message>
+    <message>
       <location filename="gui_rotate.py" line="282"/>
       <source>Some subelements could not be moved.</source>
       <translation>Sommige subelementen konden niet verplaatst worden.</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="122"/>
-      <source>Point array</source>
-      <translation>Punt reeks</translation>
-    </message>
-    <message>
       <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
       <translation>Selecteer precies twee objecten, het basisobject en het punt object, voordat u deze opdracht aanroept.</translation>
+    </message>
+    <message>
+      <location filename="gui_pointarray.py" line="122"/>
+      <source>Point array</source>
+      <translation>Punt reeks</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
@@ -6905,14 +4495,14 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Toon uitlijn werkbalk</translation>
     </message>
     <message>
-      <location filename="gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Reeks</translation>
-    </message>
-    <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
       <translation>Selecteer een object voor de reeks</translation>
+    </message>
+    <message>
+      <location filename="gui_array_simple.py" line="101"/>
+      <source>Array</source>
+      <translation>Reeks</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="89"/>
@@ -6935,11 +4525,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Polygoon maken</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="123"/>
-      <source>Mirror</source>
-      <translation>Spiegelen</translation>
-    </message>
-    <message>
       <location filename="gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
       <translation>Selecteer een object om te spiegelen</translation>
@@ -6950,6 +4535,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Kies het beginpunt van de spiegellijn</translation>
     </message>
     <message>
+      <location filename="gui_mirror.py" line="123"/>
+      <source>Mirror</source>
+      <translation>Spiegelen</translation>
+    </message>
+    <message>
       <location filename="gui_mirror.py" line="204"/>
       <source>Pick end point of mirror line</source>
       <translation>Kies het eindpunt van de spiegellijn</translation>
@@ -6958,11 +4548,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
       <translation>Punt maken</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="353"/>
-      <source>Scale</source>
-      <translation>Schalen</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="87"/>
@@ -6980,9 +4565,24 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Kies een referentieafstand vanaf het basispunt</translation>
     </message>
     <message>
+      <location filename="gui_scale.py" line="353"/>
+      <source>Scale</source>
+      <translation>Schalen</translation>
+    </message>
+    <message>
       <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
       <translation>Sommige subelementen konden niet worden geschaald.</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="333"/>
+      <source>Unable to scale object:</source>
+      <translation type="unfinished">Unable to scale object:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="337"/>
+      <source>Unable to scale objects:</source>
+      <translation type="unfinished">Unable to scale objects:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="340"/>
@@ -7035,11 +4635,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Afmeting spiegelen</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="478"/>
-      <source>Stretch</source>
-      <translation>Uitrekken</translation>
-    </message>
-    <message>
       <location filename="gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
       <translation>Selecteer een object om uit te rekken</translation>
@@ -7070,6 +4665,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Een rechthoek in een draad veranderen</translation>
     </message>
     <message>
+      <location filename="gui_stretch.py" line="478"/>
+      <source>Stretch</source>
+      <translation>Uitrekken</translation>
+    </message>
+    <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
       <translation>Wijzig raster status</translation>
@@ -7085,11 +4685,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Rechthoek maken</translation>
     </message>
     <message>
-      <location filename="gui_draft2sketch.py" line="143"/>
-      <source>Convert Draft/Sketch</source>
-      <translation>Converteer Draft/Schets</translation>
-    </message>
-    <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
       <translation>Selecteer een object om te converteren.</translation>
@@ -7103,6 +4698,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
       <translation>Converteren naar ontwerp</translation>
+    </message>
+    <message>
+      <location filename="gui_draft2sketch.py" line="143"/>
+      <source>Convert Draft/Sketch</source>
+      <translation>Converteer Draft/Schets</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
@@ -7140,14 +4740,14 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Geen bewerkingspunt gevonden voor het geselecteerde object</translation>
     </message>
     <message>
+      <location filename="gui_edit.py" line="815"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
       <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: dit object is niet bewerkbaar</translation>
-    </message>
-    <message>
-      <location filename="gui_patharray.py" line="143"/>
-      <source>Path array</source>
-      <translation>Pad reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
@@ -7155,14 +4755,14 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Selecteer precies twee objecten, het basis object en het pad object, voordat u deze opdracht aanroept.</translation>
     </message>
     <message>
+      <location filename="gui_patharray.py" line="143"/>
+      <source>Path array</source>
+      <translation>Pad reeks</translation>
+    </message>
+    <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
       <translation>Pad getoreerde reeks</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1094"/>
-      <source>Trimex</source>
-      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="94"/>
@@ -7173,6 +4773,11 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Kies afstand</translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="483"/>
@@ -7238,26 +4843,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Eigen</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="73"/>
-      <source>No active command.</source>
-      <translation>Geen actieve opdracht.</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="92"/>
-      <source>Finish line</source>
-      <translation>Eind regel</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="118"/>
-      <source>Close line</source>
-      <translation>Lijn sluiten</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="144"/>
-      <source>Undo line</source>
-      <translation>Lijn ongedaan maken</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="64"/>
@@ -7435,11 +5020,6 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Tekst maken</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="279"/>
-      <source>Rotate</source>
-      <translation>Draaien</translation>
-    </message>
-    <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
       <translation>Selecteer een object om te draaien</translation>
@@ -7482,117 +5062,34 @@ De eindhoek zal de basishoek plus dit getal zijn.</translation>
       <translation>Kies rotatiehoek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="750"/>
-      <source>Global</source>
-      <translation>Overal</translation>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Activeer deze laag</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="748"/>
-      <source>Coordinates relative to last point or to coordinate system origin
-if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Selecteer inhoud laag</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="753"/>
-      <source>Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <location filename="gui_lineops.py" line="73"/>
+      <source>No active command.</source>
+      <translation>Geen actieve opdracht.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="759"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <location filename="gui_lineops.py" line="92"/>
+      <source>Finish line</source>
+      <translation>Eind regel</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="771"/>
-      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <location filename="gui_lineops.py" line="118"/>
+      <source>Close line</source>
+      <translation>Lijn sluiten</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1249"/>
-      <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1250"/>
-      <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1251"/>
-      <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1257"/>
-      <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1258"/>
-      <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1259"/>
-      <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="2047"/>
-      <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="130"/>
-      <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="138"/>
-      <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="333"/>
-      <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="337"/>
-      <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
-    </message>
-    <message>
-      <location filename="gui_edit.py" line="815"/>
-      <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
-    </message>
-    <message>
-      <location filename="mirror.py" line="113"/>
-      <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="WorkingPlane.py" line="696"/>
-      <source>Selected Shapes must define a plane
-</source>
-      <translation type="unfinished">Selected Shapes must define a plane
-</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="222"/>
-      <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <location filename="gui_lineops.py" line="144"/>
+      <source>Undo line</source>
+      <translation>Lijn ongedaan maken</translation>
     </message>
   </context>
   <context>
@@ -7611,6 +5108,2657 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation type="unfinished">successfully exported</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_CloseLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="124"/>
+      <source>Close Line</source>
+      <translation>Lijn sluiten</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="125"/>
+      <source>Closes the line being drawn, and finishes the operation.</source>
+      <translation>Sluit de lijn die getekend wordt, en beëindigt de bewerking.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_FinishLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="98"/>
+      <source>Finish line</source>
+      <translation>Eind regel</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="99"/>
+      <source>Finishes a line without closing it.</source>
+      <translation>Beëindigt een lijn zonder deze te sluiten.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UndoLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="151"/>
+      <source>Undo last segment</source>
+      <translation>Maak laatste segment ongedaan</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="152"/>
+      <source>Undoes the last drawn segment of the line being drawn.</source>
+      <translation>Maakt het laatst getekende segment van de getrokken lijn ongedaan.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ImportDWG</name>
+    <message>
+      <location filename="importDWG.py" line="233"/>
+      <source>Conversion successful</source>
+      <translation>Conversie succesvol</translation>
+    </message>
+    <message>
+      <location filename="importDWG.py" line="277"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
+      <source>Annotation Styles Editor</source>
+      <translation>Stijlen van aantekening editor</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
+      <source>Style name</source>
+      <translation>Stijl naam</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <source>The name of your style. Existing style names can be edited.</source>
+      <translation>De naam van uw stijl. Bestaande stijlnamen kunnen worden bewerkt.</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
+      <source>Add new...</source>
+      <translation>Nieuwe toevoegen...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
+      <source>Renames the selected style</source>
+      <translation>Wijzigt de naam van de geselecteerde stijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
+      <source>Rename</source>
+      <translation>Hernoemen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
+      <source>Deletes the selected style</source>
+      <translation>Verwijder de geselecteerde stijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
+      <source>Delete</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <source>Import styles from json file</source>
+      <translation>Importeer stijlen van json bestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
+      <source>Export styles to json file</source>
+      <translation>Exporteer stijlen naar json bestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <source>Font size in the system units</source>
+      <translation>Tekengrootte in de systeem eenheden</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <source>Font size</source>
+      <translation>Lettergrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
+      <source>Line spacing in system units</source>
+      <translation>Regelafstand in systeemeenheden</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
+      <source>Line spacing</source>
+      <translation>Regelafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="190"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>Het lettertype voor teksten en afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
+      <source>Font name</source>
+      <translation>Font naam</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <source>Units</source>
+      <translation>Eenheden</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
+      <source>A multiplier factor that affects the size of texts and markers</source>
+      <translation>Een vermenigvuldigings factor die invloed heeft op de grootte van teksten en markeringen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <source>Scale multiplier</source>
+      <translation>Schaal vermenigvuldiger</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
+      <source>The number of decimals to show for dimension values</source>
+      <translation>Het aantal decimalen te tonen voor de maatgetallen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
+      <source>Decimals</source>
+      <translation>Decimalen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
+      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
+      <translation>Specificeer een geldige lengteeenheid zoals mm, m, m, in, ft, om het maatgetal in deze eenheid te forceren</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
+      <source>Unit override</source>
+      <translation>Eenheid overschrijven</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="315"/>
+      <source>If it is checked it will show the unit next to the dimension value</source>
+      <translation>Als dit aangevinkt is, wordt de eenheid naast het maatgetal weergegeven</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <source>Show unit</source>
+      <translation>Toon eenheid</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
+      <source>Line and arrows</source>
+      <translation>Lijn en pijlen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="433"/>
+      <source>The width of the dimension lines</source>
+      <translation>De breedte van de maatlijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
+      <source>Line width</source>
+      <translation>Lijndikte</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
+      <translation>De afstand die de verlengingslijnen nog verder worden uitgebreid dan de afmetingslijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <source>Extension overshoot</source>
+      <translation>Uitbreiding overschrijding</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="357"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <source>The size of the dimension arrows or markers in system units</source>
+      <translation>De grootte van de afmetingspijlen of markeringen in de systeemeenheden</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
+      <source>Arrow size</source>
+      <translation>Pijl grootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="367"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
+      <source>If it is checked it will display the dimension line</source>
+      <translation>Als dit is aangevinkt, wordt de maatlijn weergegeven</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
+      <source>Show lines</source>
+      <translation>Laat lijnen zien</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <source>The distance that the dimension line is additionally extended</source>
+      <translation>De afstand die de maatlijn nog verder wordt verlengd</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <source>Dimension overshoot</source>
+      <translation>Afmetingslijnoverschrijding</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="387"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
+      <source>The length of the extension lines</source>
+      <translation>Lengte van de verlengingslijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <source>Extension lines</source>
+      <translation>Verlengingslijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
+      <source>The type of arrows or markers to use at the end of dimension lines</source>
+      <translation>Het type pijlen of markeringen dat gebruikt moet worden aan het einde van de afmetingslijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
+      <source>Arrow type</source>
+      <translation>Pijl type</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="407"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <source>The color of dimension lines, arrows and texts</source>
+      <translation>De kleur van afmetingslijnen, pijlen en teksten</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
+      <source>Line / text color</source>
+      <translation>Lijn / tekstkleur</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
+      <source>Circle</source>
+      <translation>Cirkel</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="486"/>
+      <source>Arrow</source>
+      <translation>Pijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
+      <source>Tick</source>
+      <translation>Vink</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="496"/>
+      <source>Tick-2</source>
+      <translation>Schuine streep-2</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftCircularArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
+      <source>Circular array</source>
+      <translation>Cirkelvormig patroon</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>De coördinaten van het punt waar de rotatieas doorheen gaat.
+Wijzig de richting van de as zelf in de eigenschapbewerker.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
+      <source>Center of rotation</source>
+      <translation>Middenpunt van rotatie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="69"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="83"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Herstel de coördinaten van het rotatie-middenpunt.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
+      <source>Reset point</source>
+      <translation>Herstelpunt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
+Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
+      <source>Fuse</source>
+      <translation>Samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
+Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation>Linkreeks</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="175"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
+      <source>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</source>
+      <translation>Afstand van een element in een ring van de reeks tot het volgende element in dezelfde ring.
+Het kan niet nul zijn.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="179"/>
+      <source>Tangential distance</source>
+      <translation>Tangentiële afstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="200"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="210"/>
+      <source>Distance from one layer of objects to the next layer of objects.</source>
+      <translation>Afstand van één laag van objecten tot de volgende laag van objecten.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
+      <source>Radial distance</source>
+      <translation>Radiale afstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="223"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
+      <source>The number of symmetry lines in the circular array.</source>
+      <translation>Het aantal symmetrielijnen in de cirkelvormige reeks.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="236"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
+      <source>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Aantal cirkelvormige lagen of ringen om te maken, inclusief een kopie van het originele object.
+Het moet ten minste 2 zijn.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
+      <source>Number of circular layers</source>
+      <translation>Aantal circulaire lagen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
+      <source>Symmetry</source>
+      <translation>Symmetrie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Plaats reservering voor het pictogram)</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftOrthoArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
+      <source>Orthogonal array</source>
+      <translation>Orthogonale matrix</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
+      <source>Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Afstand tussen de elementen in de Z-richting.
+Normaal gesproken is alleen de Z-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
+Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
+      <source>Z intervals</source>
+      <translation>Z intervallen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="57"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="302"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="64"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="253"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="295"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="392"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="71"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="246"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="378"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="122"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="262"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
+      <source>Reset the distances.</source>
+      <translation>Herstel de afstanden.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
+      <source>Reset Z</source>
+      <translation>Herstel Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
+Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
+      <source>Fuse</source>
+      <translation>Samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
+Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
+      <source>Link array</source>
+      <translation>Linkreeks</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Plaats reservering voor het pictogram)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
+      <source>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Afstand tussen de elementen in de X-richting.
+Normaal gesproken is alleen de X-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
+Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
+      <source>X intervals</source>
+      <translation>X intervallen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
+      <source>Reset X</source>
+      <translation>Herstel X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
+      <source>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Afstand tussen de elementen in de Y-richting.
+Normaal gesproken is alleen de Y-waarde nodig; de andere twee waarden kunnen een extra verschuiving in hun respectievelijke richtingen geven.
+Negatieve waarden zullen resulteren in kopieën in de negatieve richting.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
+      <source>Y intervals</source>
+      <translation>Y intervallen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
+      <source>Reset Y</source>
+      <translation>Herstel Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
+      <source>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</source>
+      <translation>Aantal elementen in de reeks in de opgegeven richting, inclusief een kopie van het originele object.
+Het aantal moet minimaal 1 in elke richting zijn.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
+      <source>Number of elements</source>
+      <translation>Aantal elementen</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftPolarArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
+      <source>Polar array</source>
+      <translation>Polair matrix</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>De coördinaten van het punt waar de rotatieas doorheen gaat.
+Wijzig de richting van de as zelf in de eigenschapbewerker.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
+      <source>Center of rotation</source>
+      <translation>Middenpunt van rotatie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="69"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="115"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="122"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Herstel de coördinaten van het rotatie-middenpunt.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
+      <source>Reset point</source>
+      <translation>Herstelpunt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Indien aangevinkt, worden de resulterende objecten in de reeks samengevoegd als ze elkaar aanraken.
+Dit werkt alleen als "Link array" uitgeschakeld is.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
+      <source>Fuse</source>
+      <translation>Samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Indien aangevinkt, wordt het resulterende object een "Linkreeks" in plaats van een normale reeks.
+Een linkreeks is efficiënter bij het maken van meerdere kopieën, maar kan niet samengevoegd worden.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation>Linkreeks</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="175"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
+      <source>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</source>
+      <translation>Sweephoek van de poolverdeling.
+Een negatieve hoek produceert een poolpatroon in de tegenovergestelde richting.
+De maximale absolute waarde is 360 graden.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
+      <source>Polar angle</source>
+      <translation>Pool hoek</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="208"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="219"/>
+      <source>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Aantal elementen in de reeks, inclusief een kopie van het oorspronkelijke object. 
+Het moet ten minste 2 zijn.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
+      <source>Number of elements</source>
+      <translation>Aantal elementen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Plaats reservering voor het pictogram)</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftShapeStringGui</name>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="26"/>
+      <source>ShapeString</source>
+      <translation>Tekenreeksvorm</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="46"/>
+      <location filename="../ui/TaskShapeString.ui" line="56"/>
+      <location filename="../ui/TaskShapeString.ui" line="73"/>
+      <source>Enter coordinates or select point with mouse.</source>
+      <translation>Voer de coördinaten in of selecteer het punt met de muis.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="66"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="83"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="90"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="101"/>
+      <source>Font file</source>
+      <translation>Lettertypebestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="115"/>
+      <source>Text to be made into ShapeString</source>
+      <translation>Tekst die omgezet moet worden in ShapeString</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="122"/>
+      <source>String</source>
+      <translation>Tekenreeks</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="133"/>
+      <source>Height</source>
+      <translation>Hoogte</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="140"/>
+      <source>Height of the result</source>
+      <translation>Hoogte van het resultaat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="186"/>
+      <source>Reset 3d point selection</source>
+      <translation>Herstel 3D-puntselectie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="192"/>
+      <source>Reset Point</source>
+      <translation>Herstel punt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Form</name>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="14"/>
+      <source>Working plane setup</source>
+      <translation>Instelling van het werkvlak</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="20"/>
+      <source>Select a face or working plane proxy or 3 vertices.
+Or choose one of the options below</source>
+      <translation>Selecteer een vlak of werkvlakproxy of 3 eindpunten, of kies een van de onderstaande opties</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="31"/>
+      <source>Sets the working plane to the XY plane (ground plane)</source>
+      <translation>Stelt het werkvlak in op het XY-vlak (grondvlak)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="34"/>
+      <source>Top (XY)</source>
+      <translation>Bovenkant (XY)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="41"/>
+      <source>Sets the working plane to the XZ plane (front plane)</source>
+      <translation>Stelt het werkvlak in op het XZ-vlak (voorzijde)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="44"/>
+      <source>Front (XZ)</source>
+      <translation>Voorkant (XZ)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="51"/>
+      <source>Sets the working plane to the YZ plane (side plane)</source>
+      <translation>Stelt het werkvlak in op het YZ-vlak (zijkant)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="54"/>
+      <source>Side (YZ)</source>
+      <translation>Zijkant (YZ)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="61"/>
+      <source>Sets the working plane facing the current view</source>
+      <translation>Zet het werkvlak in de richting van de huidige schermweergave</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="64"/>
+      <source>Align to view</source>
+      <translation>Uitlijnen met weergave</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="71"/>
+      <source>The working plane will align to the current
+view each time a command is started</source>
+      <translation>Het werkvlak zal uitlijnen naar de huidige
+weergave telkens wanneer een opdracht wordt gestart</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="78"/>
+      <source>Automatic</source>
+      <translation>Automatisch</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="87"/>
+      <source>An optional offset to give to the working plane
+above its base position. Use this together with one
+of the buttons above</source>
+      <translation>Een optionele verschuiving om aan het werkvlak
+bovenop zijn basispositie. Gebruik dit samen met één
+van de knoppen hierboven</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="99"/>
+      <source>Offset</source>
+      <translation>Verschuiving</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="106"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="118"/>
+      <source>If this is selected, the working plane will be
+centered on the current view when pressing one
+of the buttons above</source>
+      <translation>Als dit is geselecteerd, wordt het werkvlak
+gecentreerd op de huidige weergave wanneer op een
+van de knoppen hierboven wordt geklikt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="111"/>
+      <source>Center plane on view</source>
+      <translation>Middenvlak op zicht</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="135"/>
+      <source>Or select a single vertex to move the current
+working plane without changing its orientation.
+Then, press the button below</source>
+      <translation>Of selecteer een enkel knooppunt om het huidige
+werkvlak te verplaatsen zonder de oriëntatie aan te passen.
+Druk vervolgens op de knop hieronder</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="147"/>
+      <source>Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view</source>
+      <translation>Beweegt het werkvlak zonder de oriëntatie
+te veranderen. Als geen punt is geselecteerd, wordt het vlak
+verplaatst naar het centrum van de weergave</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="152"/>
+      <source>Move working plane</source>
+      <translation>Werkvlak verplaatsen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="161"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="171"/>
+      <source>The spacing between the smaller grid lines</source>
+      <translation>De afstand tussen de kleinere rasterlijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="164"/>
+      <source>Grid spacing</source>
+      <translation>Rasterafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="181"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="191"/>
+      <source>The number of squares between each main line of the grid</source>
+      <translation>Het aantal vierkantjes tussen elke hoofdlijn van het raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="184"/>
+      <source>Main line every</source>
+      <translation>Hoofdlijn elk</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="198"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="207"/>
+      <source>The distance at which a point can be snapped to
+when approaching the mouse. You can also change this
+value by using the [ and ] keys while drawing</source>
+      <translation>De afstand waarop een punt magnetisch uitgelijnd kan worden
+wanneer de muis nadert. U kunt deze
+waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="212"/>
+      <source>Snapping radius</source>
+      <translation>Straal van de magnetische uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation>Raster extensie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> lijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
+      <source>Centers the view on the current working plane</source>
+      <translation>Centreer de weergave op het huidige werkvlak</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
+      <source>Center view</source>
+      <translation>Centreer beeld</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
+      <source>Resets the working plane to its previous position</source>
+      <translation>Herstel het werkvlak naar de vorige positie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
+      <source>Previous</source>
+      <translation>Vorige</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
+      <source>Style settings</source>
+      <translation>Stijl instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
+      <source>Fills the values below with a stored style preset</source>
+      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
+      <source>Load preset</source>
+      <translation type="unfinished">Load preset</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
+      <source>Save current style as a preset...</source>
+      <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
+      <source>Lines and faces</source>
+      <translation>Regels en vlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="66"/>
+      <source>The color of faces</source>
+      <translation>De kleur van de vlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
+      <source>Draw style</source>
+      <translation>Tekenstijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
+      <source>Line color</source>
+      <translation>Lijnkleur</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="87"/>
+      <source>Line width</source>
+      <translation>Lijndikte</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="94"/>
+      <source>The color of lines</source>
+      <translation>Kleur van de lijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="101"/>
+      <source>The line style</source>
+      <translation>De lijnstijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
+      <source>Solid</source>
+      <translation>Volumemodel</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="110"/>
+      <source>Dashed</source>
+      <translation>Gestreept</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="115"/>
+      <source>Dotted</source>
+      <translation>Gestippeld</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="120"/>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="128"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="135"/>
+      <source>Display mode</source>
+      <translation>Weergavemodus</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="142"/>
+      <source>The display mode for faces</source>
+      <translation>De weergavemodus voor vlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="146"/>
+      <source>Flat Lines</source>
+      <translation>Platte lijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="151"/>
+      <source>Wireframe</source>
+      <translation>Draadmodel</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
+      <source>Shaded</source>
+      <translation>Schaduw</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="161"/>
+      <source>Points</source>
+      <translation>Punten</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="169"/>
+      <source>Shape color</source>
+      <translation>Vorm kleur</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="176"/>
+      <source>Transparency</source>
+      <translation>Transparantie</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
+      <source>The transparency of faces</source>
+      <translation>Transparantie van de vlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
+      <source> %</source>
+      <translation> %</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <source>Annotations</source>
+      <translation>Aantekeningen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="205"/>
+      <source>The type of dimension arrows</source>
+      <translation>De soort van maat-pijlen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="209"/>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <source>Circle</source>
+      <translation>Cirkel</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
+      <source>Arrow</source>
+      <translation>Pijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <source>Tick</source>
+      <translation>Vink</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
+      <source>Tick-2</source>
+      <translation>Schuine streep-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
+      <source>Text font</source>
+      <translation>Lettertype</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="244"/>
+      <source>Text color</source>
+      <translation>Tekst kleur</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="257"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>Het lettertype voor teksten en afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="264"/>
+      <source>Text size</source>
+      <translation>Tekstgrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
+      <source>The color of texts and dimension texts</source>
+      <translation>De kleur van teksten en dimensie teksten</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="278"/>
+      <source>The size of texts and dimension texts</source>
+      <translation>De afmetingen van teksten en dimensie teksten</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
+      <source>Arrow style</source>
+      <translation>Pijl type</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
+      <source>If the unit suffix is shown on dimension texts or not</source>
+      <translation>Als het achtervoegsel van de unit al dan niet op de maatteksten wordt weergegeven</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="308"/>
+      <source>The size of dimension arrows</source>
+      <translation>De grootte van maatpijlen</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
+      <source>Show unit</source>
+      <translation>Toon eenheid</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="325"/>
+      <source>Arrow size</source>
+      <translation>Pijl grootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="332"/>
+      <source>Unit override</source>
+      <translation>Eenheid overschrijven</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="339"/>
+      <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
+      <translation>De te gebruiken eenheid voor afmetingen. Laat leeg om de huidige FreeCAD eenheid te gebruiken</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Tekstafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation>De afstand tussen de tekst en de maatlijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Regelafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation>De afstand tussen twee regels tekst</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="382"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
+      <source>Selected</source>
+      <translation>Geselecteerd</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Vorm</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Schalen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Rotatie:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDraft</name>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="14"/>
+      <source>General settings</source>
+      <translation>Algemene instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="32"/>
+      <source>General Draft Settings</source>
+      <translation>Algemene ontwerpinstellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="40"/>
+      <source>Default working plane</source>
+      <translation>Standaard werkvlak</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="67"/>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="72"/>
+      <source>XY (Top)</source>
+      <translation>XY (Bovenkant)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="77"/>
+      <source>XZ (Front)</source>
+      <translation>XZ (voorkant)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="82"/>
+      <source>YZ (Side)</source>
+      <translation>YZ (zijkant)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="94"/>
+      <source>Internal precision level</source>
+      <translation>Interne precisie-niveau</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="120"/>
+      <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
+      <translation>Het aantal decimalen in interne coördinatenoperaties (bijv. 3 = 0,001). Waarden tussen 6 en 8 worden meestal beschouwd als de beste uitruil onder FreeCAD gebruikers.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="143"/>
+      <source>Tolerance</source>
+      <translation>Tolerantie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="169"/>
+      <source>This is the value used by functions that use a tolerance.
+Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
+      <translation>Dit is de waarde die gebruikt wordt door functies die een tolerantie gebruiken.
+Waarden met verschillen onder deze waarde zullen als dezelfde behandeld worden. Deze waarde zal binnenkort verouderd worden zodat het nauwkeurigheidsniveau hierboven beide controleert.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="194"/>
+      <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
+      <translation>Als deze optie aangevinkt is, zal de uitklaplijst met lagen ook groepen tonen, waardoor u ook objecten automatisch aan groepen kunt toevoegen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="197"/>
+      <source>Show groups in layers list drop-down button</source>
+      <translation>Toon groepen in de uitklapknop van de lagenlijst</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="216"/>
+      <source>Draft tools options</source>
+      <translation>Opties voor ontwerpgereedschappen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="230"/>
+      <source>When drawing lines, set focus on Length instead of X coordinate.
+This allows to point the direction and type the distance.</source>
+      <translation>Bij het tekenen van lijnen, focus instellen op Lengte in plaats van X-coördinaat.
+Dit maakt het mogelijk om de richting te wijzen en de afstand in te typen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="234"/>
+      <source>Set focus on Length instead of X coordinate</source>
+      <translation>Stel de focus in op de lengte in plaats van X-coördinaat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="247"/>
+      <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
+      <translation>Indien deze optie ingesteld is, bij het maken van schetsobjecten bovenop een bestaand vlak van een ander object, zal de "Ondersteuningseigenschap" van het schetsobject ingesteld worden op het basisobject. Dit was het standaardgedrag voor FreeCAD 0.19</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="250"/>
+      <source>Set the Support property when possible</source>
+      <translation>Stel de ondersteuningseigenschappen in indien mogelijk</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <source>If this is checked, objects will appear as filled by default.
+Otherwise, they will appear as wireframe</source>
+      <translation>Als u dit selectievakje aanvinkt, verschijnen de objecten als standaard gevuld. 
+Anders verschijnen ze als draadmodel</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="267"/>
+      <source>Fill objects with faces whenever possible</source>
+      <translation>Vul, waar mogelijk, de objecten op met vlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="283"/>
+      <source>Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</source>
+      <translation>Normaal gesproken worden na het kopiëren van objecten de kopieën geselecteerd.
+Als deze optie aangevinkt is, worden de basisobjecten geselecteerd.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="287"/>
+      <source>Select base objects after copying</source>
+      <translation>Selecteer basisobjecten na het kopiëren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="300"/>
+      <source>If this is checked, copy mode will be kept across command,
+otherwise commands will always start in no-copy mode</source>
+      <translation>Als u dit selectievakje aanvinkt, zal de kopieermodus over de commando's worden bewaard.
+Anders zullen de commando's altijd beginnen in geen kopie-modus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="304"/>
+      <source>Global copy mode</source>
+      <translation>Globale kopieermodus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="320"/>
+      <source>Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
+      <translation>Dwing ontwerpgereedschappen af om deelbasisvormen te maken in plaats van schetsobjecten.
+Let op dat dit niet volledig ondersteund wordt en veel objecten niet bewerkt kunnen worden met schetswijzigers.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="324"/>
+      <source>Use Part Primitives when available</source>
+      <translation>Gebruik deelbasisvormen indien beschikbaar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="341"/>
+      <source>Prefix labels of Clones with:</source>
+      <translation>Voorvoegsellabels van klonen met:</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="372"/>
+      <source>Construction Geometry</source>
+      <translation>Bouwgeometrie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="380"/>
+      <source>Construction group name</source>
+      <translation>Bouwgroepsnaam</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="387"/>
+      <source>This is the default group name for construction geometry</source>
+      <translation>Dit is de standaard groepsnaam voor de constructie geometrie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="390"/>
+      <source>Construction</source>
+      <translation>Constructie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="407"/>
+      <source>Construction geometry color</source>
+      <translation>Kleur van de bouwgeometrie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="427"/>
+      <source>This is the default color for objects being drawn while in construction mode.</source>
+      <translation>Dit is de gekozen kleur voor objecten getekend in constructie-modus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="14"/>
+      <source>Visual settings</source>
+      <translation>Visuele instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="26"/>
+      <source>Visual Settings</source>
+      <translation>Visuele instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="34"/>
+      <source>Snap symbols style</source>
+      <translation>Stijl van de uitlijnsymbolen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="54"/>
+      <source>Draft classic style</source>
+      <translation>Klassieke schetsstijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="59"/>
+      <source>Bitsnpieces style</source>
+      <translation>Flardenstijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="80"/>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="87"/>
+      <source>The default color for snap symbols</source>
+      <translation>De standaardkleur voor uitlijnsymbolen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="111"/>
+      <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
+      <translation>Vink dit aan als u de kleur/lijnbreedte van de werkbalk standaard wilt gebruiken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="114"/>
+      <source>Save current color and linewidth across sessions</source>
+      <translation>Sla de huidige kleur en lijnbreedte op voor alle sessies</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="131"/>
+      <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
+      <translation>Indien aangevinkt verschijnt tijdens het tekenen een widget die de huidige werkvlakoriëntatie aangeeft</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="134"/>
+      <source>Show Working Plane tracker</source>
+      <translation>Toon werkbalktracker</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="151"/>
+      <source>Default template sheet</source>
+      <translation>Standaard sjabloonvel</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="177"/>
+      <source>The default template to use when creating a new drawing sheet</source>
+      <translation>De standaardsjabloon om te gebruiken bij het maken van een nieuwe tekenplaat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="194"/>
+      <source>Alternate SVG patterns location</source>
+      <translation type="unfinished">Alternate SVG patterns location</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="220"/>
+      <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
+      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="237"/>
+      <source>SVG pattern resolution</source>
+      <translation type="unfinished">SVG pattern resolution</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation>De resolutie om patronen in te tekenen. Standaardwaarde is 128. Hogere waarden geven betere resoluties, lagere waarden maken sneller tekenen mogelijk</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>SVG pattern default size</source>
+      <translation type="unfinished">SVG pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size for SVG patterns</source>
+      <translation type="unfinished">The default size for SVG patterns</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
+      <translation>Vink dit aan als u de kleuren van de vlakken wilt behouden tijdens het downgraden en upgraden (alleen splitFaces en makeShell)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
+      <source>Preserve colors of faces during downgrade/upgrade</source>
+      <translation>Behoud de kleuren van de vlakken tijdens het downgraden/upgraden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
+      <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
+      <translation>Vink dit aan als u wilt dat de vlaknamen afgeleid worden van de oorspronkelijke objectnaam en andersom terwijl u downgradet/upgradet (alleen splitFaces en makeShell)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <source>Preserve names of faces during downgrade/upgrade</source>
+      <translation>Behoud de namen van de vlakken tijdens het downgraden/upgraden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
+      <source>Drawing view line definitions</source>
+      <translation>Kijklijndefinities tekenen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
+      <source>Dashed line definition</source>
+      <translation>Streepjeslijndefinitie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="395"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="438"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
+      <source>An SVG linestyle definition</source>
+      <translation>Een SVG-lijnstijldefinitie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
+      <source>0.09,0.05</source>
+      <translation>0.09,0.05</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
+      <source>Dashdot line definition</source>
+      <translation>Streepstiplijndefinitie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
+      <source>0.09,0.05,0.02,0.05</source>
+      <translation>0.09,0.05,0.02,0.05</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
+      <source>Dotted line definition</source>
+      <translation>Stippelijndefinitie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
+      <source>0.02,0.02</source>
+      <translation>0.02,0.02</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <source>Texts and dimensions</source>
+      <translation>Teksten en afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
+      <source>Text settings</source>
+      <translation>Tekstinstellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="34"/>
+      <source>Font family</source>
+      <translation>Lettertypefamilie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="47"/>
+      <source>This is the default font name for all Draft texts and dimensions.
+It can be a font name such as "Arial", a default style such as "sans", "serif"
+or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
+such as "Arial:Bold"</source>
+      <translation>Dit is de standaard naam van het lettertype voor alle Draft teksten en afmetingen. Het kan een font naam zijn, zoals "Arial", een standaard stijl, zoals "sans", "serif" of "mono", of een familie, zoals "Arial, Helvetica, sans" of een naam met een stijl zoals "Arial: Bold"</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="59"/>
+      <source>Internal font</source>
+      <translation>Intern lettertype</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="76"/>
+      <source>Font size</source>
+      <translation>Lettergrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="89"/>
+      <source>Default height for texts and dimensions</source>
+      <translation>Standaardhoogte voor teksten en afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="116"/>
+      <source>Dimension settings</source>
+      <translation>Afmetingsinstellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="124"/>
+      <source>Display mode</source>
+      <translation>Weergavemodus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="144"/>
+      <source>text above (2D)</source>
+      <translation>tekst bovenaan (2D)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="149"/>
+      <source> text inside (3D)</source>
+      <translation> tekst binnen (3D)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="161"/>
+      <source>Number of decimals</source>
+      <translation>Aantal decimalen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
+      <source>Extension lines size</source>
+      <translation>Verlengingslijngrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="208"/>
+      <source>The default size of dimensions extension lines</source>
+      <translation>De standaardgrootte van verlengingslijnen voor de afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <source>Extension line overshoot</source>
+      <translation>Extensielijnoverschrijding</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="244"/>
+      <source>The default length of extension line above dimension line</source>
+      <translation>De standaardlengte van de verlengingslijn boven de afmetingslijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <source>Dimension line overshoot</source>
+      <translation>Afmetingslijnoverschrijding</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <source>The default distance the dimension line is extended past extension lines</source>
+      <translation>De standaardafstand waar de afmetingslijn voorbij de verlengingslijnen verlengd is</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="309"/>
+      <source>Arrows style</source>
+      <translation>Pijltype</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
+      <source>Circle</source>
+      <translation>Cirkel</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
+      <source>Arrow</source>
+      <translation>Pijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
+      <source>Tick</source>
+      <translation>Vink</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="343"/>
+      <source>Tick-2</source>
+      <translation>Schuine streep-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="355"/>
+      <source>Arrows size</source>
+      <translation>Pijlgrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="362"/>
+      <source>The default size of arrows</source>
+      <translation>De standaardgrootte van pijlen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
+      <source>Text orientation</source>
+      <translation>Tekstoriëntatie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="395"/>
+      <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
+      <translation>Dit is de plaats van de dimensie-teksten wanneer deze dimensies verticaal staan. Standaard is links, dat is de ISO-norm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="405"/>
+      <source>Left (ISO standard)</source>
+      <translation>Links (ISO-norm)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
+      <source>Right</source>
+      <translation>Rechts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="422"/>
+      <source>Text spacing</source>
+      <translation>Tekstafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="429"/>
+      <source>The space between the dimension line and the dimension text</source>
+      <translation>De afstand tussen de afmetingslijn en de afmetingstekst</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="455"/>
+      <source>Show the unit suffix in dimensions</source>
+      <translation>Toon het eenheidachtervoegsel in de afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation>Eenheid overschrijven</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation>Door dit veld leeg te laten, worden de afmetingen weergegeven in de huidige eenheid die is gedefinieerd in FreeCAD. Door hier een eenheid zoals m of cm aan te geven, kun je de nieuwe afmetingen in die eenheid afdwingen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
+      <source>ShapeString settings</source>
+      <translation>ShapeString-instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <source>Default ShapeString font file</source>
+      <translation>Standaard ShapeString-lettertypebestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
+      <source>Select a font file</source>
+      <translation>Kies een lettertypebestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="14"/>
+      <source>SVG</source>
+      <translation>SVG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="40"/>
+      <source>Import style</source>
+      <translation>Import stijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="47"/>
+      <source>Method chosen for importing SVG object color to FreeCAD</source>
+      <translation>Methode gekozen voor het importeren van SVG-objectkleur naar FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="60"/>
+      <source>None (fastest)</source>
+      <translation>Geen (snelste)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="65"/>
+      <source>Use default color and linewidth</source>
+      <translation>Gebruik standaard kleur en lijndikte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="70"/>
+      <source>Original color and linewidth</source>
+      <translation>Originele kleur en lijndikte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="82"/>
+      <source>If checked, no units conversion will occur.
+One unit in the SVG file will translate as one millimeter. </source>
+      <translation>Indien aangevinkt, zal er geen eenheidsconversie plaatsvinden.
+Een eenheid in het SVG-bestand vertaalt zich als een millimeter. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="86"/>
+      <source>Disable units scaling</source>
+      <translation>Schakel eenheidsschalen uit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="121"/>
+      <source>Export style</source>
+      <translation>Exportstijl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="128"/>
+      <source>Style of SVG file to write when exporting a sketch</source>
+      <translation>Stijl van SVG-bestand om te schrijven bij het exporteren van een schets</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="141"/>
+      <source>Translated (for print &amp; display)</source>
+      <translation>Vertaald (voor publicatie en weergave)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="146"/>
+      <source>Raw (for CAM)</source>
+      <translation>Ruw (voor CAM)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="158"/>
+      <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
+      <translation>Alle witte lijnen zullen in de SVG in het zwart verschijnen voor een betere leesbaarheid tegen witte achtergronden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="161"/>
+      <source>Translate white line color to black</source>
+      <translation>Vertaal witte lijnkleur naar zwart</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="181"/>
+      <source>Max segment length for discretized arcs</source>
+      <translation>Max. Segmentlengte voor gediscretiseerde bogen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="204"/>
+      <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
+In this case arcs will be discretized into small line segments.
+This value is the maximum segment length. </source>
+      <translation>Versies van Open CASCADE ouder dan versie 6.8 ondersteunen geen boogprojectie.
+In dit geval zullen bogen gediscretiseerd worden in kleine lijnsegmenten.
+Deze waarde is de maximale segmentlengte. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="14"/>
+      <source>OCA</source>
+      <translation>OCA</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="46"/>
+      <source>Check this if you want the areas (3D faces) to be imported too.</source>
+      <translation>Schakel dit als u wilt de gebieden (3D oppervlakken) te importeren.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="49"/>
+      <source>Import OCA areas</source>
+      <translation>OCA gebieden importeren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="14"/>
+      <source>DXF</source>
+      <translation>DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
+      <translation>Deze voorkeurendialoogvenster wordt getoond bij het importeren/exporteren van DXF-bestanden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation>Toon dit dialoogvenster bij het importeren en exporteren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="51"/>
+      <source>Python importer is used, otherwise the newer C++ is used.
+Note: C++ importer is faster, but is not as featureful yet</source>
+      <translation>Pythonimporter wordt gebruikt, anders wordt de nieuwere C++ gebruikt.
+Opmerking: C++ importer is sneller, maar is nog niet even functioneel</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="55"/>
+      <source>Use legacy python importer</source>
+      <translation>Gebruik het legacy python-importeerprogramma</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="75"/>
+      <source>Use legacy python exporter</source>
+      <translation>Gebruik het legacy python-exporteerprogramma</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="88"/>
+      <source>Automatic update (legacy importer only)</source>
+      <translation>Automatische update (alleen oud importeerprogramma)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="96"/>
+      <source>Allow FreeCAD to download the Python converter for DXF import and export.
+You can also do this manually by installing the "dxf_library" workbench
+from the Addon Manager.</source>
+      <translation>Sta FreeCAD toe om de Pythonconverter te downloaden voor DXF-import en -export.
+U kunt dit ook handmatig doen door de "dxf_library" werkbank
+te installeren vanuit de Uitbreidingsmanager.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="101"/>
+      <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
+      <translation>Sta FreeCAD toe om de DXF-bibliotheken automatisch te downloaden en bij te werken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
+      <source>Import options</source>
+      <translation>Importeeropties</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="140"/>
+      <source>Note: Not all the options below are used by the new importer yet</source>
+      <translation>Opmerking: niet alle onderstaande opties worden door het nieuwe importeerprogramma al gebruikt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="149"/>
+      <source>Import</source>
+      <translation>Importeren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="156"/>
+      <source>If unchecked, texts and mtexts won't be imported</source>
+      <translation>Als dit niet aangevinkt is, zullen de teksten en mteksten niet geïmporteerd worden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="159"/>
+      <source>texts and dimensions</source>
+      <translation>teksten en afmetingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="172"/>
+      <source>If unchecked, points won't be imported</source>
+      <translation>Als dit niet aangevinkt is, zullen de punten niet geïmporteerd worden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="175"/>
+      <source>points</source>
+      <translation>punten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="188"/>
+      <source>If checked, paper space objects will be imported too</source>
+      <translation>Als dit aangevinkt is, zullen de papieren ruimteobjecten ook geïmporteerd worden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="191"/>
+      <source>layouts</source>
+      <translation>lay-outs</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="204"/>
+      <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
+      <translation>Als u wilt dat de niet genoemde blokken (beginnend met een *) ook worden geïmporteerd</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="207"/>
+      <source>*blocks</source>
+      <translation>*blokken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="224"/>
+      <source>Create</source>
+      <translation>Aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="231"/>
+      <source>Only standard Part objects will be created (fastest)</source>
+      <translation>Alleen standaard deelobjecten worden aangemaakt (snelste)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="234"/>
+      <source>simple Part shapes</source>
+      <translation>eenvoudige deelvormen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="250"/>
+      <source>Parametric Draft objects will be created whenever possible</source>
+      <translation>Parametrische schetsobjecten worden waar mogelijk aangemaakt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="253"/>
+      <source>Draft objects</source>
+      <translation>Schetsobjecten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="266"/>
+      <source>Sketches will be created whenever possible</source>
+      <translation>Schetsen worden waar mogelijk gemaakt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="269"/>
+      <source>Sketches</source>
+      <translation>Schetsen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <source>Scale factor to apply to imported files</source>
+      <translation>Toe te passen schaalfactor op geïmporteerde bestanden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <source>Scale factor to apply to DXF files on import.
+The factor is the conversion between the unit of your DXF file and millimeters.
+Example: for files in millimeters: 1, in centimeters: 10,
+                             in meters: 1000, in inches: 25.4, in feet: 304.8</source>
+      <translation>Schaalfactor die toegepast moet worden op DXF-bestanden bij het importeren.
+De factor is de conversie tussen de eenheid van uw DXF-bestand en millimeters.
+Bijv: voor bestanden in millimeters: 1, in centimeters: 10, 
+                             in meters: 1000, in duimen: 25,4, in voeten: 304,8</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="338"/>
+      <source>Colors will be retrieved from the DXF objects whenever possible.
+Otherwise default colors will be applied. </source>
+      <translation>Kleuren worden waar mogelijk uit de DXF-objecten opgehaald.
+Anders worden standaardkleuren toegepast. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="342"/>
+      <source>Get original colors from the DXF file</source>
+      <translation>De originele kleuren uit het DXF-bestand verkrijgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="359"/>
+      <source>FreeCAD will try to join coincident objects into wires.
+Note that this can take a while!</source>
+      <translation>FreeCAD zal proberen samenvallende objecten samen te voegen tot draden. 
+Pas op, dit kan een tijdje duren!</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="363"/>
+      <source>Join geometry</source>
+      <translation>Geometrie koppelen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="380"/>
+      <source>Objects from the same layers will be joined into Draft Blocks,
+turning the display faster, but making them less easily editable </source>
+      <translation>Objecten van dezelfde lagen zullen samengevoegd worden in ontwerpblokken,
+zetten het scherm sneller, maar maken ze minder makkelijk te bewerken </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="384"/>
+      <source>Group layers into blocks</source>
+      <translation>Lagen groeperen in blokken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="401"/>
+      <source>Imported texts will get the standard Draft Text size,
+instead of the size they have in the DXF document</source>
+      <translation>Geïmporteerde teksten krijgen de standaard ontwerptekstgrootte,
+in plaats van de grootte die ze hebben in het DXF-document</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="405"/>
+      <source>Use standard font size for texts</source>
+      <translation>Standaardlettergrootte gebruiken voor teksten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
+      <source>If this is checked, DXF layers will be imported as Draft Layers</source>
+      <translation>Als u dit selectievakje aanvinkt, worden de DXF-lagen als ontwerplagen geïmporteerd</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="425"/>
+      <source>Use Layers</source>
+      <translation>Lagen gebruiken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="445"/>
+      <source>Hatches will be converted into simple wires</source>
+      <translation>Arceringen worden omgezet in eenvoudige draden</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <source>Import hatch boundaries as wires</source>
+      <translation>Arceergrenzen als draden importeren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
+      <source>If polylines have a width defined, they will be rendered
+as closed wires with correct width</source>
+      <translation>Als polylijnen een gedefinieerde breedte hebben, zullen ze
+worden weergegeven als gesloten draden met de juiste breedte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="469"/>
+      <source>Render polylines with width</source>
+      <translation>Geef polylijnen met breedte weer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="486"/>
+      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
+      <translation>Het exporteren van ellipsen wordt slecht ondersteund. Gebruik dit om ze als polylijnen te exporteren.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="489"/>
+      <source>Treat ellipses and splines as polylines</source>
+      <translation>Behandel ellipsen en splines als polylijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="518"/>
+      <source>Max Spline Segment:</source>
+      <translation>Max. Splinesegment:</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="528"/>
+      <source>Maximum length of each of the polyline segments.
+If it is set to '0' the whole spline is treated as a straight segment.</source>
+      <translation>Maximale lengte van elk polylijnsegmenten.
+Als het is ingesteld op '0' wordt de hele spline behandeld als een recht segment.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="559"/>
+      <location filename="../ui/preferences-svg.ui" line="107"/>
+      <source>Export options</source>
+      <translation>Exportopties</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="567"/>
+      <source>All objects containing faces will be exported as 3D polyfaces</source>
+      <translation>Alle objecten met vlakken worden geëxporteerd als 3D-veelvlakken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="570"/>
+      <source>Export 3D objects as polyface meshes</source>
+      <translation>3D-objecten exporteren als polyface netten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="587"/>
+      <source>Drawing Views will be exported as blocks.
+This might fail for post DXF R12 templates.</source>
+      <translation>Tekenweergaven worden geëxporteerd als blokken.
+Dit kan mislukken voor post DXF R12-sjablonen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="591"/>
+      <source>Export Drawing Views as blocks</source>
+      <translation>Tekenweergaven als blokken exporteren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="611"/>
+      <source>Exported objects will be projected to reflect the current view direction</source>
+      <translation>Geëxporteerde objecten zullen worden geprojecteerd om de huidige weergaverichting weer te geven</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <source>Project exported objects along current view direction</source>
+      <translation>Projecteer de geëxporteerde objecten langs de huidige kijkrichting</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="14"/>
+      <source>Grid and snapping</source>
+      <translation>Raster en magnetisch uitlijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="26"/>
+      <source>Snapping</source>
+      <translation>Magnetisch uitlijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="34"/>
+      <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
+      <translation>Als u dit selectievakje aanvinkt, wordt het magnetisch uitlijnen geactiveerd zonder dat u op de uitlijnmodustoets hoeft te drukken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="37"/>
+      <source>Always snap (disable snap mod)</source>
+      <translation>Altijd uitlijnen (schakel de uitlijnmodus uit)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="57"/>
+      <source>Constrain mod</source>
+      <translation>Beperken modus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="77"/>
+      <source>The Constraining modifier key</source>
+      <translation>De Beperken wijzigingstoets</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="87"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="142"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="197"/>
+      <source>Shift</source>
+      <translation>Shift</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="92"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="147"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="202"/>
+      <source>Ctrl</source>
+      <translation>Ctrl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="97"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="152"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="207"/>
+      <source>Alt</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="109"/>
+      <source>Snap mod</source>
+      <translation>Uitlijn modus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="129"/>
+      <source>The snap modifier key</source>
+      <translation>De uitlijn-wijzigingstoets</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="164"/>
+      <source>Alt mod</source>
+      <translation>ALT modus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="184"/>
+      <source>The Alt modifier key</source>
+      <translation>De Alt-wijzigingstoets</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="219"/>
+      <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
+      <translation>Indien aangevinkt, de module werkbalk toond wanneer u het magnetisch uitlijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="222"/>
+      <source>Show Draft Snap toolbar</source>
+      <translation>Toon Draft uitlijn werkbalk</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="242"/>
+      <source>Hide Draft snap toolbar after use</source>
+      <translation>Verberg de Draft uitlijn werkbalk na gebruik</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="263"/>
+      <source>Grid</source>
+      <translation>Raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="269"/>
+      <source>If checked, a grid will appear when drawing</source>
+      <translation>Indien aangevinkt, zal een raster worden weergegeven bij het tekenen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="272"/>
+      <source>Use grid</source>
+      <translation>Gebruik raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="291"/>
+      <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
+      <translation>Indien aangevinkt, zal het schetsraster altijd zichtbaar zijn wanneer de schetswerkbank actief is. Anders alleen bij gebruik van een commando</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="294"/>
+      <source>Always show the grid</source>
+      <translation>Altijd de raster tonen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="310"/>
+      <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
+      <translation>Indien aangevinkt, wordt er een extra rand weergegeven rond het raster, waarbij het hoofdformaat van het vierkant in de linkeronderrand wordt getoond</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="313"/>
+      <source>Show grid border</source>
+      <translation>Rasterrand weergeven</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="329"/>
+      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
+      <translation>Indien ingesteld, zal het raster zijn twee hoofdassen in rood, groen of blauw hebben als ze overeenkomen met globale assen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <source>Use colored axes</source>
+      <translation>Gebruik gekleurde assen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="353"/>
+      <source>Main lines every</source>
+      <translation>Hoofdlijnen elke</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="376"/>
+      <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
+      <translation>Hoofdlijnen worden dikker getrokken. Geef hier aan hoeveel ruitjes tussen de hoofdlijnen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="402"/>
+      <source>Grid spacing</source>
+      <translation>Rasterafstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
+      <source>The spacing between each grid line</source>
+      <translation>De afstand tussen elke rasterlijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="431"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="92"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="211"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="247"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="283"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="365"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-dxf.ui" line="535"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
+      <source>Grid size</source>
+      <translation>Rastergrootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="477"/>
+      <source>The number of horizontal or vertical lines of the grid</source>
+      <translation>Het aantal horizontale of verticale lijnen van het raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
+      <source> lines</source>
+      <translation> lijnen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <source>Grid color and transparency</source>
+      <translation>Rasterkleur en transparantie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="526"/>
+      <source>The color of the grid</source>
+      <translation>De kleur van het raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="546"/>
+      <source>The overall transparency of the grid</source>
+      <translation>De algehele transparantie van het raster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="567"/>
+      <source>Draft Edit preferences</source>
+      <translation>Schetsbewerkingsvoorkeuren</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="570"/>
+      <source>Edit</source>
+      <translation>Bewerken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="584"/>
+      <source>Maximum number of contemporary edited objects</source>
+      <translation>Maximaal aantal actuele bewerkte objecten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="607"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stelt het maximale aantal objecten in voor Schetsbewerking&lt;/p&gt;&lt;p&gt;kan tegelijkertijd verwerken&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="645"/>
+      <source>Draft edit pick radius</source>
+      <translation>Straalkeuze voor de schetsbewerking</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="668"/>
+      <source>Controls pick radius of edit nodes</source>
+      <translation>Bepaalt de straalkeuze van knooppuntbewerking</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="14"/>
+      <source>DWG</source>
+      <translation>DWG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="26"/>
+      <source>DWG conversion</source>
+      <translation>DWG conversie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="34"/>
+      <source>Path to ODA file converter</source>
+      <translation>Pad naar ODA-bestandsconverter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="41"/>
+      <source>The path to your ODA (formerly Teigha) File Converter executable</source>
+      <translation>Het pad naar uw uitvoerbare ODA-bestandsconverter (voorheen Teigha)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="56"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opmerking:&lt;/span&gt; DXF-opties zijn ook van toepassing op de DWG-bestanden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="14"/>
+      <source>User interface settings</source>
+      <translation>Gebruikersinterface instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="26"/>
+      <source>In-Command Shortcuts</source>
+      <translation>Commandosnelkoppelingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="52"/>
+      <source>`</source>
+      <translation>`</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="89"/>
+      <source>S</source>
+      <translation>S</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="111"/>
+      <source>Close</source>
+      <translation>Sluiten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="118"/>
+      <source>Relative</source>
+      <translation>Relatief</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="140"/>
+      <source>R</source>
+      <translation>R</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="177"/>
+      <source>O</source>
+      <translation>O</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="214"/>
+      <source>T</source>
+      <translation>T</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="236"/>
+      <source>Continue</source>
+      <translation>Doorgaan</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="243"/>
+      <source>Copy</source>
+      <translation>Kopie</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="250"/>
+      <source>Increase Radius</source>
+      <translation>Straal vergroten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="257"/>
+      <source>Cycle Snap</source>
+      <translation>Cyclisch vastklikken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="279"/>
+      <source>[</source>
+      <translation>[</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="316"/>
+      <source>]</source>
+      <translation>]</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="338"/>
+      <source>Snap</source>
+      <translation>Vastklikken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="345"/>
+      <source>Decrease Radius</source>
+      <translation>Straal verkleinen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="352"/>
+      <source>Length</source>
+      <translation>Lengte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="359"/>
+      <source>Wipe</source>
+      <translation>Wissen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="381"/>
+      <source>D</source>
+      <translation>D</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="403"/>
+      <source>Add Hold</source>
+      <translation>Voeg een hulppunt toe</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="425"/>
+      <source>L</source>
+      <translation>L</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="447"/>
+      <source>Exit</source>
+      <translation>Afsluiten</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="469"/>
+      <source>P</source>
+      <translation>P</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="491"/>
+      <source>Fill</source>
+      <translation>Vullen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="498"/>
+      <source>Subelement Mode</source>
+      <translation>Subelementmodus</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="520"/>
+      <source>E</source>
+      <translation>E</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="557"/>
+      <source>H</source>
+      <translation>H</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="579"/>
+      <source>Select Edge</source>
+      <translation>Selecteer rand</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="601"/>
+      <source>W</source>
+      <translation>W</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="638"/>
+      <source>A</source>
+      <translation>A</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="675"/>
+      <source>Q</source>
+      <translation>Q</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="697"/>
+      <source>Set WP</source>
+      <translation>WV instellen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="719"/>
+      <source>U</source>
+      <translation>U</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="741"/>
+      <source>Restrict X</source>
+      <translation>X beperken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="763"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="785"/>
+      <source>Restrict Y</source>
+      <translation>Y beperken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="807"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="829"/>
+      <source>Restrict Z</source>
+      <translation>Z beperken</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="851"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="873"/>
+      <source>Global</source>
+      <translation>Overal</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="895"/>
+      <source>G</source>
+      <translation type="unfinished">G</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="928"/>
+      <source>Enable draft statusbar customization</source>
+      <translation>Aanpassing van de schetsstatusbalk inschakelen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="931"/>
+      <source>Draft Statusbar</source>
+      <translation>Schetsstatusbalk</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="951"/>
+      <source>Enable snap statusbar widget</source>
+      <translation>Uitlijn-statusbalkwidget inschakelen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="954"/>
+      <source>Draft snap widget</source>
+      <translation>Draft Uitlijn widget</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="970"/>
+      <source>Enable draft statusbar annotation scale widget</source>
+      <translation>Annotatieschaalwidget in de statusbalk inschakelen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="973"/>
+      <source>Annotation scale widget</source>
+      <translation>Annotatieschaalwidget</translation>
     </message>
   </context>
 </TS>

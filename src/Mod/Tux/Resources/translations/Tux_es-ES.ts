@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>NavigationIndicator</name>
     <message>
@@ -42,6 +42,11 @@
       <location filename="NavigationIndicatorGui.py" line="70"/>
       <source>Rotation focus</source>
       <translation>Foco de rotación</translation>
+    </message>
+    <message>
+      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Botón central del ratón o la tecla H.</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="73"/>
@@ -87,11 +92,6 @@
       <location filename="NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Indefinido</translation>
-    </message>
-    <message>
-      <location filename="NavigationIndicatorGui.py" line="71"/>
-      <source>Middle mouse button or H key.</source>
-      <translation>Botón central del ratón o la tecla H.</translation>
     </message>
   </context>
 </TS>

@@ -86,17 +86,17 @@
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1692"/>
+      <location filename="../../Command.cpp" line="1699"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Additive helix</source>
       <translation type="unfinished">Additive helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation type="unfinished">Sweep a selected sketch along a helix</translation>
     </message>
@@ -104,17 +104,17 @@
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1600"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>Additive loft</source>
       <translation>Additive loft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>Loft ng napiling profile sa pamamagitan ng ibang profile sections</translation>
     </message>
@@ -122,17 +122,17 @@
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Additive pipe</source>
       <translation>Additive pipe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>Sweep ang napiling sketch along a path o sa ibang profiles</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2559"/>
       <source>Boolean operation</source>
       <translation>Boolean operation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2560"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>Boolean operation na may dalawa o higit pang bodies</translation>
     </message>
@@ -176,17 +176,17 @@
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="249"/>
+      <location filename="../../Command.cpp" line="250"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="250"/>
+      <location filename="../../Command.cpp" line="251"/>
       <source>Create a local coordinate system</source>
       <translation type="unfinished">Create a local coordinate system</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="251"/>
+      <location filename="../../Command.cpp" line="252"/>
       <source>Create a new local coordinate system</source>
       <translation type="unfinished">Create a new local coordinate system</translation>
     </message>
@@ -194,17 +194,17 @@
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1954"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1955"/>
+      <location filename="../../Command.cpp" line="1962"/>
       <source>Chamfer</source>
       <translation>Chamfer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1956"/>
+      <location filename="../../Command.cpp" line="1963"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Chamfer ang napiling edges ng isang shape</translation>
     </message>
@@ -212,17 +212,17 @@
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>Create a clone</source>
       <translation>Lumikha ng kagaya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Create a new clone</source>
       <translation>Lumikha ng bagong clone</translation>
     </message>
@@ -230,17 +230,17 @@
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="1983"/>
+      <location filename="../../Command.cpp" line="1990"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1984"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Draft</source>
       <translation>Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1985"/>
+      <location filename="../../Command.cpp" line="1992"/>
       <source>Make a draft on a face</source>
       <translation>Gumawa ng draft sa face</translation>
     </message>
@@ -266,17 +266,17 @@
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1933"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1934"/>
       <source>Fillet</source>
       <translation>Fillet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1935"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Gumawa ng fillet sa isang edge, face o body</translation>
     </message>
@@ -284,17 +284,17 @@
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1427"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Groove</source>
       <translation>Groove</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="1436"/>
       <source>Groove a selected sketch</source>
       <translation>I-Groove ang napiling sketch</translation>
     </message>
@@ -302,17 +302,17 @@
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Hole</source>
       <translation>Hole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Create a hole with the selected sketch</source>
       <translation>Lumikha ng hole sa napiling sketch</translation>
     </message>
@@ -320,17 +320,17 @@
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Create a datum line</source>
       <translation>Lumikha ng datum line</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="196"/>
       <source>Create a new datum line</source>
       <translation>Lumikha ng bagong datum line</translation>
     </message>
@@ -338,17 +338,17 @@
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2250"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2251"/>
+      <location filename="../../Command.cpp" line="2258"/>
       <source>LinearPattern</source>
       <translation>Linear Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2259"/>
       <source>Create a linear pattern feature</source>
       <translation>Lumikha ng linear pattern feature</translation>
     </message>
@@ -374,17 +374,17 @@
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2188"/>
+      <location filename="../../Command.cpp" line="2195"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2189"/>
+      <location filename="../../Command.cpp" line="2196"/>
       <source>Mirrored</source>
       <translation>Mirrored</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2190"/>
+      <location filename="../../Command.cpp" line="2197"/>
       <source>Create a mirrored feature</source>
       <translation>Lumikha ng mirrored feature</translation>
     </message>
@@ -446,17 +446,17 @@
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2435"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2429"/>
+      <location filename="../../Command.cpp" line="2436"/>
       <source>Create MultiTransform</source>
       <translation>Lumikha ng MultiTransform</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2430"/>
+      <location filename="../../Command.cpp" line="2437"/>
       <source>Create a multitransform feature</source>
       <translation>Lumikha ng isang multitransform feature</translation>
     </message>
@@ -464,17 +464,17 @@
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="489"/>
       <source>Create sketch</source>
       <translation>Lumikha ng sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
+      <location filename="../../Command.cpp" line="490"/>
       <source>Create a new sketch</source>
       <translation type="unfinished">Create a new sketch</translation>
     </message>
@@ -482,17 +482,17 @@
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1230"/>
       <source>Pad</source>
       <translation>Pad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../Command.cpp" line="1231"/>
       <source>Pad a selected sketch</source>
       <translation>Pad ng napiling sketch</translation>
     </message>
@@ -500,17 +500,17 @@
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="167"/>
       <source>Create a datum plane</source>
       <translation>Lumikha ng datum plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Create a new datum plane</source>
       <translation>Lumikha ng bagong datum plane</translation>
     </message>
@@ -518,17 +518,17 @@
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1277"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>Pocket</source>
       <translation>Pocket</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1285"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>Lumikha ng pocket sa napiling sketch</translation>
     </message>
@@ -536,17 +536,17 @@
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="221"/>
+      <location filename="../../Command.cpp" line="222"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Create a datum point</source>
       <translation>Lumikha ng datum point</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Create a new datum point</source>
       <translation>Lumikha ng bagong datum point</translation>
     </message>
@@ -554,17 +554,17 @@
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2314"/>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2322"/>
       <source>PolarPattern</source>
       <translation>PolarPattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2323"/>
       <source>Create a polar pattern feature</source>
       <translation>Lumikha ng polar pattern feature</translation>
     </message>
@@ -572,17 +572,17 @@
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolution</source>
       <translation>Revolution</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolve a selected sketch</source>
       <translation>I-revolve ang napiling sketch</translation>
     </message>
@@ -590,17 +590,17 @@
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2380"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Scaled</source>
       <translation>Scaled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2381"/>
+      <location filename="../../Command.cpp" line="2388"/>
       <source>Create a scaled feature</source>
       <translation>Lumikha ng scaled feature</translation>
     </message>
@@ -608,17 +608,17 @@
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Create a shape binder</source>
       <translation>Lumikha ng shape binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Create a new shape binder</source>
       <translation>Lumikha ng bagong shape binder</translation>
     </message>
@@ -626,13 +626,13 @@
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Create a sub-object(s) shape binder</source>
       <translation type="unfinished">Create a sub-object(s) shape binder</translation>
     </message>
@@ -640,17 +640,17 @@
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1769"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1770"/>
       <source>Subtractive helix</source>
       <translation type="unfinished">Subtractive helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1764"/>
+      <location filename="../../Command.cpp" line="1771"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
     </message>
@@ -658,17 +658,17 @@
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1643"/>
+      <location filename="../../Command.cpp" line="1650"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1651"/>
       <source>Subtractive loft</source>
       <translation>Subtractive loft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1652"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>I-Loft ang napiling profile sa pamamagitan ng iba pang mga bahagi ng profile at alisin ito mula sa body</translation>
     </message>
@@ -676,17 +676,17 @@
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Subtractive pipe</source>
       <translation>Subtractive pipe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1545"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
       <translation>I-sweep ang napiling sketch sa isang path o sa iba pang mga profile at alisin ito mula sa body</translation>
     </message>
@@ -694,17 +694,17 @@
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2047"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2048"/>
       <source>Thickness</source>
       <translation>Kapal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2042"/>
+      <location filename="../../Command.cpp" line="2049"/>
       <source>Make a thick solid</source>
       <translation>Gumawa ng makapal na solid</translation>
     </message>
@@ -712,53 +712,53 @@
   <context>
     <name>CmdPrimtiveCompAdditive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="68"/>
+      <location filename="../../CommandPrimitive.cpp" line="69"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
+      <location filename="../../CommandPrimitive.cpp" line="71"/>
       <source>Create an additive primitive</source>
       <translation>Lumikha ng isang additive primitive</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="195"/>
+      <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Box</source>
       <translation>Additive Box</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="199"/>
+      <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
       <translation>Additive Cylinder</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="203"/>
+      <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
       <translation>Additive Sphere</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="207"/>
+      <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
       <translation>Additive Cone</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="211"/>
+      <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Ellipsoid</source>
       <translation>Additive Ellipsoid</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="215"/>
+      <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Torus</source>
       <translation>Additive Torus</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="219"/>
+      <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Prism</source>
       <translation>Additive Prism</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="223"/>
+      <location filename="../../CommandPrimitive.cpp" line="227"/>
       <source>Additive Wedge</source>
       <translation>Additive Wedge</translation>
     </message>
@@ -766,53 +766,53 @@
   <context>
     <name>CmdPrimtiveCompSubtractive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="239"/>
+      <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="240"/>
-      <location filename="../../CommandPrimitive.cpp" line="241"/>
+      <location filename="../../CommandPrimitive.cpp" line="244"/>
+      <location filename="../../CommandPrimitive.cpp" line="245"/>
       <source>Create a subtractive primitive</source>
       <translation type="unfinished">Create a subtractive primitive</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="351"/>
+      <location filename="../../CommandPrimitive.cpp" line="355"/>
       <source>Subtractive Box</source>
       <translation>Subtractive Box</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="355"/>
+      <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
       <translation>Subtractive Cylinder</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="359"/>
+      <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
       <translation>Subtractive Sphere</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="363"/>
+      <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
       <translation>Subtractive Cone</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="367"/>
+      <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Ellipsoid</source>
       <translation>Subtractive Ellipsoid</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="371"/>
+      <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Torus</source>
       <translation>Subtractive Torus</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="375"/>
+      <location filename="../../CommandPrimitive.cpp" line="379"/>
       <source>Subtractive Prism</source>
       <translation>Subtractive Prism</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="379"/>
+      <location filename="../../CommandPrimitive.cpp" line="383"/>
       <source>Subtractive Wedge</source>
       <translation>Subtractive Wedge</translation>
     </message>
@@ -820,48 +820,48 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Edit ShapeBinder</source>
       <translation type="unfinished">Edit ShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Create ShapeBinder</source>
       <translation type="unfinished">Create ShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="393"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Create SubShapeBinder</source>
       <translation type="unfinished">Create SubShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="448"/>
       <source>Create Clone</source>
       <translation type="unfinished">Create Clone</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="641"/>
-      <location filename="../../Command.cpp" line="1155"/>
+      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="1159"/>
       <source>Make copy</source>
       <translation type="unfinished">Make copy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="669"/>
       <source>Create a Sketch on Face</source>
       <translation type="unfinished">Create a Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Create a new Sketch</source>
       <translation type="unfinished">Create a new Sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2477"/>
+      <location filename="../../Command.cpp" line="2484"/>
       <source>Convert to MultiTransform feature</source>
       <translation type="unfinished">Convert to MultiTransform feature</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2568"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Create Boolean</source>
       <translation type="unfinished">Create Boolean</translation>
     </message>
@@ -1034,7 +1034,7 @@
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1607"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1608"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1057,6 +1057,28 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::DlgActiveBody</name>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="14"/>
+      <source>Active Body Required</source>
+      <translation>Kailangan ang Active Body</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="20"/>
+      <source>To create a new PartDesign object, there must be an active Body object in the document.
+
+Please select a body from below, or create a new body.</source>
+      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document.
+
+Please select a body from below, or create a new body.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.ui" line="36"/>
+      <source>Create new body</source>
+      <translation type="unfinished">Create new body</translation>
     </message>
   </context>
   <context>
@@ -2294,8 +2316,8 @@ click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="30"/>
-      <location filename="../../TaskPadParameters.cpp" line="146"/>
-      <location filename="../../TaskPadParameters.cpp" line="546"/>
+      <location filename="../../TaskPadParameters.cpp" line="154"/>
+      <location filename="../../TaskPadParameters.cpp" line="708"/>
       <source>Dimension</source>
       <translation>Sukat</translation>
     </message>
@@ -2305,138 +2327,168 @@ click again to end selection</translation>
       <translation>Haba</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="60"/>
-      <source>Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <location filename="../../TaskPadParameters.ui" line="57"/>
+      <source>Direction</source>
+      <translation>Direksyon</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="64"/>
+      <location filename="../../TaskPadParameters.ui" line="65"/>
+      <source>Direction/edge:</source>
+      <translation type="unfinished">Direction/edge:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="72"/>
+      <source>Either along the sketch normal
+or select an edge as reference</source>
+      <translation type="unfinished">Either along the sketch normal
+or select an edge as reference</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="77"/>
+      <location filename="../../TaskPadParameters.cpp" line="698"/>
+      <source>Sketch normal</source>
+      <translation type="unfinished">Sketch normal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="82"/>
+      <location filename="../../TaskPadParameters.cpp" line="364"/>
+      <location filename="../../TaskPadParameters.cpp" line="699"/>
+      <source>Select reference...</source>
+      <translation type="unfinished">Select reference...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="92"/>
       <source>Use custom direction</source>
       <translation type="unfinished">Use custom direction</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="73"/>
-      <source>x</source>
-      <translation>x</translation>
+      <location filename="../../TaskPadParameters.ui" line="102"/>
+      <source>Use custom vector for pad direction, otherwise
+the sketch plane's normal vector will be used</source>
+      <translation type="unfinished">Use custom vector for pad direction, otherwise
+the sketch plane's normal vector will be used</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="80"/>
+      <location filename="../../TaskPadParameters.ui" line="115"/>
       <source>x-component of direction vector</source>
       <translation type="unfinished">x-component of direction vector</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="102"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadParameters.ui" line="109"/>
-      <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadParameters.ui" line="131"/>
+      <location filename="../../TaskPadParameters.ui" line="137"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="138"/>
+      <location filename="../../TaskPadParameters.ui" line="144"/>
+      <source>y-component of direction vector</source>
+      <translation type="unfinished">y-component of direction vector</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="166"/>
+      <source>y</source>
+      <translation>y</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="173"/>
       <source>z-component of direction vector</source>
       <translation type="unfinished">z-component of direction vector</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="166"/>
+      <location filename="../../TaskPadParameters.ui" line="198"/>
+      <source>x</source>
+      <translation>x</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.ui" line="211"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation type="unfinished">If unchecked, the length will be
 measured along the specified direction</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="170"/>
+      <location filename="../../TaskPadParameters.ui" line="215"/>
       <source>Length along sketch normal</source>
       <translation type="unfinished">Length along sketch normal</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="185"/>
+      <location filename="../../TaskPadParameters.ui" line="227"/>
       <source>Offset to face</source>
       <translation type="unfinished">Offset to face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="192"/>
+      <location filename="../../TaskPadParameters.ui" line="234"/>
       <source>Offset from face in which pad will end</source>
       <translation type="unfinished">Offset from face in which pad will end</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="207"/>
+      <location filename="../../TaskPadParameters.ui" line="249"/>
       <source>Applies length symmetrically to sketch plane</source>
       <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="210"/>
+      <location filename="../../TaskPadParameters.ui" line="252"/>
       <source>Symmetric to plane</source>
       <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="217"/>
+      <location filename="../../TaskPadParameters.ui" line="259"/>
       <source>Reverses pad direction</source>
       <translation type="unfinished">Reverses pad direction</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="220"/>
+      <location filename="../../TaskPadParameters.ui" line="262"/>
       <source>Reversed</source>
       <translation type="unfinished">Reversed</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="229"/>
+      <location filename="../../TaskPadParameters.ui" line="271"/>
       <source>2nd length</source>
       <translation>2nd na haba</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="247"/>
-      <location filename="../../TaskPadParameters.cpp" line="135"/>
-      <location filename="../../TaskPadParameters.cpp" line="569"/>
+      <location filename="../../TaskPadParameters.ui" line="289"/>
+      <location filename="../../TaskPadParameters.cpp" line="143"/>
+      <location filename="../../TaskPadParameters.cpp" line="729"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.ui" line="266"/>
+      <location filename="../../TaskPadParameters.ui" line="308"/>
       <source>Update view</source>
       <translation>I-update ang view</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="57"/>
+      <location filename="../../TaskPadParameters.cpp" line="59"/>
       <source>Pad parameters</source>
       <translation>Mga parameter ng Pad</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="64"/>
-      <location filename="../../TaskPadParameters.cpp" line="554"/>
+      <location filename="../../TaskPadParameters.cpp" line="66"/>
+      <location filename="../../TaskPadParameters.cpp" line="715"/>
       <source>No face selected</source>
       <translation>Walang face na pinili</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="147"/>
-      <location filename="../../TaskPadParameters.cpp" line="547"/>
+      <location filename="../../TaskPadParameters.cpp" line="155"/>
+      <location filename="../../TaskPadParameters.cpp" line="709"/>
       <source>To last</source>
       <translation type="unfinished">To last</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="148"/>
-      <location filename="../../TaskPadParameters.cpp" line="548"/>
+      <location filename="../../TaskPadParameters.cpp" line="156"/>
+      <location filename="../../TaskPadParameters.cpp" line="710"/>
       <source>To first</source>
       <translation>Sa una</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="149"/>
-      <location filename="../../TaskPadParameters.cpp" line="549"/>
+      <location filename="../../TaskPadParameters.cpp" line="157"/>
+      <location filename="../../TaskPadParameters.cpp" line="711"/>
       <source>Up to face</source>
       <translation>Hanggang sa face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="150"/>
-      <location filename="../../TaskPadParameters.cpp" line="550"/>
+      <location filename="../../TaskPadParameters.cpp" line="158"/>
+      <location filename="../../TaskPadParameters.cpp" line="712"/>
       <source>Two dimensions</source>
       <translation>Dalawang dimensyon</translation>
     </message>
@@ -2667,7 +2719,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="30"/>
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
-      <location filename="../../TaskPocketParameters.cpp" line="439"/>
+      <location filename="../../TaskPocketParameters.cpp" line="441"/>
       <source>Dimension</source>
       <translation>Sukat</translation>
     </message>
@@ -2699,7 +2751,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="108"/>
       <location filename="../../TaskPocketParameters.cpp" line="107"/>
-      <location filename="../../TaskPocketParameters.cpp" line="462"/>
+      <location filename="../../TaskPocketParameters.cpp" line="464"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -2715,31 +2767,31 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
-      <location filename="../../TaskPocketParameters.cpp" line="447"/>
+      <location filename="../../TaskPocketParameters.cpp" line="449"/>
       <source>No face selected</source>
       <translation>Walang face na pinili</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="120"/>
-      <location filename="../../TaskPocketParameters.cpp" line="440"/>
+      <location filename="../../TaskPocketParameters.cpp" line="442"/>
       <source>Through all</source>
       <translation>Sa pamamagitan ng lahat</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="121"/>
-      <location filename="../../TaskPocketParameters.cpp" line="441"/>
+      <location filename="../../TaskPocketParameters.cpp" line="443"/>
       <source>To first</source>
       <translation>Sa una</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="122"/>
-      <location filename="../../TaskPocketParameters.cpp" line="442"/>
+      <location filename="../../TaskPocketParameters.cpp" line="444"/>
       <source>Up to face</source>
       <translation>Hanggang sa face</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="123"/>
-      <location filename="../../TaskPocketParameters.cpp" line="443"/>
+      <location filename="../../TaskPocketParameters.cpp" line="445"/>
       <source>Two dimensions</source>
       <translation>Dalawang dimensyon</translation>
     </message>
@@ -3143,42 +3195,42 @@ click again to end selection</translation>
   <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="196"/>
+      <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
       <translation type="unfinished">Create an additive box by its width, height, and length</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="200"/>
+      <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
       <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="204"/>
+      <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
       <translation>Lumikha ng isang additive sphere sa pamamagitan ng radius at iba't ibang angles nito</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="208"/>
+      <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
       <translation>Lumikha ng isang additive cone</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="212"/>
+      <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive ellipsoid</source>
       <translation>Lumikha ng isang additive ellipsoid</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="216"/>
+      <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
       <translation>Lumikha ng isang additive torus</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="220"/>
+      <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
       <translation>Lumikha ng isang additive prism</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="224"/>
+      <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
       <translation>Lumikha ng isang additive wedge</translation>
     </message>
@@ -3186,42 +3238,42 @@ click again to end selection</translation>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="352"/>
+      <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
       <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="356"/>
+      <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
       <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="360"/>
+      <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
       <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="364"/>
+      <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
       <translation type="unfinished">Create a subtractive cone</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="368"/>
+      <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
       <translation type="unfinished">Create a subtractive ellipsoid</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="372"/>
+      <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
       <translation type="unfinished">Create a subtractive torus</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="376"/>
+      <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
       <translation type="unfinished">Create a subtractive prism</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="380"/>
+      <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
       <translation type="unfinished">Create a subtractive wedge</translation>
     </message>
@@ -3270,76 +3322,76 @@ click again to end selection</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>Invalid selection</source>
       <translation>Hindi valid ang pagpili</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Walang mga attachment modes na fit sa mga napiling object. Pumili ng iba.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="151"/>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Error</source>
       <translation>Kamalian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
       <translation>Walang active na body. Mangyaring gawing active ang body bago magpasok ng datum entity.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
       <translation type="unfinished">Sub-Shape Binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Several sub-elements selected</source>
       <translation type="unfinished">Several sub-elements selected</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="594"/>
       <source>You have to select a single face as support for a sketch!</source>
       <translation type="unfinished">You have to select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>No support face selected</source>
       <translation type="unfinished">No support face selected</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>You have to select a face as support for a sketch!</source>
       <translation type="unfinished">You have to select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="610"/>
+      <location filename="../../Command.cpp" line="614"/>
       <source>No planar support</source>
       <translation type="unfinished">No planar support</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="611"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>You need a planar face as support for a sketch!</source>
       <translation type="unfinished">You need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="796"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>No valid planes in this document</source>
       <translation>Walang valid na mga plane sa dokumentong ito</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Please create a plane first or select a face to sketch on</source>
       <translation>Mangyaring lumikha muna ng plane o pumili ng face na iguhit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="810"/>
-      <location filename="../../Command.cpp" line="1176"/>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="814"/>
+      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="2146"/>
       <location filename="../../ViewProvider.cpp" line="117"/>
       <location filename="../../ViewProviderBoolean.cpp" line="86"/>
       <location filename="../../ViewProviderDatum.cpp" line="256"/>
@@ -3350,9 +3402,9 @@ click again to end selection</translation>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="811"/>
-      <location filename="../../Command.cpp" line="1177"/>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="815"/>
+      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="2147"/>
       <location filename="../../ViewProvider.cpp" line="118"/>
       <location filename="../../ViewProviderBoolean.cpp" line="87"/>
       <location filename="../../ViewProviderDatum.cpp" line="257"/>
@@ -3363,96 +3415,96 @@ click again to end selection</translation>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1056"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1057"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1079"/>
+      <location filename="../../Command.cpp" line="1083"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
       <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1105"/>
       <source>No sketch to work on</source>
       <translation>Walang sketch na tratrabahuin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1102"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>No sketch is available in the document</source>
       <translation>Walang sketch na available sa dokumento</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1829"/>
-      <location filename="../../Command.cpp" line="1833"/>
-      <location filename="../../Command.cpp" line="1859"/>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1840"/>
+      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Wrong selection</source>
       <translation>Maling pagpili</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1837"/>
       <source>Select an edge, face, or body.</source>
       <translation type="unfinished">Select an edge, face, or body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1838"/>
-      <location filename="../../Command.cpp" line="2166"/>
+      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="2173"/>
       <source>Selection is not in Active Body</source>
       <translation>Ang napili ay wala sa Active Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1839"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>Wrong object type</source>
       <translation>Maling uri ng object</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>%1 works only on parts.</source>
       <translation>%1 gumagana lamang sa parts.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Shape of the selected Part is empty</source>
       <translation>Hugis ng napiling Part ay walang laman</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1872"/>
+      <location filename="../../Command.cpp" line="1879"/>
       <source> not possible on selected faces/edges.</source>
       <translation> hindi posible sa napiling faces/edges.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
+      <location filename="../../Command.cpp" line="2164"/>
       <source>No valid features in this document</source>
       <translation>Walang valid na mga feature sa dokumentong ito</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2158"/>
+      <location filename="../../Command.cpp" line="2165"/>
       <source>Please create a feature first.</source>
       <translation type="unfinished">Please create a feature first.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Please select only one feature in an active body.</source>
       <translation type="unfinished">Please select only one feature in an active body.</translation>
     </message>
@@ -3623,12 +3675,12 @@ Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="265"/>
+      <location filename="../../CommandPrimitive.cpp" line="269"/>
       <source>No previous feature found</source>
       <translation>Wlang dating feature ang natagpuan</translation>
     </message>
     <message>
-      <location filename="../../CommandPrimitive.cpp" line="266"/>
+      <location filename="../../CommandPrimitive.cpp" line="270"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
       <translation>Hindi posible ang paglikha ng subtractive feature ng walang base feature na magagamit</translation>
     </message>
@@ -3658,12 +3710,7 @@ Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="143"/>
-      <source>No active Body</source>
-      <translation>Walang aktibong body</translation>
-    </message>
-    <message>
-      <location filename="../../Utils.cpp" line="144"/>
+      <location filename="../../Utils.cpp" line="130"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
@@ -3672,32 +3719,32 @@ If you have a legacy document with PartDesign objects without Body, use the migr
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="159"/>
+      <location filename="../../Utils.cpp" line="177"/>
       <source>Active Body Required</source>
       <translation>Kailangan ang Active Body</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="160"/>
+      <location filename="../../Utils.cpp" line="178"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Para makalikha ng bagong PartDesign object, dapat ay mayroong active Body object na nasa document. Mangyaring gumawa ng isang active (double click) o lumikha ng bagong Body.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="200"/>
+      <location filename="../../Utils.cpp" line="213"/>
       <source>Feature is not in a body</source>
       <translation>Ang feature ay wala sa isang body</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="201"/>
+      <location filename="../../Utils.cpp" line="214"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Para magamit ang feature na ito, kailangang mapabilang ito sa isang object na nasa dokumento.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="233"/>
+      <location filename="../../Utils.cpp" line="246"/>
       <source>Feature is not in a part</source>
       <translation>Ang feature ay wala sa isang part</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="234"/>
+      <location filename="../../Utils.cpp" line="247"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Para magamit ang feature na ito, kailangang mapabilang ito sa isang part object na nasa dokumento.</translation>
     </message>
@@ -3865,6 +3912,16 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
       <translation type="unfinished">Edit helix</translation>
+    </message>
+    <message>
+      <location filename="../../DlgActiveBody.cpp" line="55"/>
+      <source>Please select</source>
+      <translation type="unfinished">Please select</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.cpp" line="362"/>
+      <source>Sketch normal</source>
+      <translation type="unfinished">Sketch normal</translation>
     </message>
   </context>
   <context>

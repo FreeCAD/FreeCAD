@@ -403,7 +403,8 @@ public:
      */
     static std::string getTempPath();
     static std::string getTempFileName(const char* FileName=0);
-    static std::string getUserConfigDir();
+    static std::string getUserCachePath();
+    static std::string getUserConfigPath();
     static std::string getUserAppDataDir();
     static std::string getUserMacroDir();
     static std::string getResourceDir();
@@ -513,11 +514,13 @@ private:
     static PyObject* sAddExportType     (PyObject *self,PyObject *args);
     static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
-    static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
-    static PyObject* sGetUserConfigDir  (PyObject *self,PyObject *args);
-    static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);
-    static PyObject* sGetUserMacroDir   (PyObject *self,PyObject *args);
-    static PyObject* sGetHelpDir        (PyObject *self,PyObject *args);
+    static PyObject* sGetResourcePath   (PyObject *self,PyObject *args);
+    static PyObject* sGetTempPath       (PyObject *self,PyObject *args);
+    static PyObject* sGetUserCachePath  (PyObject *self,PyObject *args);
+    static PyObject* sGetUserConfigPath (PyObject *self,PyObject *args);
+    static PyObject* sGetUserAppDataPath(PyObject *self,PyObject *args);
+    static PyObject* sGetUserMacroPath  (PyObject *self,PyObject *args);
+    static PyObject* sGetHelpPath       (PyObject *self,PyObject *args);
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args);

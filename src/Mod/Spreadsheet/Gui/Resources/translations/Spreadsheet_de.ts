@@ -2,6 +2,103 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Zelle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Übernehmen</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Änderungen an der aktuellen Zelle anwenden</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Löschen</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Löscht den Inhalt der aktuellen Zelle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Berechnen</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Kalkulationstabelle erstellen</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
@@ -555,6 +652,61 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
   </context>
   <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Import/Export-Einstellungen</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Trennzeichen: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Escape-Zeichen: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
@@ -629,18 +781,6 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <source>Spreadsheet</source>
       <translation>Kalkulationstabelle</translation>
-    </message>
-    <message>
-      <source>&amp;Spreadsheet</source>
-      <translation>&amp;Kalkulationstabelle</translation>
-    </message>
-    <message>
-      <source>&amp;Alignment</source>
-      <translation>&amp;Ausrichtung</translation>
-    </message>
-    <message>
-      <source>&amp;Styles</source>
-      <translation>&amp;Stile</translation>
     </message>
   </context>
 </TS>

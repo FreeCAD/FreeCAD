@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="ca" sourcelanguage="en">
+<TS version="2.1" language="ca" sourcelanguage="en">
   <context>
     <name>App::Property</name>
     <message>
@@ -127,6 +127,11 @@ Deixa aquesta propietat buida per poder especificar 'Eix' i 'Centre' manualment.
     </message>
     <message>
       <location filename="array.py" line="291"/>
+      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
+      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+    </message>
+    <message>
+      <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
       <translation>Un paràmetre que determina quants plans de simetria tindrà la matriu circular.</translation>
     </message>
@@ -193,6 +198,26 @@ Aquesta propietat és de només lectura, ja que el nombre depèn dels paràmetre
       <translation>La superfície d'aquest objecte</translation>
     </message>
     <message>
+      <location filename="pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation>L'objecte base que es duplicarà.</translation>
+    </message>
+    <message>
+      <location filename="patharray.py" line="177"/>
+      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
+      <translation>Objecte al llarg del qual es distribuiran les còpies. Ha de contenir 'Arestes'.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation>Nombre de còpies a crear.</translation>
+    </message>
+    <message>
+      <location filename="pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+    </message>
+    <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>La direcció normal del text de la dimensió</translation>
@@ -201,6 +226,23 @@ Aquesta propietat és de només lectura, ja que el nombre depèn dels paràmetre
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
       <translation>L'objecte mesurat per aquest objecte dimensió</translation>
+    </message>
+    <message>
+      <location filename="dimension.py" line="167"/>
+      <source>The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</source>
+      <translation type="unfinished">The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -515,6 +557,11 @@ subelement 'VertexN', 'ArestaN' o 'CaraN' respectivament, si s'especifiquen.</tr
       <translation>Espaiat entre caracters</translation>
     </message>
     <message>
+      <location filename="shapestring.py" line="59"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Mostra els elements individuals de la matriu</translation>
@@ -599,6 +646,45 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <translation>Fragmenta el·lipses i B-splines en segments de línia</translation>
     </message>
     <message>
+      <location filename="shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+    </message>
+    <message>
+      <location filename="shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+    </message>
+    <message>
       <location filename="ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
       <translation>Angle d'inici de l'arc el·líptic</translation>
@@ -624,6 +710,41 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
       <translation>Àrea d'aquest objecte</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="52"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="55"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma d'aquest objecte</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="58"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="61"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="64"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="67"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
@@ -654,11 +775,6 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
       <translation>Longitud d'aquest objecte</translation>
-    </message>
-    <message>
-      <location filename="patharray.py" line="177"/>
-      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation>Objecte al llarg del qual es distribuiran les còpies. Ha de contenir 'Arestes'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
@@ -913,6 +1029,15 @@ Entreu '$dim' per reemplaçar-lo per la longitud de la cota.</translation>
       <translation>Mostra el sufix de la unitat</translation>
     </message>
     <message>
+      <location filename="view_dimension.py" line="216"/>
+      <source>A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</source>
+      <translation type="unfinished">A unit to express the measurement.
+Leave blank for system default.
+Use 'arch' to force US arch notation</translation>
+    </message>
+    <message>
       <location filename="view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>Mida de la fletxa</translation>
@@ -953,6 +1078,11 @@ beyond the dimension line</source>
       <location filename="view_layer.py" line="66"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
       <translation>Si és cert, els objectes continguts a aquesta capa adoptarà el color de la línia de la capa</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="77"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1049,373 +1179,28 @@ beyond the dimension line</source>
       <source>Display a leader line or not</source>
       <translation>Mostra o amaga la línia guia</translation>
     </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="86"/>
-      <source>The base object that will be duplicated.</source>
-      <translation>L'objecte base que es duplicarà.</translation>
-    </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="100"/>
-      <source>Number of copies to create.</source>
-      <translation>Nombre de còpies a crear.</translation>
-    </message>
-    <message>
-      <location filename="pathtwistedarray.py" line="107"/>
-      <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
-    </message>
-    <message>
-      <location filename="shapestring.py" line="59"/>
-      <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
-    </message>
-    <message>
-      <location filename="view_dimension.py" line="216"/>
-      <source>A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="117"/>
-      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="98"/>
-      <source>For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="105"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="122"/>
-      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="127"/>
-      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="111"/>
-      <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
-    </message>
-    <message>
-      <location filename="shape2dview.py" line="132"/>
-      <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma d'aquest objecte</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="52"/>
-      <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="55"/>
-      <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="58"/>
-      <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="61"/>
-      <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="64"/>
-      <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="67"/>
-      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="77"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
-    </message>
-  </context>
-  <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="14"/>
-      <source>Annotation Styles Editor</source>
-      <translation>Editor d'estils d'anotació</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="20"/>
-      <source>Style name</source>
-      <translation>Nom de l'estil</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="50"/>
-      <source>Add new...</source>
-      <translation>Afegeix nou...</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="79"/>
-      <source>Renames the selected style</source>
-      <translation>Canvia el nom als elements seleccionats</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="82"/>
-      <source>Rename</source>
-      <translation>Reanomena</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="110"/>
-      <source>Deletes the selected style</source>
-      <translation>Esborra l'estil seleccionat</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="113"/>
-      <source>Delete</source>
-      <translation>Elimina</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="164"/>
-      <source>Text</source>
-      <translation>Text</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="173"/>
-      <source>Font size</source>
-      <translation>Mida del tipus de lletra</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="183"/>
-      <source>Line spacing</source>
-      <translation>Interlineat</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="193"/>
-      <source>Font name</source>
-      <translation>Nom de la font</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="212"/>
-      <source>The font to use for texts and dimensions</source>
-      <translation>Font a emprar per a textos i dimensions</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="239"/>
-      <source>Units</source>
-      <translation>Unitats</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="248"/>
-      <source>Scale multiplier</source>
-      <translation>Multiplicador d'escala</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="258"/>
-      <source>Decimals</source>
-      <translation>Decimals</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="268"/>
-      <source>Unit override</source>
-      <translation>Substitució d'unitat</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="278"/>
-      <source>Show unit</source>
-      <translation>Mostra les unitats</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="331"/>
-      <source>Line and arrows</source>
-      <translation>Línies i fletxes</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="340"/>
-      <source>Line width</source>
-      <translation>Amplada de línia</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="350"/>
-      <source>Extension overshoot</source>
-      <translation>Superació de l'extensió</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="360"/>
-      <source>Arrow size</source>
-      <translation>Mida de la fletxa</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="370"/>
-      <source>Show lines</source>
-      <translation>Mostra les línies</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="380"/>
-      <source>Dimension overshoot</source>
-      <translation>Superació de la dimensió</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="390"/>
-      <source>Extension lines</source>
-      <translation>Línies d'extensió</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="400"/>
-      <source>Arrow type</source>
-      <translation>Tipus de fletxa</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="410"/>
-      <source>Line / text color</source>
-      <translation>Línia / text color</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="433"/>
-      <source>The width of the dimension lines</source>
-      <translation>L'amplària de les línies d'acotació</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="436"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="446"/>
-      <source>The color of dimension lines, arrows and texts</source>
-      <translation>El color de les línies d'acotació, fletxes i textos</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="476"/>
-      <source>Dot</source>
-      <translation>Punt</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="486"/>
-      <source>Arrow</source>
-      <translation>Fletxa</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="491"/>
-      <source>Tick</source>
-      <translation>Tick</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="38"/>
-      <source>The name of your style. Existing style names can be edited.</source>
-      <translation>El nom del vostre estil. Els noms d'estil existent poden ser editats.</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="219"/>
-      <source>Font size in the system units</source>
-      <translation>Mida de la font en unitats del sistema</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="180"/>
-      <source>Line spacing in system units</source>
-      <translation>Espai entre línies en unitats del sistema</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="285"/>
-      <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Un factor multiplicador que afecta la mida del text i marcadors</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="305"/>
-      <source>The number of decimals to show for dimension values</source>
-      <translation>El nombre de decimals pels valors de les acotacions</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="298"/>
-      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Especifiqueu una unitat de longitud vàlida com ara mm, m, in, ft, per forçar que es mostri el valor de l'acotació en aquesta unitat</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="315"/>
-      <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Si està marcada l'opció, mostrarà la unitat al costat del valor de la cota</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="534"/>
-      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Distància a la qual les línies d'extensió s'allarguen més enllà de la línia de cota</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="504"/>
-      <source>The size of the dimension arrows or markers in system units</source>
-      <translation>Mida de les fletxes de la cota o marcadors en unitats del sistema</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="417"/>
-      <source>If it is checked it will display the dimension line</source>
-      <translation>Si està marcada l'opció, es mostrarà la línia de cota</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="514"/>
-      <source>The distance that the dimension line is additionally extended</source>
-      <translation>Distància addicional que s'extendrà la línia de cota</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="524"/>
-      <source>The length of the extension lines</source>
-      <translation>Longitud de les línies d'extensió</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="472"/>
-      <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation>Tius de fletxa o marcador que s'emprarà al final de les línies de cota</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="481"/>
-      <source>Circle</source>
-      <translation>Cercle</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="496"/>
-      <source>Tick-2</source>
-      <translation>Tick-2</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="120"/>
-      <source>Import styles from json file</source>
-      <translation>Importa els estils d'un fitxer JSON</translation>
-    </message>
-    <message>
-      <location filename="dialog_AnnotationStyleEditor.ui" line="130"/>
-      <source>Export styles to json file</source>
-      <translation>Exporta els estils a un fitxer JSON</translation>
-    </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="importDXF.py" line="129"/>
-      <source>Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</source>
-      <translation>Ha fallat la descàrrega de llibreries dxf.
-Instal·li el complement de la llibreria dxf 
-mitjançant l'opció Eines -&gt;Gestor de complements</translation>
+      <location filename="pointarray.py" line="305"/>
+      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
+      <translation>L'objecte de punt no té un punt discret, no es pot usar per a una matriu.</translation>
+    </message>
+    <message>
+      <location filename="bspline.py" line="106"/>
+      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
+      <translation>_BSpline.createGeometry: Tancada amb el mateix punt d'inici/final. No es pot actualitzar la geometria.</translation>
+    </message>
+    <message>
+      <location filename="view_wpproxy.py" line="102"/>
+      <source>Writing camera position</source>
+      <translation>Escrivint la posició de la càmera</translation>
+    </message>
+    <message>
+      <location filename="view_wpproxy.py" line="119"/>
+      <source>Writing objects shown/hidden state</source>
+      <translation>Escrivint l'estat visible/ocult dels objectes</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="145"/>
@@ -1468,36 +1253,6 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Importació-exportació</translation>
     </message>
     <message>
-      <location filename="pointarray.py" line="305"/>
-      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation>L'objecte de punt no té un punt discret, no es pot usar per a una matriu.</translation>
-    </message>
-    <message>
-      <location filename="bspline.py" line="106"/>
-      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation>_BSpline.createGeometry: Tancada amb el mateix punt d'inici/final. No es pot actualitzar la geometria.</translation>
-    </message>
-    <message>
-      <location filename="view_wpproxy.py" line="102"/>
-      <source>Writing camera position</source>
-      <translation>Escrivint la posició de la càmera</translation>
-    </message>
-    <message>
-      <location filename="view_wpproxy.py" line="119"/>
-      <source>Writing objects shown/hidden state</source>
-      <translation>Escrivint l'estat visible/ocult dels objectes</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="402"/>
-      <source>Merge layer duplicates</source>
-      <translation>Fusiona duplicats de capa</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="407"/>
-      <source>Add new layer</source>
-      <translation>Afegeix una capa</translation>
-    </message>
-    <message>
       <location filename="init_draft_statusbar.py" line="252"/>
       <source>Toggles Grid On/Off</source>
       <translation>Conmuta la quadrícula activa/inactiva</translation>
@@ -1521,6 +1276,21 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Activa o desactiva la restricció al pla de treball</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="48"/>
+      <source>Arc tools</source>
+      <translation>Eines d'arc</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="56"/>
+      <source>Bezier tools</source>
+      <translation>Eines Bézier</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Eines de taules</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="154"/>
@@ -1588,6 +1358,15 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Crear un clon</translation>
     </message>
     <message>
+      <location filename="importDXF.py" line="129"/>
+      <source>Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -&gt; Addon Manager</source>
+      <translation>Ha fallat la descàrrega de llibreries dxf.
+Instal·li el complement de la llibreria dxf 
+mitjançant l'opció Eines -&gt;Gestor de complements</translation>
+    </message>
+    <message>
       <location filename="gui_clone.py" line="91"/>
       <source>Clone</source>
       <translation>Clona</translation>
@@ -1613,6 +1392,31 @@ The array can be turned into an orthogonal or a polar array by changing its type
 La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
     </message>
     <message>
+      <location filename="gui_setstyle.py" line="273"/>
+      <source>Save style</source>
+      <translation>Desa l'estil</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="274"/>
+      <source>Name of this new style:</source>
+      <translation>Nom d'aquest nou estil:</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="281"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="282"/>
+      <source>Name exists. Overwrite?</source>
+      <translation>Aquest nom ja existeix. El vols sobreescriure?</translation>
+    </message>
+    <message>
+      <location filename="gui_setstyle.py" line="317"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation>Error: no s'ha trobat el mòdul json. Impossible salvar l'estil</translation>
+    </message>
+    <message>
       <location filename="gui_polararray.py" line="66"/>
       <source>Polar array</source>
       <translation>Matriu polar</translation>
@@ -1628,9 +1432,9 @@ The array can be turned into an orthogonal or a circular array by changing its t
 La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
     </message>
     <message>
-      <location filename="gui_arrays.py" line="65"/>
-      <source>Array tools</source>
-      <translation>Eines de taules</translation>
+      <location filename="gui_hatch.py" line="48"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
@@ -1678,440 +1482,14 @@ La matriu es pot convertir en polar o circular canviant-ne el tipus.</translatio
       <translation>No s'ha definit la direcció de desplaçament. Si us plau, moveu el ratolí a un o altre costat de l'objecte abans per indicar-ne la direcció</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="273"/>
-      <source>Save style</source>
-      <translation>Desa l'estil</translation>
+      <location filename="view_layer.py" line="402"/>
+      <source>Merge layer duplicates</source>
+      <translation>Fusiona duplicats de capa</translation>
     </message>
     <message>
-      <location filename="gui_setstyle.py" line="274"/>
-      <source>Name of this new style:</source>
-      <translation>Nom d'aquest nou estil:</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="282"/>
-      <source>Name exists. Overwrite?</source>
-      <translation>Aquest nom ja existeix. El vols sobreescriure?</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="317"/>
-      <source>Error: json module not found. Unable to save style</source>
-      <translation>Error: no s'ha trobat el mòdul json. Impossible salvar l'estil</translation>
-    </message>
-    <message>
-      <location filename="gui_setstyle.py" line="281"/>
-      <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
-    </message>
-    <message>
-      <location filename="gui_hatch.py" line="48"/>
-      <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftCircularArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="26"/>
-      <source>Circular array</source>
-      <translation>Matriu circular</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>Les coordenades del punt per on passa l’eix de rotació.
-Canvieu la direcció del propi eix a l’editor de propietats.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="61"/>
-      <source>Center of rotation</source>
-      <translation>Centre de rotació</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="69"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="76"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="83"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="131"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Reinicia les coordenades del centre de rotació.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="134"/>
-      <source>Reset point</source>
-      <translation>Reinicia el punt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="146"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
-Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="150"/>
-      <source>Fuse</source>
-      <translation>Combina</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="157"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
-Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="161"/>
-      <source>Link array</source>
-      <translation>Matriu d'enllaç</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="186"/>
-      <source>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</source>
-      <translation>Distància d'un element en un anell de la matriu a l'element següent del mateix anell.
-No pot ser zero.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="179"/>
-      <source>Tangential distance</source>
-      <translation>Distància tangencial</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="210"/>
-      <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation>Distància d'una capa dels objectes a la capa d'objectes següent.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="203"/>
-      <source>Radial distance</source>
-      <translation>Distància radial</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="261"/>
-      <source>The number of symmetry lines in the circular array.</source>
-      <translation>El nombre de línies de simetria de la matriu circular.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="250"/>
-      <source>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Nombre de capes circulars o anells que s'han de crear, inclosa una còpia de l'objecte original.
-Ha de ser pel cap baix 2.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="254"/>
-      <source>Number of circular layers</source>
-      <translation>Nombre de capes circulars</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="264"/>
-      <source>Symmetry</source>
-      <translation>Simetria</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_CircularArray.ui" line="273"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espai reservat per a la icona)</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftOrthoArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="26"/>
-      <source>Orthogonal array</source>
-      <translation>Matriu ortogonal</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="44"/>
-      <source>Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distància entre els elements en direcció Z.
-Normalment, només és necessari el valor Z; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
-Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="49"/>
-      <source>Z intervals</source>
-      <translation>Intervals en Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="385"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="392"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="378"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="353"/>
-      <source>Reset the distances.</source>
-      <translation>Tornar a establir les distàncies.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="125"/>
-      <source>Reset Z</source>
-      <translation>Reinicia Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="137"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
-Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="141"/>
-      <source>Fuse</source>
-      <translation>Combina</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="148"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
-Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="152"/>
-      <source>Link array</source>
-      <translation>Matriu d'enllaç</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="177"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espai reservat per a la icona)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="184"/>
-      <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distància entre els elements en la direcció X.
-Normalment, només és necessari el valor X; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
-Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="189"/>
-      <source>X intervals</source>
-      <translation>Intervals en X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="265"/>
-      <source>Reset X</source>
-      <translation>Reinicia X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="275"/>
-      <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distància entre els elements en direcció Y.
-Normalment, només és necessari el valor Y; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
-Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="280"/>
-      <source>Y intervals</source>
-      <translation>Intervals en Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="356"/>
-      <source>Reset Y</source>
-      <translation>Reinicia Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="366"/>
-      <source>Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</source>
-      <translation>Nombre d'elements de la matriu en la direcció especificada, inclosa una còpia de l'objecte original.
-El nombre ha de ser com a mínim 1 en cada direcció.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_OrthoArray.ui" line="370"/>
-      <source>Number of elements</source>
-      <translation>Nombre d'elements</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftPolarArrayTaskPanel</name>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="26"/>
-      <source>Polar array</source>
-      <translation>Matriu polar</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</source>
-      <translation>Les coordenades del punt per on passa l’eix de rotació.
-Canvieu la direcció del propi eix a l’editor de propietats.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="61"/>
-      <source>Center of rotation</source>
-      <translation>Centre de rotació</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="69"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="115"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="122"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="131"/>
-      <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Reinicia les coordenades del centre de rotació.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="134"/>
-      <source>Reset point</source>
-      <translation>Reinicia el punt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="146"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</source>
-      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
-Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="150"/>
-      <source>Fuse</source>
-      <translation>Combina</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="157"/>
-      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
-Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="161"/>
-      <source>Link array</source>
-      <translation>Matriu d'enllaç</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="187"/>
-      <source>Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</source>
-      <translation>Angle d'escombratge de la distribució polar.
-Un angle negatiu produeix un patró polar en la direcció oposada.
-El valor màxim absolut és de 360 graus.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="180"/>
-      <source>Polar angle</source>
-      <translation>Angle polar</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="219"/>
-      <source>Number of elements in the array, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>Nombre d'elements de la matriu, inclosa una còpia de l'objecte original. Ha de ser almenys 2.</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="212"/>
-      <source>Number of elements</source>
-      <translation>Nombre d'elements</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_PolarArray.ui" line="235"/>
-      <source>(Placeholder for the icon)</source>
-      <translation>(Espai reservat per a la icona)</translation>
-    </message>
-  </context>
-  <context>
-    <name>DraftShapeStringGui</name>
-    <message>
-      <location filename="TaskShapeString.ui" line="26"/>
-      <source>ShapeString</source>
-      <translation>Forma d'Etiqueta</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="115"/>
-      <source>Text to be made into ShapeString</source>
-      <translation>Text per a convertir en TextForma</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="122"/>
-      <source>String</source>
-      <translation>Cadena</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="133"/>
-      <source>Height</source>
-      <translation>Alçària</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="140"/>
-      <source>Height of the result</source>
-      <translation>Alçada del resultat</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="66"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="83"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="90"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="101"/>
-      <source>Font file</source>
-      <translation>Fitxer de tipus de lletra</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="73"/>
-      <source>Enter coordinates or select point with mouse.</source>
-      <translation>Entrar coordenades o selecionar un punt amb el ratolì.</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="186"/>
-      <source>Reset 3d point selection</source>
-      <translation>Redefinir selecció de punts 3d</translation>
-    </message>
-    <message>
-      <location filename="TaskShapeString.ui" line="192"/>
-      <source>Reset Point</source>
-      <translation>Reiniciar Punt</translation>
+      <location filename="view_layer.py" line="407"/>
+      <source>Add new layer</source>
+      <translation>Afegeix una capa</translation>
     </message>
   </context>
   <context>
@@ -2316,19 +1694,6 @@ El clon resultant pot ésser escalat en qualsevol de les seves tres direccions.<
     </message>
   </context>
   <context>
-    <name>Draft_CloseLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="124"/>
-      <source>Close Line</source>
-      <translation>Tanca la línia</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="125"/>
-      <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation>Tanca la línia que s'esta dibuixant, i finalitza l'operació.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -2482,19 +1847,6 @@ Premeu E o bé ALT+botó dret per mostrar un menú contextual en els nodes supor
     </message>
   </context>
   <context>
-    <name>Draft_FinishLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="98"/>
-      <source>Finish line</source>
-      <translation>Acaba la línia</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="99"/>
-      <source>Finishes a line without closing it.</source>
-      <translation>Finalitza una línia sense tancar-la.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_FlipDimension</name>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
@@ -2520,6 +1872,11 @@ Si hi ha altres objectes seleccionats seran ignorats.</translation>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
       <translation type="unfinished">Create hatches on selected faces</translation>
+    </message>
+    <message>
+      <location filename="gui_hatch.py" line="42"/>
+      <source>Creates hatches on the faces of a selected object</source>
+      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
     </message>
   </context>
   <context>
@@ -3305,19 +2662,6 @@ CTRL per ajustar, MAJÚS per restringir al segment actual o a la normal, ALT per
     </message>
   </context>
   <context>
-    <name>Draft_UndoLine</name>
-    <message>
-      <location filename="gui_lineops.py" line="151"/>
-      <source>Undo last segment</source>
-      <translation>Desfés l'últim segment</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="152"/>
-      <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation>Desfà l'últim segment dibuixat de la línia que s'està dibuixant.</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Upgrade</name>
     <message>
       <location filename="gui_upgrade.py" line="58"/>
@@ -3379,478 +2723,6 @@ Aleshores, podeu usar-lo per desar posicions de càmera i estats d'objectes semp
     </message>
   </context>
   <context>
-    <name>Form</name>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="14"/>
-      <source>Working plane setup</source>
-      <translation>Configuració del pla de treball</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="20"/>
-      <source>Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</source>
-      <translation>Seleccioneu una cara o un pla de treball intermediari o 3 vèrtexs. O trieu una de les opcions següents</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="31"/>
-      <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation>Estableix el pla de treball al pla XY (pla del terra)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="34"/>
-      <source>Top (XY)</source>
-      <translation>Part superior (XY)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="41"/>
-      <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation>Estableix el pla de treball al pla XZ (pla frontal)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="44"/>
-      <source>Front (XZ)</source>
-      <translation>Part de davant (XZ)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="51"/>
-      <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation>Estableix el pla de treball al pla YZ (pla lateral)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="54"/>
-      <source>Side (YZ)</source>
-      <translation>Al costat (YZ)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="61"/>
-      <source>Sets the working plane facing the current view</source>
-      <translation>Estableix el pla de treball encarat amb la vista actual</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="64"/>
-      <source>Align to view</source>
-      <translation>Alinea a la vista</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="71"/>
-      <source>The working plane will align to the current
-view each time a command is started</source>
-      <translation>El pla de treball s’alinearà a la vista actual cada vegada que s'inicia una ordre</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="78"/>
-      <source>Automatic</source>
-      <translation>Automàtica</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="87"/>
-      <source>An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</source>
-      <translation>Una separació opcional per al pla de treball damunt de la seva posició de base. Utilitzeu-ho juntament amb un dels botons de dalt</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="99"/>
-      <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="118"/>
-      <source>If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</source>
-      <translation>Si aquesta opció està seleccionada, el pla de treball se centrarà en la vista actual en prémer un dels botons de dalt</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="111"/>
-      <source>Center plane on view</source>
-      <translation>Pla central de la vista</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="135"/>
-      <source>Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</source>
-      <translation>O seleccioneu un vèrtex simple per a moure el pla de treball actual sense canviar la seua orientació. A continuació, premeu el botó següent</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="147"/>
-      <source>Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</source>
-      <translation>Mou el pla de treball sense canviar la seva orientació. Si no hi ha cap punt seleccionat, el pla es mourà al centre de la vista</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="152"/>
-      <source>Move working plane</source>
-      <translation>Mou el pla de treball</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="171"/>
-      <source>The spacing between the smaller grid lines</source>
-      <translation>L'espaiat entre les línies de la graella més xicotetes</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="164"/>
-      <source>Grid spacing</source>
-      <translation>Espaiat de la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="191"/>
-      <source>The number of squares between each main line of the grid</source>
-      <translation>El nombre de quadrats entre cada línia principal de la graella</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="184"/>
-      <source>Main line every</source>
-      <translation>Línia principal cada</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="207"/>
-      <source>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</source>
-      <translation>La distància a la qual es pot ajustar un punt
-en acostar-se al ratolí. També podeu canviar aquest
-valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="212"/>
-      <source>Snapping radius</source>
-      <translation>Ajust Radi</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="241"/>
-      <source>Centers the view on the current working plane</source>
-      <translation>Centra la vista en el pla de treball actual</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="244"/>
-      <source>Center view</source>
-      <translation>Centra la vista</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="251"/>
-      <source>Resets the working plane to its previous position</source>
-      <translation>Reinicia el pla de treball a la seva posició anterior</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="254"/>
-      <source>Previous</source>
-      <translation>Anterior</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="219"/>
-      <source>Grid extension</source>
-      <translation>Extensió de la graella</translation>
-    </message>
-    <message>
-      <location filename="TaskSelectPlane.ui" line="226"/>
-      <source> lines</source>
-      <translation> línies</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="14"/>
-      <source>Style settings</source>
-      <translation>Ajustaments d'estil</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="244"/>
-      <source>Text color</source>
-      <translation>Color del text</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="169"/>
-      <source>Shape color</source>
-      <translation>Color de la forma</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="87"/>
-      <source>Line width</source>
-      <translation>Amplada de línia</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="66"/>
-      <source>The color of faces</source>
-      <translation>El color de les cares</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="205"/>
-      <source>The type of dimension arrows</source>
-      <translation>El tipus de les fletxes de les cotes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="209"/>
-      <source>Dot</source>
-      <translation>Punt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="214"/>
-      <source>Circle</source>
-      <translation>Cercle</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="219"/>
-      <source>Arrow</source>
-      <translation>Fletxa</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="224"/>
-      <source>Tick</source>
-      <translation>Tick</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="229"/>
-      <source>Tick-2</source>
-      <translation>Tick-2</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="271"/>
-      <source>The color of texts and dimension texts</source>
-      <translation>El color dels textos i dels textos de les cotes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="278"/>
-      <source>The size of texts and dimension texts</source>
-      <translation>Mida dels textos i del textos de les cotes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="318"/>
-      <source>Show unit</source>
-      <translation>Mostra les unitats</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="80"/>
-      <source>Line color</source>
-      <translation>Color de línia</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="308"/>
-      <source>The size of dimension arrows</source>
-      <translation>Mida de les fletxes de les cotes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="257"/>
-      <source>The font to use for texts and dimensions</source>
-      <translation>Font a emprar per a textos i dimensions</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="101"/>
-      <source>The line style</source>
-      <translation>L'estil de la línia</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="105"/>
-      <source>Solid</source>
-      <translation>Sòlid</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="110"/>
-      <source>Dashed</source>
-      <translation>Discontínua</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="115"/>
-      <source>Dotted</source>
-      <translation>Puntejada</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="120"/>
-      <source>DashDot</source>
-      <translation>Guió punt</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="264"/>
-      <source>Text size</source>
-      <translation>Mida del text</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="332"/>
-      <source>Unit override</source>
-      <translation>Substitució d'unitat</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="339"/>
-      <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation>Unitat que s'utilitzarà per les cotes. Deixeu-la en blanc per usar l'unitat actual del FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="183"/>
-      <source>The transparency of faces</source>
-      <translation>La transparència de les cares</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="176"/>
-      <source>Transparency</source>
-      <translation>Transparència</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="135"/>
-      <source>Display mode</source>
-      <translation>Mode de visualització</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="237"/>
-      <source>Text font</source>
-      <translation>Tius de lletra</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="325"/>
-      <source>Arrow size</source>
-      <translation>Mida de la fletxa</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="142"/>
-      <source>The display mode for faces</source>
-      <translation>El tipus de visualització per les cares</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="146"/>
-      <source>Flat Lines</source>
-      <translation>Linies planes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="151"/>
-      <source>Wireframe</source>
-      <translation>Model de filferro</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="156"/>
-      <source>Shaded</source>
-      <translation>Ombrejat</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="161"/>
-      <source>Points</source>
-      <translation>Punts</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="73"/>
-      <source>Draw style</source>
-      <translation>Estil de dibuix</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="94"/>
-      <source>The color of lines</source>
-      <translation>El color de les línies</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="288"/>
-      <source>Arrow style</source>
-      <translation>Estil de la fletxa</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="128"/>
-      <source> px</source>
-      <translation> px</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="57"/>
-      <source>Lines and faces</source>
-      <translation>Línies i cares</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="199"/>
-      <source>Annotations</source>
-      <translation>Anotacions</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="295"/>
-      <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation>Si es mostra o no el sufix d'unitat als textos de les cotes</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="22"/>
-      <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="26"/>
-      <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="40"/>
-      <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="382"/>
-      <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="385"/>
-      <source>Selected</source>
-      <translation>Seleccionat</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="397"/>
-      <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="346"/>
-      <source>Text spacing</source>
-      <translation>Espaiat de text</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="353"/>
-      <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="363"/>
-      <source>Line spacing</source>
-      <translation>Interlineat</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel_SetStyle.ui" line="370"/>
-      <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="23"/>
-      <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="30"/>
-      <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="37"/>
-      <source>Scale</source>
-      <translation>Escala</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="44"/>
-      <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
-    </message>
-    <message>
-      <location filename="dialogHatch.ui" line="64"/>
-      <source>Rotation:</source>
-      <translation>Rotació:</translation>
-    </message>
-    <message encoding="UTF-8">
-      <location filename="dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>º</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="gui_groups.py" line="452"/>
@@ -3859,1415 +2731,11 @@ valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgSettingsDraft</name>
-    <message>
-      <location filename="preferences-draft.ui" line="32"/>
-      <source>General Draft Settings</source>
-      <translation>Configuracions Generals de Projecte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="427"/>
-      <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation>Aquest es el color predeterminat per objectes que estan sent dibuixats en el mode de construcció.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="387"/>
-      <source>This is the default group name for construction geometry</source>
-      <translation>Aquest es el nom del grup predeterminat per la geometria de la construcció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="390"/>
-      <source>Construction</source>
-      <translation>Construcció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="114"/>
-      <source>Save current color and linewidth across sessions</source>
-      <translation>Guardar color actual i linewidth a través de les sessions</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="304"/>
-      <source>Global copy mode</source>
-      <translation>Mode de còpia global</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="40"/>
-      <source>Default working plane</source>
-      <translation>Pla de treball per defecte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="67"/>
-      <source>None</source>
-      <translation>Cap</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="72"/>
-      <source>XY (Top)</source>
-      <translation>XY (dalt)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="77"/>
-      <source>XZ (Front)</source>
-      <translation>XZ (Front.)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="82"/>
-      <source>YZ (Side)</source>
-      <translation>YZ (costat)</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="89"/>
-      <source>Default height for texts and dimensions</source>
-      <translation>Alçada d'omissió per a textos i dimensions</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="47"/>
-      <source>This is the default font name for all Draft texts and dimensions.
-It can be a font name such as "Arial", a default style such as "sans", "serif"
-or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
-such as "Arial:Bold"</source>
-      <translation>Aquest és el nom de tipus de lletra per defecte per a tots els textos d'Esbós i les cotes. Pot ser un nom de lletra com "Arial", un estil per defecte com "sans", "serif" o "mono" o una família com "Arial, Helvètica", una tipografia sans o un nom amb un estil com «Arial: negreta"</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="151"/>
-      <source>Default template sheet</source>
-      <translation>Full de plantilla per defecte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="177"/>
-      <source>The default template to use when creating a new drawing sheet</source>
-      <translation>La plantilla per defecte a utilitzar quan es crea un nou full de dibuix</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="40"/>
-      <source>Import style</source>
-      <translation>Estil d'importació</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="60"/>
-      <source>None (fastest)</source>
-      <translation>Cap (més ràpid)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="65"/>
-      <source>Use default color and linewidth</source>
-      <translation>Ús omissió color i linewidth</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="70"/>
-      <source>Original color and linewidth</source>
-      <translation>Color original i linewidth</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="46"/>
-      <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Seleccionar aquesta opció si vol que les áreas (cares 3D) també s' importin.</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="49"/>
-      <source>Import OCA areas</source>
-      <translation>Importació OCA àrees</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Configuració general</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="380"/>
-      <source>Construction group name</source>
-      <translation>Nom del grup de construcció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="143"/>
-      <source>Tolerance</source>
-      <translation>Tolerància</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="363"/>
-      <source>Join geometry</source>
-      <translation>Uneix-te a geometria</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="194"/>
-      <source>Alternate SVG Patterns location</source>
-      <translation>Localització de SVG patrons alternatiu</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="220"/>
-      <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation>Ací podeu especificar un directori que conté arxius SVG que contenen definicions de &lt;pattern&gt;que es poden afegir a les pautes d'escotilla de projecte estàndards</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="57"/>
-      <source>Constrain mod</source>
-      <translation>Mode de restricció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="77"/>
-      <source>The Constraining modifier key</source>
-      <translation>La tecla modificadora de Restricció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="109"/>
-      <source>Snap mod</source>
-      <translation>Snap mod</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="129"/>
-      <source>The snap modifier key</source>
-      <translation>La tecla modificador snap</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="164"/>
-      <source>Alt mod</source>
-      <translation>Alt mod</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="287"/>
-      <source>Select base objects after copying</source>
-      <translation>Permet seleccionar objectes base després de copiar</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="269"/>
-      <source>If checked, a grid will appear when drawing</source>
-      <translation>Si està marcada, una quadrícula apareixerà quan dibuix</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="272"/>
-      <source>Use grid</source>
-      <translation>Use grid</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="402"/>
-      <source>Grid spacing</source>
-      <translation>Espaiat de la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="425"/>
-      <source>The spacing between each grid line</source>
-      <translation>L'espaiat entre cada línia de la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="353"/>
-      <source>Main lines every</source>
-      <translation>Principals línies cada</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="376"/>
-      <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation>Mainlines s'extrauran més gruixuda. Especifiqueu aquí quantes places entre mainlines.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="94"/>
-      <source>Internal precision level</source>
-      <translation>Nivell de precisió interna</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="395"/>
-      <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation>Això és l'orientació dels textos dimensió quan aquestes dimensions són verticals. Es deixa per defecte, que és l'estàndard ISO.</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="405"/>
-      <source>Left (ISO standard)</source>
-      <translation>Esquerra (norma ISO)</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="410"/>
-      <source>Right</source>
-      <translation>Dreta</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="384"/>
-      <source>Group layers into blocks</source>
-      <translation>Grup de capes en blocs</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="570"/>
-      <source>Export 3D objects as polyface meshes</source>
-      <translation>Exportar objectes 3D com polyface malles</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="219"/>
-      <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Si està marcada, es mostrarà la barra d'eines de Snap cada vegada que utilitzes ajustament</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="222"/>
-      <source>Show Draft Snap toolbar</source>
-      <translation>Mostra la varra d'eines d'Ajust de l'Esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="242"/>
-      <source>Hide Draft snap toolbar after use</source>
-      <translation>Amaga la barra d'eines de projecte Snap després del seu ús</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="134"/>
-      <source>Show Working Plane tracker</source>
-      <translation>Mostra el pla de treball rastrejador</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="291"/>
-      <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Si està marcada, la cuadricula d'esbós sempre serà visible quan Esbós estigui actiu. En cas contrari només quan s'usi una ordre</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="405"/>
-      <source>Use standard font size for texts</source>
-      <translation>Utilitza la mida de font estàndard per a textos</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="448"/>
-      <source>Import hatch boundaries as wires</source>
-      <translation>Importar ombrejats frontera com filferros</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="469"/>
-      <source>Render polylines with width</source>
-      <translation>Representar Polilínies amb amplada</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="141"/>
-      <source>Translated (for print &amp; display)</source>
-      <translation>Traduit (per impressió i pantalla)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="146"/>
-      <source>Raw (for CAM)</source>
-      <translation>Raw (for CAM)</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="161"/>
-      <source>Translate white line color to black</source>
-      <translation>Traduir el color de línia de blanc a negre</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="324"/>
-      <source>Use Part Primitives when available</source>
-      <translation>Utilitza Primitives de peça quan sigui possible</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="26"/>
-      <source>Snapping</source>
-      <translation>Ajusta</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="34"/>
-      <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation>Si està marcada, ajustament és activat sense la necessitat de prémer la tecla de snap mod</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="37"/>
-      <source>Always snap (disable snap mod)</source>
-      <translation>Sempre (Impossibiliti Snap mod)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="407"/>
-      <source>Construction geometry color</source>
-      <translation>Color de geometria de construcció</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="149"/>
-      <source>Import</source>
-      <translation>Importa</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="159"/>
-      <source>texts and dimensions</source>
-      <translation>textos i dimensions</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="175"/>
-      <source>points</source>
-      <translation>punts</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="191"/>
-      <source>layouts</source>
-      <translation>disposicions</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="207"/>
-      <source>*blocks</source>
-      <translation>* blocs</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="614"/>
-      <source>Project exported objects along current view direction</source>
-      <translation>Projecte exportar objectes al llarg de la direcció de visualització</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="14"/>
-      <source>Visual settings</source>
-      <translation>Escenes visuals</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="26"/>
-      <source>Visual Settings</source>
-      <translation>Escenes visuals</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="34"/>
-      <source>Snap symbols style</source>
-      <translation>Estil de símbols de ajust</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="54"/>
-      <source>Draft classic style</source>
-      <translation>Estil clàssic</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="59"/>
-      <source>Bitsnpieces style</source>
-      <translation>Estil Bitsnpieces</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="80"/>
-      <source>Color</source>
-      <translation>Color</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="237"/>
-      <source>Hatch patterns resolution</source>
-      <translation>Resolució de patrons de sombreixar</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="263"/>
-      <source>Grid</source>
-      <translation>Quadrícula</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="294"/>
-      <source>Always show the grid</source>
-      <translation>Sempre Mostra la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="14"/>
-      <source>Texts and dimensions</source>
-      <translation>Textos i dimensions</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="59"/>
-      <source>Internal font</source>
-      <translation>Tipus de lletra interna</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="323"/>
-      <source>Dot</source>
-      <translation>Punt</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="328"/>
-      <source>Circle</source>
-      <translation>Cercle</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="333"/>
-      <source>Arrow</source>
-      <translation>Fletxa</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="362"/>
-      <source>The default size of arrows</source>
-      <translation>La mida per defecte de fletxes</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="208"/>
-      <source>The default size of dimensions extension lines</source>
-      <translation>La mida per defecte de línies d'extensió de dimensions</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="429"/>
-      <source>The space between the dimension line and the dimension text</source>
-      <translation>L'espai entre la línia de la dimensió i el text de la dimensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="534"/>
-      <source>Select a font file</source>
-      <translation>Seleccioneu un fitxer de tipus de lletra</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="267"/>
-      <source>Fill objects with faces whenever possible</source>
-      <translation>Omplir els objectes amb cares sempre que sigui possible</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="224"/>
-      <source>Create</source>
-      <translation>Crea</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="234"/>
-      <source>simple Part shapes</source>
-      <translation>formes simples de Peça</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="253"/>
-      <source>Draft objects</source>
-      <translation>Projecte objectes</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="269"/>
-      <source>Sketches</source>
-      <translation>Croquis</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="342"/>
-      <source>Get original colors from the DXF file</source>
-      <translation>Obtenir colors originals de l'arxiu DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="489"/>
-      <source>Treat ellipses and splines as polylines</source>
-      <translation>Tractar d'el·lipses i splines com Polilínies</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="121"/>
-      <source>Export style</source>
-      <translation>Estil d'exportació</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="455"/>
-      <source>Show the unit suffix in dimensions</source>
-      <translation>Mostrar el sufix d'unitat en dimensions</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="101"/>
-      <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Permeten a FreeCAD automàticament descarregar i actualitzar les biblioteques DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="209"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="457"/>
-      <source>Grid size</source>
-      <translation>Mida de reixat</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="483"/>
-      <source> lines</source>
-      <translation> línies</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="144"/>
-      <source>text above (2D)</source>
-      <translation>text (2D) per sobre</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="149"/>
-      <source> text inside (3D)</source>
-      <translation> text dins (3D)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="375"/>
-      <source>Dashed line definition</source>
-      <translation>Definició de la línia discontínua</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="418"/>
-      <source>Dashdot line definition</source>
-      <translation>Dashdot definició de línia</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="461"/>
-      <source>Dotted line definition</source>
-      <translation>Definició de la línia de punts</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="14"/>
-      <source>Grid and snapping</source>
-      <translation>Xarxa i l'ajust</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="26"/>
-      <source>Text settings</source>
-      <translation>Configuració de text</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="34"/>
-      <source>Font family</source>
-      <translation>Tipus de Font</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="76"/>
-      <source>Font size</source>
-      <translation>Mida del tipus de lletra</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="116"/>
-      <source>Dimension settings</source>
-      <translation>Configuració de la dimensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="124"/>
-      <source>Display mode</source>
-      <translation>Mode de visualització</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="309"/>
-      <source>Arrows style</source>
-      <translation>Estil de fletxes</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="355"/>
-      <source>Arrows size</source>
-      <translation>Mida de les fletxes</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="388"/>
-      <source>Text orientation</source>
-      <translation>Orientació de text</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="422"/>
-      <source>Text spacing</source>
-      <translation>Espaiat de text</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="513"/>
-      <source>ShapeString settings</source>
-      <translation>Configuració ShapeString</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="521"/>
-      <source>Default ShapeString font file</source>
-      <translation>Fitxer de tipus de lletra per defecte ShapeString</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="367"/>
-      <source>Drawing view line definitions</source>
-      <translation>Definicions de línia de vista de dibuix</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="14"/>
-      <source>DWG</source>
-      <translation>DWG</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="26"/>
-      <source>DWG conversion</source>
-      <translation>Conversió DWG</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="56"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Nota:&lt;/span&gt; aplicar opcions DXF arxius DWG així.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="14"/>
-      <source>DXF</source>
-      <translation>DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="26"/>
-      <source>Import options</source>
-      <translation>Opcions d'importació</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="55"/>
-      <source>Use legacy python importer</source>
-      <translation>Importador de Python llegat d'ús</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="107"/>
-      <source>Export options</source>
-      <translation>Opcions d'exportació</translation>
-    </message>
-    <message>
-      <location filename="preferences-oca.ui" line="14"/>
-      <source>OCA</source>
-      <translation>OCA</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="14"/>
-      <source>SVG</source>
-      <translation>SVG</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="86"/>
-      <source>Disable units scaling</source>
-      <translation>Deshabilitar el escalat de unitats</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="591"/>
-      <source>Export Drawing Views as blocks</source>
-      <translation>Exportar el dibuix vistes com a blocs</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="140"/>
-      <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Nota: No totes les opcions següents són utilitzats per l'importador nou encara</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="38"/>
-      <source>Show this dialog when importing and exporting</source>
-      <translation>Mostra aquest diàleg durant la importació i l'exportació</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="88"/>
-      <source>Automatic update (legacy importer only)</source>
-      <translation>Actualització automàtica (llegat importador només)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="341"/>
-      <source>Prefix labels of Clones with:</source>
-      <translation>Etiquetes dels clons del prefix:</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="289"/>
-      <source>Scale factor to apply to imported files</source>
-      <translation>Factor d'escala per aplicar a fitxers importats</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="181"/>
-      <source>Max segment length for discretized arcs</source>
-      <translation>Longitud de segment de Max per arcs discretized</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="161"/>
-      <source>Number of decimals</source>
-      <translation>Nombre de decimals</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="197"/>
-      <source>Shift</source>
-      <translation>Shift</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="202"/>
-      <source>Ctrl</source>
-      <translation>Ctrl</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="207"/>
-      <source>Alt</source>
-      <translation>Alt</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="184"/>
-      <source>The Alt modifier key</source>
-      <translation>La tecla modificadora Alt</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="477"/>
-      <source>The number of horizontal or vertical lines of the grid</source>
-      <translation>El nombre de línies horitzontals o verticals de la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="87"/>
-      <source>The default color for snap symbols</source>
-      <translation>El color predeterminat per símbols de ajust ràpid</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="111"/>
-      <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation>Triar aquesta opció si desitja utilitzar el color/ample de línia de la barra d'eines per defecte</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="131"/>
-      <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation>Si està marcada, apareix un giny que indica l'orientació de pla de treball actual durant les operacions de dibuix</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="481"/>
-      <source>An SVG linestyle definition</source>
-      <translation>Una definició d'estil de línia SVG</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="201"/>
-      <source>Extension lines size</source>
-      <translation>Tamany de les linies d’extensiò</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="237"/>
-      <source>Extension line overshoot</source>
-      <translation>Superació de la línia d'extensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="244"/>
-      <source>The default length of extension line above dimension line</source>
-      <translation>La llargària per defecte de l'extensió de la línia per sobre de la línia de dimensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="273"/>
-      <source>Dimension line overshoot</source>
-      <translation>Superació de la línia de dimensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="280"/>
-      <source>The default distance the dimension line is extended past extension lines</source>
-      <translation>La distància per defecte de la línia de dimensió s'estén més enllà de les línies d'extensió</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="338"/>
-      <source>Tick</source>
-      <translation>Tick</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="343"/>
-      <source>Tick-2</source>
-      <translation>Tick-2</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="326"/>
-      <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation>Marcar si voleu preservar el color de les cares mentre s'estigui revertint o actualitzant (sols splitFaces i makeShell)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="329"/>
-      <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation>Preserva el color de les cares durant la downgrade/upgrade</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="346"/>
-      <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation>Marqueu això si voleu que els noms de les cares derivin del nom de l'objecte d'origen i viceversa quan s'estigui revertint o actualitzant (sols splitFaces i makeShell)</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="349"/>
-      <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation>Preserva el nom de les cares durant la reversió i l'actualització</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="41"/>
-      <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation>El camí a l'executable del convertidor de fitxers ODA ( anteriorment Teigha)</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="486"/>
-      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Exportació d'el·lipses poc compatible. En el seu lloc, utilitzeu això per a exportar-les com a polilínies.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="518"/>
-      <source>Max Spline Segment:</source>
-      <translation>Segment de Spline Màxim:</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="120"/>
-      <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
-      <translation>El nombre de decimals en les operacions de coordenades internes (p. ex. 3 = 0,001). Els usuaris de FreeCAD consideren el millor rang els valors entre 6 i 8.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="169"/>
-      <source>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
-      <translation>Aquest és el valor utilitzat per a funcions que utilitzen una tolerància.
-Els valors amb diferències per sota d'aquest valor es tractaran com a iguals. Aquest valor aviat serà obsolet, així que el nivell de precisió superior controla tots dós.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="75"/>
-      <source>Use legacy python exporter</source>
-      <translation>Utilitza l'exportador python llegat</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="247"/>
-      <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation>Si s'ha establert aquesta opció, en crear objectes Esbós a la part superior d'una cara existent d'altre objecte, la propietat «Suport» de l'objecte Esbós s'establirà en l'objecte base. Aquest era el comportament estàndard abans de FreeCAD 0.19</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="372"/>
-      <source>Construction Geometry</source>
-      <translation>Geometria de construcció</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="26"/>
-      <source>In-Command Shortcuts</source>
-      <translation>Dreceres d'ordres</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="118"/>
-      <source>Relative</source>
-      <translation>Relatiu</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="140"/>
-      <source>R</source>
-      <translation>R</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="236"/>
-      <source>Continue</source>
-      <translation>Continua</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="214"/>
-      <source>T</source>
-      <translation>T</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="111"/>
-      <source>Close</source>
-      <translation>Tanca</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="177"/>
-      <source>O</source>
-      <translation>O</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="243"/>
-      <source>Copy</source>
-      <translation>Copia</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="469"/>
-      <source>P</source>
-      <translation>P</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="498"/>
-      <source>Subelement Mode</source>
-      <translation>Mode subelement</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="381"/>
-      <source>D</source>
-      <translation>D</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="491"/>
-      <source>Fill</source>
-      <translation>Ompli</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="425"/>
-      <source>L</source>
-      <translation>L</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="447"/>
-      <source>Exit</source>
-      <translation>Surt</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="638"/>
-      <source>A</source>
-      <translation>A</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="579"/>
-      <source>Select Edge</source>
-      <translation>Selecciona l'aresta</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="520"/>
-      <source>E</source>
-      <translation>Afegir Columna</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="403"/>
-      <source>Add Hold</source>
-      <translation>Afegir Columna</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="675"/>
-      <source>Q</source>
-      <translation>Q</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="352"/>
-      <source>Length</source>
-      <translation>Longitud</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="557"/>
-      <source>H</source>
-      <translation>H</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="359"/>
-      <source>Wipe</source>
-      <translation>Neteja</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="601"/>
-      <source>W</source>
-      <translation>W</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="697"/>
-      <source>Set WP</source>
-      <translation>Definir el pla de treball</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="719"/>
-      <source>U</source>
-      <translation>U</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="257"/>
-      <source>Cycle Snap</source>
-      <translation>Cicle Snap</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="52"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="338"/>
-      <source>Snap</source>
-      <translation>Ajusta</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="89"/>
-      <source>S</source>
-      <translation>S</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="250"/>
-      <source>Increase Radius</source>
-      <translation>Augmenta el radi</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="279"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="345"/>
-      <source>Decrease Radius</source>
-      <translation>Disminueix el radi</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="316"/>
-      <source>]</source>
-      <translation>]</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="741"/>
-      <source>Restrict X</source>
-      <translation>Restringeix X</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="763"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="785"/>
-      <source>Restrict Y</source>
-      <translation>Restringeix Y</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="807"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="829"/>
-      <source>Restrict Z</source>
-      <translation>Restricciò Z</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="851"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="194"/>
-      <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation>Si es marca aquesta opció, la llista desplegable de capes també mostrarà grups, cosa que us permetrà afegir objectes automàticament a grups.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="197"/>
-      <source>Show groups in layers list drop-down button</source>
-      <translation>Mostra grups en el botó de la llista desplegable de capes</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="216"/>
-      <source>Draft tools options</source>
-      <translation>Opcions d'eines d'Esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="230"/>
-      <source>When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</source>
-      <translation>En dibuixar línies, fixa el focus en la llargària en lloc de en les coordenades X.
-Això permet assenyalar la direcció i introduir la distància.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="234"/>
-      <source>Set focus on Length instead of X coordinate</source>
-      <translation>Estableix el focus en la llargària en lloc de en les coordenades X</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="250"/>
-      <source>Set the Support property when possible</source>
-      <translation>Estableix la propietat Suport quan siga possible</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="263"/>
-      <source>If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</source>
-      <translation>Si està marcada, els objectes apareixeran plens per defecte. En cas contrari, apareixeran com a model de filferro</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="283"/>
-      <source>Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</source>
-      <translation>Normalment, després de copiar objectes, selecciona les còpies. Si aquesta opció està marcada, se seleccionaran, en el seu lloc, els objectes base.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="300"/>
-      <source>If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</source>
-      <translation>Si està marcada, el mode copia es mantindrà d'una ordre a l'altra, en cas contrari les ordres sempre s'iniciaran en el mode no-còpia</translation>
-    </message>
-    <message>
-      <location filename="preferences-draft.ui" line="320"/>
-      <source>Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation>Força les eines d'esbós a crear primitives de peça enlloc d'objectes esbós.
-Tingueu en compte que això no és totalment compatible i que molts objectes no es poden editar amb els modificadors d'esbós.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="14"/>
-      <source>User interface settings</source>
-      <translation>Configuració de la interfície d'usuari</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="928"/>
-      <source>Enable draft statusbar customization</source>
-      <translation>Activa la personalització de la barra d'estat d'esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="931"/>
-      <source>Draft Statusbar</source>
-      <translation>Barra d'estat d'esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="951"/>
-      <source>Enable snap statusbar widget</source>
-      <translation>Activa el giny d'ajust de la barra d'estat</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="954"/>
-      <source>Draft snap widget</source>
-      <translation>Giny d'ajust d'esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="970"/>
-      <source>Enable draft statusbar annotation scale widget</source>
-      <translation>Activa el giny de l'anotació d'escala de la barra d'estat d'esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="973"/>
-      <source>Annotation scale widget</source>
-      <translation>Giny d'escala d'anotació</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="567"/>
-      <source>Draft Edit preferences</source>
-      <translation>Preferències d'edició d'esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="570"/>
-      <source>Edit</source>
-      <translation>Edita</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="584"/>
-      <source>Maximum number of contemporary edited objects</source>
-      <translation>Nombre màxim d'objectes simultanis editats</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="607"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Estableix el nombre màxim d'objectes que Edició d'Esbós&lt;/p&gt;&lt;p&gt;pot processar al mateix temps&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="645"/>
-      <source>Draft edit pick radius</source>
-      <translation>Radi de selecció de l'edició d'Esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="668"/>
-      <source>Controls pick radius of edit nodes</source>
-      <translation>Controla el radi de selecció dels nodes d’edició</translation>
-    </message>
-    <message>
-      <location filename="preferences-dwg.ui" line="34"/>
-      <source>Path to ODA file converter</source>
-      <translation>Camí al convertidor de fitxers ODA</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="35"/>
-      <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation>Aquest diàleg de preferències es mostrarà quan importeu/exporteu fitxers DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="51"/>
-      <source>Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>S'utilitza importador de Python, en cas contrari s'utilitza el C ++ més recent.
-Nota: l’importador C ++ és més ràpid, però encara no té tantes funcionalitats</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="96"/>
-      <source>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</source>
-      <translation>Permet a FreeCAD descarregar el convertidor Python per a la importació i exportació de DXF.
-També podeu fer-ho manualment instal·lant el banc de treball «dxf_library»
-del gestor de complements.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="156"/>
-      <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Si està desactivada, no importa textos ni mtextos</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="172"/>
-      <source>If unchecked, points won't be imported</source>
-      <translation>Si està desactivada, no s'importen els punts</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="188"/>
-      <source>If checked, paper space objects will be imported too</source>
-      <translation>Si està activada, els objectes de l'espai paper també s'importaran</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="204"/>
-      <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Si voleu que els blocs sense nom (que comencen amb un *) també s'importen</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="231"/>
-      <source>Only standard Part objects will be created (fastest)</source>
-      <translation>Només es crearan objectes peça estàndard (més ràpid)</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="250"/>
-      <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>Els objectes Esbós paramètrics es crearan quan sigui possible</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="266"/>
-      <source>Sketches will be created whenever possible</source>
-      <translation>Es crearan croquis quan sigui possible</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="309"/>
-      <source>Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation>Factor d'escala a aplicar als arxius DXF durant la importació. El factor és la conversió entre la unitat del seu fitxer DXF i mil·límetres. Ex: per a fitxers en mil·límetres: 1, en centímetres: 10, en metres: 1000, en polzades: 25.4, en peus: 304.8</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="338"/>
-      <source>Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </source>
-      <translation>Es recuperen els colors dels objectes DXF sempre que siga possible. En cas contrari s'aplica el colors per defecte. </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="359"/>
-      <source>FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</source>
-      <translation>FreeCAD intentarà unir objectes coincidents en filferros. Pot ser un procés lent!</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="380"/>
-      <source>Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </source>
-      <translation>Els objectes de les mateixes capes s'uniran en Blocs d'Esbós, la visualització serà més ràpida, però l'edició serà més difícil </translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="401"/>
-      <source>Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</source>
-      <translation>Els textos importats tindran la mida estàndard d'Esborrany, en lloc de la mida que tenen en el document DXF</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="422"/>
-      <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Si està marcada, s'importaran capes DXF com a capes d'Esbós</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="425"/>
-      <source>Use Layers</source>
-      <translation>Utilitza les capes</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="445"/>
-      <source>Hatches will be converted into simple wires</source>
-      <translation>Les trames es convertiran en filferros simples</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="465"/>
-      <source>If polylines have a width defined, they will be rendered
-as closed wires with correct width</source>
-      <translation>Si les polilínies tenen una amplària definida, es renderitzaran com a filferros tancats amb l'amplària correcta</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="528"/>
-      <source>Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation>Longitud màxima de cadascun dels segments de la polilínia. Si s'estableix en «0», l'spline sencer es tracta com un segment recte.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="567"/>
-      <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation>Tots els objectes que continguen cares s'exportaran com a multifacetes 3D</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="587"/>
-      <source>Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</source>
-      <translation>Les vistes de dibuix s’exportaran com a blocs. Això pot fallar per a les plantilles post DXF R12.</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="611"/>
-      <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>Els objectes exportats es projectaran per a reflectir la direcció actual de la vista</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="47"/>
-      <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation>Aquest és el mètode escollit per a importar el color d'objecte SVG a FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="82"/>
-      <source>If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </source>
-      <translation>Si està marcada, no es produeix cap conversió d'unitats. Una unitat en el fitxer SVG es traduirà com un mil·límetre. </translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="128"/>
-      <source>Style of SVG file to write when exporting a sketch</source>
-      <translation>Estil que s'usarà per escriure el fitxer SVG quan s'exporti un croquis</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="158"/>
-      <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation>Totes les línies blanques apareixen en negre en l'SVG per a una millor llegibilitat amb un fons blancs</translation>
-    </message>
-    <message>
-      <location filename="preferences-svg.ui" line="204"/>
-      <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </source>
-      <translation>Les versions d'Open CASCADE anteriors a la versió 6.8 no admeten la projecció d'arc. En aquest cas, els arcs es poden discretitzar en xicotets segments de línia. Aquest valor és la llargària màxima del segment. </translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="310"/>
-      <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation>Si es marca, es mostra una vora addicional al voltant de la graella, mostrant la mida del quadre principal a la vora inferior esquerra</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="313"/>
-      <source>Show grid border</source>
-      <translation>Mostra la vora de la graella</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="475"/>
-      <source>Override unit</source>
-      <translation>Sobreescriu la unitat</translation>
-    </message>
-    <message>
-      <location filename="preferences-drafttexts.ui" line="495"/>
-      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation>Si el camp es deixa en blanc, les mesures de les cotes es mostraran en l'unitat actual definida a FreeCAD. Si s'indica una unitat aqui, com ara m o cm, podeu forçar a que es mostrin les cotes en aquesta unitat.</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="257"/>
-      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation>Resolució a la qual es dibuixaran els patrons. El valor per defecte és 128. Valors més alts donen resolucions millors, valors més baixos fan el dibuix més ràpid</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="280"/>
-      <source>Hatch Pattern default size</source>
-      <translation>Mida per defecte de la trama</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftvisual.ui" line="300"/>
-      <source>The default size of hatch patterns</source>
-      <translation>Mida per defecte dels. patrons de trama</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="329"/>
-      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation>Si es marca, la graella tindrà els seus dos eixos principals de color verd, vermell o blau quan coincideixin amb els eixos globals</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="332"/>
-      <source>Use colored axes</source>
-      <translation>Fes servir els eixos de colors</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="506"/>
-      <source>Grid color and transparency</source>
-      <translation>Colors i transparència dela Malla</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="526"/>
-      <source>The color of the grid</source>
-      <translation>El color de la graella</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftsnap.ui" line="546"/>
-      <source>The overall transparency of the grid</source>
-      <translation>Transparència global de la graella</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="873"/>
-      <source>Global</source>
-      <translation>Global</translation>
-    </message>
-    <message>
-      <location filename="preferences-draftinterface.ui" line="895"/>
-      <source>G</source>
-      <translation>G</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="71"/>
-      <source>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
-    </message>
-  </context>
-  <context>
     <name>ImportAirfoilDAT</name>
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
       <translation type="unfinished">Did not find enough coordinates</translation>
-    </message>
-  </context>
-  <context>
-    <name>ImportDWG</name>
-    <message>
-      <location filename="importDWG.py" line="233"/>
-      <source>Conversion successful</source>
-      <translation>Conversió correcta</translation>
-    </message>
-    <message>
-      <location filename="importDWG.py" line="277"/>
-      <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
     </message>
   </context>
   <context>
@@ -5294,19 +2762,134 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
   <context>
     <name>draft</name>
     <message>
+      <location filename="DraftGui.py" line="745"/>
+      <source>Relative</source>
+      <translation>Relatiu</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="750"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="768"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="784"/>
+      <source>Close</source>
+      <translation>Tanca</translation>
+    </message>
+    <message>
+      <location filename="gui_rotate.py" line="276"/>
+      <source>Copy</source>
+      <translation>Copia</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="81"/>
+      <source>Subelement mode</source>
+      <translation>Mode sub-element</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="86"/>
+      <source>Fill</source>
+      <translation>Ompli</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="91"/>
+      <source>Exit</source>
+      <translation>Surt</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="96"/>
+      <source>Snap On/Off</source>
+      <translation>Ajusta/desajusta</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="101"/>
+      <source>Increase snap radius</source>
+      <translation>Augmenta el radi d'ajust</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="106"/>
+      <source>Decrease snap radius</source>
+      <translation>Disminueix el radi d'ajust</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="111"/>
+      <source>Restrict X</source>
+      <translation>Restringeix X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="116"/>
+      <source>Restrict Y</source>
+      <translation>Restringeix Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="121"/>
+      <source>Restrict Z</source>
+      <translation>Restricciò Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="790"/>
+      <source>Select edge</source>
+      <translation>Selecciona l'aresta</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="131"/>
+      <source>Add custom snap point</source>
+      <translation>Afegeix un punt d'ajust personalitzat</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="136"/>
+      <source>Length mode</source>
+      <translation>Mode de Llargària</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="786"/>
+      <source>Wipe</source>
+      <translation>Neteja</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="146"/>
+      <source>Set Working Plane</source>
+      <translation>Estableix el pla de treball</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="151"/>
+      <source>Cycle snap object</source>
+      <translation>Canvia cíclicament l'ajust d'un objecte</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="156"/>
+      <source>Toggle near snap on/off</source>
+      <translation>Activa/desactiva el proper ajust</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
       <translation>Barra d'ordres d'Esbós</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="832"/>
-      <source>Toggle construction mode</source>
-      <translation>Activar/desactivar el mode de construcció</translation>
+      <location filename="gui_selectplane.py" line="369"/>
+      <source>Top</source>
+      <translation>Planta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="2054"/>
-      <source>Autogroup off</source>
-      <translation>Desactivar Auto-agrupar</translation>
+      <location filename="gui_selectplane.py" line="381"/>
+      <source>Front</source>
+      <translation>Alçat</translation>
+    </message>
+    <message>
+      <location filename="gui_selectplane.py" line="393"/>
+      <source>Side</source>
+      <translation>Costat</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="659"/>
+      <source>Auto</source>
+      <translation>Auto</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="722"/>
@@ -5384,6 +2967,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Angle del segment actual</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="741"/>
+      <source>Check this to lock the current angle</source>
+      <translation>Marqueu aquesta casella per a blocar l'angle actual</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="1105"/>
       <source>Radius</source>
       <translation>Radi</translation>
@@ -5394,14 +2982,90 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Radi del cercle</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="748"/>
+      <source>Coordinates relative to last point or to coordinate system origin
+if is the first point to set</source>
+      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
+if is the first point to set</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="753"/>
+      <source>Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</source>
+      <translation type="unfinished">Coordinates relative to global coordinate system.
+Uncheck to use working plane coordinate system</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="755"/>
+      <source>Filled</source>
+      <translation>Emplenat</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="759"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</source>
+      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
+Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="761"/>
+      <source>Finish</source>
+      <translation>Finalitza</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="763"/>
+      <source>Finishes the current drawing or editing operation</source>
+      <translation>Acaba el dibuix actual o l'operació d'edició</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Si està marcada, comanda no acabarà fins que es premi el botó de comanda una altra vegada</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="771"/>
+      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
+      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
       <translation>Desplaçament de l'estil &amp;OCC</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="782"/>
+      <source>&amp;Undo (CTRL+Z)</source>
+      <translation>&amp;Desfés (CTRL+Z)</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="783"/>
+      <source>Undo the last segment</source>
+      <translation>Desfés l'últim segment</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="785"/>
+      <source>Finishes and closes the current line</source>
+      <translation>Finalitza i tanca la línia actual</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="787"/>
+      <source>Wipes the existing segments of this line and starts again from the last point</source>
+      <translation>Esborra els segments existents d'aquesta línia i comença de nou desde l'últim punt</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="788"/>
+      <source>Set WP</source>
+      <translation>Definir el pla de treball</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="789"/>
+      <source>Reorients the working plane on the last segment</source>
+      <translation>Reorienta el pla de treball de l'últim segment</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="791"/>
+      <source>Selects an existing edge to be measured by this dimension</source>
+      <translation>Selecciona una aresta existent per a mesurar-la amb aquesta dimensió</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -5414,14 +3078,19 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Nombre de costats</translation>
     </message>
     <message>
-      <location filename="gui_offset.py" line="324"/>
-      <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <location filename="DraftGui.py" line="796"/>
+      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
+      <translation>Si està activada, els objectes es copiaran en lloc de moure's. Preferències -&gt; Esbós -&gt; Mode de còpia global per a mantenir aquest mode en les ordres següents</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
-      <source>Auto</source>
-      <translation>Auto</translation>
+      <location filename="DraftGui.py" line="797"/>
+      <source>Modify subelements</source>
+      <translation>Modifica els sub-elements</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="798"/>
+      <source>If checked, subelements will be modified instead of entire objects</source>
+      <translation>Si està marcat, els sub-elements es modificaran en lloc dels objectes sencers</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="799"/>
@@ -5464,6 +3133,36 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Obrir un selector de fitxers per a arxiu de font</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="807"/>
+      <source>Create text</source>
+      <translation>Crear text</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="808"/>
+      <source>Press this button to create the text object, or finish your text with two blank lines</source>
+      <translation>Premeu aquest botó per a crear l’objecte de text o finalitzeu el vostre text amb dues línies en blanc</translation>
+    </message>
+    <message>
+      <location filename="gui_selectplane.py" line="536"/>
+      <source>Current working plane</source>
+      <translation>Pla de treball actual</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="831"/>
+      <source>Change default style for new objects</source>
+      <translation>Canvia l'estil per defecte dels objectes nous</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="832"/>
+      <source>Toggle construction mode</source>
+      <translation>Activar/desactivar el mode de construcció</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="2054"/>
+      <source>Autogroup off</source>
+      <translation>Desactivar Auto-agrupar</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="944"/>
       <source>Line</source>
       <translation>Línia</translation>
@@ -5484,6 +3183,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Arc</translation>
     </message>
     <message>
+      <location filename="gui_rotate.py" line="279"/>
+      <source>Rotate</source>
+      <translation>Rotació</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="987"/>
       <source>Point</source>
       <translation>Punt</translation>
@@ -5494,9 +3198,24 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Etiqueta</translation>
     </message>
     <message>
+      <location filename="gui_offset.py" line="324"/>
+      <source>Offset</source>
+      <translation>Equidistancia (ofset)</translation>
+    </message>
+    <message>
       <location filename="gui_trimex.py" line="215"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="217"/>
+      <source>Offset distance</source>
+      <translation>Distància de separació</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1094"/>
+      <source>Trimex</source>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1192"/>
@@ -5509,19 +3228,19 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1261"/>
-      <source>Global X</source>
-      <translation>Global X</translation>
+      <location filename="DraftGui.py" line="1249"/>
+      <source>Local u0394X</source>
+      <translation>u0394X local</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1262"/>
-      <source>Global Y</source>
-      <translation>Global Y</translation>
+      <location filename="DraftGui.py" line="1250"/>
+      <source>Local u0394Y</source>
+      <translation>u0394Y local</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1263"/>
-      <source>Global Z</source>
-      <translation>Global Z</translation>
+      <location filename="DraftGui.py" line="1251"/>
+      <source>Local u0394Z</source>
+      <translation>u0394Z local</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
@@ -5537,6 +3256,36 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <location filename="DraftGui.py" line="1255"/>
       <source>Local Z</source>
       <translation>Local Z</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1257"/>
+      <source>Global u0394X</source>
+      <translation>u0394X global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1258"/>
+      <source>Global u0394Y</source>
+      <translation>u0394Y global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1259"/>
+      <source>Global u0394Z</source>
+      <translation>u0394Z global</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1261"/>
+      <source>Global X</source>
+      <translation>Global X</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1262"/>
+      <source>Global Y</source>
+      <translation>Global Y</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="1263"/>
+      <source>Global Z</source>
+      <translation>Global Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1496"/>
@@ -5564,6 +3313,11 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Si us plau, introduïu un fitxer de tipus de lletra.</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="2047"/>
+      <source>Autogroup:</source>
+      <translation>Agrupament automàtic:</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="2374"/>
       <source>Faces</source>
       <translation>Cares</translation>
@@ -5584,237 +3338,51 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <translation>Elements del Lligacares</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="276"/>
-      <source>Copy</source>
-      <translation>Copia</translation>
+      <location filename="importDWG.py" line="286"/>
+      <source>LibreDWG error</source>
+      <translation type="unfinished">LibreDWG error</translation>
     </message>
     <message>
-      <location filename="importDXF.py" line="146"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>No s'han trobat en el sistema les llibreries d'importació/exportació DXF necessàries perquè FreeCAD pugui manegar el format DXF
-Per permetre que FreeCAD descarregui aquestes llibreries:
- 1 - Carregui el banc de treball Esbós
- 2 - Menú Editar &gt; Preferències &gt; Importa-Exporta &gt; DXF &gt; Activa descàrregues
-O descarregueu aquestes llibreries manualment tal com s'explica a
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</translation>
+      <location filename="importDWG.py" line="295"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="745"/>
-      <source>Relative</source>
-      <translation>Relatiu</translation>
+      <location filename="importDWG.py" line="228"/>
+      <source>Conversion successful</source>
+      <translation>Conversió correcta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="768"/>
-      <source>Continue</source>
-      <translation>Continua</translation>
+      <location filename="importDWG.py" line="231"/>
+      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
+      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="784"/>
-      <source>Close</source>
-      <translation>Tanca</translation>
+      <location filename="importDWG.py" line="300"/>
+      <source>ODA File Converter not found</source>
+      <translation type="unfinished">ODA File Converter not found</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="86"/>
-      <source>Fill</source>
-      <translation>Ompli</translation>
+      <location filename="importDWG.py" line="310"/>
+      <source>QCAD error</source>
+      <translation type="unfinished">QCAD error</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="91"/>
-      <source>Exit</source>
-      <translation>Surt</translation>
+      <location filename="make_sketch.py" line="139"/>
+      <source>All Shapes must be coplanar</source>
+      <translation type="unfinished">All Shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="96"/>
-      <source>Snap On/Off</source>
-      <translation>Ajusta/desajusta</translation>
+      <location filename="WorkingPlane.py" line="696"/>
+      <source>Selected Shapes must define a plane
+</source>
+      <translation type="unfinished">Selected Shapes must define a plane
+</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="101"/>
-      <source>Increase snap radius</source>
-      <translation>Augmenta el radi d'ajust</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="106"/>
-      <source>Decrease snap radius</source>
-      <translation>Disminueix el radi d'ajust</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="111"/>
-      <source>Restrict X</source>
-      <translation>Restringeix X</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="116"/>
-      <source>Restrict Y</source>
-      <translation>Restringeix Y</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="121"/>
-      <source>Restrict Z</source>
-      <translation>Restricciò Z</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="790"/>
-      <source>Select edge</source>
-      <translation>Selecciona l'aresta</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="131"/>
-      <source>Add custom snap point</source>
-      <translation>Afegeix un punt d'ajust personalitzat</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="136"/>
-      <source>Length mode</source>
-      <translation>Mode de Llargària</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="786"/>
-      <source>Wipe</source>
-      <translation>Neteja</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="146"/>
-      <source>Set Working Plane</source>
-      <translation>Estableix el pla de treball</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="151"/>
-      <source>Cycle snap object</source>
-      <translation>Canvia cíclicament l'ajust d'un objecte</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="741"/>
-      <source>Check this to lock the current angle</source>
-      <translation>Marqueu aquesta casella per a blocar l'angle actual</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="755"/>
-      <source>Filled</source>
-      <translation>Emplenat</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="761"/>
-      <source>Finish</source>
-      <translation>Finalitza</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="763"/>
-      <source>Finishes the current drawing or editing operation</source>
-      <translation>Acaba el dibuix actual o l'operació d'edició</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="782"/>
-      <source>&amp;Undo (CTRL+Z)</source>
-      <translation>&amp;Desfés (CTRL+Z)</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="783"/>
-      <source>Undo the last segment</source>
-      <translation>Desfés l'últim segment</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="785"/>
-      <source>Finishes and closes the current line</source>
-      <translation>Finalitza i tanca la línia actual</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="787"/>
-      <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation>Esborra els segments existents d'aquesta línia i comença de nou desde l'últim punt</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="788"/>
-      <source>Set WP</source>
-      <translation>Definir el pla de treball</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="789"/>
-      <source>Reorients the working plane on the last segment</source>
-      <translation>Reorienta el pla de treball de l'últim segment</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="791"/>
-      <source>Selects an existing edge to be measured by this dimension</source>
-      <translation>Selecciona una aresta existent per a mesurar-la amb aquesta dimensió</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="796"/>
-      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Si està activada, els objectes es copiaran en lloc de moure's. Preferències -&gt; Esbós -&gt; Mode de còpia global per a mantenir aquest mode en les ordres següents</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="81"/>
-      <source>Subelement mode</source>
-      <translation>Mode sub-element</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="797"/>
-      <source>Modify subelements</source>
-      <translation>Modifica els sub-elements</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="798"/>
-      <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation>Si està marcat, els sub-elements es modificaran en lloc dels objectes sencers</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="369"/>
-      <source>Top</source>
-      <translation>Planta</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="381"/>
-      <source>Front</source>
-      <translation>Alçat</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="393"/>
-      <source>Side</source>
-      <translation>Costat</translation>
-    </message>
-    <message>
-      <location filename="gui_selectplane.py" line="536"/>
-      <source>Current working plane</source>
-      <translation>Pla de treball actual</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="46"/>
-      <source>Draft</source>
-      <translation>Calat</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="156"/>
-      <source>Toggle near snap on/off</source>
-      <translation>Activa/desactiva el proper ajust</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="807"/>
-      <source>Create text</source>
-      <translation>Crear text</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="808"/>
-      <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation>Premeu aquest botó per a crear l’objecte de text o finalitzeu el vostre text amb dues línies en blanc</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="217"/>
-      <source>Offset distance</source>
-      <translation>Distància de separació</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="831"/>
-      <source>Change default style for new objects</source>
-      <translation>Canvia l'estil per defecte dels objectes nous</translation>
+      <location filename="WorkingPlane.py" line="704"/>
+      <source>Selected Shapes must define a plane</source>
+      <translation type="unfinished">Selected Shapes must define a plane</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -5927,6 +3495,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Els dos punts coincideixen</translation>
     </message>
     <message>
+      <location filename="mirror.py" line="113"/>
+      <source>mirrored</source>
+      <translation type="unfinished">mirrored</translation>
+    </message>
+    <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
       <translation>S'ha trobat 1 bloc: s'està explotant</translation>
@@ -5987,9 +3560,19 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Entrada incorrecta: ha de ser un posicionament, un vector o una rotació.</translation>
     </message>
     <message>
+      <location filename="make_arc_3points.py" line="130"/>
+      <source>Points:</source>
+      <translation>Punts:</translation>
+    </message>
+    <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
       <translation>Entrada incorrecta: ha de ser una llista o una tupla de tres punts exactament.</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="138"/>
+      <source>Placement:</source>
+      <translation>Ubicació:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
@@ -6000,6 +3583,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Entrada incorrecta: tipus de punts incorrectes.</translation>
+    </message>
+    <message>
+      <location filename="make_arc_3points.py" line="159"/>
+      <source>Cannot generate shape:</source>
+      <translation type="unfinished">Cannot generate shape:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -6219,11 +3807,21 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
 </translation>
     </message>
     <message>
+      <location filename="make_sketch.py" line="104"/>
+      <source>No shape found</source>
+      <translation type="unfinished">No shape found</translation>
+    </message>
+    <message>
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
       <translation>Totes les formes han de ser planes
 </translation>
+    </message>
+    <message>
+      <location filename="make_sketch.py" line="111"/>
+      <source>All Shapes must be planar</source>
+      <translation type="unfinished">All Shapes must be planar</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -6358,14 +3956,9 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>s'ha canviat el tipus 'Text d'Esbós' a 'Text'</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Activa aquesta capa</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Seleccioneu el contingut de la capa</translation>
+      <location filename="InitGui.py" line="46"/>
+      <source>Draft</source>
+      <translation>Calat</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
@@ -6568,14 +4161,32 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea ShapeString</translation>
     </message>
     <message>
-      <location filename="gui_downgrade.py" line="85"/>
-      <source>Downgrade</source>
-      <translation>Baixar de categoria</translation>
+      <location filename="importDXF.py" line="146"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>No s'han trobat en el sistema les llibreries d'importació/exportació DXF necessàries perquè FreeCAD pugui manegar el format DXF
+Per permetre que FreeCAD descarregui aquestes llibreries:
+ 1 - Carregui el banc de treball Esbós
+ 2 - Menú Editar &gt; Preferències &gt; Importa-Exporta &gt; DXF &gt; Activa descàrregues
+O descarregueu aquestes llibreries manualment tal com s'explica a
+https://github.com/yorikvanhavre/Draft-dxf-importer
+Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
       <translation>Seleccioneu un objecte per a actualitzar</translation>
+    </message>
+    <message>
+      <location filename="gui_downgrade.py" line="85"/>
+      <source>Downgrade</source>
+      <translation>Baixar de categoria</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="79"/>
@@ -6673,6 +4284,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea Cota (radial)</translation>
     </message>
     <message>
+      <location filename="gui_dimensions.py" line="508"/>
+      <source>Edge too short!</source>
+      <translation type="unfinished">Edge too short!</translation>
+    </message>
+    <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
       <translation>Les arestes no es creuen!</translation>
@@ -6713,11 +4329,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Promociona</translation>
     </message>
     <message>
-      <location filename="gui_move.py" line="205"/>
-      <source>Move</source>
-      <translation>Mou</translation>
-    </message>
-    <message>
       <location filename="gui_move.py" line="81"/>
       <source>Select an object to move</source>
       <translation>Seleccioneu un objecte per moure</translation>
@@ -6733,19 +4344,24 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Trieu el punt final</translation>
     </message>
     <message>
+      <location filename="gui_move.py" line="205"/>
+      <source>Move</source>
+      <translation>Mou</translation>
+    </message>
+    <message>
       <location filename="gui_rotate.py" line="282"/>
       <source>Some subelements could not be moved.</source>
       <translation>Alguns subelements no s'han pogut moure.</translation>
     </message>
     <message>
-      <location filename="gui_pointarray.py" line="122"/>
-      <source>Point array</source>
-      <translation>Matriu de punts</translation>
-    </message>
-    <message>
       <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
       <translation>Si us plau, seleccioneu exactament dos objectes, l'objecte base i l'objecte punt, abans d'invocar aquesta ordre.</translation>
+    </message>
+    <message>
+      <location filename="gui_pointarray.py" line="122"/>
+      <source>Point array</source>
+      <translation>Matriu de punts</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
@@ -6848,14 +4464,14 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Mostra la barra d'eines d'ajustar</translation>
     </message>
     <message>
-      <location filename="gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Matriu, Array</translation>
-    </message>
-    <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
       <translation>Seleccioneu un objecte per la matriu</translation>
+    </message>
+    <message>
+      <location filename="gui_array_simple.py" line="101"/>
+      <source>Array</source>
+      <translation>Matriu, Array</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="89"/>
@@ -6878,11 +4494,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea Polígon</translation>
     </message>
     <message>
-      <location filename="gui_mirror.py" line="123"/>
-      <source>Mirror</source>
-      <translation>Reflexa</translation>
-    </message>
-    <message>
       <location filename="gui_mirror.py" line="73"/>
       <source>Select an object to mirror</source>
       <translation>Seleccioneu un objecte per a reflectir</translation>
@@ -6893,6 +4504,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Trieu el punt de partida de la línia de reflexió</translation>
     </message>
     <message>
+      <location filename="gui_mirror.py" line="123"/>
+      <source>Mirror</source>
+      <translation>Reflexa</translation>
+    </message>
+    <message>
       <location filename="gui_mirror.py" line="204"/>
       <source>Pick end point of mirror line</source>
       <translation>Trieu el punt final de la línia de reflexió</translation>
@@ -6901,11 +4517,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
       <translation>Crea un punt</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="353"/>
-      <source>Scale</source>
-      <translation>Escala</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="87"/>
@@ -6923,9 +4534,24 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Trieu una distància de referència des del punt de base</translation>
     </message>
     <message>
+      <location filename="gui_scale.py" line="353"/>
+      <source>Scale</source>
+      <translation>Escala</translation>
+    </message>
+    <message>
       <location filename="gui_scale.py" line="203"/>
       <source>Some subelements could not be scaled.</source>
       <translation>Alguns subelements no s'han pogut escalar.</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="333"/>
+      <source>Unable to scale object:</source>
+      <translation>No es pot escalar l'objecte:</translation>
+    </message>
+    <message>
+      <location filename="gui_scale.py" line="337"/>
+      <source>Unable to scale objects:</source>
+      <translation>No es poden escalar els objectes:</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="340"/>
@@ -6978,11 +4604,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Inverteix l'acotació</translation>
     </message>
     <message>
-      <location filename="gui_stretch.py" line="478"/>
-      <source>Stretch</source>
-      <translation>Estira</translation>
-    </message>
-    <message>
       <location filename="gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
       <translation>Seleccioneu un objecte per estirar</translation>
@@ -7013,6 +4634,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Transformant un rectangle en un filferro</translation>
     </message>
     <message>
+      <location filename="gui_stretch.py" line="478"/>
+      <source>Stretch</source>
+      <translation>Estira</translation>
+    </message>
+    <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
       <translation>Commuta la graella</translation>
@@ -7028,11 +4654,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea un rectangle</translation>
     </message>
     <message>
-      <location filename="gui_draft2sketch.py" line="143"/>
-      <source>Convert Draft/Sketch</source>
-      <translation>Converteix Esbós/Croquis</translation>
-    </message>
-    <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
       <translation>Seleccioneu un objecte per convertir.</translation>
@@ -7046,6 +4667,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
       <translation>Converteix a esbós</translation>
+    </message>
+    <message>
+      <location filename="gui_draft2sketch.py" line="143"/>
+      <source>Convert Draft/Sketch</source>
+      <translation>Converteix Esbós/Croquis</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
@@ -7083,14 +4709,14 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>No s`ha trobat cap punt d'edició per l'objecte seleccionat</translation>
     </message>
     <message>
+      <location filename="gui_edit.py" line="815"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation>S'han seleccionat massa objectes, el màxim està establert en:</translation>
+    </message>
+    <message>
       <location filename="gui_edit.py" line="823"/>
       <source>: this object is not editable</source>
       <translation>: aquest objete no es editable</translation>
-    </message>
-    <message>
-      <location filename="gui_patharray.py" line="143"/>
-      <source>Path array</source>
-      <translation>Matriu de camí</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
@@ -7098,14 +4724,14 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Si us plau, seleccioneu exactament dos objectes, l'objecte base i l'objecte camí abans d'invocar aquesta ordre.</translation>
     </message>
     <message>
+      <location filename="gui_patharray.py" line="143"/>
+      <source>Path array</source>
+      <translation>Matriu de camí</translation>
+    </message>
+    <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
       <translation>Matriu de camí retorçat</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1094"/>
-      <source>Trimex</source>
-      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="94"/>
@@ -7116,6 +4742,11 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <location filename="gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Trieu la distància</translation>
+    </message>
+    <message>
+      <location filename="gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="483"/>
@@ -7181,26 +4812,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <location filename="gui_selectplane.py" line="534"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="73"/>
-      <source>No active command.</source>
-      <translation>Cap ordre activa.</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="92"/>
-      <source>Finish line</source>
-      <translation>Acaba la línia</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="118"/>
-      <source>Close line</source>
-      <translation>Tanca la línia</translation>
-    </message>
-    <message>
-      <location filename="gui_lineops.py" line="144"/>
-      <source>Undo line</source>
-      <translation>Desfés la línia</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="64"/>
@@ -7378,11 +4989,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Crea un text</translation>
     </message>
     <message>
-      <location filename="gui_rotate.py" line="279"/>
-      <source>Rotate</source>
-      <translation>Rotació</translation>
-    </message>
-    <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
       <translation>Seleccioneu un objecte per girar</translation>
@@ -7425,117 +5031,34 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <translation>Trieu angle de rotació</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="750"/>
-      <source>Global</source>
-      <translation>Global</translation>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Activa aquesta capa</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="748"/>
-      <source>Coordinates relative to last point or to coordinate system origin
-if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Seleccioneu el contingut de la capa</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="753"/>
-      <source>Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <location filename="gui_lineops.py" line="73"/>
+      <source>No active command.</source>
+      <translation>Cap ordre activa.</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="759"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <location filename="gui_lineops.py" line="92"/>
+      <source>Finish line</source>
+      <translation>Acaba la línia</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="771"/>
-      <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <location filename="gui_lineops.py" line="118"/>
+      <source>Close line</source>
+      <translation>Tanca la línia</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1249"/>
-      <source>Local u0394X</source>
-      <translation>u0394X local</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1250"/>
-      <source>Local u0394Y</source>
-      <translation>u0394Y local</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1251"/>
-      <source>Local u0394Z</source>
-      <translation>u0394Z local</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1257"/>
-      <source>Global u0394X</source>
-      <translation>u0394X global</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1258"/>
-      <source>Global u0394Y</source>
-      <translation>u0394Y global</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="1259"/>
-      <source>Global u0394Z</source>
-      <translation>u0394Z global</translation>
-    </message>
-    <message>
-      <location filename="DraftGui.py" line="2047"/>
-      <source>Autogroup:</source>
-      <translation>Agrupament automàtic:</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="130"/>
-      <source>Points:</source>
-      <translation>Punts:</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="138"/>
-      <source>Placement:</source>
-      <translation>Ubicació:</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="333"/>
-      <source>Unable to scale object:</source>
-      <translation>No es pot escalar l'objecte:</translation>
-    </message>
-    <message>
-      <location filename="gui_scale.py" line="337"/>
-      <source>Unable to scale objects:</source>
-      <translation>No es poden escalar els objectes:</translation>
-    </message>
-    <message>
-      <location filename="gui_edit.py" line="815"/>
-      <source>Too many objects selected, max number set to:</source>
-      <translation>S'han seleccionat massa objectes, el màxim està establert en:</translation>
-    </message>
-    <message>
-      <location filename="mirror.py" line="113"/>
-      <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
-    </message>
-    <message>
-      <location filename="make_arc_3points.py" line="159"/>
-      <source>Cannot generate shape:</source>
-      <translation type="unfinished">Cannot generate shape:</translation>
-    </message>
-    <message>
-      <location filename="WorkingPlane.py" line="696"/>
-      <source>Selected Shapes must define a plane
-</source>
-      <translation type="unfinished">Selected Shapes must define a plane
-</translation>
-    </message>
-    <message>
-      <location filename="gui_trimex.py" line="222"/>
-      <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <location filename="gui_lineops.py" line="144"/>
+      <source>Undo line</source>
+      <translation>Desfés la línia</translation>
     </message>
   </context>
   <context>
@@ -7554,6 +5077,2631 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation>s'ha exportat amb èxit</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_CloseLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="124"/>
+      <source>Close Line</source>
+      <translation>Tanca la línia</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="125"/>
+      <source>Closes the line being drawn, and finishes the operation.</source>
+      <translation>Tanca la línia que s'esta dibuixant, i finalitza l'operació.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_FinishLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="98"/>
+      <source>Finish line</source>
+      <translation>Acaba la línia</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="99"/>
+      <source>Finishes a line without closing it.</source>
+      <translation>Finalitza una línia sense tancar-la.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UndoLine</name>
+    <message>
+      <location filename="gui_lineops.py" line="151"/>
+      <source>Undo last segment</source>
+      <translation>Desfés l'últim segment</translation>
+    </message>
+    <message>
+      <location filename="gui_lineops.py" line="152"/>
+      <source>Undoes the last drawn segment of the line being drawn.</source>
+      <translation>Desfà l'últim segment dibuixat de la línia que s'està dibuixant.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ImportDWG</name>
+    <message>
+      <location filename="importDWG.py" line="233"/>
+      <source>Conversion successful</source>
+      <translation>Conversió correcta</translation>
+    </message>
+    <message>
+      <location filename="importDWG.py" line="277"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
+      <source>Annotation Styles Editor</source>
+      <translation>Editor d'estils d'anotació</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
+      <source>Style name</source>
+      <translation>Nom de l'estil</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <source>The name of your style. Existing style names can be edited.</source>
+      <translation>El nom del vostre estil. Els noms d'estil existent poden ser editats.</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
+      <source>Add new...</source>
+      <translation>Afegeix nou...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
+      <source>Renames the selected style</source>
+      <translation>Canvia el nom als elements seleccionats</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
+      <source>Rename</source>
+      <translation>Reanomena</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
+      <source>Deletes the selected style</source>
+      <translation>Esborra l'estil seleccionat</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
+      <source>Delete</source>
+      <translation>Elimina</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <source>Import styles from json file</source>
+      <translation>Importa els estils d'un fitxer JSON</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
+      <source>Export styles to json file</source>
+      <translation>Exporta els estils a un fitxer JSON</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
+      <source>Text</source>
+      <translation>Text</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <source>Font size in the system units</source>
+      <translation>Mida de la font en unitats del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <source>Font size</source>
+      <translation>Mida del tipus de lletra</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
+      <source>Line spacing in system units</source>
+      <translation>Espai entre línies en unitats del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
+      <source>Line spacing</source>
+      <translation>Interlineat</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="190"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>Font a emprar per a textos i dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
+      <source>Font name</source>
+      <translation>Nom de la font</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <source>Units</source>
+      <translation>Unitats</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
+      <source>A multiplier factor that affects the size of texts and markers</source>
+      <translation>Un factor multiplicador que afecta la mida del text i marcadors</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <source>Scale multiplier</source>
+      <translation>Multiplicador d'escala</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
+      <source>The number of decimals to show for dimension values</source>
+      <translation>El nombre de decimals pels valors de les acotacions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
+      <source>Decimals</source>
+      <translation>Decimals</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
+      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
+      <translation>Especifiqueu una unitat de longitud vàlida com ara mm, m, in, ft, per forçar que es mostri el valor de l'acotació en aquesta unitat</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
+      <source>Unit override</source>
+      <translation>Substitució d'unitat</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="315"/>
+      <source>If it is checked it will show the unit next to the dimension value</source>
+      <translation>Si està marcada l'opció, mostrarà la unitat al costat del valor de la cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <source>Show unit</source>
+      <translation>Mostra les unitats</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
+      <source>Line and arrows</source>
+      <translation>Línies i fletxes</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="433"/>
+      <source>The width of the dimension lines</source>
+      <translation>L'amplària de les línies d'acotació</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
+      <source>Line width</source>
+      <translation>Amplada de línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
+      <translation>Distància a la qual les línies d'extensió s'allarguen més enllà de la línia de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <source>Extension overshoot</source>
+      <translation>Superació de l'extensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="357"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <source>The size of the dimension arrows or markers in system units</source>
+      <translation>Mida de les fletxes de la cota o marcadors en unitats del sistema</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
+      <source>Arrow size</source>
+      <translation>Mida de la fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="367"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
+      <source>If it is checked it will display the dimension line</source>
+      <translation>Si està marcada l'opció, es mostrarà la línia de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
+      <source>Show lines</source>
+      <translation>Mostra les línies</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <source>The distance that the dimension line is additionally extended</source>
+      <translation>Distància addicional que s'extendrà la línia de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <source>Dimension overshoot</source>
+      <translation>Superació de la dimensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="387"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
+      <source>The length of the extension lines</source>
+      <translation>Longitud de les línies d'extensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <source>Extension lines</source>
+      <translation>Línies d'extensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
+      <source>The type of arrows or markers to use at the end of dimension lines</source>
+      <translation>Tius de fletxa o marcador que s'emprarà al final de les línies de cota</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
+      <source>Arrow type</source>
+      <translation>Tipus de fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="407"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <source>The color of dimension lines, arrows and texts</source>
+      <translation>El color de les línies d'acotació, fletxes i textos</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
+      <source>Line / text color</source>
+      <translation>Línia / text color</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <source>Dot</source>
+      <translation>Punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
+      <source>Circle</source>
+      <translation>Cercle</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="486"/>
+      <source>Arrow</source>
+      <translation>Fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
+      <source>Tick</source>
+      <translation>Tick</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="496"/>
+      <source>Tick-2</source>
+      <translation>Tick-2</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftCircularArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
+      <source>Circular array</source>
+      <translation>Matriu circular</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>Les coordenades del punt per on passa l’eix de rotació.
+Canvieu la direcció del propi eix a l’editor de propietats.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
+      <source>Center of rotation</source>
+      <translation>Centre de rotació</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="69"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="83"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Reinicia les coordenades del centre de rotació.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
+      <source>Reset point</source>
+      <translation>Reinicia el punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
+Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
+      <source>Fuse</source>
+      <translation>Combina</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
+Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation>Matriu d'enllaç</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="175"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
+      <source>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</source>
+      <translation>Distància d'un element en un anell de la matriu a l'element següent del mateix anell.
+No pot ser zero.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="179"/>
+      <source>Tangential distance</source>
+      <translation>Distància tangencial</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="200"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="210"/>
+      <source>Distance from one layer of objects to the next layer of objects.</source>
+      <translation>Distància d'una capa dels objectes a la capa d'objectes següent.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
+      <source>Radial distance</source>
+      <translation>Distància radial</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="223"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
+      <source>The number of symmetry lines in the circular array.</source>
+      <translation>El nombre de línies de simetria de la matriu circular.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="236"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
+      <source>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Nombre de capes circulars o anells que s'han de crear, inclosa una còpia de l'objecte original.
+Ha de ser pel cap baix 2.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
+      <source>Number of circular layers</source>
+      <translation>Nombre de capes circulars</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
+      <source>Symmetry</source>
+      <translation>Simetria</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Espai reservat per a la icona)</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftOrthoArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
+      <source>Orthogonal array</source>
+      <translation>Matriu ortogonal</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
+      <source>Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distància entre els elements en direcció Z.
+Normalment, només és necessari el valor Z; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
+Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
+      <source>Z intervals</source>
+      <translation>Intervals en Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="57"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="302"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="64"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="253"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="295"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="392"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="71"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="246"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="378"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="122"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="262"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
+      <source>Reset the distances.</source>
+      <translation>Tornar a establir les distàncies.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
+      <source>Reset Z</source>
+      <translation>Reinicia Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
+Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
+      <source>Fuse</source>
+      <translation>Combina</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
+Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
+      <source>Link array</source>
+      <translation>Matriu d'enllaç</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Espai reservat per a la icona)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
+      <source>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distància entre els elements en la direcció X.
+Normalment, només és necessari el valor X; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
+Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
+      <source>X intervals</source>
+      <translation>Intervals en X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
+      <source>Reset X</source>
+      <translation>Reinicia X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
+      <source>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation>Distància entre els elements en direcció Y.
+Normalment, només és necessari el valor Y; els altres dos valors poden possibilitar un canvi addicional en les seves direccions respectives.
+Els valors negatius donaran lloc a còpies produïdes en la direcció negativa.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
+      <source>Y intervals</source>
+      <translation>Intervals en Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
+      <source>Reset Y</source>
+      <translation>Reinicia Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
+      <source>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</source>
+      <translation>Nombre d'elements de la matriu en la direcció especificada, inclosa una còpia de l'objecte original.
+El nombre ha de ser com a mínim 1 en cada direcció.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
+      <source>Number of elements</source>
+      <translation>Nombre d'elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftPolarArrayTaskPanel</name>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
+      <source>Polar array</source>
+      <translation>Matriu polar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation>Les coordenades del punt per on passa l’eix de rotació.
+Canvieu la direcció del propi eix a l’editor de propietats.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
+      <source>Center of rotation</source>
+      <translation>Centre de rotació</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="69"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="115"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="122"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation>Reinicia les coordenades del centre de rotació.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
+      <source>Reset point</source>
+      <translation>Reinicia el punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation>Si està marcada, els objectes que resulten en la matriu es fusionaran si es toquen.
+Això només funciona si "Matriu d'enllaç" està desactivada.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
+      <source>Fuse</source>
+      <translation>Combina</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation>Si està marcada, l'objecte que en resulte serà una "matriu d'enllaç" en lloc d'una matriu regular.
+Una matriu d'enllaç és més eficient quan es creen diverses còpies, però no es pot fusionar.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation>Matriu d'enllaç</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="175"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
+      <source>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</source>
+      <translation>Angle d'escombratge de la distribució polar.
+Un angle negatiu produeix un patró polar en la direcció oposada.
+El valor màxim absolut és de 360 graus.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
+      <source>Polar angle</source>
+      <translation>Angle polar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="208"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="219"/>
+      <source>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</source>
+      <translation>Nombre d'elements de la matriu, inclosa una còpia de l'objecte original. Ha de ser almenys 2.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
+      <source>Number of elements</source>
+      <translation>Nombre d'elements</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
+      <source>(Placeholder for the icon)</source>
+      <translation>(Espai reservat per a la icona)</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftShapeStringGui</name>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="26"/>
+      <source>ShapeString</source>
+      <translation>Forma d'Etiqueta</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="46"/>
+      <location filename="../ui/TaskShapeString.ui" line="56"/>
+      <location filename="../ui/TaskShapeString.ui" line="73"/>
+      <source>Enter coordinates or select point with mouse.</source>
+      <translation>Entrar coordenades o selecionar un punt amb el ratolì.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="66"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="83"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="90"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="101"/>
+      <source>Font file</source>
+      <translation>Fitxer de tipus de lletra</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="115"/>
+      <source>Text to be made into ShapeString</source>
+      <translation>Text per a convertir en TextForma</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="122"/>
+      <source>String</source>
+      <translation>Cadena</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="133"/>
+      <source>Height</source>
+      <translation>Alçària</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="140"/>
+      <source>Height of the result</source>
+      <translation>Alçada del resultat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="186"/>
+      <source>Reset 3d point selection</source>
+      <translation>Redefinir selecció de punts 3d</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="192"/>
+      <source>Reset Point</source>
+      <translation>Reiniciar Punt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Form</name>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="14"/>
+      <source>Working plane setup</source>
+      <translation>Configuració del pla de treball</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="20"/>
+      <source>Select a face or working plane proxy or 3 vertices.
+Or choose one of the options below</source>
+      <translation>Seleccioneu una cara o un pla de treball intermediari o 3 vèrtexs. O trieu una de les opcions següents</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="31"/>
+      <source>Sets the working plane to the XY plane (ground plane)</source>
+      <translation>Estableix el pla de treball al pla XY (pla del terra)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="34"/>
+      <source>Top (XY)</source>
+      <translation>Part superior (XY)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="41"/>
+      <source>Sets the working plane to the XZ plane (front plane)</source>
+      <translation>Estableix el pla de treball al pla XZ (pla frontal)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="44"/>
+      <source>Front (XZ)</source>
+      <translation>Part de davant (XZ)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="51"/>
+      <source>Sets the working plane to the YZ plane (side plane)</source>
+      <translation>Estableix el pla de treball al pla YZ (pla lateral)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="54"/>
+      <source>Side (YZ)</source>
+      <translation>Al costat (YZ)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="61"/>
+      <source>Sets the working plane facing the current view</source>
+      <translation>Estableix el pla de treball encarat amb la vista actual</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="64"/>
+      <source>Align to view</source>
+      <translation>Alinea a la vista</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="71"/>
+      <source>The working plane will align to the current
+view each time a command is started</source>
+      <translation>El pla de treball s’alinearà a la vista actual cada vegada que s'inicia una ordre</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="78"/>
+      <source>Automatic</source>
+      <translation>Automàtica</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="87"/>
+      <source>An optional offset to give to the working plane
+above its base position. Use this together with one
+of the buttons above</source>
+      <translation>Una separació opcional per al pla de treball damunt de la seva posició de base. Utilitzeu-ho juntament amb un dels botons de dalt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="99"/>
+      <source>Offset</source>
+      <translation>Equidistancia (ofset)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="106"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="118"/>
+      <source>If this is selected, the working plane will be
+centered on the current view when pressing one
+of the buttons above</source>
+      <translation>Si aquesta opció està seleccionada, el pla de treball se centrarà en la vista actual en prémer un dels botons de dalt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="111"/>
+      <source>Center plane on view</source>
+      <translation>Pla central de la vista</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="135"/>
+      <source>Or select a single vertex to move the current
+working plane without changing its orientation.
+Then, press the button below</source>
+      <translation>O seleccioneu un vèrtex simple per a moure el pla de treball actual sense canviar la seua orientació. A continuació, premeu el botó següent</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="147"/>
+      <source>Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view</source>
+      <translation>Mou el pla de treball sense canviar la seva orientació. Si no hi ha cap punt seleccionat, el pla es mourà al centre de la vista</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="152"/>
+      <source>Move working plane</source>
+      <translation>Mou el pla de treball</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="161"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="171"/>
+      <source>The spacing between the smaller grid lines</source>
+      <translation>L'espaiat entre les línies de la graella més xicotetes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="164"/>
+      <source>Grid spacing</source>
+      <translation>Espaiat de la quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="181"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="191"/>
+      <source>The number of squares between each main line of the grid</source>
+      <translation>El nombre de quadrats entre cada línia principal de la graella</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="184"/>
+      <source>Main line every</source>
+      <translation>Línia principal cada</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="198"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="207"/>
+      <source>The distance at which a point can be snapped to
+when approaching the mouse. You can also change this
+value by using the [ and ] keys while drawing</source>
+      <translation>La distància a la qual es pot ajustar un punt
+en acostar-se al ratolí. També podeu canviar aquest
+valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="212"/>
+      <source>Snapping radius</source>
+      <translation>Ajust Radi</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation>Extensió de la graella</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> línies</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
+      <source>Centers the view on the current working plane</source>
+      <translation>Centra la vista en el pla de treball actual</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
+      <source>Center view</source>
+      <translation>Centra la vista</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
+      <source>Resets the working plane to its previous position</source>
+      <translation>Reinicia el pla de treball a la seva posició anterior</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
+      <source>Previous</source>
+      <translation>Anterior</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
+      <source>Style settings</source>
+      <translation>Ajustaments d'estil</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
+      <source>Fills the values below with a stored style preset</source>
+      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
+      <source>Load preset</source>
+      <translation type="unfinished">Load preset</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
+      <source>Save current style as a preset...</source>
+      <translation type="unfinished">Save current style as a preset...</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
+      <source>Lines and faces</source>
+      <translation>Línies i cares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="66"/>
+      <source>The color of faces</source>
+      <translation>El color de les cares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
+      <source>Draw style</source>
+      <translation>Estil de dibuix</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
+      <source>Line color</source>
+      <translation>Color de línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="87"/>
+      <source>Line width</source>
+      <translation>Amplada de línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="94"/>
+      <source>The color of lines</source>
+      <translation>El color de les línies</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="101"/>
+      <source>The line style</source>
+      <translation>L'estil de la línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
+      <source>Solid</source>
+      <translation>Sòlid</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="110"/>
+      <source>Dashed</source>
+      <translation>Discontínua</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="115"/>
+      <source>Dotted</source>
+      <translation>Puntejada</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="120"/>
+      <source>DashDot</source>
+      <translation>Guió punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="128"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="135"/>
+      <source>Display mode</source>
+      <translation>Mode de visualització</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="142"/>
+      <source>The display mode for faces</source>
+      <translation>El tipus de visualització per les cares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="146"/>
+      <source>Flat Lines</source>
+      <translation>Linies planes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="151"/>
+      <source>Wireframe</source>
+      <translation>Model de filferro</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
+      <source>Shaded</source>
+      <translation>Ombrejat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="161"/>
+      <source>Points</source>
+      <translation>Punts</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="169"/>
+      <source>Shape color</source>
+      <translation>Color de la forma</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="176"/>
+      <source>Transparency</source>
+      <translation>Transparència</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
+      <source>The transparency of faces</source>
+      <translation>La transparència de les cares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
+      <source> %</source>
+      <translation> %</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <source>Annotations</source>
+      <translation>Anotacions</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="205"/>
+      <source>The type of dimension arrows</source>
+      <translation>El tipus de les fletxes de les cotes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="209"/>
+      <source>Dot</source>
+      <translation>Punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <source>Circle</source>
+      <translation>Cercle</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
+      <source>Arrow</source>
+      <translation>Fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <source>Tick</source>
+      <translation>Tick</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
+      <source>Tick-2</source>
+      <translation>Tick-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
+      <source>Text font</source>
+      <translation>Tius de lletra</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="244"/>
+      <source>Text color</source>
+      <translation>Color del text</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="257"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>Font a emprar per a textos i dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="264"/>
+      <source>Text size</source>
+      <translation>Mida del text</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
+      <source>The color of texts and dimension texts</source>
+      <translation>El color dels textos i dels textos de les cotes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="278"/>
+      <source>The size of texts and dimension texts</source>
+      <translation>Mida dels textos i del textos de les cotes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
+      <source>Arrow style</source>
+      <translation>Estil de la fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
+      <source>If the unit suffix is shown on dimension texts or not</source>
+      <translation>Si es mostra o no el sufix d'unitat als textos de les cotes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="308"/>
+      <source>The size of dimension arrows</source>
+      <translation>Mida de les fletxes de les cotes</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
+      <source>Show unit</source>
+      <translation>Mostra les unitats</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="325"/>
+      <source>Arrow size</source>
+      <translation>Mida de la fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="332"/>
+      <source>Unit override</source>
+      <translation>Substitució d'unitat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="339"/>
+      <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
+      <translation>Unitat que s'utilitzarà per les cotes. Deixeu-la en blanc per usar l'unitat actual del FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="346"/>
+      <source>Text spacing</source>
+      <translation>Espaiat de text</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="353"/>
+      <source>The space between the text and the dimension line</source>
+      <translation type="unfinished">The space between the text and the dimension line</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
+      <source>Line spacing</source>
+      <translation>Interlineat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
+      <source>The spacing between different lines of text</source>
+      <translation type="unfinished">The spacing between different lines of text</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="382"/>
+      <source>Apply above style to selected object(s)</source>
+      <translation type="unfinished">Apply above style to selected object(s)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
+      <source>Selected</source>
+      <translation>Seleccionat</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
+      <source>Texts/dims</source>
+      <translation type="unfinished">Texts/dims</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="23"/>
+      <source>pattern files (*.pat)</source>
+      <translation type="unfinished">pattern files (*.pat)</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="30"/>
+      <source>PAT file:</source>
+      <translation type="unfinished">PAT file:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="37"/>
+      <source>Scale</source>
+      <translation>Escala</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="44"/>
+      <source>Pattern:</source>
+      <translation type="unfinished">Pattern:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="64"/>
+      <source>Rotation:</source>
+      <translation>Rotació:</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogHatch.ui" line="71"/>
+      <source>°</source>
+      <translation>º</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDraft</name>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="14"/>
+      <source>General settings</source>
+      <translation>Configuració general</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="32"/>
+      <source>General Draft Settings</source>
+      <translation>Configuracions Generals de Projecte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="40"/>
+      <source>Default working plane</source>
+      <translation>Pla de treball per defecte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="67"/>
+      <source>None</source>
+      <translation>Cap</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="72"/>
+      <source>XY (Top)</source>
+      <translation>XY (dalt)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="77"/>
+      <source>XZ (Front)</source>
+      <translation>XZ (Front.)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="82"/>
+      <source>YZ (Side)</source>
+      <translation>YZ (costat)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="94"/>
+      <source>Internal precision level</source>
+      <translation>Nivell de precisió interna</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="120"/>
+      <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
+      <translation>El nombre de decimals en les operacions de coordenades internes (p. ex. 3 = 0,001). Els usuaris de FreeCAD consideren el millor rang els valors entre 6 i 8.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="143"/>
+      <source>Tolerance</source>
+      <translation>Tolerància</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="169"/>
+      <source>This is the value used by functions that use a tolerance.
+Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
+      <translation>Aquest és el valor utilitzat per a funcions que utilitzen una tolerància.
+Els valors amb diferències per sota d'aquest valor es tractaran com a iguals. Aquest valor aviat serà obsolet, així que el nivell de precisió superior controla tots dós.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="194"/>
+      <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
+      <translation>Si es marca aquesta opció, la llista desplegable de capes també mostrarà grups, cosa que us permetrà afegir objectes automàticament a grups.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="197"/>
+      <source>Show groups in layers list drop-down button</source>
+      <translation>Mostra grups en el botó de la llista desplegable de capes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="216"/>
+      <source>Draft tools options</source>
+      <translation>Opcions d'eines d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="230"/>
+      <source>When drawing lines, set focus on Length instead of X coordinate.
+This allows to point the direction and type the distance.</source>
+      <translation>En dibuixar línies, fixa el focus en la llargària en lloc de en les coordenades X.
+Això permet assenyalar la direcció i introduir la distància.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="234"/>
+      <source>Set focus on Length instead of X coordinate</source>
+      <translation>Estableix el focus en la llargària en lloc de en les coordenades X</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="247"/>
+      <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
+      <translation>Si s'ha establert aquesta opció, en crear objectes Esbós a la part superior d'una cara existent d'altre objecte, la propietat «Suport» de l'objecte Esbós s'establirà en l'objecte base. Aquest era el comportament estàndard abans de FreeCAD 0.19</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="250"/>
+      <source>Set the Support property when possible</source>
+      <translation>Estableix la propietat Suport quan siga possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <source>If this is checked, objects will appear as filled by default.
+Otherwise, they will appear as wireframe</source>
+      <translation>Si està marcada, els objectes apareixeran plens per defecte. En cas contrari, apareixeran com a model de filferro</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="267"/>
+      <source>Fill objects with faces whenever possible</source>
+      <translation>Omplir els objectes amb cares sempre que sigui possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="283"/>
+      <source>Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</source>
+      <translation>Normalment, després de copiar objectes, selecciona les còpies. Si aquesta opció està marcada, se seleccionaran, en el seu lloc, els objectes base.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="287"/>
+      <source>Select base objects after copying</source>
+      <translation>Permet seleccionar objectes base després de copiar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="300"/>
+      <source>If this is checked, copy mode will be kept across command,
+otherwise commands will always start in no-copy mode</source>
+      <translation>Si està marcada, el mode copia es mantindrà d'una ordre a l'altra, en cas contrari les ordres sempre s'iniciaran en el mode no-còpia</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="304"/>
+      <source>Global copy mode</source>
+      <translation>Mode de còpia global</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="320"/>
+      <source>Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
+      <translation>Força les eines d'esbós a crear primitives de peça enlloc d'objectes esbós.
+Tingueu en compte que això no és totalment compatible i que molts objectes no es poden editar amb els modificadors d'esbós.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="324"/>
+      <source>Use Part Primitives when available</source>
+      <translation>Utilitza Primitives de peça quan sigui possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="341"/>
+      <source>Prefix labels of Clones with:</source>
+      <translation>Etiquetes dels clons del prefix:</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="372"/>
+      <source>Construction Geometry</source>
+      <translation>Geometria de construcció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="380"/>
+      <source>Construction group name</source>
+      <translation>Nom del grup de construcció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="387"/>
+      <source>This is the default group name for construction geometry</source>
+      <translation>Aquest es el nom del grup predeterminat per la geometria de la construcció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="390"/>
+      <source>Construction</source>
+      <translation>Construcció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="407"/>
+      <source>Construction geometry color</source>
+      <translation>Color de geometria de construcció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="427"/>
+      <source>This is the default color for objects being drawn while in construction mode.</source>
+      <translation>Aquest es el color predeterminat per objectes que estan sent dibuixats en el mode de construcció.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="14"/>
+      <source>Visual settings</source>
+      <translation>Escenes visuals</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="26"/>
+      <source>Visual Settings</source>
+      <translation>Escenes visuals</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="34"/>
+      <source>Snap symbols style</source>
+      <translation>Estil de símbols de ajust</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="54"/>
+      <source>Draft classic style</source>
+      <translation>Estil clàssic</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="59"/>
+      <source>Bitsnpieces style</source>
+      <translation>Estil Bitsnpieces</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="80"/>
+      <source>Color</source>
+      <translation>Color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="87"/>
+      <source>The default color for snap symbols</source>
+      <translation>El color predeterminat per símbols de ajust ràpid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="111"/>
+      <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
+      <translation>Triar aquesta opció si desitja utilitzar el color/ample de línia de la barra d'eines per defecte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="114"/>
+      <source>Save current color and linewidth across sessions</source>
+      <translation>Guardar color actual i linewidth a través de les sessions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="131"/>
+      <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
+      <translation>Si està marcada, apareix un giny que indica l'orientació de pla de treball actual durant les operacions de dibuix</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="134"/>
+      <source>Show Working Plane tracker</source>
+      <translation>Mostra el pla de treball rastrejador</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="151"/>
+      <source>Default template sheet</source>
+      <translation>Full de plantilla per defecte</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="177"/>
+      <source>The default template to use when creating a new drawing sheet</source>
+      <translation>La plantilla per defecte a utilitzar quan es crea un nou full de dibuix</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="194"/>
+      <source>Alternate SVG patterns location</source>
+      <translation type="unfinished">Alternate SVG patterns location</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="220"/>
+      <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
+      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="237"/>
+      <source>SVG pattern resolution</source>
+      <translation type="unfinished">SVG pattern resolution</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation>Resolució a la qual es dibuixaran els patrons. El valor per defecte és 128. Valors més alts donen resolucions millors, valors més baixos fan el dibuix més ràpid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>SVG pattern default size</source>
+      <translation type="unfinished">SVG pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size for SVG patterns</source>
+      <translation type="unfinished">The default size for SVG patterns</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
+      <translation>Marcar si voleu preservar el color de les cares mentre s'estigui revertint o actualitzant (sols splitFaces i makeShell)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
+      <source>Preserve colors of faces during downgrade/upgrade</source>
+      <translation>Preserva el color de les cares durant la downgrade/upgrade</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
+      <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
+      <translation>Marqueu això si voleu que els noms de les cares derivin del nom de l'objecte d'origen i viceversa quan s'estigui revertint o actualitzant (sols splitFaces i makeShell)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <source>Preserve names of faces during downgrade/upgrade</source>
+      <translation>Preserva el nom de les cares durant la reversió i l'actualització</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
+      <source>Drawing view line definitions</source>
+      <translation>Definicions de línia de vista de dibuix</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
+      <source>Dashed line definition</source>
+      <translation>Definició de la línia discontínua</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="395"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="438"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
+      <source>An SVG linestyle definition</source>
+      <translation>Una definició d'estil de línia SVG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
+      <source>0.09,0.05</source>
+      <translation>0.09,0.05</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
+      <source>Dashdot line definition</source>
+      <translation>Dashdot definició de línia</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
+      <source>0.09,0.05,0.02,0.05</source>
+      <translation>0.09,0.05,0.02,0.05</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
+      <source>Dotted line definition</source>
+      <translation>Definició de la línia de punts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
+      <source>0.02,0.02</source>
+      <translation>0.02,0.02</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <source>Texts and dimensions</source>
+      <translation>Textos i dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="26"/>
+      <source>Text settings</source>
+      <translation>Configuració de text</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="34"/>
+      <source>Font family</source>
+      <translation>Tipus de Font</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="47"/>
+      <source>This is the default font name for all Draft texts and dimensions.
+It can be a font name such as "Arial", a default style such as "sans", "serif"
+or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
+such as "Arial:Bold"</source>
+      <translation>Aquest és el nom de tipus de lletra per defecte per a tots els textos d'Esbós i les cotes. Pot ser un nom de lletra com "Arial", un estil per defecte com "sans", "serif" o "mono" o una família com "Arial, Helvètica", una tipografia sans o un nom amb un estil com «Arial: negreta"</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="59"/>
+      <source>Internal font</source>
+      <translation>Tipus de lletra interna</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="76"/>
+      <source>Font size</source>
+      <translation>Mida del tipus de lletra</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="89"/>
+      <source>Default height for texts and dimensions</source>
+      <translation>Alçada d'omissió per a textos i dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="116"/>
+      <source>Dimension settings</source>
+      <translation>Configuració de la dimensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="124"/>
+      <source>Display mode</source>
+      <translation>Mode de visualització</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="144"/>
+      <source>text above (2D)</source>
+      <translation>text (2D) per sobre</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="149"/>
+      <source> text inside (3D)</source>
+      <translation> text dins (3D)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="161"/>
+      <source>Number of decimals</source>
+      <translation>Nombre de decimals</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
+      <source>Extension lines size</source>
+      <translation>Tamany de les linies d’extensiò</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="208"/>
+      <source>The default size of dimensions extension lines</source>
+      <translation>La mida per defecte de línies d'extensió de dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <source>Extension line overshoot</source>
+      <translation>Superació de la línia d'extensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="244"/>
+      <source>The default length of extension line above dimension line</source>
+      <translation>La llargària per defecte de l'extensió de la línia per sobre de la línia de dimensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <source>Dimension line overshoot</source>
+      <translation>Superació de la línia de dimensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <source>The default distance the dimension line is extended past extension lines</source>
+      <translation>La distància per defecte de la línia de dimensió s'estén més enllà de les línies d'extensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="309"/>
+      <source>Arrows style</source>
+      <translation>Estil de fletxes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <source>Dot</source>
+      <translation>Punt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
+      <source>Circle</source>
+      <translation>Cercle</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
+      <source>Arrow</source>
+      <translation>Fletxa</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
+      <source>Tick</source>
+      <translation>Tick</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="343"/>
+      <source>Tick-2</source>
+      <translation>Tick-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="355"/>
+      <source>Arrows size</source>
+      <translation>Mida de les fletxes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="362"/>
+      <source>The default size of arrows</source>
+      <translation>La mida per defecte de fletxes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
+      <source>Text orientation</source>
+      <translation>Orientació de text</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="395"/>
+      <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
+      <translation>Això és l'orientació dels textos dimensió quan aquestes dimensions són verticals. Es deixa per defecte, que és l'estàndard ISO.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="405"/>
+      <source>Left (ISO standard)</source>
+      <translation>Esquerra (norma ISO)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
+      <source>Right</source>
+      <translation>Dreta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="422"/>
+      <source>Text spacing</source>
+      <translation>Espaiat de text</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="429"/>
+      <source>The space between the dimension line and the dimension text</source>
+      <translation>L'espai entre la línia de la dimensió i el text de la dimensió</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="455"/>
+      <source>Show the unit suffix in dimensions</source>
+      <translation>Mostrar el sufix d'unitat en dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation>Sobreescriu la unitat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation>Si el camp es deixa en blanc, les mesures de les cotes es mostraran en l'unitat actual definida a FreeCAD. Si s'indica una unitat aqui, com ara m o cm, podeu forçar a que es mostrin les cotes en aquesta unitat.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
+      <source>ShapeString settings</source>
+      <translation>Configuració ShapeString</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
+      <source>Default ShapeString font file</source>
+      <translation>Fitxer de tipus de lletra per defecte ShapeString</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
+      <source>Select a font file</source>
+      <translation>Seleccioneu un fitxer de tipus de lletra</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="14"/>
+      <source>SVG</source>
+      <translation>SVG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="40"/>
+      <source>Import style</source>
+      <translation>Estil d'importació</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="47"/>
+      <source>Method chosen for importing SVG object color to FreeCAD</source>
+      <translation>Aquest és el mètode escollit per a importar el color d'objecte SVG a FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="60"/>
+      <source>None (fastest)</source>
+      <translation>Cap (més ràpid)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="65"/>
+      <source>Use default color and linewidth</source>
+      <translation>Ús omissió color i linewidth</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="70"/>
+      <source>Original color and linewidth</source>
+      <translation>Color original i linewidth</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="82"/>
+      <source>If checked, no units conversion will occur.
+One unit in the SVG file will translate as one millimeter. </source>
+      <translation>Si està marcada, no es produeix cap conversió d'unitats. Una unitat en el fitxer SVG es traduirà com un mil·límetre. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="86"/>
+      <source>Disable units scaling</source>
+      <translation>Deshabilitar el escalat de unitats</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="121"/>
+      <source>Export style</source>
+      <translation>Estil d'exportació</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="128"/>
+      <source>Style of SVG file to write when exporting a sketch</source>
+      <translation>Estil que s'usarà per escriure el fitxer SVG quan s'exporti un croquis</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="141"/>
+      <source>Translated (for print &amp; display)</source>
+      <translation>Traduit (per impressió i pantalla)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="146"/>
+      <source>Raw (for CAM)</source>
+      <translation>Raw (for CAM)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="158"/>
+      <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
+      <translation>Totes les línies blanques apareixen en negre en l'SVG per a una millor llegibilitat amb un fons blancs</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="161"/>
+      <source>Translate white line color to black</source>
+      <translation>Traduir el color de línia de blanc a negre</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="181"/>
+      <source>Max segment length for discretized arcs</source>
+      <translation>Longitud de segment de Max per arcs discretized</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-svg.ui" line="204"/>
+      <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
+In this case arcs will be discretized into small line segments.
+This value is the maximum segment length. </source>
+      <translation>Les versions d'Open CASCADE anteriors a la versió 6.8 no admeten la projecció d'arc. En aquest cas, els arcs es poden discretitzar en xicotets segments de línia. Aquest valor és la llargària màxima del segment. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="14"/>
+      <source>OCA</source>
+      <translation>OCA</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="46"/>
+      <source>Check this if you want the areas (3D faces) to be imported too.</source>
+      <translation>Seleccionar aquesta opció si vol que les áreas (cares 3D) també s' importin.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-oca.ui" line="49"/>
+      <source>Import OCA areas</source>
+      <translation>Importació OCA àrees</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="14"/>
+      <source>DXF</source>
+      <translation>DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
+      <translation>Aquest diàleg de preferències es mostrarà quan importeu/exporteu fitxers DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation>Mostra aquest diàleg durant la importació i l'exportació</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="51"/>
+      <source>Python importer is used, otherwise the newer C++ is used.
+Note: C++ importer is faster, but is not as featureful yet</source>
+      <translation>S'utilitza importador de Python, en cas contrari s'utilitza el C ++ més recent.
+Nota: l’importador C ++ és més ràpid, però encara no té tantes funcionalitats</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="55"/>
+      <source>Use legacy python importer</source>
+      <translation>Importador de Python llegat d'ús</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="71"/>
+      <source>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</source>
+      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
+Note: C++ exporter is faster, but is not as featureful yet</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="75"/>
+      <source>Use legacy python exporter</source>
+      <translation>Utilitza l'exportador python llegat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="88"/>
+      <source>Automatic update (legacy importer only)</source>
+      <translation>Actualització automàtica (llegat importador només)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="96"/>
+      <source>Allow FreeCAD to download the Python converter for DXF import and export.
+You can also do this manually by installing the "dxf_library" workbench
+from the Addon Manager.</source>
+      <translation>Permet a FreeCAD descarregar el convertidor Python per a la importació i exportació de DXF.
+També podeu fer-ho manualment instal·lant el banc de treball «dxf_library»
+del gestor de complements.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="101"/>
+      <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
+      <translation>Permeten a FreeCAD automàticament descarregar i actualitzar les biblioteques DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
+      <source>Import options</source>
+      <translation>Opcions d'importació</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="140"/>
+      <source>Note: Not all the options below are used by the new importer yet</source>
+      <translation>Nota: No totes les opcions següents són utilitzats per l'importador nou encara</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="149"/>
+      <source>Import</source>
+      <translation>Importa</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="156"/>
+      <source>If unchecked, texts and mtexts won't be imported</source>
+      <translation>Si està desactivada, no importa textos ni mtextos</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="159"/>
+      <source>texts and dimensions</source>
+      <translation>textos i dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="172"/>
+      <source>If unchecked, points won't be imported</source>
+      <translation>Si està desactivada, no s'importen els punts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="175"/>
+      <source>points</source>
+      <translation>punts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="188"/>
+      <source>If checked, paper space objects will be imported too</source>
+      <translation>Si està activada, els objectes de l'espai paper també s'importaran</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="191"/>
+      <source>layouts</source>
+      <translation>disposicions</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="204"/>
+      <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
+      <translation>Si voleu que els blocs sense nom (que comencen amb un *) també s'importen</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="207"/>
+      <source>*blocks</source>
+      <translation>* blocs</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="224"/>
+      <source>Create</source>
+      <translation>Crea</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="231"/>
+      <source>Only standard Part objects will be created (fastest)</source>
+      <translation>Només es crearan objectes peça estàndard (més ràpid)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="234"/>
+      <source>simple Part shapes</source>
+      <translation>formes simples de Peça</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="250"/>
+      <source>Parametric Draft objects will be created whenever possible</source>
+      <translation>Els objectes Esbós paramètrics es crearan quan sigui possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="253"/>
+      <source>Draft objects</source>
+      <translation>Projecte objectes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="266"/>
+      <source>Sketches will be created whenever possible</source>
+      <translation>Es crearan croquis quan sigui possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="269"/>
+      <source>Sketches</source>
+      <translation>Croquis</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <source>Scale factor to apply to imported files</source>
+      <translation>Factor d'escala per aplicar a fitxers importats</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <source>Scale factor to apply to DXF files on import.
+The factor is the conversion between the unit of your DXF file and millimeters.
+Example: for files in millimeters: 1, in centimeters: 10,
+                             in meters: 1000, in inches: 25.4, in feet: 304.8</source>
+      <translation>Factor d'escala a aplicar als arxius DXF durant la importació. El factor és la conversió entre la unitat del seu fitxer DXF i mil·límetres. Ex: per a fitxers en mil·límetres: 1, en centímetres: 10, en metres: 1000, en polzades: 25.4, en peus: 304.8</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="338"/>
+      <source>Colors will be retrieved from the DXF objects whenever possible.
+Otherwise default colors will be applied. </source>
+      <translation>Es recuperen els colors dels objectes DXF sempre que siga possible. En cas contrari s'aplica el colors per defecte. </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="342"/>
+      <source>Get original colors from the DXF file</source>
+      <translation>Obtenir colors originals de l'arxiu DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="359"/>
+      <source>FreeCAD will try to join coincident objects into wires.
+Note that this can take a while!</source>
+      <translation>FreeCAD intentarà unir objectes coincidents en filferros. Pot ser un procés lent!</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="363"/>
+      <source>Join geometry</source>
+      <translation>Uneix-te a geometria</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="380"/>
+      <source>Objects from the same layers will be joined into Draft Blocks,
+turning the display faster, but making them less easily editable </source>
+      <translation>Els objectes de les mateixes capes s'uniran en Blocs d'Esbós, la visualització serà més ràpida, però l'edició serà més difícil </translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="384"/>
+      <source>Group layers into blocks</source>
+      <translation>Grup de capes en blocs</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="401"/>
+      <source>Imported texts will get the standard Draft Text size,
+instead of the size they have in the DXF document</source>
+      <translation>Els textos importats tindran la mida estàndard d'Esborrany, en lloc de la mida que tenen en el document DXF</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="405"/>
+      <source>Use standard font size for texts</source>
+      <translation>Utilitza la mida de font estàndard per a textos</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
+      <source>If this is checked, DXF layers will be imported as Draft Layers</source>
+      <translation>Si està marcada, s'importaran capes DXF com a capes d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="425"/>
+      <source>Use Layers</source>
+      <translation>Utilitza les capes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="445"/>
+      <source>Hatches will be converted into simple wires</source>
+      <translation>Les trames es convertiran en filferros simples</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <source>Import hatch boundaries as wires</source>
+      <translation>Importar ombrejats frontera com filferros</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
+      <source>If polylines have a width defined, they will be rendered
+as closed wires with correct width</source>
+      <translation>Si les polilínies tenen una amplària definida, es renderitzaran com a filferros tancats amb l'amplària correcta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="469"/>
+      <source>Render polylines with width</source>
+      <translation>Representar Polilínies amb amplada</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="486"/>
+      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
+      <translation>Exportació d'el·lipses poc compatible. En el seu lloc, utilitzeu això per a exportar-les com a polilínies.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="489"/>
+      <source>Treat ellipses and splines as polylines</source>
+      <translation>Tractar d'el·lipses i splines com Polilínies</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="518"/>
+      <source>Max Spline Segment:</source>
+      <translation>Segment de Spline Màxim:</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="528"/>
+      <source>Maximum length of each of the polyline segments.
+If it is set to '0' the whole spline is treated as a straight segment.</source>
+      <translation>Longitud màxima de cadascun dels segments de la polilínia. Si s'estableix en «0», l'spline sencer es tracta com un segment recte.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="559"/>
+      <location filename="../ui/preferences-svg.ui" line="107"/>
+      <source>Export options</source>
+      <translation>Opcions d'exportació</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="567"/>
+      <source>All objects containing faces will be exported as 3D polyfaces</source>
+      <translation>Tots els objectes que continguen cares s'exportaran com a multifacetes 3D</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="570"/>
+      <source>Export 3D objects as polyface meshes</source>
+      <translation>Exportar objectes 3D com polyface malles</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="587"/>
+      <source>Drawing Views will be exported as blocks.
+This might fail for post DXF R12 templates.</source>
+      <translation>Les vistes de dibuix s’exportaran com a blocs. Això pot fallar per a les plantilles post DXF R12.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="591"/>
+      <source>Export Drawing Views as blocks</source>
+      <translation>Exportar el dibuix vistes com a blocs</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="611"/>
+      <source>Exported objects will be projected to reflect the current view direction</source>
+      <translation>Els objectes exportats es projectaran per a reflectir la direcció actual de la vista</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <source>Project exported objects along current view direction</source>
+      <translation>Projecte exportar objectes al llarg de la direcció de visualització</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="14"/>
+      <source>Grid and snapping</source>
+      <translation>Xarxa i l'ajust</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="26"/>
+      <source>Snapping</source>
+      <translation>Ajusta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="34"/>
+      <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
+      <translation>Si està marcada, ajustament és activat sense la necessitat de prémer la tecla de snap mod</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="37"/>
+      <source>Always snap (disable snap mod)</source>
+      <translation>Sempre (Impossibiliti Snap mod)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="57"/>
+      <source>Constrain mod</source>
+      <translation>Mode de restricció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="77"/>
+      <source>The Constraining modifier key</source>
+      <translation>La tecla modificadora de Restricció</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="87"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="142"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="197"/>
+      <source>Shift</source>
+      <translation>Shift</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="92"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="147"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="202"/>
+      <source>Ctrl</source>
+      <translation>Ctrl</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="97"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="152"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="207"/>
+      <source>Alt</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="109"/>
+      <source>Snap mod</source>
+      <translation>Snap mod</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="129"/>
+      <source>The snap modifier key</source>
+      <translation>La tecla modificador snap</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="164"/>
+      <source>Alt mod</source>
+      <translation>Alt mod</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="184"/>
+      <source>The Alt modifier key</source>
+      <translation>La tecla modificadora Alt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="219"/>
+      <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
+      <translation>Si està marcada, es mostrarà la barra d'eines de Snap cada vegada que utilitzes ajustament</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="222"/>
+      <source>Show Draft Snap toolbar</source>
+      <translation>Mostra la varra d'eines d'Ajust de l'Esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="242"/>
+      <source>Hide Draft snap toolbar after use</source>
+      <translation>Amaga la barra d'eines de projecte Snap després del seu ús</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="263"/>
+      <source>Grid</source>
+      <translation>Quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="269"/>
+      <source>If checked, a grid will appear when drawing</source>
+      <translation>Si està marcada, una quadrícula apareixerà quan dibuix</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="272"/>
+      <source>Use grid</source>
+      <translation>Use grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="291"/>
+      <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
+      <translation>Si està marcada, la cuadricula d'esbós sempre serà visible quan Esbós estigui actiu. En cas contrari només quan s'usi una ordre</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="294"/>
+      <source>Always show the grid</source>
+      <translation>Sempre Mostra la quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="310"/>
+      <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
+      <translation>Si es marca, es mostra una vora addicional al voltant de la graella, mostrant la mida del quadre principal a la vora inferior esquerra</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="313"/>
+      <source>Show grid border</source>
+      <translation>Mostra la vora de la graella</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="329"/>
+      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
+      <translation>Si es marca, la graella tindrà els seus dos eixos principals de color verd, vermell o blau quan coincideixin amb els eixos globals</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <source>Use colored axes</source>
+      <translation>Fes servir els eixos de colors</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="353"/>
+      <source>Main lines every</source>
+      <translation>Principals línies cada</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="376"/>
+      <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
+      <translation>Mainlines s'extrauran més gruixuda. Especifiqueu aquí quantes places entre mainlines.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="402"/>
+      <source>Grid spacing</source>
+      <translation>Espaiat de la quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
+      <source>The spacing between each grid line</source>
+      <translation>L'espaiat entre cada línia de la quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="431"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="92"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="211"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="247"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="283"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="365"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="432"/>
+      <location filename="../ui/preferences-dxf.ui" line="535"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
+      <source>Grid size</source>
+      <translation>Mida de reixat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="477"/>
+      <source>The number of horizontal or vertical lines of the grid</source>
+      <translation>El nombre de línies horitzontals o verticals de la quadrícula</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
+      <source> lines</source>
+      <translation> línies</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <source>Grid color and transparency</source>
+      <translation>Colors i transparència dela Malla</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="526"/>
+      <source>The color of the grid</source>
+      <translation>El color de la graella</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="546"/>
+      <source>The overall transparency of the grid</source>
+      <translation>Transparència global de la graella</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="567"/>
+      <source>Draft Edit preferences</source>
+      <translation>Preferències d'edició d'esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="570"/>
+      <source>Edit</source>
+      <translation>Edita</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="584"/>
+      <source>Maximum number of contemporary edited objects</source>
+      <translation>Nombre màxim d'objectes simultanis editats</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="607"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Estableix el nombre màxim d'objectes que Edició d'Esbós&lt;/p&gt;&lt;p&gt;pot processar al mateix temps&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="645"/>
+      <source>Draft edit pick radius</source>
+      <translation>Radi de selecció de l'edició d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="668"/>
+      <source>Controls pick radius of edit nodes</source>
+      <translation>Controla el radi de selecció dels nodes d’edició</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="14"/>
+      <source>DWG</source>
+      <translation>DWG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="26"/>
+      <source>DWG conversion</source>
+      <translation>Conversió DWG</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="34"/>
+      <source>Path to ODA file converter</source>
+      <translation>Camí al convertidor de fitxers ODA</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="41"/>
+      <source>The path to your ODA (formerly Teigha) File Converter executable</source>
+      <translation>El camí a l'executable del convertidor de fitxers ODA ( anteriorment Teigha)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="56"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Nota:&lt;/span&gt; aplicar opcions DXF arxius DWG així.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="14"/>
+      <source>User interface settings</source>
+      <translation>Configuració de la interfície d'usuari</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="26"/>
+      <source>In-Command Shortcuts</source>
+      <translation>Dreceres d'ordres</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="52"/>
+      <source>`</source>
+      <translation>`</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="89"/>
+      <source>S</source>
+      <translation>S</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="111"/>
+      <source>Close</source>
+      <translation>Tanca</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="118"/>
+      <source>Relative</source>
+      <translation>Relatiu</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="140"/>
+      <source>R</source>
+      <translation>R</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="177"/>
+      <source>O</source>
+      <translation>O</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="214"/>
+      <source>T</source>
+      <translation>T</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="236"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="243"/>
+      <source>Copy</source>
+      <translation>Copia</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="250"/>
+      <source>Increase Radius</source>
+      <translation>Augmenta el radi</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="257"/>
+      <source>Cycle Snap</source>
+      <translation>Cicle Snap</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="279"/>
+      <source>[</source>
+      <translation>[</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="316"/>
+      <source>]</source>
+      <translation>]</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="338"/>
+      <source>Snap</source>
+      <translation>Ajusta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="345"/>
+      <source>Decrease Radius</source>
+      <translation>Disminueix el radi</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="352"/>
+      <source>Length</source>
+      <translation>Longitud</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="359"/>
+      <source>Wipe</source>
+      <translation>Neteja</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="381"/>
+      <source>D</source>
+      <translation>D</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="403"/>
+      <source>Add Hold</source>
+      <translation>Afegir Columna</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="425"/>
+      <source>L</source>
+      <translation>L</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="447"/>
+      <source>Exit</source>
+      <translation>Surt</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="469"/>
+      <source>P</source>
+      <translation>P</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="491"/>
+      <source>Fill</source>
+      <translation>Ompli</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="498"/>
+      <source>Subelement Mode</source>
+      <translation>Mode subelement</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="520"/>
+      <source>E</source>
+      <translation>Afegir Columna</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="557"/>
+      <source>H</source>
+      <translation>H</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="579"/>
+      <source>Select Edge</source>
+      <translation>Selecciona l'aresta</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="601"/>
+      <source>W</source>
+      <translation>W</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="638"/>
+      <source>A</source>
+      <translation>A</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="675"/>
+      <source>Q</source>
+      <translation>Q</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="697"/>
+      <source>Set WP</source>
+      <translation>Definir el pla de treball</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="719"/>
+      <source>U</source>
+      <translation>U</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="741"/>
+      <source>Restrict X</source>
+      <translation>Restringeix X</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="763"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="785"/>
+      <source>Restrict Y</source>
+      <translation>Restringeix Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="807"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="829"/>
+      <source>Restrict Z</source>
+      <translation>Restricciò Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="851"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="873"/>
+      <source>Global</source>
+      <translation>Global</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="895"/>
+      <source>G</source>
+      <translation>G</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="928"/>
+      <source>Enable draft statusbar customization</source>
+      <translation>Activa la personalització de la barra d'estat d'esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="931"/>
+      <source>Draft Statusbar</source>
+      <translation>Barra d'estat d'esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="951"/>
+      <source>Enable snap statusbar widget</source>
+      <translation>Activa el giny d'ajust de la barra d'estat</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="954"/>
+      <source>Draft snap widget</source>
+      <translation>Giny d'ajust d'esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="970"/>
+      <source>Enable draft statusbar annotation scale widget</source>
+      <translation>Activa el giny de l'anotació d'escala de la barra d'estat d'esbós</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="973"/>
+      <source>Annotation scale widget</source>
+      <translation>Giny d'escala d'anotació</translation>
     </message>
   </context>
 </TS>

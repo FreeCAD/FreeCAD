@@ -2,6 +2,103 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu" sourcelanguage="en">
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Sejt</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Alkalmaz</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>A módosítások alkalmazása az aktuális cellára</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Törli az aktuális cella tartalmát</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Kiszámítás</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>A vezérlők által kezelt értékek frissítése</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Táblázat létrehozása</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Vezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Tulajdonságvezérlő hozzáadása</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Vezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Cellavezérlő hozzáadása a kijelölt táblázathoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Táblázat tárgyának hozzáadása az aktív dokumentumhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Tulajdonságvezérlő hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Tulajdonságvezérlő hozzáadása a kijelölt táblázathoz</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
@@ -552,6 +649,61 @@ Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Cella hivatkozás álnévvel, például
 Spreadsheet.my_alias_name helyett Spreadsheet.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Számolótábla</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Import/Export beállítások</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A karakterláncok határainak meghatározására használt jel, általában egyetlen idézőjel (') vagy kettős idézőjel (&amp;quot;). Egyetlen karakternek kell lennie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Elválasztó karakter: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A "menekülés" jel, általában fordított perjel (\), használják a speciális nem nyomtatandó karakterek jelzéséere, mint pl. \t = fül. Egyetlen karakternek kell lennie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>"Menekülés" jel: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A mezőhatárolóként használható leíró. Alapértelmezés szerint ez egy fül, de gyakran használják a vesszőket (,) és a pontosvesszőket (;) is. Válassza ki a kívánt karaktert a listából, vagy írja be a sajátját a mezőbe. Ennek egyetlen karakternek vagy karakterkódnak kell lennie&lt;span style=" font-style:italic;"&gt;fül&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;pont&lt;/span&gt;,vagy &lt;span style=" font-style:italic;"&gt;pontosvessző&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>fül</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Idézet jel: </translation>
     </message>
   </context>
   <context>

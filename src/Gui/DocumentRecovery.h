@@ -28,6 +28,7 @@
 #include <QScopedPointer>
 #include <QList>
 #include <QFileInfo>
+#include <QFileInfoList>
 #include <string>
 #include <functional>
 
@@ -53,7 +54,6 @@ protected:
     void closeEvent(QCloseEvent*);
     void contextMenuEvent(QContextMenuEvent*);
     QString createProjectFile(const QString&);
-    void clearDirectory(const QFileInfo&);
     void cleanup(QDir&, const QList<QFileInfo>&, const QString&);
 
 protected Q_SLOTS:
@@ -69,11 +69,11 @@ private:
 
 class DocumentRecoveryFinder {
 public:
-    void checkForPreviousCrashes();
+    bool checkForPreviousCrashes();
 
 private:
     void checkDocumentDirs(QDir&, const QList<QFileInfo>&, const QString&);
-    void showRecoveryDialogIfNeeded();
+    bool showRecoveryDialogIfNeeded();
 
 private:
     QList<QFileInfo> restoreDocFiles;
@@ -82,6 +82,21 @@ private:
 class DocumentRecoveryHandler {
 public:
     void checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const;
+};
+
+class DocumentRecoveryCleaner {
+public:
+    void clearDirectory(const QFileInfo& dir);
+    void setIgnoreFiles(const QStringList&);
+    void setIgnoreDirectories(const QFileInfoList&);
+
+private:
+    void subtractFiles(QStringList&);
+    void subtractDirs(QFileInfoList&);
+
+private:
+    QStringList ignoreFiles;
+    QFileInfoList ignoreDirs;
 };
 
 } //namespace Dialog

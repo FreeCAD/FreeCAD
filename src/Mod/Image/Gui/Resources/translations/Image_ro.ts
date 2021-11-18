@@ -4,68 +4,30 @@
   <context>
     <name>Image_Scaling</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <location filename="_CommandImageScaling.py" line="62"/>
       <source>Scale image plane</source>
       <translation>Punerea la scară a planului imaginii</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <location filename="_CommandImageScaling.py" line="66"/>
       <source>Scales an image plane by defining a distance between two points</source>
       <translation>Scalează un Imagine Plane definind o distanţă dintre două puncte</translation>
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
-      <source>Scale image plane</source>
-      <translation>Punerea la scară a planului imaginii</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance [mm]</source>
-      <translation>Distanță [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
-      <source>Select first point</source>
-      <translation>Selectaţi primul punct</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;introduceţi distanţa&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;selectaţi ImagePlane&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
-      <source>Select second point</source>
-      <translation>Selectaţi al doilea punct</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>Selectaţi Imagine Plane şi introduceți distanța</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Image</source>
       <translation>Imagine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Create image plane...</source>
       <translation>Creaza plan pentru imagine...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create a planar image in the 3D space</source>
       <translation>Creaza o imagine planara in spatiul 3D</translation>
     </message>
@@ -73,17 +35,17 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="54"/>
       <source>Image</source>
       <translation>Imagine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Open...</source>
       <translation>Deschide...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
       <translation>Afișează imaginea</translation>
     </message>
@@ -91,32 +53,40 @@
   <context>
     <name>CmdImageScaling</name>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Image</source>
       <translation>Imagine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Scale...</source>
       <translation>Scară...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Image Scaling</source>
       <translation>Scalarea imaginii</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Create ImagePlane</source>
+      <translation type="unfinished">Create ImagePlane</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="332"/>
-      <location filename="../../OpenGLImageBox.cpp" line="384"/>
+      <location filename="../../GLImageBox.cpp" line="334"/>
+      <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>Formatul pixelilor pentru imagine</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="333"/>
-      <location filename="../../OpenGLImageBox.cpp" line="385"/>
+      <location filename="../../GLImageBox.cpp" line="335"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Tip de spațiu de culoare nedefinit pentru vizualizarea imaginii</translation>
     </message>
@@ -192,30 +162,30 @@
       <translation>Gata...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="551"/>
       <source>grey</source>
       <translation>gri</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="552"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="570"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="585"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="601"/>
+      <location filename="../../ImageView.cpp" line="612"/>
+      <location filename="../../ImageView.cpp" line="617"/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="612"/>
       <source>outside image</source>
       <translation>în afara imaginii</translation>
     </message>
@@ -223,30 +193,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Images</source>
       <translation>Imagini</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="118"/>
       <source>All files</source>
       <translation>Toate fisierele</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Choose an image file to open</source>
       <translation>Alegeți un fișier imagine pentru deschidere</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Error opening image</source>
       <translation>Eroare la deschiderea imaginii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Could not load the chosen image</source>
       <translation>Imposibil de încărcat imaginea aleasă</translation>
     </message>

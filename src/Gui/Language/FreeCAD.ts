@@ -476,7 +476,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Release date</source>
@@ -704,7 +704,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -765,7 +765,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Username:</source>
@@ -920,7 +920,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear</source>
@@ -1131,7 +1131,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Global</source>
@@ -1231,7 +1231,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Line transparency:</source>
@@ -1397,7 +1397,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
@@ -1592,7 +1592,7 @@ horizontal space in Python console</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1873,7 +1873,7 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Emissive color:</source>
@@ -2041,7 +2041,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2107,7 +2107,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>UUID:</source>
@@ -2264,7 +2264,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
@@ -2428,7 +2428,7 @@ from Python console to Report view panel</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
@@ -2746,7 +2746,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Color-gradient settings</source>
@@ -3822,7 +3822,7 @@ Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step.</source>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4645,7 +4645,7 @@ originally selected prior to opening this dialog</source>
     </message>
     <message>
         <source></source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

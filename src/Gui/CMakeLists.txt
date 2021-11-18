@@ -328,6 +328,7 @@ SET(Gui_UIC_SRCS
     DlgPropertyLink.ui
     DlgReportView.ui
     DlgSettings3DView.ui
+    DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsUnits.ui
@@ -563,6 +564,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgPreferencesImp.cpp
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
+    DlgSettingsCacheDirectory.cpp
     DlgSettingsNavigation.cpp
     DlgSettingsSelection.cpp
     DlgSettingsUnitsImp.cpp
@@ -580,6 +582,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgPreferencesImp.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
+    DlgSettingsCacheDirectory.h
     DlgSettingsNavigation.h
     DlgSettingsSelection.h
     DlgSettingsUnitsImp.h
@@ -599,6 +602,7 @@ SET(Dialog_Settings_SRCS
     DlgPreferences.ui
     DlgReportView.ui
     DlgSettings3DView.ui
+    DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsUnits.ui

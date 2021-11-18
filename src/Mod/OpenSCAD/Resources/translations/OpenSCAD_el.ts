@@ -1,145 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="el" sourcelanguage="en">
-  <context>
-    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
-    <message>
-      <location filename="openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Γενικές ρυθμίσεις</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="26"/>
-      <source>General OpenSCAD Settings</source>
-      <translation>Γενικές ρυθμίσεις OpenSCAD</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="34"/>
-      <source>OpenSCAD executable</source>
-      <translation>Εκτελέσιμη εφαρμογή του OpenSCAD</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="65"/>
-      <source>OpenSCAD import</source>
-      <translation>Εισαγωγή OpenSCAD</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Χρήση του ViewProvider σε προβολή δενδροδιαγράμματος</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="110"/>
-      <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Αν αυτό έχει επιλεχθεί, τα Αντικείμενα Multmatrix θα είναι Παραμετρικά</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="113"/>
-      <source>Use Multmatrix Feature</source>
-      <translation>Χρήση Χαρακτηριστικού Multmatrix</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="153"/>
-      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Ο μέγιστος αριθμός όψεων ενός πολυγώνου, πρίσματος ή κόλουρης πυραμίδας. Αν η fn είναι μεγαλύτερη από αυτήν την τιμή το αντικείμενο θεωρείται κυκλικό. Ορίστε την τιμή 0 για να μην υπάρχει όριο</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="133"/>
-      <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Μέγιστος αριθμός όψεων για πολύγωνα (fn)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="177"/>
-      <source>OpenSCAD export</source>
-      <translation>Εξαγωγή OpenSCAD</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="185"/>
-      <source>maximum fragment size</source>
-      <translation>μέγιστο μέγεθος τμήματος</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="208"/>
-      <source>angular (fa)</source>
-      <translation>Γωνιακή (fa)</translation>
-    </message>
-    <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="218"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="250"/>
-      <source>size (fs)</source>
-      <translation>μέγεθος (fs)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="278"/>
-      <source>mm</source>
-      <translation>χιλιοστά</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="304"/>
-      <source>convexity</source>
-      <translation>κυρτότητα</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="341"/>
-      <source>Mesh fallback</source>
-      <translation>Εφεδρικό πλέγμα</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="383"/>
-      <source>Deflection</source>
-      <translation>Εκτροπή</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="386"/>
-      <source>deflection</source>
-      <translation>εκτροπή</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="393"/>
-      <source>Triangulation settings</source>
-      <translation>Ρυθμίσεις τριγωνοποίησης</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="90"/>
-      <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Αν αυτό έχει επιλεχθεί, τα Χαρακτηριστικά θα διατηρήσουν τα θυγατρικά τους στοιχεία στην προβολή δενδροδιαγράμματος</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
-      <source>Print debug information in the Console</source>
-      <translation>Εκτύπωση πληροφοριών αποσφαλμάτωσης στην Κονσόλα</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="47"/>
-      <source>The path to the OpenSCAD executable</source>
-      <translation>Η διαδρομή για την εκτελέσιμη εφαρμογή του OpenSCAD</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="215"/>
-      <source>Minimum angle for a fragment</source>
-      <translation>Ελάχιστη γωνία για ένα τμήμα</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="272"/>
-      <source>Minimum size of a fragment</source>
-      <translation>Ελάχιστο μέγεθος για ένα τμήμα</translation>
-    </message>
-  </context>
+<TS version="2.1" language="el" sourcelanguage="en">
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="149"/>
-      <source>Convert Edges to Faces</source>
-      <translation>Μετατροπή Ακμών σε Όψεις</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="309"/>
-      <source>Please select 3 objects first</source>
-      <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
+      <location filename="OpenSCADUtils.py" line="622"/>
+      <source>Error all shapes must be either 2D or both must be 3D</source>
+      <translation>Σφάλμα πρέπει είτε να είναι όλα τα σχήματα δισδιάστατα είτε να είναι όλα τρισδιάστατα</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
@@ -152,6 +19,21 @@
       <translation>Πιέστε το OK</translation>
     </message>
     <message>
+      <location filename="OpenSCADCommands.py" line="102"/>
+      <source>Unable to explode %s</source>
+      <translation>Αδυναμία κατακερματισμού του %s</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="149"/>
+      <source>Convert Edges to Faces</source>
+      <translation>Μετατροπή Ακμών σε Όψεις</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="309"/>
+      <source>Please select 3 objects first</source>
+      <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
+    </message>
+    <message>
       <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
@@ -160,6 +42,21 @@
       <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation type="unfinished">Load</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>Ανανέωση</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="369"/>
@@ -180,31 +77,6 @@
       <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>Δημιουργία Πλέγματος με τη χρήση Λειτουργιών Boole</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADUtils.py" line="622"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Σφάλμα πρέπει είτε να είναι όλα τα σχήματα δισδιάστατα είτε να είναι όλα τρισδιάστατα</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="102"/>
-      <source>Unable to explode %s</source>
-      <translation>Αδυναμία κατακερματισμού του %s</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="365"/>
-      <source>Load</source>
-      <translation type="unfinished">Load</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="366"/>
-      <source>Save</source>
-      <translation type="unfinished">Save</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refresh</source>
-      <translation>Ανανέωση</translation>
     </message>
   </context>
   <context>
@@ -411,6 +283,138 @@
       <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>Εργαλεία OpenSCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General settings</source>
+      <translation>Γενικές ρυθμίσεις</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="26"/>
+      <source>General OpenSCAD Settings</source>
+      <translation>Γενικές ρυθμίσεις OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="34"/>
+      <source>OpenSCAD executable</source>
+      <translation>Εκτελέσιμη εφαρμογή του OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="47"/>
+      <source>The path to the OpenSCAD executable</source>
+      <translation>Η διαδρομή για την εκτελέσιμη εφαρμογή του OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="65"/>
+      <source>OpenSCAD import</source>
+      <translation>Εισαγωγή OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>Εκτύπωση πληροφοριών αποσφαλμάτωσης στην Κονσόλα</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="90"/>
+      <source>If this is checked, Features will claim their children in the tree view</source>
+      <translation>Αν αυτό έχει επιλεχθεί, τα Χαρακτηριστικά θα διατηρήσουν τα θυγατρικά τους στοιχεία στην προβολή δενδροδιαγράμματος</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="93"/>
+      <source>Use ViewProvider in Tree View</source>
+      <translation>Χρήση του ViewProvider σε προβολή δενδροδιαγράμματος</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="110"/>
+      <source>If this is checked, Multmatrix Object will be Parametric</source>
+      <translation>Αν αυτό έχει επιλεχθεί, τα Αντικείμενα Multmatrix θα είναι Παραμετρικά</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="113"/>
+      <source>Use Multmatrix Feature</source>
+      <translation>Χρήση Χαρακτηριστικού Multmatrix</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="130"/>
+      <location filename="../ui/openscadprefs-base.ui" line="153"/>
+      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
+      <translation>Ο μέγιστος αριθμός όψεων ενός πολυγώνου, πρίσματος ή κόλουρης πυραμίδας. Αν η fn είναι μεγαλύτερη από αυτήν την τιμή το αντικείμενο θεωρείται κυκλικό. Ορίστε την τιμή 0 για να μην υπάρχει όριο</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="133"/>
+      <source>Maximum number of faces for polygons (fn)</source>
+      <translation>Μέγιστος αριθμός όψεων για πολύγωνα (fn)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="177"/>
+      <source>OpenSCAD export</source>
+      <translation>Εξαγωγή OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="185"/>
+      <source>maximum fragment size</source>
+      <translation>μέγιστο μέγεθος τμήματος</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="205"/>
+      <location filename="../ui/openscadprefs-base.ui" line="215"/>
+      <source>Minimum angle for a fragment</source>
+      <translation>Ελάχιστη γωνία για ένα τμήμα</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="208"/>
+      <source>angular (fa)</source>
+      <translation>Γωνιακή (fa)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="218"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="247"/>
+      <location filename="../ui/openscadprefs-base.ui" line="272"/>
+      <source>Minimum size of a fragment</source>
+      <translation>Ελάχιστο μέγεθος για ένα τμήμα</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="250"/>
+      <source>size (fs)</source>
+      <translation>μέγεθος (fs)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="278"/>
+      <source>mm</source>
+      <translation>χιλιοστά</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="304"/>
+      <source>convexity</source>
+      <translation>κυρτότητα</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="341"/>
+      <source>Mesh fallback</source>
+      <translation>Εφεδρικό πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="361"/>
+      <location filename="../ui/openscadprefs-base.ui" line="383"/>
+      <source>Deflection</source>
+      <translation>Εκτροπή</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="386"/>
+      <source>deflection</source>
+      <translation>εκτροπή</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="393"/>
+      <source>Triangulation settings</source>
+      <translation>Ρυθμίσεις τριγωνοποίησης</translation>
     </message>
   </context>
 </TS>

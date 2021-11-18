@@ -56,7 +56,8 @@ public:
     virtual void apply() override;
 
     void fillDirectionCombo();
-    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText,
+        bool hasSketch = true);
 
 private Q_SLOTS:
     void onLengthChanged(double);

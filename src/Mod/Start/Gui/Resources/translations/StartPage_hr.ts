@@ -211,7 +211,7 @@
     <message>
       <location filename="TranslationTexts.py" line="83"/>
       <source>Open start page preferences</source>
-      <translation type="unfinished">Open start page preferences</translation>
+      <translation>Otvori postavke Početne stranice</translation>
     </message>
   </context>
   <context>
@@ -291,8 +291,8 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>Izborna prilagođena mapa koja će se prikazati na dnu prve stranice.
+Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,17 +302,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>Pokazuje zabilješke pored datoteke sličice, gdje možete napraviti zabilješke od FreeCAD sesija</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>Prikaži savjete</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Prikaži savjete pomoći u kartici  Dokumenti početne radne površine </translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -342,7 +342,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>Boja pozadine Nijansa boje dolje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Ako je to označeno, i ako su stilski predlošci naznačeni u općim postavkama, to će se koristiti i nadjačati boju ispod</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>Ako je ovo odabrano, ikona 'Nova datoteka' prikazuje ikonu gradijenta umjesto normalne ikone</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,12 +467,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>Odaberite na koji radni stol se želite prebaciti nakon pokretanja programa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Ako je označeno, automatski će zatvoriti početnu stranicu kada se FreeCAD pokrene</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -487,12 +487,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Zatvorite i uključite otvaranje datoteke</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>Ako se aplikacija pokrene otvaranjem datoteke, primijenite dvije gore navedene postavke</translation>
     </message>
   </context>
 </TS>

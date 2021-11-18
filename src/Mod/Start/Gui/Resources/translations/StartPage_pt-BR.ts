@@ -342,7 +342,7 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>Gradiente de fundo para baixo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -487,12 +487,12 @@ Usando ";;" para separar caminhos, você pode adicionar várias pastas aqui</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>Fechar e alternar ao abrir o arquivo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>Se a aplicação for iniciada com a abertura de um arquivo, aplique as duas configurações acima</translation>
     </message>
   </context>
 </TS>

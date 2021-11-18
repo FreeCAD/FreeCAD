@@ -2,6 +2,103 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hr" sourcelanguage="en">
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Ćelija</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Primijeni</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Primijenite promjene na trenutnu ćeliju</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Briše sadržaj trenutne ćelije</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Izračunati</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Ažurira vrijednosti kojima upravljaju regulatori</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Stvori proračunsku tablicu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Dodaj regulator</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Dodaj značajke regulator</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Dodaj regulator</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Dodaje kontroler ćelije odabranoj proračunskoj tablici</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Dodaje objekt proračunske tablice u aktivni dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Dodaj značajke regulator</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Dodaje kontroler značajki odabranoj proračunskoj tablici</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
@@ -562,6 +659,61 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     </message>
   </context>
   <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Uvezi/Izvezi postavke</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak koji se koristi za razgraničenje nizova, obično je jednostruki navodnik (') ili dvostruki navodnik (&amp;quot;). Mora biti jedan znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Znak za razgraničenje:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape znak, obično obrnuta kosa crta (\), koji se koristi za označavanje posebnih znakova koji se ne mogu ispisivati, npr. \t = tab. Mora biti jedan znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Escape znak: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak za korištenje kao graničnik polja. Zadano je tabulator, ali također se često koriste zarezi (,) i točke i zarezi (;). Odaberite s popisa ili unesite svoje u polje. Mora biti jedan znak ili riječi &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, ili &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Citat znak:</translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
@@ -577,7 +729,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Umetni %n red(ova) iznad</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
       </translation>
@@ -585,7 +737,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Umetni %n red(ova) ispod</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
@@ -601,7 +753,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Ukloni red(ove)</numerusform>
         <numerusform>Remove row(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
       </translation>
@@ -633,7 +785,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Ukloni stupac(ce)</numerusform>
         <numerusform>Remove column(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>

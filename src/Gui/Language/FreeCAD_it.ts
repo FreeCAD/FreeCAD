@@ -3308,7 +3308,7 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Ambienti di Lavoro Disponibili</translation>
     </message>
   </context>
   <context>
@@ -4507,31 +4507,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Beccheggio (intorno all'asse y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Rollìo (intorno all'asse x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Imbardata (intorno all'asse z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Imbardata (intorno all'asse z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Beccheggio (intorno all'asse y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Rollìo (intorno all'asse x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Angoli di Eulero (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -6058,7 +6058,7 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgaro</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6066,7 +6066,7 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Spagnolo (Argentina)</translation>
     </message>
   </context>
   <context>
@@ -7034,7 +7034,7 @@ Percorso fisico: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Impossibile salvare il documento</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7042,27 +7042,27 @@ Percorso fisico: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Si è verificato un problema cercando di salvare il file. Questo può essere dovuto al fatto che alcune delle cartelle genitore non esistono, o non si dispone di autorizzazioni sufficienti, o per altri motivi. Dettagli errore:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Vuoi salvare il file con un nome diverso?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Documento non salvato</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Il documento %1 non può essere salvato. Vuoi annullare la chiusura?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 Documento(i) non salvato</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Alcuni documenti non possono essere salvati. Vuoi annullare la chiusura?</translation>
     </message>
   </context>
   <context>

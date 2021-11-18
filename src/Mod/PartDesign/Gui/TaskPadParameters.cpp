@@ -356,17 +356,36 @@ void TaskPadParameters::fillDirectionCombo()
     blockUpdate = true;
 
     if (axesInList.empty()) {
+        bool hasFace = false;
         ui->directionCB->clear();
-        // add sketch normal
+        // we can have sketches or faces
+        // for sketches just get the sketch normal
         PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
+        // for faces we test if it is verified and if we can get its normal
+        if (!pcSketch) {
+            try {
+                Part::Feature* pcFeature = pcFeat->getVerifiedObject();
+                Base::Vector3d SketchVector = pcFeat->getProfileNormal();
+                Q_UNUSED(pcFeature)
+                Q_UNUSED(SketchVector)
+                hasFace = true;
+            }
+            catch (const Base::Exception& e) {
+                new App::DocumentObjectExecReturn(e.what());
+            }
+        }
         if (pcSketch)
             addAxisToCombo(pcSketch, "N_Axis", tr("Sketch normal"));
+        else if (hasFace)
+            addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Face normal"), false);
         // add the other entries
         addAxisToCombo(0, std::string(), tr("Select reference..."));
         // we start with the sketch normal as proposal for the custom direction
         if (pcSketch)
             addAxisToCombo(pcSketch, "N_Axis", tr("Custom direction"));
+        else if (hasFace)
+            addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Custom direction"), false);
     }
 
     // add current link, if not in list
@@ -408,12 +427,15 @@ void TaskPadParameters::fillDirectionCombo()
 }
 
 void TaskPadParameters::addAxisToCombo(App::DocumentObject* linkObj,
-    std::string linkSubname, QString itemText)
+    std::string linkSubname, QString itemText, bool hasSketch)
 {
     this->ui->directionCB->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
     App::PropertyLinkSub& lnk = *(axesInList.back());
-    lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
+    // if we have a face, we leave the link empty since we cannot
+    // store the face normal as sublink
+    if (hasSketch)
+        lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
 }
 
 void TaskPadParameters::onDirectionCBChanged(int num)
@@ -423,8 +445,17 @@ void TaskPadParameters::onDirectionCBChanged(int num)
     if (axesInList.empty())
         return;
 
+    // we use this scheme for 'num'
+    // 0: normal to sketch or face
+    // 1: selection mode
+    // 2: custom
+    // 3-x: edges selected in the 3D model
+
+    // check the axis
+    // when the link is empty we are either in selection mode
+    // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
-    if (lnk.getValue() == 0) {
+    if (num == 1) {
         // enter reference selection mode
         this->blockConnection(false);
         // to distinguish that this is the direction selection
@@ -432,15 +463,16 @@ void TaskPadParameters::onDirectionCBChanged(int num)
         TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
         return;
     }
-    else {
+    else if (lnk.getValue() != 0) {
         if (!pcPad->getDocument()->isIn(lnk.getValue())) {
             Base::Console().Error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
-        // in case user is in selection mode, but changed his mind before selecting anything
-        exitSelectionMode();
     }
+
+    // in case the user is in selection mode, but changed his mind before selecting anything
+    exitSelectionMode();
 
     try {
         recomputeFeature();

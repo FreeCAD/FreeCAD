@@ -2,6 +2,103 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu" sourcelanguage="en">
   <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Gelaxka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Aplikatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Aplikatu aldaketak uneko gelaxkari</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Ezabatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Uneko gelaxkako edukiak ezabatzen ditu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Kalkulatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Kontrolagailuek maneiatutako balioak eguneratzen ditu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Sortu kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Gehitu kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Gehitu propietate-kontrolagailua</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Gehitu kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Gelaxka-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Kalkulu-orri bat gehitzen dio dokumentu aktiboari</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Gehitu propietate-kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Propietate-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
@@ -555,6 +652,61 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
   </context>
   <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Inportaziorako/esportaziorako ezarpenak</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kateak mugatzeko erabiltzen den karakterea, gehienetan komatxo bakunak (') edo komatxo bikoitzak (&amp;quot;). Karaktere bakarra izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Karaktere mugatzailea: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Inprimatu ezin diren karaktere bereziak adierazteko erabiltzen den ihes-karakterea, normalean alderantzizko barra da (\). Adibidez, \t = tabulazioa da. Karaktere bakarra izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Ihes karakterea: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eremu-bereizle gisa erabilitako karakterea. Balio lehenetsia tabulazioa da, baina komak (,) eta puntu eta komak (;) ere erabili ohi dira. Hautatu bat zerrendatik edo sartu nahi duzun beste edozein karaktere eremuan. Karaktere bakarra edo &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt; hitza izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Aipu ikurra: </translation>
+    </message>
+  </context>
+  <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
@@ -611,9 +763,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n zutabe</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n zutabe</numerusform>
       </translation>
     </message>
     <message numerus="yes">

@@ -142,6 +142,10 @@ SET(PathScripts_SRCS
     PathScripts/__init__.py
 )
 
+SET(Generator_SRCS
+    Generators/drill_generator.py
+)
+
 SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
@@ -211,6 +215,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
+    PathTests/TestPathDrillGenerator.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
     PathTests/TestPathLog.py
@@ -259,6 +264,7 @@ SET(Path_Data
 
 SET(all_files
     ${PathScripts_SRCS}
+    ${Generator_SRCS}
     ${PathScripts_post_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -293,6 +299,13 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${Generator_SRCS}
+    DESTINATION
+        Mod/Path/Generators
+)
+
+INSTALL(
+    FILES
         ${PathTests_SRCS}
     DESTINATION
         Mod/Path/PathTests
@@ -304,7 +317,7 @@ INSTALL(
   DESTINATION
         Mod/Path/PathTests
 )
-      
+
 
 INSTALL(
     FILES

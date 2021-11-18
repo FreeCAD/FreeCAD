@@ -194,7 +194,11 @@ QGVPage::~QGVPage()
 void QGVPage::startBalloonPlacing(void)
 {
     balloonPlacing = true;
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    activateCursor(QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
+#else
     activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
+#endif
 }
 
 void QGVPage::cancelBalloonPlacing(void)

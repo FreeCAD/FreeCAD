@@ -1061,7 +1061,12 @@ std::string Application::getTempFileName(const char* FileName)
     return Base::FileInfo::getTempFileName(FileName, getTempPath().c_str());
 }
 
-std::string Application::getUserConfigDir()
+std::string Application::getUserCachePath()
+{
+    return mConfig["UserCachePath"];
+}
+
+std::string Application::getUserConfigPath()
 {
     return mConfig["UserConfigPath"];
 }
@@ -2958,11 +2963,6 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
 
     boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
 
-    //if (!boost::filesystem::exists(appData)) {
-    //    // This should never ever happen
-    //    throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
-    //}
-
     // If a custom user home path is given then don't modify it
     if (customHome.isEmpty()) {
         for (const auto& it : paths)
@@ -3039,20 +3039,20 @@ std::tuple<QString, QString, QString> getCustomPaths()
  * \li XDG_CACHE_HOME
  * \endlist
  */
-std::tuple<QString, QString, QString> getStandardPaths()
+std::tuple<QString, QString, QString, QString> getStandardPaths()
 {
     QString configHome = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
     QString dataHome = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     QString cacheHome = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 
     // Keep the old behaviour
 #if defined(FC_OS_WIN32)
     configHome = getOldGenericDataLocation(QString());
     dataHome = configHome;
-    cacheHome = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 #endif
 
-    return std::make_tuple(configHome, dataHome, cacheHome);
+    return std::make_tuple(configHome, dataHome, cacheHome, tempPath);
 }
 }
 
@@ -3075,6 +3075,7 @@ void Application::ExtractUserPath()
     QString configHome = std::get<0>(stdPaths);
     QString dataHome = std::get<1>(stdPaths);
     QString cacheHome = std::get<2>(stdPaths);
+    QString tempPath = std::get<3>(stdPaths);
 
     // User home path
     //
@@ -3116,12 +3117,19 @@ void Application::ExtractUserPath()
     }
 
 
-    // Set application tmp. directory
+    // User cache path
     //
     std::vector<std::string> cachedirs = subdirs;
     cachedirs.emplace_back("Cache");
     boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
-    mConfig["AppTempPath"] = pathToString(cache) + PATHSEP;
+    mConfig["UserCachePath"] = pathToString(cache) + PATHSEP;
+
+
+    // Set application tmp. directory
+    //
+    std::vector<std::string> empty;
+    boost::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
+    mConfig["AppTempPath"] = pathToString(tmp) + PATHSEP;
 
 
     // Set the default macro directory

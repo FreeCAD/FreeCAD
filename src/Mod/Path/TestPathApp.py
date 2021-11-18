@@ -22,17 +22,18 @@
 
 import TestApp
 
-# from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathAdaptive import TestPathAdaptive
 from PathTests.TestPathCore import TestPathCore
 from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
+from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
 from PathTests.TestPathGeom import TestPathGeom
-from PathTests.TestPathHelix import TestPathHelix
+# from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
+# from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathPreferences import TestPathPreferences
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
@@ -55,7 +56,7 @@ False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
 False if TestPathDeburr.__name__ else True
 False if TestPathGeom.__name__ else True
-False if TestPathHelix.__name__ else True
+# False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpTools.__name__ else True
 False if TestPathPreferences.__name__ else True
@@ -70,3 +71,4 @@ False if TestPathTooltable.__name__ else True
 False if TestPathUtil.__name__ else True
 False if TestPathVcarve.__name__ else True
 False if TestPathVoronoi.__name__ else True
+False if TestPathDrillGenerator.__name__ else True

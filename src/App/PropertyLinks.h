@@ -935,6 +935,8 @@ public:
      */
     void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
+    void addValue(App::DocumentObject *obj, const std::vector<std::string> &SubList={}, bool reset = false);
+
     const std::vector<DocumentObject*> &getValues(void) const {
         return _lValueList;
     }
@@ -1003,6 +1005,9 @@ public:
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+
+private:
+    void verifyObject(App::DocumentObject *, App::DocumentObject *);
 
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>NavigationIndicator</name>
     <message>
@@ -42,6 +42,11 @@
       <location filename="NavigationIndicatorGui.py" line="70"/>
       <source>Rotation focus</source>
       <translation>Rotatie focus</translation>
+    </message>
+    <message>
+      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Middelste muisknop of toets H.</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="73"/>
@@ -87,11 +92,6 @@
       <location filename="NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>niet gedefinieerd</translation>
-    </message>
-    <message>
-      <location filename="NavigationIndicatorGui.py" line="71"/>
-      <source>Middle mouse button or H key.</source>
-      <translation>Middelste muisknop of toets H.</translation>
     </message>
   </context>
 </TS>

@@ -197,8 +197,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="AddonManager.py" line="203"/>
+        <source>You must restart FreeCAD for changes to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="204"/>
         <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="209"/>
+        <source>Restart now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="210"/>
+        <source>Restart later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

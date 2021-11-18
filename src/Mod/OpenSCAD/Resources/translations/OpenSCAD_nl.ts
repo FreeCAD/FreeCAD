@@ -1,145 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="1.1" language="nl" sourcelanguage="en">
-  <context>
-    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
-    <message>
-      <location filename="openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Algemene instellingen</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="26"/>
-      <source>General OpenSCAD Settings</source>
-      <translation>Algemene OpenSCAD instellingen</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="34"/>
-      <source>OpenSCAD executable</source>
-      <translation>OpenSCAD uitvoerbaar bestand</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="65"/>
-      <source>OpenSCAD import</source>
-      <translation>OpenSCAD import</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Gebruik ViewProvider in structuurweergave</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="110"/>
-      <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Wanneer ingeschakeld, zal de Multmatrix Object parametrisch zijn</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="113"/>
-      <source>Use Multmatrix Feature</source>
-      <translation>Functie van de Multmatrix gebruiken</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="153"/>
-      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Het maximale aantal vlakken van een veelhoek, prisma of frustum. Als fn groter is dan deze waarde wordt het object beschouwd als een cirkelvormig object. Zet op 0 voor geen limiet</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="133"/>
-      <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maximaal aantal vlakken voor veelhoeken (fn)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="177"/>
-      <source>OpenSCAD export</source>
-      <translation>OpenSCAD export</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="185"/>
-      <source>maximum fragment size</source>
-      <translation>maximale fragment grootte</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="208"/>
-      <source>angular (fa)</source>
-      <translation>hoekig (fa)</translation>
-    </message>
-    <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="218"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="250"/>
-      <source>size (fs)</source>
-      <translation>grootte (fs)</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="278"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="304"/>
-      <source>convexity</source>
-      <translation>convexiteit</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="341"/>
-      <source>Mesh fallback</source>
-      <translation>Reservemesh</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="383"/>
-      <source>Deflection</source>
-      <translation>Deflectie</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="386"/>
-      <source>deflection</source>
-      <translation>deflectie</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="393"/>
-      <source>Triangulation settings</source>
-      <translation>Triangulatie instellingen</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="90"/>
-      <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Wanneer ingeschakeld ingeschakeld, Zullen functies hun kinderen in de boomstructuurweergave claimen</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
-      <source>Print debug information in the Console</source>
-      <translation>Afdrukken van foutopsporingsgegevens in de Console</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="47"/>
-      <source>The path to the OpenSCAD executable</source>
-      <translation>Het pad naar het OpenSCAD programma</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="215"/>
-      <source>Minimum angle for a fragment</source>
-      <translation>Minimale hoek voor een fragment</translation>
-    </message>
-    <message>
-      <location filename="openscadprefs-base.ui" line="272"/>
-      <source>Minimum size of a fragment</source>
-      <translation>Minimale grootte van een fragment</translation>
-    </message>
-  </context>
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="149"/>
-      <source>Convert Edges to Faces</source>
-      <translation>Randen omzetten naar vlakken</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="309"/>
-      <source>Please select 3 objects first</source>
-      <translation>Selecteer eerst 3 objecten</translation>
+      <location filename="OpenSCADUtils.py" line="622"/>
+      <source>Error all shapes must be either 2D or both must be 3D</source>
+      <translation>Fout alle vormen moeten ofwel 2D zijn of beide moeten 3D zijn</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
@@ -152,6 +19,21 @@
       <translation>Druk op OK</translation>
     </message>
     <message>
+      <location filename="OpenSCADCommands.py" line="102"/>
+      <source>Unable to explode %s</source>
+      <translation>Kan %s niet ontleden</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="149"/>
+      <source>Convert Edges to Faces</source>
+      <translation>Randen omzetten naar vlakken</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="309"/>
+      <source>Please select 3 objects first</source>
+      <translation>Selecteer eerst 3 objecten</translation>
+    </message>
+    <message>
       <location filename="OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
@@ -160,6 +42,21 @@
       <location filename="OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Wissen</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="365"/>
+      <source>Load</source>
+      <translation>Laad</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="366"/>
+      <source>Save</source>
+      <translation>Opslaan</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="367"/>
+      <source>Refresh</source>
+      <translation>Vernieuwen</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="369"/>
@@ -180,31 +77,6 @@
       <location filename="OpenSCADCommands.py" line="474"/>
       <source>Mesh Boolean</source>
       <translation>Meshboolean</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADUtils.py" line="622"/>
-      <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Fout alle vormen moeten ofwel 2D zijn of beide moeten 3D zijn</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="102"/>
-      <source>Unable to explode %s</source>
-      <translation>Kan %s niet ontleden</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="365"/>
-      <source>Load</source>
-      <translation>Laad</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="366"/>
-      <source>Save</source>
-      <translation>Opslaan</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="367"/>
-      <source>Refresh</source>
-      <translation>Vernieuwen</translation>
     </message>
   </context>
   <context>
@@ -411,6 +283,138 @@
       <location filename="InitGui.py" line="77"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCADTools</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General settings</source>
+      <translation>Algemene instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="26"/>
+      <source>General OpenSCAD Settings</source>
+      <translation>Algemene OpenSCAD instellingen</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="34"/>
+      <source>OpenSCAD executable</source>
+      <translation>OpenSCAD uitvoerbaar bestand</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="47"/>
+      <source>The path to the OpenSCAD executable</source>
+      <translation>Het pad naar het OpenSCAD programma</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="65"/>
+      <source>OpenSCAD import</source>
+      <translation>OpenSCAD import</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>Afdrukken van foutopsporingsgegevens in de Console</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="90"/>
+      <source>If this is checked, Features will claim their children in the tree view</source>
+      <translation>Wanneer ingeschakeld ingeschakeld, Zullen functies hun kinderen in de boomstructuurweergave claimen</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="93"/>
+      <source>Use ViewProvider in Tree View</source>
+      <translation>Gebruik ViewProvider in structuurweergave</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="110"/>
+      <source>If this is checked, Multmatrix Object will be Parametric</source>
+      <translation>Wanneer ingeschakeld, zal de Multmatrix Object parametrisch zijn</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="113"/>
+      <source>Use Multmatrix Feature</source>
+      <translation>Functie van de Multmatrix gebruiken</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="130"/>
+      <location filename="../ui/openscadprefs-base.ui" line="153"/>
+      <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
+      <translation>Het maximale aantal vlakken van een veelhoek, prisma of frustum. Als fn groter is dan deze waarde wordt het object beschouwd als een cirkelvormig object. Zet op 0 voor geen limiet</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="133"/>
+      <source>Maximum number of faces for polygons (fn)</source>
+      <translation>Maximaal aantal vlakken voor veelhoeken (fn)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="177"/>
+      <source>OpenSCAD export</source>
+      <translation>OpenSCAD export</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="185"/>
+      <source>maximum fragment size</source>
+      <translation>maximale fragment grootte</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="205"/>
+      <location filename="../ui/openscadprefs-base.ui" line="215"/>
+      <source>Minimum angle for a fragment</source>
+      <translation>Minimale hoek voor een fragment</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="208"/>
+      <source>angular (fa)</source>
+      <translation>hoekig (fa)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="218"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="247"/>
+      <location filename="../ui/openscadprefs-base.ui" line="272"/>
+      <source>Minimum size of a fragment</source>
+      <translation>Minimale grootte van een fragment</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="250"/>
+      <source>size (fs)</source>
+      <translation>grootte (fs)</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="278"/>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="304"/>
+      <source>convexity</source>
+      <translation>convexiteit</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="341"/>
+      <source>Mesh fallback</source>
+      <translation>Reservemesh</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="361"/>
+      <location filename="../ui/openscadprefs-base.ui" line="383"/>
+      <source>Deflection</source>
+      <translation>Deflectie</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="386"/>
+      <source>deflection</source>
+      <translation>deflectie</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="393"/>
+      <source>Triangulation settings</source>
+      <translation>Triangulatie instellingen</translation>
     </message>
   </context>
 </TS>

@@ -4,68 +4,30 @@
   <context>
     <name>Image_Scaling</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <location filename="_CommandImageScaling.py" line="62"/>
       <source>Scale image plane</source>
       <translation>Escala el pla de la imatge</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <location filename="_CommandImageScaling.py" line="66"/>
       <source>Scales an image plane by defining a distance between two points</source>
       <translation>Ajusta la mida de la imatge definint la distància entre dos punts</translation>
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
-      <source>Scale image plane</source>
-      <translation>Escala el pla de la imatge</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance [mm]</source>
-      <translation>Distància [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
-      <source>Select first point</source>
-      <translation>Seleccioneu el primer punt</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Introduïu la distància&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Seleccioneu Plad'Imatge&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
-      <source>Select second point</source>
-      <translation>Seleccioneu el segon punt</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>Seleccioneu el pla de la imatge i teclegeu la distància</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Image</source>
       <translation>Imatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Create image plane...</source>
       <translation>Crear el pla d'imatge...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create a planar image in the 3D space</source>
       <translation>Crear una imatge plana en l'espai 3D</translation>
     </message>
@@ -73,17 +35,17 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="54"/>
       <source>Image</source>
       <translation>Imatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Open...</source>
       <translation>Obrir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
       <translation>Obrir vista d'imatge</translation>
     </message>
@@ -91,32 +53,40 @@
   <context>
     <name>CmdImageScaling</name>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Image</source>
       <translation>Imatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Scale...</source>
       <translation>Escala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Image Scaling</source>
       <translation>Escalat d'imatge</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Create ImagePlane</source>
+      <translation type="unfinished">Create ImagePlane</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="332"/>
-      <location filename="../../OpenGLImageBox.cpp" line="384"/>
+      <location filename="../../GLImageBox.cpp" line="334"/>
+      <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>Format de píxel d'imatge</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="333"/>
-      <location filename="../../OpenGLImageBox.cpp" line="385"/>
+      <location filename="../../GLImageBox.cpp" line="335"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Tipus d'espai acolorit no definit per la visualització de la imatge</translation>
     </message>
@@ -192,30 +162,30 @@
       <translation>Llest...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="551"/>
       <source>grey</source>
       <translation>gris</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="552"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="570"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="585"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="601"/>
+      <location filename="../../ImageView.cpp" line="612"/>
+      <location filename="../../ImageView.cpp" line="617"/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="555"/>
+      <location filename="../../ImageView.cpp" line="565"/>
+      <location filename="../../ImageView.cpp" line="580"/>
+      <location filename="../../ImageView.cpp" line="596"/>
+      <location filename="../../ImageView.cpp" line="612"/>
       <source>outside image</source>
       <translation>imatge exterior</translation>
     </message>
@@ -223,30 +193,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Images</source>
       <translation>Imatges</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="118"/>
       <source>All files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Choose an image file to open</source>
       <translation>Trieu un fitxer d'imatge per obrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Error opening image</source>
       <translation>Error a l'obrir la imatge</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Could not load the chosen image</source>
       <translation>No es pot carregar la imatge escollida</translation>
     </message>
