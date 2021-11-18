@@ -996,7 +996,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         if (feature->isTouched())
             feature->recomputeFeature();
 
-        std::string FeatName = cmd->getUniqueObjectName(which.c_str(),pcActiveBody);
+        std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
 
@@ -1021,7 +1021,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
             };
 
-        if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
+        if (which.compare("AdditiveLoft") == 0 ||
+            which.compare("SubtractiveLoft") == 0) {
             // for additive and subtractive lofts set subvalues even for sketches
             // when a vertex is first selected
             auto subName = subs.empty() ? "" : subs.front();
@@ -1030,7 +1031,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             // just the sub-shapes if they are set. So when whole sketches are
             // desired, don not set sub-values.
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                !(subName.size() > 6 && subName.substr(0,6) == "Vertex"))
+                !(subName.size() > 6 && subName.substr(0, 6) == "Vertex"))
                 runProfileCmd();
             else
                 runProfileCmdWithSubs();
@@ -1048,15 +1049,22 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 }
             }
         }
-        else {
-            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty())
+        else if (which.compare("AdditivePipe") == 0 ||
+                 which.compare("SubtractivePipe") == 0) {
+            // for additive and subtractive pipes set subvalues even for sketches
+            // to support point sections
+            auto subName = subs.empty() ? "" : subs.front();
+
+            // `ProfileBased::getProfileShape()` and other methods will return
+            // just the sub-shapes if they are set. So when whole sketches are
+            // desired, don not set sub-values.
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+                !(subName.size() > 6 && subName.substr(0, 6) == "Vertex"))
                 runProfileCmd();
             else
                 runProfileCmdWithSubs();
-        }
 
-        // for additive and subtractive pipes allow the user to preselect the spines
-        if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
+            // for additive and subtractive pipes allow the user to preselect the spines
             std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
             if (selection.size() == 2) { //treat additional selected object as spine
                 std::vector <string> subnames = selection[1].getSubNames();
@@ -1073,6 +1081,12 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                     FCMD_OBJ_CMD(Feat,"Spine = (" << objCmdSpine << ", [" << ss.str() << "])");
                 }
             }
+        }
+        else {
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty())
+                runProfileCmd();
+            else
+                runProfileCmdWithSubs();
         }
 
         func(static_cast<Part::Feature*>(feature), Feat);
@@ -1909,15 +1923,15 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     }
     str << "])";
 
-    std::string FeatName = cmd->getUniqueObjectName(which.c_str(),base);
+    std::string FeatName = cmd->getUniqueObjectName(which.c_str(), base);
 
-    auto body = PartDesignGui::getBodyFor(base,false);
+    auto body = PartDesignGui::getBodyFor(base, false);
     if (!body) return;
     cmd->openCommand((std::string("Make ") + which).c_str());
     FCMD_OBJ_CMD(body,"newObject('PartDesign::"<<which<<"','"<<FeatName<<"')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
-    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
+    cmd->doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
 
     App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
@@ -2090,7 +2104,7 @@ void CmdPartDesignThickness::activated(int iMsg)
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) != "Face") {
+        if (aSubName.size() > 4 && aSubName.substr(0, 4) != "Face") {
             // empty name or any other sub-element
             SubNames.erase(SubNames.begin()+i);
         }
