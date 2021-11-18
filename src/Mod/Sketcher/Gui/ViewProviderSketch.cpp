@@ -3239,10 +3239,10 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     }
 
     if (constraint->Type == Sketcher::Diameter){
-        valueStr.insert(0, QChar(8960)); // Diameter sign
+        valueStr.prepend(QChar(216)); // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius){
-        valueStr.insert(0, QChar(82)); // Capital letter R
+        valueStr.prepend(QChar(82)); // Capital letter R
     }
 
     /**
