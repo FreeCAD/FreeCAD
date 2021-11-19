@@ -99,6 +99,7 @@
 #include "ExpressionBindingPy.h"
 #include "ViewProviderLinkPy.h"
 
+#include "EditorView.h"
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
@@ -1782,6 +1783,8 @@ void Application::initTypes(void)
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();
     Gui::TextDocumentEditorView                 ::init();
+    Gui::EditorView                             ::init();
+    Gui::PythonEditorView                       ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();

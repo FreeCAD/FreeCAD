@@ -33,7 +33,7 @@
 #include <QWebEngineView>
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
-};
+}
 #elif defined(QTWEBKIT)
 #include <QWebView>
 #endif
@@ -78,6 +78,8 @@ class WebGuiExport BrowserView : public Gui::MDIView,
                                  public Gui::WindowParameter
 {
     Q_OBJECT
+
+    TYPESYSTEM_HEADER();
 
 public:
     BrowserView(QWidget* parent);

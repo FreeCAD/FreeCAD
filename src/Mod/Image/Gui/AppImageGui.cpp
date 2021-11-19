@@ -18,6 +18,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+#include "ImageView.h"
 #include "Workbench.h"
 #include "ViewProviderImagePlane.h"
 
@@ -50,6 +51,7 @@ PyMOD_INIT_FUNC(ImageGui)
     // instantiating the commands
     CreateImageCommands();
 
+    ImageGui::ImageView::init();
     ImageGui::ViewProviderImagePlane::init();
     ImageGui::Workbench::init();
 

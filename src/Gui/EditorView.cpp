@@ -83,6 +83,8 @@ public:
 
 /* TRANSLATOR Gui::EditorView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::EditorView, Gui::MDIView)
+
 /**
  *  Constructs a EditorView which is a child of 'parent', with the
  *  name 'name'.
@@ -585,6 +587,8 @@ void EditorView::focusInEvent (QFocusEvent *)
 }
 
 // ---------------------------------------------------------
+
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
 
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
   : EditorView(editor, parent), _pye(editor)

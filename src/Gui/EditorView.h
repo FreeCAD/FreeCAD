@@ -49,6 +49,8 @@ class GuiExport EditorView : public MDIView, public WindowParameter
 {
     Q_OBJECT
 
+    TYPESYSTEM_HEADER();
+
 public:
     enum DisplayName {
         FullName,
@@ -117,6 +119,8 @@ class PythonEditor;
 class GuiExport PythonEditorView : public EditorView
 {
     Q_OBJECT
+
+    TYPESYSTEM_HEADER();
 
 public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);

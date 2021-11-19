@@ -359,6 +359,8 @@ void WebView::triggerContextMenuAction(int id)
 
 /* TRANSLATOR Gui::BrowserView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(WebGui::BrowserView, Gui::MDIView)
+
 /**
  *  Constructs a BrowserView which is a child of 'parent', with the
  *  name 'name'.
