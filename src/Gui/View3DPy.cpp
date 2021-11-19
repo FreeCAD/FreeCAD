@@ -52,6 +52,7 @@
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
 #include "PythonWrapper.h"
+#include "MDIViewPy.h"
 
 
 #include <Base/Console.h>
@@ -208,6 +209,7 @@ void View3DInventorPy::init_type()
         "hasClippingPlane(): check whether this clipping plane is active");
     add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
         "graphicsView(): Access this view as QGraphicsView");
+    add_varargs_method("cast_to_base", &View3DInventorPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2632,4 +2634,9 @@ Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
     return wrap.fromQWidget(_view->getViewer(), "QGraphicsView");
+}
+
+Py::Object View3DInventorPy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(_view);
 }

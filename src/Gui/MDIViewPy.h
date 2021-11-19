@@ -35,7 +35,11 @@ class MDIView;
 class GuiExport MDIViewPy : public Py::PythonExtension<MDIViewPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
+    static PyObject *extension_object_new( PyTypeObject *subtype, PyObject * /*args*/, PyObject * /*kwds*/ );
+
+    static Py::Object type();
+    static Py::ExtensionObject<MDIViewPy> create(MDIView *mdi);
 
     MDIViewPy(MDIView *mdi);
     ~MDIViewPy();
@@ -47,6 +51,7 @@ public:
     Py::Object fitAll(const Py::Tuple&);
     Py::Object setActiveObject(const Py::Tuple&);
     Py::Object getActiveObject(const Py::Tuple&);
+    Py::Object cast_to_base(const Py::Tuple&);
 
     MDIView* getMDIViewPtr() {return _view.data();}
 

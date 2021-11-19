@@ -53,6 +53,7 @@ void MDIViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
+    behaviors().set_tp_new(extension_object_new);
 
     add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
     add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
@@ -60,6 +61,26 @@ void MDIViewPy::init_type()
     add_varargs_method("fitAll",&MDIViewPy::fitAll,"fitAll()");
     add_varargs_method("setActiveObject", &MDIViewPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &MDIViewPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
+    add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+}
+
+PyObject *MDIViewPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
+{
+    return new MDIViewPy(nullptr);
+}
+
+Py::Object MDIViewPy::type()
+{
+    return Py::Object( reinterpret_cast<PyObject *>( behaviors().type_object() ) );
+}
+
+Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView *mdi)
+{
+    Py::Callable class_type(type());
+    Py::Tuple arg;
+    auto inst = Py::ExtensionObject<MDIViewPy>(class_type.apply(arg, Py::Dict()));
+    inst.extensionObject()->_view = mdi;
+    return inst;
 }
 
 MDIViewPy::MDIViewPy(MDIView *mdi)
@@ -197,4 +218,9 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
             Py::asObject(obj->getPyObject()),
             Py::asObject(parent->getPyObject()),
             Py::String(subname.c_str()));
+}
+
+Py::Object MDIViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Py::Object(this);
 }

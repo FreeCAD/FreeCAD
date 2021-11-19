@@ -135,6 +135,7 @@ public:
     Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
     Py::Object hasClippingPlane(const Py::Tuple& args);
     Py::Object graphicsView(const Py::Tuple& args);
+    Py::Object cast_to_base(const Py::Tuple&);
 
     View3DInventor* getView3DIventorPtr() {return _view;}
 

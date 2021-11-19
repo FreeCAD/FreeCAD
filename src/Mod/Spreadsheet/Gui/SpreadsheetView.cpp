@@ -471,6 +471,7 @@ void SheetViewPy::init_type()
     behaviors().supportSetattr();
 
     add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
+    add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
     behaviors().readyType();
 }
 
@@ -529,6 +530,11 @@ Py::Object SheetViewPy::getSheet(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     return Py::asObject(new Spreadsheet::SheetPy(getSheetViewPtr()->getSheet()));
+}
+
+Py::Object SheetViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
 #include "moc_SpreadsheetView.cpp"
