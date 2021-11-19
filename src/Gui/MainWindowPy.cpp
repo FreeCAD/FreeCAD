@@ -32,6 +32,7 @@
 #include "MDIView.h"
 #include "MDIViewPy.h"
 #include "PythonWrapper.h"
+#include <Base/TypePy.h>
 
 
 using namespace Gui;
@@ -118,12 +119,40 @@ Py::Object MainWindowPy::getWindows(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
-    return Py::None();
+    Py::List mdis;
+    if (_mw) {
+        QList<QWidget*> windows = _mw->windows();
+        for (auto it : windows) {
+            MDIView* view = qobject_cast<MDIView*>(it);
+            if (view) {
+                mdis.append(Py::asObject(view->getPyObject()));
+            }
+        }
+    }
+
+    return mdis;
 }
 
 Py::Object MainWindowPy::getWindowsOfType(const Py::Tuple& args)
 {
-    return Py::None();
+    PyObject* t;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &Base::TypePy::Type, &t))
+        throw Py::Exception();
+
+    Base::Type typeId = *static_cast<Base::TypePy*>(t)->getBaseTypePtr();
+
+    Py::List mdis;
+    if (_mw) {
+        QList<QWidget*> windows = _mw->windows();
+        for (auto it : windows) {
+            MDIView* view = qobject_cast<MDIView*>(it);
+            if (view && view->isDerivedFrom(typeId)) {
+                mdis.append(Py::asObject(view->getPyObject()));
+            }
+        }
+    }
+
+    return mdis;
 }
 
 Py::Object MainWindowPy::setActiveWindow(const Py::Tuple& args)
