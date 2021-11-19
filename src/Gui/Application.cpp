@@ -87,6 +87,7 @@
 #include "SoFCDB.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+#include "MainWindowPy.h"
 #include "MDIViewPy.h"
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
@@ -458,6 +459,7 @@ Application::Application(bool GUIenabled)
     OutputStdout                ::init_type();
     OutputStderr                ::init_type();
     PythonStdin                 ::init_type();
+    MainWindowPy                ::init_type();
     MDIViewPy                   ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();

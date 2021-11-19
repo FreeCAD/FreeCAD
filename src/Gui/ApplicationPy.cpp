@@ -44,6 +44,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"
+#include "MainWindowPy.h"
 #include "Macro.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
@@ -705,20 +706,13 @@ PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
 PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
-    PythonWrapper wrap;
-    if (!wrap.loadCoreModule() ||
-        !wrap.loadGuiModule() ||
-        !wrap.loadWidgetsModule()) {
-        PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
-        return 0;
-    }
     try {
-        return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
+        return Py::new_reference_to(MainWindowPy::createWrapper(Gui::getMainWindow()));
     }
     catch (const Py::Exception&) {
-        return 0;
+        return nullptr;
     }
 }
 
