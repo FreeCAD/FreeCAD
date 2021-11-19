@@ -1733,16 +1733,16 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
             if(shadow.second.size() && shadow.first == _cSubList[i])
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
-            writer.Stream() << sub;
+            writer.Stream() << encodeAttribute(sub);
             if(_cSubList[i].size()) {
                 if(sub!=_cSubList[i]) {
                     // Stores the actual value that is shadowed. For new version FC,
                     // we will restore this shadowed value instead.
-                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _cSubList[i];
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_cSubList[i]);
                 }else if(shadow.first.size()){
                     // Here means the user set value is old style element name.
                     // We shall then store the shadow somewhere else.
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
                 }
             }
         }
@@ -2571,16 +2571,16 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
             if(shadow.second.size() && _lSubList[i]==shadow.first)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
-            writer.Stream() << sub;
+            writer.Stream() << encodeAttribute(sub);
             if(_lSubList[i].size()) {
                 if(sub!=_lSubList[i]) {
                     // Stores the actual value that is shadowed. For new version FC,
                     // we will restore this shadowed value instead.
-                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _lSubList[i];
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_lSubList[i]);
                 }else if(shadow.first.size()) {
                     // Here means the user set value is old style element name.
                     // We shall then store the shadow somewhere else.
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
                 }
             }
         }
@@ -3752,12 +3752,12 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             if(shadowSub.second.size() && shadowSub.first==subName)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         }else{
-            writer.Stream() << "\" sub=\"" << sub;
+            writer.Stream() << "\" sub=\"" << encodeAttribute(sub);
             if(sub.size()) {
                 if(sub!=subName)
-                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << subName;
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(subName);
                 else if(shadowSub.first.size())
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadowSub.first;
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadowSub.first);
             }
         }
         writer.Stream() << "\"/>\n";
@@ -3777,12 +3777,12 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                 if(shadow.second.size() && shadow.first == _SubList[i])
                     writer.Stream() << "\" " ATTR_MAPPED "=\"1";
             } else {
-                writer.Stream() << sub;
+                writer.Stream() << encodeAttribute(sub);
                 if(_SubList[i].size()) {
                     if(sub!=_SubList[i])
-                        writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _SubList[i];
+                        writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_SubList[i]);
                     else if(shadow.first.size())
-                        writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                        writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
                 }
             }
             writer.Stream()<<"\"/>\n";
