@@ -524,11 +524,10 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
+    assert(cell != 0);
 
     if (aliasedCell != 0 && cell != aliasedCell)
         throw Base::ValueError("Alias already defined.");
-
-    assert(cell != 0);
 
     /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */
     std::string fullName = owner->getFullName() + "." + address.toString();
