@@ -1489,6 +1489,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     hatchscale = std::max(1e-3f, width / hatch->width);
   }
 
+  glDisable(GL_LIGHTING);
   glBegin(GL_QUADS);
   glNormal3fv(dir.getValue());
   if(hatch)
