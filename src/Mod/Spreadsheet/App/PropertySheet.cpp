@@ -485,6 +485,7 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell * cell = nonNullCellAt(address);
     assert(cell != 0);
+    if (cell->address != address) return; //Reject alignment change for merged cell except top-left one
     cell->setAlignment(_alignment);
 }
 
