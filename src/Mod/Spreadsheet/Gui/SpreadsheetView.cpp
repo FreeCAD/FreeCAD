@@ -595,7 +595,7 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
         else
             throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
     }
-    return Py::Object();
+    return Py::None();
 }
 
 Py::Object SheetViewPy::currentIndex(const Py::Tuple& args)
@@ -616,7 +616,7 @@ Py::Object SheetViewPy::setCurrentIndex(const Py::Tuple& args)
     if (PyArg_ParseTuple(args.ptr(), "s", &cell)) {
         sheetView->setCurrentIndex(App::CellAddress(cell));
     }
-    return Py::Object();
+    return Py::None();
 }
 
 
