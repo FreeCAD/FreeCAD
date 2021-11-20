@@ -195,19 +195,9 @@ App::DocumentObjectExecReturn *Pocket::execute()
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
-#if 0
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
-            PrismMaker.Perform(upToFace);
-
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-            TopoDS_Shape prism = PrismMaker.Shape();
-#else
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
             generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
-#endif
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -223,7 +213,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
             }
 
             this->Shape.setValue(getSolid(prism));
-        } else {
+        }
+        else {
             TopoDS_Shape prism;
             generatePrism(prism, profileshape, method, dir, L, L2,
                         Midplane.getValue(), Reversed.getValue());
@@ -258,7 +249,6 @@ App::DocumentObjectExecReturn *Pocket::execute()
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
             (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"

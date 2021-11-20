@@ -179,65 +179,6 @@ App::DocumentObjectExecReturn *Pad::execute()
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.IsNull()) {
-                // This implementation suffers from some problems:
-                // * it explicitly checks for planes only but e.g. a B-spline may work too
-                // * The extracted surface passed to GeomAPI_ProjectPointOnSurf may lack of
-                //   its placement and thus computes a wrong result
-                // * the direction computed by base and projection point must not be transformed
-#if 0
-                // Workaround because BRepFeat_MakePrism requires the base face located on a solid to be able to extrude up to a face
-                // Handle special case of extruding up to a face or plane parallel to the base face
-                BRepAdaptor_Surface adapt(upToFace);
-                if (adapt.GetType() != GeomAbs_Plane)
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face or plane is only possible if the sketch is located on a face");
-
-                double angle = dir.Angle(adapt.Plane().Axis().Direction());
-                if (angle > Precision::Confusion())
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch plane is parallel to it");
-
-                // Project basepoint of sketch onto the UpToFace to determine distance and direction
-                gp_Pnt basePoint(SketchPos.getPosition().x, SketchPos.getPosition().y, SketchPos.getPosition().z);
-                GeomAPI_ProjectPointOnSurf prj(basePoint, adapt.Surface().Surface());
-                if (prj.NbPoints() != 1)
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed to find extrusion direction");
-                // Distance
-                double length = prj.Distance(1) + Offset.getValue();
-                if (length < Precision::Confusion())
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed because of zero height");
-
-                // Direction (the distance is always positive)
-                gp_Pnt prjP = prj.NearestPoint();
-                dir = gp_Dir(gp_Vec(basePoint, prjP));
-                dir.Transform(invObjLoc.Transformation());
-#else
-                /*TopLoc_Location upToFaceLoc;
-                Handle(Geom_Surface) surf = BRep_Tool::Surface(upToFace, upToFaceLoc);
-                GeomLib_IsPlanarSurface checkSurface(surf);
-                if (surf.IsNull() || !checkSurface.IsPlanar())
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face or plane is only possible if the sketch is located on a face");
-
-                gp_Pln upToPlane = checkSurface.Plan().Transformed(upToFaceLoc);
-                gp_Dir planeNorm = upToPlane.Axis().Direction();
-                gp_Pnt planeBase = upToPlane.Location();
-                double angle = dir.Angle(planeNorm);
-                if (angle > Precision::Confusion())
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch plane is parallel to it");
-
-                // Project basepoint of sketch onto the UpToFace to determine distance and direction
-                gp_Pnt basePoint(SketchPos.getPosition().x, SketchPos.getPosition().y, SketchPos.getPosition().z);
-                Standard_Real pn = planeBase.XYZ().Dot(planeNorm.XYZ());
-                Standard_Real qn = basePoint.XYZ().Dot(planeNorm.XYZ());
-                gp_Pnt projPoint = basePoint.Translated(planeNorm.XYZ().Multiplied(pn-qn));
-
-                // Distance
-                double length = projPoint.Distance(basePoint) + Offset.getValue();
-                if (length < Precision::Confusion())
-                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed because of zero height");
-
-                // Direction (the distance is always positive)
-                dir = gp_Dir(gp_Vec(basePoint, projPoint));*/
-#endif
-
                 //generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
                 base = sketchshape;
                 supportface = TopoDS::Face(sketchshape);
@@ -245,20 +186,11 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
 
-#if 0
-                BRepFeat_MakePrism PrismMaker;
-                PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
-                PrismMaker.Perform(upToFace);
-
-                if (!PrismMaker.IsDone())
-                    return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
-                prism = PrismMaker.Shape();
-#else
                 PrismMode mode = PrismMode::None;
                 generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
-#endif
                 base.Nullify();
-            } else {
+            }
+            else {
                 // A support object is always required and we need to use BRepFeat_MakePrism
                 // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
                 // because the feature does not add any material. This only happens with the "2" option, though
@@ -271,20 +203,11 @@ App::DocumentObjectExecReturn *Pad::execute()
                 TopExp_Explorer Ex(supportface,TopAbs_WIRE);
                 if (!Ex.More())
                     supportface = TopoDS_Face();
-#if 0
-                BRepFeat_MakePrism PrismMaker;
-                PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
-                PrismMaker.Perform(upToFace);
-
-                if (!PrismMaker.IsDone())
-                    return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
-                prism = PrismMaker.Shape();
-#else
                 PrismMode mode = PrismMode::None;
                 generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
-#endif
             }
-        } else {
+        }
+        else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
                 hasMidplane, hasReversed);
         }
@@ -297,8 +220,6 @@ App::DocumentObjectExecReturn *Pad::execute()
         this->AddSubShape.setValue(prism);
 
         if (!base.IsNull()) {
-//             auto obj = getDocument()->addObject("Part::Feature", "prism");
-//             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
             BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
@@ -318,7 +239,8 @@ App::DocumentObjectExecReturn *Pad::execute()
 
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
-        } else {
+        }
+        else {
             int solidCount = countSolids(prism);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
