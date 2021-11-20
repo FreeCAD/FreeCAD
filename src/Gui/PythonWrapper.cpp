@@ -28,6 +28,7 @@
 # include <QWidget>
 # include <QIcon>
 # include <QDir>
+# include <QEvent>
 #endif
 #include <QMetaType>
 
