@@ -91,6 +91,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 class TaskPipeOrientation : public TaskSketchBasedParameters
@@ -128,6 +129,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeOrientation> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 
@@ -162,6 +164,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeScaling> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 
