@@ -103,6 +103,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::MultiTransform              ::init();
     PartDesign::Hole                        ::init();
     PartDesign::Body                        ::init();
+    PartDesign::FeatureExtrude              ::init();
     PartDesign::Pad                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();

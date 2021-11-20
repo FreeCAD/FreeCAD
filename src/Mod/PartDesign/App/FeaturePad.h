@@ -24,11 +24,7 @@
 #ifndef PARTDESIGN_Pad_H
 #define PARTDESIGN_Pad_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
-#include "FeatureSketchBased.h"
+#include "FeatureExtrude.h"
 
 namespace PartDesign
 {

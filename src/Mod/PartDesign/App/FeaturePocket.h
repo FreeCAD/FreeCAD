@@ -24,8 +24,7 @@
 #ifndef PARTDESIGN_Pocket_H
 #define PARTDESIGN_Pocket_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+#include "FeatureExtrude.h"
 
 namespace PartDesign
 {
