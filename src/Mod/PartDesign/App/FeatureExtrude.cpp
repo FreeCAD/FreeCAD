@@ -78,3 +78,54 @@ short FeatureExtrude::mustExecute() const
         return 1;
     return ProfileBased::mustExecute();
 }
+
+Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector)
+{
+    Base::Vector3d extrudeDirection;
+
+    if (!UseCustomVector.getValue()) {
+        if (!ReferenceAxis.getValue()) {
+            // use sketch's normal vector for direction
+            extrudeDirection = sketchVector;
+            AlongSketchNormal.setReadOnly(true);
+        }
+        else {
+            // update Direction from ReferenceAxis
+            App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
+            const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
+            Base::Vector3d base;
+            Base::Vector3d dir;
+            getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
+            switch (addSubType) {
+            case Type::Additive:
+                extrudeDirection = dir;
+                break;
+            case Type::Subtractive:
+                extrudeDirection = -dir;
+                break;
+            }
+        }
+    }
+    else {
+        // use the given vector
+        // if null vector, use sketchVector
+        if ((fabs(Direction.getValue().x) < Precision::Confusion())
+            && (fabs(Direction.getValue().y) < Precision::Confusion())
+            && (fabs(Direction.getValue().z) < Precision::Confusion())) {
+            Direction.setValue(sketchVector);
+        }
+        extrudeDirection = Direction.getValue();
+    }
+
+    // disable options of UseCustomVector
+    Direction.setReadOnly(!UseCustomVector.getValue());
+    ReferenceAxis.setReadOnly(UseCustomVector.getValue());
+    // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
+    if (UseCustomVector.getValue())
+        AlongSketchNormal.setReadOnly(false);
+
+    // explicitly set the Direction so that the dialog shows also the used direction
+    // if the sketch's normal vector was used
+    Direction.setValue(extrudeDirection);
+    return extrudeDirection;
+}

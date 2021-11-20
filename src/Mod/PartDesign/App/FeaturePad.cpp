@@ -58,7 +58,7 @@ using namespace PartDesign;
 
 const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", NULL};
 
-PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
+PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 
 Pad::Pad()
 {
@@ -82,23 +82,7 @@ Pad::Pad()
     Length2.setConstraints(nullptr);
 }
 
-short Pad::mustExecute() const
-{
-    if (Placement.isTouched() ||
-        Type.isTouched() ||
-        Length.isTouched() ||
-        Length2.isTouched() ||
-        UseCustomVector.isTouched() ||
-        Direction.isTouched() ||
-        ReferenceAxis.isTouched() ||
-        AlongSketchNormal.isTouched() ||
-        Offset.isTouched() ||
-        UpToFace.isTouched())
-        return 1;
-    return ProfileBased::mustExecute();
-}
-
-App::DocumentObjectExecReturn *Pad::execute(void)
+App::DocumentObjectExecReturn *Pad::execute()
 {
     // Validate parameters
     double L = Length.getValue();
@@ -133,8 +117,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base = TopoDS_Shape();
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPos = obj->Placement.getValue();
     // get the normal vector of the sketch
     Base::Vector3d SketchVector = getProfileNormal();
 
@@ -144,52 +126,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         base.Move(invObjLoc);
 
-        Base::Vector3d paddingDirection;
-        
-        if (!UseCustomVector.getValue()) {
-            if (!ReferenceAxis.getValue()) {
-                // use sketch's normal vector for direction
-                paddingDirection = SketchVector;
-                AlongSketchNormal.setReadOnly(true);
-            }
-            else {
-                // update Direction from ReferenceAxis
-                try {
-                    App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
-                    const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
-                    Base::Vector3d base;
-                    Base::Vector3d dir;
-                    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
-                    paddingDirection = dir;
-                }
-                catch (const Base::Exception& e) {
-                    return new App::DocumentObjectExecReturn(e.what());
-                }
-            }
-        }
-        else {
-            // use the given vector
-            // if null vector, use SketchVector
-            if ( (fabs(Direction.getValue().x) < Precision::Confusion())
-                && (fabs(Direction.getValue().y) < Precision::Confusion())
-                && (fabs(Direction.getValue().z) < Precision::Confusion()) ) {
-                Direction.setValue(SketchVector);
-            }
-            paddingDirection = Direction.getValue();
-        }
-
-        // disable options of UseCustomVector  
-        Direction.setReadOnly(!UseCustomVector.getValue());
-        ReferenceAxis.setReadOnly(UseCustomVector.getValue());
-        // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
-        if (UseCustomVector.getValue())
-            AlongSketchNormal.setReadOnly(false);
+        Base::Vector3d paddingDirection = computeDirection(SketchVector);
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
-
-        // store the finally used direction to display it in the dialog
-        Direction.setValue(dir.X(), dir.Y(), dir.Z());
 
         // The length of a gp_Dir is 1 so the resulting pad would have
         // the length L in the direction of dir. But we want to have its height in the
@@ -211,10 +151,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             L = L / factor;
             L2 = L2 / factor;
         }
-
-        // explicitly set the Direction so that the dialog shows also the used direction
-        // if the sketch's normal vector was used
-        Direction.setValue(paddingDirection);
 
         dir.Transform(invObjLoc.Transformation());
 
@@ -394,7 +330,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed.");

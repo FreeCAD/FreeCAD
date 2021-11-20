@@ -53,6 +53,9 @@ public:
     //@{
     short mustExecute() const;
     //@}
+
+protected:
+    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
 };
 
 } //namespace PartDesign
