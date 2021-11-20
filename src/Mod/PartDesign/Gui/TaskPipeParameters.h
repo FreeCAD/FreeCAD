@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/Widgets.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
@@ -91,6 +92,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 class TaskPipeOrientation : public TaskSketchBasedParameters
@@ -128,6 +130,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeOrientation> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 
@@ -162,6 +165,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeScaling> ui;
+    friend class TaskDlgPipeParameters;
 };
 
 
@@ -183,6 +187,8 @@ protected:
     TaskPipeParameters  *parameter;
     TaskPipeOrientation *orientation;
     TaskPipeScaling     *scaling;
+
+    Gui::ButtonGroup *buttonGroup;
 };
 
 } //namespace PartDesignGui

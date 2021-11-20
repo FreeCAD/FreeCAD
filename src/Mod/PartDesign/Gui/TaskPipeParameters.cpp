@@ -43,15 +43,16 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Widgets.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -248,7 +249,6 @@ void TaskPipeParameters::onTransitionChanged(int idx)
 void TaskPipeParameters::onButtonRefAdd(bool checked)
 {
     if (checked) {
-        clearButtons(refAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
@@ -256,7 +256,8 @@ void TaskPipeParameters::onButtonRefAdd(bool checked)
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refAdd)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
@@ -264,7 +265,6 @@ void TaskPipeParameters::onButtonRefAdd(bool checked)
 void TaskPipeParameters::onButtonRefRemove(bool checked)
 {
     if (checked) {
-        clearButtons(refRemove);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
@@ -272,7 +272,8 @@ void TaskPipeParameters::onButtonRefRemove(bool checked)
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refRemove)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
@@ -280,7 +281,6 @@ void TaskPipeParameters::onButtonRefRemove(bool checked)
 void TaskPipeParameters::onBaseButton(bool checked)
 {
     if (checked) {
-        clearButtons(refObjAdd);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
@@ -288,7 +288,8 @@ void TaskPipeParameters::onBaseButton(bool checked)
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refObjAdd)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
@@ -304,7 +305,6 @@ void TaskPipeParameters::onProfileButton(bool checked)
             pvp->setVisible(true);
         }
 
-        clearButtons(refProfile);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
@@ -312,7 +312,8 @@ void TaskPipeParameters::onProfileButton(bool checked)
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refProfile)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
     }
 }
@@ -700,14 +701,14 @@ void TaskPipeOrientation::exitSelectionMode()
 void TaskPipeOrientation::onButtonRefAdd(bool checked)
 {
     if (checked) {
-        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refAdd)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
@@ -715,14 +716,14 @@ void TaskPipeOrientation::onButtonRefAdd(bool checked)
 void TaskPipeOrientation::onButtonRefRemove(bool checked)
 {
     if (checked) {
-        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refRemove)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
@@ -730,14 +731,14 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked)
 void TaskPipeOrientation::onBaseButton(bool checked)
 {
     if (checked) {
-        clearButtons(refObjAdd);
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refObjAdd)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
@@ -1009,14 +1010,14 @@ void TaskPipeScaling::exitSelectionMode()
 void TaskPipeScaling::onButtonRefAdd(bool checked)
 {
     if (checked) {
-        clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refAdd)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
 }
@@ -1024,14 +1025,14 @@ void TaskPipeScaling::onButtonRefAdd(bool checked)
 void TaskPipeScaling::onButtonRefRemove(bool checked)
 {
     if (checked) {
-        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
     }
     else {
         Gui::Selection().clearSelection();
-        selectionMode = none;
+        if (selectionMode == refRemove)
+            selectionMode = none;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
 }
@@ -1180,6 +1181,22 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool new
     Content.push_back(parameter);
     Content.push_back(orientation);
     Content.push_back(scaling);
+
+
+    buttonGroup = new ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+
+    buttonGroup->addButton(parameter->ui->buttonProfileBase);
+    buttonGroup->addButton(parameter->ui->buttonRefAdd);
+    buttonGroup->addButton(parameter->ui->buttonRefRemove);
+    buttonGroup->addButton(parameter->ui->buttonSpineBase);
+
+    buttonGroup->addButton(orientation->ui->buttonRefAdd);
+    buttonGroup->addButton(orientation->ui->buttonRefRemove);
+    buttonGroup->addButton(orientation->ui->buttonProfileBase);
+
+    buttonGroup->addButton(scaling->ui->buttonRefAdd);
+    buttonGroup->addButton(scaling->ui->buttonRefRemove);
 }
 
 TaskDlgPipeParameters::~TaskDlgPipeParameters()
