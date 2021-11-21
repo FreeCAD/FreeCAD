@@ -107,7 +107,7 @@ Py::Object MDIViewPy::repr()
     std::ostringstream s_out;
     if (!_view)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "MDIView";
+    s_out << _view->getTypeId().getName();
     return Py::String(s_out.str());
 }
 
