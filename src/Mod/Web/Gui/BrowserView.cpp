@@ -77,6 +77,7 @@ using QWebEnginePage = QWebPage;
 #include "CookieJar.h"
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIViewPy.h>
 #include <Gui/ProgressBar.h>
 #include <Gui/Command.h>
 #include <Gui/OnlineDocumentation.h>
@@ -170,17 +171,25 @@ void UrlWidget::display()
 class BrowserViewPy : public Py::PythonExtension<BrowserViewPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    using BaseType = Py::PythonExtension<BrowserViewPy>;
+    static void init_type();    // announce properties and methods
 
     BrowserViewPy(BrowserView* view);
     ~BrowserViewPy();
 
     Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object setHtml(const Py::Tuple&);
+    Py::Object load(const Py::Tuple&);
+    Py::Object stop(const Py::Tuple&);
+    Py::Object url(const Py::Tuple&);
+
+    BrowserView* getBrowserViewPtr();
 
 private:
-    QPointer<BrowserView> myWebView;
+    Gui::MDIViewPy base;
 };
 
 void BrowserViewPy::init_type()
@@ -194,9 +203,13 @@ void BrowserViewPy::init_type()
     behaviors().readyType();
 
     add_varargs_method("setHtml",&BrowserViewPy::setHtml,"setHtml(str)");
+    add_varargs_method("load",&BrowserViewPy::load,"load(url)");
+    add_varargs_method("stop",&BrowserViewPy::stop,"stop()");
+    add_varargs_method("url",&BrowserViewPy::url,"url()");
+    add_varargs_method("cast_to_base", &BrowserViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
-BrowserViewPy::BrowserViewPy(BrowserView* view) : myWebView(view)
+BrowserViewPy::BrowserViewPy(BrowserView* view) : base(view)
 {
 }
 
@@ -204,11 +217,48 @@ BrowserViewPy::~BrowserViewPy()
 {
 }
 
+BrowserView* BrowserViewPy::getBrowserViewPtr()
+{
+    return qobject_cast<BrowserView*>(base.getMDIViewPtr());
+}
+
+Py::Object BrowserViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
+}
+
 Py::Object BrowserViewPy::repr()
 {
     std::stringstream s;
     s << "<BrowserView at " << this << ">";
     return Py::String(s.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object BrowserViewPy::getattr(const char * attr)
+{
+    if (!getBrowserViewPtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
 }
 
 Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
@@ -221,10 +271,38 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
     std::string EncodedHtml = std::string(HtmlCode);
     PyMem_Free(HtmlCode);
 
-    if (myWebView)
-        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromUtf8(BaseUrl)));
+    getBrowserViewPtr()->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromUtf8(BaseUrl)));
     return Py::None();
 }
+
+Py::Object BrowserViewPy::load(const Py::Tuple& args)
+{
+    char* BaseUrl;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &BaseUrl))
+        throw Py::Exception();
+
+    getBrowserViewPtr()->load(BaseUrl);
+    return Py::None();
+}
+
+Py::Object BrowserViewPy::stop(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    getBrowserViewPtr()->stop();
+    return Py::None();
+}
+
+Py::Object BrowserViewPy::url(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    QUrl url = getBrowserViewPtr()->url();
+    return Py::String(url.toString().toStdString());
+}
+
 }
 
 /**
