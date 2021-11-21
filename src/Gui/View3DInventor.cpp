@@ -224,7 +224,7 @@ View3DInventor::~View3DInventor()
     }
 
     if (_viewerPy) {
-        static_cast<View3DInventorPy*>(_viewerPy)->_view = 0;
+        Base::PyGILStateLocker lock;
         Py_DECREF(_viewerPy);
     }
 
