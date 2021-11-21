@@ -36,11 +36,8 @@ else(BUILD_QT5)
     )
 endif(BUILD_QT5)
 
-generate_from_xml(MDIViewPagePy)
-
 # The XML files
 set(TechDrawGui_XML_SRCS
-    MDIViewPagePy.xml
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -206,7 +203,6 @@ SET(TechDrawGui_SRCS
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
-    MDIViewPagePyImp.cpp
     QGVPage.cpp
     QGVPage.h
     QGCustomText.cpp

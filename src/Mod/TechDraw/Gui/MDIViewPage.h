@@ -27,6 +27,7 @@
 #include "ViewProviderPage.h"
 
 #include <Gui/MDIView.h>
+#include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
 
 #include <QPrinter>
@@ -96,7 +97,7 @@ public:
     PyObject* getPyObject();
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
-    QGVPage* getQGVPage(void) {return m_view;};
+    QGVPage* getQGVPage(void) {return m_view;}
 
     QGraphicsScene* m_scene;
 
@@ -171,6 +172,26 @@ private:
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
     QList<QGIView *> deleteItems;
+};
+
+class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>
+{
+public:
+    using BaseType = Py::PythonExtension<MDIViewPagePy>;
+    static void init_type();
+
+    MDIViewPagePy(MDIViewPage *mdi);
+    ~MDIViewPagePy();
+
+    Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object getPage(const Py::Tuple&);
+    Py::Object cast_to_base(const Py::Tuple&);
+
+    MDIViewPage* getMDIViewPagePtr();
+
+protected:
+    Gui::MDIViewPy base;
 };
 
 

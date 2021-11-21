@@ -125,6 +125,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
 
     TechDrawGui::Workbench::init();
     TechDrawGui::MDIViewPage::init();
+    TechDrawGui::MDIViewPagePy::init_type();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
