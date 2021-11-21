@@ -1415,8 +1415,11 @@ Py::Object MDIViewPagePy::repr()
 // appear for SheetViewPy, too.
 Py::Object MDIViewPagePy::getattr(const char * attr)
 {
-    if (!getMDIViewPagePtr())
-        throw Py::RuntimeError("Cannot print representation of deleted object");
+    if (!getMDIViewPagePtr()) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
     std::string name( attr );
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
