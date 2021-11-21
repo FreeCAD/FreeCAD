@@ -7209,13 +7209,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
 
-        if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+        if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId())
             pointids.push_back(GeoId);
-        else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+        else if (geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
             lineids.push_back(GeoId);
-        else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId())
+        else if (geo && geo->getTypeId() == Part::GeomEllipse::getClassTypeId())
             ellipseids.push_back(GeoId);
-        else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())
+        else if (geo && geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())
             arcsofellipseids.push_back(GeoId);
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
