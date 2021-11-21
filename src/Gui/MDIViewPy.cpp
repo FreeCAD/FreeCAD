@@ -55,6 +55,13 @@ void MDIViewPy::init_type()
     behaviors().supportSetattr();
     behaviors().set_tp_new(extension_object_new);
 
+    add_varargs_method("printView",&MDIViewPy::printView,"printView()");
+    add_varargs_method("printPdf",&MDIViewPy::printPdf,"printPdf()");
+    add_varargs_method("printPreview",&MDIViewPy::printPreview,"printPreview()");
+
+    add_varargs_method("undoActions",&MDIViewPy::undoActions,"undoActions()");
+    add_varargs_method("redoActions",&MDIViewPy::redoActions,"redoActions()");
+
     add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
     add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
     add_varargs_method("supportMessage",&MDIViewPy::supportMessage,"supportMessage(str)");
@@ -102,6 +109,69 @@ Py::Object MDIViewPy::repr()
         throw Py::RuntimeError("Cannot print representation of deleted object");
     s_out << "MDIView";
     return Py::String(s_out.str());
+}
+
+Py::Object MDIViewPy::printView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->print();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPdf(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPdf();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPreview(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPreview();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::undoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList undo = _view->undoActions();
+        for (const auto& it : undo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
+}
+
+Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList redo = _view->redoActions();
+        for (const auto& it : redo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
 }
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)

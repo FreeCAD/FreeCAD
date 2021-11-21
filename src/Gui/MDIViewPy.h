@@ -46,6 +46,19 @@ public:
 
     Py::Object repr();
 
+    /** @name Printing */
+    //@{
+    Py::Object printView(const Py::Tuple&);
+    Py::Object printPdf(const Py::Tuple&);
+    Py::Object printPreview(const Py::Tuple&);
+    //@}
+
+    /** @name Undo/Redo actions */
+    //@{
+    Py::Object undoActions(const Py::Tuple&);
+    Py::Object redoActions(const Py::Tuple&);
+    //@}
+
     Py::Object sendMessage(const Py::Tuple&);
     Py::Object supportMessage(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
