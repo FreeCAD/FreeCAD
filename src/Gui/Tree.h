@@ -356,7 +356,11 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
+    /*
+    * Reverted until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
     int findRootIndex(const ViewProviderDocumentObject *childObj) const;
+    */
+    int findRootIndex(App::DocumentObject* childObj);
 
     DocumentObjectItem *findItemByObject(bool sync,
             App::DocumentObject *obj, const char *subname, bool select=false);

@@ -3684,6 +3684,10 @@ void StdTreeDrag::activated(int)
     }
 }
 
+
+/*
+* Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
+
 //===========================================================================
 // Std_GroupMoveUp
 //===========================================================================
@@ -3793,6 +3797,7 @@ bool StdGroupMoveDown::isActive(void)
 
     return tree->allowMoveDownInGroup(selected);
 }
+*/
 
 //======================================================================
 // Std_TreeViewActions
@@ -3829,10 +3834,13 @@ public:
         addCommand(new StdTreeDrag(),cmds.size());
         addCommand(new StdTreeSelection(),cmds.size());
 
+        /*
+        * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         addCommand();
 
         addCommand(new StdGroupMoveUp());
         addCommand(new StdGroupMoveDown());
+        */
     };
     virtual const char* className() const {return "StdCmdTreeViewActions";}
 };

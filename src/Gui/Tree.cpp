@@ -342,12 +342,14 @@ public:
         }
 
         // Sort the child items by their tree rank
+        /* Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         std::stable_sort(newChildren.begin(), newChildren.end(),
                          [this](App::DocumentObject *a, App::DocumentObject *b) {
                              ViewProviderDocumentObject *vpa = this->docItem->getViewProvider(a);
                              ViewProviderDocumentObject *vpb = this->docItem->getViewProvider(b);
                              return vpa->TreeRank.getValue() < vpb->TreeRank.getValue();
                          });
+         */
 
         // Mark updated in case the order of the children did change
         updated = updated || children!=newChildren;
@@ -2361,10 +2363,13 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
             ChangedObjects.emplace(vpd.getObject(),0);
             _updateStatus();
         }
+        /*
+        * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         else if (&prop == &vpd.TreeRank) {
             ReorderedObjects.insert(vpd.getObject());
             _updateStatus();
         }
+        */
     }
 }
 
@@ -2527,6 +2532,9 @@ void TreeWidget::onUpdateStatus(void)
     ChangedObjects.clear();
 
     // Sort parents of object items with adjusted order
+
+    /*
+    * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
     std::set<QTreeWidgetItem *> reorderParents;
     for (auto &obj : ReorderedObjects) {
         ViewProvider *vp = Application::Instance->getViewProvider(obj);
@@ -2566,6 +2574,7 @@ void TreeWidget::onUpdateStatus(void)
         }
         reorderParents.clear();
     }
+    */
 
     FC_LOG("update item status");
     TimingInit();
@@ -3565,8 +3574,13 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     if(!parent || parent==this) {
         parent = this;
         data->rootItem = item;
+        /*
+        * Reverted until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         if(index<0)
             index = findRootIndex(&obj);
+         */
+        if (index < 0)
+            index = findRootIndex(obj.getObject());
     }
     if(index<0)
         parent->addChild(item);
@@ -3865,7 +3879,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
+                /*
+                * Reverted until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
                 auto index = findRootIndex(childItem->object());
+                */
+                auto index = findRootIndex(childItem->object()->getObject());
                 if(index>=0)
                     this->insertChild(index,childItem);
                 else
@@ -3885,7 +3903,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
     if(updated)
         getTree()->_updateStatus();
 }
-
+/*
+* Reverted until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
 int DocumentItem::findRootIndex(const ViewProviderDocumentObject *childObj) const {
     if (!TreeParams::Instance()->KeepRootOrder() || !childObj || !childObj->getObject()
        || !childObj->getObject()->getNameInDocument()) {
@@ -3946,6 +3965,67 @@ int DocumentItem::findRootIndex(const ViewProviderDocumentObject *childObj) cons
             return -1;
     }
     if(first>last)
+        return -1;
+    return first;
+}
+*/
+
+
+int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
+    if (!TreeParams::Instance()->KeepRootOrder() || !childObj || !childObj->getNameInDocument())
+        return -1;
+
+    // object id is monotonically increasing, so use this as a hint to insert
+    // object back so that we can have a stable order in root level.
+
+    int count = this->childCount();
+    if (!count)
+        return -1;
+    int first, last;
+    // find the last item
+    for (last = count - 1; last >= 0; --last) {
+        auto citem = this->child(last);
+        if (citem->type() == TreeWidget::ObjectType) {
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if (obj->getID() <= childObj->getID())
+                return last + 1;
+            break;
+        }
+    }
+    // find the first item
+    for (first = 0; first < count; ++first) {
+        auto citem = this->child(first);
+        if (citem->type() == TreeWidget::ObjectType) {
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if (obj->getID() >= childObj->getID())
+                return first;
+            break;
+        }
+    }
+    // now do a binary search to find the lower bound, assuming the root level
+    // object is already in order
+    count = last - first;
+    int pos;
+    while (count > 0) {
+        int step = count / 2;
+        pos = first + step;
+        for (; pos <= last; ++pos) {
+            auto citem = this->child(pos);
+            if (citem->type() != TreeWidget::ObjectType)
+                continue;
+            auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
+            if (obj->getID() < childObj->getID()) {
+                first = ++pos;
+                count -= step + 1;
+            }
+            else
+                count = step;
+            break;
+        }
+        if (pos > last)
+            return -1;
+    }
+    if (first > last)
         return -1;
     return first;
 }

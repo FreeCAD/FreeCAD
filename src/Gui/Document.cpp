@@ -728,7 +728,10 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         }
 
         // If no tree rank was assigned, do it now, otherwise keep the current one
+        /*
+        * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         pcProvider->TreeRank.setValue(pcProvider->TreeRank.getValue());
+        */
 
         // adding to the tree
         signalNewObject(*pcProvider);
@@ -1433,10 +1436,13 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 }
             }
 
+            /*
+            * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
             int rank = 0;
             if (localreader->hasAttribute("rank")) {
                 rank = localreader->getAttributeAsInteger("rank");
             }
+            */
 
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
@@ -1444,11 +1450,15 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
             ViewProviderDocumentObject *vpdo = dynamic_cast<ViewProviderDocumentObject *>(pObj);
             if (vpdo) {
+
+                /*
+                * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
                 if (rank <= 0 ) {
                     // For backward compatibility, use object ID as tree rank
                     rank = vpdo->getObject()->getID();
                 }
                 vpdo->TreeRank.setValue(rank);
+                */
 
                 if (expanded) {
                     this->signalExpandObject(*vpdo, TreeItemMode::ExpandItem, 0, 0);
@@ -1574,10 +1584,13 @@ void Document::SaveDocFile (Base::Writer &writer) const
         if (obj->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
 
+        /*
+        * Commented out until discussion is resolved: https://forum.freecadweb.org/viewtopic.php?f=3&t=63744
         ViewProviderDocumentObject *vpdo = dynamic_cast<ViewProviderDocumentObject *>(obj);
         if (vpdo && vpdo->TreeRank.getValue()) {
             writer.Stream() << " rank=\"" << vpdo->TreeRank.getValue() << "\"";
         }
+        */
 
         writer.Stream() << ">" << std::endl;
         obj->Save(writer);
