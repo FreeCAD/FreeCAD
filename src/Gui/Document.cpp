@@ -1081,15 +1081,21 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
                     FC_WARN("  Document: " << docName(d).toUtf8().constData()
                             << ": " << d->FileName.getValue());
                 if (count == 3) {
-                    ts << QObject::tr("\n\nPlease check report view for more...");
+                    ts << "\n\n"
+                    << QObject::tr("Please check report view for more...");
                 } else if (count < 3) {
-                    ts << QObject::tr("\n\nPhysical path: ") << v.first
-                    << QObject::tr("\nDocument: ") << docName(doc)
-                    << QObject::tr("\n  Path: ") << QString::fromUtf8(doc->FileName.getValue());
+                    ts << "\n\n"
+                    << QObject::tr("Physical path:") << ' ' << v.first
+                    << "\n"
+                    << QObject::tr("Document:") << ' ' << docName(doc)
+                    << "\n" << '  '
+                    << QObject::tr("Path:") << ' ' << QString::fromUtf8(doc->FileName.getValue());
                     for (auto d : v.second) {
                         if (d == doc) continue;
-                        ts << QObject::tr("\nDocument: ") << docName(d)
-                        << QObject::tr("\n  Path: ") << QString::fromUtf8(d->FileName.getValue());
+                        ts << "\n" 
+                        << QObject::tr("Document:") << ' ' << docName(d)
+                        << "\n" << '  '
+                        << QObject::tr("Path:") << ' ' << QString::fromUtf8(d->FileName.getValue());
                     }
                 }
                 ++count;
