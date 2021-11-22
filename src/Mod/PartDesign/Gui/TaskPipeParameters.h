@@ -48,6 +48,36 @@ class Ui_TaskPipeParameters;
 class Ui_TaskPipeOrientation;
 class Ui_TaskPipeScaling;
 
+/// Convenience class to maintain states between the various task boxes for pipe
+class StateHandlerTaskPipe
+{
+public:
+    enum SelectionModes {
+        none = 0,
+        refProfile,
+        refSpine,
+        refSpineEdgeAdd,
+        refSpineEdgeRemove,
+        refAuxSpine,
+        refAuxSpineEdgeAdd,
+        refAuxSpineEdgeRemove,
+        refSectionAdd,
+        refSectionRemove
+    };
+
+public:
+    StateHandlerTaskPipe() {selectionMode = SelectionModes::none;}
+    ~StateHandlerTaskPipe() {}
+
+    // only keeping getter because task boxes shouldn't need to change this
+    // and task dialog is already friend
+    enum SelectionModes getSelectionMode() {return selectionMode;}
+
+private:
+    enum SelectionModes selectionMode;
+    friend class TaskDlgPipeParameters;
+};
+
 
 class TaskPipeParameters : public TaskSketchBasedParameters
 {
@@ -62,23 +92,17 @@ public:
 private Q_SLOTS:
     void onTangentChanged(bool checked);
     void onTransitionChanged(int);
-    void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
-    void onBaseButton(bool checked);
     void onProfileButton(bool checked);
     void onDeleteEdge();
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };
-    selectionModes selectionMode = none;
-
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
-    void clearButtons(const selectionModes notThis=none);
+    void clearButtons();
     void exitSelectionMode();
     void setVisibilityOfSpineAndProfile();
 
@@ -92,6 +116,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
+    StateHandlerTaskPipe *stateHandler;
     friend class TaskDlgPipeParameters;
 };
 
@@ -106,30 +131,25 @@ public:
 
 private Q_SLOTS:
     void onOrientationChanged(int);
-    void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
     void updateUI(int idx);
-    void onBaseButton(bool checked);
     void onClearButton();
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
     void onDeleteItem();
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd };
-    selectionModes selectionMode = none;
-
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons(const selectionModes notThis=none);
+    void clearButtons();
     void exitSelectionMode();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeOrientation> ui;
+    StateHandlerTaskPipe *stateHandler;
     friend class TaskDlgPipeParameters;
 };
 
@@ -144,30 +164,25 @@ public:
 
 private Q_SLOTS:
     void onScalingChanged(int);
-    void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onDeleteSection();
     void indexesMoved();
 
 protected:
-    enum selectionModes { none, refAdd, refRemove };
-    selectionModes selectionMode = none;
-
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons(const selectionModes notThis=none);
+    void clearButtons();
     void exitSelectionMode();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeScaling> ui;
+    StateHandlerTaskPipe *stateHandler;
     friend class TaskDlgPipeParameters;
 };
-
 
 /// simulation dialog for the TaskView
 class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
@@ -183,12 +198,16 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
 
+protected Q_SLOTS:
+    void onButtonToggled(QAbstractButton *button, bool checked);
+
 protected:
     TaskPipeParameters  *parameter;
     TaskPipeOrientation *orientation;
     TaskPipeScaling     *scaling;
 
     Gui::ButtonGroup *buttonGroup;
+    StateHandlerTaskPipe *stateHandler;
 };
 
 } //namespace PartDesignGui
