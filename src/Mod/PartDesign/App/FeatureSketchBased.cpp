@@ -65,7 +65,6 @@
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
-# include <TopExp.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepGProp_Face.hxx>
@@ -1180,18 +1179,21 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
     }
     else {
         TopoDS_Shape shape = getVerifiedFace(true);
-        if (shape == TopoDS_Shape())
+        if (shape.IsNull())
             return SketchVector;
 
-        if (shape.ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        // the shape can be a single face or a compound of faces, only consider the first face
+        TopExp_Explorer ex(shape, TopAbs_FACE);
+        if (ex.More()) {
+            TopoDS_Face face = TopoDS::Face(ex.Current());
+            BRepAdaptor_Surface adapt(face);
             double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
             double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
             BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
             if(prop.IsNormalDefined()) {
                 gp_Pnt pnt; gp_Vec vec;
                 // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(shape)).Normal(u,v,pnt,vec);
+                BRepGProp_Face(face).Normal(u,v,pnt,vec);
                 SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
             }
         }
