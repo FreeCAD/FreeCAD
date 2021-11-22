@@ -1088,13 +1088,13 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
                     << QObject::tr("Physical path:") << ' ' << v.first
                     << "\n"
                     << QObject::tr("Document:") << ' ' << docName(doc)
-                    << "\n" << '  '
+                    << "\n  "
                     << QObject::tr("Path:") << ' ' << QString::fromUtf8(doc->FileName.getValue());
                     for (auto d : v.second) {
                         if (d == doc) continue;
                         ts << "\n" 
                         << QObject::tr("Document:") << ' ' << docName(d)
-                        << "\n" << '  '
+                        << "\n  "
                         << QObject::tr("Path:") << ' ' << QString::fromUtf8(d->FileName.getValue());
                     }
                 }
