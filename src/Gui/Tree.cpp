@@ -341,13 +341,15 @@ public:
             }
         }
 
-        // Sort the child items by their tree rank
-        std::stable_sort(newChildren.begin(), newChildren.end(),
-                         [this](App::DocumentObject *a, App::DocumentObject *b) {
-                             ViewProviderDocumentObject *vpa = this->docItem->getViewProvider(a);
-                             ViewProviderDocumentObject *vpb = this->docItem->getViewProvider(b);
-                             return vpa->TreeRank.getValue() < vpb->TreeRank.getValue();
-                         });
+        // If allowed, sort the child items by their tree rank
+        if (newChildren.size() > 0 && viewObject->allowTreeOrderSwap(newChildren.front(), newChildren.back())) {
+            std::stable_sort(newChildren.begin(), newChildren.end(),
+                             [this](App::DocumentObject *a, App::DocumentObject *b) {
+                                 ViewProviderDocumentObject *vpa = this->docItem->getViewProvider(a);
+                                 ViewProviderDocumentObject *vpb = this->docItem->getViewProvider(b);
+                                 return vpa->TreeRank.getValue() < vpb->TreeRank.getValue();
+                             });
+        }
 
         // Mark updated in case the order of the children did change
         updated = updated || children!=newChildren;
@@ -2527,7 +2529,7 @@ void TreeWidget::onUpdateStatus(void)
     ChangedObjects.clear();
 
     // Sort parents of object items with adjusted order
-    std::set<QTreeWidgetItem *> reorderParents;
+    std::unordered_map<QTreeWidgetItem *, std::set<App::DocumentObject *>> reorderMap;
     for (auto &obj : ReorderedObjects) {
         ViewProvider *vp = Application::Instance->getViewProvider(obj);
         if (!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
@@ -2549,22 +2551,31 @@ void TreeWidget::onUpdateStatus(void)
                 }
 
                 for (DocumentObjectItem *parentItem : dataIt->second->items) {
-                    reorderParents.insert(parentItem);
+                    reorderMap[parentItem].insert(obj);
                 }
             }
         }
         else {
-            reorderParents.insert(docItem);
+            reorderMap[docItem].insert(obj);
         }
     }
     ReorderedObjects.clear();
 
-    if (!reorderParents.empty()) {
-        for (QTreeWidgetItem *parentItem : reorderParents) {
-            sortObjectItems(parentItem, [](const DocumentObjectItem *a, const DocumentObjectItem *b)
-                                          { return a->object()->TreeRank.getValue() < b->object()->TreeRank.getValue(); });
+    if (!reorderMap.empty()) {
+        for (auto parentObjects : reorderMap) {
+            if (parentObjects.first->type() == TreeWidget::ObjectType
+                && !static_cast<DocumentObjectItem *>(parentObjects.first)->object()->allowTreeOrderSwap(
+                       *parentObjects.second.begin(), *parentObjects.second.rbegin())) {
+                // Even though child tree rank changed, do not shuffle with order in parents disallowing tree order swaps
+                continue;
+            }
+
+            sortObjectItems(parentObjects.first,
+                            [](const DocumentObjectItem *a, const DocumentObjectItem *b)
+                              { return a->object()->TreeRank.getValue() < b->object()->TreeRank.getValue(); });
         }
-        reorderParents.clear();
+
+        reorderMap.clear();
     }
 
     FC_LOG("update item status");

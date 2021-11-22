@@ -34,11 +34,13 @@ class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransf
 public:
     ViewProviderMultiTransform()
         { featureName = std::string("MultiTransform");
-	   sPixmap = "PartDesign_MultiTransform.svg"; }
+          sPixmap = "PartDesign_MultiTransform.svg"; }
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
     virtual bool onDelete(const std::vector<std::string> &);
+
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

@@ -402,7 +402,8 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
        prop == &DisplayModeBody ||
        prop == &DiffuseColor ||
        prop == &PointColorArray ||
-       prop == &LineColorArray)
+       prop == &LineColorArray ||
+       prop == &TreeRank)
         return;
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
