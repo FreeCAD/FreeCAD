@@ -1005,11 +1005,14 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         auto objCmd = Gui::Command::getObjectCmd(feature);
 
+        // run the command in console to set the profile (without selected subelements)
         auto runProfileCmd =
             [=]() {
                 FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
             };
 
+        // run the command in console to set the profile with selected subelements
+        // useful to set, say, a face of a solid as the "profile"
         auto runProfileCmdWithSubs =
             [=]() {
                 std::ostringstream ss;
@@ -1023,6 +1026,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             // when a vertex is first selected
             auto subName = subs.empty() ? "" : subs.front();
 
+            // `ProfileBased::getProfileShape()` and other methods will return
+            // just the sub-shapes if they are set. So when whole sketches are
+            // desired, don not set sub-values.
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
                 !(subName.size() > 6 && subName.substr(0,6) == "Vertex"))
                 runProfileCmd();

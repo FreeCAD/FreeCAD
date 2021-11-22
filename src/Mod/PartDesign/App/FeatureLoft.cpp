@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 profilePoint = ex.Current();
             }
             if (i > 1)
-                return new App::DocumentObjectExecReturn("Loft: Only one isolated point is needed if using a sketch with isolated points for section");
+                return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
         }
 
         bool isLastSectionVertex = false;
@@ -179,7 +179,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                         wires.push_back(ex.Current());
                 }
                 if (j > 1)
-                    return new App::DocumentObjectExecReturn("Loft: Only one isolated point is needed if using a sketch with isolated points for section");
+                    return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
             }
             if (!isLastSectionVertex && numWiresAdded < wiresections.size())
                 return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
