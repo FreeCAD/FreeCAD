@@ -24,7 +24,7 @@
 #ifndef GUI_WIDGETS_H
 #define GUI_WIDGETS_H
 
-#include <Gui/ui_DlgTreeWidget.h>
+#include <QDialog>
 #include <QListWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -36,7 +36,16 @@
 #include <QToolButton>
 #include <QModelIndex>
 #include "ExpressionBinding.h"
-#include "Base/Parameter.h"
+#include <Base/Parameter.h>
+#include <memory>
+#include <FCGlobal.h>
+
+
+class QGridLayout;
+class QVBoxLayout;
+class QTreeWidget;
+class QTreeWidgetItem;
+class QSpacerItem;
 
 namespace Gui {
 class PrefCheckBox;
@@ -164,6 +173,7 @@ private:
 // ------------------------------------------------------------------------------
 
 typedef QPair<QString, bool> CheckListItem;
+class Ui_DlgTreeWidget;
 
 /**
  * The CheckListDialog class provides a dialog with a QListView with
@@ -187,7 +197,7 @@ public:
 
 private:
   QStringList checked;
-  Ui_DlgTreeWidget ui;
+  std::unique_ptr<Ui_DlgTreeWidget> ui;
 };
 
 // ------------------------------------------------------------------------------

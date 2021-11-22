@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QVBoxLayout>
+#endif
 
 #include "PropertyPage.h"
 #include "PrefWidgets.h"

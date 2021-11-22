@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <QDialogButtonBox>
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
@@ -34,6 +35,7 @@
 #include <QPainter>
 #include <QString>
 #include <QTextOption>
+#include <QVBoxLayout>
 #include <sstream>
 #endif
 
