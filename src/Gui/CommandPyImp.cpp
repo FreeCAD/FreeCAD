@@ -101,7 +101,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
                re.setCaseSensitivity(Qt::CaseInsensitive);
                if (!re.isValid()){
                    std::stringstream str;
-                   str << "Invalid regular expression: " << shortcut_to_find;
+                   str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());
                }
 
