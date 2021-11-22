@@ -24,6 +24,7 @@
 #ifndef GUI_WIDGETS_H
 #define GUI_WIDGETS_H
 
+#include <QButtonGroup>
 #include <QDialog>
 #include <QListWidget>
 #include <QLabel>
@@ -570,6 +571,25 @@ private Q_SLOTS:
 
 private:
     bool autoClose;
+};
+
+/*!
+ * \brief The ButtonGroup class
+ * Unlike Qt's QButtonGroup this class allows it that in exclusive mode
+ * all buttons can be unchecked.
+ */
+class GuiExport ButtonGroup : public QButtonGroup
+{
+    Q_OBJECT
+
+public:
+    ButtonGroup(QObject *parent = nullptr);
+
+    void setExclusive(bool on);
+    bool exclusive() const;
+
+private:
+    bool _exclusive;
 };
 
 } // namespace Gui

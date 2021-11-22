@@ -1664,4 +1664,34 @@ void ExpLineEdit::keyPressEvent(QKeyEvent *event)
         QLineEdit::keyPressEvent(event);
 }
 
+// --------------------------------------------------------------------
+
+ButtonGroup::ButtonGroup(QObject *parent)
+  : QButtonGroup(parent)
+  , _exclusive(true)
+{
+    QButtonGroup::setExclusive(false);
+
+    connect(this, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
+            [=](QAbstractButton *button) {
+        if (exclusive()) {
+            for (auto btn : buttons()) {
+                if (btn && btn != button && btn->isCheckable())
+                    btn->setChecked(false);
+            }
+        }
+    });
+}
+
+void ButtonGroup::setExclusive(bool on)
+{
+    _exclusive = on;
+}
+
+bool ButtonGroup::exclusive() const
+{
+    return _exclusive;
+}
+
+
 #include "moc_Widgets.cpp"
