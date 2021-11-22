@@ -130,14 +130,13 @@ void ViewProvider::addDefaultAction(QMenu* menu, const QString& text)
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-    bool isSolid = PartDesign::Body::isSolidFeature(feat);
     auto body = PartDesign::Body::findBodyOf(feat);
     if (body) {
         auto act = menu->addAction(QObject::tr("Toggle export"), receiver, member);
         act->setData(QVariant((int)Gui::ViewProvider::ExportInGroup));
     }
 
-    if(body && isSolid) {
+    if(body && body->isSolidFeature(feat)) {
         QAction* act;
         act = menu->addAction(QObject::tr(
                     feat->Suppress.getValue()?"Unsuppress":"Suppress"),
@@ -390,7 +389,7 @@ void ViewProvider::updateData(const App::Property* prop)
         {
             unsigned long color = 0;
             if (IconColor.getValue().getPackedValue()) {
-                if (!PartDesign::Body::isSolidFeature(getObject()))
+                if (!body->isSolidFeature(getObject()))
                     this->IconColor.setValue(0);
                 else {
                     if (!feature->BaseFeature.getValue())
@@ -425,7 +424,7 @@ void ViewProvider::updateData(const App::Property* prop)
                 // Assign tag icon color (if none) of the initial solid that we are forked from
                 std::set<App::DocumentObject*> checked;
                 for (auto obj : body->Group.getValue()) {
-                    if (!PartDesign::Body::isSolidFeature(obj))
+                    if (!body->isSolidFeature(obj))
                         continue;
                     if (checked.count(obj))
                         continue;

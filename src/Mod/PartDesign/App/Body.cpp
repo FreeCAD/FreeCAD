@@ -207,10 +207,13 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
     return false;
 }
 
-bool Body::isSolidFeature(const App::DocumentObject* f)
+bool Body::isSolidFeature(const App::DocumentObject* f) const
 {
     if (f == NULL)
         return false;
+
+    if (f == BaseFeature.getValue())
+        return true;
 
     auto type = f->getTypeId();
     if (type.isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
@@ -521,7 +524,8 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
     Part::TopoShape tipShape;
     if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
+        if ( !isSolidFeature(tip)
+                && !tip->isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
             return new App::DocumentObjectExecReturn ( "Linked object is not a PartDesign feature" );
         }
 

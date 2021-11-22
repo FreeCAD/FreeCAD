@@ -534,7 +534,7 @@ Part::Feature *ProfileBased::getBaseObject(bool silent) const
             // Use the body base feature if we are the first solid feature in the sibling group
             if (body && body->BaseFeature.getValue()) {
                 for (auto obj : body->getSiblings(const_cast<ProfileBased*>(this))) {
-                    if (Body::isSolidFeature(obj)) {
+                    if (body->isSolidFeature(obj)) {
                         if (obj == this) {
                             rv = Base::freecad_dynamic_cast<Part::Feature>(
                                     body->BaseFeature.getValue());

@@ -329,7 +329,7 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
 unsigned long ViewProviderBody::generateIconColor(App::DocumentObject *feat) const
 {
     auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
-    if (!body || (feat && !PartDesign::Body::isSolidFeature(feat)))
+    if (!body || (feat && !body->isSolidFeature(feat)))
         return 0;
 
     if (feat) {
@@ -354,7 +354,7 @@ unsigned long ViewProviderBody::generateIconColor(App::DocumentObject *feat) con
     colors.insert(0xffffffff);
     int solid_count = 0;
     for (auto o : body->Group.getValue()) {
-        if (!PartDesign::Body::isSolidFeature(o))
+        if (!body->isSolidFeature(o))
             continue;
         auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(o);
         if (!feat)
@@ -926,7 +926,7 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
         secondFeat->BaseFeature.setValue(firstFeat);
         for (auto obj : objs) {
             if (obj == secondFeat
-                    || !PartDesign::Body::isSolidFeature(obj)
+                    || !body->isSolidFeature(obj)
                     || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
                 continue;
             auto feat = static_cast<PartDesign::Feature*>(obj);

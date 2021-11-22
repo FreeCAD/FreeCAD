@@ -125,7 +125,7 @@ public:
       * for features derived from PartDesign::Feature
       * Return false if the given feature is a Sketch or a Part::Datum feature
       */
-    static bool isSolidFeature(const App::DocumentObject* f);
+    bool isSolidFeature(const App::DocumentObject* f) const;
 
     /**
       * Return true if the given feature is allowed in a Body. Currently allowed are

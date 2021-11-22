@@ -1787,7 +1787,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
             QObject::tr("Select an edge, face, or body from an active body."));
         return false;
     }
-    else if (!PartDesign::Body::isSolidFeature(selection[0].getObject())) {
+    else if (!pcActiveBody->isSolidFeature(selection[0].getObject())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not a solid feature"),
             QObject::tr("The selected object is not a solid feature. Please use the 'Boolean' feature "
                         "to fuse it into the body first."));

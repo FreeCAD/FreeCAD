@@ -418,9 +418,11 @@ void CmdPartDesignMigrate::activated(int iMsg)
 
     // Retrieve all PartDesign Features objects and filter out features already belonging to some body
     for ( const auto & feat: doc->getObjects(  ) ) {
-         if( feat->isDerivedFrom( PartDesign::Feature::getClassTypeId() ) &&
-                 !PartDesign::Body::findBodyOf( feat ) && PartDesign::Body::isSolidFeature ( feat ) ) {
-             migrateFeatures.insert ( static_cast <PartDesign::Feature *>( feat ) );
+         if( feat->isDerivedFrom( PartDesign::Feature::getClassTypeId() )) {
+             if (auto body = PartDesign::Body::findBodyOf( feat )) {
+                if (body->isSolidFeature ( feat ) )
+                    migrateFeatures.insert ( static_cast <PartDesign::Feature *>( feat ) );
+             }
          }
     }
 

@@ -1132,14 +1132,14 @@ public:
         if (!body)
             return;
         visibleFeatures.clear();
-        if (!PartDesign::Body::isSolidFeature(editingObj)) {
+        if (!body->isSolidFeature(editingObj)) {
             editingObj->Visibility.setValue(true);
             return;
         }
         for (auto obj : body->Group.getValues()) {
             if (!obj->Visibility.getValue()
                     || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-                    || !PartDesign::Body::isSolidFeature(obj))
+                    || !body->isSolidFeature(obj))
                 continue;
             visibleFeatures.emplace_back();
             auto & objs = visibleFeatures.back();
