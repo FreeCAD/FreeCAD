@@ -582,7 +582,10 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             item->setText(QObject::tr(group.constData()));
         }
         adjustListBox();
-    } else {
+    }
+    else if (e->type() == QEvent::StyleChange)
+        QMetaObject::invokeMethod(this, "adjustListBox", Qt::QueuedConnection);
+    else {
         QWidget::changeEvent(e);
     }
 }
