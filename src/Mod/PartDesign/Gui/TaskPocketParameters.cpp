@@ -478,13 +478,6 @@ void TaskPocketParameters::onDirectionCBChanged(int num)
     // in case the user is in selection mode, but changed his mind before selecting anything
     exitSelectionMode();
 
-    try {
-        recomputeFeature();
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
-    }
-
     // disable AlongSketchNormal when the direction is already normal
     if (num == 0)
         ui->checkBoxAlongDirection->setEnabled(false);
@@ -497,7 +490,6 @@ void TaskPocketParameters::onDirectionCBChanged(int num)
         pcPocket->UseCustomVector.setValue(true);
     }
     else {
-        ui->checkBoxDirection->setChecked(false);
         pcPocket->UseCustomVector.setValue(false);
     }
     // if we dont use custom direction, only allow to show its direction
@@ -512,7 +504,13 @@ void TaskPocketParameters::onDirectionCBChanged(int num)
         ui->ZDirectionEdit->setEnabled(true);
     }
     // recompute and update the direction
-    recomputeFeature();
+    pcPocket->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
+    try {
+        recomputeFeature();
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
     updateDirectionEdits();
 }
 
@@ -536,7 +534,7 @@ void TaskPocketParameters::onXDirectionEditChanged(double len)
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Direction.setValue(len, pcPocket->Direction.getValue().y, pcPocket->Direction.getValue().z);
     recomputeFeature();
-    // checking for case of a null vector is done in FeaturePocket.cpp
+    // checking for case of a null vector is done in FeatureExtrude.cpp
     // if there was a null vector, the normal vector of the sketch is used.
     // therefore the vector component edits must be updated
     updateDirectionEdits();
@@ -558,16 +556,23 @@ void TaskPocketParameters::onZDirectionEditChanged(double len)
     updateDirectionEdits();
 }
 
-void TaskPocketParameters::updateDirectionEdits(void)
+void TaskPocketParameters::updateDirectionEdits(bool Reversed)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     // we don't want to execute the onChanged edits, but just update their contents
     ui->XDirectionEdit->blockSignals(true);
     ui->YDirectionEdit->blockSignals(true);
     ui->ZDirectionEdit->blockSignals(true);
-    ui->XDirectionEdit->setValue(pcPocket->Direction.getValue().x);
-    ui->YDirectionEdit->setValue(pcPocket->Direction.getValue().y);
-    ui->ZDirectionEdit->setValue(pcPocket->Direction.getValue().z);
+    if (Reversed) {
+        ui->XDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().x);
+        ui->YDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().y);
+        ui->ZDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().z);
+    }
+    else {
+        ui->XDirectionEdit->setValue(pcPocket->Direction.getValue().x);
+        ui->YDirectionEdit->setValue(pcPocket->Direction.getValue().y);
+        ui->ZDirectionEdit->setValue(pcPocket->Direction.getValue().z);
+    }
     ui->XDirectionEdit->blockSignals(false);
     ui->YDirectionEdit->blockSignals(false);
     ui->ZDirectionEdit->blockSignals(false);
@@ -585,7 +590,11 @@ void TaskPocketParameters::onReversedChanged(bool on)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Reversed.setValue(on);
+    // midplane is not sensible when reversed
+    ui->checkBoxMidplane->setEnabled(!on);
     recomputeFeature();
+    // update the direction
+    updateDirectionEdits(on);
 }
 
 void TaskPocketParameters::onModeChanged(int index)

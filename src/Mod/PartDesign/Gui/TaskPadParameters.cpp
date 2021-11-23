@@ -474,13 +474,6 @@ void TaskPadParameters::onDirectionCBChanged(int num)
     // in case the user is in selection mode, but changed his mind before selecting anything
     exitSelectionMode();
 
-    try {
-        recomputeFeature();
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
-    }
-
     // disable AlongSketchNormal when the direction is already normal
     if (num == 0)
         ui->checkBoxAlongDirection->setEnabled(false);
@@ -492,7 +485,6 @@ void TaskPadParameters::onDirectionCBChanged(int num)
         pcPad->UseCustomVector.setValue(true);
     }
     else {
-        ui->checkBoxDirection->setChecked(false);
         pcPad->UseCustomVector.setValue(false);
     }
     // if we dont use custom direction, only allow to show its direction
@@ -507,7 +499,13 @@ void TaskPadParameters::onDirectionCBChanged(int num)
         ui->ZDirectionEdit->setEnabled(true);
     }
     // recompute and update the direction
-    recomputeFeature();
+    pcPad->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
+    try {
+        recomputeFeature();
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
     updateDirectionEdits();
 }
 
@@ -531,7 +529,7 @@ void TaskPadParameters::onXDirectionEditChanged(double len)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Direction.setValue(len, pcPad->Direction.getValue().y, pcPad->Direction.getValue().z);
     recomputeFeature();
-    // checking for case of a null vector is done in FeaturePad.cpp
+    // checking for case of a null vector is done in FeatureExtrude.cpp
     // if there was a null vector, the normal vector of the sketch is used.
     // therefore the vector component edits must be updated
     updateDirectionEdits();
@@ -553,16 +551,23 @@ void TaskPadParameters::onZDirectionEditChanged(double len)
     updateDirectionEdits();
 }
 
-void TaskPadParameters::updateDirectionEdits(void)
+void TaskPadParameters::updateDirectionEdits(bool Reversed)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     // we don't want to execute the onChanged edits, but just update their contents
     ui->XDirectionEdit->blockSignals(true);
     ui->YDirectionEdit->blockSignals(true);
     ui->ZDirectionEdit->blockSignals(true);
-    ui->XDirectionEdit->setValue(pcPad->Direction.getValue().x);
-    ui->YDirectionEdit->setValue(pcPad->Direction.getValue().y);
-    ui->ZDirectionEdit->setValue(pcPad->Direction.getValue().z);
+    if (Reversed) {
+        ui->XDirectionEdit->setValue(-1 * pcPad->Direction.getValue().x);
+        ui->YDirectionEdit->setValue(-1 * pcPad->Direction.getValue().y);
+        ui->ZDirectionEdit->setValue(-1 * pcPad->Direction.getValue().z);
+    }
+    else {
+        ui->XDirectionEdit->setValue(pcPad->Direction.getValue().x);
+        ui->YDirectionEdit->setValue(pcPad->Direction.getValue().y);
+        ui->ZDirectionEdit->setValue(pcPad->Direction.getValue().z);
+    }
     ui->XDirectionEdit->blockSignals(false);
     ui->YDirectionEdit->blockSignals(false);
     ui->ZDirectionEdit->blockSignals(false);
@@ -592,7 +597,7 @@ void TaskPadParameters::onReversedChanged(bool on)
     ui->checkBoxMidplane->setEnabled(!on);
     recomputeFeature();
     // update the direction
-    updateDirectionEdits();
+    updateDirectionEdits(on);
 }
 
 void TaskPadParameters::onModeChanged(int index)
