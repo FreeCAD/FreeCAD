@@ -48,6 +48,7 @@ fc_copy_file_if_different(
 # -----------------------------------------------------------------------------
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
