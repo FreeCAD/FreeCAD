@@ -97,7 +97,7 @@ private:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
-    void updateDirectionEdits(bool Reversed = false);
+    void updateDirectionEdits(void);
 
 private:
     QWidget* proxy;

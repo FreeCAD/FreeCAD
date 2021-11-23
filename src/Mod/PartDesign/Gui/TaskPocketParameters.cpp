@@ -556,23 +556,16 @@ void TaskPocketParameters::onZDirectionEditChanged(double len)
     updateDirectionEdits();
 }
 
-void TaskPocketParameters::updateDirectionEdits(bool Reversed)
+void TaskPocketParameters::updateDirectionEdits()
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     // we don't want to execute the onChanged edits, but just update their contents
     ui->XDirectionEdit->blockSignals(true);
     ui->YDirectionEdit->blockSignals(true);
     ui->ZDirectionEdit->blockSignals(true);
-    if (Reversed) {
-        ui->XDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().x);
-        ui->YDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().y);
-        ui->ZDirectionEdit->setValue(-1 * pcPocket->Direction.getValue().z);
-    }
-    else {
-        ui->XDirectionEdit->setValue(pcPocket->Direction.getValue().x);
-        ui->YDirectionEdit->setValue(pcPocket->Direction.getValue().y);
-        ui->ZDirectionEdit->setValue(pcPocket->Direction.getValue().z);
-    }
+    ui->XDirectionEdit->setValue(pcPocket->Direction.getValue().x);
+    ui->YDirectionEdit->setValue(pcPocket->Direction.getValue().y);
+    ui->ZDirectionEdit->setValue(pcPocket->Direction.getValue().z);
     ui->XDirectionEdit->blockSignals(false);
     ui->YDirectionEdit->blockSignals(false);
     ui->ZDirectionEdit->blockSignals(false);
@@ -592,9 +585,9 @@ void TaskPocketParameters::onReversedChanged(bool on)
     pcPocket->Reversed.setValue(on);
     // midplane is not sensible when reversed
     ui->checkBoxMidplane->setEnabled(!on);
-    recomputeFeature();
     // update the direction
-    updateDirectionEdits(on);
+    recomputeFeature();
+    updateDirectionEdits();
 }
 
 void TaskPocketParameters::onModeChanged(int index)

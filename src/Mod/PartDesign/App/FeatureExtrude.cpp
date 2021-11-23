@@ -126,6 +126,16 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
 
     // explicitly set the Direction so that the dialog shows also the used direction
     // if the sketch's normal vector was used
-    Direction.setValue(extrudeDirection);
+    // for a custom vector we cannot negate it since the Ui takes always the currently
+    // shown vector values as final direction,
+    // and when Reversed, it will be negated additionally
+    if (!UseCustomVector.getValue()) {
+        if (Reversed.getValue())
+            Direction.setValue(-extrudeDirection);
+        else
+            Direction.setValue(extrudeDirection);
+    }
+    // don't return the direction including reversed since this is handled in
+    // FeatureSketchBased.cpp afterwards
     return extrudeDirection;
 }
