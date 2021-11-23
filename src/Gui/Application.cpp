@@ -139,6 +139,7 @@
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
 #include <Gui/GuiInitScript.h>
+#include <LibraryVersions.h>
 
 
 using namespace Gui;
@@ -451,6 +452,8 @@ Application::Application(bool GUIenabled)
             break;
         Py_DECREF(descr);
     }
+
+    App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
 
     // Python console binding
     PythonDebugModule           ::init_module();

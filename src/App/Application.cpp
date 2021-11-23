@@ -138,6 +138,7 @@
 #include <QFileInfo>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
+#include <LibraryVersions.h>
 
 using namespace App;
 using namespace std;
@@ -2525,6 +2526,19 @@ void Application::initConfig(int argc, char ** argv)
 
     // capture path
     SaveEnv("PATH");
+
+    // Save version numbers of the libraries
+#ifdef OCC_VERSION_STRING_EXT
+    mConfig["OCC_VERSION"] = OCC_VERSION_STRING_EXT;
+#endif
+    mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
+    mConfig["PYTHON_VERSION"] = PY_VERSION;
+    mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
+    mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+    mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
+
+
     logStatus();
 }
 
