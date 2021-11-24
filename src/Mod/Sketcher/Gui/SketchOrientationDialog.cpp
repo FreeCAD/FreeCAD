@@ -60,7 +60,7 @@ void SketchOrientationDialog::accept()
     bool reverse = ui->Reverse_checkBox->isChecked();
     if (ui->XY_radioButton->isChecked()) {
         if (reverse) {
-            Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(-1.0,0.0,0.0,0.0));
+            Pos = Base::Placement(Base::Vector3d(0,0,offset),Base::Rotation(1.0,0.0,0.0,0.0));
             DirType = 1;
         }
         else {
@@ -70,21 +70,21 @@ void SketchOrientationDialog::accept()
     }
     else if (ui->XZ_radioButton->isChecked()) {
         if (reverse) {
-            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
+            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(0.0,1.0,1.0,0.0));
             DirType = 3;
         }
         else {
-            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
+            Pos = Base::Placement(Base::Vector3d(0,offset,0),Base::Rotation(1.0,0.0,0.0,1.0));
             DirType = 2;
         }
     }
     else if (ui->YZ_radioButton->isChecked()) {
         if (reverse) {
-            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(-0.5,0.5,0.5,-0.5));
+            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(-1.0,1.0,1.0,-1.0));
             DirType = 5;
         }
         else {
-            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(0.5,0.5,0.5,0.5));
+            Pos = Base::Placement(Base::Vector3d(offset,0,0),Base::Rotation(1.0,1.0,1.0,1.0));
             DirType = 4;
         }
     }
