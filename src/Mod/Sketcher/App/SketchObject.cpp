@@ -3412,14 +3412,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     double doty = sy * ly;
 
     // the planes of the sketches must be parallel
-    if(!allowUnaligned && dot != 1.0 && dot != -1.0) {
+    if(!allowUnaligned && fabs(fabs(dot)-1) > Precision::Confusion()) {
         if (rsn)
             *rsn = rlNonParallel;
         return false;
     }
 
     // the axis must be aligned
-    if(!allowUnaligned && ((dotx != 1.0 && dotx != -1.0) || (doty != 1.0 && doty != -1.0))) {
+    if(!allowUnaligned && ((fabs(fabs(dotx)-1) > Precision::Confusion()) || (fabs(fabs(doty)-1) > Precision::Confusion()))) {
         if (rsn)
             *rsn = rlAxesMisaligned;
         return false;
@@ -3431,14 +3431,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
 
     double alignment = ddir * lnormal;
 
-    if(!allowUnaligned && (alignment != 1.0 && alignment != -1.0) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) ){
+    if(!allowUnaligned && (fabs(fabs(alignment)-1) > Precision::Confusion()) && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition()) ){
         if (rsn)
             *rsn = rlOriginsMisaligned;
         return false;
     }
 
-    xinv = allowUnaligned?false:(dotx != 1.0);
-    yinv = allowUnaligned?false:(doty != 1.0);
+    xinv = allowUnaligned?false:(fabs(dotx-1) > Precision::Confusion());
+    yinv = allowUnaligned?false:(fabs(doty-1) > Precision::Confusion());
 
     return true;
 }
