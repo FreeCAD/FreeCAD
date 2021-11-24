@@ -28,6 +28,7 @@
 # include <QHeaderView>
 # include <QMessageBox>
 # include <QComboBox>
+# include <QSignalBlocker>
 #endif
 
 #include "DlgMacroExecuteImp.h"
@@ -84,10 +85,13 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
 {
     ui->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
-    std::string path = getWindowParameter()->GetASCII("MacroPath",
-        App::Application::getUserMacroDir().c_str());
-    this->macroPath = QString::fromUtf8(path.c_str());
-    ui->fileChooser->setFileName(this->macroPath);
+    {
+        QSignalBlocker blocker(ui->fileChooser);
+        std::string path = getWindowParameter()->GetASCII("MacroPath",
+            App::Application::getUserMacroDir().c_str());
+        this->macroPath = QString::fromUtf8(path.c_str());
+        ui->fileChooser->setFileName(this->macroPath);
+    }
 
     // Fill the List box
     QStringList labels; labels << tr("Macros");
