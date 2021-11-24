@@ -44,9 +44,6 @@ public:
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
-    
-    virtual bool allowTreeOrderSwap(const App::DocumentObject *, const App::DocumentObject *) const { return false; }
-    
 };
 
 /// ViewProvider for the MultiFuse feature
