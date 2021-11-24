@@ -265,10 +265,6 @@ class Snapper:
         # Setup trackers if needed
         self.setTrackers()
 
-        # Show the grid if it's off (new view, for ex)
-        if self.grid and Draft.getParam("grid", True):
-            self.grid.on()
-
         # Get current snap radius
         self.radius = self.getScreenDist(Draft.getParam("snapRange", 8),
                                          screenpos)
