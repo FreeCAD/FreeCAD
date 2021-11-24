@@ -72,6 +72,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Normal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Select reference...</string>
         </property>
        </item>
