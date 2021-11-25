@@ -414,10 +414,9 @@ void PropertyView::applyParams()
     QSignalBlocker blocker2(propertyEditorData->header());
     propertyEditorData->header()->resizeSection(0, _GetParam()->GetInt("DataSectionSize", 150));
 
-    if (_GetParam()->GetBool("HideHeader", false)) {
-        propertyEditorView->hideHeader(true);
-        propertyEditorData->hideHeader(true);
-    }
+    bool hideHeader = _GetParam()->GetBool("HideHeader", false);
+    propertyEditorView->hideHeader(hideHeader);
+    propertyEditorData->hideHeader(hideHeader);
 }
 
 void PropertyView::onTimer() {
