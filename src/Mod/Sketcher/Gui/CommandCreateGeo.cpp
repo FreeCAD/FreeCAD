@@ -6997,6 +6997,8 @@ class DrawSketchHandlerSlot : public DrawSketchHandler
 public:
     DrawSketchHandlerSlot()
         : Mode(STATUS_SEEK_First)
+        , SnapMode(SNAP_MODE_Free)
+        , SnapDir(SNAP_DIR_Horz)
         , dx(0), dy(0), r(0)
         , EditCurve(35)
     {
@@ -7007,6 +7009,18 @@ public:
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
         STATUS_End
+    };
+
+    enum SNAP_MODE
+    {
+        SNAP_MODE_Free,
+        SNAP_MODE_Straight
+    };
+
+    enum SNAP_DIR
+    {
+        SNAP_DIR_Horz,
+        SNAP_DIR_Vert
     };
 
     virtual void activated(ViewProviderSketch*)
@@ -7028,16 +7042,25 @@ public:
             dx = onSketchPos.x - StartPos.x;
             dy = onSketchPos.y - StartPos.y;
 
+            if(QApplication::keyboardModifiers() == Qt::ControlModifier)
+                SnapMode = SNAP_MODE_Straight;
+            else
+                SnapMode = SNAP_MODE_Free;
+
             double a = 0;
             double rev = 0;
             if (fabs(dx) > fabs(dy)) {
                 r = fabs(dx) / 4;
                 rev = Base::sgn(dx);
+                SnapDir = SNAP_DIR_Horz;
+                if (SnapMode == SNAP_MODE_Straight) dy = 0;
             }
             else {
                 r = fabs(dy) / 4;
                 a = 8;
                 rev = Base::sgn(dy);
+                SnapDir = SNAP_DIR_Vert;
+                if (SnapMode == SNAP_MODE_Straight) dx = 0;
             }
 
             // draw the arcs with each 16 segments
@@ -7121,6 +7144,17 @@ public:
 
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+                ostringstream snapCon = ostringstream("");
+                if (SnapMode == SNAP_MODE_Straight) {
+                    snapCon << "conList.append(Sketcher.Constraint('";
+                    if (SnapDir == SNAP_DIR_Horz) {
+                        snapCon << "Horizontal";
+                    }
+                    else {
+                        snapCon << "Vertical";
+                    }
+                    snapCon << "'," << firstCurve + 2 << "))\n";
+                }
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
@@ -7134,6 +7168,7 @@ public:
                     "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
                     "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
                     "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                    "%s"
                     "%s.addConstraint(conList)\n"
                     "del geoList, conList\n",
                     StartPos.x, StartPos.y,           // center of the arc1
@@ -7151,6 +7186,7 @@ public:
                     firstCurve + 1, firstCurve + 3, // tangent3
                     firstCurve + 3, firstCurve,     // tangent4
                     firstCurve, firstCurve + 1,     // equal constraint
+                    snapCon.str().c_str(),          // horizontal/vertical constraint if snapping
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 Gui::Command::commitCommand();
@@ -7193,11 +7229,14 @@ public:
             else {
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
+            SnapMode = SNAP_MODE_Straight;
         }
         return true;
     }
 protected:
     BoxMode Mode;
+    SNAP_MODE SnapMode;
+    SNAP_DIR SnapDir;
     Base::Vector2d StartPos;
     double dx, dy, r;
     std::vector<Base::Vector2d> EditCurve;
