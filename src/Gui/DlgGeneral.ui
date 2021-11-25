@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>578</height>
+    <height>767</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,22 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
+           <property name="toolTip">
+            <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
+           </property>
+           <property name="text">
+            <string>Substitute decimal separator (needs restart)</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>SubstituteDecimalSeparator</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>General</cstring>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
