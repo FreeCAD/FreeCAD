@@ -140,6 +140,7 @@ void DlgGeneralImp::saveSettings()
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
+    ui->SubstituteDecimal->onSave();
     ui->RecentFiles->onSave();
     ui->SplashScreen->onSave();
     ui->PythonWordWrap->onSave();
@@ -204,6 +205,7 @@ void DlgGeneralImp::loadSettings()
     QString startWbName = QLatin1String(start.c_str());
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
 
+    ui->SubstituteDecimal->onRestore();
     ui->RecentFiles->onRestore();
     ui->SplashScreen->onRestore();
     ui->PythonWordWrap->onRestore();
