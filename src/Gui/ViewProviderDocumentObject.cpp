@@ -809,7 +809,8 @@ Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
     if(!viewer) {
         viewer = getActiveViewer();
         if(!viewer) {
-            FC_ERR("no view");
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_ERR("no view");
             return Base::BoundBox3d();
         }
     }

@@ -970,10 +970,12 @@ void ViewProvider::setRenderCacheMode(int mode) {
         mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
-const View3DInventorViewer *ViewProvider::getActiveViewer() {
+const View3DInventorViewer *ViewProvider::getActiveViewer() const {
     auto view  = dynamic_cast<View3DInventor*>(Application::Instance->activeView());
     if(!view) {
         auto doc = Application::Instance->activeDocument();
+        if (!doc)
+            doc = Application::Instance->getDocument(getOwnerDocument());
         if(doc) {
             auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
             if(views.size())

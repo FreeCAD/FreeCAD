@@ -203,7 +203,7 @@ public:
 
     /** Convenience function to obtain the current active viewer
      */
-    static const View3DInventorViewer *getActiveViewer();
+    const View3DInventorViewer *getActiveViewer() const;
 
     /**
      * Get called if the object is about to get deleted.
