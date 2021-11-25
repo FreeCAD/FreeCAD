@@ -53,6 +53,9 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
 {
     Q_OBJECT
 
+    Q_PROPERTY(QColor errorColor READ errorColor WRITE setErrorColor)
+    Q_PROPERTY(QColor messageColor READ messageColor WRITE setMessageColor)
+
 public:
     typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
                                   App::DocumentObject *, const std::string&)>  VisibilityFunction;
@@ -77,6 +80,12 @@ public:
     bool isCompleted() const { return completed; }
 
     void setupTransaction();
+
+    QColor messageColor() const {return msgColor;}
+    void setMessageColor(const QColor &);
+
+    QColor errorColor() const {return errColor;};
+    void setErrorColor(const QColor &);
 
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
@@ -159,6 +168,15 @@ private:
     Connection connectRedo;
     App::DocumentObjectT originFeat;
     App::SubObjectT editObjT;
+
+    QColor errColor;
+    bool errColorSet = false;
+    bool hasErrColor = false;
+    QColor msgColor;
+    bool msgColorSet = false;
+    bool hasMsgColor = false;
+
+    QTimer updateTimer;
 };
 
 /// simulation dialog for the TaskView

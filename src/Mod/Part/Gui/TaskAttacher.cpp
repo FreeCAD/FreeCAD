@@ -288,6 +288,9 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
 
     connectUndo = App::GetApplication().signalUndo.connect([this]() {refresh();});
     connectRedo = App::GetApplication().signalRedo.connect([this]() {refresh();});
+
+    updateTimer.setSingleShot(true);
+    QObject::connect(&updateTimer, &QTimer::timeout, [this]() {updatePreview();});
 }
 
 TaskAttacher::~TaskAttacher()
@@ -418,9 +421,15 @@ bool TaskAttacher::updatePreview()
     } catch (...) {
         errMessage = tr("unknown error");
     }
+    // Check if text is brighter than background, to improve legibility
+    const bool dark_theme_found = (ui->buttonRef1->palette().color(QPalette::WindowText).value() > 128);
+
     if (errMessage.length()>0){
         ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
-        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+        if (hasErrColor)
+            ui->message->setStyleSheet(QStringLiteral("QLabel{color: %1;}").arg(errColor.name(QColor::HexRgb)));
+        else
+            ui->message->setStyleSheet(QString::fromLatin1(dark_theme_found ? "QLabel{color: indianred;}" : "QLabel{color: red;}"));
     } else {
         if (!attached){
             ui->message->setText(tr("Not attached"));
@@ -428,7 +437,10 @@ bool TaskAttacher::updatePreview()
         } else {
             std::vector<QString> strs = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),eMapMode(pcAttach->MapMode.getValue()));
             ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
+            if (hasMsgColor)
+                ui->message->setStyleSheet(QStringLiteral("QLabel{color: %1;}").arg(msgColor.name(QColor::HexRgb)));
+            else
+                ui->message->setStyleSheet(QString::fromLatin1(dark_theme_found ? "QLabel{color: lightgreen;}" : "QLabel{color: green;}"));
         }
     }
     QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
@@ -447,6 +459,18 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
         case 3: return ui->lineRef4;
         default: return NULL;
     }
+}
+
+void TaskAttacher::setMessageColor(const QColor &color)
+{
+    msgColor = color;
+    msgColorSet = true;
+}
+
+void TaskAttacher::setErrorColor(const QColor &color)
+{
+    errColor = color;
+    errColorSet = true;
 }
 
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1090,6 +1114,14 @@ void TaskAttacher::changeEvent(QEvent *e)
         ui->lineRef3->blockSignals(false);
         ui->buttonRef4->blockSignals(false);
         ui->lineRef4->blockSignals(false);
+    }
+    else if (e->type() == QEvent::PaletteChange)
+        updateTimer.start(100);
+    else if (e->type() == QEvent::StyleChange) {
+        hasMsgColor = msgColorSet;
+        msgColorSet = false;
+        hasErrColor = errColorSet;
+        errColorSet = false;
     }
 }
 
