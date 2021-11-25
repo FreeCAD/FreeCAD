@@ -820,9 +820,16 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
 
     textEditor->setTextCursor(newCursor);
 
-    QPalette palette;
-    palette.setColor(QPalette::Active, QPalette::Base, found ? Qt::white : QColor(255, 80, 80));
-    searchText->setPalette(palette);
+    QString styleSheet;
+    if (!found) {
+        styleSheet = QString::fromLatin1(
+            " QLineEdit {\n"
+            "     background-color: rgb(221,144,161);\n"
+            " }\n"
+        );
+    }
+
+    searchText->setStyleSheet(styleSheet);
 }
 
 void SearchBar::updateButtons()
