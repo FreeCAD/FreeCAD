@@ -1880,6 +1880,10 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
     boost::io::ios_flags_saver ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
+    if (!getQuantity().getUnit().isEmpty()) {
+        ss << ' ';
+        UnitExpression::_toString(ss, false, 0);
+    }
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
@@ -5117,6 +5121,15 @@ bool ConstantExpression::isNumber() const {
     return strcmp(name,"None") 
         && strcmp(name,"True") 
         && strcmp(name, "False");
+}
+
+bool ConstantExpression::isBoolean(bool *value) const {
+    if (strcmp(name,"True") == 0 || strcmp(name, "False") == 0) {
+        if (value)
+            *value = name[0] == 'T';
+        return true;
+    }
+    return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

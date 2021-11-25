@@ -79,6 +79,7 @@ public:
     App::PropertyIntegerSet hiddenRows;
     App::PropertyIntegerSet hiddenColumns;
     App::PropertyBool PythonMode;
+    App::PropertyEnumeration ShowCells;
 
     /// Constructor
     Sheet();
@@ -190,6 +191,8 @@ public:
 
     virtual void getPropertyNamedList(std::vector<std::pair<const char*,App::Property*> > &List) const;
 
+    virtual const char* getPropertyName(const App::Property* prop) const;
+
     virtual short mustExecute(void) const;
 
     App::DocumentObjectExecReturn *execute(void);
@@ -254,11 +257,15 @@ protected:
 
     App::Property *setObjectProperty(App::CellAddress key, Py::Object obj) ;
 
+    App::Property *setBooleanProperty(App::CellAddress key, bool value);
+
     App::Property *setFloatProperty(App::CellAddress key, double value);
 
     App::Property *setIntegerProperty(App::CellAddress key, long value);
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
+
+    void setPropertyVisibility(App::Property *prop, App::CellAddress);
 
     virtual void onSettingDocument();
 

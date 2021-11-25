@@ -76,6 +76,21 @@ typedef boost::graph_traits<DependencyList> Traits;
 typedef Traits::vertex_descriptor Vertex;
 typedef Traits::edge_descriptor Edge;
 
+static const char *ShowCellEnumText[] = {
+    "None",
+    "All",
+    "All with aliases",
+    "Only aliases",
+    nullptr,
+};
+
+enum class ShowCellEnum {
+    None,
+    All,
+    WithAliases,
+    OnlyAliases,
+};
+
 /**
   * Construct a new Sheet object.
   */
@@ -91,6 +106,9 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(hiddenRows, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden rows");
     ADD_PROPERTY_TYPE(hiddenColumns, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden columns");
     ADD_PROPERTY_TYPE(PythonMode, (false), "Spreadsheet", Prop_None, "Set default expression syntax mode");
+    ADD_PROPERTY_TYPE(ShowCells, ((long)ShowCellEnum::None), "Spreadsheet", Prop_None,
+                      "Control how to show spreadsheet cells as properties");
+    ShowCells.setEnums(ShowCellEnumText);
 
     ExpressionEngine.expressionChanged.connect([this](const App::ObjectIdentifier &) {
         this->updateBindings();
@@ -507,6 +525,14 @@ void Sheet::onSettingDocument()
     cells.documentSet();
 }
 
+void Sheet::setPropertyVisibility(App::Property *prop, App::CellAddress addr)
+{
+    auto value = (ShowCellEnum)ShowCells.getValue();
+    prop->setStatus(Property::Hidden,
+            value == ShowCellEnum::None || (value == ShowCellEnum::OnlyAliases
+                                                && !cells.aliasProp.count(addr)));
+}
+
 /**
   * Set the property for cell \p key to a PropertyFloat with the value \a value.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
@@ -522,17 +548,28 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat * floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    bool isReadOnly = true;
+    if (auto * cell = getCell(key)) {
+        if (auto expr = cell->getExpression())
+            isReadOnly = !expr->isDerivedFrom(NumberExpression::getClassTypeId());
+    }
+
+    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()
+              || prop->testStatus(Property::PropReadOnly) != isReadOnly) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        prop = addDynamicProperty("App::PropertyFloat", name.c_str(), "Cells", 0,
+                                  (isReadOnly ? Prop_ReadOnly : 0) | Prop_NoPersist);
+
+        setPropertyVisibility(prop, key);
     }
-    else
-        floatProp = static_cast<PropertyFloat*>(prop);
+    floatProp = static_cast<PropertyFloat*>(prop);
 
     propAddress[floatProp] = key;
+
+    Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User1, prop);
     floatProp->setValue(value);
 
     return floatProp;
@@ -544,19 +581,26 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger * intProp;
 
-    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+    bool isReadOnly = true;
+    if (auto * cell = getCell(key)) {
+        if (auto expr = cell->getExpression())
+            isReadOnly = !expr->isDerivedFrom(NumberExpression::getClassTypeId());
+    }
+
+    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()
+              || prop->testStatus(Property::PropReadOnly) != isReadOnly) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty(
-                    "App::PropertyInteger", name.c_str(), 0, 0, 
-                    Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        prop = addDynamicProperty("App::PropertyInteger", name.c_str(), "Cells", 0, 
+                                  (isReadOnly ? Prop_ReadOnly : 0) | Prop_NoPersist);
+        setPropertyVisibility(prop, key);
     }
-    else
-        intProp = static_cast<PropertyInteger*>(prop);
+    intProp = static_cast<PropertyInteger*>(prop);
 
     propAddress[intProp] = key;
+    Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User1, prop);
     intProp->setValue(value);
 
     return intProp;
@@ -579,22 +623,28 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity * quantityProp;
 
-    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
+    bool isReadOnly = true;
+    if (auto * cell = getCell(key))
+        isReadOnly = !isSimpleExpression(cell->getExpression());
+
+    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()
+              || prop->testStatus(Property::PropReadOnly) != isReadOnly) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
-        quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
+        prop = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", name.c_str(), "Cells", 0,
+                                  (isReadOnly ? Prop_ReadOnly : 0) | Prop_NoPersist);
+        setPropertyVisibility(prop, key);
     }
-    else
-       quantityProp = static_cast<PropertySpreadsheetQuantity*>(prop);
+    quantityProp = static_cast<PropertySpreadsheetQuantity*>(prop);
 
     propAddress[quantityProp] = key;
-    quantityProp->setValue(value);
-    quantityProp->setUnit(unit);
 
+    Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User1, prop);
+    quantityProp->setUnit(unit);
     cells.setComputedUnit(key, unit);
+    quantityProp->setValue(value);
 
     return quantityProp;
 }
@@ -612,20 +662,60 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
     std::string name = key.toString(true);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
-    PropertyString * stringProp = freecad_dynamic_cast<PropertyString>(prop);
 
-    if (!stringProp) {
+    bool isReadOnly = true;
+    if (auto * cell = getCell(key)) {
+        if (auto expr = cell->getExpression())
+            isReadOnly = !expr->isDerivedFrom(StringExpression::getClassTypeId());
+    }
+
+    if (!prop || prop->getTypeId() != PropertyString::getClassTypeId()
+              || prop->testStatus(Property::PropReadOnly) != isReadOnly) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        prop = addDynamicProperty("App::PropertyString", name.c_str(), "Cells", 0,
+                                  (isReadOnly ? Prop_ReadOnly : 0) | Prop_NoPersist);
+        setPropertyVisibility(prop, key);
     }
+    PropertyString * stringProp = static_cast<PropertyString*>(prop);
 
     propAddress[stringProp] = key;
+    Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User1, prop);
     stringProp->setValue(value.c_str());
 
     return stringProp;
+}
+
+Property * Sheet::setBooleanProperty(CellAddress key, bool value)
+{
+    std::string name = key.toString(true);
+    Property * prop = props.getDynamicPropertyByName(name.c_str());
+
+    bool isReadOnly = true;
+    if (auto * cell = getCell(key)) {
+        if (auto expr = cell->getExpression())
+            isReadOnly = !expr->isDerivedFrom(ConstantExpression::getClassTypeId());
+    }
+
+    if (!prop || prop->getTypeId() != PropertyBool::getClassTypeId()
+              || prop->testStatus(Property::PropReadOnly) != isReadOnly) {
+        if (prop) {
+            this->removeDynamicProperty(name.c_str());
+            propAddress.erase(prop);
+        }
+        prop = addDynamicProperty("App::PropertyBool", name.c_str(), "Cells", 0,
+                                  (isReadOnly ? Prop_ReadOnly : 0) | Prop_NoPersist);
+        setPropertyVisibility(prop, key);
+    }
+    PropertyBool * bprop = static_cast<PropertyBool*>(prop);
+
+    propAddress[prop] = key;
+    Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User1, prop);
+    bprop->setValue(value);
+
+    return prop;
 }
 
 Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
@@ -639,7 +729,10 @@ Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(
+                addDynamicProperty("App::PropertyPythonObject", name.c_str(), "Cells", 0,
+                                   Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        // setPropertyVisibility(pyProp, key);
     }
 
     propAddress[pyProp] = key;
@@ -700,9 +793,14 @@ void Sheet::updateProperty(CellAddress key)
         if(number) {
             long l;
             auto constant = freecad_dynamic_cast<ConstantExpression>(output.get());
-            if(constant && !constant->isNumber()) {
-                Base::PyGILStateLocker lock;
-                setObjectProperty(key, constant->getPyValue());
+            if(constant) {
+                bool v;
+                if (constant->isBoolean(&v))
+                    setBooleanProperty(key, v);
+                else if (!constant->isNumber()) {
+                    Base::PyGILStateLocker lock;
+                    setObjectProperty(key, constant->getPyValue());
+                }
             } else if (!number->getUnit().isEmpty())
                 setQuantityProperty(key, number->getValue(), number->getUnit());
             else if(number->isInteger(&l))
@@ -769,6 +867,22 @@ void Sheet::getPropertyNamedList(std::vector<std::pair<const char*,Property*> > 
         if(prop)
             List.emplace_back(v.second.c_str(),prop);
     }
+}
+
+const char* Sheet::getPropertyName(const App::Property* prop) const
+{
+    if (!prop)
+        return nullptr;
+    auto value = (ShowCellEnum)ShowCells.getValue();
+    if (value == ShowCellEnum::WithAliases || value == ShowCellEnum::OnlyAliases) {
+        auto it = propAddress.find(prop);
+        if (it != propAddress.end()) {
+            auto iter = cells.aliasProp.find(it->second);
+            if (iter != cells.aliasProp.end())
+                return iter->second.c_str();
+        }
+    }
+    return prop->getName();
 }
 
 void Sheet::touchCells(Range range) {
@@ -1614,6 +1728,34 @@ void Sheet::onChanged(const App::Property *prop) {
         tmp.swap(copyCutRanges);
         for(auto &range : tmp)
             rangeUpdated(range);
+    }
+    else if (prop == &ShowCells) {
+        if (!isRestoring() && getDocument()) {
+            for (auto &v : propAddress)
+                setPropertyVisibility(const_cast<Property*>(v.first), v.second);
+            // Force refresh property editor
+            App::GetApplication().signalChangePropertyEditor(*getDocument(), *prop);
+        }
+    }
+    else if (!prop->testStatus(Property::User1) && !prop->testStatus(Property::PropReadOnly)) {
+        Base::ObjectStatusLocker<Property::Status,Property> guard(
+                Property::User1, const_cast<Property*>(prop));
+        auto it = propAddress.find(prop);
+        if (it != propAddress.end()) {
+            CellAddress addr(it->second);
+            auto *cell = getCell(addr);
+            if (cell) {
+                try {
+                    Base::PyGILStateLocker lock;
+                    if (auto expr = expressionFromPy(this,
+                                Py::asObject(const_cast<Property*>(prop)->getPyObject())))
+                        cell->setExpression(std::move(expr));
+                }
+                catch(Base::Exception &e) {
+                    e.ReportException();
+                }
+            }
+        }
     }
     
     App::DocumentObject::onChanged(prop);

@@ -498,7 +498,12 @@ void PropertyView::onTimer() {
                     continue;
 
                 PropInfo nameType;
-                nameType.propName = prop->getName();
+                // Calling prop->getName() is more efficient, but we use
+                // getPropertyName() to give parent a chance to override the
+                // name.
+                //
+                // nameType.propName = prop->getName();
+                nameType.propName = ob->getPropertyName(prop);
                 nameType.propId = prop->getTypeId().getKey();
 
                 std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
@@ -555,7 +560,12 @@ void PropertyView::onTimer() {
             for(auto prop : dataList) {
                 if(isPropertyHidden(prop))
                     continue;
-                std::string name(prop->getName());
+                // Calling prop->getName() is more efficient, but we use
+                // getPropertyName() to give parent a chance to override the
+                // name.
+                //
+                //std::string name(prop->getName());
+                std::string name(linked->getPropertyName(prop));
                 auto it = propMap.find(name);
                 if(it!=propMap.end() && !isPropertyHidden(it->second))
                     continue;

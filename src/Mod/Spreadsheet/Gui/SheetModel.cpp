@@ -470,9 +470,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
-        auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
-
+    else {
         switch (role) {
         case  Qt::ForegroundRole:
             return getForeground(cell);
@@ -494,7 +492,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 if(cell->getEditMode())
                     return cell->getDisplayData(true);
                 PropertyString tmp;
-                tmp.setPyObject(pyProp->getValue().ptr());
+                tmp.setPyObject(Py::asObject(prop->getPyObject()).ptr());
                 value = tmp.getValue();
             } catch (Py::Exception &) {
                 Base::PyException e;
