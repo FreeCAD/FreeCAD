@@ -66,10 +66,9 @@ ViewProvider::~ViewProvider()
 bool ViewProvider::doubleClicked(void)
 {
     try {
-        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        PartDesignGui::setEdit(pcObject,body);
+        FCMD_SET_EDIT(pcObject);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
