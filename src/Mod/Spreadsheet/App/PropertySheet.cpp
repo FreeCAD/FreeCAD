@@ -1770,13 +1770,15 @@ bool PropertySheet::isBindingPath(const ObjectIdentifier &path,
     if (comps.size()!=4 
             || !comps[2].isSimple()
             || !comps[3].isSimple()
-            || (comps[1].getName()!="Bind" && comps[1].getName()!="BindHREF")
+            || (comps[1].getName()!="Bind"
+                && comps[1].getName()!="BindHREF"
+                && comps[1].getName()!="BindHiddenRef")
             || path.getProperty() != this)
     {
         return false;
     }
     if(href)
-        *href = (comps[1].getName()=="BindHREF");
+        *href = (comps[1].getName()=="BindHREF" || comps[1].getName()=="BindHiddenRef");
     if(from)
         *from = CellAddress(comps[2].getName());
     if(to)
@@ -1792,13 +1794,15 @@ PropertySheet::BindingType PropertySheet::getBinding(
 
     for(int href=0;href<2;++href) {
         ObjectIdentifier path(*this);
-        path << ObjectIdentifier::SimpleComponent(href?"BindHREF":"Bind");
+        path << ObjectIdentifier::SimpleComponent(href?"BindHiddenRef":"Bind");
         path << ObjectIdentifier::SimpleComponent(range.from().toString().c_str());
         path << ObjectIdentifier::SimpleComponent(range.to().toString().c_str());
         auto expr = SimpleStatement::cast<FunctionExpression>(owner->getExpression(path).expression.get());
         if(expr) {
             if(href) {
-                if(expr->type()!=FunctionExpression::HREF || expr->getArgs().size()!=1)
+                if((expr->type()!=FunctionExpression::HREF
+                            && expr->type()!=FunctionExpression::HIDDEN_REF)
+                        || expr->getArgs().size()!=1)
                     continue;
                 expr = SimpleStatement::cast<FunctionExpression>(expr->getArgs().front().get());
                 if(!expr)
@@ -1810,7 +1814,7 @@ PropertySheet::BindingType PropertySheet::getBinding(
                     *pStart = expr->getArgs()[1]->copy();
                 if(pEnd)
                     *pEnd = expr->getArgs()[2]->copy();
-                return href?BindingHREF:BindingNormal;
+                return href?BindingHiddenRef:BindingNormal;
             }
         }
     }
@@ -1855,7 +1859,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const App::any &v
             App::Range range(from,to);
             App::Range rangeTarget(targetFrom,targetTo);
 
-            std::string expr(href?"href(":"");
+            std::string expr(href?"hiddenref(":"");
             if(other != this) {
                 if(otherOwner->getDocument() == owner->getDocument())
                     expr = otherOwner->getNameInDocument();

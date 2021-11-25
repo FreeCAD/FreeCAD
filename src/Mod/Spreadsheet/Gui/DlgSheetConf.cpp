@@ -186,7 +186,7 @@ void DlgSheetConf::accept()
             if(!binding)
                 break;
             Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.%s.%s.%s', None)",
-                    binding==PropertySheet::BindingNormal?"Bind":"BindHREF",
+                    binding==PropertySheet::BindingNormal?"Bind":"BindHiddenRef",
                     r.from().toString(), r.to().toString());
         }
 
@@ -216,7 +216,7 @@ void DlgSheetConf::accept()
         // Formulate expression to calculate the row binding using
         // PropertyEnumeration
         Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', "
-            "'tuple(.cells, <<%s>> + str(href(%s)+%d), <<%s>> + str(href(%s)+%d))')",
+            "'tuple(.cells, <<%s>> + str(hiddenref(%s)+%d), <<%s>> + str(hiddenref(%s)+%d))')",
             range.from().toString(true), range.to().toString(true),
             range.from().toString(true,false,true), prop->getFullName(), from.row()+2,
             range.to().toString(true,false,true), prop->getFullName(), from.row()+2);
@@ -262,7 +262,7 @@ void DlgSheetConf::onDiscard() {
             if(!binding)
                 break;
             Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.%s.%s.%s', None)",
-                    binding==PropertySheet::BindingNormal?"Bind":"BindHREF",
+                    binding==PropertySheet::BindingNormal?"Bind":"BindHiddenRef",
                     r.from().toString(), r.to().toString());
         }
 

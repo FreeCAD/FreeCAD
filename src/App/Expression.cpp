@@ -2842,8 +2842,9 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
                            "Currently supported types can be specified as string\n"
                            "with value, vector, matrix, placement or rotation"},
         {STR, "str", "str(arg), convert the input argument to string"},
-        {HREF, "href", "href(arg), hide any object reference inside the input.\n"
-                       "This allows to create cyclic references. Use with caution!"},
+        {HREF, "href", "href(arg), Deprecated! Use hiddenref() instead."},
+        {HIDDEN_REF, "hiddenref", "hiddenref(arg), hide any object reference inside the input.\n"
+                                  "This allows to create cyclic references. Use with caution!"},
         {DBIND, "dbind", "dbind(arg), double binding a variable expression.\n"
                          "This allows an expression binding to be both driven and driving."},
         // Aggregates
@@ -3213,6 +3214,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
     } case STR: {
         return Py::String(args[0]->getPyValue().as_string());
     } case HREF:
+      case HIDDEN_REF:
       case DBIND: {
         return args[0]->getPyValue();
     } default:
@@ -3509,7 +3511,7 @@ ExpressionPtr FunctionExpression::_copy() const
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v) {
-    HiddenReference ref(ftype == HREF || ftype == DBIND);
+    HiddenReference ref(ftype == HREF || ftype == HIDDEN_REF || ftype == DBIND);
     for(auto &arg : args)
         arg->visit(v);
 }
@@ -4266,7 +4268,7 @@ bool CallableExpression::isTouched() const
 }
 
 void CallableExpression::_visit(ExpressionVisitor &v) {
-    HiddenReference ref(ftype == HREF || ftype == DBIND);
+    HiddenReference ref(ftype == HREF || ftype == HIDDEN_REF || ftype == DBIND);
     for(auto &arg : args)
         arg->visit(v);
     if(expr)

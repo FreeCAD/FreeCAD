@@ -595,6 +595,7 @@ public:
         CREATE, // create new object of a given type
         STR, // stringify
         HREF,
+        HIDDEN_REF,
 
         // double binding, used by PropertyExpressionEngine to make a property both driving and driven
         DBIND, 

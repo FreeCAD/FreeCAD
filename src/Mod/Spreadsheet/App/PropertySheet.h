@@ -199,7 +199,7 @@ public:
     enum BindingType {
         BindingNone,
         BindingNormal,
-        BindingHREF,
+        BindingHiddenRef,
     };
     BindingType getBinding(const App::Range &range,
             App::ExpressionPtr *pStart=0, App::ExpressionPtr *pEnd=0) const;

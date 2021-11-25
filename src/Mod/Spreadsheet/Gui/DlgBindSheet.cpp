@@ -58,7 +58,7 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
     } else {
         ui->lineEditFromStart->setReadOnly(true);
         ui->lineEditFromEnd->setReadOnly(true);
-        ui->checkBoxHREF->setChecked(type==PropertySheet::BindingHREF);
+        ui->checkBoxHREF->setChecked(type==PropertySheet::BindingHiddenRef);
         assert(pStart && pEnd);
         if(!pStart->hasComponent() && pStart->isDerivedFrom(StringExpression::getClassTypeId()))
             toStart = static_cast<StringExpression*>(pStart.get())->getText();
@@ -166,7 +166,7 @@ void DlgBindSheet::accept()
 
         if(ui->checkBoxHREF->isChecked())
             Gui::cmdAppObjectArgs(sheet,
-                    "setExpression('.cells.BindHREF.%s.%s', 'href(tuple(%s.cells, %s, %s))')",
+                    "setExpression('.cells.BindHiddenRef.%s.%s', 'hiddenref(tuple(%s.cells, %s, %s))')",
                     fromStart, fromEnd, ref, toStart, toEnd);
         else
             Gui::cmdAppObjectArgs(sheet,
