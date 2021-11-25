@@ -834,25 +834,6 @@ bool isPyMapping(const Py::Object &obj)
     return obj.isMapping() && obj.hasAttr("keys") && obj.hasAttr("values");
 }
 
-bool isSimpleExpression(const Expression *expr)
-{
-    GenericExpressionVisitor visitor(
-        [](ExpressionVisitor *, Expression &e) {
-            if (!e.isDerivedFrom(UnitExpression::getClassTypeId())
-                    && !e.isDerivedFrom(OperatorExpression::getClassTypeId())
-                    && !e.isDerivedFrom(ConditionalExpression::getClassTypeId())
-                    && !e.isDerivedFrom(SimpleStatement::getClassTypeId()))
-                throw Base::RuntimeError();
-        });
-
-    try {
-        const_cast<Expression*>(expr)->visit(visitor);
-        return true;
-    } catch (...) {
-        return false;
-    }
-}
-
 } // namespace App
 
 //
@@ -1949,6 +1930,46 @@ enum Operator {
     OP_IN,
     OP_NOT_IN,
 };
+
+namespace App {
+
+bool isSimpleExpression(const Expression *expr, bool no_arithmetics)
+{
+    if (!expr)
+        return false;
+
+    GenericExpressionVisitor visitor(
+        [no_arithmetics](ExpressionVisitor *, Expression &e) {
+            if (no_arithmetics) {
+                if (e.isDerivedFrom(OperatorExpression::getClassTypeId())) {
+                    switch(static_cast<const OperatorExpression&>(e).getOperator()) {
+                    case OP_UNIT:
+                    case OP_UNIT_ADD:
+                    case OP_DIV:
+                        return;
+                    default:
+                        throw Base::RuntimeError();
+                    }
+                }
+                else if (!e.isDerivedFrom(UnitExpression::getClassTypeId()))
+                    throw Base::RuntimeError();
+            }
+            else if (!e.isDerivedFrom(UnitExpression::getClassTypeId())
+                        && !e.isDerivedFrom(OperatorExpression::getClassTypeId())
+                        && !e.isDerivedFrom(ConditionalExpression::getClassTypeId())
+                        && !e.isDerivedFrom(SimpleStatement::getClassTypeId()))
+                throw Base::RuntimeError();
+        });
+
+    try {
+        const_cast<Expression*>(expr)->visit(visitor);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+} // namespace App
 
 ExpressionPtr OperatorExpression::create(const App::DocumentObject *owner, 
         ExpressionPtr &&left, int op, ExpressionPtr &&right)

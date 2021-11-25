@@ -47,7 +47,7 @@ AppExport bool pyToQuantity(Base::Quantity &q, const Py::Object &pyobj);
 AppExport bool isPyMapping(const Py::Object &pyobj);
 
 /// Check if the expression is either unit (number) expression or operator expression containing only unit
-AppExport bool isSimpleExpression(const Expression *expr);
+AppExport bool isSimpleExpression(const Expression *expr, bool no_arithmetics = false);
 
 ////////////////////////////////////////////////////////////////////////////////////
 

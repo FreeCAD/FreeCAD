@@ -289,6 +289,7 @@ private:
     bool editPersistent;
 
     friend class PropertySheet;
+    friend class Sheet;
 };
 
 }

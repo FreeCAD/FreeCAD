@@ -305,12 +305,6 @@ void Cell::setContent(const char * value, bool eval)
     PropertySheet::AtomicPropertyChange signaller(*owner);
     ExpressionPtr newExpr;
 
-    static ParameterGrp::handle hGrp;
-    if(!hGrp) {
-       hGrp = GetApplication().GetParameterGroupByPath(
-               "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
-    }
-
     clearException();
     if (value != 0) {
         if(owner->sheet()->isRestoring()) {
@@ -384,7 +378,7 @@ App::ExpressionPtr Cell::tryParseExpression(const char *value) const
     if (!expr && isStartingWithNumber) {
         try {
             auto parsedExpr = owner->parse(value, 0, true);
-            if (App::isSimpleExpression(parsedExpr.get()))
+            if (App::isSimpleExpression(parsedExpr.get(), true))
                 expr = std::move(parsedExpr);
         }
         catch (...) {}
