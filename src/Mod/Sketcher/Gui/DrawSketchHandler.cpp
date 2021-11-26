@@ -354,11 +354,11 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         constr.Type = Sketcher::None;
         constr.GeoId = GeoId;
         constr.PosId = PosId;
-        if (type == AutoConstraint::VERTEX && PosId != Sketcher::none)
+        if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) && PosId != Sketcher::none)
             constr.Type = Sketcher::Coincident;
         else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        else if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
             constr.Type = Sketcher::PointOnObject;
         else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
             constr.Type = Sketcher::Tangent;
@@ -404,6 +404,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
     if (constr.Type != Sketcher::None)
         suggestedConstraints.push_back(constr);
+
+    // Do not seek for tangent if we are actually building a primitive
+    if (type == AutoConstraint::VERTEX_NO_TANGENCY) return suggestedConstraints.size();
 
     // Find if there are tangent constraints (currently arcs and circles)
 
@@ -578,6 +581,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
         // Iterate through constraints
         std::vector<AutoConstraint>::const_iterator it = autoConstrs.begin();
         for (; it != autoConstrs.end(); ++it) {
+            int geoId2 = it->GeoId;
+
             switch (it->Type)
             {
             case Sketcher::Coincident: {
@@ -588,7 +593,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                                      , geoId1, posId1, it->GeoId, it->PosId);
                 } break;
             case Sketcher::PointOnObject: {
-                int geoId2 = it->GeoId;
                 Sketcher::PointPos posId2 = it->PosId;
                 if (posId1 == Sketcher::none) {
                     // Auto constraining an edge so swap parameters
@@ -599,19 +603,22 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
                                      , geoId1, posId1, geoId2);
                 } break;
+        // In special case of Horizontal/Vertical constraint, geoId2 is normally unused and should be 'Constraint::GeoUndef'
+        // However it can be used as a way to require the function to apply these constraints on another geometry
+        // In this case the caller as to set geoId2, then it will be used as target instead of geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ", geoId1);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ",
+                                      geoId2 != Constraint::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ", geoId1);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ",
+                                      geoId2 != Constraint::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
 
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry *geom2 = Obj->getGeometry(it->GeoId);
-
-                int geoId2 = it->GeoId;
 
                 // ellipse tangency support using construction elements (lines)
                 if( geom1 && geom2 &&
