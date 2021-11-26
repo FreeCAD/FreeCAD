@@ -147,6 +147,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFeatureParameters.h
     TaskSketchBasedParameters.cpp
     TaskSketchBasedParameters.h
+    TaskExtrudeParameters.cpp
+    TaskExtrudeParameters.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h

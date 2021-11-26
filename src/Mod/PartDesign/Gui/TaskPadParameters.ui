@@ -58,9 +58,6 @@
      </item>
      <item row="2" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="toolTip">
-        <string>Offset from face at which pad will end</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -256,9 +253,6 @@ measured along the specified direction</string>
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxReversed">
-     <property name="toolTip">
-      <string>Reverses pad direction</string>
-     </property>
      <property name="text">
       <string>Reversed</string>
      </property>

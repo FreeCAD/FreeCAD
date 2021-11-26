@@ -58,9 +58,6 @@
      </item>
      <item row="2" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="toolTip">
-        <string>Offset from face at which pocket will end</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
