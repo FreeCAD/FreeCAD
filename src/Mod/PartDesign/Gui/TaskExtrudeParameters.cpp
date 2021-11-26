@@ -50,33 +50,39 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBase
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-#if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
 
     this->groupLayout()->addWidget(proxy);
 }
 
-void TaskExtrudeParameters::setupDialog(bool newObj)
+TaskExtrudeParameters::~TaskExtrudeParameters()
+{
+}
+
+void TaskExtrudeParameters::setupDialog()
 {
     // Get the feature data
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     Base::Quantity l = extrude->Length.getQuantityValue();
     Base::Quantity l2 = extrude->Length2.getQuantityValue();
     Base::Quantity off = extrude->Offset.getQuantityValue();
+
     bool alongNormal = extrude->AlongSketchNormal.getValue();
     bool useCustom = extrude->UseCustomVector.getValue();
+
     double xs = extrude->Direction.getValue().x;
     double ys = extrude->Direction.getValue().y;
     double zs = extrude->Direction.getValue().z;
+
     bool midplane = extrude->Midplane.getValue();
     bool reversed = extrude->Reversed.getValue();
+
     int index = extrude->Type.getValue(); // must extract value here, clear() kills it!
     App::DocumentObject* obj =  extrude->UpToFace.getValue();
     std::vector<std::string> subStrings = extrude->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
-    if ((obj != NULL) && !subStrings.empty()) {
+    if (obj && !subStrings.empty()) {
         upToFace = subStrings.front();
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
@@ -94,9 +100,11 @@ void TaskExtrudeParameters::setupDialog(bool newObj)
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     ui->offsetEdit->setValue(off);
+
     ui->checkBoxAlongDirection->setChecked(alongNormal);
     ui->checkBoxDirection->setChecked(useCustom);
     onDirectionToggled(useCustom);
+
     // disable to change the direction if not custom
     if (!useCustom) {
         ui->XDirectionEdit->setEnabled(false);
@@ -141,6 +149,26 @@ void TaskExtrudeParameters::setupDialog(bool newObj)
 
     translateModeList(index);
 
+    connectSlots();
+
+    this->propReferenceAxis = &(extrude->ReferenceAxis);
+
+    // Due to signals attached after changes took took into effect we should update the UI now.
+    updateUI(index);
+}
+
+void TaskExtrudeParameters::readValuesFromHistory()
+{
+    ui->lengthEdit->setToLastUsedValue();
+    ui->lengthEdit->selectNumber();
+    ui->lengthEdit2->setToLastUsedValue();
+    ui->lengthEdit2->selectNumber();
+    ui->offsetEdit->setToLastUsedValue();
+    ui->offsetEdit->selectNumber();
+}
+
+void TaskExtrudeParameters::connectSlots()
+{
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
@@ -150,17 +178,17 @@ void TaskExtrudeParameters::setupDialog(bool newObj)
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
     connect(ui->directionCB, SIGNAL(activated(int)),
-        this, SLOT(onDirectionCBChanged(int)));
+            this, SLOT(onDirectionCBChanged(int)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onAlongSketchNormalChanged(bool)));
+            this, SLOT(onAlongSketchNormalChanged(bool)));
     connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onDirectionToggled(bool)));
+            this, SLOT(onDirectionToggled(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onXDirectionEditChanged(double)));
+            this, SLOT(onXDirectionEditChanged(double)));
     connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onYDirectionEditChanged(double)));
+            this, SLOT(onYDirectionEditChanged(double)));
     connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onZDirectionEditChanged(double)));
+            this, SLOT(onZDirectionEditChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
             this, SLOT(onMidplaneChanged(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
@@ -173,26 +201,17 @@ void TaskExtrudeParameters::setupDialog(bool newObj)
             this, SLOT(onFaceName(QString)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    this->propReferenceAxis = &(extrude->ReferenceAxis);
-
-    // Due to signals attached after changes took took into effect we should update the UI now.
-    updateUI(index);
-
-    // if it is a newly created object use the last value of the history
-    // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
-    if (newObj){
-        ui->lengthEdit->setToLastUsedValue();
-        ui->lengthEdit->selectNumber();
-        ui->lengthEdit2->setToLastUsedValue();
-        ui->lengthEdit2->selectNumber();
-        ui->offsetEdit->setToLastUsedValue();
-        ui->offsetEdit->selectNumber();
-    }
 }
 
-TaskExtrudeParameters::~TaskExtrudeParameters()
+void TaskExtrudeParameters::tryRecomputeFeature()
 {
+    try {
+        // recompute and update the direction
+        recomputeFeature();
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -200,63 +219,85 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         // if we have an edge selection for the extrude direction
         if (!selectionFace) {
-            std::vector<std::string> edge;
-            App::DocumentObject* selObj;
-            if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
-                exitSelectionMode();
-                propReferenceAxis->setValue(selObj, edge);
-                recomputeFeature();
-                // update direction combobox
-                fillDirectionCombo();
-            }
+            selectedReferenceAxis(msg);
         }
-        else { // if we have a selection of a face
+        // if we have a selection of a face
+        else {
             QString refText = onAddSelection(msg);
             if (refText.length() > 0) {
-                ui->lineFaceName->blockSignals(true);
+                QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
                 ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
                 ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
-                ui->lineFaceName->blockSignals(false);
                 // Turn off reference selection mode
                 onButtonFace(false);
             }
             else {
-                ui->lineFaceName->blockSignals(true);
-                ui->lineFaceName->clear();
-                ui->lineFaceName->setProperty("FeatureName", QVariant());
-                ui->lineFaceName->setProperty("FaceName", QVariant());
-                ui->lineFaceName->blockSignals(false);
+                clearFaceName();
             }
         }
-    } else if (msg.Type == Gui::SelectionChanges::ClrSelection && selectionFace) {
-        ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->clear();
-        ui->lineFaceName->setProperty("FeatureName", QVariant());
-        ui->lineFaceName->setProperty("FaceName", QVariant());
-        ui->lineFaceName->blockSignals(false);
     }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection && selectionFace) {
+        clearFaceName();
+    }
+}
+
+void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& msg)
+{
+    std::vector<std::string> edge;
+    App::DocumentObject* selObj;
+    if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
+        exitSelectionMode();
+        propReferenceAxis->setValue(selObj, edge);
+        tryRecomputeFeature();
+        // update direction combobox
+        fillDirectionCombo();
+    }
+}
+
+void TaskExtrudeParameters::clearFaceName()
+{
+    QSignalBlocker block(ui->lineFaceName);
+    ui->lineFaceName->clear();
+    ui->lineFaceName->setProperty("FeatureName", QVariant());
+    ui->lineFaceName->setProperty("FaceName", QVariant());
+
 }
 
 void TaskExtrudeParameters::onLengthChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Length.setValue(len);
-    recomputeFeature();
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::onLength2Changed(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Length2.setValue(len);
-    recomputeFeature();
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::onOffsetChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Offset.setValue(len);
-    recomputeFeature();
+    tryRecomputeFeature();
+}
+
+bool TaskExtrudeParameters::hasProfileFace(PartDesign::ProfileBased* profile) const
+{
+    try {
+        Part::Feature* pcFeature = profile->getVerifiedObject();
+        Base::Vector3d SketchVector = profile->getProfileNormal();
+        Q_UNUSED(pcFeature)
+        Q_UNUSED(SketchVector)
+        return true;
+    }
+    catch (const Base::Exception&) {
+    }
+
+    return false;
 }
 
 void TaskExtrudeParameters::fillDirectionCombo()
@@ -273,23 +314,17 @@ void TaskExtrudeParameters::fillDirectionCombo()
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         // for faces we test if it is verified and if we can get its normal
         if (!pcSketch) {
-            try {
-                Part::Feature* pcFeature = pcFeat->getVerifiedObject();
-                Base::Vector3d SketchVector = pcFeat->getProfileNormal();
-                Q_UNUSED(pcFeature)
-                Q_UNUSED(SketchVector)
-                hasFace = true;
-            }
-            catch (const Base::Exception& e) {
-                new App::DocumentObjectExecReturn(e.what());
-            }
+            hasFace = hasProfileFace(pcFeat);
         }
+
         if (pcSketch)
             addAxisToCombo(pcSketch, "N_Axis", tr("Sketch normal"));
         else if (hasFace)
             addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Face normal"), false);
+
         // add the other entries
         addAxisToCombo(0, std::string(), tr("Select reference..."));
+
         // we start with the sketch normal as proposal for the custom direction
         if (pcSketch)
             addAxisToCombo(pcSketch, "N_Axis", tr("Custom direction"));
@@ -330,13 +365,13 @@ void TaskExtrudeParameters::fillDirectionCombo()
     if (indexOfCurrent != -1 && !hasCustom)
         ui->directionCB->setCurrentIndex(indexOfCurrent);
     if (hasCustom)
-        ui->directionCB->setCurrentIndex(2);
+        ui->directionCB->setCurrentIndex(DirectionModes::Custom);
 
     blockUpdate = oldVal_blockUpdate;
 }
 
-void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj,
-    std::string linkSubname, QString itemText, bool hasSketch)
+void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname,
+                                           QString itemText, bool hasSketch)
 {
     this->ui->directionCB->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
@@ -364,7 +399,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     // when the link is empty we are either in selection mode
     // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
-    if (num == 1) {
+    if (num == DirectionModes::Select) {
         // enter reference selection mode
         this->blockConnection(false);
         // to distinguish that this is the direction selection
@@ -372,7 +407,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
         return;
     }
-    else if (lnk.getValue() != 0) {
+    else if (lnk.getValue()) {
         if (!extrude->getDocument()->isIn(lnk.getValue())) {
             Base::Console().Error("Object was deleted\n");
             return;
@@ -384,20 +419,22 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     exitSelectionMode();
 
     // disable AlongSketchNormal when the direction is already normal
-    if (num == 0)
+    if (num == DirectionModes::Normal)
         ui->checkBoxAlongDirection->setEnabled(false);
     else
         ui->checkBoxAlongDirection->setEnabled(true);
+
     // if custom direction is used, show it
-    if (num == 2) {
+    if (num == DirectionModes::Custom) {
         ui->checkBoxDirection->setChecked(true);
         extrude->UseCustomVector.setValue(true);
     }
     else {
         extrude->UseCustomVector.setValue(false);
     }
+
     // if we dont use custom direction, only allow to show its direction
-    if (num != 2) {
+    if (num != DirectionModes::Custom) {
         ui->XDirectionEdit->setEnabled(false);
         ui->YDirectionEdit->setEnabled(false);
         ui->ZDirectionEdit->setEnabled(false);
@@ -407,14 +444,9 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         ui->YDirectionEdit->setEnabled(true);
         ui->ZDirectionEdit->setEnabled(true);
     }
-    // recompute and update the direction
+
     extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
-    try {
-        recomputeFeature();
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
-    }
+    tryRecomputeFeature();
     updateDirectionEdits();
 }
 
@@ -422,7 +454,7 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->AlongSketchNormal.setValue(on);
-    recomputeFeature();
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::onDirectionToggled(bool on)
@@ -437,7 +469,7 @@ void TaskExtrudeParameters::onXDirectionEditChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Direction.setValue(len, extrude->Direction.getValue().y, extrude->Direction.getValue().z);
-    recomputeFeature();
+    tryRecomputeFeature();
     // checking for case of a null vector is done in FeatureExtrude.cpp
     // if there was a null vector, the normal vector of the sketch is used.
     // therefore the vector component edits must be updated
@@ -448,7 +480,7 @@ void TaskExtrudeParameters::onYDirectionEditChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Direction.setValue(extrude->Direction.getValue().x, len, extrude->Direction.getValue().z);
-    recomputeFeature();
+    tryRecomputeFeature();
     updateDirectionEdits();
 }
 
@@ -456,7 +488,7 @@ void TaskExtrudeParameters::onZDirectionEditChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Direction.setValue(extrude->Direction.getValue().x, extrude->Direction.getValue().y, len);
-    recomputeFeature();
+    tryRecomputeFeature();
     updateDirectionEdits();
 }
 
@@ -464,15 +496,12 @@ void TaskExtrudeParameters::updateDirectionEdits()
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     // we don't want to execute the onChanged edits, but just update their contents
-    ui->XDirectionEdit->blockSignals(true);
-    ui->YDirectionEdit->blockSignals(true);
-    ui->ZDirectionEdit->blockSignals(true);
+    QSignalBlocker xdir(ui->XDirectionEdit);
+    QSignalBlocker ydir(ui->YDirectionEdit);
+    QSignalBlocker zdir(ui->ZDirectionEdit);
     ui->XDirectionEdit->setValue(extrude->Direction.getValue().x);
     ui->YDirectionEdit->setValue(extrude->Direction.getValue().y);
     ui->ZDirectionEdit->setValue(extrude->Direction.getValue().z);
-    ui->XDirectionEdit->blockSignals(false);
-    ui->YDirectionEdit->blockSignals(false);
-    ui->ZDirectionEdit->blockSignals(false);
 }
 
 void TaskExtrudeParameters::onMidplaneChanged(bool on)
@@ -481,7 +510,7 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
     extrude->Midplane.setValue(on);
     // reversed is not sensible when midplane
     ui->checkBoxReversed->setEnabled(!on);
-    recomputeFeature();
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::onReversedChanged(bool on)
@@ -491,8 +520,30 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
     // midplane is not sensible when reversed
     ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
-    recomputeFeature();
+    tryRecomputeFeature();
     updateDirectionEdits();
+}
+
+void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+{
+    if (axesInList.empty())
+        throw Base::RuntimeError("Not initialized!");
+
+    int num = ui->directionCB->currentIndex();
+    const App::PropertyLinkSub& lnk = *(axesInList[num]);
+    if (!lnk.getValue()) {
+        // Note: It is possible that a face of an object is directly padded/pocketed without defining a profile shape
+        obj = nullptr;
+        sub.clear();
+    }
+    else {
+        PartDesign::ProfileBased* pcDirection = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        if (!pcDirection->getDocument()->isIn(lnk.getValue()))
+            throw Base::RuntimeError("Object was deleted");
+
+        obj = lnk.getValue();
+        sub = lnk.getSubValues();
+    }
 }
 
 void TaskExtrudeParameters::onButtonFace(const bool pressed)
@@ -534,6 +585,31 @@ void TaskExtrudeParameters::onFaceName(const QString& text)
     }
 }
 
+void TaskExtrudeParameters::translateFaceName()
+{
+    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    QVariant featureName = ui->lineFaceName->property("FeatureName");
+    if (featureName.isValid()) {
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
+        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
+        int faceId = -1;
+        bool ok = false;
+        if (upToFace.indexOf("Face") == 0) {
+            faceId = upToFace.remove(0,4).toInt(&ok);
+        }
+
+        if (ok) {
+            ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+                                      .arg(parts[0])
+                                      .arg(tr("Face"))
+                                      .arg(faceId));
+        }
+        else {
+            ui->lineFaceName->setText(parts[0]);
+        }
+    }
+}
+
 double TaskExtrudeParameters::getLength(void) const
 {
     return ui->lengthEdit->value().getValue();
@@ -549,15 +625,14 @@ double TaskExtrudeParameters::getOffset(void) const
     return ui->offsetEdit->value().getValue();
 }
 
-bool   TaskExtrudeParameters::getAlongSketchNormal(void) const
+bool TaskExtrudeParameters::getAlongSketchNormal(void) const
 {
     return ui->checkBoxAlongDirection->isChecked();
 }
 
-bool   TaskExtrudeParameters::getCustom(void) const
+bool TaskExtrudeParameters::getCustom(void) const
 {
-    // index 2 is hardcoded to custom vector
-    return ui->directionCB->currentIndex() == 2 ? true : false;
+    return (ui->directionCB->currentIndex() == DirectionModes::Custom);
 }
 
 std::string TaskExtrudeParameters::getReferenceAxis(void) const
@@ -583,12 +658,12 @@ double TaskExtrudeParameters::getZDirection(void) const
     return ui->ZDirectionEdit->value();
 }
 
-bool   TaskExtrudeParameters::getReversed(void) const
+bool TaskExtrudeParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
 }
 
-bool   TaskExtrudeParameters::getMidplane(void) const
+bool TaskExtrudeParameters::getMidplane(void) const
 {
     return ui->checkBoxMidplane->isChecked();
 }
@@ -600,14 +675,12 @@ int TaskExtrudeParameters::getMode(void) const
 
 QString TaskExtrudeParameters::getFaceName(void) const
 {
-    // 'Up to face' mode
-    if (getMode() == 3) {
-        QVariant featureName = ui->lineFaceName->property("FeatureName");
-        if (featureName.isValid()) {
-            QString faceName = ui->lineFaceName->property("FaceName").toString();
-            return getFaceReference(featureName.toString(), faceName);
-        }
+    QVariant featureName = ui->lineFaceName->property("FeatureName");
+    if (featureName.isValid()) {
+        QString faceName = ui->lineFaceName->property("FaceName").toString();
+        return getFaceReference(featureName.toString(), faceName);
     }
+
     return QString::fromLatin1("None");
 }
 
@@ -615,77 +688,35 @@ void TaskExtrudeParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        ui->lengthEdit->blockSignals(true);
-        ui->lengthEdit2->blockSignals(true);
-        ui->offsetEdit->blockSignals(true);
-        ui->XDirectionEdit->blockSignals(true);
-        ui->YDirectionEdit->blockSignals(true);
-        ui->ZDirectionEdit->blockSignals(true);
-        ui->directionCB->blockSignals(true);
+        QSignalBlocker length(ui->lengthEdit);
+        QSignalBlocker length2(ui->lengthEdit2);
+        QSignalBlocker offset(ui->offsetEdit);
+        QSignalBlocker xdir(ui->XDirectionEdit);
+        QSignalBlocker ydir(ui->YDirectionEdit);
+        QSignalBlocker zdir(ui->ZDirectionEdit);
+        QSignalBlocker dir(ui->directionCB);
+        QSignalBlocker face(ui->lineFaceName);
+        QSignalBlocker mode(ui->changeMode);
+
+        // Save all items
+        QStringList items;
+        for (int i = 0; i < ui->directionCB->count(); i++)
+            items << ui->directionCB->itemText(i);
+
+        // Translate direction items
         int index = ui->directionCB->currentIndex();
-        ui->directionCB->clear();
-        ui->directionCB->addItem(tr("Sketch normal"));
-        ui->directionCB->addItem(tr("Select reference..."));
-        ui->directionCB->addItem(tr("Custom direction"));
-        ui->directionCB->setCurrentIndex(index);
-        ui->lineFaceName->blockSignals(true);
-        ui->changeMode->blockSignals(true);
         ui->retranslateUi(proxy);
+
+        // Keep custom items
+        for (int i = 0; i < ui->directionCB->count(); i++)
+            items.pop_front();
+        ui->directionCB->addItems(items);
+        ui->directionCB->setCurrentIndex(index);
+
+        // Translate mode items
         translateModeList(ui->changeMode->currentIndex());
 
-        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-        QVariant featureName = ui->lineFaceName->property("FeatureName");
-        if (featureName.isValid()) {
-            QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
-            QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-            int faceId = -1;
-            bool ok = false;
-            if (upToFace.indexOf("Face") == 0) {
-                faceId = upToFace.remove(0,4).toInt(&ok);
-            }
-
-            if (ok) {
-                ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                          .arg(parts[0])
-                                          .arg(tr("Face"))
-                                          .arg(faceId));
-            }
-            else {
-                ui->lineFaceName->setText(parts[0]);
-            }
-        }
-
-        ui->lengthEdit->blockSignals(false);
-        ui->lengthEdit2->blockSignals(false);
-        ui->offsetEdit->blockSignals(false);
-        ui->XDirectionEdit->blockSignals(false);
-        ui->YDirectionEdit->blockSignals(false);
-        ui->ZDirectionEdit->blockSignals(false);
-        ui->directionCB->blockSignals(false);
-        ui->lineFaceName->blockSignals(false);
-        ui->changeMode->blockSignals(false);
-    }
-}
-
-void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{
-    if (axesInList.empty())
-        throw Base::RuntimeError("Not initialized!");
-
-    int num = ui->directionCB->currentIndex();
-    const App::PropertyLinkSub& lnk = *(axesInList[num]);
-    if (lnk.getValue() == 0) {
-        // Note: It is possible that a face of an object is directly padded/pocketed without defining a profile shape
-        obj = nullptr;
-        sub.clear();
-    }
-    else {
-        PartDesign::ProfileBased* pcDirection = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        if (!pcDirection->getDocument()->isIn(lnk.getValue()))
-            throw Base::RuntimeError("Object was deleted");
-
-        obj = lnk.getValue();
-        sub = lnk.getSubValues();
+        translateFaceName();
     }
 }
 

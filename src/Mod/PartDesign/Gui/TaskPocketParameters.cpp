@@ -54,7 +54,12 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
 
-    setupDialog(newObj);
+    setupDialog();
+
+    // if it is a newly created object use the last value of the history
+    if (newObj) {
+        readValuesFromHistory();
+    }
 }
 
 TaskPocketParameters::~TaskPocketParameters()
@@ -199,7 +204,10 @@ void TaskPocketParameters::apply()
     ui->lengthEdit2->apply();
 
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
-    QString facename = getFaceName();
+    QString facename = QString::fromLatin1("None");
+    if (static_cast<Modes>(getMode()) == Modes::ToFace) {
+        facename = getFaceName();
+    }
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
     FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
     FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));

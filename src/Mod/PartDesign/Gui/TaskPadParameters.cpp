@@ -53,7 +53,12 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
 
-    setupDialog(newObj);
+    setupDialog();
+
+    // if it is a newly created object use the last value of the history
+    if (newObj) {
+        readValuesFromHistory();
+    }
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -193,7 +198,10 @@ void TaskPadParameters::apply()
     FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
     FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
-    QString facename = getFaceName();
+    QString facename = QString::fromLatin1("None");
+    if (static_cast<Modes>(getMode()) == Modes::ToFace) {
+        facename = getFaceName();
+    }
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
     FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
     FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));

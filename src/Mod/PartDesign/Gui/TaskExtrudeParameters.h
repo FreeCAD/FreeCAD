@@ -37,12 +37,23 @@ namespace App {
 class Property;
 }
 
+namespace PartDesign {
+class ProfileBased;
+}
+
 namespace PartDesignGui {
 
 
 class TaskExtrudeParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
+
+    enum DirectionModes {
+        Normal,
+        Select,
+        Custom,
+        Reference
+    };
 
 public:
     TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
@@ -72,7 +83,8 @@ protected Q_SLOTS:
     virtual void onModeChanged(int);
 
 protected:
-    void setupDialog(bool);
+    void setupDialog();
+    void readValuesFromHistory();
     void changeEvent(QEvent *e) override;
     App::PropertyLinkSub* propReferenceAxis;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
@@ -94,6 +106,14 @@ protected:
     virtual void translateModeList(int index);
     virtual void updateUI(int index);
     void updateDirectionEdits(void);
+
+private:
+    void tryRecomputeFeature();
+    void translateFaceName();
+    void connectSlots();
+    bool hasProfileFace(PartDesign::ProfileBased*) const;
+    void selectedReferenceAxis(const Gui::SelectionChanges& msg);
+    void clearFaceName();
 
 protected:
     QWidget* proxy;
