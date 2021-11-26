@@ -46,6 +46,14 @@ class TaskPadParameters : public TaskExtrudeParameters
 {
     Q_OBJECT
 
+    enum class Modes {
+        Dimension,
+        ToLast,
+        ToFirst,
+        ToFace,
+        TwoDimensions
+    };
+
 public:
     TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
     ~TaskPadParameters();

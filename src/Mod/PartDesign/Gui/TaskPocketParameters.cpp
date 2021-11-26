@@ -113,7 +113,7 @@ void TaskPocketParameters::updateUI(int index)
             // (may happen in bodies)
             // FIXME: Fix probably lies somewhere in IF block on line 125 of FeaturePocket.cpp
     }
-    else if (mode == Modes::UpToFace) {
+    else if (mode == Modes::ToFace) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
         isFaceEditEnabled    = true;
@@ -173,7 +173,7 @@ void TaskPocketParameters::onModeChanged(int index)
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFirst");
             break;
-        case Modes::UpToFace:
+        case Modes::ToFace:
             // Because of the code at the beginning of Pocket::execute() which is used to detect
             // broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();

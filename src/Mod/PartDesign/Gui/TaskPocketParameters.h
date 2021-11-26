@@ -50,7 +50,7 @@ class TaskPocketParameters : public TaskExtrudeParameters
         Dimension,
         ThroughAll,
         ToFirst,
-        UpToFace,
+        ToFace,
         TwoDimensions
     };
 

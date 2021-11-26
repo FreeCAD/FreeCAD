@@ -32,22 +32,10 @@
 
 #include "ui_TaskPadParameters.h"
 #include "TaskPadParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -99,8 +87,9 @@ void TaskPadParameters::updateUI(int index)
     bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
 
-    // dimension
-    if (index == 0) {
+    Modes mode = static_cast<Modes>(index);
+
+    if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
@@ -113,14 +102,12 @@ void TaskPadParameters::updateUI(int index)
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
         isReversedVisible = true;
     }
-    // up to first/last
-    else if (index == 1 || index == 2) {
+    else if (mode == Modes::ToLast || mode == Modes::ToFirst) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
         isReversedVisible = true;
     }
-    // up to face
-    else if (index == 3) {
+    else if (mode == Modes::ToFace) {
         isOffsetEditVisible = true;
         isFaceEditEnabled   = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
@@ -130,8 +117,7 @@ void TaskPadParameters::updateUI(int index)
         isReversedEnabled = true;
         isReversedVisible = true;
     }
-    // two dimensions
-    else {
+    else if (mode == Modes::TwoDimensions) {
         isLengthEditVisible  = true;
         isLengthEdit2Visible = true;
         isMidplaneEnabled    = !ui->checkBoxReversed->isChecked();
@@ -170,17 +156,25 @@ void TaskPadParameters::onModeChanged(int index)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
 
-    switch (index) {
-        case 0:
-            pcPad->Type.setValue("Length");
-            // Avoid error message
-            if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
-                ui->lengthEdit->setValue(5.0);
-            break;
-        case 1: pcPad->Type.setValue("UpToLast"); break;
-        case 2: pcPad->Type.setValue("UpToFirst"); break;
-        case 3: pcPad->Type.setValue("UpToFace"); break;
-        default: pcPad->Type.setValue("TwoLengths");
+    switch (static_cast<Modes>(index)) {
+    case Modes::Dimension:
+        pcPad->Type.setValue("Length");
+        // Avoid error message
+        if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
+            ui->lengthEdit->setValue(5.0);
+        break;
+    case Modes::ToLast:
+        pcPad->Type.setValue("UpToLast");
+        break;
+    case Modes::ToFirst:
+        pcPad->Type.setValue("UpToFirst");
+        break;
+    case Modes::ToFace:
+        pcPad->Type.setValue("UpToFace");
+        break;
+    case Modes::TwoDimensions:
+        pcPad->Type.setValue("TwoLengths");
+        break;
     }
 
     updateUI(index);
