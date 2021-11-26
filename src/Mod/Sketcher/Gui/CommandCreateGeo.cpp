@@ -7090,7 +7090,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(dx, dy), AutoConstraint::VERTEX_NO_TANGENCY)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -7144,6 +7144,9 @@ public:
 
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+
+                AutoConstraint lastCons = sugConstr2.back();
+
                 ostringstream snapCon = ostringstream("");
                 if (SnapMode == SNAP_MODE_Straight) {
                     snapCon << "conList.append(Sketcher.Constraint('";
@@ -7154,7 +7157,17 @@ public:
                         snapCon << "Vertical";
                     }
                     snapCon << "'," << firstCurve + 2 << "))\n";
+
+                    // If horizontal/vertical already applied because of snap, do not duplicate with Autocontraint
+                    if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical)
+                        sugConstr2.pop_back();
                 }
+                else {
+                    // If horizontal/vertical Autoconstraint suggested, applied it on first line (rather than last arc)
+                    if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical)
+                        sugConstr2.back().GeoId = firstCurve + 2;
+                }
+
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
