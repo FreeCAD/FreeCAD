@@ -32,20 +32,10 @@
 
 #include "ui_TaskPadParameters.h"
 #include "TaskPocketParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Mod/PartDesign/App/FeaturePocket.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -90,15 +80,16 @@ void TaskPocketParameters::updateUI(int index)
     // disable/hide everything unless we are sure we don't need it
     // exception: the direction parameters are in any case visible
     bool isLengthEditVisible  = false;
-    bool isLengthEdit2Visible = false;    
+    bool isLengthEdit2Visible = false;
     bool isOffsetEditVisible  = false;
     bool isOffsetEditEnabled  = true;
     bool isMidplateEnabled    = false;
     bool isReversedEnabled    = false;
     bool isFaceEditEnabled    = false;
 
-    // dimension
-    if (index == 0) {
+    Modes mode = static_cast<Modes>(index);
+
+    if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
@@ -109,23 +100,20 @@ void TaskPocketParameters::updateUI(int index)
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
-    // through all
-    else if (index == 1) {
+    else if (mode == Modes::ThroughAll) {
         isOffsetEditVisible = true;
         isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
         isMidplateEnabled = true;
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
-    // up to first
-    else if (index == 2) {
+    else if (mode == Modes::ToFirst) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;       // Will change the direction it seeks for its first face?
             // It may work not quite as expected but useful if sketch oriented upside-down.
             // (may happen in bodies)
             // FIXME: Fix probably lies somewhere in IF block on line 125 of FeaturePocket.cpp
     }
-    // up to face
-    else if (index == 3) {
+    else if (mode == Modes::UpToFace) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
         isFaceEditEnabled    = true;
@@ -134,12 +122,11 @@ void TaskPocketParameters::updateUI(int index)
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
     }
-    // two dimensions
-    else {
+    else if (mode == Modes::TwoDimensions) {
         isLengthEditVisible = true;
         isLengthEdit2Visible = true;
         isReversedEnabled = true;
-    }    
+    }
 
     ui->lengthEdit->setVisible( isLengthEditVisible );
     ui->lengthEdit->setEnabled( isLengthEditVisible );
@@ -169,8 +156,8 @@ void TaskPocketParameters::onModeChanged(int index)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
 
-    switch (index) {
-        case 0:
+    switch (static_cast<Modes>(index)) {
+        case Modes::Dimension:
             // Why? See below for "UpToFace"
             if (oldLength < Precision::Confusion())
                 oldLength = 5.0;
@@ -178,15 +165,15 @@ void TaskPocketParameters::onModeChanged(int index)
             ui->lengthEdit->setValue(oldLength);
             pcPocket->Type.setValue("Length");
             break;
-        case 1:
+        case Modes::ThroughAll:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("ThroughAll");
             break;
-        case 2:
+        case Modes::ToFirst:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFirst");
             break;
-        case 3:
+        case Modes::UpToFace:
             // Because of the code at the beginning of Pocket::execute() which is used to detect
             // broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();
@@ -194,9 +181,10 @@ void TaskPocketParameters::onModeChanged(int index)
             pcPocket->Length.setValue(0.0);
             ui->lengthEdit->setValue(0.0);
             break;
-        default: 
+        case Modes::TwoDimensions:
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("TwoLengths");
+            break;
     }
 
     updateUI(index);
