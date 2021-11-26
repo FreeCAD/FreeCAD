@@ -45,7 +45,8 @@ struct AutoConstraint
     enum TargetType
     {
         VERTEX,
-        CURVE
+        CURVE,
+        VERTEX_NO_TANGENCY
     };
     Sketcher::ConstraintType Type;
     int GeoId;
