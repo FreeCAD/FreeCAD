@@ -549,6 +549,8 @@ public:
 
 //--------------------------------------------------------------------------
 
+static int _TreeIconSize;
+
 TreeParams::TreeParams() {
     handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->Attach(this);
@@ -560,6 +562,8 @@ TreeParams::TreeParams() {
 #undef FC_TREE_PARAM2
 #define FC_TREE_PARAM2 FC_TREE_PARAM
     FC_TREE_PARAMS
+
+    _TreeIconSize = _IconSize;
 }
 
 TreeParams::~TreeParams()
@@ -1799,8 +1803,6 @@ void TreeWidget::setItemSpacing(int spacing)
 {
     TreeParams::setItemSpacing(spacing);
 }
-
-static int _TreeIconSize;
 
 int TreeWidget::iconHeight() const
 {
