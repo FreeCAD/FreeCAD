@@ -23,7 +23,9 @@
 #define GUI_DLGOBJECTSELECTION_H
 
 #include <QDialog>
+#include <QTimer>
 #include <App/DocumentObserver.h>
+#include <Base/Parameter.h>
 
 class QCheckBox;
 
@@ -51,6 +53,7 @@ public:
 
 protected:
     void showEvent(QShowEvent *);
+    void hideEvent(QHideEvent *);
     void moveEvent(QMoveEvent *);
     void resizeEvent(QResizeEvent *);
     void closeEvent(QCloseEvent *);
@@ -59,6 +62,8 @@ private Q_SLOTS:
     void onDepItemChanged(QTreeWidgetItem * item, int);
     void onObjItemChanged(QTreeWidgetItem * item, int);
     void onItemSelectionChanged();
+    void checkItemChanged();
+    void onAutoDeps(bool);
 
 private:
     QTreeWidgetItem *getItem(App::DocumentObject *obj);
@@ -71,6 +76,9 @@ private:
                       App::DocumentObject *obj,
                       Qt::CheckState state,
                       bool forced = false);
+    bool checkItemState(std::map<App::DocumentObject*, Qt::CheckState> &visited,
+                        App::DocumentObject *obj,
+                        Qt::CheckState &s);
     void updateAllItemState();
     void saveGeometry();
 
@@ -82,11 +90,14 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> itemMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
-    std::set<QTreeWidgetItem*> itemUnchecked;
+    std::map<App::SubObjectT, Qt::CheckState> itemChanged;
     QTreeWidgetItem *allItem = nullptr;
     bool geometryRestored = false;
     QSize savedSize;
     QPoint savedPos;
+
+    QTimer timer;
+    ParameterGrp::handle hGrp;
 };
 
 } // namespace Gui
