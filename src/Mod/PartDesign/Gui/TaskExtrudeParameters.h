@@ -106,6 +106,7 @@ protected:
     virtual void translateModeList(int index);
     virtual void updateUI(int index);
     void updateDirectionEdits(void);
+    void setDirectionMode(int index);
 
 private:
     void tryRecomputeFeature();

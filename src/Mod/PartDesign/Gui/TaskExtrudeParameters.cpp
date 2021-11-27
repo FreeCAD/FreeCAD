@@ -404,50 +404,26 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         this->blockConnection(false);
         // to distinguish that this is the direction selection
         selectionFace = false;
+        setDirectionMode(num);
         TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
-        return;
     }
-    else if (lnk.getValue()) {
-        if (!extrude->getDocument()->isIn(lnk.getValue())) {
-            Base::Console().Error("Object was deleted\n");
-            return;
+    else {
+        if (lnk.getValue()) {
+            if (!extrude->getDocument()->isIn(lnk.getValue())) {
+                Base::Console().Error("Object was deleted\n");
+                return;
+            }
+            propReferenceAxis->Paste(lnk);
         }
-        propReferenceAxis->Paste(lnk);
-    }
 
-    // in case the user is in selection mode, but changed his mind before selecting anything
-    exitSelectionMode();
+        // in case the user is in selection mode, but changed his mind before selecting anything
+        exitSelectionMode();
 
-    // disable AlongSketchNormal when the direction is already normal
-    if (num == DirectionModes::Normal)
-        ui->checkBoxAlongDirection->setEnabled(false);
-    else
-        ui->checkBoxAlongDirection->setEnabled(true);
-
-    // if custom direction is used, show it
-    if (num == DirectionModes::Custom) {
-        ui->checkBoxDirection->setChecked(true);
-        extrude->UseCustomVector.setValue(true);
+        setDirectionMode(num);
+        extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
+        tryRecomputeFeature();
+        updateDirectionEdits();
     }
-    else {
-        extrude->UseCustomVector.setValue(false);
-    }
-
-    // if we dont use custom direction, only allow to show its direction
-    if (num != DirectionModes::Custom) {
-        ui->XDirectionEdit->setEnabled(false);
-        ui->YDirectionEdit->setEnabled(false);
-        ui->ZDirectionEdit->setEnabled(false);
-    }
-    else {
-        ui->XDirectionEdit->setEnabled(true);
-        ui->YDirectionEdit->setEnabled(true);
-        ui->ZDirectionEdit->setEnabled(true);
-    }
-
-    extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
-    tryRecomputeFeature();
-    updateDirectionEdits();
 }
 
 void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
@@ -502,6 +478,38 @@ void TaskExtrudeParameters::updateDirectionEdits()
     ui->XDirectionEdit->setValue(extrude->Direction.getValue().x);
     ui->YDirectionEdit->setValue(extrude->Direction.getValue().y);
     ui->ZDirectionEdit->setValue(extrude->Direction.getValue().z);
+}
+
+void TaskExtrudeParameters::setDirectionMode(int index)
+{
+    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    // disable AlongSketchNormal when the direction is already normal
+    if (index == DirectionModes::Normal)
+        ui->checkBoxAlongDirection->setEnabled(false);
+    else
+        ui->checkBoxAlongDirection->setEnabled(true);
+
+    // if custom direction is used, show it
+    if (index == DirectionModes::Custom) {
+        ui->checkBoxDirection->setChecked(true);
+        extrude->UseCustomVector.setValue(true);
+    }
+    else {
+        extrude->UseCustomVector.setValue(false);
+    }
+
+    // if we dont use custom direction, only allow to show its direction
+    if (index != DirectionModes::Custom) {
+        ui->XDirectionEdit->setEnabled(false);
+        ui->YDirectionEdit->setEnabled(false);
+        ui->ZDirectionEdit->setEnabled(false);
+    }
+    else {
+        ui->XDirectionEdit->setEnabled(true);
+        ui->YDirectionEdit->setEnabled(true);
+        ui->ZDirectionEdit->setEnabled(true);
+    }
+
 }
 
 void TaskExtrudeParameters::onMidplaneChanged(bool on)
