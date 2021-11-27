@@ -193,7 +193,7 @@ public:
             if (activeMenu)
                 activeMenu->removeEventFilter(&master);
             activeMenu = nullptr;
-        } else if (ViewParams::getPieMenuTriggerAction())
+        } else if (ViewParams::PieMenuTriggerAction())
             buttons[hoverIndex]->animateClick();
     }
 
@@ -743,7 +743,15 @@ void PieMenu::wheelEvent(QWheelEvent *ev)
 void PieMenu::onTriggered(QAction *action)
 {
     pimpl->action = action;
-    if (action && !action->isCheckable())
+
+    // The following commented line is originally used to not dismiss pie menu
+    // if a checkable action is toggled so the user can continually check more
+    // actions. This seems to be an undesired behavior.
+    //
+    // TODO: The optimal way, at least for pie menu is to group all checkable
+    // actions under some pie button for selection
+    //
+    // if (action && !action->isCheckable())
         hide();
 }
 
