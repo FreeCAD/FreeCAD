@@ -788,8 +788,6 @@ class depth_params(object):
 
     def __init__(self, clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
         '''self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False'''
-        if z_finish_step > step_down:
-            raise ValueError('z_finish_step must be less than step_down')
 
         self.__clearance_height = clearance_height
         self.__safe_height = safe_height
@@ -800,6 +798,9 @@ class depth_params(object):
         self.__user_depths = user_depths
         self.data = self.__get_depths(equalstep=equalstep)
         self.index = 0
+
+        if self.__z_finish_step > self.__step_down:
+            raise ValueError('z_finish_step must be less than step_down')
 
     def __iter__(self):
         self.index = 0
