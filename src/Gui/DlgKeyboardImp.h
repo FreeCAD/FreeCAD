@@ -30,6 +30,9 @@
 class QTreeWidgetItem;
 
 namespace Gui {
+
+class PrefWidgetStates;
+
 namespace Dialog {
 class Ui_DlgCustomKeyboard;
 
@@ -70,6 +73,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgCustomKeyboard> ui;
+    std::unique_ptr<Gui::PrefWidgetStates> widgetStates;
     bool firstShow;
 };
 

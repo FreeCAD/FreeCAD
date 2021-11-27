@@ -50,6 +50,7 @@
 #include "MainWindow.h"
 #include "Widgets.h"
 #include "ViewParams.h"
+#include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
 
@@ -72,6 +73,8 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false)
 {
     ui->setupUi(this);
+
+    widgetStates.reset(new Gui::PrefWidgetStates(this));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
             getMainWindow(), SLOT (whatsThis()));
@@ -282,25 +285,8 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
     }
 }
 
-void DlgPreferencesImp::saveGeometry()
-{
-    std::ostringstream oss;
-    oss << savedPos.x() << " " << savedPos.y() << " "
-        << savedSize.width() << " " << savedSize.height();
-    App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/General")->SetASCII(
-                "PreferenceGeometry", oss.str().c_str());
-}
-
-void DlgPreferencesImp::moveEvent(QMoveEvent *ev)
-{
-    savedPos = this->pos();
-    QDialog::moveEvent(ev);
-}
-
 void DlgPreferencesImp::closeEvent(QCloseEvent *e)
 {
-    saveGeometry();
     QDialog::reject();
     e->accept();
 }
@@ -316,13 +302,11 @@ void DlgPreferencesImp::reject()
         if (res == QMessageBox::Yes)
             hBackup->copyTo(&App::GetApplication().GetUserParameter());
     }
-    saveGeometry();
     QDialog::reject();
 }
 
 void DlgPreferencesImp::accept()
 {
-    saveGeometry();
     this->invalidParameter = false;
     applyChanges();
     if (!this->invalidParameter)
@@ -483,20 +467,14 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    this->adjustSize();
-    restoreGeometry();
+    adjustSize();
+    adjustListBox();
     QDialog::showEvent(ev);
 }
 
 void DlgPreferencesImp::paintEvent(QPaintEvent *ev)
 {
     QDialog::paintEvent(ev);
-}
-
-void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
-{
-    savedSize = ev->size();
-    QDialog::resizeEvent(ev);
 }
 
 void DlgPreferencesImp::adjustListBox()
@@ -509,32 +487,6 @@ void DlgPreferencesImp::adjustListBox()
     width += style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 10;
     ui->listBox->setFixedWidth(width);
     ui->listBox->setGridSize(QSize(width, 75));
-}
-
-void DlgPreferencesImp::restoreGeometry()
-{
-    if (geometryRestored)
-        return;
-    geometryRestored = true;
-
-    adjustListBox();
-
-    std::string geometry = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/General")->GetASCII(
-                "PreferenceGeometry", "");
-    std::istringstream iss(geometry);
-    int x,y,w,h;
-    if (iss >> x >> y >> w >> h) {
-        if (ViewParams::getCheckWidgetPlacementOnRestore()) {
-            QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
-            x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
-            y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-            w = std::min<int>(rect.width(), w);
-            h = std::min<int>(rect.height(), h);
-        }
-        this->move(x, y);
-        this->resize(w, h);
-    }
 }
 
 bool DlgPreferencesImp::eventFilter(QObject *o, QEvent *ev)

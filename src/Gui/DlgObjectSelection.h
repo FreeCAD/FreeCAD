@@ -31,6 +31,8 @@ class QCheckBox;
 
 namespace Gui {
 
+class PrefWidgetStates;
+
 class Ui_DlgObjectSelection;
 class GuiExport DlgObjectSelection : public QDialog
 {
@@ -50,13 +52,6 @@ public:
 
     void accept();
     void reject();
-
-protected:
-    void showEvent(QShowEvent *);
-    void hideEvent(QHideEvent *);
-    void moveEvent(QMoveEvent *);
-    void resizeEvent(QResizeEvent *);
-    void closeEvent(QCloseEvent *);
 
 private Q_SLOTS:
     void onDepItemChanged(QTreeWidgetItem * item, int);
@@ -80,7 +75,6 @@ private:
                         App::DocumentObject *obj,
                         Qt::CheckState &s);
     void updateAllItemState();
-    void saveGeometry();
 
 private:
     Ui_DlgObjectSelection* ui;
@@ -92,9 +86,8 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
     std::map<App::SubObjectT, Qt::CheckState> itemChanged;
     QTreeWidgetItem *allItem = nullptr;
-    bool geometryRestored = false;
-    QSize savedSize;
-    QPoint savedPos;
+
+    std::unique_ptr<PrefWidgetStates> widgetStates;
 
     QTimer timer;
     ParameterGrp::handle hGrp;

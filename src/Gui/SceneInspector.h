@@ -33,6 +33,7 @@ class SoNode;
 
 namespace Gui {
 class Document;
+class PrefWidgetStates;
 namespace Dialog {
 
 class Ui_SceneInspector;
@@ -108,6 +109,7 @@ protected:
 
 private:
     Ui_SceneInspector* ui;
+    std::unique_ptr<Gui::PrefWidgetStates> widgetStates;
 };
 
 } // namespace Dialog

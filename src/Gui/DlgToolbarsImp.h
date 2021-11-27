@@ -30,6 +30,9 @@
 class QTreeWidgetItem;
 
 namespace Gui {
+
+class PrefWidgetStates;
+
 namespace Dialog {
 class Ui_DlgCustomToolbars;
 
@@ -94,6 +97,7 @@ protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
+    std::unique_ptr<Gui::PrefWidgetStates> widgetStates;
 };
 
 /** This class implements the creation of user defined toolbars.

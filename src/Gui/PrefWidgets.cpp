@@ -26,6 +26,8 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QMessageBox>
+# include <QSplitter>
+# include <QDesktopWidget>
 #endif
 
 #include <QWidgetAction>
@@ -37,9 +39,10 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
-
+#include "ViewParams.h"
 #include "PrefWidgets.h"
 #include "FileDialog.h"
+#include "MainWindow.h"
 
 using Base::Console;
 using namespace Gui;
@@ -470,6 +473,114 @@ void PrefWidget::failedToRestore(const QString& name) const
     if (objname.isEmpty())
         objname = "Undefined";
     Console().Warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
+}
+
+// --------------------------------------------------------------------
+
+PrefWidgetStates::PrefWidgetStates(QWidget *widget, bool manageSize, const char *name)
+  : manageSize(manageSize)
+  , widget(widget)
+{
+  if (!name)
+    name = widget->metaObject()->className();
+  hParam = App::GetApplication().GetParameterGroupByPath(
+      "User parameter:BaseApp/Preferences/General/Widgets")->GetGroup(name);
+  widget->installEventFilter(this);
+};
+
+PrefWidgetStates::~PrefWidgetStates()
+{
+}
+
+void PrefWidgetStates::addSplitter(QSplitter *splitter, const char *name)
+{
+  std::string _name;
+  if (!name) {
+    _name = "Splitter";
+    if (splitters.size())
+      _name += std::to_string(splitters.size());
+    name = _name.c_str();
+  }
+  splitters[splitter] = name;
+}
+
+bool PrefWidgetStates::eventFilter(QObject *o, QEvent *e)
+{
+  if (o != widget)
+    return false;
+  switch(e->type()) {
+  case QEvent::Show:
+    restoreSettings();
+    break;
+  case QEvent::Hide:
+  case QEvent::Close:
+    saveSettings();
+    break;
+  default:
+    break;
+  }
+  return false;
+}
+
+void PrefWidgetStates::saveSettings()
+{
+  std::ostringstream oss;
+  if (manageSize) {
+    auto pos = widget->pos();
+    auto size = widget->size();
+    oss << pos.x() << " " << pos.y() << " "
+      << size.width() << " " << size.height();
+    hParam->SetASCII("Geometry", oss.str().c_str());
+    if ((widget->windowFlags() & Qt::WindowMinMaxButtonsHint))
+      hParam->SetBool("Maximized", widget->isMaximized());
+  }
+  for (auto &v : splitters) {
+    oss.str("");
+    for (int size : v.first->sizes())
+      oss << size << " ";
+    hParam->SetASCII(v.second.c_str(), oss.str());
+  }
+}
+
+void PrefWidgetStates::restoreSettings()
+{
+  if (geometryRestored)
+    return;
+  geometryRestored = true;
+
+  if (manageSize) {
+    std::string geometry = hParam->GetASCII("Geometry", "");
+    std::istringstream iss(geometry);
+    int x,y,w,h;
+    if (iss >> x >> y >> w >> h) {
+      if (ViewParams::getCheckWidgetPlacementOnRestore()) {
+        auto parent = widget->parentWidget();
+        if (!parent)
+          parent = getMainWindow();
+        QRect rect = QApplication::desktop()->availableGeometry(parent);
+        x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
+        y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
+        w = std::min<int>(rect.width(), w);
+        h = std::min<int>(rect.height(), h);
+      }
+      widget->move(x, y);
+      widget->resize(w, h);
+      if ((widget->windowFlags() & Qt::WindowMinMaxButtonsHint) && hParam->GetBool("Maximized", false))
+        QMetaObject::invokeMethod(widget, "showMaximized", Qt::QueuedConnection);
+    }
+  }
+
+  for (auto &v : splitters) {
+    if (v.second.size()) {
+      QList<int> sizes;
+      std::istringstream iss(hParam->GetASCII(v.second.c_str()));
+      int size;
+      while (iss >> size)
+        sizes.append(size);
+      if (sizes.size())
+        v.first->setSizes(sizes);
+    }
+  }
 }
 
 // --------------------------------------------------------------------

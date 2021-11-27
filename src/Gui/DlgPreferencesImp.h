@@ -36,6 +36,9 @@ class QListWidgetItem;
 class QTabWidget;
 
 namespace Gui {
+
+class PrefWidgetStates;
+
 namespace Dialog {
 class PreferencePage;
 class Ui_DlgPreferences;
@@ -130,11 +133,7 @@ public:
 protected:
     void changeEvent(QEvent *e);
     void showEvent(QShowEvent*);
-    void resizeEvent(QResizeEvent*);
-    void saveGeometry();
-    void moveEvent(QMoveEvent *);
     void paintEvent(QPaintEvent *ev);
-    void restoreGeometry();
     void closeEvent(QCloseEvent *);
     bool eventFilter(QObject *, QEvent *);
 
@@ -159,10 +158,7 @@ private:
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
-    bool geometryRestored = false;
     bool paramTouched = false;
-    QSize savedSize;
-    QPoint savedPos;
 
     boost::signals2::scoped_connection connParam;
 
@@ -171,6 +167,8 @@ private:
     static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
 
     static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
+
+    std::unique_ptr<Gui::PrefWidgetStates> widgetStates;
 };
 
 } // namespace Dialog

@@ -43,6 +43,7 @@
 #include "Command.h"
 #include "BitmapFactory.h"
 #include "DlgCustomizeSpaceball.h"
+#include "PrefWidgets.h"
 
 typedef std::vector<Base::Reference<ParameterGrp> > GroupVector;
 
@@ -659,6 +660,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
   , clearButton(nullptr)
   , printReference(nullptr)
   , devModel(nullptr)
+  , widgetStates(new PrefWidgetStates(this, false))
 {
     this->setWindowTitle(tr("Spaceball Buttons"));
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
@@ -748,6 +750,8 @@ void DlgCustomizeSpaceball::setupLayout()
     leftPane->setLayout(buttonGroup);
     splitter->addWidget(leftPane);
     splitter->addWidget(commandView);
+
+    widgetStates->addSplitter(splitter);
 
     printReference = new QPushButton(tr("Print Reference"), this);
     QHBoxLayout *printLayout = new QHBoxLayout();

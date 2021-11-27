@@ -25,12 +25,16 @@
 #define GUI_DIALOG_DLGCUSTOMIZE_IMP_H
 
 #include <QDialog>
+#include <memory>
 
 class QTabWidget;
 class QGridLayout;
 class QHBoxLayout;
 
 namespace Gui {
+
+class PrefWidgetStates;
+
 namespace Dialog {
 
 /**
@@ -74,6 +78,7 @@ private:
     QGridLayout* customLayout; /**< layout */
     QHBoxLayout* layout; /** horizontal layout */
     static QList<QByteArray> _pages; /**< Name of all registered preference pages */
+    std::unique_ptr<Gui::PrefWidgetStates> widgetStates; /** for managing widget sizes */
     //@}
 };
 

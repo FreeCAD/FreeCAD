@@ -37,6 +37,9 @@
 #include <QAction>
 
 namespace Gui {
+
+class PrefWidgetStates;
+
 namespace Dialog {
 
 class Ui_DlgParameter;
@@ -113,8 +116,6 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void closeEvent(QCloseEvent*);
 
     void doImportOrMerge(ParameterGrp *hGrp, bool merge);
     ParameterGrp::handle copyParameters(ParameterManager *manager);
@@ -125,7 +126,7 @@ protected:
     bool checkGroupItemState(ParameterGroupItem *item, Qt::CheckState state);
     void clearGroupItem(ParameterGroupItem *item,
         std::unordered_map<ParameterGrp*, std::set<ParamKey>> &changes);
-    void saveState(bool saveGeometry);
+    void saveState();
     void removeState();
 
     void slotParamChanged(ParameterGrp *Param,
@@ -166,6 +167,7 @@ private:
     int lastIndex = -1;
     QAction actMerge;
     std::set<ParameterGrp*> warned;
+    std::unique_ptr<PrefWidgetStates> widgetStates;
 };
 
 // --------------------------------------------------------------------

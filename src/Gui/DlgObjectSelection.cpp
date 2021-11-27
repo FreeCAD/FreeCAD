@@ -23,7 +23,6 @@
 #ifndef _PreComp_
 # include <QTreeWidget>
 # include <QCheckBox>
-# include <QDesktopWidget>
 # include <QResizeEvent>
 #endif
 
@@ -37,6 +36,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "MetaTypes.h"
 #include "ui_DlgObjectSelection.h"
+#include "PrefWidgets.h"
 #include "ViewParams.h"
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
@@ -81,6 +81,10 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
 
     ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
+
+    widgetStates.reset(new PrefWidgetStates(this));
+    widgetStates->addSplitter(ui->vsplitter, "VSplitter");
+    widgetStates->addSplitter(ui->splitter, "Splitter");
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
@@ -502,47 +506,6 @@ void DlgObjectSelection::setMessage(const QString &msg) {
     ui->label->setText(msg);
 }
 
-void DlgObjectSelection::showEvent(QShowEvent *e) {
-    if (!geometryRestored) {
-        geometryRestored = true;
-        std::string geometry = hGrp->GetASCII("ObjectSelectionGeometry", "");
-        std::istringstream iss(geometry);
-        int x,y,w,h;
-        if (iss >> x >> y >> w >> h) {
-            if (ViewParams::getCheckWidgetPlacementOnRestore()) {
-                QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
-                x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
-                y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-                w = std::min<int>(rect.width(), w);
-                h = std::min<int>(rect.height(), h);
-            }
-            this->move(x, y);
-            this->resize(w, h);
-        }
-    }
-    QDialog::showEvent(e);
-}
-
-void DlgObjectSelection::hideEvent(QHideEvent *ev)
-{
-    saveGeometry();
-    QDialog::hideEvent(ev);
-}
-
-void DlgObjectSelection::saveGeometry()
-{
-    std::ostringstream oss;
-    oss << savedPos.x() << " " << savedPos.y() << " "
-        << savedSize.width() << " " << savedSize.height();
-    hGrp->SetASCII("ObjectSelectionGeometry", oss.str().c_str());
-}
-
-void DlgObjectSelection::resizeEvent(QResizeEvent* ev)
-{
-    savedSize = ev->size();
-    QDialog::resizeEvent(ev);
-}
-
 void DlgObjectSelection::onAutoDeps(bool checked)
 {
     hGrp->SetBool("ObjectSelectionAutoDeps", checked);
@@ -570,18 +533,6 @@ void DlgObjectSelection::onAutoDeps(bool checked)
         setCheckState(item, state);
     }
     onItemSelectionChanged();
-}
-
-void DlgObjectSelection::moveEvent(QMoveEvent *ev)
-{
-    savedPos = this->pos();
-    QDialog::moveEvent(ev);
-}
-
-void DlgObjectSelection::closeEvent(QCloseEvent *e)
-{
-    saveGeometry();
-    QDialog::closeEvent(e);
 }
 
 #include "moc_DlgObjectSelection.cpp"

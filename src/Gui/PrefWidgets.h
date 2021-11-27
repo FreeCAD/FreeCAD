@@ -39,6 +39,8 @@
 #include "FileDialog.h"
 #include "QuantitySpinBox.h"
 
+class QSplitter;
+
 namespace Gui {
 class CommandManager;
 class WidgetFactoryInst;
@@ -179,6 +181,8 @@ protected:
   bool m_Restored = false;
 };
 
+
+/// Convenient class for accessing and tracking common parameter settings of PrefWidgets
 class PrefParam: public ParameterGrp::ObserverType {
 public:
   PrefParam();
@@ -197,6 +201,28 @@ private:
   std::set<PrefWidget*> _entries;
 };
 
+
+/// Convenient class to help widget save/restore states
+class GuiExport PrefWidgetStates : public QObject
+{
+  Q_OBJECT
+public:
+  PrefWidgetStates(QWidget *widget, bool manageSize=true, const char *name = nullptr);
+  virtual ~PrefWidgetStates();
+  void addSplitter(QSplitter *, const char *name = nullptr);
+
+protected:
+  bool eventFilter(QObject *o, QEvent *e);
+  void saveSettings();
+  void restoreSettings();
+  
+protected:
+  ParameterGrp::handle hParam;
+  bool geometryRestored = false;
+  bool manageSize = true;
+  std::map<QSplitter*, std::string> splitters;
+  QWidget *widget = nullptr;
+};
 
 /** The PrefSpinBox class.
  * \author Werner Mayer

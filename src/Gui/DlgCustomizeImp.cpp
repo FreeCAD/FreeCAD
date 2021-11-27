@@ -32,6 +32,7 @@
 #include "DlgCustomizeImp.h"
 #include "MainWindow.h"
 #include "WidgetFactory.h"
+#include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
 
@@ -48,6 +49,7 @@ QList<QByteArray> DlgCustomizeImp::_pages;
  */
 DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
+  , widgetStates(new Gui::PrefWidgetStates(this))
 {
     setModal(false);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

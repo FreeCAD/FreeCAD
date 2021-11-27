@@ -51,6 +51,7 @@
 #include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "SpinBox.h"
+#include "PrefWidgets.h"
 #include "ViewParams.h"
 
 #include <Base/Parameter.h>
@@ -77,9 +78,12 @@ static QByteArray _LastParameterSet;
 DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   : QWidget(parent, fl|Qt::WindowMinMaxButtonsHint|Qt::WindowCloseButtonHint)
   , ui(new Ui_DlgParameter)
+  , widgetStates(new PrefWidgetStates(this))
 {
     ui->setupUi(this);
     ui->checkSort->setVisible(false); // for testing
+
+    widgetStates->addSplitter(ui->splitter3);
 
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -315,47 +319,6 @@ void DlgParameterImp::on_closeButton_clicked()
     close();
 }
 
-void DlgParameterImp::showEvent(QShowEvent *ev)
-{
-    if (!geometryRestored) {
-        geometryRestored = true;
-
-        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
-            .GetGroup("BaseApp")->GetGroup("Preferences");
-        hGrp = hGrp->GetGroup("ParameterEditor");
-        std::string buf = hGrp->GetASCII("Geometry", "");
-        if (!buf.empty()) {
-            int x, y, w, h;
-            char sep;
-            std::stringstream str(buf);
-            str >> sep >> x
-                >> sep >> y
-                >> sep >> w
-                >> sep >> h;
-            w -= x;
-            h -= y;
-
-            if (ViewParams::getCheckWidgetPlacementOnRestore()) {
-                QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
-                x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
-                y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-                w = std::min<int>(rect.height(), w);
-                h = std::min<int>(rect.width(), h);
-            }
-            this->move(x, y);
-            this->resize(w, h);
-        }
-        if (hGrp->GetBool("Maximized", false))
-            QMetaObject::invokeMethod(this, "showMaximized", Qt::QueuedConnection);
-    }
-    QWidget::showEvent(ev);
-}
-
-void DlgParameterImp::closeEvent(QCloseEvent* )
-{
-    saveState(true);
-}
-
 void DlgParameterImp::removeState()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
@@ -366,7 +329,7 @@ void DlgParameterImp::removeState()
     lastIndex = -1;
 }
 
-void DlgParameterImp::saveState(bool saveGeometry)
+void DlgParameterImp::saveState()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp/Preferences/ParameterEditor");
@@ -387,16 +350,6 @@ void DlgParameterImp::saveState(bool saveGeometry)
         _LastParameterSet = ui->parameterSet->itemData(lastIndex).toByteArray();
     }
     lastIndex = ui->parameterSet->currentIndex();
-
-    if (saveGeometry) {
-        // save geometry of window
-        const QRect& r = this->geometry();
-        std::stringstream str;
-        str << "(" << r.left() << "," << r.top() << ","
-            << r.right() << "," << r.bottom() << ")";
-        hGrp->SetASCII("Geometry", str.str().c_str());
-        hGrp->SetBool("Maximized", isMaximized());
-    }
 }
 
 void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
@@ -490,7 +443,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     if (!rcParMngr)
         return;
 
-    saveState(false);
+    saveState();
 
     bool readonly =  isReadOnly(rcParMngr);
     bool editable = !readonly && rcParMngr != &App::GetApplication().GetUserParameter()
@@ -766,7 +719,7 @@ void DlgParameterImp::on_btnRename_clicked()
 
 void DlgParameterImp::on_btnRefresh_clicked()
 {
-    saveState(false);
+    saveState();
     QSignalBlocker guard(paramGroup);
     QSignalBlocker guard2(paramValue);
     App::GetApplication().RefreshParameterSet();

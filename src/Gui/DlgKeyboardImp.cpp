@@ -38,6 +38,7 @@
 #include "Command.h"
 #include "Widgets.h"
 #include "Window.h"
+#include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
 
@@ -67,9 +68,12 @@ struct GroupMap_find {
 DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
   : CustomizeActionPage(parent)
   , ui(new Ui_DlgCustomKeyboard)
+  , widgetStates(new Gui::PrefWidgetStates(this, false))
   , firstShow(true)
 {
     ui->setupUi(this);
+
+    widgetStates->addSplitter(ui->splitter);
 
     ui->editCommand->setPlaceholderText(tr("Type to search..."));
     auto completer = new CommandCompleter(ui->editCommand, this);

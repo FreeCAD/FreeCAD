@@ -48,6 +48,7 @@
 #include "Application.h"
 #include "Macro.h"
 #include "ViewProviderLink.h"
+#include "PrefWidgets.h"
 
 FC_LOG_LEVEL_INIT("Gui", true, true);
 
@@ -222,7 +223,9 @@ int SceneModel::columnCount(const QModelIndex &) const
 /* TRANSLATOR Gui::Dialog::DlgInspector */
 
 DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_SceneInspector())
+  : QDialog(parent, fl)
+  , ui(new Ui_SceneInspector())
+  , widgetStates(new Gui::PrefWidgetStates(this, "DlgInspector"))
 {
     ui->setupUi(this);
     ui->fieldView->header()->setStretchLastSection(false);
@@ -231,6 +234,8 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
     ui->fieldView->setAlternatingRowColors(true);
     ui->fieldView->setRootIsDecorated(true);
     ui->fieldView->setExpandsOnDoubleClick(true);
+
+    widgetStates->addSplitter(ui->splitter);
 
     SceneModel* model = new SceneModel(this);
     ui->treeView->setModel(model);

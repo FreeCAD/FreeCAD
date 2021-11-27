@@ -38,6 +38,8 @@ class QPushButton;
 
 namespace Gui
 {
+    class PrefWidgetStates;
+
     namespace Dialog
     {
         class ButtonView : public QListView
@@ -175,6 +177,8 @@ namespace Gui
             QPushButton *clearButton;
             QPushButton *printReference;
             QComboBox *devModel;
+            
+            std::unique_ptr<Gui::PrefWidgetStates> widgetStates;
         };
     }
 }

@@ -47,6 +47,7 @@
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Action.h"
+#include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
 
@@ -77,8 +78,12 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     : CustomizeActionPage(parent)
     , ui(new Ui_DlgCustomToolbars)
     , type(t)
+    , widgetStates(new Gui::PrefWidgetStates(this, false))
 {
     ui->setupUi(this);
+
+    widgetStates->addSplitter(ui->splitter);
+
     ui->moveActionRightButton->setIcon(BitmapFactory().iconFromTheme("button_right"));
     ui->moveActionLeftButton->setIcon(BitmapFactory().iconFromTheme("button_left"));
     ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
