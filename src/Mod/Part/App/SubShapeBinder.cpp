@@ -63,6 +63,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include "SubShapeBinder.h"
 #include "BodyBase.h"
+#include "PartParams.h"
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -83,6 +84,7 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
     // Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
+    ADD_PROPERTY_TYPE(Refine, (true),"Base",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges)");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(FillStyle, (static_cast<long>(0)), "Base",App::Prop_None,
             "Face filling type when making curved face.\n\n"
@@ -136,6 +138,7 @@ SubShapeBinder::~SubShapeBinder() {
 
 void SubShapeBinder::setupObject() {
     _Version.setValue(8);
+    Refine.setValue(PartParams::RefineModel());
     checkPropertyStatus();
 }
 
@@ -624,7 +627,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if(solids.size() > 1) {
                     try {
                         result.makEFuse(solids);
-                        result = result.makERefine();
+                        if (Refine.getValue())
+                            result = result.makERefine();
                     } catch(Base::Exception & e) {
                         FC_LOG(getFullName() << " Failed to fuse: " << e.what());
                     } catch(Standard_Failure & e) {
@@ -634,9 +638,12 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     }
                 } else {
                     // wrap the single solid in compound to keep its placement
-                    result.makECompound({solids.front().makERefine()});
+                    auto solid = solids.front();
+                    if (Refine.getValue())
+                        solid = solid.makERefine();
+                    result.makECompound({solid});
                 }
-            } else if (result.hasSubShape(TopAbs_SHELL))
+            } else if (result.hasSubShape(TopAbs_SHELL) && Refine.getValue())
                 result = result.makERefine();
         } 
 
