@@ -938,6 +938,9 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
 
+    connect(ui->listWidgetReferences->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
@@ -962,6 +965,27 @@ TaskPipeScaling::~TaskPipeScaling()
     if (vp) {
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
+}
+
+void TaskPipeScaling::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+    auto originals = pipe->Sections.getSubListValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+    }
+
+    pipe->Sections.setSubListValues(originals);
+    recomputeFeature();
+    updateUI(ui->stackedWidget->currentIndex());
 }
 
 void TaskPipeScaling::clearButtons(const selectionModes notThis)
