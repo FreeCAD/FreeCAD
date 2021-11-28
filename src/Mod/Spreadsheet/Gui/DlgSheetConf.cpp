@@ -129,6 +129,14 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
     if(!cell)
         return nullptr;
     auto vexpr = VariableExpression::isDoubleBinding(cell->getExpression());
+    if (!vexpr) {
+        if (auto fexpr = SimpleStatement::cast<FunctionExpression>(cell->getExpression())) {
+            if((fexpr->type()==FunctionExpression::HREF
+                        || fexpr->type() == FunctionExpression::HIDDEN_REF)
+                    && fexpr->getArgs().size()==1)
+                vexpr = Base::freecad_dynamic_cast<VariableExpression>(fexpr->getArgs().front().get());
+        }
+    }
     if(vexpr) {
         auto prop = Base::freecad_dynamic_cast<PropertyEnumeration>(
                             vexpr->getPath().getProperty());
