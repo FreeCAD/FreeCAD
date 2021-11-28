@@ -77,7 +77,7 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
         else if (subStrings[0] == "")
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
-        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+        else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);

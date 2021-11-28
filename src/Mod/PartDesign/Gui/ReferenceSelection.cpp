@@ -148,7 +148,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     if (pObj && pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         std::string subName(sSubName);
-        if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+        if (edge && subName.compare(0, 4, "Edge") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
@@ -162,7 +162,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                 }
             }
         }
-        if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
+        if (plane && subName.compare(0, 4, "Face") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Face& face = TopoDS::Face(sh);
@@ -176,10 +176,10 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                 }
             }
         }
-        if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
+        if (point && subName.compare(0, 6, "Vertex") == 0) {
             return true;
         }
-        if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+        if (circle && subName.compare(0, 4, "Edge") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);

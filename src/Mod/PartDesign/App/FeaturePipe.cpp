@@ -123,7 +123,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             // only take the entire shape when we have a sketch selected, but
             // not a point of the sketch
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                !(subName.compare(0, 6, "Vertex") == 0))
+                subName.compare(0, 6, "Vertex") != 0)
                 return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
             else {
                 if(subName.empty())
@@ -490,7 +490,7 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector< std::st
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0, 4) == "Edge") {
+        if (aSubName.compare(0, 4, "Edge") == 0) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
             const TopTools_ListOfShape& los = mapEdgeEdge.FindFromKey(edge);
 

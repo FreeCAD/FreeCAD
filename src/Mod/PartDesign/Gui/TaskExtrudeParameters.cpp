@@ -84,7 +84,7 @@ void TaskExtrudeParameters::setupDialog()
     int faceId = -1;
     if (obj && !subStrings.empty()) {
         upToFace = subStrings.front();
-        if (upToFace.substr(0,4) == "Face")
+        if (upToFace.compare(0, 4, "Face") == 0)
             faceId = std::atoi(&upToFace[4]);
     }
 

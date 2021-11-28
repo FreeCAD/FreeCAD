@@ -1029,9 +1029,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
             // `ProfileBased::getProfileShape()` and other methods will return
             // just the sub-shapes if they are set. So when whole sketches are
-            // desired, don not set sub-values.
+            // desired, do not set sub-values.
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                !(subName.size() > 6 && subName.substr(0, 6) == "Vertex"))
+                subName.compare(0, 6, "Vertex") != 0)
                 runProfileCmd();
             else
                 runProfileCmdWithSubs();
@@ -1059,7 +1059,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             // just the sub-shapes if they are set. So when whole sketches are
             // desired, don not set sub-values.
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                !(subName.size() > 6 && subName.substr(0, 6) == "Vertex"))
+                subName.compare(0, 6, "Vertex") != 0)
                 runProfileCmd();
             else
                 runProfileCmdWithSubs();
@@ -2048,7 +2048,7 @@ void CmdPartDesignDraft::activated(int iMsg)
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+        if (aSubName.compare(0, 4, "Face") == 0) {
             // Check for valid face types
             TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
             BRepAdaptor_Surface sf(face);
@@ -2104,7 +2104,7 @@ void CmdPartDesignThickness::activated(int iMsg)
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0, 4) != "Face") {
+        if (aSubName.compare(0, 4, "Face") != 0) {
             // empty name or any other sub-element
             SubNames.erase(SubNames.begin()+i);
         }

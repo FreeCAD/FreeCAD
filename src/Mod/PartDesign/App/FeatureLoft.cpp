@@ -85,7 +85,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             // only take the entire shape when we have a sketch selected, but
             // not a point of the sketch
             if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                !(subName.size() > 6 && subName.substr(0,6) == "Vertex"))
+                subName.compare(0, 6, "Vertex") != 0)
                 return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
             else {
                 if(subName.empty())
