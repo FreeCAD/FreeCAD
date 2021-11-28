@@ -842,13 +842,13 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 
             for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
                 std::string shapetype;
-                if (it->size() > 4 && it->substr(0,4) == "Face") {
+                if (it->compare(0, 4, "Face") == 0) {
                     shapetype = "Face";
                 }
-                else if (it->size() > 4 && it->substr(0,4) == "Edge") {
+                else if (it->compare(0, 4, "Edge") == 0) {
                     shapetype = "Edge";
                 }
-                else if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                else if (it->compare(0, 6, "Vertex") == 0) {
                     shapetype = "Vertex";
                 }
                 else {
@@ -1073,7 +1073,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
                 hasValidAxis = true;
                 axis = sketch->getAxis(Part::Part2DObject::N_Axis);
             }
-            else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0, 4) == "Axis") {
+            else if (subReferenceAxis[0].compare(0, 4, "Axis") == 0) {
                 int AxId = std::atoi(subReferenceAxis[0].substr(4, 4000).c_str());
                 if (AxId >= 0 && AxId < sketch->getAxisCount()) {
                     hasValidAxis = true;
