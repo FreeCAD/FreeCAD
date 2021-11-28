@@ -95,7 +95,7 @@ protected:
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;
     App::PropertyAngle*       propAngle;
-    App::PropertyLength*      propGrowth;
+    App::PropertyDistance*    propGrowth;
     App::PropertyEnumeration* propMode;
     App::PropertyBool*        propOutside;
 
