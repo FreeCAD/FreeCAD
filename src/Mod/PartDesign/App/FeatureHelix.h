@@ -52,7 +52,7 @@ public:
     App::PropertyFloatConstraint   Turns;
     App::PropertyBool        LeftHanded;
     App::PropertyAngle       Angle;
-    App::PropertyLength      Growth;
+    App::PropertyDistance    Growth;
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;

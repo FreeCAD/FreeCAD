@@ -134,13 +134,12 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: turns too small!");
         if ((Height.getValue() < Precision::Confusion())
-            && (Growth.getValue() < Precision::Confusion()))
+            && (abs(Growth.getValue()) < Precision::Confusion()))
             return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
         Pitch.setValue(Height.getValue()/Turns.getValue());
     } else {
         return new App::DocumentObjectExecReturn("Error: unsupported mode");
     }
-
 
     TopoDS_Shape sketchshape;
     try {
@@ -407,7 +406,7 @@ TopoDS_Shape Helix::generateHelixPath(void)
     bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
     double radiusTop;
     if (growthMode)
-        radiusTop = radius + turns*growth;
+        radiusTop = radius + turns * growth;
     else
         radiusTop = radius + height * tan(Base::toRadians(angle));
 
@@ -533,6 +532,13 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
         // restore the PropertyFloat to be able to set its value
         TurnsProperty.Restore(reader);
         Turns.setValue(TurnsProperty.getValue());
+    }
+    // property Growth had the App::PropertyLength and was changed to App::PropertyDistance
+    else if (prop == &Growth && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength GrowthProperty;
+        // restore the PropertyLength to be able to set its value
+        GrowthProperty.Restore(reader);
+        Growth.setValue(GrowthProperty.getValue());
     }
     else {
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
