@@ -68,59 +68,53 @@ Workbench::~Workbench()
 
 void Workbench::activated()
 {
+    auto bar = Gui::getMainWindow()->findChild<QToolBar*>(QString::fromLatin1("Spreadsheet"));
+    if (!bar)
+        return;
+
+    QPalette palette = Gui::getMainWindow()->palette();
+    if (!foregroundColor) {
+        foregroundColor = new QtColorPicker();
+        foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
+        foregroundColor->setStandardColors();
+        QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
+    }
+    QSignalBlocker guard(foregroundColor);
+    foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
+    foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
+    foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
+    foregroundColor->setStatusTip(QObject::tr("Set cell(s) foreground color"));
+    bar->addWidget(foregroundColor);
+
+    if (!backgroundColor) {
+        backgroundColor = new QtColorPicker();
+        backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
+        backgroundColor->setStandardColors();
+        QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
+    }
+    QSignalBlocker guard2(backgroundColor);
+    backgroundColor->setCurrentColor(palette.color(QPalette::Base));
+    backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
+    backgroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) background color"));
+    backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
+    bar->addWidget(backgroundColor);
+
     if (!initialized) {
-        QList<QToolBar*> bars = Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromLatin1("Spreadsheet"));
+        initialized = true;
+        QObject::connect(bar, &QToolBar::orientationChanged,
+                         std::bind(&Workbench::onToolbarOrientationChange, this, bar));
+    }
+    onToolbarOrientationChange(bar);
+}
 
-        if (bars.size() == 1) {
-            QToolBar * bar = bars[0];
-            QtColorPicker * foregroundColor;
-            QtColorPicker * backgroundColor;
-            QPalette palette = Gui::getMainWindow()->palette();
-
-            QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
-            if (fgList.size() > 0)
-                foregroundColor = fgList[0];
-            else {
-                foregroundColor = new QtColorPicker();
-                foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
-                foregroundColor->setStandardColors();
-                foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
-                QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
-            }
-            foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
-            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell(s) foreground color"));
-            bar->addWidget(foregroundColor);
-
-            QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
-            if (bgList.size() > 0)
-                backgroundColor = bgList[0];
-            else {
-                backgroundColor = new QtColorPicker();
-                backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
-                backgroundColor->setStandardColors();
-                backgroundColor->setCurrentColor(palette.color(QPalette::Base));
-                QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
-            }
-            backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
-            backgroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) background color"));
-            backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
-            bar->addWidget(backgroundColor);
-
-            auto toggleVisible = [bar]() {
-                bool visible = bar->orientation() == Qt::Horizontal;
-                auto actions = bar->actions();
-                for (auto picker : bar->findChildren<QtColorPicker*>()) {
-                    for (auto action : actions) {
-                        if (bar->widgetForAction(action) == picker)
-                            action->setVisible(visible);
-                    }
-                }
-            };
-            toggleVisible();
-            QObject::connect(bar, &QToolBar::orientationChanged, toggleVisible);
-
-            initialized = true;
+void Workbench::onToolbarOrientationChange(QToolBar *bar)
+{
+    bool visible = bar->orientation() == Qt::Horizontal;
+    auto actions = bar->actions();
+    for (auto action : actions) {
+        if (auto widget = bar->widgetForAction(action)) {
+           if (widget == foregroundColor || widget == backgroundColor)
+            action->setVisible(visible);
         }
     }
 }

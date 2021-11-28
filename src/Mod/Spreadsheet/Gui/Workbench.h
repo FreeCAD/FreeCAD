@@ -25,10 +25,12 @@
 #ifndef SPREADSHEET_WORKBENCH_H
 #define SPREADSHEET_WORKBENCH_H
 
+#include <QPointer>
 #include <Gui/Workbench.h>
+#include "qtcolorpicker.h"
 
-class QtColorPicker;
 class QColor;
+class QToolBar;
 
 namespace SpreadsheetGui {
 
@@ -38,8 +40,8 @@ namespace SpreadsheetGui {
 
 class SpreadsheetGuiExport WorkbenchHelper : public QObject
 {
-    Q_OBJECT
-protected Q_SLOTS:
+  Q_OBJECT
+public Q_SLOTS:
   void setForegroundColor(const QColor &color);
   void setBackgroundColor(const QColor &color);
 };
@@ -56,11 +58,14 @@ public:
 private:
   bool initialized;
   std::unique_ptr<WorkbenchHelper> workbenchHelper;
+  QPointer<QtColorPicker> foregroundColor;
+  QPointer<QtColorPicker> backgroundColor;
 
 protected:
   Gui::MenuItem *setupMenuBar() const;
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
+  void onToolbarOrientationChange(QToolBar *);
 };
 
 } // namespace SpreadsheetModGui
