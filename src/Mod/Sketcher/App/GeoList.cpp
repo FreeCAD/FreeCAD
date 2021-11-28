@@ -30,6 +30,7 @@
 #include <assert.h>
 
 #include <Base/Vector3D.h>
+#include <Base/Exception.h>
 
 #include <Mod/Sketcher/App/GeometryFacade.h>
 
@@ -45,7 +46,8 @@ GeoListModel<T>::GeoListModel(  std::vector<T> && geometrylist,
                                 int intgeocount,
                                 bool ownerT): geomlist(std::move(geometrylist)),
                                               intGeoCount(intgeocount),
-                                              OwnerT(ownerT)
+                                              OwnerT(ownerT),
+                                              indexInit(false)
 {
 
 }
@@ -56,7 +58,8 @@ GeoListModel<T>::GeoListModel(  const std::vector<T> & geometrylist,
                                 int intgeocount,
                                 bool ownerT): geomlist(geometrylist), // copy constructed here
                                               intGeoCount(intgeocount),
-                                              OwnerT(ownerT)
+                                              OwnerT(ownerT),
+                                              indexInit(false)
 {
 
 }
@@ -95,27 +98,64 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
 }
 
 template <typename T>
-const T GeoListModel<T>::getGeometryFromGeoId(const std::vector<T> & geometrylist, int geoId)
+const Part::Geometry * GeoListModel<T>::getGeometryFromGeoId(const std::vector<T> & geometrylist, int geoId)
 {
-    if (geoId >= 0)
-        return geometrylist[geoId];
-    else
-        return geometrylist[geometrylist.size()+geoId];
+    if constexpr (std::is_same<T,GeometryPtr>()) {
+        if (geoId >= 0)
+            return geometrylist[geoId];
+        else
+            return geometrylist[geometrylist.size()+geoId];
+    }
+    else if constexpr (std::is_same<T,GeometryFacadeUniquePtr>()) {
+        if (geoId >= 0)
+            return geometrylist[geoId]->getGeometry();
+        else
+            return geometrylist[geometrylist.size()+geoId]->getGeometry();
+    }
+}
+
+template <typename T>
+const Sketcher::GeometryFacade * GeoListModel<T>::getGeometryFacadeFromGeoId(const std::vector<T> & geometrylist, int geoId)
+{
+    if constexpr (std::is_same<T,GeometryPtr>()) {
+        if (geoId >= 0)
+            return GeometryFacade::getFacade(geometrylist[geoId]).release();
+        else
+            return GeometryFacade::getFacade(geometrylist[geometrylist.size()+geoId]).release();
+    }
+    else if constexpr (std::is_same<T,GeometryFacadeUniquePtr>()) {
+        if (geoId >= 0)
+            return geometrylist[geoId].get();
+        else
+            return geometrylist[geometrylist.size()+geoId].get();
+    }
 }
 
 // this function is used to simulate cyclic periodic negative geometry indices (for external geometry)
 template <typename T>
-const T GeoListModel<T>::getGeometryFromGeoId(int geoId) const
+const Part::Geometry * GeoListModel<T>::getGeometryFromGeoId(int geoId) const
 {
     return GeoListModel<T>::getGeometryFromGeoId(geomlist, geoId);
 }
 
 template <typename T>
+const Sketcher::GeometryFacade * GeoListModel<T>::getGeometryFacadeFromGeoId(int geoId) const
+{
+    return GeoListModel<T>::getGeometryFacadeFromGeoId(geomlist, geoId);
+}
+
+template <typename T>
 Base::Vector3d GeoListModel<T>::getPoint(int geoId, Sketcher::PointPos pos) const
 {
-    Part::Geometry * geo = getGeometryFromGeoId(geoId);
+    const Part::Geometry * geo = getGeometryFromGeoId(geoId);
 
     return getPoint(geo, pos);
+}
+
+template <typename T>
+Base::Vector3d GeoListModel<T>::getPoint(const GeoElementId & geid) const
+{
+    return getPoint(geid.GeoId, geid.Pos);
 }
 
 template <typename T>
@@ -184,6 +224,83 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry * geo, Sketcher::P
     return Base::Vector3d();
 }
 
+template <typename T>
+void GeoListModel<T>::rebuildVertexIndex(void) const
+{
+    VertexId2GeoElementId.clear();
+    GeoElementId2VertexId.clear();
+
+    int geoId=0;
+    int pointId=0;
+
+    auto addGeoElement = [this, &pointId](int geoId, PointPos pos) {
+        VertexId2GeoElementId.emplace_back(geoId,pos);
+        GeoElementId2VertexId.emplace(std::piecewise_construct,
+                                        std::forward_as_tuple(geoId, pos),
+                                        std::forward_as_tuple(pointId++));
+    };
+
+    if (geomlist.size() <= 2)
+        return;
+    for (auto it = geomlist.begin(); it != geomlist.end(); ++it, geoId++) {
+
+        Base::Type type;
+
+        if constexpr (std::is_same<T, Part::Geometry *>::value)
+            type = (*it)->getTypeId();
+        else if constexpr (std::is_same<T, std::unique_ptr<const Sketcher::GeometryFacade>>::value)
+            type = (*it)->getGeometry()->getTypeId();
+
+        if ( geoId > getInternalCount())
+            geoId = -getExternalCount();
+
+        if (type == Part::GeomPoint::getClassTypeId()) {
+            addGeoElement(geoId,PointPos::start);
+        } else if (type == Part::GeomLineSegment::getClassTypeId() ||
+                   type == Part::GeomBSplineCurve::getClassTypeId()) {
+            addGeoElement(geoId,PointPos::start);
+            addGeoElement(geoId,PointPos::end);
+        } else if (type == Part::GeomCircle::getClassTypeId() ||
+                   type == Part::GeomEllipse::getClassTypeId()) {
+            addGeoElement(geoId,PointPos::mid);
+        } else if (type == Part::GeomArcOfCircle::getClassTypeId() ||
+                   type == Part::GeomArcOfEllipse::getClassTypeId() ||
+                   type == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                   type == Part::GeomArcOfParabola::getClassTypeId()) {
+            addGeoElement(geoId,PointPos::start);
+            addGeoElement(geoId,PointPos::end);
+            addGeoElement(geoId,PointPos::mid);
+        }
+    }
+
+    indexInit = true;
+}
+
+template <typename T>
+Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId)
+{
+    if(!indexInit) // lazy initialised
+        rebuildVertexIndex();
+
+    return VertexId2GeoElementId[vertexId];
+}
+
+template <typename T>
+int GeoListModel<T>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId & geoelementId) const
+{
+    if(!indexInit) // lazy initialised
+        rebuildVertexIndex();
+
+    auto found = std::find(VertexId2GeoElementId.begin(), VertexId2GeoElementId.end(), geoelementId);
+
+    if( found != VertexId2GeoElementId.end() )
+        return std::distance(found, VertexId2GeoElementId.begin());
+
+    THROWM(Base::IndexError, "GeoElementId not indexed");
+}
+
+
+
 namespace Sketcher {
 
 // Template specialisations
@@ -193,7 +310,8 @@ GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
                                 int intgeocount,
                                 bool ownerT) :  geomlist(std::move(geometrylist)),
                                                 intGeoCount(intgeocount),
-                                                OwnerT(false)
+                                                OwnerT(false),
+                                                indexInit(false)
 {
     // GeometryFacades hold the responsibility for releasing the resources.
     //
@@ -212,7 +330,8 @@ GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
                                 const std::vector<std::unique_ptr< const Sketcher::GeometryFacade>> & geometrylist,
                                 int intgeocount,
                                 bool ownerT):   intGeoCount(intgeocount),
-                                                OwnerT(false)
+                                                OwnerT(false),
+                                                indexInit(false)
 {
     // GeometryFacades are movable, but not copiable, so they need to be reconstructed (shallow copy of vector)
     // Under the Single Responsibility Principle, these will not take over a responsibility that shall be enforced
@@ -233,24 +352,6 @@ GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 
 }
 
-template < >
-const std::unique_ptr<const Sketcher::GeometryFacade>
-GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::getGeometryFromGeoId
-    (const std::vector<std::unique_ptr<const Sketcher::GeometryFacade>> & geometrylist, int geoId)
-{
-    if (geoId >= 0)
-        return Sketcher::GeometryFacade::getFacade(geometrylist[geoId]->getGeometry());
-    else
-        return Sketcher::GeometryFacade::getFacade(geometrylist[geometrylist.size()+geoId]->getGeometry());
-}
-
-template < >
-Base::Vector3d GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::getPoint(int geoId, Sketcher::PointPos pos) const
-{
-    const Part::Geometry * geo = getGeometryFromGeoId(geoId)->getGeometry();
-
-    return getPoint(geo, pos);
-}
 
 // instantiate the types so that other translation units can access template constructors
 template class GeoListModel<Part::Geometry *>;
