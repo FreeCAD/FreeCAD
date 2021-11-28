@@ -542,6 +542,7 @@ public:
     bool restorePreselCursor = false;
     bool skipMouseRelease = false;
     bool checkHiddenItems = false;
+    bool multiSelecting = false;
 
     QTreeWidgetItem *tooltipItem = nullptr;
 };
@@ -3877,10 +3878,6 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
 
-    if (QApplication::queryKeyboardModifiers()
-            & (Qt::ControlModifier | Qt::ShiftModifier))
-        return; // multi selection
-
     int displayMode = TreeParams::DocumentMode();
     for (auto it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
@@ -3888,8 +3885,8 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
         QFont f = it->second->font(0);
         f.setBold(it == jt);
         if(!it->first->getDocument()->testStatus(App::Document::TempDoc))
-            it->second->setHidden(0 == displayMode && it != jt);
-        if (2 == displayMode) {
+            it->second->setHidden(0 == displayMode && it != jt && !pimpl->multiSelecting);
+        if (2 == displayMode && !pimpl->multiSelecting) {
             it->second->setExpanded(it == jt);
         }
         // this must be done as last step
@@ -4396,25 +4393,6 @@ void TreeWidget::setupText()
     this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
-void TreeWidget::syncView(ViewProviderDocumentObject *vp)
-{
-    (void)vp;
-    // Deprecated. To be removed it in the next merge
-#if 0
-    if(currentDocItem && TreeParams::SyncView()) {
-        bool focus = hasFocus();
-        auto view = currentDocItem->document()->setActiveView(vp);
-        if(focus)
-            setFocus();
-        if(view) {
-            const char** pReturnIgnore=0;
-            view->onMsg("ViewSelectionExtend",pReturnIgnore);
-        }
-    }
-#endif
-}
-
-
 void TreeWidget::onShowHidden()
 {
     if (!this->contextItem) return;
@@ -4491,6 +4469,9 @@ void TreeWidget::onItemSelectionChanged ()
             || this->isConnectionBlocked()
             || updateBlocked)
         return;
+
+    Base::StateLocker guard(pimpl->multiSelecting, 
+            (QApplication::queryKeyboardModifiers() & Qt::ControlModifier) ? true : false);
 
     preselectTimer->stop();
 
