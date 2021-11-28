@@ -3954,10 +3954,10 @@ VarInfo VariableExpression::push(const Expression *owner, bool mustExist, std::s
 void VariableExpression::setVarInfo(VarInfo &info, bool mustExist, bool noassign) const{
     Timing(setVarInfo);
     const auto &comps = var.getComponents();
-    if(comps.size()==1 && components.empty())
+    if(comps.size()==1 && (components.empty() || noassign))
         return;
     size_t count = comps.size();
-    if(components.empty())
+    if(components.empty() || noassign)
         --count;
     size_t i=1;
     for(;i<count;++i) {
@@ -3965,7 +3965,7 @@ void VariableExpression::setVarInfo(VarInfo &info, bool mustExist, bool noassign
             EvalFrame::warn(this, 2, *info.rhs);
         info.rhs = comps[i].get(info.rhs);
     }
-    if(components.empty()) {
+    if(components.empty() || noassign) {
         info.prefix = info.rhs;
         if(!noassign)
             EvalFrame::warn(this, 2, *info.rhs);
