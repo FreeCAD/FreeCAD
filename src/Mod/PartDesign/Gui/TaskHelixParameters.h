@@ -56,6 +56,7 @@ public:
 
     static bool showPreview(PartDesign::Helix*);
 
+private:
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
      * current value of revolution object's axis reference.
@@ -65,6 +66,9 @@ public:
      */
     void fillAxisCombo(bool forceRefill = false);
     void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+    void addSketchAxes();
+    void addPartAxes();
+    int addCurrentLink();
 
 private Q_SLOTS:
     void onPitchChanged(double);

@@ -196,44 +196,62 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
 
     if (forceRefill) {
         ui->axis->clear();
-
         this->axesInList.clear();
 
         //add sketch axes
-        PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
-        if (pcSketch) {
-            addAxisToCombo(pcSketch, "N_Axis", QObject::tr("Normal sketch axis"));
-            addAxisToCombo(pcSketch, "V_Axis", QObject::tr("Vertical sketch axis"));
-            addAxisToCombo(pcSketch, "H_Axis", QObject::tr("Horizontal sketch axis"));
-            for (int i = 0; i < pcSketch->getAxisCount(); i++) {
-                QString itemText = QObject::tr("Construction line %1").arg(i + 1);
-                std::stringstream sub;
-                sub << "Axis" << i;
-                addAxisToCombo(pcSketch, sub.str(), itemText);
-            }
-        }
+        addSketchAxes();
 
         //add part axes
-        PartDesign::Body* body = PartDesign::Body::findBodyOf(pcFeat);
-        if (body) {
-            try {
-                App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), "", tr("Base X axis"));
-                addAxisToCombo(orig->getY(), "", tr("Base Y axis"));
-                addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
-            }
-            catch (const Base::Exception& ex) {
-                ex.ReportException();
-            }
-        }
+        addPartAxes();
 
         //add "Select reference"
         addAxisToCombo(0, std::string(), tr("Select reference..."));
-    }//endif forceRefill
+    }
 
-    //add current link, if not in list
-    //first, figure out the item number for current axis
+    //add current link, if not in list and highlight it
+    int indexOfCurrent = addCurrentLink();
+    if (indexOfCurrent != -1)
+        ui->axis->setCurrentIndex(indexOfCurrent);
+
+    blockUpdate = oldVal_blockUpdate;
+}
+
+void TaskHelixParameters::addSketchAxes()
+{
+    PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
+    if (pcSketch) {
+        addAxisToCombo(pcSketch, "N_Axis", tr("Normal sketch axis"));
+        addAxisToCombo(pcSketch, "V_Axis", tr("Vertical sketch axis"));
+        addAxisToCombo(pcSketch, "H_Axis", tr("Horizontal sketch axis"));
+        for (int i = 0; i < pcSketch->getAxisCount(); i++) {
+            QString itemText = tr("Construction line %1").arg(i + 1);
+            std::stringstream sub;
+            sub << "Axis" << i;
+            addAxisToCombo(pcSketch, sub.str(), itemText);
+        }
+    }
+}
+
+void TaskHelixParameters::addPartAxes()
+{
+    PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(pcFeat);
+    if (body) {
+        try {
+            App::Origin* orig = body->getOrigin();
+            addAxisToCombo(orig->getX(), "", tr("Base X axis"));
+            addAxisToCombo(orig->getY(), "", tr("Base Y axis"));
+            addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
+        }
+        catch (const Base::Exception& ex) {
+            ex.ReportException();
+        }
+    }
+}
+
+int TaskHelixParameters::addCurrentLink()
+{
     int indexOfCurrent = -1;
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string>& subList = propReferenceAxis->getSubValues();
@@ -243,6 +261,7 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
             break;
         }
     }
+
     if (indexOfCurrent == -1 && ax) {
         assert(subList.size() <= 1);
         std::string sub;
@@ -252,16 +271,12 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
         indexOfCurrent = axesInList.size() - 1;
     }
 
-    //highlight current.
-    if (indexOfCurrent != -1)
-        ui->axis->setCurrentIndex(indexOfCurrent);
-
-    blockUpdate = oldVal_blockUpdate;
+    return indexOfCurrent;
 }
 
 void TaskHelixParameters::addAxisToCombo(App::DocumentObject* linkObj,
-    std::string linkSubname,
-    QString itemText)
+                                         std::string linkSubname,
+                                         QString itemText)
 {
     this->ui->axis->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
@@ -500,7 +515,18 @@ void TaskHelixParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
+        // save current indexes
+        int axis = ui->axis->currentIndex();
+        int mode = ui->inputMode->currentIndex();
         ui->retranslateUi(proxy);
+
+        // Axes added by the user cannot be restored
+        fillAxisCombo(true);
+
+        // restore the indexes
+        if (axis < ui->axis->count())
+            ui->axis->setCurrentIndex(axis);
+        ui->inputMode->setCurrentIndex(mode);
     }
 }
 
@@ -510,7 +536,7 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vecto
         throw Base::RuntimeError("Not initialized!");
 
     int num = ui->axis->currentIndex();
-    const App::PropertyLinkSub& lnk = *(axesInList[num]);
+    const App::PropertyLinkSub& lnk = *(axesInList.at(num));
     if (lnk.getValue() == 0) {
         throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
     }
