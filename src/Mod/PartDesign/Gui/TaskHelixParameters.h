@@ -49,7 +49,7 @@ class TaskHelixParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHelixParameters(ViewProviderHelix *HelixView,QWidget *parent = 0);
+    TaskHelixParameters(ViewProviderHelix* HelixView, QWidget* parent = 0);
     ~TaskHelixParameters();
 
     virtual void apply() override;
@@ -64,7 +64,7 @@ public:
      * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
      */
     void fillAxisCombo(bool forceRefill = false);
-    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
 
 private Q_SLOTS:
     void onPitchChanged(double);
@@ -81,9 +81,9 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     bool updateView() const;
-    void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
     void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
 
@@ -124,7 +124,7 @@ class TaskDlgHelixParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgHelixParameters(ViewProviderHelix *HelixView);
+    TaskDlgHelixParameters(ViewProviderHelix* HelixView);
 
     ViewProviderHelix* getHelixView() const
     { return static_cast<ViewProviderHelix*>(vp); }
