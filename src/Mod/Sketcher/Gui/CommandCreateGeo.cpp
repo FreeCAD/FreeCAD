@@ -7145,7 +7145,8 @@ public:
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
-                AutoConstraint lastCons = sugConstr2.back();
+                AutoConstraint lastCons = {Sketcher::None, Sketcher::Constraint::GeoUndef, Sketcher::none};
+                if (!sugConstr2.empty()) lastCons = sugConstr2.back();
 
                 ostringstream snapCon = ostringstream("");
                 if (SnapMode == SNAP_MODE_Straight) {
