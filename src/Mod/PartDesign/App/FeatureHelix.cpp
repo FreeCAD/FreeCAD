@@ -128,11 +128,14 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: height too small!");
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error turns too small!");
+            return new App::DocumentObjectExecReturn("Error: turns too small!");
         Pitch.setValue(Height.getValue()/Turns.getValue());
     } else if (mode == HelixMode::height_turns_growth) {
         if (Turns.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Error turns too small!");
+            return new App::DocumentObjectExecReturn("Error: turns too small!");
+        if ((Height.getValue() < Precision::Confusion())
+            && (Growth.getValue() < Precision::Confusion()))
+            return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
         Pitch.setValue(Height.getValue()/Turns.getValue());
     } else {
         return new App::DocumentObjectExecReturn("Error: unsupported mode");
