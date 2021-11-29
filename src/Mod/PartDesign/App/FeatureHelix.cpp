@@ -371,6 +371,20 @@ TopoDS_Shape Helix::generateHelixPath(void)
 
     Base::Vector3d normal = getProfileNormal();
     Base::Vector3d start = v.Cross(normal);  // pointing towards the desired helix start point.
+
+    // if our axis is (nearly) aligned with the profile's normal, we're only interested in the "twist"
+    // of the helix. The actual starting point, and thus the radius, isn't important as long as it's
+    // somewhere in the profile's plane: an arbitrary vector perpendicular to the normal.
+    if (start.IsNull()) {
+        auto hopefullyNotParallel = Base::Vector3d(1.0, 2.0, 3.0);
+        start = normal.Cross(hopefullyNotParallel);
+        if (start.IsNull()) {
+            // bad luck
+            hopefullyNotParallel = Base::Vector3d(3.0, 2.0, 1.0);
+            start = normal.Cross(hopefullyNotParallel);
+        }
+    }
+
     gp_Dir dir_start(start.x, start.y, start.z);
 
     // Find out in what quadrant relative to the axis the profile is located, and the exact position.
@@ -447,6 +461,12 @@ TopoDS_Shape Helix::generateHelixPath(void)
 // this function calculates self intersection safe pitch based on the profile bounding box.
 double Helix::safePitch()
 {
+    Base::Vector3d v = Axis.getValue();
+    Base::Vector3d n = getProfileNormal();
+    Base::Vector3d s = v.Cross(n);  // pointing towards the desired helix start point.
+    if (s.IsNull())
+        return Precision::Confusion(); // if the axis orthogonal to the profile, any pitch >0 is safe
+
     // Below is an approximation. It is possible to do the general way by solving for the pitch
     // where the helix is self intersecting.
 
@@ -461,14 +481,11 @@ double Helix::safePitch()
 
     double X = Xmax - Xmin, Y = Ymax - Ymin, Z = Zmax - Zmin;
 
-    Base::Vector3d v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
     gp_Vec bbvec(X, Y, Z);
 
     double p0 = bbvec*dir; // safe pitch if angle=0
 
-    Base::Vector3d n = getProfileNormal();
-    Base::Vector3d s = v.Cross(n);  // pointing towards the desired helix start point.
     gp_Dir dir_s(s.x, s.y, s.z);
 
     if (tan(abs(angle))*p0 > abs(bbvec*dir_s))

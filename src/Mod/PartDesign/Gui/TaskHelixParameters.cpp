@@ -202,6 +202,7 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
         PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch){
+            addAxisToCombo(pcSketch,"N_Axis",QObject::tr("Normal sketch axis"));
             addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
             addAxisToCombo(pcSketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
             for (int i=0; i < pcSketch->getAxisCount(); i++) {
