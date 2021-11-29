@@ -105,7 +105,9 @@ protected:
 
 
 private:
+    void connectSlots();
     void updateUI();
+    void updateStatus();
 
 private:
     QWidget* proxy;

@@ -68,30 +68,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->pitch, SIGNAL(valueChanged(double)),
-        this, SLOT(onPitchChanged(double)));
-    connect(ui->height, SIGNAL(valueChanged(double)),
-        this, SLOT(onHeightChanged(double)));
-    connect(ui->turns, SIGNAL(valueChanged(double)),
-        this, SLOT(onTurnsChanged(double)));
-    connect(ui->coneAngle, SIGNAL(valueChanged(double)),
-        this, SLOT(onAngleChanged(double)));
-    connect(ui->growth, SIGNAL(valueChanged(double)),
-        this, SLOT(onGrowthChanged(double)));
-    connect(ui->axis, SIGNAL(activated(int)),
-        this, SLOT(onAxisChanged(int)));
-    connect(ui->checkBoxLeftHanded, SIGNAL(toggled(bool)),
-        this, SLOT(onLeftHandedChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-        this, SLOT(onReversedChanged(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-        this, SLOT(onUpdateView(bool)));
-    connect(ui->inputMode, SIGNAL(activated(int)),
-        this, SLOT(onModeChanged(int)));
-    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
-        this, SLOT(onOutsideChanged(bool)));
+    connectSlots();
 
     this->groupLayout()->addWidget(proxy);
 
@@ -114,6 +91,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     if (!(rev->HasBeenEdited).getValue()) {
         rev->proposeParameters();
         recomputeFeature();
+        updateStatus();
     }
 
     this->propAngle = &(rev->Angle);
@@ -184,6 +162,34 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
             ex.ReportException();
         }
     }
+}
+
+void TaskHelixParameters::connectSlots()
+{
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->pitch, SIGNAL(valueChanged(double)),
+            this, SLOT(onPitchChanged(double)));
+    connect(ui->height, SIGNAL(valueChanged(double)),
+            this, SLOT(onHeightChanged(double)));
+    connect(ui->turns, SIGNAL(valueChanged(double)),
+            this, SLOT(onTurnsChanged(double)));
+    connect(ui->coneAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->growth, SIGNAL(valueChanged(double)),
+            this, SLOT(onGrowthChanged(double)));
+    connect(ui->axis, SIGNAL(activated(int)),
+            this, SLOT(onAxisChanged(int)));
+    connect(ui->checkBoxLeftHanded, SIGNAL(toggled(bool)),
+            this, SLOT(onLeftHandedChanged(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
+    connect(ui->inputMode, SIGNAL(activated(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
+            this, SLOT(onOutsideChanged(bool)));
 }
 
 void TaskHelixParameters::fillAxisCombo(bool forceRefill)
@@ -284,10 +290,8 @@ void TaskHelixParameters::addAxisToCombo(App::DocumentObject* linkObj,
     lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
 }
 
-void TaskHelixParameters::updateUI()
+void TaskHelixParameters::updateStatus()
 {
-    fillAxisCombo();
-
     auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
     auto status = std::string(pcHelix->getStatusString());
     if (status.compare("Valid") == 0 || status.compare("Touched") == 0) {
@@ -297,6 +301,13 @@ void TaskHelixParameters::updateUI()
             status = "";
     }
     ui->labelMessage->setText(QString::fromUtf8(status.c_str()));
+}
+
+void TaskHelixParameters::updateUI()
+{
+    fillAxisCombo();
+
+    updateStatus();
 
     bool isPitchVisible = false;
     bool isHeightVisible = false;
@@ -305,6 +316,7 @@ void TaskHelixParameters::updateUI()
     bool isAngleVisible = false;
     bool isGrowthVisible = false;
 
+    auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
     if (pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
         isOutsideVisible = true;
 
@@ -330,8 +342,7 @@ void TaskHelixParameters::updateUI()
         isGrowthVisible = true;
     }
     else {
-        status = "Error: unsupported mode";
-        ui->labelMessage->setText(QString::fromUtf8(status.c_str()));
+        ui->labelMessage->setText(tr("Error: unsupported mode"));
     }
 
     ui->pitch->setVisible(isPitchVisible);
@@ -350,7 +361,6 @@ void TaskHelixParameters::updateUI()
     ui->labelGrowth->setVisible(isGrowthVisible);
 
     ui->checkBoxOutside->setVisible(isOutsideVisible);
-
 }
 
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -453,6 +463,7 @@ void TaskHelixParameters::onAxisChanged(int num)
         }
 
         recomputeFeature();
+        updateStatus();
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -461,7 +472,6 @@ void TaskHelixParameters::onAxisChanged(int num)
 
 void TaskHelixParameters::onModeChanged(int index)
 {
-
     propMode->setValue(index);
 
     ui->pitch->setValue(propPitch->getValue());
@@ -476,6 +486,7 @@ void TaskHelixParameters::onLeftHandedChanged(bool on)
 {
     propLeftHanded->setValue(on);
     recomputeFeature();
+    updateUI();
 }
 
 void TaskHelixParameters::onReversedChanged(bool on)
