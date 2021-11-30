@@ -91,7 +91,6 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     if (!(rev->HasBeenEdited).getValue()) {
         rev->proposeParameters();
         recomputeFeature();
-        updateStatus();
     }
 
     this->propAngle = &(rev->Angle);
