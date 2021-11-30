@@ -8,6 +8,7 @@ set(Part_Scripts
     Init.py
     JoinFeatures.py
     MakeBottle.py
+    PartEnums.py
     TestPartApp.py
 )
 
