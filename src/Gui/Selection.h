@@ -311,6 +311,8 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate(){}
     virtual bool allow(App::Document*,App::DocumentObject*, const char*)=0;
+    virtual void setOverrideCursor();
+    virtual void restoreCursor();
 
     /**
      * @brief notAllowedReason is a string that sets the message to be

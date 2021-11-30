@@ -897,24 +897,34 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
         return -1;
     }
 
+    auto tmp = ActiveGate;
+    // To prevent rmvPreselect() calling ActiveGate->restoreCursor() which will cause flash of cusor
+    ActiveGate = nullptr; 
     rmvPreselect();
+    ActiveGate = tmp;
 
     if (ActiveGate && signal!=1) {
         App::Document* pDoc = getDocument(pDocName);
-        if (!pDoc || !pObjectName)
+        if (!pDoc || !pObjectName) {
+            ActiveGate->restoreCursor();
             return 0;
+        }
         std::pair<std::string,std::string> elementName;
         auto pObject = pDoc->getObject(pObjectName);
-        if(!pObject)
+        if(!pObject) {
+            ActiveGate->restoreCursor();
             return 0;
+        }
 
         const char *subelement = pSubName;
         if(gateResolve) {
             auto &newElementName = elementName.first;
             auto &oldElementName = elementName.second;
             pObject = App::GeoFeature::resolveElement(pObject,pSubName,elementName);
-            if (!pObject)
+            if (!pObject) {
+                ActiveGate->restoreCursor();
                 return 0;
+            }
             if(gateResolve > 1)
                 subelement = newElementName.size()?newElementName.c_str():oldElementName.c_str();
             else
@@ -933,13 +943,13 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
             if (getMainWindow()) {
                 getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
+                ActiveGate->setOverrideCursor();
+
+                DocName = pDocName; // So that rmvPreselect() will restore the cursor
             }
             return -2;
         }
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        mdi->restoreOverrideCursor();
+        ActiveGate->restoreCursor();
     }
 
     DocName = pDocName;
@@ -1115,9 +1125,8 @@ void SelectionSingleton::rmvPreselect()
     hy = 0;
     hz = 0;
 
-    if (ActiveGate && getMainWindow()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        mdi->restoreOverrideCursor();
+    if (ActiveGate) {
+        ActiveGate->restoreCursor();
     }
 
     FC_TRACE("rmv preselect");
@@ -1160,6 +1169,21 @@ void SelectionSingleton::rmvSelectionGate(void)
     }
 }
 
+void SelectionGate::setOverrideCursor()
+{
+    if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
+        if (Gui::MDIView* mdi = doc->getActiveView())
+            mdi->setOverrideCursor(Qt::ForbiddenCursor);
+    }
+}
+
+void SelectionGate::restoreCursor()
+{
+    if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
+        if (Gui::MDIView* mdi = doc->getActiveView())
+            mdi->restoreOverrideCursor();
+    }
+}
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
@@ -1264,8 +1288,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
                     msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
                 }
                 getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(Qt::ForbiddenCursor);
+                ActiveGate->setOverrideCursor();
             }
             ActiveGate->notAllowedReason.clear();
             QApplication::beep();
