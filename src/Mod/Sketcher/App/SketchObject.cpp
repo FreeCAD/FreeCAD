@@ -7346,7 +7346,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         }
                         else {  // general case, full circle
                             Base::Vector3d p(cnt.X(),cnt.Y(),cnt.Z());  // converting to FCAD style vector
-                            invPlm.multVec(p,p);  // transforming towards sketch's (x,y) coordinates
 
                             gp_Vec vecMajorAxis = vec1 ^ vec2;  // major axis in 3D space
                             Base::Vector3d vectorMajorAxis(vecMajorAxis.X(),vecMajorAxis.Y(),vecMajorAxis.Z());  // maj axis into FCAD style vector
