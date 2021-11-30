@@ -102,6 +102,7 @@ public:
     void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
+    void applyCursor(void);
 
 protected:
     // helpers
@@ -116,7 +117,6 @@ protected:
                       const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>());
     void addCursorTail(std::vector<QPixmap> &pixmaps);
     void unsetCursor(void);
-    void applyCursor(void);
     void applyCursor(QCursor &newCursor);
     void setCrosshairColor();
     unsigned long getCrosshairColor();

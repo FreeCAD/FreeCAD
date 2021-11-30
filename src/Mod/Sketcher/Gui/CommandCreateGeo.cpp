@@ -5626,12 +5626,34 @@ bool CmdSketcherCreateDraftLine::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
-    class FilletSelection : public Gui::SelectionFilterGate
+
+    class SketcherSelectionFilterGate : public Gui::SelectionFilterGate
     {
+    protected:
         App::DocumentObject* object;
+        ViewProviderSketch * viewObject;
+    public:
+        SketcherSelectionFilterGate(App::DocumentObject *obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+            , object(obj)
+            , viewObject(Base::freecad_dynamic_cast<ViewProviderSketch>(
+                        Gui::Application::Instance->getViewProvider(obj)))
+        {
+        }
+
+        virtual void restoreCursor() override {
+            if (viewObject && viewObject->currentHandler())
+                viewObject->currentHandler()->applyCursor();
+            else
+                Gui::SelectionFilterGate::restoreCursor();
+        }
+    };
+
+    class FilletSelection : public SketcherSelectionFilterGate
+    {
     public:
         FilletSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : SketcherSelectionFilterGate(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6038,12 +6060,11 @@ bool CmdSketcherCompCreateFillets::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
-    class TrimmingSelection : public Gui::SelectionFilterGate
+    class TrimmingSelection : public SketcherSelectionFilterGate
     {
-        App::DocumentObject* object;
     public:
         TrimmingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : SketcherSelectionFilterGate(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6199,13 +6220,11 @@ bool CmdSketcherTrimming::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
-    class ExtendSelection : public Gui::SelectionFilterGate
+    class ExtendSelection : public SketcherSelectionFilterGate
     {
-        App::DocumentObject* object;
     public:
         ExtendSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
-            , object(obj)
+            : SketcherSelectionFilterGate(obj)
             , disabled(false)
         {}
 
@@ -6513,12 +6532,11 @@ bool CmdSketcherExtend::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
-    class SplittingSelection : public Gui::SelectionFilterGate
+    class SplittingSelection : public SketcherSelectionFilterGate
     {
-        App::DocumentObject* object;
     public:
         SplittingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : SketcherSelectionFilterGate(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6630,13 +6648,13 @@ bool CmdSketcherSplit::isActive(void)
 
 
 namespace SketcherGui {
-    class ExternalSelection : public Gui::SelectionFilterGate
+    class ExternalSelection : public SketcherSelectionFilterGate
     {
-        App::DocumentObject* object;
     public:
         ExternalSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
-        {}
+            : SketcherSelectionFilterGate(obj)
+        {
+        }
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
@@ -7269,12 +7287,11 @@ protected:
 // ======================================================================================
 
 namespace SketcherGui {
-    class CarbonCopySelection : public Gui::SelectionFilterGate
+    class CarbonCopySelection : public SketcherSelectionFilterGate
     {
-        App::DocumentObject* object;
     public:
         CarbonCopySelection(App::DocumentObject* obj)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        : SketcherSelectionFilterGate(obj)
         {}
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
