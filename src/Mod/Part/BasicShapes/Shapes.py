@@ -113,6 +113,8 @@ def _tostr(v):
         return _ftostr(v)
     if isinstance(v, FreeCAD.Vector):
         return _vec_tostr(v)
+    if isinstance(v, Part.Vertex):
+        return _vec_tostr(v.Point)
     if isinstance(v, FreeCAD.Placement):
         return _pla_tostr(v)
     if isinstance(v, tuple):
@@ -227,8 +229,12 @@ def showPreselectInfo():
     except Exception:
         pass
 
-    txt = _getGeoAttributes(txt, shape,
-            ('Orientation', ('Closed', 'isClosed')))
+    txt = _getGeoAttributes(txt, shape, ('Orientation',
+                                         ('Closed', 'isClosed'),
+                                         ('FirstVertex', 'firstVertex'),
+                                         ('LastVertex', 'lastVertex'),
+                                         'ParameterRange',
+                                        ))
 
     geo = getattr(shape, 'Curve', None)
     if geo:
