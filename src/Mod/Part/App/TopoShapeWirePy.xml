@@ -58,6 +58,11 @@ Transition can be 0 (default), 1 (right corners) or 2 (rounded corners).
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeEvolved" Const="true" Keyword="true">
+        <Documentation>
+            <UserDocu>Profile along the spine</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="approximate" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Approximate B-Spline-curve from this wire
