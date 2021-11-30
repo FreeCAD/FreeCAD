@@ -444,10 +444,11 @@ PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
 }
 
 /*
+import PartEnums
 v = App.Vector
 profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)])
 spine = Part.Face(Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)]))
-evolve = spine.makeEvolved(profile)
+evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
 */
 PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
 {
@@ -487,13 +488,19 @@ PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
         break;
     }
 
-    BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
-                                      PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
-                                      PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
-                                      PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
-                                      Tolerance);
-    TopoDS_Shape shape = evolved.Shape();
-    return Py::new_reference_to(shape2pyshape(shape));
+    try {
+        BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
+                                          PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
+                                          Tolerance);
+        TopoDS_Shape shape = evolved.Shape();
+        return Py::new_reference_to(shape2pyshape(shape));
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
 }
 
 PyObject* TopoShapeFacePy::valueAt(PyObject *args)
