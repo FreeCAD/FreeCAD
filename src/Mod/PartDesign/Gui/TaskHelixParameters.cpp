@@ -62,48 +62,55 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* HelixView, QWidget* parent)
-    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix parameters")),
-    ui(new Ui_TaskHelixParameters)
+    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix parameters"))
+    , ui(new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-    connectSlots();
-
     this->groupLayout()->addWidget(proxy);
 
-    // Temporarily prevent unnecessary feature recomputes
-    ui->axis->blockSignals(true);
-    ui->pitch->blockSignals(true);
-    ui->height->blockSignals(true);
-    ui->turns->blockSignals(true);
-    ui->coneAngle->blockSignals(true);
-    ui->growth->blockSignals(true);
-    ui->checkBoxLeftHanded->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
-    ui->checkBoxOutside->blockSignals(true);
+    initializeHelix();
 
-    //bind property mirrors
-    PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    assignProperties();
+    setValuesFromProperties();
 
-    PartDesign::Helix* rev = static_cast<PartDesign::Helix*>(vp->getObject());
+    updateUI();
 
-    if (!(rev->HasBeenEdited).getValue()) {
-        rev->proposeParameters();
+    // enable use of parametric expressions for the numerical fields
+    bindProperties();
+
+    connectSlots();
+    setFocus();
+    showCoordinateAxes();
+}
+
+void TaskHelixParameters::initializeHelix()
+{
+    PartDesign::Helix* helix = static_cast<PartDesign::Helix*>(vp->getObject());
+    if (!(helix->HasBeenEdited).getValue()) {
+        helix->proposeParameters();
         recomputeFeature();
     }
+}
 
-    this->propAngle = &(rev->Angle);
-    this->propGrowth = &(rev->Growth);
-    this->propPitch = &(rev->Pitch);
-    this->propHeight = &(rev->Height);
-    this->propTurns = &(rev->Turns);
-    this->propReferenceAxis = &(rev->ReferenceAxis);
-    this->propLeftHanded = &(rev->LeftHanded);
-    this->propReversed = &(rev->Reversed);
-    this->propMode = &(rev->Mode);
-    this->propOutside = &(rev->Outside);
+void TaskHelixParameters::assignProperties()
+{
+    PartDesign::Helix* helix = static_cast<PartDesign::Helix*>(vp->getObject());
+    propAngle = &(helix->Angle);
+    propGrowth = &(helix->Growth);
+    propPitch = &(helix->Pitch);
+    propHeight = &(helix->Height);
+    propTurns = &(helix->Turns);
+    propReferenceAxis = &(helix->ReferenceAxis);
+    propLeftHanded = &(helix->LeftHanded);
+    propReversed = &(helix->Reversed);
+    propMode = &(helix->Mode);
+    propOutside = &(helix->Outside);
+}
 
+void TaskHelixParameters::setValuesFromProperties()
+{
     double pitch = propPitch->getValue();
     double height = propHeight->getValue();
     double turns = propTurns->getValue();
@@ -125,42 +132,16 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     ui->checkBoxReversed->setChecked(reversed);
     ui->inputMode->setCurrentIndex(index);
     ui->checkBoxOutside->setChecked(outside);
+}
 
-    blockUpdate = false;
-    updateUI();
-
-    // enable use of parametric expressions for the numerical fields
-    ui->pitch->bind(static_cast<PartDesign::Helix*>(pcFeat)->Pitch);
-    ui->height->bind(static_cast<PartDesign::Helix*>(pcFeat)->Height);
-    ui->turns->bind(static_cast<PartDesign::Helix*>(pcFeat)->Turns);
-    ui->coneAngle->bind(static_cast<PartDesign::Helix*>(pcFeat)->Angle);
-    ui->growth->bind(static_cast<PartDesign::Helix*>(pcFeat)->Growth);
-
-    ui->axis->blockSignals(false);
-    ui->pitch->blockSignals(false);
-    ui->height->blockSignals(false);
-    ui->turns->blockSignals(false);
-    ui->coneAngle->blockSignals(false);
-    ui->growth->blockSignals(false);
-    ui->checkBoxLeftHanded->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-    ui->checkBoxOutside->blockSignals(false);
-
-    setFocus();
-
-    //show the parts coordinate system axis for selection
-    PartDesign::Body* body = PartDesign::Body::findBodyOf(vp->getObject());
-    if (body) {
-        try {
-            App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
-        }
-        catch (const Base::Exception& ex) {
-            ex.ReportException();
-        }
-    }
+void TaskHelixParameters::bindProperties()
+{
+    PartDesign::Helix* helix = static_cast<PartDesign::Helix*>(vp->getObject());
+    ui->pitch->bind(helix->Pitch);
+    ui->height->bind(helix->Height);
+    ui->turns->bind(helix->Turns);
+    ui->coneAngle->bind(helix->Angle);
+    ui->growth->bind(helix->Growth);
 }
 
 void TaskHelixParameters::connectSlots()
@@ -189,6 +170,23 @@ void TaskHelixParameters::connectSlots()
             this, SLOT(onModeChanged(int)));
     connect(ui->checkBoxOutside, SIGNAL(toggled(bool)),
             this, SLOT(onOutsideChanged(bool)));
+}
+
+void TaskHelixParameters::showCoordinateAxes()
+{
+    //show the parts coordinate system axis for selection
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(vp->getObject());
+    if (body) {
+        try {
+            App::Origin* origin = body->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        }
+        catch (const Base::Exception& ex) {
+            ex.ReportException();
+        }
+    }
 }
 
 void TaskHelixParameters::fillAxisCombo(bool forceRefill)
@@ -294,7 +292,7 @@ void TaskHelixParameters::updateStatus()
     auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
     auto status = std::string(pcHelix->getStatusString());
     if (status.compare("Valid") == 0 || status.compare("Touched") == 0) {
-        if (pcHelix->safePitch() > propPitch->getValue())
+        if (pcHelix->safePitch() > pcHelix->Pitch.getValue())
             status = "Warning: helix might be self intersecting";
         else
             status = "";

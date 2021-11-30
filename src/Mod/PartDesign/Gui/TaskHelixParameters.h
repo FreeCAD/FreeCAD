@@ -105,9 +105,14 @@ protected:
 
 
 private:
+    void initializeHelix();
     void connectSlots();
     void updateUI();
     void updateStatus();
+    void assignProperties();
+    void setValuesFromProperties();
+    void bindProperties();
+    void showCoordinateAxes();
 
 private:
     QWidget* proxy;
