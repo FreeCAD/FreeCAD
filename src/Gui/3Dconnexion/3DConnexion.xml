@@ -35,6 +35,13 @@
    </Mapping>
 </ButtonMap>
 
+<ButtonMap DeviceName="SpaceNavigator">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command="Std_ViewHome"/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+   </Mapping>
+</ButtonMap>
+
 <ButtonMap DeviceName="SpacePilot">
    <Mapping>
       <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
