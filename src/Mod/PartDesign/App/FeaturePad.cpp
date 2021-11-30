@@ -315,7 +315,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         } else {
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;
-            params.solid = true;
+            params.solid = makeface;
             params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
             params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
             params.innerTaperAngleFwd = this->InnerTaperAngle.getValue() * M_PI / 180.0;
