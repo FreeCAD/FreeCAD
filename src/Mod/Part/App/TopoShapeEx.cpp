@@ -1925,7 +1925,8 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
     for (;;) {
         try {
             *this = base;
-            for (auto &face : sketchshape.getSubTopoShapes(TopAbs_FACE)) {
+            for (auto &face : sketchshape.getSubTopoShapes(
+                        sketchshape.hasSubShape(TopAbs_FACE)?TopAbs_FACE:TopAbs_WIRE)) {
                 srcShapes.clear();
                 if (!sketchshape.isNull() && !this->findShape(sketchshape.getShape()))
                     srcShapes.push_back(sketchshape);
@@ -1935,7 +1936,7 @@ TopoShape &TopoShape::makEPrism(const TopoShape &_base,
                     srcShapes.push_back(uptoface);
                 srcShapes.push_back(*this);
 
-                PrismMaker.Init(this->getShape(), TopoDS::Face(face.getShape()),
+                PrismMaker.Init(this->getShape(), face.getShape(),
                         TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
 
                 PrismMaker.Perform(uptoface.getShape());
