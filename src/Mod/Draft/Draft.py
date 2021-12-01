@@ -120,9 +120,11 @@ from draftutils.gui_utils import (dim_symbol,
                                   dim_dash,
                                   dimDash)
 
-from draftutils.groups import (get_group_names,
+from draftutils.groups import (is_group,
+                               get_group_names,
                                getGroupNames,
                                ungroup,
+                               get_windows,
                                get_group_contents,
                                getGroupContents,
                                get_movable_children,
