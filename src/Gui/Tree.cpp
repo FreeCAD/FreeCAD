@@ -3888,6 +3888,8 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
             it->second->setHidden(0 == displayMode && it != jt && !pimpl->multiSelecting);
         if (2 == displayMode && !pimpl->multiSelecting) {
             it->second->setExpanded(it == jt);
+            if (currentItem())
+                scrollToItem(currentItem());
         }
         // this must be done as last step
         it->second->setFont(0, f);
