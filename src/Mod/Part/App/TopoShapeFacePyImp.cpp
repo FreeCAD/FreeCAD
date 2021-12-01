@@ -70,6 +70,7 @@
 # include <GeomLProp_SLProps.hxx>
 # include <BRep_Tool.hxx>
 #endif // _PreComp
+#include <BRepOffsetAPI_MakeEvolved.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -98,6 +99,10 @@
 #include "FaceMaker.h"
 
 using namespace Part;
+
+namespace Part {
+    extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 // returns a string which represent the object e.g. when printed in python
 std::string TopoShapeFacePy::representation(void) const
@@ -436,6 +441,66 @@ PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
     mkOffset.Perform(dist);
 
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
+}
+
+/*
+import PartEnums
+v = App.Vector
+profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)])
+spine = Part.Face(Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)]))
+evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
+*/
+PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
+{
+    PyObject* Profile;
+    PyObject* AxeProf = Py_True;
+    PyObject* Solid = Py_False;
+    PyObject* ProfOnSpine = Py_False;
+    int JoinType = int(GeomAbs_Arc);
+    double Tolerance = 0.0000001;
+
+    static char* kwds_evolve[] = {"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine", "Tolerance", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|iO!O!O!d", kwds_evolve,
+                                     &TopoShapeWirePy::Type, &Profile, &JoinType,
+                                     &PyBool_Type, &AxeProf, &PyBool_Type, &Solid,
+                                     &PyBool_Type, &ProfOnSpine, &Tolerance))
+        return nullptr;
+
+    const TopoDS_Face& spine = TopoDS::Face(getTopoShapePtr()->getShape());
+    BRepBuilderAPI_FindPlane findPlane(spine);
+    if (!findPlane.Found()) {
+        PyErr_SetString(PartExceptionOCCError, "No planar face");
+        return nullptr;
+    }
+
+    const TopoDS_Wire& profile = TopoDS::Wire(static_cast<TopoShapeWirePy*>(Profile)->getTopoShapePtr()->getShape());
+
+    GeomAbs_JoinType joinType;
+    switch (JoinType) {
+    case GeomAbs_Tangent:
+        joinType = GeomAbs_Tangent;
+        break;
+    case GeomAbs_Intersection:
+        joinType = GeomAbs_Intersection;
+        break;
+    default:
+        joinType = GeomAbs_Arc;
+        break;
+    }
+
+    try {
+        BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
+                                          PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
+                                          Tolerance);
+        TopoDS_Shape shape = evolved.Shape();
+        return Py::new_reference_to(shape2pyshape(shape));
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
 }
 
 PyObject* TopoShapeFacePy::valueAt(PyObject *args)

@@ -30,6 +30,11 @@ Returns Compound of Wires. Deprecated - use makeOffset2D instead.
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="makeEvolved" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Profile along the spine</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getUVNodes" Const="true">
             <Documentation>
                 <UserDocu>Get the list of (u,v) nodes of the tessellation
